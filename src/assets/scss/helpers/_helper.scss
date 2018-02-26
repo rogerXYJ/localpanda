@@ -1,0 +1,132 @@
+@charset "UTF-8";
+//-----------------------------------------------------  
+// helpers scss
+//-----------------------------------------------------
+
+// ul/ol has list style
+ul.has-style{
+  @extend %ul-has-style;
+}
+// li float
+ul.inline-float{
+  @extend %clearfix;
+  li{
+    @include float;
+  }
+}
+// li inline-block
+ul.inline-block{
+  li{
+    @extend %inline-block; 
+    margin-right: 8px;
+    &:last-child{
+      margin-right: 0;
+    }
+  }
+}
+
+// 浮动及闭合浮动
+.fl{
+  @extend %float;
+}
+.fr{
+  @include float(right);
+}
+.clearfix{
+  @extend %clearfix;
+}
+
+// 不同形式的隐藏
+.hidden{
+  @extend %hidden;
+}
+.visually-hidden {
+  @extend %visually-hidden;
+}
+
+// text-align:left/right/center
+.tar{
+	text-align: right;
+}
+.tac{
+	text-align: center;
+}
+
+// 图片替换文字
+.ir{
+	@extend %ir;
+}
+
+.displaynone{
+  display:none;
+}
+.bread-nav{
+  font-size: 14px;
+  padding: 15px 0;
+}
+// 消息提示变红色
+.msg_box{
+  color:#ff3333;
+}
+
+// 灰色
+.gray{
+  color:$gray;
+}
+%outline{
+  outline:1px solid #abcdef;
+}
+// margin类快速添加
+.mt14{
+  margin-top:14px;
+}
+.mr8{
+  margin-right:8px;
+}
+.mr20{
+  margin-right:20px;
+}
+.ml-2{
+  margin-left:-2px;
+}
+.mt10{
+  margin-top:10px;
+}
+.mt36{
+  margin-top:36px;
+}
+.mb20{
+  margin-bottom:20px;
+}
+.mt30{
+  margin-top:30px !important;
+}
+.mt20{
+  margin-top:20px !important;
+}
+.mb10{
+  margin-bottom:10px;
+}
+.blue{
+  color: #86c4f0;
+}
+.red{
+  color:#e16868;
+}
+.orange{
+  color: #f3991e;
+}
+.ml20{
+  margin-left: 20px;
+}
+
+//宽度
+.w120{
+  width: 120px;
+}
+
+.text-l{
+  text-align: left !important;
+}
+
+

@@ -1,0 +1,13 @@
+//按钮样式
+%btn {
+    padding: 5px 16px;
+    background: #2697D5;
+    border-radius: 4px;
+    font-size: $font14;
+    color: $white;
+    cursor: pointer;
+    display: inline-block;
+    &:active {
+        background: #1582BF;
+    }
+}

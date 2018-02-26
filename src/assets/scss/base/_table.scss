@@ -1,0 +1,69 @@
+
+%table {
+    padding: 0 20px 20px;
+    table {
+        border: 0;
+        width: 100%;
+        thead {
+            background: #F9FAFC;
+            border: 1px solid #E8EAEE;
+            tr {
+                th {
+                    height: 40px;
+                    font-size: $font12;
+                    color: #999;
+                    border: 0px;
+                }
+            }
+        }
+        tbody {
+            tr {
+                td {
+                    height: 40px;
+                    border: 0;
+                    text-align: center;
+                    font-size: $font12;
+                    color: #666;
+                    a {
+                        color: #2979FF;
+                        &:hover {
+                            text-decoration: underline;
+                        }
+                    }
+                    span{
+                        &.s1{
+//                          待处理-紫色
+                            color: #A20BAE;
+                        } 
+                        &.s2{
+//                          配置中+运行中+使用中-橙色
+                            color: #F07818;
+                        }
+                        &.s3{
+//                          已开通+启用-绿色
+                            color:  #71B234;
+                        }
+                        &.s4{
+//                          禁用-红色
+                            color: #FD5E5E;
+                        }，
+                        &.s5{
+//                          已失效-灰色
+                            color: #666;
+                        }
+                    }
+                    b {
+                        font-weight: normal;
+                        padding: 0 4px;
+                        cursor: pointer;
+                        color: #2979FF;
+                    }
+                }
+                &:nth-child(even) {
+                    background: #FAFAFA;
+                }
+            }
+        }
+    }
+
+}

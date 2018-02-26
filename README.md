@@ -1,1 +1,1 @@
-"# localpanda " 
+# localpanda

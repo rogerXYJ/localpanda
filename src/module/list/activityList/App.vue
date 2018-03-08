@@ -78,7 +78,7 @@
 									<div class="duration"><i class="iconfont">&#xe624;</i>Duration: {{item.duration}} {{item.durationUnit|firstUpperCase}}</div>
 									<div class="totalPic">
 										
-										<div class="nowPic">From <b>${{item.bottomPrice}}</b><span>  pp</span></div>
+										<div class="nowPic">From <b>${{returnFloat(item.bottomPrice)}}</b><span>  pp</span></div>
 									</div>
 								</div>
 							
@@ -157,7 +157,20 @@
 			Bottom
 		},
 		methods: {
-			
+			returnFloat(value) {
+				var value = Math.round(parseFloat(value) * 100) / 100;
+				var xsd = value.toString().split(".");
+				if(xsd.length == 1) {
+					value = value.toString() + ".00";
+					return value;
+				}
+				if(xsd.length > 1) {
+					if(xsd[1].length < 2) {
+						value = value.toString() + "0";
+					}
+					return value;
+				}
+			},
 			city(loc){
 				if(loc=='Shanghai')return 'shanghai'
 				if(loc=='Beijing')return 'beijing'
@@ -247,20 +260,25 @@
 			var title=document.getElementsByTagName("title")[0];
 			var keywords=document.querySelector("meta[name=keywords]");
 			var description=document.querySelector("meta[name=description]")
-			title.innerHTML="The Top Local "+that.loc+" Guides | The Best Professional "+that.loc+" Tour Guides."
-			keywords.setAttribute("content",""+that.loc+" Tour Guide, "+that.loc+" Professional Guide, Things to do in "+that.loc+", "+that.loc+" destinations, "+that.loc+" history, "+that.loc+" culture, "+that.loc+" locals, "+that.loc+" tourist attractions, "+that.loc+" tours")
-			description.setAttribute("content","Book the best local tour guides in "+that.loc+", authentic tours & experiences, real local activities, cut the lines with professional guides, "+that.loc+"’s best history, culture, food, architecture, art, and photo, and nightlife tours.")
+			title.innerHTML="The Top "+that.value+" Tours | "+that.value+" Local Activities and Experiences"
+			keywords.setAttribute("content","Best Things to do in "+that.value+", "+that.value+" tours, "+that.value+" trip, "+that.value+" travel, "+that.value+" tour packages, "+that.value+" guide, china tours")
+			if(that.loc=="Beijing"){
+				description.setAttribute("content","See top things to do in Beijing, including Beijing city tours, Beijing walking tours, Beijing history & culture tours, and Beijing food tours. Visit the Forbidden City, Temple of Heaven, Great Wall, Tiananmen Square, and Beijing Summer Palace with our local China tour guides.")
+			}else if(that.loc=="Shanghai"){
+				description.setAttribute("content","See top things to do in Shanghai, including Shanghai city tours, Shanghai walking tours, Shanghai history & culture tours, and Shanghai food tours. Visit the bund shanghai, the Shanghai Tower, the French concession, yu garden, zhujiajiao and Suzhou with our local China tour guides.")
+			}else if(that.loc=="Guilin"){
+				description.setAttribute("content","See top things to do in Guilin, including Guilin scenic tours, Guilin walking tours, Guilin history & culture tours, Guilin food tours, and Guilin Biking tours. See the best scenery in Guilin including Elephant Trunk Hill, Guilin Forest, Li River, Sun & Moon Pagodas, and Yaoshan Mountain.")
+			}else if(that.loc=="Chengdu"){
+				description.setAttribute("content","See top things to do in Chengdu, including Chengdu city tours, Chengdu walking tours, Chengdu history & culture tours, and Chengdu food tours. Visit the Giant Panda Breeding Research Base, Mount Qingcheng, Wenshu Yuan Monestary, Jinli Street, and Dujiangyan with our local China tour guides.")
+			}else{
+				description.setAttribute("content","See top things to do in Xi’an, including Xi’an city tours, Xi’an walking tours, Xi’an history & culture tours, and Xi’an food tours. Visit the Terra-cotta Warriors, Xi’an City Wall, Muslim Quarter, Shaanxi History Museum, and Xi’an markets with our local China tour guides.")
+			}
 		}
 	}
 </script>
 <style lang="scss">
 	@import '../../../assets/scss/_main.scss';
 	@import '../../../assets/font/iconfont.css';
-	
-	
-	
-	
-	
 	.el-input__inner {
 		width: 168px!important;
 		height: 40px;
@@ -313,30 +331,8 @@
 </style>
 <style lang="scss" scoped>
 	@import "../../../assets/scss/base/_setting.scss";
-	/*@media (max-width:1200px) {
-		.guideList{
-			.selectInfo{
-				width: 958px!important;;
-			}
-			.selectType{
-				width: 958px!important;;
-			}
-			.list-cont{
-				width: 958px!important;;
-				.activity-item {
-					&:nth-child(3n+0) {
-						margin-right: 0;
-					}
-					&:nth-child(4n+0) {
-						 margin-right: 20px!important;
-					}
-				}
-			}
-		}
-			
-	}*/
 	.guideList {
-		
+		overflow-x:hidden;
 		width:100%;
 		.banner {
 			&.beijing{

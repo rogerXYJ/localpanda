@@ -107,8 +107,8 @@
 							    -webkit-box-orient:vertical;">{{i.title}}</h4>
 
 								<div class="pic">
-									<div class="old-pic" v-if="i.originalPrice">${{i.originalPrice}}</div>
-									<div class="current-price">From<b>${{i.bottomPrice}}</b><span>  pp</span></div>
+									<div class="old-pic" v-if="i.originalPrice">${{returnFloat(i.originalPrice)}}</div>
+									<div class="current-price">From<b>${{returnFloat(i.bottomPrice)}}</b><span>  pp</span></div>
 								</div>
 							</div>
 						</a>
@@ -122,8 +122,8 @@
 						<div class="bookbox">
 							<div class="picPp clearfix">
 								<div class="picLeft">
-									From <span>${{picInfo.originalPrice}}</span>
-									<b>${{picInfo.bottomPrice}}</b> pp
+									From <span v-if="picInfo.originalPrice">${{returnFloat(picInfo.originalPrice)}}</span>
+									<b>${{returnFloat(picInfo.bottomPrice)}}</b> pp
 								</div>
 								<div class="picRight" @mouseover="showNode" @mouseleave="hidden">
 									Price Note
@@ -213,19 +213,19 @@
 									<b class='headTitle'>Price Breakdown</b>
 									<ul>
 										<li class="clearfix">
-											<div class="formula" v-if="children==0&&adults==1">${{round(adultsPic/(adults+children))}} x {{adults+children}} Person</div>
-											<div class="formula" v-else>${{round(adultsPic/(adults+children))}} x {{adults+children}} People </div>
+											<div class="formula" v-if="children==0&&adults==1">${{returnFloat(round(adultsPic/(adults+children)))}} x {{adults+children}} Person</div>
+											<div class="formula" v-else>${{returnFloat(round(adultsPic/(adults+children)))}} x {{adults+children}} People </div>
 
-											<div class="pic">${{adultsPic}}</div>
+											<div class="pic">${{returnFloat(adultsPic)}}</div>
 										</li>
 										<li class="clearfix" v-if="children>0&&picInfo.childDiscount">
-											<div class="formula"><b style="display: inline-block;">- ${{children*picInfo.childDiscount}}</b> for child(ren)</div>
+											<div class="formula"><b style="display: inline-block;">- ${{returnFloat(children*picInfo.childDiscount)}}</b> for child(ren)</div>
 										</li>
 									</ul>
 									<div class="total clearfix">
 										<div class="totalText">Total</div>
-										<div class="totalPic" v-if="children>0&&picInfo.childDiscount">${{cutXiaoNum(adultsPic-children*picInfo.childDiscount,1)}}</div>
-										<div class="totalPic" v-else>${{adultsPic}}</div>
+										<div class="totalPic" v-if="children>0&&picInfo.childDiscount">${{returnFloat(cutXiaoNum(adultsPic-children*picInfo.childDiscount,1))}}</div>
+										<div class="totalPic" v-else>${{returnFloat(adultsPic)}}</div>
 									</div>
 								</div>
 								<div class="inquiry">
@@ -303,8 +303,7 @@
 				isShowAdults: false,
 				isShowTime: false,
 				options: {
-					minDate: GetDateStr(2),
-					maxDate: addmulMonth(GetDateStr(2), 12),
+					
 				},
 				picInfo: {},
 				adultsPic: "",
@@ -499,7 +498,21 @@
 					location.href = "https://www.localpanda.com/fillYourInformation.html"
 				}
 			},
-
+			//价格两位小数
+			returnFloat(value) {
+				var value = Math.round(parseFloat(value) * 100) / 100;
+				var xsd = value.toString().split(".");
+				if(xsd.length == 1) {
+					value = value.toString() + ".00";
+					return value;
+				}
+				if(xsd.length > 1) {
+					if(xsd[1].length < 2) {
+						value = value.toString() + "0";
+					}
+					return value;
+				}
+			},
 			getRecommend() {
 				let that = this
 				that.axios.get("https://www.localpanda.com/api/activity/recommend/" + that.id).then(function(res) {
@@ -572,7 +585,6 @@
 
 		},
 		filters: {
-
 			firstUpperCase(val) {
 				if(val)
 					return val.toLowerCase().replace(/( |^)[a-z]/g, (L) => L.toUpperCase());
@@ -585,6 +597,11 @@
 				if(res.data.available == 1) {
 					that.picInfo = res.data
 					that.picInfo.departureTime ? that.time = that.picInfo.departureTime[0] : that.time = ""
+					that.options={
+						clickOpens:false,
+						minDate: that.picInfo.earliestBookDate,
+						maxDate: addmulMonth(that.picInfo.earliestBookDate, 12),
+					}
 
 				} else {
 					window.location.href = "https://www.localpanda.com/falsePage.html"

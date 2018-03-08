@@ -122,7 +122,7 @@ based on your needs!</p>
 		}
 		.btn{
 			position: absolute;
-			left: 60%;
+			right: 0;
 			top: 50%;
 			margin-top: -50px;
 			span{

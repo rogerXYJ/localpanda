@@ -1,5 +1,5 @@
 <template>
-	<footer id="footer" :style="{width:deviceWidth+'px'}">
+	<div class="footercommon">
 		<div class="footInfo">
 			<div class="footLeft">
 				<h3>Message</h3>
@@ -21,7 +21,7 @@
 					<div>
 						<i class="iconfont" style="font-size: 17px;">&#xe649;</i>Contact
 					</div>
-					<p>0086 21 80182090</p>
+					<p>+86 21 80182090</p>
 					<p>+1-818-404-8141</p>
 					<p>service@localpanda.com</p>
 					
@@ -88,7 +88,7 @@
 
 		</div>
 		<Alert :isShowAlert="isShowAlert" :alertTitle="alertTitle" :alertMessage="alertMessage" v-on:setIsShowAlert="getIsShowAlert"></Alert>
-	</footer>
+	</div>
 	
 	
 	
@@ -100,7 +100,7 @@
 	import '../../assets/font/iconfont.js';
 	export default {
 		props:["showBook","logIn"],
-		name: 'footer',
+		name: 'footercommon',
 		data() {
 			return {
 				name: '',
@@ -147,6 +147,12 @@
 							message: that.textarea
 						}
 					}
+						that.isShowAlert=true
+						that.alertTitle="Submission completed!"
+						that.alertMessage="Thank you for your feedback.We will get back to you within 1 day."
+						that.name=""
+						that.email=""
+						that.textarea=""
 						that.axios.post("https://www.localpanda.com/user/feedback/commit", JSON.stringify(obj), {
 							headers: {
 								'Content-Type': 'application/json; charset=UTF-8'
@@ -154,12 +160,7 @@
 						}).then(function(response) {
 							
 							if(response.data.succeed){
-								that.isShowAlert=true
-								that.alertTitle="Submission completed!"
-								that.alertMessage="Thank you for your feedback.We will get back to you within 1 day."
-								that.name=""
-								that.email=""
-								that.textarea=""
+								
 							}else{
 								that.isShowAlert=true
 								that.alertMessage="Failed!"
@@ -205,7 +206,7 @@
 </style>
 <style lang="scss" scoped>
 	@import "../../assets/scss/base/_setting.scss";
-	#footer {
+	.footercommon {
 		.icon {
 	       width: 26px; height: 26px;
 	       vertical-align:middle;
@@ -273,7 +274,7 @@
 					height: 141px;
 					width: 671px;
 					textarea {
-						width: 100%;
+						width: calc(100% - 10px);
 						height: 131px;
 						padding-top: 10px;
 						padding-left: 10px;

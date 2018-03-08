@@ -1,5 +1,5 @@
  <template>
-    <div class="indexst" :style="{width:deviceWidth+'px'}">
+    <div class="indexst">
     <HeaderCommon :logIn="logIn" :isIndex="isIndex"></HeaderCommon>
         <Banner ></Banner>
         <MustGo ></MustGo>
@@ -72,6 +72,6 @@ export default {
 <style lang="scss" scoped>
 @import "../../assets/scss/base/_setting.scss";
 .indexst{
-   
+   overflow-x:hidden;
 }
 </style>

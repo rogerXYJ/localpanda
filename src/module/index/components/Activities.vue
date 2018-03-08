@@ -4,7 +4,7 @@
 			<h3>Top Activities</h3>
 			<p>These tours are so hot right now</p>
 		</div>
-	<!--	<div class="activitie-list">
+		<!--	<div class="activitie-list">
 			<ul>
 				<li v-for="item in activeList">
 					<a :href="item.id?'https://www.localpanda.com/activity/detail/'+item.id:'#'">
@@ -46,42 +46,42 @@
 			</ul>
 		</div>-->
 		<div class="topSearchList clearfix">
-					<div class="topSearchList-item" v-for="item in activeList">
-						<a :href="'https://www.localpanda.com/activity/details/'+item.activityId">
-							
-							<div class="activity">
-								
-									<div class="activity-photo" v-lazy:background-image="item.coverPhotoUrl">
-										
-									</div>
-								
-							</div>
-							<div class="activitDe">
-								<div class="info">
-									<div class="activeType clearfix">
-										<div class="tourType"><i class="iconfont">&#xe653;</i>{{item.category}}</div>
-										<div class="duration"><i class="iconfont">&#xe624;</i>Duration: {{item.duration}} {{item.durationUnit|firstUpperCase}}</div>
-									</div>
-									<div class="titleText" style="-moz-box-orient: vertical;
-							    -webkit-box-orient:vertical;">
-										{{item.title}}
-									</div>
-									<div class="totalPic">
-										
-										<div class="nowPic">From <b>${{item.bottomPrice}}</b><span>  pp</span></div>
-									</div>
-								</div>
-							
-							</div>
-								<div class="highlights">
-									<b><span>Highlights</span></b>
-									<ul v-if="item.highlights">
-										<li v-for="i in delNullArr(item.highlights.split('\n'))">{{i}}</li>
-									</ul>
-								</div>
-						</a>
+			<div class="topSearchList-item" v-for="item in activeList">
+				<a :href="'https://www.localpanda.com/activity/details/'+item.activityId">
+
+					<div class="activity">
+
+						<div class="activity-photo" v-lazy:background-image="item.coverPhotoUrl">
+
+						</div>
+
 					</div>
-				</div>
+					<div class="activitDe">
+						<div class="info">
+							<div class="activeType clearfix">
+								<div class="tourType"><i class="iconfont">&#xe653;</i>{{item.category}}</div>
+								<div class="duration"><i class="iconfont">&#xe624;</i>Duration: {{item.duration}} {{item.durationUnit|firstUpperCase}}</div>
+							</div>
+							<div class="titleText" style="-moz-box-orient: vertical;
+							    -webkit-box-orient:vertical;">
+								{{item.title}}
+							</div>
+							<div class="totalPic">
+
+								<div class="nowPic">From <b>${{returnFloat(item.bottomPrice)}}</b><span>  pp</span></div>
+							</div>
+						</div>
+
+					</div>
+					<div class="highlights">
+						<b><span>Highlights</span></b>
+						<ul v-if="item.highlights">
+							<li v-for="i in delNullArr(item.highlights.split('\n'))">{{i}}</li>
+						</ul>
+					</div>
+				</a>
+			</div>
+		</div>
 
 	</div>
 
@@ -89,22 +89,36 @@
 
 <script>
 	import '../../../assets/js/plugin/flexible.js'
-	
+
 	export default {
-		props:["activeList","isDeviceType"],
+		props: ["activeList", "isDeviceType"],
 		name: "Activities",
 		data() {
 			return {
 				activities: [],
-				
+
 			}
 		},
 		components: {},
 		mounted() {
-			
+
 		},
 		methods: {
-				delNullArr(array) {
+			returnFloat(value) {
+				var value = Math.round(parseFloat(value) * 100) / 100;
+				var xsd = value.toString().split(".");
+				if(xsd.length == 1) {
+					value = value.toString() + ".00";
+					return value;
+				}
+				if(xsd.length > 1) {
+					if(xsd[1].length < 2) {
+						value = value.toString() + "0";
+					}
+					return value;
+				}
+			},
+			delNullArr(array) {
 				for(var i = 0; i < array.length; i++) {
 					if(array[i] == "" || typeof(array[i]) == "undefined") {
 						array.splice(i, 1);
@@ -116,11 +130,10 @@
 				return array;
 			},
 		},
-		filters:{
-			
+		filters: {
 			firstUpperCase(val) {
 				if(val)
-		  		return val.toLowerCase().replace(/( |^)[a-z]/g, (L) => L.toUpperCase());
+					return val.toLowerCase().replace(/( |^)[a-z]/g, (L) => L.toUpperCase());
 			}
 		},
 	}
@@ -128,207 +141,190 @@
 
 <style lang="scss">
 	@import "../../../assets/scss/base/_setting.scss";
-	
 	#Activities {
 		width: 1170px;
 		margin: 60px auto 0;
 		.topSearchList {
-					
-					margin-top:19px;
-					.topSearchList-item {
-						position:relative;
-						float:left;
-						box-shadow: 0px 2px 6px 0px rgba(53, 58, 63, 0.1);
-						overflow:hidden;
-						background: #fff;
-						margin-right:20px;
-						&:nth-child(3n+0) {
-							margin-right: 0;
-						}
-						width:376px;
-						margin-top: 20px;
-						.title {
-						    height: 72px;
-						    width: 330px;
-						    overflow: hidden;
-						    border-left: 4px solid  #1bbc9d;
-						    text-overflow: ellipsis;
-						    display: -webkit-box;
-						    display: -moz-box;
-						    -moz-box-orient: vertical;
-						    -webkit-box-orient:vertical;
-						    
-						    -webkit-line-clamp: 3;
-						     -moz-line-clamp:3;
-						     -o-text-overflow: ellipsis;
-						    word-wrap: break-word;
-							margin: 30px 20px 20px;
-							font-size: 20px;
-							font-weight: bold;
-							position: relative;
-							padding-left: 14px;
-							line-height: 24px;
-							
-							
-						}
-						.activity {
-							.activity-photo {
-								width: 376px;
-								height: 188px;
-								background-repeat: no-repeat!important;
-								background-size:cover!important;
-								position: relative;
-								.type{
-									position: absolute;
-									top: 10px;
-									left: 10px;
-									padding: 5px;
-									font-size: 14px;
-									font-weight: bold;
-									background: #f4b33f;
-									color: #fff;
-								}
-							}
-						}
-						.activitDe{
-							padding:0 20px 20px;
-							.activeType{
-								height: 48px;
-								line-height: 48px;
-								.tourType{
-									float: left;
-									color:#d87b65;
-									font-size: 14px;
-									i{
-										font-size: 12px;
-										margin-right: 8px;
-									}
-								}
-								.duration{
-									float: right;
-									font-size:14px;
-									color: #878e95;
-									i{
-										font-size: 12px;
-										margin-right: 8px;
-									}
-								}
-								
-							}
-							.titleText{
-								width: 100%;
-								height:50px;
-								 text-overflow: ellipsis;
-						    display: -webkit-box;
-						    display: -moz-box;
-						    -moz-box-orient: vertical;
-						    -webkit-box-orient:vertical;
-						    
-						    -webkit-line-clamp: 2;
-						     -moz-line-clamp:2;
-						     -o-text-overflow: ellipsis;
-						    word-wrap: break-word;
-								
-							font-size: 20px;
-							font-weight: bold;
-							text-align: left;
-							overflow: hidden;
-								
-								
-							}
-							.totalPic{
-								padding-top: 20px;
-								.oldpic{
-									text-align: right;
-									font-size: 14px;
-									color: #878e95;
-									text-decoration: line-through;
-								}
-								.nowPic{
-									text-align: right;
-									font-size: 14px;
-									color:#878e95;
-									b{
-										color: #353a3f;
-										font-size: 20px;
-									}
-									span{
-										color: #353a3f;
-									}
-								}
-							}
-							
-						}
-						&:hover .highlights{
-							-webkit-transition: all .5s cubic-bezier(0, 1, 0.5, 1);
-								transition: all .5s cubic-bezier(0, 1, 0.5, 1);
-								transform: translateY(0);
-						}
-						.highlights {
+			margin-top: 19px;
+			.topSearchList-item {
+				position: relative;
+				float: left;
+				box-shadow: 0px 2px 6px 0px rgba(53, 58, 63, 0.1);
+				overflow: hidden;
+				background: #fff;
+				margin-right: 20px;
+				&:nth-child(3n+0) {
+					margin-right: 0;
+				}
+				width:376px;
+				margin-top: 20px;
+				.title {
+					height: 72px;
+					width: 330px;
+					overflow: hidden;
+					border-left: 4px solid #1bbc9d;
+					text-overflow: ellipsis;
+					display: -webkit-box;
+					display: -moz-box;
+					-moz-box-orient: vertical;
+					-webkit-box-orient: vertical;
+					-webkit-line-clamp: 3;
+					-moz-line-clamp: 3;
+					-o-text-overflow: ellipsis;
+					word-wrap: break-word;
+					margin: 30px 20px 20px;
+					font-size: 20px;
+					font-weight: bold;
+					position: relative;
+					padding-left: 14px;
+					line-height: 24px;
+				}
+				.activity {
+					.activity-photo {
+						width: 376px;
+						height: 188px;
+						background-repeat: no-repeat!important;
+						background-size: cover!important;
+						position: relative;
+						.type {
 							position: absolute;
-							top: 0;
-							transform: translateY(200%);
-							-webkit-transition: all .5s cubic-bezier(0, 1, 0.5, 1);
-							transition: all .5s cubic-bezier(0, 1, 0.5, 1);
-							background-image: linear-gradient(135deg, #009efd 0%, #1bbc9d 100%);
-							width: 100%;
-							height:100%;
-							b{
-								color: #fff;
-								font-size: 20px;
-								
-								margin-top: 20px;
-								display: block;
-								text-align:center; 
-								span{
-									position: relative;
-									&:after{
-										content: "";
-								         height: 2px;
-								         width: 100%;
-								         background: #fff;
-								         left: 50%;
-								         margin-left: -50%;
-								         bottom: -20px;
-								         display: block;
-								         position: absolute;
-								         
-									}
-								}
-								
-							};
-									ul {
-										
-										padding: 50px 20px 0;
-										height: 250px;
-										li {
-											color: #fff;
-											font-size: 16px;
-											position: relative;
-											padding-left: 16px;
-											margin-top: 12px;
-											line-height: 22px;
-											&:first-child {
-												margin-top: 0;
-											}
-											&:after {
-												position: absolute;
-												content: "";
-												width: 4px;
-												height: 4px;
-												border-radius: 50%;
-												background: #fff;
-												left: 0;
-												top: 8px;
-											}
-										}
-									}
-							}	
-								
-							
-						
+							top: 10px;
+							left: 10px;
+							padding: 5px;
+							font-size: 14px;
+							font-weight: bold;
+							background: #f4b33f;
+							color: #fff;
+						}
 					}
 				}
+				.activitDe {
+					padding: 0 20px 20px;
+					.activeType {
+						height: 48px;
+						line-height: 48px;
+						.tourType {
+							float: left;
+							color: #d87b65;
+							font-size: 14px;
+							i {
+								font-size: 12px;
+								margin-right: 8px;
+							}
+						}
+						.duration {
+							float: right;
+							font-size: 14px;
+							color: #878e95;
+							i {
+								font-size: 12px;
+								margin-right: 8px;
+							}
+						}
+					}
+					.titleText {
+						width: 100%;
+						height: 50px;
+						text-overflow: ellipsis;
+						display: -webkit-box;
+						display: -moz-box;
+						-moz-box-orient: vertical;
+						-webkit-box-orient: vertical;
+						-webkit-line-clamp: 2;
+						-moz-line-clamp: 2;
+						-o-text-overflow: ellipsis;
+						word-wrap: break-word;
+						font-size: 20px;
+						font-weight: bold;
+						text-align: left;
+						overflow: hidden;
+					}
+					.totalPic {
+						padding-top: 20px;
+						.oldpic {
+							text-align: right;
+							font-size: 14px;
+							color: #878e95;
+							text-decoration: line-through;
+						}
+						.nowPic {
+							text-align: right;
+							font-size: 14px;
+							color: #878e95;
+							b {
+								color: #353a3f;
+								font-size: 20px;
+							}
+							span {
+								color: #353a3f;
+							}
+						}
+					}
+				}
+				&:hover .highlights {
+					-webkit-transition: all .5s cubic-bezier(0, 1, 0.5, 1);
+					transition: all .5s cubic-bezier(0, 1, 0.5, 1);
+					transform: translateY(0);
+				}
+				.highlights {
+					position: absolute;
+					top: 0;
+					transform: translateY(200%);
+					-webkit-transition: all .5s cubic-bezier(0, 1, 0.5, 1);
+					transition: all .5s cubic-bezier(0, 1, 0.5, 1);
+					background-image: linear-gradient(135deg, #009efd 0%, #1bbc9d 100%);
+					width: 100%;
+					height: 100%;
+					b {
+						color: #fff;
+						font-size: 20px;
+						margin-top: 20px;
+						display: block;
+						text-align: center;
+						span {
+							position: relative;
+							&:after {
+								content: "";
+								height: 2px;
+								width: 100%;
+								background: #fff;
+								left: 50%;
+								margin-left: -50%;
+								bottom: -20px;
+								display: block;
+								position: absolute;
+							}
+						}
+					}
+					;
+					ul {
+						padding: 50px 20px 0;
+						height: 250px;
+						li {
+							color: #fff;
+							font-size: 16px;
+							position: relative;
+							padding-left: 16px;
+							margin-top: 12px;
+							line-height: 22px;
+							&:first-child {
+								margin-top: 0;
+							}
+							&:after {
+								position: absolute;
+								content: "";
+								width: 4px;
+								height: 4px;
+								border-radius: 50%;
+								background: #fff;
+								left: 0;
+								top: 8px;
+							}
+						}
+					}
+				}
+			}
+		}
 		/*.activitie-list {
 			ul {
 				overflow: auto;

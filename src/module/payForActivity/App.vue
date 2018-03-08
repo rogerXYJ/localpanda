@@ -31,21 +31,21 @@
 				</div>
 				<div class="pic">
 					<div class="adult clearfix">
-						<div class="formula" v-if="opctions.childrenNum==0&&opctions.adultNum==1">${{opctions.averagePrice}} x 1 Person</div>
-						<div class="formula" v-else>$ {{opctions.averagePrice}} x {{opctions.adultNum+opctions.childrenNum}} People </div>
-						<div class="adultPic" >$ {{cutXiaoNum(opctions.averagePrice*(opctions.adultNum+opctions.childrenNum),1)}}</div>
+						<div class="formula" v-if="opctions.childrenNum==0&&opctions.adultNum==1">${{returnFloat(opctions.averagePrice)}} x 1 Person</div>
+						<div class="formula" v-else>$ {{returnFloat(opctions.averagePrice)}} x {{opctions.adultNum+opctions.childrenNum}} People </div>
+						<div class="adultPic" >$ {{returnFloat(cutXiaoNum(opctions.averagePrice*(opctions.adultNum+opctions.childrenNum),1))}}</div>
 					</div>
 					<div class="child" v-if="opctions.childDiscount">
-						<b>- ${{opctions.childDiscount}}</b> for child(ren)
+						<b>- ${{returnFloat(opctions.childDiscount)}}</b> for child(ren)
 					</div>
 					<div class="child" v-if="opctions.couponDiscount">
-						<b>- ${{opctions.couponDiscount}}</b> for discount
+						<b>- ${{returnFloat(opctions.couponDiscount)}}</b> for discount
 					</div>
 					
 				</div>
 				<div class="total clearfix">
 					<div class="totle-title">Total (USD)</div>
-					<div class="totalPic">${{opctions.amount}}</div>
+					<div class="totalPic">${{returnFloat(opctions.amount)}}</div>
 				</div>
 
 			</div>
@@ -114,6 +114,20 @@
 				}
 
 			},
+			returnFloat(value) {
+				var value = Math.round(parseFloat(value) * 100) / 100;
+				var xsd = value.toString().split(".");
+				if(xsd.length == 1) {
+					value = value.toString() + ".00";
+					return value;
+				}
+				if(xsd.length > 1) {
+					if(xsd[1].length < 2) {
+						value = value.toString() + "0";
+					}
+					return value;
+				}
+			},
 			getToken() {
 				let that = this
 				that.stripeHandler = StripeCheckout.configure({
@@ -175,9 +189,6 @@
 				})
 			}
 		},
-		filters: {
-			
-		},
 		created: function() {
 			this.orderId = GetQueryString("objectId")
 			
@@ -194,7 +205,7 @@
 <style lang="scss">
 	@import '../../assets/scss/_main.scss';
 	@import '../../assets/font/iconfont.css';
-	#header {
+	#headercommon {
 		box-shadow: 0px 2px 6px 0px rgba(53, 58, 63, 0.1);
 	}
 </style>

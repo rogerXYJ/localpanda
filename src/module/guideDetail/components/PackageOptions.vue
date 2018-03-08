@@ -178,7 +178,7 @@
 				</div>
 				<div class="bookbtn">
 					<p v-if="Date.parse(sortDate(startTimeHalfTour.time).split(',')[0])-Date.parse(new Date())<5*86400000||Date.parse(sortDate(startTimeAllTour.time).split(',')[0])-Date.parse(new Date())<5*86400000">Since you are booking less than 5 days before departure, we cannot provide a refund if you have to cancel.</p>
-					
+
 					<button class="btnlinner no-margin" @click="jumpfill(1)">BOOK NOW</button>
 				</div>
 			</div>
@@ -197,21 +197,21 @@
 
 			</div>
 		</div>
-		
+
 	</div>
 </template>
 
 <script>
 	import { GetDateStr, addmulMonth } from '../../../assets/js/plugin/utils.js'
 	import flatPickr from 'vue-flatpickr-component';
-	
+
 	export default {
 		props: ["guideId", "detail"],
 		name: 'packageOptions',
 		data() {
 			return {
-				obj:'',
-				isNowPage:true,
+				obj: '',
+				isNowPage: true,
 				allcarpic: '', //动态带车全天价格
 				halfcarpic: "", //动态带车半天价格
 				allTourpic: '', //动态不带车全天价格
@@ -230,7 +230,6 @@
 
 				seletId2: 0, //切换带车
 
-			
 				picmsg: '',
 				SupplementaryCar: '',
 				SupplemenTourPic: '',
@@ -283,7 +282,7 @@
 		},
 		components: {
 			flatPickr,
-			
+
 		},
 		methods: {
 			dateClear(val) {
@@ -292,25 +291,25 @@
 					this.carHalfarr = this.carHalfarr.concat(this.startTimeAllCar.time.split(", "))
 					this.carAllarr = this.carAllarr.concat(this.startTimeHalfCar.time.split(", "))
 					this.startTimeAllCar.time = ""
-					
+
 					//console.log(this.carHalfsuerDate)
 
 				} else if(val == this.startTimeHalfCar.time) {
-					
+
 					this.carAllarr = this.carAllarr.concat(this.startTimeHalfCar.time.split(", "))
 					this.carHalfarr = this.carHalfarr.concat(this.startTimeAllCar.time.split(", "))
 					this.startTimeHalfCar.time = ""
-					
+
 				} else if(val == this.startTimeAllTour.time) {
 					this.tourHalfarr = this.tourHalfarr.concat(this.startTimeAllTour.time.split(", "))
 					this.tourAllarr = this.tourAllarr.concat(this.startTimeHalfTour.time.split(", "))
 					this.startTimeAllTour.time = ""
-					
+
 				} else if(val == this.startTimeHalfTour.time) {
 					this.tourAllarr = this.tourAllarr.concat(this.startTimeHalfTour.time.split(", "))
 					this.tourHalfarr = this.tourHalfarr.concat(this.startTimeAllTour.time.split(", "))
 					this.startTimeHalfTour.time = ""
-					
+
 				}
 			},
 
@@ -323,14 +322,14 @@
 
 			//带车
 			jumpfill(oderId) {
-				const that=this
-				
+				const that = this
+
 				ga('gtag_UA_107010673_1.send', {
-				  hitType: 'event',
-				  eventCategory: 'Button',
-				  eventAction: 'Click',
-				  eventLabel: 'guide_book',
-				  eventValue: that.guideId
+					hitType: 'event',
+					eventCategory: 'Button',
+					eventAction: 'Click',
+					eventLabel: 'guide_book',
+					eventValue: that.guideId
 				});
 				if(oderId == 0) {
 					that.obj = {
@@ -364,12 +363,12 @@
 						startTimeHalfTour: this.startTimeHalfTour.time
 					}
 				}
-				
-					that.obj = JSON.stringify(that.obj)
-					console.log(that.obj)
-					localStorage.setItem("infor", that.obj)
-					window.location.href = 'https://www.localpanda.com/fillYourInfo.html'
-				
+
+				that.obj = JSON.stringify(that.obj)
+				console.log(that.obj)
+				localStorage.setItem("infor", that.obj)
+				window.location.href = 'https://www.localpanda.com/fillYourInfo.html'
+
 			},
 			//动态改变带车价格
 			changeselet() {
@@ -424,24 +423,24 @@
 				}
 				return a;
 			},
-			gaSendtour(){
-				let that=this
+			gaSendtour() {
+				let that = this
 				ga('gtag_UA_107010673_1.send', {
-				  hitType: 'event',
-				  eventCategory: 'Button',
-				  eventAction: 'Click',
-				  eventLabel: 'guide_select_hiking',
-				  eventValue: that.guideId
+					hitType: 'event',
+					eventCategory: 'Button',
+					eventAction: 'Click',
+					eventLabel: 'guide_select_hiking',
+					eventValue: that.guideId
 				});
 			},
-			gaSendvehicle(){
-				let that=this
+			gaSendvehicle() {
+				let that = this
 				ga('gtag_UA_107010673_1.send', {
-				  hitType: 'event',
-				  eventCategory: 'Button',
-				  eventAction: 'Click',
-				  eventLabel: 'guide_select_vehicle',
-				  eventValue: that.guideId
+					hitType: 'event',
+					eventCategory: 'Button',
+					eventAction: 'Click',
+					eventLabel: 'guide_select_vehicle',
+					eventValue: that.guideId
 				});
 			},
 			selet(id) {
@@ -463,7 +462,7 @@
 				this.carAllarr = this.carAllarr.concat(this.startTimeHalfCar.time.split(", "))
 				this.tourHalfarr = this.tourHalfarr.concat(this.startTimeAllTour.time.split(", "))
 				this.tourAllarr = this.tourAllarr.concat(this.startTimeHalfTour.time.split(", "))
-				this.valueCarall=''
+				this.valueCarall = ''
 				//}
 			},
 			seletall(id) {
@@ -485,11 +484,11 @@
 				this.carAllarr = this.carAllarr.concat(this.startTimeHalfCar.time.split(", "))
 				this.tourHalfarr = this.tourHalfarr.concat(this.startTimeAllTour.time.split(", "))
 				this.tourAllarr = this.tourAllarr.concat(this.startTimeHalfTour.time.split(", "))
-				this.value=''
+				this.value = ''
 				//}
 			},
 			//库存
-			sortDate(date){
+			sortDate(date) {
 				var Dates = date.split(",");
 				for(var F = Dates.length; F;) Dates[--F] = [(new Date(Dates[F])).getTime(), Dates[F]]
 				Dates.sort(function(A, B) {
@@ -507,6 +506,7 @@
 					let halfStr = response.data.prices.hikingHalfDayPrices
 					let carStr = response.data.prices.vehicleFullDayPrices
 					let halfcarstr = response.data.prices.vehicleHalfDayPrices
+					that.getDate()
 					//徒步全天
 					if(response.data.prices.hikingFullDayPrices == null) {
 						for(var i = 0; i < response.data.maxHikingParticipants; i++) {
@@ -566,14 +566,14 @@
 						//console.log(that.halfTourPic)
 					}
 					//带车全天
-					if(response.data.vehicleAvailable!=0){
+					if(response.data.vehicleAvailable != 0) {
 						for(var i in carStr) {
 							var car = {
 								"people": i + " people",
 								"money": carStr[i]
 							}
 							that.carTourPic.push(car)
-	
+
 						}
 						that.carTourPic[0] = {
 							"people": 1 + " person",
@@ -586,20 +586,20 @@
 								"money": halfcarstr[i]
 							}
 							that.halfcarTourPic.push(carhalf)
-	
+
 						}
 						that.halfcarTourPic[0] = {
 							"people": 1 + " person",
 							"money": that.halfcarTourPic[0].money
 						}
 					}
-					if(response.data.vehicleInstructions){
+					if(response.data.vehicleInstructions) {
 						that.SupplementaryCar = response.data.vehicleInstructions.split("\r\n")
-					}	
-					
-					if(response.data.hikingInstructions){
+					}
+
+					if(response.data.hikingInstructions) {
 						that.SupplemenTourPic = response.data.hikingInstructions.split("\r\n")
-					}	
+					}
 
 					for(var i = 0; i < that.SupplemenTourPic.length; i++) {
 						if(that.SupplemenTourPic[i] == '') {
@@ -611,6 +611,50 @@
 				}, function(response) {
 
 				})
+			},
+			getDate() {
+				const that = this
+				that.axios.get("https://www.localpanda.com/api/stock/guide/" + that.guideId + "?startDate=" + that.picmsg.earliestBookDate + "&days=90").then(function(response) {
+					that.carAllsuerDate = response.data
+					that.carHalfsuerDate = response.data
+					//that.carHalfarr=response.data
+					that.tourAllsuerDate = response.data
+					that.tourHalfsuerDate = response.data
+					//带车全天日历
+					that.allcaroptions = {
+						mode: "multiple",
+						enable: that.carAllsuerDate,
+						minDate: that.picmsg.earliestBookDate,
+						maxDate: addmulMonth(that.picmsg.earliestBookDate, 3),
+
+					}
+					//带车半天日历
+					that.halfcaroptions = {
+						mode: "multiple",
+						enable: that.carHalfsuerDate,
+						minDate: that.picmsg.earliestBookDate,
+						maxDate: addmulMonth(that.picmsg.earliestBookDate, 3),
+
+					}
+					//徒步全天日历
+					that.touralloptions = {
+						mode: "multiple",
+						enable: that.tourAllsuerDate,
+						minDate: that.picmsg.earliestBookDate,
+						maxDate: addmulMonth(that.picmsg.earliestBookDate, 3),
+
+					}
+					//不带车半天日历
+					that.tourhalfoptions = {
+						mode: "multiple",
+						enable: that.tourHalfsuerDate,
+						minDate: that.picmsg.earliestBookDate,
+						maxDate: addmulMonth(that.picmsg.earliestBookDate, 3),
+
+					}
+
+				}, function(response) {})
+
 			}
 		},
 		filters: {
@@ -628,193 +672,38 @@
 		},
 		mounted: function() {
 			this.getPrice()
-			
-			
+
 		},
 		created: function() {
-			const that = this
-			that.axios.get("https://www.localpanda.com/api/stock/guide/" + that.guideId + "?startDate=" + GetDateStr(3) + "&days=90").then(function(response) {
-				that.carAllsuerDate = response.data
-				that.carHalfsuerDate = response.data
-				//that.carHalfarr=response.data
-				that.tourAllsuerDate = response.data
-				that.tourHalfsuerDate = response.data
-				//带车全天日历
-				that.allcaroptions = {
-					mode: "multiple",
-					enable: that.carAllsuerDate,
-					minDate: GetDateStr(3),
-					maxDate: addmulMonth(GetDateStr(3), 3),
-					onOpen: function(selectedDates, dateStr, instance) {/*
-						if(that.startTimeHalfCar.time != "") {
-							console.log(1111)
-							var arr = that.startTimeHalfCar.time.split(", ")
-							that.carAllarr = dateStr.split(", ").concat(that.array_diff(that.carAllsuerDate, arr))
-							that.Function = instance.clear
-							console.log(that.carAllarr)
-							instance.set(that.allcaroptions, {
-								mode: "multiple",
-								enable: that.carHalfarr,
-								minDate: GetDateStr(4),
-								maxDate: addmulMonth(GetDateStr(4), 3),
-							})
-						}
-
-						//console.log()
-						//instance.config.disable=arr
-
-					*/}
-
-				}
-				//带车半天日历
-				that.halfcaroptions = {
-					mode: "multiple",
-					enable: that.carHalfsuerDate,
-					minDate: GetDateStr(3),
-					maxDate: addmulMonth(GetDateStr(3), 3),
-					onOpen: function(selectedDates, dateStr, instance) {/*
-
-						if(that.startTimeAllCar.time != '') {
-							console.log(222)
-							var arr1 = that.startTimeAllCar.time.split(", ")
-							that.carHalfarr = that.array_diff(that.carHalfsuerDate, arr1).concat(dateStr.split(", "))
-							//instance.config.enable = that.carHalfarr
-							that.Function = instance.clear
-							instance.set(that.halfcaroptions, {
-								mode: "multiple",
-								enable: that.carHalfarr,
-								minDate: GetDateStr(4),
-								maxDate: addmulMonth(GetDateStr(4), 3),
-							})
-						}
-
-					*/}
-
-				}
-				//徒步全天日历
-				that.touralloptions = {
-					mode: "multiple",
-					enable: that.tourAllsuerDate,
-					minDate: GetDateStr(3),
-					maxDate: addmulMonth(GetDateStr(3), 3),
-					onOpen: function(selectedDates, dateStr, instance) {/*
-
-						if(that.startTimeHalfTour.time != "") {
-							var arr = that.startTimeHalfTour.time.split(', ')
-							that.tourAllarr = that.array_diff(that.tourAllsuerDate, arr)
-							that.Function = instance.clear
-							instance.set(that.halfcaroptions, {
-								mode: "multiple",
-								enable: that.tourAllarr,
-								minDate: GetDateStr(4),
-								maxDate: addmulMonth(GetDateStr(4), 3),
-							})
-						}
-
-						//console.log()
-						//instance.config.disable=arr
-
-					*/}
-
-				}
-				//不带车半天日历
-				that.tourhalfoptions = {
-					mode: "multiple",
-					enable: that.tourHalfsuerDate,
-					minDate: GetDateStr(3),
-					maxDate: addmulMonth(GetDateStr(3), 3),
-					onOpen: function(selectedDates, dateStr, instance) {/*
-
-						if(that.startTimeAllTour.time != "") {
-							var arr = that.startTimeAllTour.time.split(", ")
-							that.tourHalfarr = that.array_diff(that.tourHalfsuerDate, arr)
-							that.Function = instance.clear
-							instance.set(that.halfcaroptions, {
-								mode: "multiple",
-								enable: that.tourHalfarr,
-								minDate: GetDateStr(4),
-								maxDate: addmulMonth(GetDateStr(4), 3),
-							})
-						}
-						//console.log(instance.config.disable)
-						//console.log()
-						//instance.config.disable=arr
-
-					*/}
-				}
-
-			}, function(response) {})
 
 		},
 		watch: {
-			/*"startTimeAllCar.time": function(val,oldVal) {
-				let that = this
-				if(val!='') {
-					console.log(that.halfcaroptions.onOpen)
-					that.halfcaroptions.onOpen=function(selectedDates, dateStr, instance) {
-							console.log(111)
-							var arr1 = val.split(", ")
-							console.log(arr1)
-							that.carHalfarr = that.array_diff(that.carHalfsuerDate, arr1).concat(dateStr.split(", "))
-							//instance.config.enable = that.carHalfarr
-							that.Function = instance.clear
-							instance.set(that.halfcaroptions, {
-								mode: "multiple",
-								enable: that.carHalfarr,
-								minDate: GetDateStr(4),
-								maxDate: addmulMonth(GetDateStr(4), 3),
-							})
 
-						}
-					}
-				
-			},
-
-			"startTimeHalfCar.time": function(val, oldVal) {
-				let that = this
-				if(val!='') {
-					that.allcaroptions.onOpen=function(selectedDates, dateStr, instance) {
-
-							var arr = val.split(", ")
-							that.carAllarr = dateStr.split(", ").concat(that.array_diff(that.carAllsuerDate, arr))
-							that.Function = instance.clear
-							console.log(that.carAllarr)
-							instance.set(that.allcaroptions, {
-								mode: "multiple",
-								enable: that.carHalfarr,
-								minDate: GetDateStr(4),
-								maxDate: addmulMonth(GetDateStr(4), 3),
-							})
-
-							//console.log()
-							//instance.config.disable=arr
-
-						}
-
-					
-
-				}
-			}*/
 		}
 	}
 </script>
 <style lang="scss">
 	@import '../../../assets/scss/_main.scss';
 	@import '../../../assets/font/iconfont.css';
-	
 	/** select **/
-	.el-popper[x-placement^=bottom]{
+	
+	.el-popper[x-placement^=bottom] {
 		margin-top: 0!important;
 	}
-	.el-select .el-input.is-focus .el-input__inner{
-		border-color:#1bbc9d!important; 
+	
+	.el-select .el-input.is-focus .el-input__inner {
+		border-color: #1bbc9d!important;
 	}
-	.popper__arrow{
-		
-		border-bottom-color:#fff!important;
-		
+	
+	.popper__arrow {
+		border-bottom-color: #fff!important;
 	}
-	.el-popper .popper__arrow, .el-popper .popper__arrow::after{border-style: none!important;}
+	
+	.el-popper .popper__arrow,
+	.el-popper .popper__arrow::after {
+		border-style: none!important;
+	}
+	
 	.block {
 		.el-date-editor.el-input,
 		.el-date-editor.el-input__inner {
@@ -881,17 +770,25 @@
 		max-width: 266px;
 		margin: 30px;
 	}
-	::-webkit-input-placeholder { /* WebKit browsers */
-   	color: #878e95!important;
+	
+	::-webkit-input-placeholder {
+		/* WebKit browsers */
+		color: #878e95!important;
 	}
-	:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
-	   color:#878e95!important;
+	
+	:-moz-placeholder {
+		/* Mozilla Firefox 4 to 18 */
+		color: #878e95!important;
 	}
-	::-moz-placeholder { /* Mozilla Firefox 19+ */
-	    color:#878e95!important;
+	
+	::-moz-placeholder {
+		/* Mozilla Firefox 19+ */
+		color: #878e95!important;
 	}
-	:-ms-input-placeholder { /* Internet Explorer 10+ */
-	    color: #878e95!important;
+	
+	:-ms-input-placeholder {
+		/* Internet Explorer 10+ */
+		color: #878e95!important;
 	}
 </style>
 <style lang="scss" scoped>
@@ -900,6 +797,7 @@
 		margin-top: 24px;
 		width: 300px!important;
 	}
+	
 	#packageOptions {
 		background: #faf9f8;
 		padding: 40px 0 0;
@@ -912,8 +810,8 @@
 				margin-bottom: 20px;
 				font-weight: bold;
 			}
-			.text{
-				width:724px!important;
+			.text {
+				width: 724px!important;
 				font-size: 18px;
 				margin-bottom: 30px;
 			}
@@ -925,7 +823,8 @@
 				}
 			}
 			.payfordetail {
-				box-shadow: 0px 2px 6px 0px rgba(53, 58, 63, 0.1);;
+				box-shadow: 0px 2px 6px 0px rgba(53, 58, 63, 0.1);
+				;
 				float: right;
 				background: #fff;
 				padding: 34px 30px 30px 30px;
@@ -989,7 +888,7 @@
 					}
 				}
 				.bookbtn {
-					p{
+					p {
 						font-size: 14px;
 						margin-top: 14px;
 						color: red;
@@ -1005,7 +904,7 @@
 					background: #fff;
 					margin-bottom: 10px;
 					padding-right: 30px;
-					height:auto; 
+					height: auto;
 					&:last-child {
 						margin-bottom: 0;
 					}
@@ -1015,7 +914,7 @@
 						top: 29px!important;
 						left: 26px!important;
 					}
-					.font-typeb{
+					.font-typeb {
 						font-size: 38px;
 						top: 26px;
 						left: 30px;
@@ -1061,9 +960,9 @@
 						.paybtn {
 							float: right;
 							height: 100%;
-							margin:22px 0 21px;
+							margin: 22px 0 21px;
 							b {
-								text-align:center;
+								text-align: center;
 								display: block;
 								font-size: 18px;
 								span {
@@ -1094,22 +993,20 @@
 						clear: both;
 						padding: 0 0 40px;
 						border-top: 1px solid #ebebeb;
-						.hint{
-							padding:20px 0;
-							b{
+						.hint {
+							padding: 20px 0;
+							b {
 								line-height: 20px;
 								position: relative;
-								&:first-child{
+								&:first-child {
 									margin-right: 30px;
 								}
-								
 								color: #1bbc9d;
-								span{
+								span {
 									font-size: 8px;
 									font-weight: normal;
 									margin-right: 10px;
 								}
-								
 							}
 						}
 						h3 {
@@ -1121,7 +1018,6 @@
 						.payfortime {
 							margin-top: 28px;
 							.date {
-								
 								position: relative;
 								i {
 									position: absolute;
@@ -1141,7 +1037,6 @@
 						}
 						.Guests {
 							.slectPeople {
-								
 								width: 326px;
 								position: relative;
 								i {
@@ -1228,7 +1123,8 @@
 	.date {
 		width: 269px;
 	}
-	.green{
+	
+	.green {
 		color: #1bbc9d!important;
 	}
 </style>

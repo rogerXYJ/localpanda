@@ -1,5 +1,5 @@
 <template>
-	<header id="header" :style="{width:deviceWidth+'px'}">
+	<div id="headercommon">
 		<div class="heder-cont">
 			<div class="log">
 				<a href="https://www.localpanda.com/index.html">
@@ -46,7 +46,7 @@
 		<Contact :ContactStatus="ContactStatus" v-on:isshowfn="isShowFn" v-on:contact-call-back="contactCallBack" :objectType="objectType"></Contact>
 		<Alert   :isShowAlert="isShowAlert" :alertTitle="alertTitle" :alertMessage="alertMessage" v-on:setIsShowAlert="getIsShowAlert"></Alert>
 		<Anonymity :AnonymityStatus="AnonymityStatus"  v-on:anonymity-back="isAnonymityback"></Anonymity>
-	</header>
+	</div>
 </template>
 
 <script>
@@ -58,7 +58,7 @@
 	import Contact from '../../module/guideDetail/components/Contact'
 	export default {
 		props:["logIn","isAnonymity","isIndex"],
-		name: 'header',
+		name: 'headercommon',
 		data() {
 			return {
 				fbToken:'',
@@ -267,7 +267,7 @@
        fill: currentColor;
        overflow: hidden;
     }
-	#header{
+	#headercommon{
 		height: 60px;
 		.heder-cont{
 			width: 100%;

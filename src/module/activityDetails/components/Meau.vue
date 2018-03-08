@@ -1,5 +1,5 @@
 <template>
-	<div id="menu">
+	<div id="menuType">
 			<div class="menu_list">
 				<ul class="clearfix">
 					<li @click="goAnchor('journey')">What to Expect</li>
@@ -14,7 +14,7 @@
 <script>
 		export default {
 		
-		name: "menu",
+		name: "menuType",
 		data() {
 			return {
 			}
@@ -25,7 +25,6 @@
 		},
 		methods: {
 			goAnchor(selector) {
-				
 				var anchor = document.getElementById(selector)
 				console.log()
 				document.body.scrollTop = anchor.offsetTop+document.getElementById("banner").offsetHeight+60-76
@@ -38,7 +37,7 @@
 </script>
 
 <style lang="scss">
-	#menu {
+	#menuType {
 			position: relative;
 			.menu_list {
 				animation: fadein 0.3s ease-in-out forwards;

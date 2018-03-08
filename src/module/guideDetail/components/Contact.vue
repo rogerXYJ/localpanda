@@ -116,23 +116,24 @@
 							
 						}
 					}
+					that.$emit("isshowfn",true);
+					that.$emit('contact-call-back', true);
+					that.contactActive = false;
+					that.name=""
+					that.email=""
+					that.phone=""
+					that.dateTime=""
+					that.textInfo=""
+					that.destination=""
+					that.peopleNub=1
 					that.axios.post("https://www.localpanda.com/user/feedback/commit", JSON.stringify(obj), {
 							headers: {
 								'Content-Type': 'application/json; charset=UTF-8'
 							}
 						}).then(function(response) {
-							console.log(response)
+							
 							if(response.data.succeed){
-								that.$emit("isshowfn",true);
-								that.$emit('contact-call-back', true);
-								that.contactActive = false;
-								that.name=""
-								that.email=""
-								that.phone=""
-								that.dateTime=""
-								that.textInfo=""
-								that.destination=""
-								that.peopleNub=1
+								
 							}else{
 								that.$emit("isshowfn",true);
 								that.$emit('contact-call-back', true);

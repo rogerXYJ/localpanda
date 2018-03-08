@@ -105,17 +105,17 @@
 					</div>
 					<div class="pic">
 						<div class="adult clearfix">
-							<div class="formula" v-if="opctions.childrenNum==0&&opctions.adultNum==1">${{opctions.adultsPic}} x 1 Person</div>
-							<div class="formula" v-else>$ {{round(opctions.adultsPic/(opctions.adultNum+opctions.childrenNum))}} x {{opctions.adultNum+opctions.childrenNum}} People </div>
-							<div class="adultPic">$ {{opctions.adultsPic}}</div>
+							<div class="formula" v-if="opctions.childrenNum==0&&opctions.adultNum==1">${{returnFloat(opctions.adultsPic)}} x 1 Person</div>
+							<div class="formula" v-else>$ {{returnFloat(round(opctions.adultsPic/(opctions.adultNum+opctions.childrenNum)))}} x {{opctions.adultNum+opctions.childrenNum}} People </div>
+							<div class="adultPic">$ {{returnFloat(opctions.adultsPic)}}</div>
 						</div>
 						<div class="child" v-if="opctions.childrenNum>00&&opctions.childDiscount">
-							<b>- ${{opctions.childrenNum*opctions.childDiscountP}}</b> for child(ren)
+							<b>- ${{returnFloat(opctions.childrenNum*opctions.childDiscountP)}}</b> for child(ren)
 						</div>
 					</div>
 					<div class="total clearfix">
 						<div class="totle-title">Total (USD)</div>
-						<div class="totalPic">${{opctions.amount}}</div>
+						<div class="totalPic">${{returnFloat(opctions.amount)}}</div>
 					</div>
 
 				</div>
@@ -292,6 +292,20 @@
 			fousphonenumb(i) {
 				this.TravellerphoneErr = false
 			},
+			returnFloat(value) {
+				var value = Math.round(parseFloat(value) * 100) / 100;
+				var xsd = value.toString().split(".");
+				if(xsd.length == 1) {
+					value = value.toString() + ".00";
+					return value;
+				}
+				if(xsd.length > 1) {
+					if(xsd[1].length < 2) {
+						value = value.toString() + "0";
+					}
+					return value;
+				}
+			},
 			next() {
 				const that = this
 				if(that.oderFirstName == "" || regExp.isNub(that.oderFirstName) || regExp.isCode(that.oderFirstName)) {
@@ -385,7 +399,7 @@
 <style lang="scss">
 	@import '../../assets/scss/_main.scss';
 	@import '../../assets/font/iconfont.css';
-	#header {
+	#headercommon {
 		box-shadow: 0px 2px 6px 0px rgba(53, 58, 63, 0.1);
 	}
 </style>

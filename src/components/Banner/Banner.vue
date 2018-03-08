@@ -1,5 +1,5 @@
 <template>
-	<div class="banner" :style="{width:deviceWidth+'px'}">
+	<div class="banner">
 		<swiper :options="swiperOptionBannerPc">
 			<swiper-slide v-for="slide in swiperSlides">
 				<a :href="slide.link">
@@ -45,14 +45,14 @@
 				swiperSlides: [
 					{
 						url: "https://d2q486kjf9cwwu.cloudfront.net/static/homePage/banner1.jpg",
-						link:'https://www.localpanda.com/activity/recommend/Beijing/Great-Wall',
+						link:'https://www.localpanda.com/activity/recommend/Beijing/Popular-and-Classic-Tours',
 						loc:'Beijing Tours'
 						
 						
 					},
 					{
 						url:"https://d2q486kjf9cwwu.cloudfront.net/static/homePage/banner2.jpg",
-						link:'https://www.localpanda.com/activity/recommend/Shanghai/Shanghai-Day-Trips-and-Excursions',
+						link:'https://www.localpanda.com/activity/recommend/Shanghai/Popular-and-Classic-Tours',
 						loc:'Shanghai Tours'
 					}
 					

@@ -104,6 +104,17 @@ export default {
 						that.toast="This activity was booked by another guest "+response.data.latestBooking+" hours ago."
 					}
 					
+					var title=document.getElementsByTagName("title")[0];
+					var keywords=document.querySelector("meta[name=keywords]");
+					var description=document.querySelector("meta[name=description]")
+					
+					var keywordsContent=response.data.tourTypes.join(",")
+					var descriptionContent=response.data.category+" "+response.data.duration+" "+response.data.durationUnit+" "+response.data.title
+					title.innerHTML= response.data.title
+					
+					keywords.setAttribute("content",keywordsContent)
+					description.setAttribute("content",descriptionContent)
+					
         		}else{
         			window.location.href = "https://www.localpanda.com/falsePage.html"
         		}
@@ -118,7 +129,7 @@ export default {
     	this.id=getUrlParams()
        	this.getInfo()
         this.logIn=window.localStorage.getItem("logstate")
-        window.addEventListener('scroll', this.scorllBar) 
+        window.addEventListener('scroll', this.scorllBar)
     },
     watch:{
     	"detail.latestBooking":function(val,oldVal){

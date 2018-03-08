@@ -108,7 +108,7 @@
 <style lang="scss">
 	@import '../../../assets/scss/_main.scss';
 	@import '../../../assets/font/iconfont.css';
-	#header {
+	#headercommon {
 		box-shadow: 0px 2px 6px 0px rgba(53, 58, 63, 0.1);
 	}
 </style>

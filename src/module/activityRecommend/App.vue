@@ -4,15 +4,47 @@
 		<div class="hotbanner" :class="loc=='Beijing'?'beijing':'shanghai'">
 			<p v-if="loc=='Beijing'">
 				<span>Beijing</span> History, Culture, and Art in China’s Capital
+				</br> Our guides can speak English, Spanish, Russian, Japanese, Korean and other languages.
 			</p>
 			<p v-else>
 				<span>Shanghai</span> Where China’s past and future collide
+				</br> Our guides can speak English, Spanish, Russian, Japanese, Korean and other languages.
 			</p>
 		</div>
 		<div class="topSeachInfo">
+			
+			<div class="seachType">
+				<div class="swiper-button-prev" ><i class="iconfont">&#xe615;</i></div>
+				<div class="swiper-button-next" ><i class="iconfont">&#xe620;</i></div>
+				<swiper :options="swiperOption" v-if="loc=='Beijing'">
+
+					<swiper-slide v-for="slide in swiperSlides" >
+						<a @click="GaAll" :class="link==slide.url?'cur':''" :href="link==slide.url?'javascript:':slide.url">
+							<div class="seachItem" :class="link==slide.url?'border':''" v-bind:style="{backgroundImage:'url(' + slide.imgUrl + ')'}">
+								<div :class="link==slide.url?'curColor':''" v-html="slide.keywords"></div>
+							</div>
+						</a>
+					</swiper-slide>
+				</swiper>
+				<swiper :options="swiperOption" v-else>
+
+					<swiper-slide v-for="item in slides">
+						<a @click="GaAll" :class="link==item.url?'cur':''" :href="link==item.url?'javascript:':item.url">
+							<div class="seachItem" :class="link==item.url?'border':''"  v-bind:style="{backgroundImage:'url(' + item.imgUrl + ')'}">
+								<div :class="link==item.url?'curColor':''" v-html="item.keywords"></div>
+							</div>
+						</a>
+					</swiper-slide>
+				</swiper>
+			</div>
+
 			<div class="searchList">
-				<h3>{{information.title}}</h3>
-				
+				<h3>
+					{{information.title}}
+					<a v-if="loc=='Beijing'"  href="https://www.localpanda.com/activity/list/Beijing">All Beijing Activities</a>
+					<a v-if="loc=='Shanghai'" href="https://www.localpanda.com/activity/list/Shanghai">All Shanghai Activities</a>
+				</h3>
+
 				<div class="topSearchList clearfix">
 					<div class="topSearchList-item" v-for="item in activities">
 						<a :href="'https://www.localpanda.com/activity/details/'+item.activityId" target="_blank">
@@ -36,23 +68,23 @@
 										{{item.title}}
 									</div>
 									<div class="totalPic">
-										<div class="oldpic" v-if="item.originalPrice">${{item.originalPrice}}</div>
-										<div class="nowPic">From <b>${{item.bottomPrice}}</b><span>  pp</span></div>
+										<div class="oldpic" v-if="item.originalPrice">${{returnFloat(item.originalPrice)}}</div>
+										<div class="nowPic">From <b>${{returnFloat(item.bottomPrice)}}</b><span>  pp</span></div>
 									</div>
 								</div>
-								
+
 							</div>
 							<div class="highlights">
-									<b><span>Highlights</span></b>
-									<ul v-if="item.highlights">
-										<li v-for="i in delNullArr(item.highlights.split('\n'))">{{i}}</li>
-									</ul>
-								</div>
+								<b><span>Highlights</span></b>
+								<ul v-if="item.highlights">
+									<li v-for="i in delNullArr(item.highlights.split('\n'))">{{i}}</li>
+								</ul>
+							</div>
 						</a>
 					</div>
 				</div>
 			</div>
-			<div class="searchList" v-for="i in recommendations">
+			<!--<div class="searchList" v-for="i in recommendations">
 				<h3>{{i.title}}</h3>
 				
 				<div class="topSearchList clearfix">
@@ -78,8 +110,8 @@
 										{{item.title}}
 									</div>
 									<div class="totalPic">
-										<div class="oldpic" v-if="item.originalPrice">${{item.originalPrice}}</div>
-										<div class="nowPic">From <b>${{item.bottomPrice}}</b><span>  pp</span></div>
+										<div class="oldpic" v-if="item.originalPrice">${{returnFloat(item.originalPrice)}}</div>
+										<div class="nowPic">From <b>${{returnFloat(item.bottomPrice)}}</b><span>  pp</span></div>
 									</div>
 								</div>
 
@@ -93,9 +125,9 @@
 						</a>
 					</div>
 				</div>
-			</div>
+			</div>-->
 		</div>
-		<Bottom  :scrollTop="300"></Bottom>
+		<Bottom :scrollTop="300"></Bottom>
 		<FooterCommon></FooterCommon>
 	</div>
 
@@ -105,17 +137,132 @@
 	import HeaderCommon from '../../components/HeaderCommon/HeaderCommon'
 	import FooterCommon from '../../components/FooterCommon/FooterCommon';
 	import Bottom from './components/Bottom'
+	import { swiper, swiperSlide } from 'vue-awesome-swiper'
+	require('swiper/dist/css/swiper.css')
 	export default {
 		name: 'topSeach',
 		data() {
 			return {
-				logIn:'',
+				logIn: '',
 				showBook: false,
 				information: '',
 				activities: [],
 				recommendations: [],
+				link:location.href,
 				loc: location.href.split('/').reverse()[1],
-				keyword: location.href.split('/').reverse()[0]
+				keyword: location.href.split('/').reverse()[0],
+				swiperLeftBtnStatus:false,
+				swiperRightBtnStatus:true,
+				activeIndex: '',
+				swiperOption: {
+					setWrapperSize: true,
+					slidesPerView: 6,
+					spaceBetween: 20,
+					mousewheelControl: false,
+					noSwiping : true,
+					
+					prevButton: '.swiper-button-prev',
+					nextButton: '.swiper-button-next',
+					initialSlide: 0,
+				
+				},
+				slides:[
+					{
+						keywords:"Popular & <br/>Classic Tours",
+						url:"https://www.localpanda.com/activity/recommend/Shanghai/Popular-And-Classic-Tours",
+						imgUrl:'https://d2q486kjf9cwwu.cloudfront.net/static/headerPhotos/PopularAndClassicTours.jpg'
+					},
+					{
+						keywords:"Sales & <br/>Deals",
+						url:"https://www.localpanda.com/activity/recommend/Shanghai/Sales-and-Deals",
+						imgUrl:'https://d2q486kjf9cwwu.cloudfront.net/static/headerPhotos/SalesAndDeals.jpg'
+					},
+					{
+						keywords:"Ancient <br/>Water Towns",
+						url:"https://www.localpanda.com/activity/recommend/Shanghai/Ancient-Water-Towns",
+						imgUrl:'https://d2q486kjf9cwwu.cloudfront.net/static/headerPhotos/AncientWaterTowns.jpg'
+					},
+					{
+						keywords:"Day Trips & Excursions",
+						url:"https://www.localpanda.com/activity/recommend/Shanghai/Day-Trips-and-Excursions",
+						imgUrl:'https://d2q486kjf9cwwu.cloudfront.net/static/headerPhotos/DayTripsAndExcursions.jpg'
+					},
+					{
+						keywords:"City Tours",
+						url:"https://www.localpanda.com/activity/recommend/Shanghai/City-Tours",
+						imgUrl:'https://d2q486kjf9cwwu.cloudfront.net/static/headerPhotos/CityTours.jpg'
+					},
+					{
+						keywords:"Layover<br/> Tours & Quick Excursions",
+						url:"https://www.localpanda.com/activity/recommend/Shanghai/Layover-Tours-and-Quick-Excursions",
+						imgUrl:'https://d2q486kjf9cwwu.cloudfront.net/static/headerPhotos/LayoverToursAndQuickExcursions.jpg'
+					},
+					{
+						keywords:"Food & Local Experiences",
+						url:"https://www.localpanda.com/activity/recommend/Shanghai/Food-and-Local-Experiences",
+						imgUrl:'https://d2q486kjf9cwwu.cloudfront.net/static/headerPhotos/FoodAndLocalExperiences.jpg'
+					},
+					{
+						keywords:"Affordable Group Tours",
+						url:"https://www.localpanda.com/activity/recommend/Shanghai/Affordable-Group-Tours",
+						imgUrl:'https://d2q486kjf9cwwu.cloudfront.net/static/headerPhotos/AffordableGroupTours.jpg'
+					},
+					{
+						keywords:"Multi-day & Extended <br/> Tours",
+						url:"https://www.localpanda.com/activity/recommend/Shanghai/Multi-day-and-Extended-Tours",
+						imgUrl:'https://d2q486kjf9cwwu.cloudfront.net/static/headerPhotos/Multi-dayAndExtendedTours.jpg'
+					},
+					{
+						keywords:"Shows & <br/>Tickets",
+						url:"https://www.localpanda.com/activity/recommend/Shanghai/Shows-and-Tickets",
+						imgUrl:'https://d2q486kjf9cwwu.cloudfront.net/static/headerPhotos/ShowsAndTickets.jpg'
+					}
+				],
+				swiperSlides: [
+					{
+						keywords: "Popular & Classic Tours",
+						url: "https://www.localpanda.com/activity/recommend/Beijing/Popular-and-Classic-Tours",
+						imgUrl:'https://d2q486kjf9cwwu.cloudfront.net/static/headerPhotos/PopularAndClassicTours.jpg'
+					},
+					{
+						keywords: "Sales & Deals",
+						url: "https://www.localpanda.com/activity/recommend/Beijing/Sales-and-Deals",
+						imgUrl:'https://d2q486kjf9cwwu.cloudfront.net/static/headerPhotos/SalesAndDeals.jpg'
+					},
+					{
+						keywords: "Great Wall of China",
+						url: "https://www.localpanda.com/activity/recommend/Beijing/Great-Wall-of-China",
+						imgUrl:'https://d2q486kjf9cwwu.cloudfront.net/static/headerPhotos/GreatWallofChina.jpg'
+					},
+					{
+						keywords: "Walking & <br/>City Tours",
+						url: "https://www.localpanda.com/activity/recommend/Beijing/Walking-and-City-Tours",
+						imgUrl:'https://d2q486kjf9cwwu.cloudfront.net/static/headerPhotos/WalkingAndCityTours.jpg'
+					},
+					
+					{
+						keywords: "Layover <br/>Tours & Quick Excursions",
+						url: "https://www.localpanda.com/activity/recommend/Beijing/Layover-Tours-and-Quick-Excursions",
+						imgUrl:'https://d2q486kjf9cwwu.cloudfront.net/static/headerPhotos/LayoverToursAndQuickExcursions.jpg'
+					},
+					{
+						keywords: "Food & Local Experiences",
+						url: "https://www.localpanda.com/activity/recommend/Beijing/Food-and-Local-Experiences",
+						imgUrl:'https://d2q486kjf9cwwu.cloudfront.net/static/headerPhotos/FoodAndLocalExperiences.jpg'
+					},
+					{
+						keywords: "Multi-day & Extended <br/> Tours",
+						url: "https://www.localpanda.com/activity/recommend/Beijing/Multi-day-and-Extended-Tours",
+						imgUrl:'https://d2q486kjf9cwwu.cloudfront.net/static/headerPhotos/Multi-dayAndExtendedTours.jpg'
+					},
+					{
+						keywords: "Shows &<br/> Tickets",
+						url: "https://www.localpanda.com/activity/recommend/Beijing/Shows-and-Tickets",
+						imgUrl:'https://d2q486kjf9cwwu.cloudfront.net/static/headerPhotos/ShowsAndTickets.jpg'
+					},
+					
+
+				]
 			}
 		},
 		components: {
@@ -124,7 +271,6 @@
 			Bottom
 		},
 		methods: {
-
 			delNullArr(array) {
 				for(var i = 0; i < array.length; i++) {
 					if(array[i] == "" || typeof(array[i]) == "undefined") {
@@ -136,25 +282,47 @@
 				}
 				return array;
 			},
+			GaAll(){
+				ga('gtag_UA_107010673_1.send', {
+					hitType: 'event',
+					eventCategory: 'Link',
+					eventAction: 'Click',
+					eventLabel: 'activity_theme_switch',
 
+				});
+			},
+			returnFloat(value) {
+				var value = Math.round(parseFloat(value) * 100) / 100;
+				var xsd = value.toString().split(".");
+				if(xsd.length == 1) {
+					value = value.toString() + ".00";
+					return value;
+				}
+				if(xsd.length > 1) {
+					if(xsd[1].length < 2) {
+						value = value.toString() + "0";
+					}
+					return value;
+				}
+			},
 			getMes() {
 				let that = this
 				that.axios.get("https://www.localpanda.com/api/recommend/" + that.loc + "/" + that.keyword).then(function(resopnse) {
 					console.log(resopnse)
 					that.information = resopnse.data
 					that.activities = resopnse.data.references
-					that.recommendations = resopnse.data.recommendations
+					//that.recommendations = resopnse.data.recommendations
 				}, function(resopnse) {
 
 				})
 			}
 
 		},
-		filters:{
-			
+		filters: {
+
 			firstUpperCase(val) {
 				if(val)
-		  		return val.toLowerCase().replace(/( |^)[a-z]/g, (L) => L.toUpperCase());
+					return val.toLowerCase().replace(/( |^)[a-z]/g, (L) => L.toUpperCase());
 			}
 		},
 		mounted: function() {
@@ -186,7 +354,7 @@
 		background: #FAF9F8!important;
 	}
 	
-	#header {
+	#headercommon {
 		background: #fff!important;
 		box-shadow: 0px 2px 6px 0px rgba(53, 58, 63, 0.1);
 	}
@@ -194,6 +362,7 @@
 <style lang="scss" scoped>
 	@import "../../assets/scss/base/_setting.scss";
 	.topSeach {
+		overflow-X:hidden;
 		.hotbanner {
 			display: -webkit-box;
 			-webkit-box-pack: center;
@@ -228,26 +397,41 @@
 			padding-bottom: 100px;
 			width: 1170px;
 			margin: 0 auto;
-			.link {
-				margin-top: 80px;
-				text-align: center;
-				p {
-					font-size: 16px;
-					color: #353a3f;
-				}
-				a {
-					font-size: 18px;
-					color: #1bbc9d;
-					text-decoration: underline;
+			
+			.seachType {
+				margin-top: 20px;
+				position: relative;
+				.seachItem {
+					width: 178px;
+					height: 130px;
+					background: #000;
+					font-size: 24px;
+					color: #fff;
+					
+					display: table;
+					div{
+						display: table-cell;
+						vertical-align: middle;
+						width: 70%;
+						text-align: center;
+						background:rgba(0,0,0,0.3);
+						&:hover{
+							background:rgba(0,0,0,0)
+						}
+					}
 				}
 			}
 			.searchList {
 				margin-top: 60px;
 				h3 {
-					text-align: center;
 					font-size: 32px;
 					color: #3a3a3a;
 					font-weight: bold;
+					a{
+						float: right;
+						font-size: 18px;
+						text-decoration: underline;
+					}
 				}
 				.import-text {
 					text-align: center;
@@ -264,7 +448,7 @@
 						float: left;
 						overflow: hidden;
 						background: #fff;
-						margin-right:30px;
+						margin-right: 30px;
 						&:nth-child(3n+0) {
 							margin-right: 0;
 						}
@@ -294,7 +478,7 @@
 						.activity {
 							.activity-photo {
 								width: 370px;
-								height: 248px;
+								height: 188px;
 								background-repeat: no-repeat!important;
 								background-size: cover!important;
 								position: relative;
@@ -352,7 +536,8 @@
 								overflow: hidden;
 							}
 							.totalPic {
-								padding: 20px 0;
+								height: 40px;
+								padding: 20px 0 0;
 								.oldpic {
 									text-align: right;
 									font-size: 14px;
@@ -367,84 +552,133 @@
 										color: #353a3f;
 										font-size: 20px;
 									}
-									span{
+									span {
 										color: #353a3f;
 									}
 								}
 							}
 						}
-						&:hover .highlights{
+						&:hover .highlights {
 							-webkit-transition: all .5s cubic-bezier(0, 1, 0.5, 1);
-								transition: all .5s cubic-bezier(0, 1, 0.5, 1);
-								transform: translateY(0);
+							transition: all .5s cubic-bezier(0, 1, 0.5, 1);
+							transform: translateY(0);
 						}
-					.highlights {
-						position: absolute;
-						top: 0;
-						left: 0;
-						transform: translateY(200%);
-						-webkit-transition: all .5s cubic-bezier(0, 1, 0.5, 1);
-						transition: all .5s cubic-bezier(0, 1, 0.5, 1);
-						background-image: linear-gradient(135deg, #009efd 0%, #1bbc9d 100%);
-						width: 100%;
-						height:100%;
-						b{
+						.highlights {
+							position: absolute;
+							top: 0;
+							left: 0;
+							transform: translateY(200%);
+							-webkit-transition: all .5s cubic-bezier(0, 1, 0.5, 1);
+							transition: all .5s cubic-bezier(0, 1, 0.5, 1);
+							background-image: linear-gradient(135deg, #009efd 0%, #1bbc9d 100%);
+							width: 100%;
+							height: 100%;
+							b {
 								color: #fff;
 								font-size: 20px;
-								
 								margin-top: 50px;
 								display: block;
-								text-align:center;
-								span{
+								text-align: center;
+								span {
 									position: relative;
-									&:after{
+									&:after {
 										left: 50%;
 										margin-left: -50%;
 										content: "";
-								         height: 2px;
-								         width: 100%;
-								         background: #fff;
-								         bottom: -24px;
-								         display: block;
-								         position: absolute;
-								         
+										height: 2px;
+										width: 100%;
+										background: #fff;
+										bottom: -24px;
+										display: block;
+										position: absolute;
 									}
 								}
-								
 							}
-						ul {
-							padding: 50px 20px 0;
-							height: 250px;
-							li {
-								color: #FFF;
-								font-size: 16px;
-								position: relative;
-								padding-left: 16px;
-								margin-top: 12px;
-								line-height: 22px;
-								&:first-child {
-									margin-top: 0;
-								}
-								&:after {
-									position: absolute;
-									content: "";
-									width: 4px;
-									height: 4px;
-									border-radius: 50%;
-									background: #FFF;
-									left: 0;
-									top: 8px;
+							ul {
+								padding: 50px 20px 0;
+								height: 250px;
+								li {
+									color: #FFF;
+									font-size: 16px;
+									position: relative;
+									padding-left: 16px;
+									margin-top: 12px;
+									line-height: 22px;
+									&:first-child {
+										margin-top: 0;
+									}
+									&:after {
+										position: absolute;
+										content: "";
+										width: 4px;
+										height: 4px;
+										border-radius: 50%;
+										background: #FFF;
+										left: 0;
+										top: 8px;
+									}
 								}
 							}
 						}
 					}
-					}
-					
 				}
 			}
 		}
 		.margin {
 			margin-top: 30px;
 		}
+		.swiper-button-prev {
+			background-image: none;
+			width: 40px;
+			height: 40px;
+			background: #fff;
+			box-shadow: 1px 3px 3px rgba(53, 58, 63, 0.2);
+			
+			text-align: center;
+			line-height: 40px;
+			border-radius: 50%;
+			left: -20px;
+			z-index: 999;
+			opacity: 1;
+			&:hover{
+				background: linear-gradient(270deg,#009efd 0%,#1bbc9d 100%);
+				color: #fff;
+			}
+		}
+		.swiper-button-next {
+			background-image: none;
+			
+			width: 40px;
+			height: 40px;
+			background: #fff;
+	        
+			box-shadow: 1px 3px 3px rgba(53, 58, 63, 0.2);
+			text-align: center;
+			line-height: 40px;
+			border-radius: 50%;
+			right: -20px;
+			z-index: 999;
+			opacity: 1;
+			&:hover{
+				background: linear-gradient(270deg,#009efd 0%,#1bbc9d 100%);
+				color: #fff;
+			}
+		}
+		.swiper-button-disabled {
+			display: none;
+			
+		}
+		.cur{
+			cursor:auto;
+		}
+		.border{
+			border:2px solid #1bbc9d;
+			
+		}
+		.curColor{
+			background:rgba(0,0,0,0)!important;
+			
+		}
+		
 	}
 </style>

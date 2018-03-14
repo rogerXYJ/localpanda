@@ -512,7 +512,8 @@ export default {
         console.log(orderInfo);
         localStorage.setItem("orderInfo", orderInfo);
 
-        location.href = "https://www.localpanda.com/fillYourInformation.html";
+       location.href = "/activity/fillYourInfo";
+        //routes.push('/fillYourInfo')
       }
     },
   },

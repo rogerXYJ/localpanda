@@ -11,7 +11,7 @@
 				<ul class="guide-infomation clearfix">
 
 					<li v-for="item in guidelist">
-						<a :href="item.guideId?'https://www.localpanda.com/guide/detail/'+item.guideId:'#'">
+						<a :href="item.guideId?'/guide/detail/'+item.guideId:'#'">
 							<div class="guide-infomation-img">
 								<img v-lazy="item.headPortraitUrl" />
 							</div>

@@ -51,14 +51,14 @@
 				swiperSlides: [
 					{
 						url: "https://d2q486kjf9cwwu.cloudfront.net/static/homePage/banner1.jpg",
-						link:'https://www.localpanda.com/activity/recommend/Beijing/Popular-and-Classic-Tours',
+						link:'/activity/recommend/Beijing/Popular-and-Classic-Tours',
 						loc:'Beijing Tours'
 						
 						
 					},
 					{
 						url:"https://d2q486kjf9cwwu.cloudfront.net/static/homePage/banner2.jpg",
-						link:'https://www.localpanda.com/activity/recommend/Shanghai/Popular-and-Classic-Tours',
+						link:'/activity/recommend/Shanghai/Popular-and-Classic-Tours',
 						loc:'Shanghai Tours'
 					}
 					

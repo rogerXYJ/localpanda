@@ -1,5 +1,5 @@
  <template>
-    <div class="indexst" :style="{width:deviceWidth+'px'}">
+    <div class="indexst">
     <HeaderCommon :logIn="logIn" :isIndex="isIndex"></HeaderCommon>
         <Banner ></Banner>
         <MustGo ></MustGo>
@@ -30,7 +30,7 @@ export default {
         guidelist:'',
         activeList:'',
         logIn:'',
-        deviceWidth:'',
+        
         isIndex:true
       }
       let briefRes = {};
@@ -66,10 +66,7 @@ export default {
     },
        
     mounted: function() {
-      let that=this
-      let deviceWidth = document.documentElement.clientWidth
-      this.deviceWidth = deviceWidth
-        
+    
     }
 }
 </script>

@@ -8,7 +8,8 @@ module.exports = {
     vendor: [
         'axios',
         'vue-lazyload',
-        'element-ui'
+        'element-ui',
+        '~/assets/font/iconfont.js',
     ]
   },
   babel: {

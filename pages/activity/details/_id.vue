@@ -2,7 +2,7 @@
     <div id="activitiesDetail">
        <HeaderCommon :logIn="logIn"></HeaderCommon>
        <Meau v-if="isShowMeau"></Meau>
-		    <ActivityBanner :bannerPhotos="detail.bannerPhotos" :destination="destination"></ActivityBanner>
+		<ActivityBanner :bannerPhotos="detail.bannerPhotos" :destination="destination"></ActivityBanner>
         
         <Activities :remark="remark" :introduction="introduction" :isShowBookNow="isShowBookNow" :isscroll="isscroll" :picInfo="picInfo" :id="id" :detail="detail" :highlights="highlights" :destinations="destinations" :itemsIncluded="itemsIncluded" :recommed="recommed"></Activities>
        

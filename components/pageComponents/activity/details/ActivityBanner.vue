@@ -2,10 +2,10 @@
 	<div id="banner">
 		<div class="linkseting">
 			<div class="linkinfo">
-				<a href="https://www.localpanda.com/index.html">Home</a>
+				<a href="/">Home</a>
 				<em class="iconfont">&#xe64a;</em>
-				<a v-if="destination=='Xi\'an'" href="https://www.localpanda.com/activity/list/Xian">Xi'an Activities</a>
-				<a v-else :href="'https://www.localpanda.com/activity/list/'+destination">{{destination}} Activities</a>
+				<a v-if="destination=='Xi\'an'" href="/activity/list/Xian">Xi'an Activities</a>
+				<a v-else :href="'/activity/list/'+destination">{{destination}} Activities</a>
 				
 				<em class="iconfont">&#xe64a;</em>
 				<span>Activity Details</span>
@@ -17,7 +17,7 @@
 					<img :src="slide"  />
 				</div>
 			</div>
-			<div class="swiper-pagination swiper-pagination-bullets"></div>
+			
 		</div>
 		<div class="swiper-button-prev swiper-button-white"></div>
     	<div class="swiper-button-next swiper-button-white"></div>
@@ -25,8 +25,13 @@
 </template>
 <script>
 
-import Vue from 'vue';
-
+import bus from '~/assets/js/pages/bus.js'
+if (process.browser){
+  	const VueAwesomeSwiper = require('vue-awesome-swiper/dist/ssr')
+	bus.use(VueAwesomeSwiper)
+  	require('swiper/dist/css/swiper.css')
+  	console.log(VueAwesomeSwiper)
+};
 export default {
   props: ["bannerPhotos", "destination"],
   name: "banner",
@@ -45,18 +50,16 @@ export default {
           prevEl: '.swiper-button-prev',
         },
         setWrapperSize: true,
-		    initialSlide: 0,
+		initialSlide: 0,
       },
     };
   },
   components: {},
   methods: {
-    get() {
-      console.log(this.destination);
-    }
+    
   },
   mounted: function() {
-    this.get();
+   	 console.log(this.bannerPhotos)
   }
 };
 </script>

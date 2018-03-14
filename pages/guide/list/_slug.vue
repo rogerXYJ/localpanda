@@ -4,7 +4,7 @@
 		<div class="banner" :class="loc=='Shanghai'?'shanghai':'beijing'">
 			<div class="selectInfo">
 				<div class="linkseting">
-					<a href="https://www.localpanda.com/index.html">Home</a>
+					<a href="/">Home</a>
 					<em class="iconfont">&#xe64a;</em>
 					<a href="javascript:" v-if="loc=='Shanghai'">Shanghai Guides</a>
 					<a href="javascript:" v-else>Beijing Guides</a>
@@ -26,7 +26,7 @@
 		<div class="selectType">
 			<ul class="clearfix">
 				<li>
-					<a :href="'https://www.localpanda.com/activity/list/'+loc">
+					<a :href="'/activity/list/'+loc">
 						<div class="bg">
 							<div class="bgTitle">Activities</div>
 							<p>Activities with the most authentic </p>
@@ -48,7 +48,7 @@
 		<div class="list-cont">
 			<ul>
 				<li :key="index" v-for="(item, index) in guideList">
-					<a :href="item.guideId ?'https://www.localpanda.com/guide/detail/'+item.guideId : '#'">
+					<a :href="item.guideId ?'/guide/detail/'+item.guideId : '#'">
 						<div class="guideHeadImg">
 							<img v-lazy="item.headPortraitUrl">
 						</div>
@@ -99,12 +99,12 @@ export default {
         {
           value: "Shanghai",
           label: "Shanghai",
-          url: "https://www.localpanda.com/guide/list/Shanghai"
+          url: "/guide/list/Shanghai"
         },
         {
           value: "Beijing",
           label: "Beijing",
-          url: "https://www.localpanda.com/guide/list/Beijing"
+          url: "/guide/list/Beijing"
         }
       ],
       value: loc,

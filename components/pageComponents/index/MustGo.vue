@@ -38,7 +38,7 @@
 						cover: 'https://d2q486kjf9cwwu.cloudfront.net/static/homePage/Beijing.jpg',
 						title: 'Beijing',
 						value: 'Beijing',
-						linkUrl:'https://www.localpanda.com/activity/list/Beijing',
+						linkUrl:'/activity/list/Beijing',
 						content: [
 							'See All Tours & Activities',
 							'The center of China’s imperial history & modern power, where the nation’s political and cultural elite still reside.',
@@ -53,13 +53,13 @@
 							'See All Tours & Activities',
 							'Nestled between the skyscrapers of this massive metropolis lies a city rich with history, secrets, and fun things to do!'
 						],
-						linkUrl:'https://www.localpanda.com/activity/list/Shanghai',
+						linkUrl:'/activity/list/Shanghai',
 					},
 					{
 						cover: 'https://d2q486kjf9cwwu.cloudfront.net/static/homePage/Chengdu.jpg',
 						title: 'Chengdu',
 						value: 'Chengdu',
-						linkUrl:'https://www.localpanda.com/activity/list/Chengdu',
+						linkUrl:'/activity/list/Chengdu',
 						content: [
 							'See All Tours & Activities',
 							'Giant pandas, beautiful mountain scenery, baby pandas, delicious spicy food, red pandas, tea houses, and more pandas!'
@@ -70,7 +70,7 @@
 						cover: "https://d2q486kjf9cwwu.cloudfront.net/static/homePage/Xi'an.png",
 						title: 'Xi\'an',
 						value: 'Xi\'an',
-						linkUrl:'https://www.localpanda.com/activity/list/Xian',
+						linkUrl:'/activity/list/Xian',
 						content: [
 							'See All Tours & Activities',
 							'Home to the legendary Terra-cotta Warriors of Qin Shi Huang, China’s first emperor, Xi’an holds the heart of Chinese civilization. '
@@ -79,7 +79,7 @@
 					{
 						cover: 'https://d2q486kjf9cwwu.cloudfront.net/static/homePage/Guilin.png',
 						title: 'Guilin',
-						linkUrl:'https://www.localpanda.com/activity/list/Guilin',
+						linkUrl:'/activity/list/Guilin',
 						value:'Guilin',
 						content: ['Float down the Li river and bike',
 							'through thousand-year-old villages as you take in the stunning beauty of Southern China’s Iconic Karsk Mountains.'

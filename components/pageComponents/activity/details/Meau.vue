@@ -14,7 +14,7 @@
 <script>
 		export default {
 		
-		name: "menu",
+		name: "menuType",
 		data() {
 			return {
 			}

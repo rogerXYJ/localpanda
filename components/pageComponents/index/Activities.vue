@@ -47,7 +47,7 @@
 		</div>-->
 		<div class="topSearchList clearfix">
 					<div class="topSearchList-item" v-for="item in activeList">
-						<a :href="'https://www.localpanda.com/activity/details/'+item.activityId">
+						<a :href="'/activity/details/'+item.activityId">
 							
 							<div class="activity">
 								

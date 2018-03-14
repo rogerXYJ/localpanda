@@ -7,8 +7,8 @@
 				<div class="linkseting">
 					<a href="~/index.html">Home</a>
 					<em class='iconfont'>&#xe64a;</em>
-					<a v-if="detail.location=='Shanghai'" :href="'../list/'+detail.location">Shanghai Guides</a>
-					<a v-else :href="'../list/'+detail.location">Beijing Guides</a>
+					<a v-if="detail.location=='Shanghai'" :href="'/guide/list/'+detail.location">Shanghai Guides</a>
+					<a v-else :href="'/guide/list/'+detail.location">Beijing Guides</a>
 					<em class='iconfont'>&#xe64a;</em>
 					<span>{{detail.enName}}</span>
 				</div>

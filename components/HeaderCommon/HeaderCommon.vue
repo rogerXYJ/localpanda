@@ -1,8 +1,8 @@
 <template>
-	<div id="headercommon">
+	<div id="header">
 		<div class="heder-cont">
 			<div class="log">
-				<a href="https://www.localpanda.com/index.html">
+				<a href="/">
 					<svg class="icon" aria-hidden="true">
 					    <use xlink:href="#icon-logo1"></use>
 					</svg>
@@ -276,7 +276,7 @@
        fill: currentColor;
        overflow: hidden;
     }
-	#headercommon{
+	#header{
 		height: 60px;
 		.heder-cont{
 			width: 100%;

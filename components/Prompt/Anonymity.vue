@@ -1,6 +1,12 @@
 <script>
 	import {regExp} from "~/assets/js/plugin/utils"
+	import Vue from "vue"
 	export default {
+		async asyncData({ apiBasePath }) {
+		    return {
+		      apiBasePath: apiBasePath
+		    }
+		  },
 		name: "anonymity",
 		data() {
 			return {
@@ -192,7 +198,7 @@
 						accessToken: $this.fbToken,
 						userId: $this.faceUserID
 					}
-					$this.axios.post("http://13.59.63.250/user/login/facebook", JSON.stringify(obj), {
+					Vue.axios.post("http://13.59.63.250/user/login/facebook", JSON.stringify(obj), {
 						headers: {
 							'Content-Type': 'application/json; charset=UTF-8'
 						}

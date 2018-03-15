@@ -3,6 +3,7 @@ module.exports = {
     middleware: [
       'page-init',
     ]
+    
   },
   build: {
     vendor: [

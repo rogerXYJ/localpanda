@@ -1,5 +1,5 @@
 <script>
-	import {regExp} from "../../assets/js/plugin/utils"
+	import {regExp} from "~/assets/js/plugin/utils"
 	export default {
 		name: "anonymity",
 		data() {
@@ -192,12 +192,6 @@
 						accessToken: $this.fbToken,
 						userId: $this.faceUserID
 					}
-					
-					
-					/*async asyncData ({ params },callback) {
-					    let { data } = await axios.post('https://www.localpanda.com/user/login/facebook',JSON.stringify(obj))
-					    return { title: data.title }
-					 }*/
 					$this.axios.post("http://13.59.63.250/user/login/facebook", JSON.stringify(obj), {
 						headers: {
 							'Content-Type': 'application/json; charset=UTF-8'

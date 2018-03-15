@@ -3,7 +3,7 @@
 		
 		<div v-swiper:mySwiper="swiperOptionBannerPc">
 	    <div class="swiper-wrapper">
-	      <div class="swiper-slide" v-for="slide in swiperSlides">
+	      <div class="swiper-slide" v-for="(slide,index) in swiperSlides" :key="index">
 	        <a :href="slide.link">
 				<div class="imgBanner" :style="{background:'url('+slide.url+')'}">
 					

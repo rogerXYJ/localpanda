@@ -1,5 +1,4 @@
 <script>
-import {loadScript} from "~/assets/js/plugin/utils.js"
 	export default {
 		
 		name: "alertTitle",
@@ -141,6 +140,7 @@ import {loadScript} from "~/assets/js/plugin/utils.js"
 						$this.userid = response.data
 						
 						window.localStorage.setItem("userid", $this.userid)
+						
 						location.reload()
 						
 						

@@ -60,13 +60,13 @@ export default {
         OurServices
     },
     methods: {
-        
+       
     },
     created() {
     },
        
     mounted: function() {
-    
+    	this.logIn = window.localStorage.getItem("logstate");
     }
 }
 </script>

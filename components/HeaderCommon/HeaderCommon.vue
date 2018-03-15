@@ -54,10 +54,10 @@
 	if (process.BROWSER_BUILD) {
 	  require('~/assets/font/iconfont.js')
 	}
-	import AlertTitle from '../Prompt/AlertTitle'
-	import Anonymity from '../Prompt/Anonymity'
-	import Alert from '../Prompt/Alert'
-	import Contact from '../Contact/Contact'
+	import AlertTitle from '~/components/Prompt/AlertTitle'
+	import Anonymity from '~/components/Prompt/Anonymity'
+	import Alert from '~/components/Prompt/Alert'
+	import Contact from '~/components/Contact/Contact'
 	export default {
 		props:["logIn","isAnonymity","isIndex"],
 		name: 'headercommon',
@@ -235,25 +235,19 @@
 		},
 		mounted() {
 			let that=this
-			if (process.BROWSER_BUILD) {
+			
 	  			document.getElementsByTagName("body")[0].addEventListener("click", function() {
-				that.iscontshow = true
+					that.iscontshow = true
 
 				})
+				that.logimg=window.localStorage.getItem("key")
 			
-			}
-			
+				that.fbToken=window.localStorage.getItem("fbToken")
+				console.log(this.logIn)
 			
 		},
 		created() {
-			let that=this
-			if (process.BROWSER_BUILD) {
-	  			that.logimg=window.localStorage.getItem("key")
 			
-				that.fbToken=window.localStorage.getItem("fbToken")
-				
-			
-			}
 			
      
 			

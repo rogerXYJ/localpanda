@@ -27,7 +27,6 @@
 			goAnchor(selector) {
 				
 				var anchor = document.getElementById(selector)
-				console.log()
 				document.body.scrollTop = anchor.offsetTop+document.getElementById("banner").offsetHeight+60-76
 				document.documentElement.scrollTop =anchor.offsetTop+document.getElementById("banner").offsetHeight+60-76
 			},

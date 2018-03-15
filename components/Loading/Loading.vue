@@ -41,7 +41,7 @@
 	</div>
 </template>
 <style lang="scss" scoped>
-	@import "../../assets/scss/base/_setting.scss";
+	@import "~assets/scss/base/_setting.scss";
 	.on{
 		display: block;
 	}

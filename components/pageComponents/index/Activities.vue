@@ -46,7 +46,7 @@
 			</ul>
 		</div>-->
 		<div class="topSearchList clearfix">
-					<div class="topSearchList-item" v-for="item in activeList">
+					<div class="topSearchList-item" v-for="(item,index) in activeList" :key="index">
 						<a :href="'/activity/details/'+item.activityId">
 							
 							<div class="activity">

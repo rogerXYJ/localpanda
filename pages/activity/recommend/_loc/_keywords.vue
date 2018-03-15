@@ -28,7 +28,7 @@
 				</swiper>-->
 				<div v-swiper:mySwiper="swiperOption" v-if="loc=='Beijing'">
 				    <div class="swiper-wrapper">
-				      <div class="swiper-slide" v-for="slide in swiperSlides">
+				      <div class="swiper-slide" v-for="(slide,index) in swiperSlides" :key="index">
 				        <a @click="GaAll" :class="link==slide.url?'cur':''" :href="link==slide.url?'javascript:':slide.url">
 							<div class="seachItem" :class="link==slide.url?'border':''" v-bind:style="{backgroundImage:'url(' + slide.imgUrl + ')'}">
 								<div :class="link==slide.url?'curColor':''" v-html="slide.keywords"></div>
@@ -39,7 +39,7 @@
 				  </div>
 				  <div v-swiper:mySwiper="swiperOption" v-else>
 				    <div class="swiper-wrapper">
-				      <div class="swiper-slide" v-for="item in slides">
+				      <div class="swiper-slide" v-for="(item,index) in slides" :key="index">
 				       <a @click="GaAll" :class="link==item.url?'cur':''" :href="link==item.url?'javascript:':item.url">
 							<div class="seachItem" :class="link==item.url?'border':''"  v-bind:style="{backgroundImage:'url(' + item.imgUrl + ')'}">
 								<div :class="link==item.url?'curColor':''" v-html="item.keywords"></div>
@@ -68,7 +68,7 @@
 				</h3>
 
 				<div class="topSearchList clearfix">
-					<div class="topSearchList-item" v-for="item in activities">
+					<div class="topSearchList-item" :key="index" v-for="(item,index) in activities">
 						<a :href="'https://www.localpanda.com/activity/details/'+item.activityId" target="_blank">
 							<p v-if="item.recommendedReason" class="title" :title="item.recommendedReason" style="-moz-box-orient: vertical;
 							    -webkit-box-orient:vertical;">{{item.recommendedReason}}</p>
@@ -99,7 +99,7 @@
 							<div class="highlights">
 								<b><span>Highlights</span></b>
 								<ul v-if="item.highlights">
-									<li v-for="i in delNullArr(item.highlights.split('\n'))">{{i}}</li>
+									<li :key="index" v-for="(i,index) in delNullArr(item.highlights.split('\n'))">{{i}}</li>
 								</ul>
 							</div>
 						</a>

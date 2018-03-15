@@ -10,7 +10,7 @@
 				<div class="swiper-button-next" ><i class="iconfont">&#xe620;</i></div>-->
 				<ul class="guide-infomation clearfix">
 
-					<li v-for="item in guidelist">
+					<li v-for="(item,index) in guidelist" :key="index">
 						<a :href="item.guideId?'/guide/detail/'+item.guideId:'#'">
 							<div class="guide-infomation-img">
 								<img v-lazy="item.headPortraitUrl" />
@@ -18,7 +18,7 @@
 							<div class="guide-infomation-introduce">
 								<div class="guide-details">
 									<h3>{{item.enName}}</h3>
-									<span class="iconfont gradeList" v-for="i in item.pingfen">&#xe61f;</span>
+									<span class="iconfont gradeList" v-for="(i,index) in item.pingfen" :key="index">&#xe61f;</span>
 									<p>{{item.location}}</p>
 								</div>
 								<div class="include ">
@@ -27,7 +27,7 @@
 									<p><i class="iconfont cn">&#xe632;</i>{{item.englishLevel}}</p>
 								</div>
 								<div class="taglist">
-									<span v-for="j in item.tourTypes">{{j}}</span>
+									<span v-for="(j,index) in item.tourTypes" :key="index">{{j}}</span>
 
 								</div>
 							</div>

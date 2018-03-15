@@ -108,6 +108,7 @@
 	export default {
 		name: 'guideList',
 		async asyncData ({ route, store, error, apiBasePath, redirect }) {
+			
 			let slug=route.params.slug;
 			let data={
 				options: [{
@@ -144,7 +145,8 @@
 				pageNum:1,
 				loadingStatus:false,
 				isdisabled:false,
-				isListPage:true
+				isListPage:true,
+				apiBasePath:apiBasePath
 				
 			}
 			let listdata={}
@@ -283,7 +285,8 @@
 			 		pageNum:that.pageNum,
 			 		pageSize:that.pageSize
 			 	}
-			 	that.axios.post('http://13.59.63.205/api/activity/list',JSON.stringify(obj),{
+			 	console.log(this.apiBasePath)
+			 	Vue.axios.post(this.apiBasePath+'activity/list',JSON.stringify(obj),{
 				headers: {
 					'Content-Type': 'application/json; charset=UTF-8'
 				}
@@ -325,7 +328,7 @@
 			const that=this
  			 //that.pageInit()
  			 
- 			 that.logIn=localStorage.getItem("logstate")
+ 			 that.logIn=localStorage.getItem("logstate")?localStorage.getItem("logstate"):null
 			
 		}
 	}
@@ -555,7 +558,7 @@
 					.titleText{
 						width: 100%;
 						
-						height: 42px;
+						height: 48px;
 						 text-overflow: ellipsis;
 				    display: -webkit-box;
 				    display: -moz-box;

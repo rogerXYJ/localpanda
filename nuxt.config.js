@@ -10,6 +10,7 @@ module.exports = {
         'vue-lazyload',
         'element-ui',
         '~/assets/font/iconfont.js',
+        '~/assets/js/plugin/flexible.js'
     ]
   },
   babel: {

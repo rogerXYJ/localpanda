@@ -66,7 +66,7 @@
 				<div class="information">
 					<h4>Other required information</h4>
 					<textarea v-if="opctions.category=='Private Tour'" v-model="comments" placeholder="please provide your hotel address so the guide can pick you up." onfocus="this.placeholder=''" onblur="this.placeholder='please provide your hotel address so the guide can pick you up.'"></textarea>
-					<!--<textarea v-else v-model="comments"></textarea>-->
+					<textarea v-else v-model="comments"></textarea>
 				</div>
 			</div>
 		</div>
@@ -79,8 +79,9 @@
 <script>
 	import Vue from 'vue'
 	import { regExp } from '~/assets/js/plugin/utils'
-	if (process.BROWSER_BUILD) {
+	if (process.browser) {
 	  require('~/assets/js/plugin/flexible.js')
+	   require('~/assets/js/pages/talk.js')
 	}
 	export default {
 		name: 'fillYourInfo',
@@ -282,7 +283,7 @@
 									}
 								}).then(function(response) {
 
-									window.location.href = "/activity/payForActivity?objectId=" + response.data
+									window.location.href = "/activity/payment?objectId=" + response.data
 								}, function(response) {})
 							}
 						}
@@ -317,7 +318,7 @@
 								}
 							}).then(function(response) {
 
-								window.location.href = "/activity/payForActivity?objectId=" + response.data
+								window.location.href = "/activity/payment?objectId=" + response.data
 							}, function(response) {})
 						}
 					}

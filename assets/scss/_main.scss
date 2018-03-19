@@ -25,16 +25,16 @@ html {
     // font-family: "Alright Sans LP", "Avenir Next", "Helvetica Neue", Helvetica, Arial, "PingFang SC", "Source Han Sans SC", "Hiragino Sans GB", "Microsoft YaHei", "WenQuanYi MicroHei", sans-serif; 
     font-family: "Ubuntu";
 }
-/* 字体上传到cdn再引用 不要引用无效地址
+// 字体上传到cdn再引用 不要引用无效地址
 @font-face{
     font-family: "Ubuntu";
-    src:url('/static/font/ubuntu-r.woff2')format('truetype'); ;
+    src:url('https://d2q486kjf9cwwu.cloudfront.net/static/font/ubuntu-r.woff2');
 }
 @font-face {
     font-family:"coopbl";
-    src: url('/static/font/COOPBL.TTF')format('truetype');
+    src: url('https://d2q486kjf9cwwu.cloudfront.net/static/font/COOPBL.TTF');
 }
-*/
+
 * {
     margin: 0;
     padding: 0;

@@ -67,12 +67,12 @@
 						
 				logText1:["Real Locals","All guides are experts in the local area"],
 			
-				logText2:["Flat Rate","We don’t hide extra fees or charge per-person"],
+				logText2:["Flat Rate","We don't hide extra fees or charge per-person"],
 			
 				logText3:["Hand Picked Guides",'All our guides are carefully selected for their expertise and glowing customer reviews'],
 			
 				
-				logText4:["Private & Customizable","No groups, no tourist traps. You’ll only do what you want at your own pace"],
+				logText4:["Private & Customizable","No groups, no tourist traps. You'll only do what you want at your own pace"],
 				
 				show:false,
 			}

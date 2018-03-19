@@ -5,12 +5,13 @@ module.exports = {
     ]
   },
   build: {
+  	//publicPath: 'https://d2q486kjf9cwwu.cloudfront.net/static/js/',
+  	publicPath: 'https://www.localpanda.com/',
     vendor: [
         'axios',
         'vue-lazyload',
         'element-ui',
         '~/assets/font/iconfont.js',
-        '~/assets/js/plugin/flexible.js'
     ]
   },
   babel: {

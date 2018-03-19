@@ -64,8 +64,8 @@
 	</div>
 </template>
 <style lang="scss" scoped>
-	@import "../../assets/scss/base/_setting.scss";
-	@import "../../assets/scss/base/_animate.scss";
+	@import "~assets/scss/base/_setting.scss";
+	@import "~assets/scss/base/_animate.scss";
 	.alertTitleOuter {
 		.fix{
 			position:fixed;

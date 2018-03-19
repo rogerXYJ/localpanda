@@ -35,7 +35,7 @@ export default {
   },
   methods: {
     goback() {
-      window.location.href = "index.html";
+      window.location.href = "/";
     }
   },
   mounted: function() {

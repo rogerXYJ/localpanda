@@ -130,7 +130,7 @@
 						accessToken: $this.fbToken,
 						userId: $this.faceUserID
 					}
-					$this.axios.post("https://www.localpanda.com/user/login/facebook", JSON.stringify(obj), {
+					$this.axios.post("https://api.localpanda.com/api/user/login/facebook", JSON.stringify(obj), {
 						headers: {
 							'Content-Type': 'application/json; charset=UTF-8'
 						}

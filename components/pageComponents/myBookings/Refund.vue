@@ -2,16 +2,17 @@
 	<div id="alertTitle" class="alertTitle" v-if="isShowAlertTitle">
 		<div class="fixed"></div>
 		<div v-bind:class="{'box animated zoomIn' : isShowAlertTitle , 'box animated zoomOut' : !isShowAlertTitle}">
-			<div class="false" @click="cancle"><i class="iconfont">&#xe629;</i></div>
 			<div class="con">
 
 				<span v-show="isShowTitle">{{alertTitle}}</span>
 				<p>{{alertMessage}}</p>
 			</div>
+			
 			<div class="selectBtn clearfix">
-				<div class="btn" v-on:click="conmmitFn">Yes, I will leave </div>
-				<div class="btn margin" v-on:click="cancle">No, I will stay</div>
+				<div class="btn" v-on:click="conmmitFn">Confirm</div>
+				<div class="btn margin" v-on:click="cancel">Cancel</div>
 			</div>
+			
 			
 		</div>
 	</div>
@@ -19,43 +20,34 @@
 <script>
 	export default {
 		name: "alertTitle",
-		props: ['isShowAlertTitle','alertTitle','alertMessage'],
+		props: ['isShowAlertTitle','alertTitle','alertMessage','orderId','businessType'],
 		data() {
 			return {
 				isShowTitle:true,  //是否有标题
-
 			}
 		},
 		methods: {
-			goBackFn() {
-				let $this = this
-				if(window.history && window.history.pushState) {
-					window.addEventListener('popstate', function() {
-						var hashLocation = location.hash;
-						var hashSplit = hashLocation.split("#!/");
-						var hashName = hashSplit[1];
-						if(hashName !== '') {
-							var hash = window.location.hash;
-							if(hash === '') {
-								$this.isShowAlertTitle = true
-								$this.alertMessage = "If you leave the page, the information will not be saved. Are you sure to leave?";
-							}
-	
-						}
-					})
-					window.history.pushState('popstate', null, '#');
-				}
-			},
 			conmmitFn() {
-				// this.isShowAlertTitle = !this.isShowAlertTitle;
+				
+				let obj={
+					orderId:this.orderId,
+					businessType:this.businessType
+				}
+				this.axios.post("https://api.localpanda.com/api/payment/refund/stripe",JSON.stringify(obj),{
+				headers: {
+						'Content-Type': 'application/json; charset=UTF-8'
+					}
+				}).then(function(response){
+					if(response.data.succeed){
+						
+						window.location.reload()
+					}
+				},function(response){})
 				this.$emit("setIsShowAlertFn",!this.isShowAlertTitle)
-				localStorage.removeItem("infor")
-				window.history.back(); 
 			},
-			cancle(){
-				this.$emit("setIsShowAlertFn",!this.isShowAlertTitle)
-				this.goBackFn()
-			}
+			cancel() {
+				this.$emit("setIsShowConfirmFn",!this.isShowAlertTitle)
+			},
 		},
 		watch: {
 			alertTitle: function(val,oldVal){ //监听是否有标题
@@ -96,7 +88,7 @@
 			.con{
 				width:300px;
 				margin: 0 auto;
-				padding-top: 62px;
+				    padding: 30px 10px 30px 30px;
 				span{
 			
 					font-size: 24px;;
@@ -107,18 +99,17 @@
 				}
 				p{
 					color: #353a3f;
-					font-size: 18px;
+					font-size: 20px;
 					margin-top: 26px;
 					vertical-align: middle;
-					text-align: center;
+					
 					word-wrap:break-word;
 					margin-top: 26px;
-
 				}
 			}
 			.selectBtn{
 				height: 42px;
-				margin: 46px auto 0;
+				margin: 25px auto 0;
 				width: 86%;
 				.btn{
 					float: left;
@@ -142,21 +133,6 @@
 				
 				
 				
-			}
-			.false {
-				&:hover {
-					cursor: pointer;
-				}
-				position: absolute;
-				width: 22px;
-				height: 22px;
-				border-radius: 50%;
-				background: #dde0e0;
-				color: #fff;
-				right: 10px;
-				top: 11px;
-				line-height: 22px;
-				text-align: center;
 			}
 		}
 	}

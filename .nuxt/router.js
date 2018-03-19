@@ -4,18 +4,20 @@ import Router from 'vue-router'
 Vue.use(Router)
 
 const _ebde25cc = () => import('..\\pages\\test\\index.vue' /* webpackChunkName: "pages_test_index" */).then(m => m.default || m)
-const _4eeee41d = () => import('..\\pages\\success.vue' /* webpackChunkName: "pages_success" */).then(m => m.default || m)
-const _e5ca5b28 = () => import('..\\pages\\falsePage.vue' /* webpackChunkName: "pages_falsePage" */).then(m => m.default || m)
-const _53399e15 = () => import('..\\pages\\activity\\payForActivity.vue' /* webpackChunkName: "pages_activity_payForActivity" */).then(m => m.default || m)
+const _4a0277bc = () => import('..\\pages\\error.vue' /* webpackChunkName: "pages_error" */).then(m => m.default || m)
+const _3beabbd8 = () => import('..\\pages\\user\\profile.vue' /* webpackChunkName: "pages_user_profile" */).then(m => m.default || m)
+const _c06b781e = () => import('..\\pages\\activity\\payment.vue' /* webpackChunkName: "pages_activity_payment" */).then(m => m.default || m)
+const _3fc14127 = () => import('..\\pages\\user\\myBookings.vue' /* webpackChunkName: "pages_user_myBookings" */).then(m => m.default || m)
+const _6fc65c93 = () => import('..\\pages\\payment\\success.vue' /* webpackChunkName: "pages_payment_success" */).then(m => m.default || m)
+const _234c1184 = () => import('..\\pages\\activity\\booking\\index.vue' /* webpackChunkName: "pages_activity_booking_index" */).then(m => m.default || m)
+const _e60875bc = () => import('..\\pages\\guide\\payment\\index.vue' /* webpackChunkName: "pages_guide_payment_index" */).then(m => m.default || m)
 const _41837833 = () => import('..\\pages\\guide\\booking.vue' /* webpackChunkName: "pages_guide_booking" */).then(m => m.default || m)
-const _0718e96a = () => import('..\\pages\\activity\\fillYourInfoMobile.vue' /* webpackChunkName: "pages_activity_fillYourInfoMobile" */).then(m => m.default || m)
-const _18d90849 = () => import('..\\pages\\activity\\fillYourInfo.vue' /* webpackChunkName: "pages_activity_fillYourInfo" */).then(m => m.default || m)
-const _5a79dc40 = () => import('..\\pages\\guide\\pay\\index.vue' /* webpackChunkName: "pages_guide_pay_index" */).then(m => m.default || m)
+const _3c6cdddc = () => import('..\\pages\\activity\\booking\\mobile\\index.vue' /* webpackChunkName: "pages_activity_booking_mobile_index" */).then(m => m.default || m)
 const _30534f63 = () => import('..\\pages\\guide\\detail\\_id.vue' /* webpackChunkName: "pages_guide_detail__id" */).then(m => m.default || m)
-const _7448dd5d = () => import('..\\pages\\activity\\details\\_id.vue' /* webpackChunkName: "pages_activity_details__id" */).then(m => m.default || m)
 const _2c7ba706 = () => import('..\\pages\\guide\\list\\_slug.vue' /* webpackChunkName: "pages_guide_list__slug" */).then(m => m.default || m)
 const _0a933717 = () => import('..\\pages\\activity\\list\\_slug.vue' /* webpackChunkName: "pages_activity_list__slug" */).then(m => m.default || m)
 const _7c98fc36 = () => import('..\\pages\\guide\\activity\\_id.vue' /* webpackChunkName: "pages_guide_activity__id" */).then(m => m.default || m)
+const _7448dd5d = () => import('..\\pages\\activity\\details\\_id.vue' /* webpackChunkName: "pages_activity_details__id" */).then(m => m.default || m)
 const _f06231de = () => import('..\\pages\\activity\\recommend\\_loc\\_keywords.vue' /* webpackChunkName: "pages_activity_recommend__loc__keywords" */).then(m => m.default || m)
 const _d18eb428 = () => import('..\\pages\\index.vue' /* webpackChunkName: "pages_index" */).then(m => m.default || m)
 
@@ -83,19 +85,39 @@ export function createRouter () {
 			name: "test"
 		},
 		{
-			path: "/success",
-			component: _4eeee41d,
-			name: "success"
+			path: "/error",
+			component: _4a0277bc,
+			name: "error"
 		},
 		{
-			path: "/falsePage",
-			component: _e5ca5b28,
-			name: "falsePage"
+			path: "/user/profile",
+			component: _3beabbd8,
+			name: "user-profile"
 		},
 		{
-			path: "/activity/payForActivity",
-			component: _53399e15,
-			name: "activity-payForActivity"
+			path: "/activity/payment",
+			component: _c06b781e,
+			name: "activity-payment"
+		},
+		{
+			path: "/user/myBookings",
+			component: _3fc14127,
+			name: "user-myBookings"
+		},
+		{
+			path: "/payment/success",
+			component: _6fc65c93,
+			name: "payment-success"
+		},
+		{
+			path: "/activity/booking",
+			component: _234c1184,
+			name: "activity-booking"
+		},
+		{
+			path: "/guide/payment",
+			component: _e60875bc,
+			name: "guide-payment"
 		},
 		{
 			path: "/guide/booking",
@@ -103,29 +125,14 @@ export function createRouter () {
 			name: "guide-booking"
 		},
 		{
-			path: "/activity/fillYourInfoMobile",
-			component: _0718e96a,
-			name: "activity-fillYourInfoMobile"
-		},
-		{
-			path: "/activity/fillYourInfo",
-			component: _18d90849,
-			name: "activity-fillYourInfo"
-		},
-		{
-			path: "/guide/pay",
-			component: _5a79dc40,
-			name: "guide-pay"
+			path: "/activity/booking/mobile",
+			component: _3c6cdddc,
+			name: "activity-booking-mobile"
 		},
 		{
 			path: "/guide/detail/:id?",
 			component: _30534f63,
 			name: "guide-detail-id"
-		},
-		{
-			path: "/activity/details/:id?",
-			component: _7448dd5d,
-			name: "activity-details-id"
 		},
 		{
 			path: "/guide/list/:slug?",
@@ -141,6 +148,11 @@ export function createRouter () {
 			path: "/guide/activity/:id?",
 			component: _7c98fc36,
 			name: "guide-activity-id"
+		},
+		{
+			path: "/activity/details/:id?",
+			component: _7448dd5d,
+			name: "activity-details-id"
 		},
 		{
 			path: "/activity/recommend/:loc?/:keywords?",

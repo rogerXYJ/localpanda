@@ -11,7 +11,7 @@
  			<div class="text">"The document you are looking for may have been removed or re-named. Please contact the web site owner 
 for further  assistance"</div>
 			<div class="backBtn">
-				<button @click="goback">Back to Home</button>
+				<button ><a href="/">Back to Home</a></button>
 			</div>
 			
       </div>
@@ -34,7 +34,7 @@ export default {
     },
     methods: {
         goback(){
-        	window.location.href="index.html"
+        	window.location.href="/"
         }
     },
     mounted: function() {

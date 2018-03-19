@@ -30,7 +30,7 @@ if (process.browser){
   	const VueAwesomeSwiper = require('vue-awesome-swiper/dist/ssr')
 	bus.use(VueAwesomeSwiper)
   	require('swiper/dist/css/swiper.css')
-  	console.log(VueAwesomeSwiper)
+  	
 };
 export default {
   props: ["bannerPhotos", "destination"],
@@ -59,7 +59,7 @@ export default {
     
   },
   mounted: function() {
-   	 console.log(this.bannerPhotos)
+  
   }
 };
 </script>

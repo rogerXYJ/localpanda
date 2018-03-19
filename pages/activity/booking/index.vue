@@ -93,7 +93,7 @@
 							<p v-if="opctions.adultNum==1&&opctions.childrenNum==0">1 Person</p>
 							<p v-else>{{opctions.adultNum+opctions.childrenNum}} People</p>
 						</div>
-						
+
 					</div>
 					<div class="date">
 						<p>{{opctions.startDate}}</p>
@@ -118,7 +118,7 @@
 				<div class="bookbtn">
 					<p>Pay with:</p>
 					<div class="payfor">
-						<img style="width:200px" src="https://s3.us-east-2.amazonaws.com/localpanda.images/static/icon/stripe.png" />
+						<img style="width:200px" src="https://d2q486kjf9cwwu.cloudfront.net/static/icon/stripe.png" />
 					</div>
 					<div style=" width:316px;font-size: 16px;line-height: 20px;display: block; margin-top: 20px;"><b>Secure Payment:</b> </br>We use Stripe’s online payment system, which sends your payment info directly to Stripe’s secure servers, so your data is never sent to Local Panda’s servers and cannot be stolen.</div>
 				</div>
@@ -138,13 +138,15 @@
 	import FooterCommon from '~/components/FooterCommon/FooterCommon';
 	import AlertGoBack from '~/components/Prompt/AlertGoBack';
 	import Alert from '~/components/Prompt/Alert'
-	
+
 	export default {
-	async asyncData({ apiBasePath }) {
-	    return {
-	      apiBasePath: apiBasePath
-	    }
-	  },
+		async asyncData({
+			apiBasePath
+		}) {
+			return {
+				apiBasePath: apiBasePath
+			}
+		},
 		name: 'fillYourInfo',
 		data() {
 			return {
@@ -207,7 +209,7 @@
 			round(val) {
 				if(typeof val === 'number' && val % 1 === 0) {
 					return val
-				}else {
+				} else {
 					return(parseFloat(this.cutXiaoNum(val, 1)) + 0.1).toFixed(1)
 
 				}
@@ -287,23 +289,25 @@
 				this.TravellerphoneErr = false
 			},
 			returnFloat(value) {
-				var value = Math.round(parseFloat(value) * 100) / 100;
-				var xsd = value.toString().split(".");
-				if(xsd.length == 1) {
-					value = value.toString() + ".00";
-					return value;
-				}
-				if(xsd.length > 1) {
-					if(xsd[1].length < 2) {
-						value = value.toString() + "0";
+				if(value) {
+					var value = Math.round(parseFloat(value) * 100) / 100;
+					var xsd = value.toString().split(".");
+					if(xsd.length == 1) {
+						value = value.toString() + ".00";
+						return value;
 					}
-					return value;
+					if(xsd.length > 1) {
+						if(xsd[1].length < 2) {
+							value = value.toString() + "0";
+						}
+						return value;
+					}
 				}
+
 			},
 			next() {
 				const that = this
-				var obj;
-				//that.addOder = true
+				var obj; //that.addOder = true
 				if(that.oderFirstName == "" || regExp.isNub(that.oderFirstName) || regExp.isCode(that.oderFirstName)) {
 					that.oderFirstNameErr = true
 					that.isShowAlert = true
@@ -367,13 +371,13 @@
 								"utcOffset": new Date().getTimezoneOffset() / 60 * -1
 							}
 							if(that.addOder == false) {
-								that.axios.put("https://www.localpanda.com/api/activity/order/create", JSON.stringify(obj), {
+								that.axios.put("https://api.localpanda.com/api/activity/order/create", JSON.stringify(obj), {
 									headers: {
 										'Content-Type': 'application/json; charset=UTF-8'
 									}
 								}).then(function(response) {
-									
-									window.location.href = "payForActivity.html?objectId=" + response.data
+
+									window.location.href = "/activity/payment?objectId=" + response.data
 								}, function(response) {})
 							}
 						}
@@ -401,28 +405,27 @@
 						}
 						if(that.addOder == false) {
 							that.addOder = true
-							that.axios.put(this.apiBasePath+"activity/order/create", JSON.stringify(obj), {
+							that.axios.put(this.apiBasePath + "activity/order/create", JSON.stringify(obj), {
 								headers: {
 									'Content-Type': 'application/json; charset=UTF-8'
 								}
 							}).then(function(response) {
-								
-								window.location.href = "/activity/payForActivity?objectId=" + response.data
+
+								window.location.href = "/activity/payment?objectId=" + response.data
 							}, function(response) {})
 						}
 					}
-					console.log(that.addOder)
+					
 
 				}
 			}
 
 		},
 		created: function() {
-			
-			
+
 		},
 		mounted: function() {
-			this.opctions = localStorage.getItem("orderInfo")?JSON.parse(localStorage.getItem("orderInfo")):''
+			this.opctions = localStorage.getItem("orderInfo") ? JSON.parse(localStorage.getItem("orderInfo")) : ''
 			this.logIn = window.localStorage.getItem("logstate")
 			this.goBackFn()
 
@@ -435,7 +438,7 @@
 <style lang="scss">
 	@import '~assets/scss/_main.scss';
 	@import '~/assets/font/iconfont.css';
-	#headercommon {
+	#header {
 		box-shadow: 0px 2px 6px 0px rgba(53, 58, 63, 0.1);
 	}
 </style>
@@ -460,7 +463,6 @@
 						padding-bottom: 30px;
 						border-bottom: 1px solid #dde0e0;
 						.serviceform {
-							
 							h3 {
 								font-size: 18px;
 								margin-bottom: 0;
@@ -471,7 +473,6 @@
 								font-size: 18px
 							}
 						}
-						
 					}
 					.date {
 						padding: 30px 0;

@@ -21,8 +21,8 @@
 					<div>
 						<i class="iconfont" style="font-size: 17px;">&#xe649;</i>Contact
 					</div>
-					<p>0086 21 80182090</p>
-					<p>+1-818-404-8141</p>
+					<p>+86 (21) 8018-2090</p>
+					<p>+1 (888) 930-8849 (US toll free)</p>
 					<p>service@localpanda.com</p>
 					
 				</div>
@@ -97,6 +97,7 @@
 <script>
 	import { regExp } from '~/assets/js/plugin/utils'
 	import Alert from '../Prompt/Alert'
+
 	export default {
 		props:["showBook","logIn"],
 		name: 'footercommon',
@@ -111,7 +112,6 @@
 				isShowAlert: false,//弹框返回状态
 				alertMessage: "",//弹框内容
 				alertTitle:'',
-				deviceWidth:''
 			}
 		},
 		components:{
@@ -146,7 +146,7 @@
 							message: that.textarea
 						}
 					}
-						that.axios.post("http://13.59.63.205/user/feedback/commit", JSON.stringify(obj), {
+						that.axios.post("https://api.localpanda.com/api/user/feedback/commit", JSON.stringify(obj), {
 							headers: {
 								'Content-Type': 'application/json; charset=UTF-8'
 							}

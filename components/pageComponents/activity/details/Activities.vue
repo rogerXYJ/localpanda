@@ -75,25 +75,48 @@
 				</div>
 				<div class="provide" id="provide">
 					<h3>What's Included?</h3>
-					<ul>
+					<ul v-if="itemsIncluded">
 						<li :key="index" v-for="(item,index) in itemsIncluded">{{item}}</li>
-
 					</ul>
+					<ul v-if="inclusions">
+						<li :key="index" v-for="(item,index) in inclusions">
+							<h5>{{item.title}}</h5>
+							<p v-if="item.content" v-html="item.content"></p>
+						</li>
+					</ul>
+				</div>
+				<div class="provide" v-if="exclusions" id="exclusions">
+					<h3>Exclusions</h3>
+					<ul>
+						<li :key="index" v-for="(item,index) in exclusions">
+							<h5>{{item.title}}</h5>
+							<p v-if="item.content" v-html="item.content"></p>
+						</li>
+					</ul>
+				</div>
+				<div class="notes" v-if="notice.length>0" id="notice">
+					<h3>Additional Info</h3>
+					<p v-for="(item,index) in notice" :key="index">{{item}}</p>
+				</div>
+				<div class="notes" v-if="picInfo.priceInstructions" id="PriceNote">
+					<h3>Price Note</h3>
+					<p>{{picInfo.priceInstructions}}</p>
+				</div>
+				<div class="notes" v-if="picInfo.refundInstructions" id="CancellationPolicy">
+					<h3>Cancellation Policy</h3>
+					<p>{{picInfo.refundInstructions}}</p>
 				</div>
 				<div class="notes" id="notes">
 					<h3>Notes</h3>
 					<p v-if="remark" :key="index" v-for="(item,index) in remark">{{item}}</p>
-					<p v-if="picInfo.priceInstructions">{{picInfo.priceInstructions}}</p>
-					<p v-if="picInfo.refundInstructions">{{picInfo.refundInstructions}}</p>
-					<p v-if="detail.venues" :key="index" v-for="(i,index) in detail.venues">{{i}}</p>
+					<!--<p v-if="detail.venues" :key="index" v-for="(i,index) in detail.venues">{{i}}</p>-->
 				</div>
-
 			</div>
 			<div class="recommend" id="recommend" v-if="recommed.length>0">
 				<h3>Similar Experiences</h3>
 				<ul class="clearfix">
 					<li :key="index" v-for="(i,index) in recommed">
-						<a :href="'https://www.localpanda.com/activity/details/'+i.activityId">
+						<a :href="'/activity/details/'+i.activityId">
 							<div class="activity-pic">
 								<img v-lazy="i.coverPhotoUrl">
 							</div>
@@ -302,7 +325,10 @@ export default {
     "isShowBookNow",
     "picInfo",
     "recommed",
-    "introduction"
+    "introduction",
+    "inclusions",
+    "exclusions",
+    "notice"
   ],
   name: "Activities",
   data() {
@@ -318,8 +344,9 @@ export default {
       isShowAdults: false,
       isShowTime: false,
       options: {
-        minDate: GetDateStr(2),
-        maxDate: addmulMonth(GetDateStr(2), 12)
+		minDate: this.picInfo.earliestBookDate,
+		maxDate: addmulMonth(this.picInfo.earliestBookDate, 12),
+			
       },
       adultsPic: "",
       objectType: "ACTIVITY",
@@ -511,8 +538,18 @@ export default {
         orderInfo = JSON.stringify(orderInfo);
         console.log(orderInfo);
         localStorage.setItem("orderInfo", orderInfo);
-
-       location.href = "/activity/fillYourInfo";
+        
+		var ua = navigator.userAgent;
+		var ipad = ua.match(/(iPad).*OS\s([\d_]+)/),
+		isIphone = !ipad && ua.match(/(iPhone\sOS)\s([\d_]+)/),
+		isAndroid = ua.match(/(Android)\s+([\d.]+)/),
+		isMobile = isIphone || isAndroid;
+		if(isMobile){
+			location.href="/activity/booking/mobile"
+		}else{
+			location.href = "/activity/booking"
+		}
+       //location.href = "/activity/fillYourInfo";
         //routes.push('/fillYourInfo')
       }
     },
@@ -1116,6 +1153,13 @@ export default {
             margin-top: 15px;
             font-size: 18px;
             position: relative;
+            h5{
+            	font-size: 18px;
+            }
+            p{
+            	font-size: 14px;
+            	margin-top: 4px;
+            }
             &:after {
               content: "";
               position: absolute;

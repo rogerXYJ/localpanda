@@ -36,11 +36,14 @@
 			return {
 				swiperOptionBannerPc: {
 					lazy: true,
-					autoplay: true,
+					autoplay: {
+						 disableOnInteraction: false,
+					},
 					speed:1000,
 					loop:true,
 					pagination: {
-						el:'.swiper-pagination'
+						el:'.swiper-pagination',
+						clickable :true,
 						},
 					effect : 'fade',
 					paginationClickable :true,

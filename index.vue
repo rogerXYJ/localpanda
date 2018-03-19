@@ -53,10 +53,10 @@ export default {
        
     mounted: function() {
         let that=this
-        that.axios.get('https://www.localpanda.com/api/guide/brief/'+that.id).then(function(response){
+        that.axios.get('https://api.localpanda.com/api/guide/brief/'+that.id).then(function(response){
         		that.guidelist=response.data
         },function(response){})
-        that.axios.get("https://www.localpanda.com/api/activity/batch/"+that.activityId).then(function(response){
+        that.axios.get("https://api.localpanda.com/api/activity/batch/"+that.activityId).then(function(response){
         	console.log(response)
         		that.activeList=response.data
         },function(response){})

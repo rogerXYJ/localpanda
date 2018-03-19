@@ -126,7 +126,7 @@
 					that.textInfo=""
 					that.destination=""
 					that.peopleNub=1
-					that.axios.post("http://13.59.63.205/user/feedback/commit", JSON.stringify(obj), {
+					that.axios.post("https://wwww.localpanda.com/api/user/feedback/commit", JSON.stringify(obj), {
 							headers: {
 								'Content-Type': 'application/json; charset=UTF-8'
 							}

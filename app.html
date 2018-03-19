@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html {{ HTML_ATTRS }}>
   <head>  
-    <meta name="viewport" content="width=device-width, initial-scale=0,user-scalable=yes,maximum-scale=1.0">
+    <meta name="viewport" content="">
     <link rel="shortcut icon" href="https://d2q486kjf9cwwu.cloudfront.net/static/icon/favicon.ico" type="image/x-icon">
     {{ HEAD }}
 	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-107010673-1"></script>
@@ -13,20 +13,36 @@
       gtag('config', 'UA-107010673-1');
     </script>
     <script>
-		var ua = navigator.userAgent;
-		var ipad = ua.match(/(iPad).*OS\s([\d_]+)/),
-			isIphone = !ipad && ua.match(/(iPhone\sOS)\s([\d_]+)/),
-			isAndroid = ua.match(/(Android)\s+([\d.]+)/),
-			isMobile = isIphone || isAndroid,
-		 	viewport = document.querySelector("meta[name=viewport]");
-		if(isIphone || ipad) {
-				viewport.setAttribute('content', "width=1500 ,user-scalable=yes,maximum-scale=0.5");
-		} else {
-				viewport.setAttribute('content', "width=device-width, initial-scale=0,user-scalable=yes,maximum-scale=1.0");
-		}
+    	
+    		if(window.location.href.startsWith("https://www.localpanda.com/activity/booking/mobile")){
+	    		
+	    		viewport = document.querySelector("meta[name=viewport]");
+	    		viewport.setAttribute('content', "width=device-width, initial-scale=1.0, maximum-scale=1.0");
+	    	}else{
+	    		viewport()
+	    	}
+    	
+    	
+    	
+    	function viewport(){
+    		var ua = navigator.userAgent;
+			var ipad = ua.match(/(iPad).*OS\s([\d_]+)/),
+				isIphone = !ipad && ua.match(/(iPhone\sOS)\s([\d_]+)/),
+				isAndroid = ua.match(/(Android)\s+([\d.]+)/),
+				isMobile = isIphone || isAndroid,
+			 	viewport = document.querySelector("meta[name=viewport]");
+			if(isIphone || ipad) {
+					viewport.setAttribute('content', "width=1500 ,user-scalable=yes,maximum-scale=0.5");
+			} else {
+					viewport.setAttribute('content', "width=device-width, initial-scale=0,user-scalable=yes,maximum-scale=1.0");
+			}
+    	}
+		
 	</script>
   </head>
   <body {{ BODY_ATTRS }} >
     {{ APP }}
+    
   </body>
+  
 </html>

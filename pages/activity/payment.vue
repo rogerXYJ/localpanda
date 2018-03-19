@@ -10,7 +10,7 @@
 		<div class="bookbtn">
 				<p>Pay with:</p>
 				<div class="payfor">
-					<img style="width: 200px;" src="https://s3.us-east-2.amazonaws.com/localpanda.images/static/icon/stripe.png" />
+					<img style="width: 200px;" src="https://d2q486kjf9cwwu.cloudfront.net/static/icon/stripe.png" />
 				</div>
 				<div style="font-size: 16px;line-height: 20px;display: block; margin-top: 20px;"><b>Secure Payment:</b></br>We use Stripe’s online payment system, which sends your payment info directly to Stripe’s secure servers, so your data is never sent to Local Panda’s servers and cannot be stolen.</div>
 			</div>
@@ -56,6 +56,9 @@
 </template>
 
 <script>
+	if (process.browser) {
+	  require('~/assets/js/pages/talk.js')
+	}
 	import { GetQueryString } from '~/assets/js/plugin/utils.js'
 	import HeaderCommon from '~/components/HeaderCommon/HeaderCommon'
 	import FooterCommon from '~/components/FooterCommon/FooterCommon';
@@ -169,7 +172,7 @@
 
 							if(response.data.succeed) {
 								that.loadingStatus = true
-								window.location.href = "/success?orderId=" + that.orderId + '&amount=' + that.opctions.amount
+								window.location.href = "/payment/success?orderId=" + that.orderId + '&amount=' + that.opctions.amount
 							}
 							//
 						}, function(response) {})
@@ -219,12 +222,12 @@
 <style lang="scss">
 	@import '~assets/scss/_main.scss';
 	@import '~/assets/font/iconfont.css';
-	#headercommon {
+	#header{
 		box-shadow: 0px 2px 6px 0px rgba(53, 58, 63, 0.1);
 	}
 </style>
 <style lang="scss" scoped>
-	@import "../../assets/scss/base/_setting.scss";
+	@import "~assets/scss/base/_setting.scss";
 	.payNow {
 		.oderdetial {
 			width: 1170px;

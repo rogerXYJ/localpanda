@@ -63,13 +63,13 @@
 			<div class="searchList">
 				<h3>
 					{{information.title}}
-					<a v-if="loc=='Beijing'"  href="https://www.localpanda.com/activity/list/Beijing">All Beijing Activities</a>
-					<a v-if="loc=='Shanghai'" href="https://www.localpanda.com/activity/list/Shanghai">All Shanghai Activities</a>
+					<a v-if="loc=='Beijing'"  href="/activity/list/Beijing">All Beijing Activities</a>
+					<a v-if="loc=='Shanghai'" href="/activity/list/Shanghai">All Shanghai Activities</a>
 				</h3>
 
 				<div class="topSearchList clearfix">
 					<div class="topSearchList-item" :key="index" v-for="(item,index) in activities">
-						<a :href="'https://www.localpanda.com/activity/details/'+item.activityId" target="_blank">
+						<a :href="'/activity/details/'+item.activityId" target="_blank">
 							<p v-if="item.recommendedReason" class="title" :title="item.recommendedReason" style="-moz-box-orient: vertical;
 							    -webkit-box-orient:vertical;">{{item.recommendedReason}}</p>
 							<div class="activity">
@@ -153,6 +153,7 @@
 					initialSlide: 0,
 				
 				},
+				//shanghai
 				slides:[
 					{
 						keywords:"Popular & <br/>Classic Tours",
@@ -205,6 +206,7 @@
 						imgUrl:'https://d2q486kjf9cwwu.cloudfront.net/static/headerPhotos/ShowsAndTickets.jpg'
 					}
 				],
+				//beijing
 				swiperSlides: [
 					{
 						keywords: "Popular & Classic Tours",
@@ -218,7 +220,7 @@
 					},
 					{
 						keywords: "Great Wall of China",
-						url: "https://www.localpanda.com/activity/recommend/Beijing/Great-Wall-of-China",
+						url: "/activity/recommend/Beijing/Great-Wall-of-China",
 						imgUrl:'https://d2q486kjf9cwwu.cloudfront.net/static/headerPhotos/GreatWallofChina.jpg'
 					},
 					{
@@ -239,7 +241,7 @@
 					},
 					{
 						keywords: "Multi-day & Extended <br/> Tours",
-						url: "https://www.localpanda.com/activity/recommend/Beijing/Multi-day-and-Extended-Tours",
+						url: "/activity/recommend/Beijing/Multi-day-and-Extended-Tours",
 						imgUrl:'https://d2q486kjf9cwwu.cloudfront.net/static/headerPhotos/Multi-dayAndExtendedTours.jpg'
 					},
 					{
@@ -261,6 +263,33 @@
 	 		data.activities=data.information.references
 			 
 			return data
+		},
+		head(){
+			let loc=this.loc
+			let title="The Top Local " + loc + " Tours | The Best Authentic " + loc + " Activities and Experiences."
+			let keywords="Things to do in " + loc + ", " + loc + " destinations, " + loc + " landmarks, top things to see in " + loc + ", " + loc + " tourist attractions, Best " + loc + " tours, " + loc + " tours, " + loc + " walking tours, " + loc + " sightseeing"
+			if(loc == "Beijing") {
+				var description="Experience the best things to do in " + loc + ", walking & biking tours, history & culture tours, explore the Forbidden City, Temple of Heaven, Great Wall, Tiananmen Square, and Summer Palace, see dying hutongs, enjoy Peking duck & opera, cooking & Tai Chi classes, and cheap shopping"
+			} else if(loc == "Shanghai") {
+				var description="Experience the best things to do in " + loc + ", walking & biking tours, history & culture tours, explore the bund & French concession, see local dying neighborhoods, enjoy tea ceremonies, wet markets, and cheap shopping"
+			} else if(loc == "Suzhou") {
+				var description= "Experience the best things to do in " + loc + ", walking & biking tours, history & culture tours, explore Suzhou Gardens, Canals, and Silk crafts & production, see ancient water towns, enjoy stunning photography, local traditions, and cheap shopping"
+			}
+			return {
+				title: title,
+				meta: [{
+						hid: "keywords",
+						name: "keywords",
+						content: keywords
+					},
+					{
+						hid: "description",
+						name: "description",
+						content: description
+					}
+
+				]
+			};
 		},
 		components: {
 			HeaderCommon,
@@ -326,6 +355,7 @@
 			let that = this
 			
 			that.link=location.href
+			
 			
 			//that.getMes()
 			that.logIn = localStorage.getItem("logstate");

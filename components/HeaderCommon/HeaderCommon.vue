@@ -211,15 +211,15 @@
 				
 			},
 			goBook(){
-				window.location.href="https://www.localpanda.com/MyBookings.html?menu=0&flag=1"
+				window.location.href="/user/myBookings?menu=0&flag=1"
 			},
 			goPrefie(){
-				window.location.href="https://www.localpanda.com/profile.html?menu=1&flag=1"
+				window.location.href="/user/profile?menu=1&flag=1"
 			},
 			reload(){
 				if(GetQueryString("flag")){
 					//console.log(window.localStorage.getItem("flag"))
-					window.location.href="https://www.localpanda.com/index.html"
+					window.location.href="/"
 				}else{
 					location.reload()
 				}

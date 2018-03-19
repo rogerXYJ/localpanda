@@ -368,7 +368,7 @@
 					that.obj = JSON.stringify(that.obj)
 					console.log(that.obj)
 					localStorage.setItem("infor", that.obj)
-					window.location.href = 'https://www.localpanda.com/fillYourInfo.html'
+					window.location.href = '/guide/booking'
 				
 			},
 			//动态改变带车价格
@@ -445,13 +445,7 @@
 				});
 			},
 			selet(id) {
-				/*if(localStorage.getItem("logstate") == 0||localStorage.getItem("logstate")==null) {
-							
-							
-							this.alertTitleStatus = true
-							this.alertTitle = "Log in to Local Panda",
-							this.alertTitleMessage = "Log in to add things to your wishlist and access your bookings from any device."
-				} else {*/
+				
 				this.seletId = id
 				this.show = false
 				this.seletId2 = 0
@@ -464,16 +458,10 @@
 				this.tourHalfarr = this.tourHalfarr.concat(this.startTimeAllTour.time.split(", "))
 				this.tourAllarr = this.tourAllarr.concat(this.startTimeHalfTour.time.split(", "))
 				this.valueCarall=''
-				//}
+			
 			},
 			seletall(id) {
-				/*if(localStorage.getItem("logstate") == 0||localStorage.getItem("logstate")==null) {
-						console.log(111)
-						
-						this.alertTitleStatus = true
-						this.alertTitle = "Log in to Local Panda",
-						this.alertTitleMessage = "Log in to add things to your wishlist and access your bookings from any device."
-				} else {*/
+			
 				this.seletId2 = id
 				this.show = true
 				this.seletId = 0
@@ -486,7 +474,7 @@
 				this.tourHalfarr = this.tourHalfarr.concat(this.startTimeAllTour.time.split(", "))
 				this.tourAllarr = this.tourAllarr.concat(this.startTimeHalfTour.time.split(", "))
 				this.value=''
-				//}
+				
 			},
 			//库存
 			sortDate(date){
@@ -500,7 +488,7 @@
 			},
 			getPrice() {
 				let that = this
-				that.axios.get('https://www.localpanda.com/api/guide/price/' + that.guideId).then(function(response) {
+				that.axios.get('https://api.localpanda.com/api/guide/price/' + that.guideId).then(function(response) {
 					that.picmsg = response.data
 					let str = response.data.prices.hikingFullDayPrices
 					//console.log(response.data.prices.hikingFullDayPrices)
@@ -607,10 +595,55 @@
 							i = i - 1;
 						}
 					}
+					that.getDate()
 
 				}, function(response) {
 
 				})
+			},
+			getDate() {
+				const that = this
+				that.axios.get("https://api.localpanda.com/api/stock/guide/" + that.guideId + "?startDate=" + that.picmsg.earliestBookDate + "&days=90").then(function(response) {
+					that.carAllsuerDate = response.data
+					that.carHalfsuerDate = response.data
+					//that.carHalfarr=response.data
+					that.tourAllsuerDate = response.data
+					that.tourHalfsuerDate = response.data
+					//带车全天日历
+					that.allcaroptions = {
+						mode: "multiple",
+						enable: that.carAllsuerDate,
+						minDate: that.picmsg.earliestBookDate,
+						maxDate: addmulMonth(that.picmsg.earliestBookDate, 3),
+
+					}
+					//带车半天日历
+					that.halfcaroptions = {
+						mode: "multiple",
+						enable: that.carHalfsuerDate,
+						minDate: that.picmsg.earliestBookDate,
+						maxDate: addmulMonth(that.picmsg.earliestBookDate, 3),
+
+					}
+					//徒步全天日历
+					that.touralloptions = {
+						mode: "multiple",
+						enable: that.tourAllsuerDate,
+						minDate: that.picmsg.earliestBookDate,
+						maxDate: addmulMonth(that.picmsg.earliestBookDate, 3),
+
+					}
+					//不带车半天日历
+					that.tourhalfoptions = {
+						mode: "multiple",
+						enable: that.tourHalfsuerDate,
+						minDate: that.picmsg.earliestBookDate,
+						maxDate: addmulMonth(that.picmsg.earliestBookDate, 3),
+
+					}
+
+				}, function(response) {})
+
 			}
 		},
 		filters: {
@@ -632,169 +665,10 @@
 			
 		},
 		created: function() {
-			const that = this
-			that.axios.get("https://www.localpanda.com/api/stock/guide/" + that.guideId + "?startDate=" + GetDateStr(3) + "&days=90").then(function(response) {
-				that.carAllsuerDate = response.data
-				that.carHalfsuerDate = response.data
-				//that.carHalfarr=response.data
-				that.tourAllsuerDate = response.data
-				that.tourHalfsuerDate = response.data
-				//带车全天日历
-				that.allcaroptions = {
-					mode: "multiple",
-					enable: that.carAllsuerDate,
-					minDate: GetDateStr(3),
-					maxDate: addmulMonth(GetDateStr(3), 3),
-					onOpen: function(selectedDates, dateStr, instance) {/*
-						if(that.startTimeHalfCar.time != "") {
-							console.log(1111)
-							var arr = that.startTimeHalfCar.time.split(", ")
-							that.carAllarr = dateStr.split(", ").concat(that.array_diff(that.carAllsuerDate, arr))
-							that.Function = instance.clear
-							console.log(that.carAllarr)
-							instance.set(that.allcaroptions, {
-								mode: "multiple",
-								enable: that.carHalfarr,
-								minDate: GetDateStr(4),
-								maxDate: addmulMonth(GetDateStr(4), 3),
-							})
-						}
-
-						//console.log()
-						//instance.config.disable=arr
-
-					*/}
-
-				}
-				//带车半天日历
-				that.halfcaroptions = {
-					mode: "multiple",
-					enable: that.carHalfsuerDate,
-					minDate: GetDateStr(3),
-					maxDate: addmulMonth(GetDateStr(3), 3),
-					onOpen: function(selectedDates, dateStr, instance) {/*
-
-						if(that.startTimeAllCar.time != '') {
-							console.log(222)
-							var arr1 = that.startTimeAllCar.time.split(", ")
-							that.carHalfarr = that.array_diff(that.carHalfsuerDate, arr1).concat(dateStr.split(", "))
-							//instance.config.enable = that.carHalfarr
-							that.Function = instance.clear
-							instance.set(that.halfcaroptions, {
-								mode: "multiple",
-								enable: that.carHalfarr,
-								minDate: GetDateStr(4),
-								maxDate: addmulMonth(GetDateStr(4), 3),
-							})
-						}
-
-					*/}
-
-				}
-				//徒步全天日历
-				that.touralloptions = {
-					mode: "multiple",
-					enable: that.tourAllsuerDate,
-					minDate: GetDateStr(3),
-					maxDate: addmulMonth(GetDateStr(3), 3),
-					onOpen: function(selectedDates, dateStr, instance) {/*
-
-						if(that.startTimeHalfTour.time != "") {
-							var arr = that.startTimeHalfTour.time.split(', ')
-							that.tourAllarr = that.array_diff(that.tourAllsuerDate, arr)
-							that.Function = instance.clear
-							instance.set(that.halfcaroptions, {
-								mode: "multiple",
-								enable: that.tourAllarr,
-								minDate: GetDateStr(4),
-								maxDate: addmulMonth(GetDateStr(4), 3),
-							})
-						}
-
-						//console.log()
-						//instance.config.disable=arr
-
-					*/}
-
-				}
-				//不带车半天日历
-				that.tourhalfoptions = {
-					mode: "multiple",
-					enable: that.tourHalfsuerDate,
-					minDate: GetDateStr(3),
-					maxDate: addmulMonth(GetDateStr(3), 3),
-					onOpen: function(selectedDates, dateStr, instance) {/*
-
-						if(that.startTimeAllTour.time != "") {
-							var arr = that.startTimeAllTour.time.split(", ")
-							that.tourHalfarr = that.array_diff(that.tourHalfsuerDate, arr)
-							that.Function = instance.clear
-							instance.set(that.halfcaroptions, {
-								mode: "multiple",
-								enable: that.tourHalfarr,
-								minDate: GetDateStr(4),
-								maxDate: addmulMonth(GetDateStr(4), 3),
-							})
-						}
-						//console.log(instance.config.disable)
-						//console.log()
-						//instance.config.disable=arr
-
-					*/}
-				}
-
-			}, function(response) {})
-
+			
 		},
 		watch: {
-			/*"startTimeAllCar.time": function(val,oldVal) {
-				let that = this
-				if(val!='') {
-					console.log(that.halfcaroptions.onOpen)
-					that.halfcaroptions.onOpen=function(selectedDates, dateStr, instance) {
-							console.log(111)
-							var arr1 = val.split(", ")
-							console.log(arr1)
-							that.carHalfarr = that.array_diff(that.carHalfsuerDate, arr1).concat(dateStr.split(", "))
-							//instance.config.enable = that.carHalfarr
-							that.Function = instance.clear
-							instance.set(that.halfcaroptions, {
-								mode: "multiple",
-								enable: that.carHalfarr,
-								minDate: GetDateStr(4),
-								maxDate: addmulMonth(GetDateStr(4), 3),
-							})
-
-						}
-					}
-				
-			},
-
-			"startTimeHalfCar.time": function(val, oldVal) {
-				let that = this
-				if(val!='') {
-					that.allcaroptions.onOpen=function(selectedDates, dateStr, instance) {
-
-							var arr = val.split(", ")
-							that.carAllarr = dateStr.split(", ").concat(that.array_diff(that.carAllsuerDate, arr))
-							that.Function = instance.clear
-							console.log(that.carAllarr)
-							instance.set(that.allcaroptions, {
-								mode: "multiple",
-								enable: that.carHalfarr,
-								minDate: GetDateStr(4),
-								maxDate: addmulMonth(GetDateStr(4), 3),
-							})
-
-							//console.log()
-							//instance.config.disable=arr
-
-						}
-
-					
-
-				}
-			}*/
+			
 		}
 	}
 </script>

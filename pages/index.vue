@@ -59,6 +59,26 @@ export default {
         Guide,
         OurServices
     },
+    head(){
+    	let title="Local Panda | The China Travel Experts. "
+    	let keywords="Local Panda, China, China travel, China tour, China travel company, China travel guide, China tour package"
+    	let description="China specialized travel platform, handpicked local guides, book private and personalized tours, trip planning assistance, hundreds of things to do and see in China, sightseeing day activities, car service and transportation"
+    	return{
+    		title:title,
+    		meta: [{
+						hid: "keywords",
+						name: "keywords",
+						content: keywords
+					},
+					{
+						hid: "description",
+						name: "description",
+						content: description
+					}
+					
+				]
+    	}
+    },
     methods: {
        
     },

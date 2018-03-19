@@ -122,6 +122,7 @@ export default {
       );
       data.guideList = apiGuideLocalBriefRes.data;
     } catch (err) {
+    	
       console.log(err);
       return error(JSON.stringify(err));
     }
@@ -210,7 +211,7 @@ export default {
     changeVal(loc) {
       let that = this;
       that.axios
-        .get("https://www.localpanda.com/api/guide/" + that.loc + "/brief")
+        .get("https://api.localpanda.com/api/guide/" + that.loc + "/brief")
         .then(
           function(response) {
             that.guideList = response.data;

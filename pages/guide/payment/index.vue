@@ -10,9 +10,9 @@
 				<div class="bookbtn">
 				<p>Pay with:</p>
 				<div class="payfor">
-					<img style="width: 200px;" src="https://s3.us-east-2.amazonaws.com/localpanda.images/static/icon/stripe.png" />
+					<img style="width: 200px;" src="https://d2q486kjf9cwwu.cloudfront.net/static/icon/stripe.png" />
 				</div>
-				<div style="font-size: 16px;line-height: 20px;display: block; margin-top: 20px;"><b>Secure Payment:</b> <br>We use Stripe’s online payment system, which sends your payment info directly to Stripe’s secure servers, so your data is never sent to Local Panda’s servers and cannot be stolen.</div>
+				<div style="font-size: 16px;line-height: 20px;display: block; margin-top: 20px;"><b>Secure Payment:</b> </br>We use Stripe’s online payment system, which sends your payment info directly to Stripe’s secure servers, so your data is never sent to Local Panda’s servers and cannot be stolen.</div>
 			</div>
 				<div class="payfordetail">
 					<div class="head clearfix">
@@ -21,9 +21,7 @@
 							<p v-if="oderInfo.participants==1">{{oderInfo.participants}}person</p>
 							<p v-else>{{oderInfo.participants}}people</p>
 						</div>
-						<div class="gideheadlog">
-							<img :src="headPortraitUrl" />
-						</div>
+						
 					</div>
 					<div class="halfday" v-if="halfDates">
 						<b>Half day</b>
@@ -55,7 +53,9 @@ import Loading from "~/components/Loading/Loading";
 import api from "~/assets/js/plugin/api.js";
 import Vue from 'vue';
 import { throws } from 'assert';
-
+if (process.browser) {
+	  require('~/assets/js/pages/talk.js')
+	}
 export default {
   name: "payNow",
 
@@ -149,7 +149,7 @@ export default {
 
           that.axios
             .post(
-              "https://www.localpanda.com/api/payment/pay/stripe",
+              "https://api.localpanda.com/api/payment/pay/stripe",
               JSON.stringify(obj),
               {
                 headers: {
@@ -162,7 +162,7 @@ export default {
                 if (response.data.succeed) {
                   that.loadingStatus = true;
                   window.location.href =
-                    "success.html?orderId=" +
+                    "/payment/success?orderId=" +
                     that.orderId +
                     "&amount=" +
                     that.amount;
@@ -206,134 +206,126 @@ export default {
     }
   },
   mounted: function() {
-    console.log(this.axios);
+    
     this.getToken();
     this.logIn = window.localStorage.getItem("logstate");
   }
 };
 </script>
 <style lang="scss">
-@import "~assets/scss/_main.scss";
-@import "~/assets/font/iconfont.css";
-#header {
-  box-shadow: 0px 2px 6px 0px rgba(53, 58, 63, 0.1);
-}
+	@import '~assets/scss/_main.scss';
+	@import '~/assets/font/iconfont.css';
+	#header {
+		box-shadow: 0px 2px 6px 0px rgba(53, 58, 63, 0.1);
+	}
 </style>
 <style lang="scss" scoped>
 @import "~assets/scss/base/_setting.scss";
-.payNow {
-  .oderdetial {
-    width: 1170px;
-    margin: 0 auto;
-    padding: 60px 0 100px;
-    position: relative;
-    .link {
-      a {
-        font-size: 16px;
-        color: #353a3f;
-        cursor: auto;
-        &:last-child {
-          color: #dde0e0;
-        }
-      }
-      i {
-        font-size: 10px;
-        color: #dde0e0;
-        margin: 0 20px;
-      }
-    }
-    h3 {
-      font-weight: bold;
-      font-size: 36px;
-      margin: 64px 0 44px;
-    }
-    .payfordetail {
-      box-shadow: 0px 2px 6px 0px rgba(53, 58, 63, 0.1);
-      background: #fff;
-      padding: 30px 30px 40px;
-      width: 316px;
-      .head {
-        padding-bottom: 30px;
-        border-bottom: 1px solid #dde0e0;
-        .serviceform {
-          float: left;
-          width: 143px;
-          h3 {
-            font-size: 18px;
-            margin-bottom: 0;
-            margin-top: 0;
-          }
-          p {
-            font-size: 18px;
-          }
-        }
-        .gideheadlog {
-          width: 138px;
-          height: 92px;
-          float: left;
-          margin-left: 19px;
-          img {
-            width: 100%;
-            height: 100%;
-          }
-        }
-      }
-      .halfday {
-        padding: 30px 0;
-        position: relative;
-        border-bottom: 1px solid #dde0e0;
-        b {
-          font-size: 18px;
-          color: #353a3f;
-        }
-        p {
-          font-size: 18px;
-        }
-        span {
-          position: absolute;
-          right: 0;
-          top: 42px;
-          font-size: 18px;
-        }
-      }
-      .total {
-        padding: 30px 0 27px;
-        position: relative;
-        p {
-          font-size: 18px;
-        }
-        b {
-          font-size: 18px;
-          position: absolute;
-          top: 33px;
-          right: 0;
-        }
-      }
-    }
-    .bookbtn {
-      width: 242px;
-      position: absolute;
-      top: 60px;
-      right: 0;
-      padding: 30px;
-      background: #faf9f8;
-      p {
-        font-size: 18px;
-        font-weight: bold;
-      }
-      .payfor {
-        span {
-          display: inline-block;
-          width: 58px;
-          height: 36px;
-          margin-right: 10px;
-        }
-      }
-    }
-  }
-  .paybtn {
-    font-size: 16px;
-    font-weight: bold;
-  }
+	.payNow {
+		.oderdetial {
+			width: 1170px;
+			margin: 0 auto;
+			padding: 60px 0 100px;
+			position: relative;
+			.link {
+					a {
+						font-size: 16px;
+						color: #353a3f;
+						cursor:auto; 
+						&:last-child {
+							color: #dde0e0;
+						}
+					}
+					i {
+						font-size: 10px;
+						color: #dde0e0;
+						margin: 0 20px;
+					}
+				}
+				h3{
+					font-weight: bold;
+					font-size:36px;
+					margin: 64px 0 44px;
+					
+				}
+			.payfordetail {
+				box-shadow: 0px 2px 6px 0px rgba(53, 58, 63, 0.1);
+				background: #fff;
+				padding: 30px 30px 40px;
+				width: 316px;
+				margin-top: 40px;
+				.head {
+					padding-bottom: 30px;
+					border-bottom: 1px solid #dde0e0;
+					.serviceform {
+						
+						h3 {
+							font-size: 18px;
+							margin-bottom: 0;
+							margin-top: 0;
+						}
+						p {
+							font-size: 18px
+						}
+					}
+					
+				}
+				.halfday {
+					padding: 30px 0;
+					position: relative;
+					border-bottom: 1px solid #dde0e0;
+					b {
+						font-size: 18px;
+						color: #353a3f;
+					}
+					p {
+						font-size: 18px;
+					}
+					span {
+						position: absolute;
+						right: 0;
+						top: 42px;
+						font-size: 18px;
+					}
+				}
+				.total {
+					padding: 30px 0 27px;
+					position: relative;
+					p {
+						font-size: 18px;
+					}
+					b {
+						font-size: 18px;
+						position: absolute;
+						top: 33px;
+						right: 0;
+					}
+				}
+			}
+			.bookbtn {
+				width: 242px;
+				position: absolute;
+				top: 60px;
+				right: 0;
+				padding: 30px;
+				background: #faf9f8;
+				p {
+					font-size: 18px;
+					font-weight: bold;
+				}
+				.payfor {
+					span {
+						display: inline-block;
+						width: 58px;
+						height: 36px;
+						margin-right: 10px;
+					}
+				}
+			}
+		}
+	.paybtn{
+		font-size: 16px;
+		font-weight: bold;
+	}
 }
 </style>

@@ -65,7 +65,7 @@
 					    "firstName":"lulu",
 					    "emailAddress":"luluyao@localpanda.com"*/
 					}
-					that.axios.post("https://www.localpanda.com/api/activity/order/list", JSON.stringify(obj), {
+					that.axios.post("https://api.localpanda.com/api/activity/order/list", JSON.stringify(obj), {
 						headers: {
 							'Content-Type': 'application/json; charset=UTF-8'
 						}
@@ -73,7 +73,7 @@
 							obj=JSON.stringify(obj)
 							if(response.data.length>0){
 								window.localStorage.setItem("obj",obj)
-								window.location.href="https://www.localpanda.com/MyBookings.html?menu=0&flag=1"
+								window.location.href="/user/myBookings?menu=0&flag=1"
 							}else{
 								that.errorText="Sorry, we didn't find an order under this name and email"	
 							}
@@ -198,7 +198,7 @@
 						accessToken: $this.fbToken,
 						userId: $this.faceUserID
 					}
-					Vue.axios.post("http://13.59.63.250/user/login/facebook", JSON.stringify(obj), {
+					Vue.axios.post("https://api.localpanda.com/api/user/login/facebook", JSON.stringify(obj), {
 						headers: {
 							'Content-Type': 'application/json; charset=UTF-8'
 						}
@@ -209,7 +209,7 @@
 						
 						window.localStorage.setItem("userid", $this.userid)
 						
-						window.location.href="https://www.localpanda.com/MyBookings.html?menu=0&flag=1"
+						window.location.href="/user/myBookings?menu=0&flag=1"
 						
 
 					}, function(response) {})
@@ -271,8 +271,8 @@
 	</div>
 </template>
 <style lang="scss" scoped>
-	@import "../../assets/scss/base/_setting.scss";
-	@import "../../assets/scss/base/_animate.scss";
+	@import "~assets/scss/base/_setting.scss";
+	@import "~assets/scss/base/_animate.scss";
 	.alertTitleOuter {
 		background: rgba(0, 0, 0, 0.5);
 		height: 100%;

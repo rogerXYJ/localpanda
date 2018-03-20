@@ -85,7 +85,15 @@
 		
 		data() {
 			return {
-				opctions:{},
+				opctions:{
+					averagePrice:0,
+					childrenNum:0,
+					adultNum:0,
+					amount:0,
+					couponDiscount:0
+					
+					
+				},
 				stripeHandler: "",	
 				halfDates: '',
 				enName: '',

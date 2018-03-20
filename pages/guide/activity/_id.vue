@@ -9,6 +9,9 @@
 </template>
 
 <script>
+if (process.browser) {
+  require('~/assets/js/pages/talk.js')
+}
 import HeaderCommon from '~/components/HeaderCommon/HeaderCommon';
 import FooterCommon from '~/components/FooterCommon/FooterCommon';
 import ActivitiesType from '~/components/pageComponents/guide/activity/ActivitiesType'

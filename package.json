@@ -8,6 +8,7 @@
     "axios": "^0.18.0",
     "element-ui": "^2.2.1",
     "nuxt": "^1.4.0",
+    "v-calendar": "^0.8.0",
     "vue-awesome-swiper": "^3.1.3",
     "vue-axios": "^2.0.2",
     "vue-flatpickr-component": "^7.0.0",
@@ -23,6 +24,7 @@
     "electron": "^1.8.3",
     "mocha": "^5.0.4",
     "node-sass": "^4.7.2",
+    "postcss-loader": "^2.1.1",
     "sass-loader": "^6.0.7",
     "transform-runtime": "^0.0.0"
   }

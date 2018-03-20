@@ -5,12 +5,12 @@ module.exports = {
     ]
   },
   build: {
-  	//publicPath: 'https://d2q486kjf9cwwu.cloudfront.net/static/js/',
-  	publicPath: 'https://www.localpanda.com/',
+  	publicPath: 'https://d2q486kjf9cwwu.cloudfront.net/static/js/',
     vendor: [
         'axios',
         'vue-lazyload',
         'element-ui',
+        'v-calendar',
         '~/assets/font/iconfont.js',
     ]
   },
@@ -18,6 +18,9 @@ module.exports = {
     plugins: [['component', [{
       libraryName: 'element-ui',
       styleLibraryName: 'theme-chalk'
+    },{
+    	 libraryName: 'v-calendar',
+      styleLibraryName: 'v-calendar'
     }]]]
   },
   plugins: [
@@ -25,9 +28,11 @@ module.exports = {
     { src: '~/plugins/axios.js'},
     { src: '~/plugins/vue-lazyload.js', ssr: false },
     { src: '~/plugins/element-ui.js', ssr: false },
+     { src: '~/plugins/calendar.js', ssr: false },
   ],
   css: [
     'element-ui/lib/theme-chalk/index.css',
-    'swiper/dist/css/swiper.css'
+    'swiper/dist/css/swiper.css',
+    'v-calendar/lib/v-calendar.min.css'
   ],
 }

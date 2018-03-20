@@ -93,7 +93,7 @@
 					data.destination = response.data.destinations[0];
 					data.inclusions=response.data.inclusions;
 					data.exclusions=response.data.exclusions;
-					response.data.notice?(data.notice=delNullArr(
+					response.data.notice&&response.data.notice!=""?(data.notice=delNullArr(
 						response.data.notice.split("\n")
 					)):'';
 

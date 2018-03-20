@@ -1,6 +1,5 @@
 <template>
 	<div id="activities">
-
 		<div class="activitiesDel">
 			<div class="activitiesInfo">
 				<div class="tags clearfix">
@@ -162,7 +161,9 @@
 								<div class="select clearfix">
 									<div class="selectDate" :class="picInfo.departureTime?'':'long'">
 										<b>Date</b>
-										<flatPickr placeholder="Date" v-model="dateTime" :config="options"></flatPickr>
+										<!--<flatPickr placeholder="Date" v-model="dateTime" :config="options"></flatPickr>-->
+										<v-date-picker mode='single'v-model='selectedValue'></v-date-picker>
+											 
 									</div>
 									<div class="selectTime" v-if="picInfo.departureTime">
 										<b>Time</b>
@@ -183,7 +184,6 @@
 								<div class="selectPepole">
 									<b>Guests</b>
 									<div class="Guests" @click.stop="showAdults">
-										<!--<input class="people" readonly="readonly" v-model="people" />-->
 										<div class="people" v-if="children==0&&adults==0">{{people}}</div>
 										<div class="people" v-if="children==0&&adults==1">{{people}} Person</div>
 										<div class="people" v-if="children>0||adults>1">{{people}} People</div>
@@ -225,9 +225,6 @@
 													<em class="iconfont" v-else>&#xe64b;</em>
 												</div>
 											</div>
-											<!--<p style="margin-top: 10px; font-size:12px;color:red;" v-if="error">*Mimimum number of travelers:{{picInfo.minParticipants}}.</p>
-											<p style="margin-top: 10px;font-size:12px;" v-else>*Final headcount does not include babies.</p>-->
-
 										</div>
 
 									</div>
@@ -310,9 +307,16 @@ import {
   addmulMonth,
   getUrlParams
 } from "~/assets/js/plugin/utils";
+import bus from '~/assets/js/pages/bus'
 import Contact from "~/components/pageComponents/guide/detail/Contact";
 import Alert from "~/components/Prompt/Alert";
 import flatPickr from "vue-flatpickr-component";
+//import "~/assets/js/plugin/f"
+if (process.browser){
+	  	const Vcalendar = require('v-calendar')
+  		bus.use(Vcalendar)
+	  	require('v-calendar/lib/v-calendar.min.css')
+	};
 export default {
   props: [
     "remark",
@@ -343,7 +347,8 @@ export default {
       isShowBook: false,
       isShowAdults: false,
       isShowTime: false,
-      options: {
+      selectedValue: new Date(),
+     options: {
 		minDate: this.picInfo.earliestBookDate,
 		maxDate: addmulMonth(this.picInfo.earliestBookDate, 12),
 			
@@ -369,7 +374,8 @@ export default {
   components: {
     flatPickr,
     Contact,
-    Alert
+    Alert,
+    
   },
   methods: {
     showVeiwMore() {
@@ -545,8 +551,10 @@ export default {
 		isAndroid = ua.match(/(Android)\s+([\d.]+)/),
 		isMobile = isIphone || isAndroid;
 		if(isMobile){
+			that.dateTime=""
 			location.href="/activity/booking/mobile"
 		}else{
+			that.dateTime=""
 			location.href = "/activity/booking"
 		}
        //location.href = "/activity/fillYourInfo";
@@ -712,6 +720,8 @@ export default {
                     border-color: #e3e5e9 !important;
                   }
                 }
+               
+	               
               }
               .selectTime {
                 b {

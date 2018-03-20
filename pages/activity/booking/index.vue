@@ -132,6 +132,9 @@
 </template>
 
 <script>
+	if (process.browser) {
+	   require('~/assets/js/pages/talk.js')
+	}
 	import Vue from 'vue'
 	import { regExp } from '~/assets/js/plugin/utils'
 	import HeaderCommon from '~/components/HeaderCommon/HeaderCommon';
@@ -150,7 +153,15 @@
 		name: 'fillYourInfo',
 		data() {
 			return {
-				opctions: {},
+				opctions: {
+					averagePrice:0,
+					adultsPic:10,
+					childrenNum:0,
+					adultNum:0,
+					amount:0,
+					childDiscountP:0,
+					couponDiscount:0
+				},
 				//订单联系人
 				oderFirstName: '',
 				oderFirstNameErr: false,

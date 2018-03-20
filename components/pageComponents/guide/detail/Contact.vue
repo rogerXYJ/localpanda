@@ -217,7 +217,7 @@
 					<input :class="{err:emailErr}" v-model="email" @focus="emailfocus" @blur="emailbulr"/>
 				</div>-->
 				
-				<div v-if="objectType!='ACTIVITY'" class="fillDate clearfix">
+				<div class="fillDate clearfix">
 					<div class="date">
 						<b>Date of Arrival</b>
 						<div class="datetime" >
@@ -226,7 +226,7 @@
 							<flatPickr  v-model="dateTime" :config="options"></flatPickr>
 						</div>
 					</div>
-					<div class="nuber" v-if="objectType!='ACTIVITY'">
+					<div class="nuber">
 						<b>Number of People</b>
 						<div class="peopleN">
 							<div class="peopleshow" :class="{noBottom:isshowchoose}" @click.stop="showchoose">

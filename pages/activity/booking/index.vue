@@ -439,7 +439,7 @@
 			this.opctions = localStorage.getItem("orderInfo") ? JSON.parse(localStorage.getItem("orderInfo")) : ''
 			this.logIn = window.localStorage.getItem("logstate")
 			this.goBackFn()
-
+			console.log(this.opctions)
 		},
 		watch: {
 

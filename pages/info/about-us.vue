@@ -122,7 +122,6 @@ export default {
 </style>
 <style lang="scss" scoped>
     @import "~assets/scss/base/_setting.scss";
-    @import '~assets/scss/G-ui/mixin.scss';
     h2, h3{
         text-align: center;
     }

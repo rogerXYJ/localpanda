@@ -18,7 +18,9 @@
             <h3>OUR MISSION</h3>
             <h2>We turn trips into amazing experiences</h2>
             <div class="about-mission__cell page-section">
-                <div class="about-mission__cell-icon iconfont">&#xe64e;</div>
+                <div class="about-mission__cell-icon">
+                    <i class="iconfont">&#xe64e;</i>
+                </div>
                 <div class="about-mission__cell-content">
                     <h4>Private</h4>
                     <p>No groups, no tour buses, no long lines. You are the sole concern of our travel experts and professional guides during your trip.</p>

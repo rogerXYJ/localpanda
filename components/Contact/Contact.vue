@@ -1,15 +1,7 @@
 <script>
 	import { regExp, GetDateStr, addmulMonth } from '~/assets/js/plugin/utils'
-	/*import flatPickr from 'vue-flatpickr-component';
-	import 'flatpickr/dist/flatpickr.css';*/
-	import bus from '~/assets/js/pages/bus'
-	if(process.browser) {
-		const Vcalendar = require('v-calendar')
-		bus.use(Vcalendar);
-
-		require('v-calendar/lib/v-calendar.min.css')
-	};
-
+	import flatPickr from 'vue-flatpickr-component';
+	import 'flatpickr/dist/flatpickr.css';
 	export default {
 		name: "contact",
 		data() {
@@ -24,60 +16,51 @@
 				textInfo: '',
 				textInfoErr: false,
 				
-				peopleNub: 1,
+				
+				peopleNub: 0,
+				
 				//日期参数 
-				dateTime: null,
-				mindate: GetDateStr(1),
-				maxdate: addmulMonth(GetDateStr(1), 12),
-				popoverExpanded: false,
-				formats: {
-					title: "MMM YYYY",
-					weekdays: "WWW",
-					navMonths: "MMM",
-					input: ["L", "YYYY-MM-DD"], // Only for `v-date-picker`
-					dayPopover: "L", // Only for `v-date-picker`
-
-				},
-				PopoverVisibility: "focus",
-				navVisibility: "hidden",
-				tintColor: "#1bbc9d",
-				showDayPopover: false,
-				inputProps: {
-					placeholder: 'Date',
-					readonly: "readonly"
-				},
-				/*options:{
+				dateTime: '',
+				
+				options:{
 					minDate: GetDateStr(1),
 					maxDate: addmulMonth(GetDateStr(1), 12),
-				},*/
+				},
 				isshowchoose: false,
+				
 				istrue: false,
 				destination: '',
+				
 			}
 		},
 		components: {
-			//flatPickr,
+			flatPickr,
 		},
 		methods: {
 			add() {
 				this.peopleNub++
+				
 			},
 			del() {
-				if(this.peopleNub == 1) {
-					this.peopleNub = 1
+				
+			
+				if(this.peopleNub == 0) {
+					this.peopleNub = 0
 				} else {
 					this.peopleNub--
 				}
+			
+				
 			},
 			setContactActive(val) {
-				console.log(val)
+				
 				this.contactActive = val;
 			},
 			showchoose() {
 				this.isshowchoose = true
 
 			},
-
+			
 			namefocus() {
 				this.nameErr = false
 			},
@@ -96,7 +79,6 @@
 			peopleNubfocus() {
 				this.isshowchoose = true
 			},
-
 			dateClear() {
 				this.dateTime = ""
 			},
@@ -112,9 +94,13 @@
 					that.nameErr = true
 				} else if(!regExp.isEmail(that.email)) {
 					that.emailErr = true
-				} else if(that.textInfo == '') {
+				}else if(that.peopleNub==0){
+					
+					that.isshowchoose=true
+					
+				}else if(that.textInfo == '') {
 					that.textInfoErr = true
-				} else {
+				}else{
 					if(window.localStorage.getItem("userid")) {
 						var obj = {
 							userId: window.localStorage.getItem("userid"),
@@ -142,7 +128,7 @@
 
 						}
 					}
-					that.axios.post("https://www.localpanda.com/user/feedback/commit", JSON.stringify(obj), {
+					that.axios.post("https://api.localpanda.com/api/user/feedback/commit", JSON.stringify(obj), {
 						headers: {
 							'Content-Type': 'application/json; charset=UTF-8'
 						}
@@ -158,7 +144,10 @@
 							that.dateTime = ""
 							that.textInfo = ""
 							that.destination = ""
-							that.peopleNub = 1
+							that.peopleNub=0
+							
+							
+							
 						} else {
 							that.$emit("isshowfn", true);
 							that.$emit('contact-call-back', true);
@@ -169,7 +158,9 @@
 							that.phone = ""
 							that.dateTime = ""
 							that.textInfo = ""
-							that.peopleNub = 1
+							that.peopleNub=0
+							
+							
 							that.destination = ""
 						}
 
@@ -202,6 +193,7 @@
 			var that = this
 			document.getElementsByTagName("body")[0].addEventListener('click', function() {
 				that.isshowchoose = false
+				
 			})
 		},
 		props: ['ContactStatus', "guideId", "enName", "objectType", "objectId"]
@@ -245,16 +237,17 @@
 						<div class="datetime">
 							<i class="iconfont font-blue" v-if="!dateTime">&#xe60d;</i>
 							<i class="iconfont cancelDate" v-else @click.stop="dateClear(dateTime)">&#xe647;</i>
-							<v-date-picker class='picker' v-model="dateTime" :date="formats" :popover-expanded="popoverExpanded" :popover-visibility="PopoverVisibility" :min-date="mindate" :max-date="maxdate" :tint-color="tintColor" :navVisibility="navVisibility" :showDayPopover="showDayPopover" :input-props="inputProps"></v-date-picker>
+							<flatPickr  v-model="dateTime" :config="options"></flatPickr>
 						</div>
 					</div>
 					<div class="nuber">
-						<b>Number of People</b>
+						<b>Number of People<span>*</span></b>
 						<div class="peopleN">
 							<div class="peopleshow" :class="{noBottom:isshowchoose}" @click.stop="showchoose">
 								<i class="iconfont icon-people">&#xe63d;</i>
-								<span v-if="peopleNub==1">1 person</span>
-								<span v-else>{{peopleNub}} people</span>
+								<span v-if="peopleNub==0">Select People</span>
+								<span v-if="peopleNub==1">1 Person</span>
+								<span v-if="peopleNub>1">{{peopleNub}} People</span>
 								<i class="iconfont icon-down" v-if="!isshowchoose">&#xe60f;</i>
 								<i class="iconfont icon-down" v-else>&#xe63f;</i>
 							</div>
@@ -262,15 +255,17 @@
 								<div class="border">
 									<b>People</b>
 									<div class="operation">
-										<em class="iconfont" @click.stop="del">&#xe64d;</em>
+										<em class="iconfont" @click.stop="del(0)">&#xe64d;</em>
 										<input v-model="peopleNub" />
-										<em class="iconfont" @click.stop="add">&#xe64b;</em>
+										<em class="iconfont" @click.stop="add(0)">&#xe64b;</em>
 									</div>
 								</div>
 							</div>
 						</div>
 
 					</div>
+					
+					
 				</div>
 				<div class='destination' v-if="objectType=='CONSULTING'">
 					<b>Destinations</b>
@@ -283,7 +278,7 @@
 				</div>
 
 				<div class="btn">
-					<a class="continue" @click="ok()">SUBMIT</a>
+					<a class="continue" @click.stop="ok()">SUBMIT</a>
 				</div>
 
 			</div>
@@ -292,18 +287,19 @@
 	</div>
 </template>
 <style lang="scss">
-	.datetime {
-		width: 357px;
-		margin-top: 10px;
-		.flatpickr-input {
-			height: 30px!important;
-			width: 300px!important;
-			border: 1px solid #dde0e0;
-		}
-		.flatpickr-calendar:before {
-			border: none!important;
-		}
+	.datetime{
+	width: 357px;
+	margin-top: 10px;
+	.flatpickr-input{
+		height: 30px!important;
+		width: 300px!important;
+		border: 1px solid  #dde0e0;
 	}
+	.flatpickr-calendar:before{
+		border:none!important;
+		
+	}
+}
 </style>
 <style lang="scss" scoped>
 	@import "~assets/scss/base/_setting.scss";
@@ -473,7 +469,7 @@
 					.nuber {
 						float: left;
 						margin-left: 20px;
-						width: 315px;
+						width: 347px;
 						position: relative;
 						/*input{
 							width: 357px;
@@ -516,13 +512,12 @@
 							.choosePeople {
 								position: absolute;
 								background: #fff;
-								width: 100%;
 								padding: 0 20px 20px;
 								border-left: 1px solid #dde0e0;
 								border-right: 1px solid #dde0e0;
 								border-bottom: 1px solid #dde0e0;
-								width: 317px;
 								border-radius: 0 2px 2px 0;
+								width: 317px;
 								.border {
 									padding-top: 20px;
 									border-top: 1px solid #dde0e0;

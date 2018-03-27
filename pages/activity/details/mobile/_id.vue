@@ -1,10 +1,7 @@
 <template>
 	<div id="activitiesDetail">
-		<HeaderCommon :logIn="logIn"></HeaderCommon>
-		<Meau v-if="isShowMeau" :notice="notice" :exclusions="exclusions" :picInfo="picInfo"></Meau>
-		<ActivityBanner :bannerPhotos="detail.bannerPhotos" :destination="destination"></ActivityBanner>
-
-		<Activities 
+		<Mbanner :bannerPhotos="detail.bannerPhotos" :destination="destination"></Mbanner>
+		<Mdetails
 			:remark="remark" 
 			:notice="notice" 
 			:inclusions="inclusions" 
@@ -18,33 +15,29 @@
 			:highlights="highlights" 
 			:destinations="destinations" 
 			:itemsIncluded="itemsIncluded" 
-			:recommed="recommed"></Activities>
-		<FooterCommon></FooterCommon>
-		<div class="toast-container" v-if="toastShow">
-			<div class="toast-message clearfix">
-				<span>
-       				<svg class="icon" aria-hidden="true">
-					    <use xlink:href="#icon-tishi"></use>
-					</svg>
-       			</span>
-				<div class="toast-text">
-					{{toast}}
-				</div>
-			</div>
-		</div>
-
+			:recommed="recommed"
+			></Mdetails>
+		<transition name="slideleft">
+            <Mmeau v-show="isShowMeau" class="Mmeau" :notice="notice" :exclusions="exclusions" :picInfo="picInfo"></Mmeau>
+        </transition>
+      	<div class="marsk" v-if="isscroll">
+        	<i class="iconfont" @click.stop="showMeau">&#xe665;</i>
+        </div>
 	</div>
 </template>
 
 <script>
 	if (process.browser) {
 	  require('~/assets/js/pages/talk.js')
+	  require('~/assets/js/plugin/flexible.js')
 	}
-	import HeaderCommon from "~/components/HeaderCommon/HeaderCommon";
-	import FooterCommon from "~/components/FooterCommon/FooterCommon";
-	import ActivityBanner from "~/components/pageComponents/activity/details/ActivityBanner";
-	import Activities from "~/components/pageComponents/activity/details/Activities";
-	import Meau from "~/components/pageComponents/activity/details/Meau";
+	
+	
+	import Mbanner from "~/components/pageComponents/activity/details/mobile/Mbanner";
+	import Mdetails from "~/components/pageComponents/activity/details/mobile/Mdetails";
+	import Mmeau from '~/components/pageComponents/activity/details/mobile/m-meau'
+	
+	
 	import { delNullArr,getUrlParams } from "~/assets/js/plugin/utils";
 
 	import Vue from 'vue';
@@ -77,7 +70,9 @@
 				toastShow: false,
 				inclusions:[],
 				exclusions:[],
-				notice:[]
+				notice:[],
+				
+				
 			};
 			let response = {};
 			let apiActivityPriceRes = {};
@@ -158,7 +153,7 @@
 		head() {
 			let title = this.detail.title;
 			let description = this.detail.category + " " + this.detail.duration + " " + this.detail.durationUnit + " " + this.detail.title;
-			let keywords =this.detail.tourTypes?this.detail.tourTypes.join(","):""
+			let keywords = this.detail.tourTypes.join(",")
 			return {
 				title: title,
 				meta: [{
@@ -176,34 +171,25 @@
 			};
 		},
 		components: {
-			HeaderCommon,
-			FooterCommon,
-			ActivityBanner,
-			Activities,
-			Meau
+			Mbanner,
+			Mdetails,
+			Mmeau
 		},
 		methods: {
+			showMeau(){
+				this.isShowMeau=true
+			},
 			scorllBar() {
 				let data = this;
-				var hightLights =
-					document.getElementById("heightLights").offsetTop +
-					document.getElementById("banner").offsetHeight +
-					60 -
-					76;
-				var recommendTop;
-				document.getElementById("recommend").offsetTop ?
-					(recommendTop = document.getElementById("recommend").offsetTop) :
-					(recommendTop = 2000);
+				
+				
 
-				if(window.scrollY > hightLights && window.scrollY < recommendTop) {
-					data.isShowMeau = true;
-					data.isShowBookNow = true;
+				if(window.scrollY > 100) {
+					
+					
 					data.isscroll = true;
-				} else if(window.scrollY > recommendTop) {
-					data.isShowBookNow = false;
 				} else {
-					data.isShowMeau = false;
-					data.isShowBookNow = false;
+					
 					data.isscroll = false;
 				}
 			}
@@ -212,34 +198,20 @@
 			let data = this;
 			data.id!='undefined'?data.id:getUrlParams()
 			this.logIn = window.localStorage.getItem("logstate");
+			window.addEventListener("click", function(){data.isShowMeau=false});
 			window.addEventListener("scroll", this.scorllBar);
-			var ua = navigator.userAgent;
-			var ipad = ua.match(/(iPad).*OS\s([\d_]+)/),
-				isIphone = !ipad && ua.match(/(iPhone\sOS)\s([\d_]+)/),
-				isAndroid = ua.match(/(Android)\s+([\d.]+)/),
-				isMobile = isIphone || isAndroid;
-			if(isMobile) {
-				location.href = "/activity/details/mobile/"+data.id	
-			} 
 		},
 		watch: {
-			"detail.latestBooking": function(val, oldVal) {
-				
-				let data = this;
-				if(val) {
-					setTimeout(function() {
-						data.toastShow = true;
-					}, 3000);
-				} else {
-					data.toastShow = false;
-				}
-			}
+			
 		}
 	};
 </script>
 <style lang="scss">
 	@import "~assets/scss/_main.scss";
 	@import "~/assets/font/iconfont.css";
+	#launcher{
+		bottom: 2.133333rem!important;
+	}
 </style>
 <style lang="scss" scoped>
 	@import "~assets/scss/base/_setting.scss";
@@ -316,5 +288,35 @@
 				}
 			}
 		}
+		 .slideleft-enter-active,
+		    .slideleft-leave-active {
+		    	 /*transform: translateY(0); */
+		        transition: all .8s;
+		    }
+		    
+		    .slideleft-enter,
+		    .slideleft-leave-to {
+		         /*transform: translateY(100%); */
+		        opacity: 0;
+		    }
+		    
+		    .Mmeau {
+		       
+		    }
+		.marsk{
+			position: fixed;
+			top: 50%;
+			right: 0.293333rem;
+			width:1.173333rem;
+			height: 1.173333rem;
+			line-height: 1.173333rem;
+			text-align: center;
+			border-radius: 50%;
+			box-shadow: 0px 0px 0.04rem 0px;
+			background: #fff;
+			z-index: 200;
+			color: #1bbc9d;
+			font-size: 0.48rem;
+			}
 	}
 </style>

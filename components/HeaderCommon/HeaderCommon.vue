@@ -16,6 +16,7 @@
 				<li @click="showContact">Customize Your Trip</li>
 				<li @click="isShowAnonymityback">My Bookings</li>
 				<li @click="show" v-if="isIndex">Log In</li>
+				<li @click="goAboutUs">About Us</li>
 				<li  @click="getscoll">Contact Us</li>
 				
 			</ul>
@@ -23,6 +24,7 @@
 				
 				<li @click="showContact">Customize Your Trip</li>
 				<li @click="goBook" style="margin-right: 40px;">My Bookings</li>
+				<li @click="goAboutUs" style="margin-right: 40px;">About Us</li>
 				<li @click="getscoll">Contact Us</li>
 				<li @click.stop="contshow"><img :src="logimg" /></li>
 				<div class="cont" :class="{'isshow':iscontshow}">
@@ -212,6 +214,9 @@
 			},
 			goBook(){
 				window.location.href="/user/myBookings?menu=0&flag=1"
+			},
+			goAboutUs(){
+				window.location.href="/info/about-us"
 			},
 			goPrefie(){
 				window.location.href="/user/profile?menu=1&flag=1"

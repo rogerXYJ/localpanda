@@ -10,23 +10,23 @@
 			</div>
 			<div class="toursMessage">
 				<ul>
-					<li>
+					<li class="clearfix">
 						<label class="iconfont">&#xe653;</label>
 						<span>type: {{detail.trafficType}}</span>
 					</li>
-					<li>
+					<li class="clearfix">
 						<label class="iconfont">&#xe610;</label>
 						<span>Location: {{destinations}}</span>
 					</li>
-					<li>
+					<li class="clearfix">
 						<label class="iconfont">&#xe624;</label>
 						<span>Duration: {{detail.duration}} {{detail.durationUnit|firstUpperCase}}</span>
 					</li>
-					<li>
+					<li class="clearfix">
 						<label class="iconfont">&#xe627;</label>
 						<span>Languages: English, French, Spanish, Russian, German, Japanese, Korean</span>
 					</li>
-					<li>
+					<li class="clearfix">
 						<label class="iconfont">&#xe652;</label>
 						<span v-if="picInfo.minParticipants==picInfo.maxParticipants">Participants: {{picInfo.minParticipants}}</span>
 						<span v-else>Participants: {{picInfo.minParticipants}} - {{picInfo.maxParticipants}}</span>
@@ -272,13 +272,20 @@
 				ul {
 					li {
 						margin-top: 0.48rem;
+						
 						label {
-							font-size: 0.32rem;
+							margin-top: 0.04rem;
+							float: left;
+							font-size: 0.373333rem;
+							
 						}
 						span {
 							display: inline-block;
 							margin-left: 0.24rem;
 							font-size: 0.346666rem;
+							float:left;
+							width: 90%;
+						
 						}
 					}
 				}

@@ -192,10 +192,16 @@
 				let that=this
 				Vue.axios.get(this.apiBasePath+"activity/order/detail/"+that.orderId).then(function(res){
 					that.opctions=res.data
+					console.log(res.data)
 				},function(res){})
 			},
 			pay() {
 				let that = this;
+				
+				/*pageTracker._addTrans(that.orderId,"",that.opctions.amount,"", "", "", "", "");
+				pageTracker._addItem(that.orderId, "",” blue whale web analytics note “, “web marketing”, “20″,”2″ );
+				
+				pageTracker._trackTrans();*/
 				ga('gtag_UA_107010673_1.send', {
 						hitType: 'event',
 						eventCategory: 'Button',

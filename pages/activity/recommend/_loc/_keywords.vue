@@ -201,14 +201,14 @@
 						imgUrl:'https://d2q486kjf9cwwu.cloudfront.net/static/headerPhotos/Multi-dayAndExtendedTours.jpg'
 					},
 					{
-						keywords:"Huangpu <br/> River Cruises",
-						url:"/activity/recommend/Shanghai/Huangpu-River-Cruises",
-						imgUrl:'https://d2q486kjf9cwwu.cloudfront.net/static/headerPhotos/HuangpuRiverCruises.jpg'
-					},
-					{
 						keywords:"Shows & <br/>Tickets",
 						url:"/activity/recommend/Shanghai/Shows-and-Tickets",
 						imgUrl:'https://d2q486kjf9cwwu.cloudfront.net/static/headerPhotos/ShowsAndTickets.jpg'
+					},
+					{
+						keywords:"Huangpu <br/> River Cruises",
+						url:"/activity/recommend/Shanghai/Huangpu-River-Cruises",
+						imgUrl:'https://d2q486kjf9cwwu.cloudfront.net/static/headerPhotos/HuangpuRiverCruises.jpg'
 					}
 				],
 				//beijing

@@ -177,9 +177,10 @@
 								'Content-Type': 'application/json; charset=UTF-8'
 							}
 						}).then(function(response) {
-
+							console.log(response.data)
 							if(response.data.succeed) {
 								that.loadingStatus = true
+								
 								window.location.href = "/payment/success?orderId=" + that.orderId + '&amount=' + that.opctions.amount
 							}
 							//

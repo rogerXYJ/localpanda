@@ -1,0 +1,578 @@
+<template>
+	<div class="m-details">
+		<div class="m-details-cont">
+			<div class="toursType ">{{detail.category}}</div>
+			<div class="activitiyTitle">
+				<h3>{{detail.title}}</h3>
+				<div class="types">
+					<span v-for="i in detail.tourTypes">{{i}}</span>
+				</div>
+			</div>
+			<div class="toursMessage">
+				<ul>
+					<li>
+						<label class="iconfont">&#xe653;</label>
+						<span>type: {{detail.trafficType}}</span>
+					</li>
+					<li>
+						<label class="iconfont">&#xe610;</label>
+						<span>Location: {{destinations}}</span>
+					</li>
+					<li>
+						<label class="iconfont">&#xe624;</label>
+						<span>Duration: {{detail.duration}} {{detail.durationUnit|firstUpperCase}}</span>
+					</li>
+					<li>
+						<label class="iconfont">&#xe627;</label>
+						<span>Languages: English, French, Spanish, Russian, German, Japanese, Korean</span>
+					</li>
+					<li>
+						<label class="iconfont">&#xe652;</label>
+						<span v-if="picInfo.minParticipants==picInfo.maxParticipants">Participants: {{picInfo.minParticipants}}</span>
+						<span v-else>Participants: {{picInfo.minParticipants}} - {{picInfo.maxParticipants}}</span>
+					</li>
+				</ul>
+			</div>
+			<p class="says">{{detail.recommendedReason}}</p>
+			<div class="heightLights" id="heightLights">
+				<p :key="index" class="clearfix" v-for="(item,index) in highlights"><i class="iconfont">&#xe654;</i><span>{{item}}</span></p>
+			</div>
+			<div class="journey" id="journey" ref="journey">
+				<div class="expect">
+					<h3 class="expect-title">What You Can Expect</h3>
+					<div class="introduction" :class="{'show':isShowMore}">
+						<p :key="index" v-for="(j,index) in introduction">{{j}}</p>
+						<ul>
+							<li :key="index" v-for="(i,index) in detail.itineraries">
+								<div class="item_v clearfix">
+									<div class="contTitle">
+										<h3>{{i.title}}</h3>
+										<p>{{i.description}}</p>
+									</div>
+									<div class="cont" v-if="i.photoUrl">
+										<img v-lazy="i.photoUrl" />
+									</div>
+								</div>
+							</li>
+						</ul>
+					</div>
+					
+				</div>
+			</div>
+			<div class="provide" id="provide">
+				<h3>What's Included?</h3>
+				<ul v-if="itemsIncluded">
+					<li :key="index" v-for="(item,index) in itemsIncluded">{{item}}</li>
+				</ul>
+				<ul v-if="inclusions">
+					<li :key="index" v-for="(item,index) in inclusions">
+						<h5>{{item.title}}</h5>
+						<p v-if="item.content" v-html="item.content"></p>
+					</li>
+				</ul>
+			</div>
+			<div class="provide" v-if="exclusions" id="exclusions">
+				<h3>Exclusions</h3>
+				<ul>
+					<li :key="index" v-for="(item,index) in exclusions">
+						<h5>{{item.title}}</h5>
+						<p v-if="item.content" v-html="item.content"></p>
+					</li>
+				</ul>
+			</div>
+			<div class="notes" v-if="notice.length>0" id="notice">
+				<h3>Additional Info</h3>
+				<p v-for="(item,index) in notice" :key="index">{{item}}</p>
+			</div>
+			<div class="notes" v-if="picInfo.priceInstructions" id="PriceNote">
+				<h3>Price Note</h3>
+				<p>{{picInfo.priceInstructions}}</p>
+			</div>
+			<div class="notes" v-if="picInfo.refundInstructions" id="CancellationPolicy">
+				<h3>Cancellation Policy</h3>
+				<p>{{picInfo.refundInstructions}}</p>
+			</div>
+			<div class="notes" id="notes">
+				<h3>Notes</h3>
+				<p v-if="remark" :key="index" v-for="(item,index) in remark">{{item}}</p>
+			</div>
+			<div class="recommend" id="recommend" v-if="recommed.length>0">
+				<h3>Similar Experiences</h3>
+				<div v-swiper:swiper="swiperOption">
+					<div class="swiper-wrapper">
+						<div class="swiper-slide" :key="index" v-for="(i,index) in recommed">
+							<a :href="'/activity/details/mobile/'+i.activityId">
+								<div class="activity-pic">
+									<img v-lazy="i.coverPhotoUrl">
+								</div>
+								<div class="activity-cont">
+									<div class="activity-info clearfix">
+										<div class="activity-cont-type"><i class="iconfont">&#xe653;</i>{{i.category}}</div>
+										<div class="duration"><i class="iconfont">&#xe624;</i>Duration: {{i.duration}} {{i.durationUnit|firstUpperCase}}</div>
+									</div>
+
+									<h4 style="-moz-box-orient: vertical;
+								    -webkit-box-orient:vertical;">{{i.title}}</h4>
+
+									<div class="pic">
+										<div class="old-pic" v-if="i.originalPrice">${{returnFloat(i.originalPrice)}}</div>
+										<div class="current-price">From<b>${{returnFloat(i.bottomPrice)}}</b><span>  pp</span></div>
+									</div>
+								</div>
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="book clearfix">
+			<div class="picinfo">
+				<p v-if="picInfo.originalPrice" class="oldpic">$ {{returnFloat(picInfo.originalPrice)}}</p>
+				<p>From <b>$ {{returnFloat(picInfo.bottomPrice)}}</b> pp</p>
+			</div>
+			<button class="bookBtn" @click="goBooking">Book Now</button>
+			
+		</div>
+	</div>
+</template>
+
+<script>
+	import bus from '~/assets/js/pages/bus.js'
+	if(process.browser) {
+		const VueAwesomeSwiper = require('vue-awesome-swiper/dist/ssr')
+		bus.use(VueAwesomeSwiper)
+		require('swiper/dist/css/swiper.css')
+		require('~/assets/js/plugin/flexible.js')
+	}
+	export default {
+		props: [
+			"remark",
+			"detail",
+			"highlights",
+			"destinations",
+			"itemsIncluded",
+			"id",
+			"isscroll",
+			"isShowBookNow",
+			"picInfo",
+			"recommed",
+			"introduction",
+			"inclusions",
+			"exclusions",
+			"notice"
+		],
+		name: 'm-details',
+		data() {
+			return {
+				isShowMore: false,
+				showbtn: 0,
+				swiperOption: {
+					lazy: true,
+					slidesPerView :"auto",
+					initialSlide: 0,
+					spaceBetween:17,
+				},
+		}
+	},
+	components: {},
+		methods: {
+			showMore(id) {
+				if(id == 0) {
+					this.showbtn = 0
+					this.isShowMore = false
+				} else {
+					this.showbtn = 1
+					this.isShowMore = true
+				}
+
+			},
+			goBooking(){
+				let objDetail={
+					id:this.id,
+					picInfo:this.picInfo,
+					title:this.detail.title,
+					category:this.detail.category
+				}
+				objDetail=JSON.stringify(objDetail)
+				localStorage.setItem("objDetail",objDetail)
+				location.href="/activity/details/mobile/bookDetail"
+			},
+			 returnFloat(value) {
+				if(value){
+					var value = Math.round(parseFloat(value) * 100) / 100;
+					var xsd = value.toString().split(".");
+					if(xsd.length == 1) {
+						value = value.toString() + ".00";
+						return value;
+					}
+					if(xsd.length > 1) {
+						if(xsd[1].length < 2) {
+							value = value.toString() + "0";
+						}
+						return value;
+					}
+				}
+			}
+		},
+		filters: {
+			firstUpperCase(val) {
+				if(val)
+					return val.toLowerCase().replace(/( |^)[a-z]/g, L => L.toUpperCase());
+			}
+		},
+		mounted: function() {},
+		watch:{
+			
+		}
+	}
+</script>
+
+<style lang="scss" scoped>
+	@import "~/assets/font/iconfont.css";
+	.m-details {
+		padding: 0 0.573333rem 2rem;
+		.m-details-cont {
+			margin-top: 0.64rem;
+			.toursType {
+				font-size: 0.266666rem;
+				color: #1bbc9d;
+			}
+			.activitiyTitle {
+				margin-top: 0.266666rem;
+				h3 {
+					font-size: 0.613333rem;
+					font-weight: bold;
+				}
+				.types {
+					margin: 0.266666rem 0 0.36rem;
+					font-size: 0.346666rem;
+					span {
+						font-size: 0.346666rem;
+						position: relative;
+						padding: 0 0.16rem;
+						&:first-child {
+							padding-left: 0;
+						}
+						&:not(:first-child) {
+							&:after {
+								content: "";
+								width: 0.053333rem;
+								height: 0.053333rem;
+								border-radius: 50%;
+								background: #353a3f;
+								position: absolute;
+								left: 0px;
+								top: 0.266666rem;
+							}
+						}
+					}
+				}
+			}
+			.toursMessage {
+				ul {
+					li {
+						margin-top: 0.48rem;
+						label {
+							font-size: 0.32rem;
+						}
+						span {
+							display: inline-block;
+							margin-left: 0.24rem;
+							font-size: 0.346666rem;
+						}
+					}
+				}
+			}
+			.says {
+				padding: 0.826666rem 0 0.56rem;
+				border-bottom: 1px solid #dde0e0;
+				font-size: 0.346666rem;
+				line-height: 0.48rem;
+			}
+			.heightLights {
+				padding: 0.64rem 0;
+				border-bottom: 1px solid #dde0e0;
+				P {
+					margin-top: 0.213333rem;
+					&:first-child {
+						margin-top: 0;
+					}
+					i {
+						float: left;
+						font-size: 0.16rem;
+						color: #1bbc9d;
+					}
+					span {
+						font-size: 0.346666rem;
+						display: inline-block;
+						margin-left: 0.32rem;
+						width: 90%;
+					}
+				}
+			}
+			.journey {
+				padding-top: 0.64rem;
+				padding-bottom: 0.64rem;
+				border-bottom: 1px solid #dde0e0;
+				.expect {
+					.expect-title {
+						font-size: 0.4rem;
+						font-weight: bold;
+					}
+					.introduction {
+						
+					
+						margin-top: 0.64rem;
+						p {
+							font-size: 0.346666rem;
+							line-height: 0.48rem;
+							margin-top: 0.266666rem;
+							&:first-child {
+								margin-top: 0;
+							}
+						}
+						ul {
+							li {
+								margin-top: 0.506666rem;
+								.contTitle {
+									h3 {
+										font-size: 0.346666rem;
+										font-weight: bold;
+									}
+									p {
+										font-size: 0.346666rem;
+										line-height: 0.48rem;
+										margin-top: 0.24rem;
+									}
+								}
+								.cont {
+									margin-top: 0.24rem;
+									img {
+										width: 100%;
+										height: 100%;
+									}
+								}
+							}
+						}
+					}
+					.viewMore {
+						font-size: 0.346666rem;
+						margin-top: 0.373333rem;
+						color: #1bbc9d;
+					}
+				}
+			}
+			.provide {
+				padding: 0.64rem 0;
+				border-bottom: 1px solid #dde0e0;
+				h3 {
+					font-size: 0.4rem;
+					font-weight: bold;
+				}
+				ul {
+					li {
+						padding-left: 0.266666rem;
+						display: inherit;
+						margin-top: 0.266666rem;
+						font-size: 0.346666rem;
+						position: relative;
+						h5 {
+							font-size: 0.346666rem;
+						}
+						p {
+							font-size: 0.293333rem;
+							margin-top: 0.08rem;
+						}
+						&:after {
+							content: "";
+							position: absolute;
+							width: 0.053333rem;
+							height: 0.053333rem;
+							border-radius: 50%;
+							background: #353a3f;
+							left: 0px;
+							top: 0.2rem
+						}
+						&:first-child {
+							margin-top: 0.64rem;
+						}
+					}
+				}
+			}
+			.notes {
+				padding: 0.64rem 0;
+				border-bottom: 1px solid #dde0e0;
+				h3 {
+					font-size: 0.4rem;
+					font-weight: bold;
+				}
+				p {
+					margin-top: 0.213333rem;
+					font-size: 0.346666rem;
+					line-height: 0.48rem;
+				}
+			}
+			.recommend {
+				margin-top: 0.626666rem;
+				padding-bottom: 0.533333rem;
+				h3 {
+					font-size: 0.4rem;
+					font-weight: bold;
+					margin-bottom: 0.64rem;
+				}
+				.swiper-wrapper {
+					.swiper-slide {
+						width: 7.386666rem;
+						&:last-child {
+							margin-right: 0;
+						}
+						.activity-pic {
+							width: 7.386666rem;
+							height: 3.693333rem;
+							position: relative;
+							img {
+								width: 100%;
+								height: 100%;
+							}
+							span {
+								position: absolute;
+								top: 10px;
+								left: 10px;
+								padding: 5px;
+								font-size: 14px;
+								font-weight: bold;
+								background: #f4b33f;
+								color: #fff;
+							}
+						}
+						.activity-cont {
+							height: 3.013333rem;
+							position: relative;
+							padding: 0.373333rem;
+							box-shadow: 0px 2px 3px 0px rgba(53, 58, 63, 0.1);
+							.activity-info {
+								.duration {
+									float: right;
+									font-size: 0.293333rem;
+									color: #878e95;
+									i {
+										font-size: 0.24rem;
+										color: #878e95;
+										margin-right: 0.173333rem;
+									}
+								}
+								.activity-cont-type {
+									float: left;
+									font-size:  0.293333rem;
+									color: #d87b65;
+									i {
+										font-size:  0.24rem;
+										color: #d87b65;
+										margin-right: 0.173333rem;
+									}
+								}
+							}
+							h4 {
+								color: #353a3f;
+								height: 1.013333rem;
+								line-height: 0.506666rem;
+								text-overflow: ellipsis;
+								display: -webkit-box;
+								display: -moz-box;
+								-moz-box-orient: vertical;
+								-webkit-box-orient: vertical;
+								-webkit-line-clamp: 2;
+								word-wrap: break-word;
+								overflow: hidden;
+								margin-top: 0.213333rem;
+								font-size: 0.373333rem;
+								font-weight: bold;
+							}
+							/*.activity-cont-duration {
+								margin-top: 17px;
+								i {
+									font-size: 12px;
+									color: #878e95;
+									margin-right: 6px;
+								}
+								font-size: 14px;
+								color: #878e95;
+							}*/
+							.pic {
+								position: absolute;
+								right: 0.4rem;
+								bottom: 0.4rem;
+								.old-pic {
+									text-align: right;
+									font-size: 0.293333rem;
+									color: #878e95;
+									text-decoration: line-through;
+								}
+								.current-price {
+									font-size: 0.293333rem;
+									color: #878e95;
+									margin-top: 0.093333rem;
+									b {
+										font-size: 0.453333rem;
+										color: #353a3f;
+										margin-left: 6px;
+									}
+									span {
+										color: #353a3f;
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+			
+		}
+		.book{
+				width: calc(100% - 1.146666rem;);
+				position: fixed;
+				height: 1.946666rem;
+				padding:0 0.573333rem;
+				bottom: 0;
+				left: 0;
+				z-index: 9999;
+				background: #fff;
+				border-top:1px solid #dde0e0; 
+				
+				.picinfo{
+					float:left;
+					width:50%;
+					margin-top:0.626666rem;
+					p{
+						font-size: 0.266666rem;
+						color: #878e95;
+						b{
+							font-size: 0.346666rem;
+							color: #353a3f;
+						}
+						&.oldpic{
+							text-decoration: line-through;
+						}
+					}
+					
+					
+				}
+				.bookBtn{
+					float: left;
+					width: 4.373333rem;
+					height: 1.2rem;
+					line-height:1.2rem;
+					text-align: center;
+					color: #FFF;
+					font-weight: bold;
+					background-image: linear-gradient(270deg, #009efd 0%, #1bbc9d 100%);
+					border-radius: 0.6rem;
+					margin-top: 0.373333rem;
+				}
+			}
+		.show {
+			overflow: inherit!important;
+			height: auto!important;
+		}
+	}
+</style>

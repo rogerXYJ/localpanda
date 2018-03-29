@@ -31,7 +31,6 @@ module.exports = {
      { src: '~/plugins/calendar.js', ssr: false },
   ],
   css: [
-    'element-ui/lib/theme-chalk/index.css',
     'swiper/dist/css/swiper.css',
     'v-calendar/lib/v-calendar.min.css'
   ],

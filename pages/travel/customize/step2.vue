@@ -132,7 +132,7 @@
             }
 		},
 		mounted: function() {
-            let formData = stepFormStorage.getStorage(storageKey, this.form);
+            let formData = stepFormStorage.getStorage(storageKey);
             if(JSON.stringify(formData).length > 7){
                 try{
                     this.form = formData;

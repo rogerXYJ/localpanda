@@ -32,7 +32,7 @@
                         <div class="GUI-form__grid">
                             <div class="GUI-form__grid-col">
                                 <el-form-item class="GUI-form-item" label="Nationality" prop="nationality">
-                                    <el-input v-model="form.emailAddress" placeholder="Please Select…"></el-input>
+                                    <el-input v-model="form.nationality" placeholder="Please Select…"></el-input>
                                 </el-form-item>
                             </div>
                             <div class="GUI-form__grid-col">
@@ -109,11 +109,17 @@ export default {
                 // console.log(this.form);
                 if (valid) {
                     console.log('step3 submit success');
-                    stepFormStorage.addStorage(storageKey, this.form);
-                    window.location.href = "/travel/customize/done";
-                    stepFormStorage.clearStorage('STEP_1_FORM_STORAGE');
-                    stepFormStorage.clearStorage('STEP_2_FORM_STORAGE');
-                    stepFormStorage.clearStorage('STEP_3_FORM_STORAGE');
+                    let formData = this.form;
+                    let formDataStep1 = stepFormStorage.getStorage('STEP_1_FORM_STORAGE');
+                    let formDataStep2 = stepFormStorage.getStorage('STEP_2_FORM_STORAGE');
+                    formData = Object.assign(formData, formDataStep1);
+                    formData = Object.assign(formData, formDataStep2);
+                    console.log(formData);
+                    this.axios.post('https://api.localpanda.com/api/user/customization/commit',JSON.stringify(formData)).then(function(response) {
+                        stepFormStorage.clearStorage('STEP_1_FORM_STORAGE');
+                        stepFormStorage.clearStorage('STEP_2_FORM_STORAGE');
+                        window.location.href = "/travel/customize/done";
+                    }, function(response) {})
                 } else {
                     console.log('error submit!!');
                     return false;
@@ -127,7 +133,7 @@ export default {
         }
     },
     mounted: function() {
-        let formData = stepFormStorage.getStorage(storageKey, this.form);
+        let formData = stepFormStorage.getStorage(storageKey);
         if(JSON.stringify(formData).length > 7){
             try{
                 this.form = formData;

@@ -230,7 +230,7 @@
                     // console.log(this.form);
                     if (valid) {
                         console.log('step1 submit success');
-                        stepFormStorage.addStorage(storageKey, this.form);
+                        stepFormStorage.addStorage(storageKey);
                         window.location.href = "/travel/customize/step2";
                     } else {
                         console.log('error submit!!');

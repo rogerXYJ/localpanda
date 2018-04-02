@@ -61,7 +61,7 @@
                 
                 <div class="GUI-form-block">
                     <div class="GUI-form-bar">
-                        <el-button @click="onSubmit('form')">Previous</el-button>
+                        <el-button @click="prevForm">Previous</el-button>
                         <el-button @click="onSubmit('form')">Next</el-button>
                     </div>
                 </div>
@@ -130,6 +130,9 @@ export default {
             console.log("onChangeRoomRequirements");
             console.log(value);
             this.form.otherRoomRequirements = value;
+        },
+        prevForm(){
+            window.location.href = "/travel/customize/step2";
         }
     },
     mounted: function() {

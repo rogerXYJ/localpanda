@@ -1,33 +1,44 @@
 <template>	
-    <div class="GUI-radio-pic">
-        <div 
-            :class="itemCls(item.value)"
-            :key="index" v-for="(item, index) in dataSource"
-            @click="onChange(item.value)"
-        >
+    <el-radio-group 
+        class="GUI-radio-pic" 
+        v-model="radioValue"
+    >
+        <div class="GUI-radio-pic__group">
             <div 
-                class="GUI-radio-pic__item-pic" 
-                v-lazy:background-image="item.src"
+                :class="itemCls(item.value)"
+                :key="index" v-for="(item, index) in dataSource"
             >
-            </div>
-            <el-radio v-model="radioValue" :label="item.value">{{item.label}}</el-radio>
-
-            <div v-if="item.extend" class="GUI-radio-item-extend">
-                <div class="GUI-radio-item-extend__item">
-                    <div class="GUI-radio-item-extend__item-title">Adults &amp; Teenagers:</div>
-                    <div class="GUI-radio-item-extend__item-label">
-                        <el-input-number controls-position="right" :min="1"></el-input-number>
-                    </div>
+                <div 
+                    class="GUI-radio-pic__item-pic" 
+                    v-lazy:background-image="item.src"
+                    @click="onChange(item.value)"
+                >
                 </div>
-                <div class="GUI-radio-item-extend__item">
-                    <div class="GUI-radio-item-extend__item-title">Children under 12:</div>
-                    <div class="GUI-radio-item-extend__item-label">
-                        <el-input-number controls-position="right" :min="0"></el-input-number>
+                <el-radio :label="item.value">{{item.label}}</el-radio>
+
+                <div v-if="item.extend" class="GUI-radio-item-extend">
+                    <div class="GUI-radio-item-extend__item">
+                        <div class="GUI-radio-item-extend__item-title">Adults &amp; Teenagers:</div>
+                        <div class="GUI-radio-item-extend__item-label">
+                            <el-input-number controls-position="right" :min="1"></el-input-number>
+                        </div>
+                    </div>
+                    <div class="GUI-radio-item-extend__item">
+                        <div class="GUI-radio-item-extend__item-title">Children under 12:</div>
+                        <div class="GUI-radio-item-extend__item-label">
+                            <el-input-number controls-position="right" :min="0"></el-input-number>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+        <OtherSpecify 
+            v-if="otherSpecifyDisplay"
+            :label="otherValue"
+            v-model="radioValue"
+            type="radio"
+        ></OtherSpecify>
+    </el-radio-group>
 </template>
 <script>
     import OtherSpecify from '~/components/GUI/form/OtherSpecify';
@@ -36,33 +47,59 @@
 		name: "GUI-RadioPic",
 		props: {
             dataSource: Array,
-            value: [String, Number]
+            value: [String, Number],
+            otherSpecifyDisplay: {
+                type: Boolean,
+                default: false
+            }
         },
 		components: {
             OtherSpecify,
 		},
 		data() {
+            let otherValue = null;
+            let value = this.value || null;
+            let has = false;
+            this.dataSource.forEach((item) => {
+                if(item.value == value){
+                    has = true
+                }
+            })
+            if(!has){
+                otherValue = value;
+            }
             return {
-                radioValue: this.value
+                radioValue: this.value,
+                otherValue,
             }
         },
         computed: {
+        },
+		watch: {
+			radioValue: function (newText, oldText) {
+                if(newText !== oldText){
+				    this.$emit('input', newText);
+                }
+			},
         },
 		methods: {
             itemCls(value){
                 return 'GUI-radio-pic__item' + (this.value == value ? ' GUI-radio-pic__item--current':'');
             },
             onChange(value){
-                console.log(value);
-                this.radioValue = value;
-                this.$emit('input', value);
+                if(value != this.radioValue){
+                    this.radioValue = value;
+                    this.$emit('input', value);
+                }
             },
             onChangeOther(value){
-                console.log(value);
-                this.radioValue = value;
-                this.$emit('input', value);
+                this.onChange(value)
             }
-		}
+        },
+        beforUpdate(){
+            
+        }
+        
 	}
 </script>
 
@@ -90,12 +127,16 @@
         }
     }
 
+    .GUI-radio-pic__group{
+        overflow: hidden;
+    }
+
     .GUI-radio-item-extend{
         width: 100%;
-        height: 2px;
+        height: 20px;
         position: relative;
         margin-top: 18px;
-        background: #ebebeb;
+        border-top: 2px solid #ebebeb;
 
         &:after{
             content: '';
@@ -103,7 +144,7 @@
             height: 0;
             position: absolute;
             left: 50%;
-            top: 2%;
+            top: 0;
             margin-left: -20px;
             border-left: 20px solid transparent;
             border-right: 20px solid transparent;
@@ -119,6 +160,8 @@
         .GUI-radio-item-extend{
             height: auto;
             padding: 18px;
+            border-top: none;
+            background: #ebebeb;
 
             &:after{
                 display: none;
@@ -126,9 +169,11 @@
 
             &__item{
                 display: block;
+                padding-bottom: 10px;
 
                 &-title{
                     font-size: 16px;
+                    padding-bottom: 10px;
                 }
             }
         }

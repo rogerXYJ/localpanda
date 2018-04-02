@@ -2,6 +2,23 @@
 
 .GUI-form{
 
+    .el-input--large{
+        .el-textarea__inner{
+            height: 258px;
+        }
+    }
+
+    .el-form-item.is-required .el-form-item__label{
+        &:before{
+            display: none;
+        }
+        &:after{
+            content: '*';
+            color: #f56c6c;
+            margin-left: 4px;
+        }
+    }
+
     /* Radio */
     .el-radio{
         line-height: 20px;
@@ -62,16 +79,52 @@
         }
     }
 
+    /* Slider */
+    .el-slider__runway{
+        height: 14px;
+        border-radius: 4px;
+        background: #ebebeb;
+    }
+    
+    .el-slider__bar{
+        height: 14px;
+    }
+
+    .el-slider__button-wrapper{
+        height: 42px;
+    }
+
+    .el-slider__button{
+        width: 20px;
+        height: 20px;
+        border-radius: 4px;
+        background: #1bbc9d;
+        border: none;
+    }
+
     /* Other */
     &__tips{
         padding-left: 8px;
         font-size: 14px;
         color: #878e95;
     }
+
+    .el-button--default{
+        width: 300px;
+        height: 42px;
+        padding: 0;
+        background-image: linear-gradient(270deg, #009efd 0%, #1bbc9d 100%), linear-gradient( #1bbc9d, #1bbc9d);
+        line-height: 42px;
+        border: none;
+        border-radius: 42px;
+        color: #ffffff;
+        font-size: 16px;
+        text-align: center;
+    }
 }
 
 .GUI-form-block{
-    margin-bottom: 80px;
+    margin-bottom: 60px;
 
     &__title{
         line-height: 28px;
@@ -130,4 +183,28 @@
         font-size: 16px;
         margin-bottom: 20px;
     }
+}
+
+.GUI-form-bar{
+    text-align: center;
+
+    .el-button--default{
+        margin: 0 12px;
+    }
+}
+
+.el-form-item__error{
+    width: 100%;
+    height: 40px;
+    padding: 0 14px;
+    margin-top: 10px;
+    position: relative;
+    left: auto;
+    border: 1px solid #e14f3f;
+    border-radius: 2px;
+    background: #f6cac5;
+    color: #e14f3f;
+    line-height: 40px;
+    font-weight: bold;
+    font-size: 16px;
 }

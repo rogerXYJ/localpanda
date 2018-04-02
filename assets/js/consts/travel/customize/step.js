@@ -156,21 +156,21 @@ module.exports = {
             }
         },
         {
-            label: "Standard & Comfort \n $75 or less",
+            label: "Standard & Comfort <br> $75 or less",
             value: {
                 accommodationMinPrice: 0,
                 accommodationMaxPrice: 75
             }
         },
         {
-            label: "4-star & Superior \n $75 -- 150",
+            label: "4-star & Superior <br> $75 -- 150",
             value: {
                 accommodationMinPrice: 75,
                 accommodationMaxPrice: 150
             }
         },
         {
-            label: "5-star & Luxury \n $150 or more",
+            label: "5-star & Luxury <br> $150 or more",
             value: {
                 accommodationMinPrice: 150,
                 accommodationMaxPrice: 150
@@ -180,17 +180,17 @@ module.exports = {
     accommodationTypeDataSource: [
         {
             label: 'International chained-brand hotels',
-            src: cdnPath + '/static/customize/interest/Shopping.jpg',
+            src: cdnPath + '/static/customize/accommodation/Internationalchainedbrandhotels.jpg',
             value: 'International chained-brand hotels',
         },
         {
             label: 'Boutique and local luxury hotels',
-            src: cdnPath + '/static/customize/interest/Shopping.jpg',
+            src: cdnPath + '/static/customize/accommodation/Bontiqueandlocalluxuryhotels.jpg',
             value: 'Boutique and local luxury hotels',
         },
         {
             label: 'BnB, home-stay, and budget hotels',
-            src: cdnPath + '/static/customize/interest/Shopping.jpg',
+            src: cdnPath + '/static/customize/accommodation/Bnbandbugethotels.jpg',
             value: 'BnB, home-stay, and budget hotels',
         },
     ]

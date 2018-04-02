@@ -4,6 +4,7 @@
         <StepBar step="2"></StepBar>
         <div class="page-section">
             <el-form 
+                v-if="formReady" 
                 ref="form" 
                 :model="form" 
                 :rules="formRules"
@@ -18,15 +19,31 @@
                     </div>
                 </div>
                 <div class="GUI-form-block GUI-form-block--require">
-                    <div class="GUI-form-block__title">Who will be traveling?</div>
+                    <div class="GUI-form-block__title">What is your favorite type of accommodation?</div>
                     <div class="GUI-form-block__content">
                         <el-form-item class="GUI-form-item" prop="accommodationType">
-                            <RadioPic :dataSource="accommodationTypeDataSource" v-model="form.accommodationType"></RadioPic>
+                            <RadioPic 
+                                :dataSource="accommodationTypeDataSource" 
+                                v-model="form.accommodationType"
+                                :otherSpecifyDisplay="true"
+                            >
+                            </RadioPic>
                         </el-form-item>
                     </div>
                 </div>
+
                 <div class="GUI-form-block">
-                    <el-button @click="onSubmit('form')">Next</el-button>
+                    <div class="GUI-form-block__title">How many rooms & beds do you need?</div>
+                    <div class="GUI-form-block__content">
+                        <RoomRequirements :roomRequirementsValue="form.roomRequirements" :otherRoomRequirementsValue="form.otherRoomRequirements" :onChange="onChangeRoomRequirements"></RoomRequirements>
+                    </div>
+                </div>
+                
+                <div class="GUI-form-block">
+                    <div class="GUI-form-bar">
+                        <el-button @click="prevForm">Previous</el-button>
+                        <el-button @click="onSubmit('form')">Next</el-button>
+                    </div>
                 </div>
             </el-form>
         </div>  
@@ -39,8 +56,12 @@
 
 	import Banner from '~/components/pageComponents/travel/customize/Banner';
     import StepBar from '~/components/pageComponents/travel/customize/StepBar';
+    import RoomRequirements from '~/components/pageComponents/travel/customize/RoomRequirements';
     
 	import Consts from '~/assets/js/consts/travel/customize/step.js';
+    import stepFormStorage from '~/assets/js/stepFormStorage.js';
+    
+    const storageKey = 'STEP_2_FORM_STORAGE';
     
 	export default {
 		name: 'TravelCustomizeStep-2',
@@ -49,19 +70,34 @@
             StepBar,
             RadioPic,
             LevelSelect,
+            RoomRequirements,
 		},
         data() {
             return {
+                formReady: false,
                 form: {
                     accommodation: {
                         accommodationMinPrice: 0,
-                        accommodationMaxPrice: 0
+                        accommodationMaxPrice: 0,
                     },
                     accommodationType: '',
+                    roomRequirements: [
+                        {
+                            "type": "King or Queen bed",
+                            "count": 0,
+                            "extraBed": false
+                        },
+                        {
+                            "type": "Double bed",
+                            "count": 0,
+                            "extraBed": false
+                        }
+                    ],
+                    otherRoomRequirements: '',
                 },
                 formRules: {
                     accommodation: [
-                        { required: true, message: 'Field is required', trigger: 'change' },
+                        { required: true, message: 'Field is required'},
                     ],
                     accommodationType: [
                         { required: true, message: 'Field is required'},
@@ -72,12 +108,39 @@
             }
         },
 		methods: {
-            onSubmit() {
-                console.log('submit!');
+            onSubmit(formName) {
+                this.$refs[formName].validate((valid) => {
+                    console.log(this.$refs[formName].model);
+                    // console.log(this.form);
+                    if (valid) {
+                        console.log('step2 submit success');
+                        stepFormStorage.addStorage(storageKey, this.form);
+                        window.location.href = "/travel/customize/step3";
+                    } else {
+                        console.log('error submit!!');
+                        return false;
+                    }
+                });
+            },
+            onChangeRoomRequirements(value){
+                console.log('onChangeRoomRequirements');
+                console.log(value);
+                this.form.otherRoomRequirements = value;
+            },
+            prevForm(){
+                window.location.href = "/travel/customize/step1";
             }
 		},
 		mounted: function() {
-
+            let formData = stepFormStorage.getStorage(storageKey, this.form);
+            if(JSON.stringify(formData).length > 7){
+                try{
+                    this.form = formData;
+                }catch(e){
+                    
+                }
+            }
+            this.formReady = true;
         }
 	}
 </script>
@@ -88,6 +151,6 @@
     @import '~assets/scss/G-ui/element-ui.scss';
 </style>
 <style lang="scss" scoped>
-	@import "~assets/scss/base/_setting.scss";
+    @import "~assets/scss/base/_setting.scss";
 </style>
 

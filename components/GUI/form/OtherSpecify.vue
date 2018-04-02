@@ -1,12 +1,12 @@
 <template>
 	<div :class="checkedCls">
 		<div class="GUI-other-specify__title">
-            <el-checkbox v-model="checked" @click="onChangeCheck">Other, please specify...</el-checkbox>
+            <el-checkbox v-if="type == 'checkbox'" @change="onChangeCheck" :label="text">Other, please specify...</el-checkbox>
+            <el-radio v-if="type == 'radio'" :label="text">Other, please specify...</el-radio>
         </div>
 		<div v-if="checked" :class="inputCls">
 			<el-input 
                 v-model="text" 
-                @change="onChange" 
                 :placeholder="placeholder"
             >
             </el-input>
@@ -23,7 +23,8 @@
 				type: String,
 				default: 'checkbox', /* radio, checkbox */
 			},
-            initValue: [String, Number],
+            value: [String, Number, Array],
+            label: [String, Number],
             placeholder: String,
 			onChangeOther: {
 				type: Function,
@@ -33,9 +34,21 @@
 			},
 		},
 		data() {
-			let checked = !!this.initValue;
+			let checked = false;
+			let text = null;
+			switch(this.type){
+				case 'radio':
+					text = this.label;
+					checked = !!this.label;
+					break;
+				case 'checkbox':
+					text = this.label;
+					checked = !!this.label;
+					break;
+			}
 			return {
-				text: '',
+				text,
+				oldText: text,
                 checked,
                 error: false,
 			}
@@ -51,14 +64,38 @@
 				return 'GUI-other-specify__input' + error;
 			},
 		},
+		watch: {
+			text: function (newText, oldText) {
+				this.oldText = oldText;
+				this.onChange(newText);
+			},
+			value: function (newText, oldText) {
+				if(newText == this.text){
+					this.checked = true;
+				}
+			},
+		},
 		methods: {
-            onChangeCheck() {
-                if(this.checked){
-                    this.onChange();
-                }
+            onChangeCheck(val) {
+				this.checked = val
             },
-			onChange() {
-				this.onChangeOther(this.text)
+			onChange(val) {
+				let value;
+				if(this.type == 'radio'){
+					value = val
+				}else{
+					let index = 0;
+                	value = this.value.slice();
+					value.forEach((item, i) => {
+						if(this.oldText == item){
+							index = i;
+						}
+					});
+					value[index] = val;
+
+				}
+				this.$emit('input', value);
+				this.onChangeOther(value);
 			}
 		}
 	}
@@ -74,8 +111,21 @@
 		float: left;
 		margin-right: 50px;
 
-		.el-checkbox__label{
+		.el-radio{
+			line-height: 40px;
+
+			.el-radio__input{
+				margin-top: 12px;
+			}
+		}
+
+		.el-checkbox{
+			line-height: 40px;
+		}
+
+		.el-checkbox__label, .el-radio__label{
 			font-size: 16px;
+			color: #1bbc9d;
 		}
     }
 

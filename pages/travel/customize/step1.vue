@@ -4,7 +4,8 @@
         <StepBar step="1"></StepBar>
 
         <div class="page-section">
-            <el-form 
+            <el-form
+                v-if="formReady" 
                 ref="form" 
                 :model="form" 
                 :rules="formRules"
@@ -26,7 +27,8 @@
                             <Checkbox 
                                 class="travel-des"
                                 :dataSource="whereDataSource" 
-                                v-model="form.destination"                                
+                                v-model="form.destination"
+                                :otherSpecifyDisplay="true"
                             >
                                 <template slot-scope="props">
                                     <div class="travel-des__item">
@@ -50,6 +52,7 @@
                                 class="travel-interest"
                                 :dataSource="interestsDataSource" 
                                 v-model="form.interests"
+                                :otherSpecifyDisplay="true"
                             >
                                 <template slot-scope="props">
                                     <div 
@@ -80,6 +83,13 @@
                                         </flatPickr>
                                     </div>
                                     <input hidden v-model="form.arriveTime">
+                                    <el-radio
+                                        class="GUI-form__radio-group"
+                                        v-model="form.arriveCity" 
+                                        label=""
+                                    >
+                                        I haven't decided yet.
+                                    </el-radio>
                                 </el-form-item>
                             </div>
                         </div>
@@ -112,29 +122,33 @@
                 </div>
                 <div class="GUI-form-block GUI-form-block--require">
                     <div class="GUI-form-block__title">Have you ever traveled to China before?</div>
-                    <div class="GUI-form-block__content GUI-form__radio-group">
-                        <el-radio-group class="GUI-form-item" prop="firstTime">
-                            <el-radio-group v-model="form.firstTime">
-                                <el-radio :label="true">Yes</el-radio>
-                                <el-radio :label="false">No</el-radio>
+                    <div class="GUI-form-block__content">
+                        <el-form-item class="GUI-form-block__content GUI-form__radio-group" prop="firstTime">
+                            <el-radio-group class="GUI-form-item">
+                                <el-radio-group v-model="form.firstTime">
+                                    <el-radio :label="true">Yes</el-radio>
+                                    <el-radio :label="false">No</el-radio>
+                                </el-radio-group>
                             </el-radio-group>
-                        </el-radio-group>
+                        </el-form-item>
                     </div>
                 </div>
                 <div class="GUI-form-block GUI-form-block--require">
                     <div class="GUI-form-block__title">Would you like us to include accomodation arrangements in your customized trip plan?</div>
                     <div class="GUI-form__tips">We have a wealth of hotel options for any kind of traveler, and can arrange better prices than you'll find on any hotel booking website.</div>
                     <div class="GUI-form-block__content">
-                        <div class="GUI-form-item" prop="accommodationIncluded">
+                        <el-form-item class="GUI-form-item" prop="accommodationIncluded">
                             <el-radio-group class="GUI-form__radio-group" v-model="form.accommodationIncluded">
                                 <el-radio :label="true">Yes</el-radio>
                                 <el-radio :label="false">No</el-radio>
                             </el-radio-group>
-                        </div>
+                        </el-form-item>
                     </div>
                 </div>
                 <div class="GUI-form-block">
-                    <el-button @click="onSubmit('form')">Next</el-button>
+                    <div class="GUI-form-bar">
+                        <el-button @click="onSubmit('form')">Next</el-button>
+                    </div>
                 </div>
             </el-form>
         </div>        
@@ -151,6 +165,9 @@
     import StepBar from '~/components/pageComponents/travel/customize/StepBar';
     
 	import Consts from '~/assets/js/consts/travel/customize/step.js';
+    import stepFormStorage from '~/assets/js/stepFormStorage.js';
+    
+    const storageKey = 'STEP_1_FORM_STORAGE';
     
 	export default {
 		name: 'TravelCustomizeStep-1',
@@ -163,6 +180,7 @@
 		},
         data() {
             return {
+                formReady: false,
                 form: {
                     participant: '',
                     destination: [],
@@ -175,25 +193,25 @@
                 },
                 formRules: {
                     participant: [
-                        { required: true, message: 'Field is required', trigger: 'change' },
+                        { required: true, message: 'Field is required' },
                     ],
                     destination: [
-                        { required: true, message: 'Field is required', trigger: 'change' },
+                        { required: true, message: 'Field is required'},
                     ],
                     interests: [
-                        { required: true, message: 'Field is required', trigger: 'change' },
+                        { required: true, message: 'Field is required' },
                     ],
                     arriveTime: [
-                        { required: true, message: 'Field is required (must be valid date)', trigger: 'change'},
+                        { required: true, message: 'Field is required (must be valid date)'},
                     ],
                     accommodationIncluded: [
-                        { required: true, message: 'Field is required', trigger: 'change'},
+                        { required: true, message: 'Field is required'},
                     ],
                     firstTime: [
-                        { required: true, message: 'Field is required', trigger: 'change'},
+                        { required: true, message: 'Field is required'},
                     ],
                     arriveCity: [
-                        { required: true, message: 'Field is required', trigger: 'change'},
+                        { required: true, message: 'Field is required'},
                     ],
                 },
                 whoDataSource: Consts.whoDataSource,
@@ -209,8 +227,11 @@
             onSubmit(formName) {
                 this.$refs[formName].validate((valid) => {
                     console.log(this.$refs[formName].model);
+                    // console.log(this.form);
                     if (valid) {
-                        alert('submit!');
+                        console.log('step1 submit success');
+                        stepFormStorage.addStorage(storageKey, this.form);
+                        window.location.href = "/travel/customize/step2";
                     } else {
                         console.log('error submit!!');
                         return false;
@@ -219,7 +240,13 @@
             },
 		},
 		mounted: function() {
-
+            let formData = stepFormStorage.getStorage(storageKey, this.form);
+            try{
+                this.form = formData;
+            }catch(e){
+                this.form = {}
+            }
+            this.formReady = true;
         }
 	}
 </script>
@@ -234,7 +261,15 @@
         .flatpickr-calendar{
             margin: 0 auto;
         }
+
+        .flatpickr-months .flatpickr-prev-month.flatpickr-prev-month, 
+        .flatpickr-months .flatpickr-next-month.flatpickr-prev-month,
+        .flatpickr-months .flatpickr-prev-month.flatpickr-next-month, 
+        .flatpickr-months .flatpickr-next-month.flatpickr-next-month{
+            top: 20px!important;
+        }
     }
+    
 </style>
 <style lang="scss" scoped>
     @import "~assets/scss/base/_setting.scss";
@@ -286,6 +321,7 @@
             background: center center no-repeat;
             background-size: cover;
             margin-bottom: 20px;
+            cursor: pointer;
 
             &-title{
                 width: 100%;
@@ -316,4 +352,5 @@
         text-align: center;
         background: #ebebeb;
     }
+    
 </style>

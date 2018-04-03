@@ -5,13 +5,13 @@ let getStorage = function(key){
         let itemStr = localStorage.getItem(key);
         result = JSON.parse(itemStr) || {};
     }
-    console.log('getStorage.result = ');
+    console.log('getStorage.' + key + '.result = ');
     console.log(result);
     return result;
 }
 
 let setStorage = function(key,data){
-    console.log('setStorage.result = ');
+    console.log('setStorage.' + key + '.result = ');
     console.log(data);
     if(window && window.localStorage){
         let localStorage = window.localStorage;

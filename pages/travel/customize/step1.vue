@@ -15,19 +15,28 @@
                     <div class="GUI-form-block__title">Who will be traveling?</div>
                     <div class="GUI-form-block__content">
                         <el-form-item class="GUI-form-item" prop="participant">
-                            <RadioPic :dataSource="whoDataSource" v-model="form.participant"></RadioPic>
+                            <RadioPic 
+                                :dataSource="whoDataSource" 
+                                v-model="form.participant"
+                                :onChangeExtend="onChangeParticipantExtend"
+                                :initExtendData="{
+                                    adults : form.adults,
+                                    children : form.children
+                                }"
+                            >
+                            </RadioPic>
                         </el-form-item>
                     </div>
                 </div>
                 <div class="GUI-form-block GUI-form-block--require">
                     <div class="GUI-form-block__title">Where do you want to travel and what are you interested in doing?</div>
                     <div class="GUI-form-block__content">
-                        <el-form-item class="GUI-form-item" prop="destination">
+                        <el-form-item class="GUI-form-item" prop="destinations">
                             <div class="GUI-form-item__title">Travel destinations</div>
                             <Checkbox 
                                 class="travel-des"
                                 :dataSource="whereDataSource" 
-                                v-model="form.destination"
+                                v-model="form.destinations"
                                 :otherSpecifyDisplay="true"
                             >
                                 <template slot-scope="props">
@@ -85,8 +94,8 @@
                                     <input hidden v-model="form.arriveTime">
                                     <el-radio
                                         class="GUI-form__radio-group"
-                                        v-model="form.arriveCity" 
-                                        label=""
+                                        v-model="form.arriveTime"
+                                        label="Not Decided"
                                     >
                                         I haven't decided yet.
                                     </el-radio>
@@ -102,8 +111,8 @@
                                     <el-input v-model="form.arriveCity" placeholder="Please enter your destination or city, eg Shanghai."></el-input>
                                     <el-radio
                                         class="GUI-form__radio-group"
-                                        v-model="form.arriveCity" 
-                                        label=""
+                                        v-model="form.arriveCity"
+                                        label="Not Decided"
                                     >
                                         I haven't decided yet.
                                     </el-radio>
@@ -183,7 +192,9 @@
                 formReady: false,
                 form: {
                     participant: '',
-                    destination: [],
+                    adults: 0,
+                    children: 0,
+                    destinations: [],
                     interests: [],
                     arriveTime: '',
                     firstTime: null,
@@ -195,7 +206,7 @@
                     participant: [
                         { required: true, message: 'Field is required' },
                     ],
-                    destination: [
+                    destinations: [
                         { required: true, message: 'Field is required'},
                     ],
                     interests: [
@@ -230,21 +241,24 @@
                     // console.log(this.form);
                     if (valid) {
                         console.log('step1 submit success');
-                        stepFormStorage.addStorage(storageKey);
-                        window.location.href = "/travel/customize/step2";
+                        stepFormStorage.addStorage(storageKey, this.form);
+                        // window.location.href = "/travel/customize/step2";
                     } else {
                         console.log('error submit!!');
                         return false;
                     }
                 });
             },
+            onChangeParticipantExtend(data){
+                this.form.adults = data.adults;
+                this.form.children = data.children;
+            }
 		},
 		mounted: function() {
-            let formData = stepFormStorage.getStorage(storageKey, this.form);
+            let formData = stepFormStorage.getStorage(storageKey);
             try{
                 this.form = formData;
             }catch(e){
-                this.form = {}
             }
             this.formReady = true;
         }

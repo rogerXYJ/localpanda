@@ -11,7 +11,7 @@
                 <div 
                     class="GUI-radio-pic__item-pic" 
                     v-lazy:background-image="item.src"
-                    @click="onChange(item.value)"
+                    @click="onChange(item.value, item.extend)"
                 >
                 </div>
                 <el-radio :label="item.value">{{item.label}}</el-radio>
@@ -20,13 +20,25 @@
                     <div class="GUI-radio-item-extend__item">
                         <div class="GUI-radio-item-extend__item-title">Adults &amp; Teenagers:</div>
                         <div class="GUI-radio-item-extend__item-label">
-                            <el-input-number controls-position="right" :min="1"></el-input-number>
+                            <el-input-number 
+                                controls-position="right" 
+                                v-model="adultsNum" 
+                                @change="onChangeAdults" 
+                                :min="1"
+                            >
+                            </el-input-number>
                         </div>
                     </div>
                     <div class="GUI-radio-item-extend__item">
                         <div class="GUI-radio-item-extend__item-title">Children under 12:</div>
                         <div class="GUI-radio-item-extend__item-label">
-                            <el-input-number controls-position="right" :min="0"></el-input-number>
+                            <el-input-number 
+                                controls-position="right" 
+                                v-model="childNum" 
+                                @change="onChangeChildren" 
+                                :min="0"
+                            >
+                            </el-input-number>
                         </div>
                     </div>
                 </div>
@@ -48,9 +60,22 @@
 		props: {
             dataSource: Array,
             value: [String, Number],
+            initExtendData: {
+                type: Object,
+                default: {
+                    adultsNum: 1,
+                    childNum: 0,
+                }
+            },
             otherSpecifyDisplay: {
                 type: Boolean,
                 default: false
+            },
+            onChangeExtend: {
+                type: Function,
+                default: (data) => {
+                    console.log(data)
+                }
             }
         },
 		components: {
@@ -71,6 +96,8 @@
             return {
                 radioValue: this.value,
                 otherValue,
+                adultsNum: this.initExtendData.adults || 1,
+                childNum: this.initExtendData.children || 0,
             }
         },
         computed: {
@@ -86,7 +113,18 @@
             itemCls(value){
                 return 'GUI-radio-pic__item' + (this.value == value ? ' GUI-radio-pic__item--current':'');
             },
-            onChange(value){
+            onChange(value, extendType){
+                if(!extendType){
+                    this.onChangeExtend({
+                        adults: 0,
+                        children: 0,
+                    })
+                }else{
+                    this.onChangeExtend({
+                        adults: this.adultsNum,
+                        children: this.childNum,
+                    })
+                }
                 if(value != this.radioValue){
                     this.radioValue = value;
                     this.$emit('input', value);
@@ -94,6 +132,18 @@
             },
             onChangeOther(value){
                 this.onChange(value)
+            },
+            onChangeAdults(val){
+                this.onChangeExtend({
+                    adults: val,
+                    children: this.childNum,
+                })
+            },
+            onChangeChildren(val){
+                this.onChangeExtend({
+                    adults: this.adultsNum,
+                    children: val,
+                })
             }
         },
         beforUpdate(){

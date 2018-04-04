@@ -114,7 +114,13 @@
                     // console.log(this.form);
                     if (valid) {
                         console.log('step2 submit success');
-                        stepFormStorage.addStorage(storageKey, this.form);
+
+                        let formData = Object.assign({},this.form);
+
+                        formData.accommodationMinPrice = formData.accommodation.accommodationMinPrice;
+                        formData.accommodationMaxPrice = formData.accommodation.accommodationMaxPrice;
+                        delete formData.accommodation;
+                        stepFormStorage.addStorage(storageKey, formData);
                         window.location.href = "/travel/customize/step3";
                     } else {
                         console.log('error submit!!');
@@ -135,6 +141,14 @@
             let formData = stepFormStorage.getStorage(storageKey);
             if(JSON.stringify(formData).length > 7){
                 try{
+                    
+                    formData.accommodation = {
+                        accommodationMinPrice: formData.accommodationMinPrice || 0,
+                        accommodationMaxPrice: formData.accommodationMaxPrice || 0,
+                    }
+
+                    delete formData.accommodationMinPrice;
+                    delete formData.accommodationMaxPrice;
                     this.form = formData;
                 }catch(e){
                     

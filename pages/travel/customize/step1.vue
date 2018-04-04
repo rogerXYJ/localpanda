@@ -122,7 +122,7 @@
                             <div class="GUI-form-block__title">How many days do you want to travel?</div>
                             <div class="GUI-form-block__content">
                                 <div class="GUI-form-item">
-                                    <el-input-number v-model="form.roomNumber" controls-position="right" :min="8"></el-input-number>
+                                    <el-input-number v-model="form.duration" controls-position="right" :min="8"></el-input-number>
                                 </div>
                             </div>
                         </div>
@@ -213,7 +213,7 @@
                     arriveTime: '',
                     firstTime: null,
                     accommodationIncluded: null,
-                    roomNumber: 8,
+                    duration: 8,
                     arriveCity: '',
                 },
                 formRules: {

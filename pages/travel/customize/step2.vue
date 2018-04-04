@@ -83,13 +83,13 @@
                     accommodationType: '',
                     roomRequirements: [
                         {
-                            "type": "King or Queen bed",
-                            "count": 0,
+                            "roomType": "King or Queen bed",
+                            "roomNumber": 0,
                             "extraBed": false
                         },
                         {
-                            "type": "Double bed",
-                            "count": 0,
+                            "roomType": "Double bed",
+                            "roomNumber": 0,
                             "extraBed": false
                         }
                     ],

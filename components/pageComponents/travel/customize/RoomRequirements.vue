@@ -5,9 +5,9 @@
             :key="index"
             v-for="(item, index) in roomRequirementsValue"
         >
-            <span class="room-bed__cell-label">{{item.type}}:</span>
+            <span class="room-bed__cell-label">{{item.roomType}}:</span>
             <span class="room-bed__cell-count">
-                <el-input-number v-model="item.count" controls-position="right"></el-input-number>
+                <el-input-number v-model="item.roomNumber" controls-position="right"></el-input-number>
             </span>
             <span class="room-bed__cell-extra">
                 <el-checkbox v-model="item.extraBed">Need an extra bed</el-checkbox>

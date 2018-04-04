@@ -92,13 +92,13 @@
                                         </flatPickr>
                                     </div>
                                     <input hidden v-model="form.arriveTime">
-                                    <el-radio
+                                    <el-checkbox
                                         class="GUI-form__radio-group"
-                                        v-model="form.arriveTime"
+                                        v-model="arriveTimeNotDecided"
                                         label="Not Decided"
                                     >
                                         I haven't decided yet.
-                                    </el-radio>
+                                    </el-checkbox>
                                 </el-form-item>
                             </div>
                         </div>
@@ -109,13 +109,12 @@
                             <div class="GUI-form-block__content">
                                 <el-form-item class="GUI-form-item" prop="arriveCity">
                                     <el-input v-model="form.arriveCity" placeholder="Please enter your destination or city, eg Shanghai."></el-input>
-                                    <el-radio
+                                    <el-checkbox
                                         class="GUI-form__radio-group"
-                                        v-model="form.arriveCity"
-                                        label="Not Decided"
+                                        v-model="arriveCityNotDecided"
                                     >
                                         I haven't decided yet.
-                                    </el-radio>
+                                    </el-checkbox>
                                 </el-form-item>
                             </div>
                         </div>
@@ -188,6 +187,21 @@
             flatPickr,
 		},
         data() {
+            
+            let arriveTimeNotDecidedCheck = (rule, value, callback) => {
+                if(!value && !this.arriveTimeNotDecided){
+                    callback(new Error('Field is required (must be valid date'));
+                }else{
+                    callback();
+                }
+            };
+            let arriveCityNotDecidedCheck = (rule, value, callback) => {
+                if(!value && !this.arriveCityNotDecided){
+                    callback(new Error('Field is required'));
+                }else{
+                    callback();
+                }
+            };
             return {
                 formReady: false,
                 form: {
@@ -212,19 +226,21 @@
                     interests: [
                         { required: true, message: 'Field is required' },
                     ],
-                    arriveTime: [
-                        { required: true, message: 'Field is required (must be valid date)'},
-                    ],
                     accommodationIncluded: [
                         { required: true, message: 'Field is required'},
                     ],
                     firstTime: [
                         { required: true, message: 'Field is required'},
                     ],
+                    arriveTime: [
+                        { validator: arriveTimeNotDecidedCheck},
+                    ],
                     arriveCity: [
-                        { required: true, message: 'Field is required'},
+                        { validator: arriveCityNotDecidedCheck},
                     ],
                 },
+                arriveTimeNotDecided: false,
+                arriveCityNotDecided: false,
                 whoDataSource: Consts.whoDataSource,
                 whereDataSource: Consts.whereDataSource,
                 interestsDataSource: Consts.interestsDataSource,
@@ -241,7 +257,14 @@
                     // console.log(this.form);
                     if (valid) {
                         console.log('step1 submit success');
-                        stepFormStorage.addStorage(storageKey, this.form);
+                        let formData = Object.assign({},this.form);
+                        if(this.arriveTimeNotDecided){
+                            formData.arriveTime = 'Not Decided';
+                        }
+                        if(this.arriveCityNotDecided){
+                            formData.arriveCity = 'Not Decided';
+                        }
+                        stepFormStorage.addStorage(storageKey, formData);
                         // window.location.href = "/travel/customize/step2";
                     } else {
                         console.log('error submit!!');
@@ -256,9 +279,21 @@
 		},
 		mounted: function() {
             let formData = stepFormStorage.getStorage(storageKey);
-            try{
-                this.form = formData;
-            }catch(e){
+            if(JSON.stringify(formData).length > 7){
+                try{
+                    if(formData.arriveTime === 'Not Decided'){
+                        formData.arriveTime = '';
+                        this.arriveTimeNotDecided = true;
+                    }
+                    if(formData.arriveCity === 'Not Decided'){
+                        formData.arriveCity = '';
+                        this.arriveCityNotDecided = true;
+                    }
+                    this.form = formData;
+                }catch(e){
+                    
+                }
+
             }
             this.formReady = true;
         }

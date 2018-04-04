@@ -265,7 +265,7 @@
                             formData.arriveCity = 'Not Decided';
                         }
                         stepFormStorage.addStorage(storageKey, formData);
-                        // window.location.href = "/travel/customize/step2";
+                        window.location.href = "/travel/customize/step2";
                     } else {
                         console.log('error submit!!');
                         return false;
@@ -291,7 +291,7 @@
                     }
                     this.form = formData;
                 }catch(e){
-                    
+
                 }
 
             }

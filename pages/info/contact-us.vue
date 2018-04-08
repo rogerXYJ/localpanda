@@ -1,22 +1,4 @@
  <template>
-<<<<<<< HEAD
-    <div class="page__container about__container">
-        <div class="about__cover">
-            <div class="about__play-btn"></div>
-        </div>
-        <div class="about__welcome">
-
-        </div>
-        <div class="about__mission">
-
-        </div>
-        <div class="about__leader">
-
-        </div>
-        <div class="about__family">
-            
-        </div>
-=======
     <div class="page__container">
     	<HeaderCommon :logIn="logIn"></HeaderCommon>
         <div class="about-cover">
@@ -52,21 +34,11 @@
         </div>
         
         <Foot></Foot>
->>>>>>> master
     </div>
 </template>
 
 <script>
 import Vue from 'vue'
-<<<<<<< HEAD
-export default {
-    name: 'contact-us',
-    components: {
-    },
-    methods: {
-    },
-    mounted: function() {
-=======
 import HeaderCommon from '~/components/HeaderCommon/HeaderCommon';
 //import FooterCommon from '~/components/FooterCommon/FooterCommon';
 import Foot from '~/components/FooterCommon/Foot';
@@ -88,20 +60,10 @@ export default {
     },
     mounted: function() {
        this.logIn = window.localStorage.getItem("logstate");
->>>>>>> master
         
     }
 }
 </script>
-<<<<<<< HEAD
-<style lang="sass">
-    @import '~assets/scss/_main.scss';
-    @import '~/assets/font/iconfont.css';
-</style>
-<style lang="scss" scoped>
-    @import "~assets/scss/base/_setting.scss";
-</style>
-=======
 <style lang="scss">
     @import '~assets/scss/_main.scss';
     @import '~/assets/font/iconfont.css';
@@ -144,4 +106,3 @@ export default {
         }
     }	
 </style>
->>>>>>> master

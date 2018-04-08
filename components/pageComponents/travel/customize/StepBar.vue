@@ -79,10 +79,6 @@
         margin: 45px auto 84px;
         position: relative;
         overflow: hidden;
-<<<<<<< HEAD
-
-=======
->>>>>>> master
         &:before{
             content: '';
             width: 0;
@@ -92,18 +88,10 @@
             top: 23px;
             background: #1bbc9d;
         }
-<<<<<<< HEAD
-
-=======
->>>>>>> master
         &__cell{
             width: 212px;
             float: left;
             text-align: center;
-<<<<<<< HEAD
-
-=======
->>>>>>> master
             &-number{
                 width: 50px;
                 height: 50px;
@@ -116,62 +104,24 @@
                 line-height: 50px;
                 font-weight: bold;
                 color: #ffffff;
-<<<<<<< HEAD
-
-=======
->>>>>>> master
                 i{
                     display: none;
                     font-size: 18px;
                 }
             }
-<<<<<<< HEAD
-
-=======
->>>>>>> master
             &-info{
                 margin-top: 14px;
                 font-size: 16px;
                 line-height: 24px;
             }
         }
-<<<<<<< HEAD
-
-=======
->>>>>>> master
         &--1{
             .step-state__cell--first{
                 .step-state__cell-number{
                     background: #1bbc9d;
-                }
-            }
-        }
-<<<<<<< HEAD
-
-=======
->>>>>>> master
-        &--2{
-            &:before{
-                width: 212px;
-            }
-<<<<<<< HEAD
-
-            .step-state__cell--first{
-                .step-state__cell-number{
-                    background: #1bbc9d;
-
                     span{
                         display: none;
                     }
-
-=======
-            .step-state__cell--first{
-                .step-state__cell-number{
-                    background: #1bbc9d;
-                    span{
-                        display: none;
-                    }
->>>>>>> master
                     i{
                         display: block;
                     }
@@ -183,33 +133,17 @@
                 }
             }
         }
-<<<<<<< HEAD
-
-=======
->>>>>>> master
         &--3{
             &:before{
                 width: 424px;
             }
-<<<<<<< HEAD
-
-=======
->>>>>>> master
             .step-state__cell--first, 
             .step-state__cell--sec{
                 .step-state__cell-number{
                     background: #1bbc9d;
-<<<<<<< HEAD
-
                     span{
                         display: none;
                     }
-
-=======
-                    span{
-                        display: none;
-                    }
->>>>>>> master
                     i{
                         display: block;
                     }

@@ -7,7 +7,7 @@
         >
             <span class="room-bed__cell-label">{{item.roomType}}:</span>
             <span class="room-bed__cell-count">
-                <el-input-number v-model="item.roomNumber" controls-position="right"></el-input-number>
+                <el-input-number v-model="item.roomNumber" controls-position="right" :min="0"></el-input-number>
             </span>
             <span class="room-bed__cell-extra">
                 <el-checkbox v-model="item.extraBed">Need an extra bed</el-checkbox>
@@ -23,10 +23,6 @@
 </template>
 <script>
     import OtherSpecify from '~/components/GUI/form/OtherSpecify';
-<<<<<<< HEAD
-
-=======
->>>>>>> master
 	export default {
 		name: "RoomRequirements",
 		props: {
@@ -70,28 +66,16 @@
     .room-bed{
         &__cell{
             margin-bottom: 20px;
-<<<<<<< HEAD
-
-=======
->>>>>>> master
             span{
                 display: inline-block;
                 font-size: 16px;
                 line-height: 40px;
             }
-<<<<<<< HEAD
-
-=======
->>>>>>> master
             &-label{
                 width: 230px;
                 padding: 0 15px 0 20px;
                 text-align: right;
             }
-<<<<<<< HEAD
-
-=======
->>>>>>> master
             &-count{
                 margin-right: 30px;
             }

@@ -27,36 +27,20 @@
     h2, h3{
         text-align: center;
     }
-<<<<<<< HEAD
-
     h2{
         font-weight: bold;
     }
-
-=======
-    h2{
-        font-weight: bold;
-    }
->>>>>>> master
 	.page-banner{
         height: 500px;
         position: relative;
         overflow: hidden;
         background: url(https://d2q486kjf9cwwu.cloudfront.net/static/customize/customizebanner.jpg) center center no-repeat #efefef;
-<<<<<<< HEAD
-
-=======
->>>>>>> master
         h2{
             margin-top: 184px;
             font-size: 44px;
             text-shadow: 0 5px 10px rgba(0,0,0,.3);
             color: #ffffff;
         }
-<<<<<<< HEAD
-
-=======
->>>>>>> master
         h3{
             margin-top: 10px;
             font-size: 20px;
@@ -64,10 +48,6 @@
             color: #ffffff;
         }
     }
-<<<<<<< HEAD
-
-=======
->>>>>>> master
     .banner-bar{
         width: 100%;
         height: 58px;
@@ -78,35 +58,19 @@
         color: #ffffff;
         line-height: 58px;
         font-size: 18px;
-<<<<<<< HEAD
-
-=======
->>>>>>> master
         ul{
             width: 1170px;
             margin: 0 auto;
             overflow: hidden;
-<<<<<<< HEAD
-
-=======
->>>>>>> master
             li{
                 width: 323px;
                 float: left;
                 position: relative;
-<<<<<<< HEAD
-
-=======
->>>>>>> master
                 i{
                     display: inline-block;
                     margin-right: 12px;
                     font-size: 14px;
                 }
-<<<<<<< HEAD
-
-=======
->>>>>>> master
                 &:last-of-type{
                     width: auto;
                     float: right;

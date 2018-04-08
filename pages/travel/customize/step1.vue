@@ -1,9 +1,6 @@
 <template >    
     <div class="page__container">
-<<<<<<< HEAD
-=======
     	<HeaderCommon :logIn="logIn"></HeaderCommon>
->>>>>>> master
         <Banner></Banner>
         <StepBar step="1"></StepBar>
 
@@ -72,7 +69,7 @@
                                         class="travel-interest__item"
                                         v-lazy:background-image="props.item.src"
                                     >
-                                        <div class="travel-interest__item-title">{{props.item.label}}</div>
+                                        <div class="travel-interest__item-title" v-html="props.item.label"></div>
                                     </div>
                                 </template>
                             </Checkbox>
@@ -163,23 +160,15 @@
                     </div>
                 </div>
             </el-form>
-<<<<<<< HEAD
-        </div>        
-=======
         </div>   
        <FooterCommon></FooterCommon>
->>>>>>> master
     </div>
 </template>
 
 <script>
     import flatPickr from "vue-flatpickr-component";
-<<<<<<< HEAD
-    
-=======
     import HeaderCommon from '~/components/HeaderCommon/HeaderCommon';
 	import FooterCommon from '~/components/FooterCommon/FooterCommon';
->>>>>>> master
     import RadioPic from '~/components/GUI/form/RadioPic';
     import Checkbox from '~/components/GUI/form/Checkbox';
     
@@ -199,18 +188,15 @@
             RadioPic,
             Checkbox,
             flatPickr,
-<<<<<<< HEAD
-=======
             HeaderCommon,
             FooterCommon
             
->>>>>>> master
 		},
         data() {
             
             let arriveTimeNotDecidedCheck = (rule, value, callback) => {
                 if(!value && !this.arriveTimeNotDecided){
-                    callback(new Error('Field is required (must be valid date'));
+                    callback(new Error('Field is required (must be valid date)'));
                 }else{
                     callback();
                 }
@@ -224,10 +210,7 @@
             };
             return {
                 formReady: false,
-<<<<<<< HEAD
-=======
                	logIn:'',
->>>>>>> master
                 form: {
                     participant: '',
                     adults: 0,
@@ -237,7 +220,7 @@
                     arriveTime: '',
                     firstTime: null,
                     accommodationIncluded: null,
-                    duration: 8,
+                    duration: 0,
                     arriveCity: '',
                 },
                 formRules: {
@@ -269,7 +252,8 @@
                 whereDataSource: Consts.whereDataSource,
                 interestsDataSource: Consts.interestsDataSource,
 				dateOptions: {
-                    inline: true
+                    inline: true,
+                    minDate: new Date()
                 }
                 
             }
@@ -289,7 +273,11 @@
                             formData.arriveCity = 'Not Decided';
                         }
                         stepFormStorage.addStorage(storageKey, formData);
-                        window.location.href = "/travel/customize/step2";
+                        if(formData.accommodationIncluded){
+                            window.location.href = "/travel/customize/step2";
+                        }else{
+                            window.location.href = "/travel/customize/step3";
+                        }
                     } else {
                         console.log('error submit!!');
                         return false;
@@ -302,10 +290,7 @@
             }
 		},
 		mounted: function() {
-<<<<<<< HEAD
-=======
 			this.logIn = window.localStorage.getItem("logstate");
->>>>>>> master
             let formData = stepFormStorage.getStorage(storageKey);
             if(JSON.stringify(formData).length > 7){
                 try{
@@ -319,13 +304,7 @@
                     }
                     this.form = formData;
                 }catch(e){
-<<<<<<< HEAD
-
                 }
-
-=======
-                }
->>>>>>> master
             }
             this.formReady = true;
         }
@@ -337,18 +316,10 @@
     @import '~assets/scss/G-ui/base.scss';
     @import '~assets/scss/G-ui/element-ui.scss';
     @import 'flatpickr/dist/flatpickr.css';
-<<<<<<< HEAD
-
-=======
->>>>>>> master
     .arrive-time{        
         .flatpickr-calendar{
             margin: 0 auto;
         }
-<<<<<<< HEAD
-
-=======
->>>>>>> master
         .flatpickr-months .flatpickr-prev-month.flatpickr-prev-month, 
         .flatpickr-months .flatpickr-next-month.flatpickr-prev-month,
         .flatpickr-months .flatpickr-prev-month.flatpickr-next-month, 
@@ -360,65 +331,33 @@
 </style>
 <style lang="scss" scoped>
     @import "~assets/scss/base/_setting.scss";
-<<<<<<< HEAD
-
-=======
->>>>>>> master
-    .travel-des{
-        
+    .travel-des{        
         &__item{
             border: 3px solid #fff;
             padding-bottom: 10px;
             cursor: pointer;
-<<<<<<< HEAD
-
-=======
->>>>>>> master
             &-pic{
                 width: 100%;
                 height: 144px;
                 background: center center no-repeat;
                 background-size: cover;
             }
-<<<<<<< HEAD
-
-=======
->>>>>>> master
             &-title{
                 padding: 10px 15px;
                 font-size: 22px;                
             }
-<<<<<<< HEAD
-
-=======
->>>>>>> master
             &-recommend{
                 padding: 5px 0 0 10px;
                 font-size: 16px;
                 line-height: 24px;
-<<<<<<< HEAD
-
-=======
->>>>>>> master
-                h4{
-                    font-weight: bold;
-                }
             }
         }
-<<<<<<< HEAD
-
-=======
->>>>>>> master
         .GUI-checkbox__item--current{
             .travel-des__item{
                 border: 3px solid #1bbc9d;
             }
         }
     }
-<<<<<<< HEAD
-
-=======
->>>>>>> master
     .travel-interest{
         &__item{
             width: 100%;
@@ -430,10 +369,6 @@
             background-size: cover;
             margin-bottom: 20px;
             cursor: pointer;
-<<<<<<< HEAD
-
-=======
->>>>>>> master
             &-title{
                 width: 100%;
                 padding: 0 20px;
@@ -449,23 +384,15 @@
                 font-weight: bold;
             }
         }
-<<<<<<< HEAD
-
-=======
         .GUI-checkbox__item.el-checkbox{
         	float: inherit!important;
         }
->>>>>>> master
         .GUI-checkbox__item--current{
             .travel-interest__item{
                 border: 3px solid #1bbc9d;
             }
         }
     }
-<<<<<<< HEAD
-
-=======
->>>>>>> master
     .arrive-time{
         width: 80%;
         padding: 20px 0;
@@ -473,8 +400,4 @@
         background: #ebebeb;
     }
     
-<<<<<<< HEAD
 </style>
-=======
-</style>
->>>>>>> master

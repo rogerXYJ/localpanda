@@ -21,10 +21,6 @@
 </template>
 <script>
     import OtherSpecify from '~/components/GUI/form/OtherSpecify';
-<<<<<<< HEAD
-
-=======
->>>>>>> master
 	export default {
 		name: "GUI-Checkbox",
 		props: {
@@ -86,10 +82,6 @@
             onChangeOther(value){
                 this.onChange(value, true);
             },
-<<<<<<< HEAD
-
-=======
->>>>>>> master
 		},
 	}
 </script>
@@ -97,39 +89,20 @@
 <style lang="scss">
     .GUI-checkbox{
         overflow: hidden;
-<<<<<<< HEAD
-
-        &__group{
-            overflow: hidden;
-
-            .el-checkbox__input{
-                display: none;
-            }
-
-=======
         &__group{
             overflow: hidden;
             .el-checkbox__input{
                 display: none;
             }
->>>>>>> master
             .el-checkbox__label{
                 padding: 0;
                 display: block;
             }
         }
-<<<<<<< HEAD
-
-=======
->>>>>>> master
         &__item.el-checkbox{
             width: 216px;
             float: left;
             margin: 0 9px;
-<<<<<<< HEAD
-
-=======
->>>>>>> master
             &-pic{
                 width: 216px;
                 height: 216px;
@@ -137,17 +110,9 @@
                 background: center center no-repeat;
                 background-size: cover;
             }
-<<<<<<< HEAD
-
             .el-radio{
                 display: block;
             }
-
-=======
-            .el-radio{
-                display: block;
-            }
->>>>>>> master
         }
     }
 </style>

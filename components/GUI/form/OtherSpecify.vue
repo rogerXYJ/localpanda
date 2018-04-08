@@ -36,21 +36,13 @@
 		data() {
 			let checked = false;
 			let text = null;
-<<<<<<< HEAD
-			console.log(!!this.label)
-=======
->>>>>>> master
 			switch(this.type){
 				case 'radio':
 					text = this.label;
 					checked = !!this.label;
 					break;
 				case 'checkbox':
-<<<<<<< HEAD
 					text = this.label || null;
-=======
-					text = this.label;
->>>>>>> master
 					checked = !!this.label;
 					break;
 			}
@@ -100,10 +92,6 @@
 						}
 					});
 					value[index] = val;
-<<<<<<< HEAD
-
-=======
->>>>>>> master
 				}
 				this.$emit('input', value);
 				this.onChangeOther(value);
@@ -117,65 +105,32 @@
     width: 100%;
 	overflow: hidden;
 	margin-top: 40px;
-<<<<<<< HEAD
-
-    &__title{
-		float: left;
-		margin-right: 50px;
-
-		.el-radio{
-			line-height: 40px;
-
-=======
     &__title{
 		float: left;
 		margin-right: 50px;
 		.el-radio{
 			line-height: 40px;
->>>>>>> master
 			.el-radio__input{
 				margin-top: 12px;
 			}
 		}
-<<<<<<< HEAD
-
 		.el-checkbox{
 			line-height: 40px;
 		}
-
-=======
-		.el-checkbox{
-			line-height: 40px;
-		}
->>>>>>> master
 		.el-checkbox__label, .el-radio__label{
 			font-size: 16px;
 			color: #1bbc9d;
 		}
     }
-<<<<<<< HEAD
-
-    &__input{
-        overflow: hidden;
-
-        &--error{
-            background: #ff0000;
-
-=======
     &__input{
         overflow: hidden;
         &--error{
             background: #ff0000;
->>>>>>> master
             .GUI-other-specify__error{
                 display: block;
             }
         }
     }
-<<<<<<< HEAD
-
-=======
->>>>>>> master
     &__error{
         display: none;
     }

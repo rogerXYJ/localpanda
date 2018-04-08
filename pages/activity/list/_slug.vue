@@ -141,7 +141,7 @@
 					<span v-if="removeDurations.length>0 && item==0" v-for="(item,index) in removeDurations" @click="del(2,removeDurations,index)">Half Day<i class="iconfont">&#xe629;</i></span>
 					<span v-if="removeDurations.length>0 && item==1" v-for="(item,index) in removeDurations"  @click="del(2,removeDurations,index)">1 Day<i class="iconfont">&#xe629;</i></span>
 					<span v-if="removeDurations.length>0 && item>1" v-for="(item,index) in removeDurations"  @click="del(2,removeDurations,index)">{{item}} Days<i class="iconfont">&#xe629;</i></span>
-					<span v-if="removeTourtype.length>0" v-for="(item,index) in removeTourtype" @click="del(3,removeTourtype,index)">{{item}}<i class="iconfont">&#xe629;</i></span>
+					<span v-if="removeTourtype.length>0" v-for="(item,index) in removeTourtype" @click="del(3,removeTourtype,index)">{{item.replace(/And/g,'&')}}<i class="iconfont">&#xe629;</i></span>
 				</div>
 				<div class="pageSizeInfo">totally {{records}} activities</div>
 			</div>
@@ -462,10 +462,11 @@
 						console.log(this.checkedCities)
 					}else{
 						this.checkedCities=[]
+						this.checkedCategory=JSON.parse(localStorage.getItem("opctions")).category.length>0?JSON.parse(localStorage.getItem("opctions")).category:[]
+						this.checkedDurations=JSON.parse(localStorage.getItem("opctions")).durations.length>0?JSON.parse(localStorage.getItem("opctions")).durations:[]
+						this.checkedTourtype=JSON.parse(localStorage.getItem("opctions")).tourtype.length>0?JSON.parse(localStorage.getItem("opctions")).tourtype:[]
 					}
-					this.checkedCategory=[]
-					this.checkedDurations=[]
-					this.checkedTourtype=[]
+					
 				}else if(id==1){
 					this.isshowcategory=!this.isshowcategory
 					this.isshowcity=false
@@ -475,11 +476,12 @@
 						this.checkedCategory=JSON.parse(localStorage.getItem("opctions")).category
 						
 					}else{
-						this.checkedCategory=[]	
+						this.checkedCities=JSON.parse(localStorage.getItem("opctions")).cities.length>0?JSON.parse(localStorage.getItem("opctions")).cities:[]
+						this.checkedCategory=[]
+						this.checkedDurations=JSON.parse(localStorage.getItem("opctions")).durations.length>0?JSON.parse(localStorage.getItem("opctions")).durations:[]
+						this.checkedTourtype=JSON.parse(localStorage.getItem("opctions")).tourtype.length>0?JSON.parse(localStorage.getItem("opctions")).tourtype:[]
 					}
-					this.checkedCities=[]
-					this.checkedDurations=[]
-					this.checkedTourtype=[]
+					
 					
 				}else if(id==2){
 					this.isshowdurations=!this.isshowdurations
@@ -492,11 +494,12 @@
 						console.log()
 						this.checkedDurations=JSON.parse(localStorage.getItem("opctions")).durations	
 					}else{
+						this.checkedCities=JSON.parse(localStorage.getItem("opctions")).cities.length>0?JSON.parse(localStorage.getItem("opctions")).cities:[]
+						this.checkedCategory=JSON.parse(localStorage.getItem("opctions")).category.length>0?JSON.parse(localStorage.getItem("opctions")).category:[]
 						this.checkedDurations=[]
+						this.checkedTourtype=JSON.parse(localStorage.getItem("opctions")).tourtype.length>0?JSON.parse(localStorage.getItem("opctions")).tourtype:[]
 					}
-					this.checkedCities=[]
-					this.checkedCategory=[]	
-					this.checkedTourtype=[]
+					
 				}else{
 					this.isshowtourtype=!this.isshowtourtype
 					this.isshowdurations=false
@@ -508,19 +511,26 @@
 						for(let i=0;i<JSON.parse(localStorage.getItem("opctions")).tourtype.length;i++){
 							JSON.parse(localStorage.getItem("opctions")).tourtype[i]=JSON.parse(localStorage.getItem("opctions")).tourtype[i].replace(/And/g, "&")
 							
-					}
+						}
 						this.checkedTourtype=JSON.parse(localStorage.getItem("opctions")).tourtype
 					}else{
+						this.checkedCities=JSON.parse(localStorage.getItem("opctions")).cities.length>0?JSON.parse(localStorage.getItem("opctions")).cities:[]
+						this.checkedCategory=JSON.parse(localStorage.getItem("opctions")).category.length>0?JSON.parse(localStorage.getItem("opctions")).category:[]
+						this.checkedDurations=JSON.parse(localStorage.getItem("opctions")).durations.length>0?JSON.parse(localStorage.getItem("opctions")).durations:[]
 						this.checkedTourtype=[]
 					}
-					this.checkedCities=[]
-					this.checkedCategory=[]
-					this.checkedDurations=[]
+					
 				}
 			},
 			clearlocalStorage(){
-				localStorage.clear()
-				console.log(111)
+				var opctions={
+					cities:[],
+					category:[],
+					durations:[],
+					tourtype:[],	
+				}
+				opctions=JSON.stringify(opctions)
+				localStorage.setItem("opctions",opctions)
 			},
 			sort(val){
 				var sort={}
@@ -1118,6 +1128,8 @@
 						border: 1px solid #878e95;
 						font-size: 16px;
 						border-radius: 20px;
+						margin-bottom: 15px;
+						display: inline-block;
 						i{
 							font-size: 7px;
 							margin-left: 6px;

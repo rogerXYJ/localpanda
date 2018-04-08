@@ -10,7 +10,6 @@ module.exports = {
         'axios',
         'vue-lazyload',
         'element-ui',
-        'v-calendar',
         '~/assets/font/iconfont.js',
     ]
   },
@@ -18,9 +17,6 @@ module.exports = {
     plugins: [['component', [{
       libraryName: 'element-ui',
       styleLibraryName: 'theme-chalk'
-    },{
-    	 libraryName: 'v-calendar',
-      styleLibraryName: 'v-calendar'
     }]]]
   },
   plugins: [
@@ -28,10 +24,9 @@ module.exports = {
     { src: '~/plugins/axios.js'},
     { src: '~/plugins/vue-lazyload.js', ssr: false },
     { src: '~/plugins/element-ui.js', ssr: false },
-     { src: '~/plugins/calendar.js', ssr: false },
+
   ],
   css: [
     'swiper/dist/css/swiper.css',
-    'v-calendar/lib/v-calendar.min.css'
   ],
 }

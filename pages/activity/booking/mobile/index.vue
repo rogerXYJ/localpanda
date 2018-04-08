@@ -336,7 +336,7 @@
 		mounted: function() {
 			this.opctions = JSON.parse(localStorage.getItem("orderInfo"))
 			this.logIn = window.localStorage.getItem("logstate")
-			this.goBackFn()
+			/*this.goBackFn()*/
 
 		},
 		watch: {

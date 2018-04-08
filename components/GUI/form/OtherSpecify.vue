@@ -36,13 +36,14 @@
 		data() {
 			let checked = false;
 			let text = null;
+			console.log(!!this.label)
 			switch(this.type){
 				case 'radio':
 					text = this.label;
 					checked = !!this.label;
 					break;
 				case 'checkbox':
-					text = this.label;
+					text = this.label || null;
 					checked = !!this.label;
 					break;
 			}

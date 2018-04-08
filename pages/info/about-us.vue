@@ -1,21 +1,32 @@
  <template>
     <div class="page__container about__container">
+    	<HeaderCommon :logIn="logIn"></HeaderCommon>
         <div class="about-cover">
-            <h2>We turn trips into amazing experiences</h2>
-            <h3>Experience different cities and meet interesting people.</h3>
-            <div class="about-cover__play-btn iconfont">&#xe661;</div>
+        	<!--<video id="video" style="object-fit: fill;" height="800" width="100%" controls poster="https://d2q486kjf9cwwu.cloudfront.net/static/headerPhotos/AmazingExperiences.jpg">
+        		<source src="http://video.699pic.com/videos/79/53/73/mWXcVs6K9gEh1512795373_10s.mp4" type="video/mp4" ></source>
+        	</video>
+        	<div class="video-rs" v-if="!isPlay">
+        		<h2 >We turn trips into amazing experiences</h2>
+	            <h3 >Experience different cities and meet interesting people.</h3>
+	            <div class="about-cover__play-btn iconfont" @click="videoPlay()">&#xe661;</div>
+        	</div>-->
+            <h2 >We turn trips into amazing experiences</h2>
+            <h3 >Experience different cities and meet interesting people.</h3>
+            <!--<div class="about-cover__play-btn iconfont">&#xe661;</div>-->
         </div>
-        <div class="about-welcome page-section">
-            <h3>ABOUT</h3>
-            <h2>Local Panda</h2>
-            <div class="about__welcome-content">
-                <p>We are a new, different kind of China travel platform that is dedicated to improving tourists’ travel experiences. Made up of a diverse team of Chinese and Westerners, we share a fascination with China and a deep love of travel. </p>
-
-                <p>Our goal is to make traveling in China burden-free by delivering real, memorable experiences, connecting customers directly with knowledgeable local guides, personalizing trip-planning, and streamlining the booking process. </p>
-            </div>
+        <div class="about-welcome">
+        	<div class="page-section">
+	            <h3>About</h3>
+	            <h2>Local Panda</h2>
+	            <div class="about__welcome-content">
+	                <p>We are a new, different kind of China travel platform that is dedicated to improving tourists’ travel experiences. Made up of a diverse team of Chinese and Westerners, we share a fascination with China and a deep love of travel. </p>
+	
+	                <p>Our goal is to make traveling in China burden-free by delivering real, memorable experiences, connecting customers directly with knowledgeable local guides, personalizing trip-planning, and streamlining the booking process. </p>
+	            </div>
+	        </div>
         </div>
         <div class="about-mission">
-            <h3>OUR MISSION</h3>
+            <h3>Our Mission</h3>
             <h2>We turn trips into amazing experiences</h2>
             <div class="about-mission__cell page-section">
                 <div class="about-mission__cell-icon">
@@ -32,7 +43,7 @@
                 </div>
                 <div class="about-mission__cell-content">
                     <h4>Personalized</h4>
-                    <p>Our philosophy is that travel is deeply personal. It creates life-long memories and connects you with friends, loved-ones, and the world beyond your home. Therefore, we tailor every moment of your journey to your preferences, interests, and needs. We also pride ourselves on our flexibility to adapt to situations as they arise during the trip, ensuring that everything goes smoothly. </p>
+                    <p>Our philosophy is that travel is deeply personal. It creates life-long memories and connections you with friends, loved-ones, and the world beyond your home. Therefore, we tailor every moment of your journey to your preferences, interests, and needs. We also pride ourselves on our flexibility to adapt to situations as they arise during the trip, ensuring that everything goes smoothly. </p>
                 </div>
             </div>
             <div class="about-mission__cell page-section">
@@ -72,47 +83,92 @@
                 </div>
             </div>
         </div>
-        <div class="about-leader page-section">
-            <h3>OUR STORY</h3>
-            <h2>The birth of a panda family</h2>
-            <div class="about-leader__pic"></div>
-            <div class="about-leader__content">
-                <p>Raised by a family of pandas in China’s southwest Sichuan province, Jun grew up with a deep love for all things China. At the age of 18 he moved to Beijing for university, where he discovered his passion for travel. Soon after graduating, he moved to Shanghai and co-founded a start-up dedicated to helping Chinese tourists travel abroad and explore the world beyond his home. </p>
-
-                <p>After successfully growing the business to a valuation of $1 billion, he finally took his chance to experience the world outside China by pursuing a masters at Stanford University. While surrounded by people from all over the world at Stanford, Jun was surprised by both the curiosity and misconceptions that his friends and classmates had about his home. </p>
-
-                <p>Never forgetting his panda roots, Jun returned to Shanghai after graduating with the dream of showing the outside world what China is really like for the real people and pandas who live there. He hand-picked an incredible team of Chinese and Western travel pros and founded Local Panda with a clear mission: to provide authentic adventures and experiences to every visitor in China.</p>
-            </div>
+        <div class="about-leader ">
+        	<div class="page-section">
+	            <h3>Our Story</h3>
+	            <h2>The birth of a panda family</h2>
+	            <div class="about-leader__pic"></div>
+	            <div class="about-leader__content">
+	                <p>Raised by a family of pandas in China’s southwest Sichuan province, Jun grew up with a deep love for all things China. At the age of 18 he moved to Beijing for university, where he discovered his passion for travel. Soon after graduating, he moved to Shanghai and co-founded a start-up dedicated to helping Chinese tourists travel abroad and explore the world beyond his home. </p>
+	
+	                <p>After successfully growing the business to a valuation of $1 billion, he finally took his chance to experience the world outside China by pursuing a masters at Stanford University. While surrounded by people from all over the world at Stanford, Jun was surprised by both the curiosity and misconceptions that his friends and classmates had about his home. </p>
+	
+	                <p>Never forgetting his panda roots, Jun returned to Shanghai after graduating with the dream of showing the outside world what China is really like for the real people and pandas who live there. He hand-picked an incredible team of Chinese and Western travel pros and founded Local Panda with a clear mission: to provide authentic adventures and experiences to every visitor in China.</p>
+	            </div>
+	        </div>
         </div>
         <div class="about-family">
             <h2>And finally...the Local Panda Team</h2>
             <h3>If you love to travel and want to build a product that changes the way people experience activities then join our talented team.</h3>
         </div>
         <div class="about-media page-section">
-            <h3>MEDIA</h3>
+            <h3>Media</h3>
             <h2>Stay up to date</h2>
             <div class="about-media__cell">
-                <div class="about-media__cell-icon"></div>
-                <div class="about-media__cell-content">Follow us on <a href="#">Facebook</a> for the snazziest travel pictures to inspire your next trip.</div>
+                <div class="about-media__cell-icon">
+                	<svg class="icon" aria-hidden="true">
+					    <use xlink:href="#icon-facebook"></use>
+					</svg>
+                </div>
+                <div class="about-media__cell-content">Follow us on <a href="https://www.facebook.com/LocalPandaGuides/?fref=ts"  target="_blank">Facebook</a> for the snazziest travel pictures to inspire your next trip.</div>
             </div>
             <div class="about-media__cell">
-                <div class="about-media__cell-icon"></div>
-                <div class="about-media__cell-content">Follow us on <a href="#">Twitter</a> for the snazziest travel pictures to inspire your next trip.</div>
+                <div class="about-media__cell-icon">
+                	<svg class="icon" aria-hidden="true">
+					    <use xlink:href="#icon-twitter1"></use>
+					</svg>
+                </div>
+                <div class="about-media__cell-content">Follow us on <a href="https://twitter.com/LocalPandaGuide" target="_blank">Twitter</a> for the snazziest travel pictures to inspire your next trip.</div>
             </div>
 
         </div>
+        <FooterCommon></FooterCommon>
     </div>
 </template>
 
 <script>
 import Vue from 'vue'
+import HeaderCommon from '~/components/HeaderCommon/HeaderCommon';
+import FooterCommon from '~/components/FooterCommon/FooterCommon';
 export default {
     name: 'about-us',
+    data(){
+    	return {
+    		logIn:'',
+    		isPlay:false,
+    		
+    	}
+    },
     components: {
+    	HeaderCommon,
+    	FooterCommon
     },
     methods: {
+    	videoPlay(){
+    		this.isPlay=true
+    		var video=document.querySelector("#video");
+    		video.play();
+    	}
     },
     mounted: function() {
+        this.logIn = window.localStorage.getItem("logstate");
+        /*var that=this
+        var Media=document.querySelector("#video");
+        var eventTester = function(e){
+			Media.addEventListener(e,function(){
+				if(e=="play"){
+					that.isPlay=true
+				}else if(e=="pause"){
+					that.isPlay=false
+				}else if(e=="ended"){
+					that.isPlay=false
+				}
+			},false);
+		}
+        eventTester("play")
+        eventTester("pause")
+        eventTester("ended")*/
+        	
         
     }
 }
@@ -127,103 +183,126 @@ export default {
     h2, h3{
         text-align: center;
     }
-
     h2{
         font-weight: bold;
     }
-
     p{
         font-size: 18px;
         line-height: 28px;
     }
-
-    .about-cover{
+    .icon {
+       width: 46px; height: 46px;
+       vertical-align:middle;
+       fill: currentColor;
+       margin:0px 14px 0 0;
+       overflow: hidden;
+    }
+   /* .about-cover{
+    	width: 100%;
         height: 800px;
         position: relative;
         overflow: hidden;
-        background: url('~/static/banner/about_cover.jpg') no-repeat center center;
-
+        &__play-btn{
+            margin-top: 50px;
+            color: rgba(255,255,255,.8);
+            font-size: 70px;
+            text-align: center;
+            cursor: pointer;
+            &:hover{
+            	opacity: .6;
+            }
+	     }
+        .video-rs{
+        	position: absolute;
+        	top: 50%;
+        	left: 50%;
+        	transform: translate(-50%,-400px);
+        	
+	        h2{
+	            margin-top: 304px;
+	            font-size: 44px;
+	            text-shadow: 0 5px 10px rgba(0,0,0,.3);
+	            color: #ffffff;
+	        }
+	        h3{
+	            margin-top: 10px;
+	            font-size: 20px;
+	            text-shadow: 0 5px 10px rgba(0,0,0,.3);
+	            color: #ffffff;
+	        }
+	        
+        }
+    }*/
+    .about-cover{
+    	width: 100%;
+        height: 800px;
+        position: relative;
+        overflow: hidden;
+        background: url('https://d2q486kjf9cwwu.cloudfront.net/static/headerPhotos/AmazingExperiences.jpg') no-repeat;
+        background-size: cover;
+        background-position: center;
+        clip-path: polygon(0 0%,100% 0%,100% 95%,0 100%);
         h2{
             margin-top: 304px;
             font-size: 44px;
             text-shadow: 0 5px 10px rgba(0,0,0,.3);
             color: #ffffff;
         }
-
         h3{
             margin-top: 10px;
             font-size: 20px;
             text-shadow: 0 5px 10px rgba(0,0,0,.3);
             color: #ffffff;
         }
-
         &__play-btn{
             margin-top: 50px;
             color: rgba(255,255,255,.8);
             font-size: 70px;
             text-align: center;
         }
-
-        &:after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            margin-left: -900px;
-            border-right: 1800px solid #fff;
-            border-top: 70px solid transparent;
-        }
+        
     }
-
     .about-welcome{
         padding: 70px 0;
-
+        clip-path: polygon(0 0%,100% 5%,100% 100%,0 100%);
         h2{
             padding: 10px 0 80px;
             font-size: 30px;
             line-height: 28px;
         }
-
         h3{
             font-size: 16px;
         }
-
         p{
             padding-bottom: 30px;
             font-size: 18px;
         }
     }
-
     .about-mission{
         position: relative;
         background: #faf9f8;
         overflow: hidden;
-        padding: 70px 0;
-
+        padding: 100px 0 80px;
+        clip-path: polygon(0 0, 100% 5%, 100% 100%, 0% 95%);
         h2{
             padding: 10px 0;
             font-size: 30px;
         }
-
         h3{
             font-size: 16px;
         }
-
         h4{
             font-size: 20px;
             padding-bottom: 20px;
         }
-
         &__cell{
             position: relative;
             padding: 70px 0;
             border-bottom: 1px solid #ebebeb;
             overflow: hidden;
-
             &:last-of-type{
                 border-bottom: none;
             }
-
             &:nth-of-type(2n){
                 .about-mission__cell-icon{
                     float: right;
@@ -234,16 +313,15 @@ export default {
                 }
             }
         }
-
         &__cell-content{
             width: 800px;
             position: absolute;
             top: 50%;
             right: 0;
             transform: translateY(-50%);
+            
         }
-
-        &:before {
+   /*  &:before {
             content: '';
             position: absolute;
             top: 0;
@@ -252,7 +330,6 @@ export default {
             border-right: 1800px solid #fff;
             border-bottom: 70px solid transparent;
         }
-
         &:after {
             content: '';
             position: absolute;
@@ -261,8 +338,8 @@ export default {
             margin-left: -900px;
             border-right: 1800px solid #fff;
             border-top: 70px solid transparent;
-        }
-
+        }*/
+       
         &__cell-icon{
             width: 200px;
             height: 200px;
@@ -274,7 +351,6 @@ export default {
                 linear-gradient(-45deg, #009efd 0%, #1bbc9d 100%);
 			background-clip: content-box, padding-box;
             border-radius: 50%;
-
             .iconfont{
                 position: absolute;
                 font-size: 114px;
@@ -288,57 +364,55 @@ export default {
             
         }
     }
-
     .about-leader{
+    	clip-path: polygon(0 5%, 100% 0, 100% 100%, 0 100%);
         overflow: hidden;
-
+         
         h2{
             padding: 10px 0 80px;
             font-size: 30px;
         }
-
         h3{
             font-size: 16px;
         }
-
         &__pic{
             width: 385px;
             height: 465px;
             float: right;
             margin-left: 150px;
-            background: url('~/static/banner/leader.jpg');
+            background: url('https://d2q486kjf9cwwu.cloudfront.net/static/headerPhotos/Jun.jpg');
         }
-
         &__content{
             overflow: hidden;
             font-size: 18px;
-
             p{
                 padding-bottom: 40px;
             }
         }
-
     }
-
+    .about-leader {
+    	padding-top: 30px;
+    }
     .about-family{
         height: 944px;
+        width: 100%;
         position: relative;
         overflow: hidden;
-        background: url('~/static/banner/family.jpg') no-repeat center center;
-
+        background: url('https://d2q486kjf9cwwu.cloudfront.net/static/headerPhotos/LocalpandaTeam.jpg') no-repeat ;
+        background-size:cover ;
+        background-position: center;
+        clip-path: polygon(0 5%, 100% 0, 100% 100%, 0 100%);
         h2{
             margin-top: 610px;
             font-size: 44px;
             color: #ffffff;
         }
-
         h3{
             margin-top: 10px;
             font-size: 20px;
             color: #ffffff;
         }
-
-        &:before {
+       /* &:before {
             content: '';
             position: absolute;
             top: 0;
@@ -346,36 +420,33 @@ export default {
             margin-left: -900px;
             border-left: 1800px solid #fff;
             border-bottom: 70px solid transparent;
-        }
+        }*/
     }
-
     .about-media{
         padding: 70px 0;
-
         h2{
             padding: 10px 0 50px;
             font-size: 30px;
             line-height: 28px;
         }
-
         h3{
             font-size: 16px;
         }
-
         &__cell{
             padding: 30px 0 20px;
+          
         }
-
+        &__cell-icon{
+        	text-align: center;
+        }
         &__cell-content{
             margin-top: 40px;
             text-align: center;
             font-size: 18px;
-
             a{
                 color: #1bbc9d;
                 text-decoration: underline;
             }
         }
-
     }
 </style>

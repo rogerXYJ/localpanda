@@ -4,11 +4,11 @@
 		<div class="hotbanner" :class="loc=='Beijing'?'beijing':'shanghai'">
 			<p v-if="loc=='Beijing'">
 				<span>Beijing</span> History, Culture, and Art in China’s Capital
-				</br> Our guides can speak English, Spanish, Russian, Japanese, Korean and other languages.
+				</br> <em>Our guides can speak English, Spanish, Russian, Japanese, Korean and other languages.</em>
 			</p>
 			<p v-else>
 				<span>Shanghai</span> Where China’s past and future collide
-				</br> Our guides can speak English, Spanish, Russian, Japanese, Korean and other languages.
+			</br><em>Our guides can speak English, Spanish, Russian, Japanese, Korean and other languages.</em>
 			</p>
 		</div>
 		<div class="topSeachInfo">
@@ -199,6 +199,11 @@
 						keywords:"Multi-day & Extended <br/> Tours",
 						url:"/activity/recommend/Shanghai/Multi-day-and-Extended-Tours",
 						imgUrl:'https://d2q486kjf9cwwu.cloudfront.net/static/headerPhotos/Multi-dayAndExtendedTours.jpg'
+					},
+					{
+						keywords:"Huangpu <br/> River Cruises",
+						url:"/activity/recommend/Shanghai/Huangpu-River-Cruises",
+						imgUrl:'https://d2q486kjf9cwwu.cloudfront.net/static/headerPhotos/HuangpuRiverCruises.jpg'
 					},
 					{
 						keywords:"Shows & <br/>Tickets",
@@ -407,12 +412,17 @@
 			}
 			height:260px;
 			p {
+				em{
+						display: inline-block;
+						margin-top: 15px;
+					}
 				span {
 					display: block;
 					font-size: 38px;
 					font-weight: bold;
 					margin-bottom: 6px;
 					text-shadow: 2.5px 2.5px 10px rgba(0, 0, 0, .3);
+					
 				}
 				text-align: center;
 				text-shadow :2.5px 2.5px 10px rgba(0,

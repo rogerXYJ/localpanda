@@ -5,7 +5,7 @@
 
 			<div class="guideMessage-m">
 				<div class="linkseting">
-					<a href="~/index.html">Home</a>
+					<a href="/">Home</a>
 					<em class='iconfont'>&#xe64a;</em>
 					<a v-if="detail.location=='Shanghai'" :href="'/guide/list/'+detail.location">Shanghai Guides</a>
 					<a v-else :href="'/guide/list/'+detail.location">Beijing Guides</a>
@@ -145,7 +145,7 @@
 	import Alert from "~/components/Prompt/Alert";
 	import Explanation from "~/components/Prompt/Explanation";
 
-	import Contact from "~/components/pageComponents/guide/detail/Contact";
+	import Contact from "~/components/Contact/Contact";
 	import Pic from "~/components/pageComponents/guide/detail/Pic";
 	import PackageOptions from "~/components/pageComponents/guide/detail/PackageOptions";
 

@@ -24,7 +24,7 @@
                                 controls-position="right" 
                                 v-model="adultsNum" 
                                 @change="onChangeAdults" 
-                                :min="1"
+                                :min="0"
                             >
                             </el-input-number>
                         </div>
@@ -96,7 +96,7 @@
             return {
                 radioValue: this.value,
                 otherValue,
-                adultsNum: this.initExtendData.adults || 1,
+                adultsNum: this.initExtendData.adults || 0,
                 childNum: this.initExtendData.children || 0,
             }
         },
@@ -114,17 +114,13 @@
                 return 'GUI-radio-pic__item' + (this.value == value ? ' GUI-radio-pic__item--current':'');
             },
             onChange(value, extendType){
-                if(!extendType){
-                    this.onChangeExtend({
-                        adults: 0,
-                        children: 0,
-                    })
-                }else{
-                    this.onChangeExtend({
-                        adults: this.adultsNum,
-                        children: this.childNum,
-                    })
-                }
+                
+                this.adultsNum = 0;
+                this.childNum = 0;
+                this.onChangeExtend({
+                    adults: 0,
+                    children: 0,
+                })
                 if(value != this.radioValue){
                     this.radioValue = value;
                     this.$emit('input', value);

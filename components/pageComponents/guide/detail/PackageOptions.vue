@@ -216,44 +216,34 @@
 				halfcarpic: "", //动态带车半天价格
 				allTourpic: '', //动态不带车全天价格
 				halfTourpic: '', //动态不不带车半天价格
-
 				valueCarall: '', //带车全天人数
-
 				carTourPic: [], //带车全天价格
 				halfcarTourPic: [], //带车半天价格
-
 				allTourPic: [], //不带车全天
 				halfTourPic: [], //不带车半天
-
 				value: '', //不带车全天人数
 				seletId: 0, //切换不带车
-
 				seletId2: 0, //切换带车
-
 			
 				picmsg: '',
 				SupplementaryCar: '',
 				SupplemenTourPic: '',
 				show: false,
-
 				carAllarr: [], //带车全天选中日期
 				carHalfarr: [], //带车半天选中日期
 				tourAllarr: [], //不带车全天选中日期
 				tourHalfarr: [], //不带车半天选中日期
-
 				Function: '',
 				carAllsuerDate: [],
 				carHalfsuerDate: [],
 				tourAllsuerDate: [],
 				tourHalfsuerDate: [],
-
 				//data 
 				startTimeAllCar: {
 					time: '',
 				},
 				startTimeHalfCar: {
 					time: '',
-
 				},
 				startTimeAllTour: {
 					time: ''
@@ -263,23 +253,17 @@
 				},
 				//带车全天日期
 				allcaroptions: {
-
 				},
 				//带车半天日期
 				halfcaroptions: {
-
 				},
 				//不带车全天日期
 				touralloptions: {
-
 				},
 				//不带车半天日期
 				tourhalfoptions: {
-
 				}
-
 			}
-
 		},
 		components: {
 			flatPickr,
@@ -288,13 +272,11 @@
 		methods: {
 			dateClear(val) {
 				if(val == this.startTimeAllCar.time) {
-
 					this.carHalfarr = this.carHalfarr.concat(this.startTimeAllCar.time.split(", "))
 					this.carAllarr = this.carAllarr.concat(this.startTimeHalfCar.time.split(", "))
 					this.startTimeAllCar.time = ""
 					
 					//console.log(this.carHalfsuerDate)
-
 				} else if(val == this.startTimeHalfCar.time) {
 					
 					this.carAllarr = this.carAllarr.concat(this.startTimeHalfCar.time.split(", "))
@@ -313,14 +295,11 @@
 					
 				}
 			},
-
 			alertTitleCallBack(val) {
 				//回调后关闭弹框
 				var that = this;
-
 				that.alertTitleStatus = false;
 			},
-
 			//带车
 			jumpfill(oderId) {
 				const that=this
@@ -346,7 +325,6 @@
 						valueCarall: this.valueCarall,
 						startTimeAllCar: this.startTimeAllCar.time,
 						startTimeHalfCar: this.startTimeHalfCar.time
-
 					}
 				} else {
 					that.obj = {
@@ -376,11 +354,8 @@
 				const that = this
 				//带车全天
 				for(let i = 0; i < that.carTourPic.length; i++) {
-
 					if(that.valueCarall == that.carTourPic[i].people) {
-
 						that.allcarpic = that.carTourPic[i].money
-
 					}
 				}
 				//带车半天
@@ -389,29 +364,22 @@
 						that.halfcarpic = that.halfcarTourPic[i].money
 					}
 				}
-
 			},
 			//动态改变徒步价格
 			changeTour() {
 				const that = this
 				//徒步全天
 				for(var i = 0; i < that.allTourPic.length; i++) {
-
 					if(that.value == that.allTourPic[i].people) {
-
 						that.allTourpic = that.allTourPic[i].money
-
 					}
 				}
 				//徒步半天
 				for(var i = 0; i < that.halfTourPic.length; i++) {
 					if(that.value == that.halfTourPic[i].people) {
-
 						that.halfTourpic = that.halfTourPic[i].money
-
 					}
 				}
-
 			},
 			array_diff(a, b) {
 				for(var i = 0; i < b.length; i++) {
@@ -516,13 +484,11 @@
 								"money": str[i]
 							}
 							that.allTourPic.push(arr)
-
 						}
 						that.allTourPic[0] = {
 							"people": 1 + " person",
 							"money": that.allTourPic[0].money
 						}
-
 					}
 					//徒步半天
 					if(response.data.prices.hikingHalfDayPrices == null) {
@@ -532,13 +498,11 @@
 								"money": response.data.hikingHalfDayPrice
 							}
 							that.halfTourPic.push(half)
-
 						}
 						that.halfTourPic[0] = {
 							'people': 1 + ' person',
 							"money": that.halfTourPic[0].money
 						}
-
 					} else {
 						for(var i in halfStr) {
 							var half = {
@@ -588,7 +552,6 @@
 					if(response.data.hikingInstructions){
 						that.SupplemenTourPic = response.data.hikingInstructions.split("\r\n")
 					}	
-
 					for(var i = 0; i < that.SupplemenTourPic.length; i++) {
 						if(that.SupplemenTourPic[i] == '') {
 							that.SupplemenTourPic.splice(i, 1);
@@ -596,9 +559,7 @@
 						}
 					}
 					that.getDate()
-
 				}, function(response) {
-
 				})
 			},
 			getDate() {
@@ -615,7 +576,6 @@
 						enable: that.carAllsuerDate,
 						minDate: that.picmsg.earliestBookDate,
 						maxDate: addmulMonth(that.picmsg.earliestBookDate, 3),
-
 					}
 					//带车半天日历
 					that.halfcaroptions = {
@@ -623,7 +583,6 @@
 						enable: that.carHalfsuerDate,
 						minDate: that.picmsg.earliestBookDate,
 						maxDate: addmulMonth(that.picmsg.earliestBookDate, 3),
-
 					}
 					//徒步全天日历
 					that.touralloptions = {
@@ -631,7 +590,6 @@
 						enable: that.tourAllsuerDate,
 						minDate: that.picmsg.earliestBookDate,
 						maxDate: addmulMonth(that.picmsg.earliestBookDate, 3),
-
 					}
 					//不带车半天日历
 					that.tourhalfoptions = {
@@ -639,11 +597,8 @@
 						enable: that.tourHalfsuerDate,
 						minDate: that.picmsg.earliestBookDate,
 						maxDate: addmulMonth(that.picmsg.earliestBookDate, 3),
-
 					}
-
 				}, function(response) {})
-
 			}
 		},
 		filters: {
@@ -655,7 +610,6 @@
 				})
 				for(var F = Dates.length; F;) Dates[--F] = Dates[F][1]
 				return Dates.join(',')
-
 				//arr.sort()
 			}
 		},

@@ -122,12 +122,12 @@
 					</div>
 					<div class="halfday" v-if="infor.startTimeHalfCar">
 						<b>Half day</b>
-						<p>{{infor.startTimeHalfCar|sortDate}}</p>
+						<p>{{infor.startTimeHalfCar}}</p>
 						<span>${{infor.halfcarpic*infor.startTimeHalfCar.split(',').length}}</span>
 					</div>
 					<div class="halfday" v-if="infor.startTimeAllCar">
 						<b>Full day</b>
-						<p>{{infor.startTimeAllCar|sortDate}}</p>
+						<p>{{infor.startTimeAllCar}}</p>
 						<span>${{infor.startTimeAllCar.split(',').length*infor.allcarpic}}</span>
 					</div>
 					<div class="total" v-if="infor.startTimeHalfCar&&!infor.startTimeAllCar">
@@ -153,12 +153,12 @@
 					</div>
 					<div class="halfday" v-if="infor.startTimeHalfTour">
 						<b>Half day</b>
-						<p>{{infor.startTimeHalfTour|sortDate}}</p>
+						<p>{{infor.startTimeHalfTour}}</p>
 						<span>${{infor.halfTourpic*infor.startTimeHalfTour.split(',').length}}</span>
 					</div>
 					<div class="halfday" v-if="infor.startTimeAllTour">
 						<b>Full day</b>
-						<p>{{infor.startTimeAllTour|sortDate}}</p>
+						<p>{{infor.startTimeAllTour}}</p>
 						<span>${{infor.startTimeAllTour.split(',').length*infor.allTourpic}}</span>
 					</div>
 					<div class="total" v-if="infor.startTimeHalfTour&&!infor.startTimeAllTour">
@@ -576,7 +576,7 @@
 			this.logIn = window.localStorage.getItem("logstate")
 			this.goBackFn()
 			this.infor = JSON.parse(window.localStorage.getItem("infor"))
-
+			console.log(this.infor)
 		},
 		watch: {
 

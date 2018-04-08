@@ -92,7 +92,8 @@
                                         >
                                         </flatPickr>
                                     </div>
-                                    <input hidden v-model="form.arriveTime">
+
+                                    <el-input class="input-hidden" v-model="form.arriveTime"></el-input>
                                     <el-checkbox
                                         class="GUI-form__radio-group"
                                         v-model="arriveTimeNotDecided"
@@ -195,6 +196,7 @@
         data() {
             
             let arriveTimeNotDecidedCheck = (rule, value, callback) => {
+                console.log(123)
                 if(!value && !this.arriveTimeNotDecided){
                     callback(new Error('Field is required (must be valid date)'));
                 }else{
@@ -240,7 +242,7 @@
                         { required: true, message: 'Field is required'},
                     ],
                     arriveTime: [
-                        { validator: arriveTimeNotDecidedCheck},
+                        { validator: arriveTimeNotDecidedCheck, trigger: 'change'},
                     ],
                     arriveCity: [
                         { validator: arriveCityNotDecidedCheck},
@@ -400,4 +402,12 @@
         background: #ebebeb;
     }
     
+    .input-hidden{
+        width: 0;
+        height: 0;
+        position: absolute;
+        top: 0;
+        left: 0;
+        overflow: hidden;
+    }
 </style>

@@ -138,7 +138,9 @@
 				<div class="del">
 					<span v-if="removeCity.length>0" v-for="(item,index) in removeCity" @click="del(0,removeCity,index)">{{item}}<i class="iconfont">&#xe629;</i></span>
 					<span v-if="removeCategory.length>0" v-for="(item,index) in removeCategory" @click="del(1,removeCategory,index)">{{item}}<i class="iconfont">&#xe629;</i></span>
-					<span v-if="removeDurations.length>0" v-for="(item,index) in removeDurations" @click="del(2,removeDurations,index)">{{item}}<i class="iconfont">&#xe629;</i></span>
+					<span v-if="removeDurations.length>0 && item==0" v-for="(item,index) in removeDurations" @click="del(2,removeDurations,index)">Half Day<i class="iconfont">&#xe629;</i></span>
+					<span v-if="removeDurations.length>0 && item==1" v-for="(item,index) in removeDurations"  @click="del(2,removeDurations,index)">1 Day<i class="iconfont">&#xe629;</i></span>
+					<span v-if="removeDurations.length>0 && item>1" v-for="(item,index) in removeDurations"  @click="del(2,removeDurations,index)">{{item}} Days<i class="iconfont">&#xe629;</i></span>
 					<span v-if="removeTourtype.length>0" v-for="(item,index) in removeTourtype" @click="del(3,removeTourtype,index)">{{item}}<i class="iconfont">&#xe629;</i></span>
 				</div>
 				<div class="pageSizeInfo">totally {{records}} activities</div>
@@ -461,7 +463,9 @@
 					}else{
 						this.checkedCities=[]
 					}
-					
+					this.checkedCategory=[]
+					this.checkedDurations=[]
+					this.checkedTourtype=[]
 				}else if(id==1){
 					this.isshowcategory=!this.isshowcategory
 					this.isshowcity=false
@@ -473,7 +477,9 @@
 					}else{
 						this.checkedCategory=[]	
 					}
-					
+					this.checkedCities=[]
+					this.checkedDurations=[]
+					this.checkedTourtype=[]
 					
 				}else if(id==2){
 					this.isshowdurations=!this.isshowdurations
@@ -488,7 +494,9 @@
 					}else{
 						this.checkedDurations=[]
 					}
-				
+					this.checkedCities=[]
+					this.checkedCategory=[]	
+					this.checkedTourtype=[]
 				}else{
 					this.isshowtourtype=!this.isshowtourtype
 					this.isshowdurations=false
@@ -505,8 +513,9 @@
 					}else{
 						this.checkedTourtype=[]
 					}
-					
-					
+					this.checkedCities=[]
+					this.checkedCategory=[]
+					this.checkedDurations=[]
 				}
 			},
 			clearlocalStorage(){
@@ -750,7 +759,7 @@
 					if(response.data.entities.length) {
 						that.loadingStatus = false
 						that.activityList=response.data.entities
-
+						window.scrollTo(100,0)
 					}
 
 				}, function(response) {
@@ -824,6 +833,11 @@
 		},
 		mounted: function() {
 			const that = this
+			if(window.location.search){
+				
+			}else{
+				this.clearlocalStorage()
+			}
 			that.removeCity=JSON.parse(localStorage.getItem("opctions"))!=null?JSON.parse(localStorage.getItem("opctions")).cities:[]
 			that.removeCategory=JSON.parse(localStorage.getItem("opctions"))!=null?JSON.parse(localStorage.getItem("opctions")).category:[]
 			that.removeDurations=JSON.parse(localStorage.getItem("opctions"))!=null?JSON.parse(localStorage.getItem("opctions")).durations:[]
@@ -836,7 +850,8 @@
 			})
 			that.logIn = localStorage.getItem("logstate") ? localStorage.getItem("logstate") : null
 			//console.log(Object.keys(this.tourtype).length)
-		}
+			
+		},
 	}
 </script>
 <style lang="scss">

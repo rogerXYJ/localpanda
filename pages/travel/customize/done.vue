@@ -1,5 +1,9 @@
 <template >    
     <div class="page__container">
+<<<<<<< HEAD
+=======
+    	<HeaderCommon :logIn="logIn"></HeaderCommon>
+>>>>>>> master
         <Banner></Banner>
         <div class="done-head">
             <div class="done-head__icon"><i class="iconfont icon-yixuanze"></i></div>
@@ -43,21 +47,41 @@ service@localpanda.com.
             </ul>
 
         </div>
+<<<<<<< HEAD
+=======
+        <FooterCommon></FooterCommon>
+>>>>>>> master
     </div>
 </template>
 
 <script>
+<<<<<<< HEAD
 import Banner from "~/components/pageComponents/travel/customize/Banner";
 
 const cdnPath = 'https://d2q486kjf9cwwu.cloudfront.net';
 
+=======
+import HeaderCommon from '~/components/HeaderCommon/HeaderCommon';
+import FooterCommon from '~/components/FooterCommon/FooterCommon';
+import Banner from "~/components/pageComponents/travel/customize/Banner";
+const cdnPath = 'https://d2q486kjf9cwwu.cloudfront.net';
+>>>>>>> master
 export default {
   name: "TravelCustomizeStep-3",
   components: {
     Banner,
+<<<<<<< HEAD
   },
   data() {
     return {
+=======
+    HeaderCommon,
+    FooterCommon
+  },
+  data() {
+    return {
+    	logIn:'',
+>>>>>>> master
         recommendDataSource: [
             {
                 src: cdnPath + '/static/customize/population/Businessgroup.jpg',
@@ -102,7 +126,13 @@ export default {
       this.form.otherRoomRequirements = value;
     }
   },
+<<<<<<< HEAD
   mounted: function() {}
+=======
+  mounted: function() {
+  	 this.logIn = window.localStorage.getItem("logstate");
+  }
+>>>>>>> master
 };
 </script>
 <style lang="scss">
@@ -112,12 +142,18 @@ export default {
 </style>
 <style lang="scss" scoped>
 @import "~assets/scss/base/_setting.scss";
+<<<<<<< HEAD
 
+=======
+>>>>>>> master
 .done-head{
     width: 600px;
     padding: 60px 0;
     margin: 0 auto;
+<<<<<<< HEAD
 
+=======
+>>>>>>> master
     &__icon{
         width: 70px;
         height: 70px;
@@ -130,12 +166,18 @@ export default {
         color: #ffffff;
         text-align: center;
         line-height: 70px;
+<<<<<<< HEAD
 
+=======
+>>>>>>> master
         i{
             font-size: 24px;
         }
     }
+<<<<<<< HEAD
 
+=======
+>>>>>>> master
     p{
         font-size: 28px;
         overflow: hidden;
@@ -143,35 +185,53 @@ export default {
         font-weight: bold;
     }
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> master
 .done-tips{
     background: #faf9f8;
     padding: 0 40px 40px;
     font-size: 18px;
+<<<<<<< HEAD
 
+=======
+>>>>>>> master
     h3{
         font-weight: bold;
         padding: 40px 0 15px;
     }
+<<<<<<< HEAD
 
+=======
+>>>>>>> master
     p{
         line-height: 30px;
     }
 }
+<<<<<<< HEAD
 
 .done-recommend{
     margin-top: 56px;
 
+=======
+.done-recommend{
+    margin-top: 56px;
+>>>>>>> master
     h2{
         font-size: 18px;
         font-weight: bold;
     }
+<<<<<<< HEAD
 
+=======
+>>>>>>> master
     &__list{
         margin-top: 30px;
         overflow: hidden;
         display: flex;
         justify-content: space-between;
+<<<<<<< HEAD
 
     }
 
@@ -179,6 +239,12 @@ export default {
         flex: 0 1 218px;
         width: 218px;
 
+=======
+    }
+    &__cell{
+        flex: 0 1 218px;
+        width: 218px;
+>>>>>>> master
         &-pic{
             width: 218px;
             height: 145px;
@@ -195,5 +261,9 @@ export default {
         }
     }
 }
+<<<<<<< HEAD
 </style>
 
+=======
+</style>
+>>>>>>> master

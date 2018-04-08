@@ -1,4 +1,8 @@
+<<<<<<< HEAD
  <template>
+=======
+<template>
+>>>>>>> master
     <div class="page__container privacy__container">
         <div class="privacy-banner">
             <h2>Need Help</h2>
@@ -111,30 +115,48 @@ export default {
     h2, h3{
         text-align: center;
     }
+<<<<<<< HEAD
 
     h2{
         font-weight: bold;
     }
 
+=======
+    h2{
+        font-weight: bold;
+    }
+>>>>>>> master
     p{
         font-size: 18px;
         line-height: 28px;
     }
+<<<<<<< HEAD
 
+=======
+>>>>>>> master
     .privacy-tab{
         padding-bottom: 60px;
         text-align: center;
         font-size: 16px;
+<<<<<<< HEAD
 
+=======
+>>>>>>> master
         &__cell{
             display: inline-block;
             position: relative;
             padding: 0 18px;
+<<<<<<< HEAD
 
             &--current{
                 color: #1bbc9d;
             }
 
+=======
+            &--current{
+                color: #1bbc9d;
+            }
+>>>>>>> master
             &:after{
                 content: '';
                 width: 2px;
@@ -145,7 +167,10 @@ export default {
                 margin-top: -5px;
                 background: #353a3f;
             }
+<<<<<<< HEAD
 
+=======
+>>>>>>> master
             &:last-of-type{
                 &:after{
                     display: none;
@@ -153,12 +178,18 @@ export default {
             }
         } 
     }
+<<<<<<< HEAD
 
+=======
+>>>>>>> master
     .privacy-banner{
         height: 210px;
         overflow: hidden;
         background: url('~/static/banner/privacy.jpg') no-repeat top center;
+<<<<<<< HEAD
 
+=======
+>>>>>>> master
         h2{
             margin-top: 80px;
             font-size: 38px;
@@ -166,20 +197,33 @@ export default {
             color: #ffffff;
         }
     }
+<<<<<<< HEAD
 
+=======
+>>>>>>> master
     .privacy-content{
         margin-top: -50px;
         padding: 20px 60px 100px;
         background: #ffffff;
         box-shadow: 0 5px 10px rgba(0,0,0,.3);
     }
+<<<<<<< HEAD
 
     .privacy-detail{
         font-size: 16px;
         line-height: 24px;
 
+=======
+    .privacy-detail{
+        font-size: 16px;
+        line-height: 24px;
+>>>>>>> master
         p{
             padding: 16px 0;
         }
     }
+<<<<<<< HEAD
 </style>
+=======
+</style>
+>>>>>>> master

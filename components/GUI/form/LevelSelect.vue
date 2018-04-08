@@ -14,7 +14,10 @@
     </div>
 </template>
 <script>
+<<<<<<< HEAD
 
+=======
+>>>>>>> master
 	export default {
 		name: "GUI-LevelSelect",
 		props: {
@@ -29,7 +32,10 @@
 		data() {
             let stepValue = 0;
             let valueType = typeof this.value;
+<<<<<<< HEAD
 
+=======
+>>>>>>> master
             this.dataSource.forEach((item, index) => {
                 let has = true;
                 if(this.valueType == 'Object'){
@@ -47,7 +53,10 @@
                     stepValue = index;
                 }
             });
+<<<<<<< HEAD
 
+=======
+>>>>>>> master
             return {
                 stepValue,
                 valueType,
@@ -78,26 +87,37 @@
 <style lang="scss">
 .GUI-level-select{
     position: relative;
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> master
     &__list{
         width: 100%;
         position: absolute;
         left: 0;
         top: 43px;
         display: flex;
+<<<<<<< HEAD
 
         li{
             flex: 1;
 
+=======
+        li{
+            flex: 1;
+>>>>>>> master
             p{
                 width: 150px;
                 position: relative;
                 margin-left: -75px;
                 text-align: center;
                 line-height: 24px;
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> master
                 &:before{
                     content: '';
                     position: absolute;
@@ -108,17 +128,26 @@
                     background: #878e95;
                 }
             }
+<<<<<<< HEAD
 
+=======
+>>>>>>> master
             &:last-of-type{
                 flex: 0;
                 position: absolute;
                 right: 0;
                 top: 0;
+<<<<<<< HEAD
 
                 p{
                     margin: 0 -75px 0 0;
                 }
 
+=======
+                p{
+                    margin: 0 -75px 0 0;
+                }
+>>>>>>> master
             }
             
         }

@@ -1,5 +1,9 @@
 <template >    
     <div class="page__container">
+<<<<<<< HEAD
+=======
+    	<HeaderCommon :logIn="logIn"></HeaderCommon>
+>>>>>>> master
         <Banner></Banner>
         <StepBar step="3"></StepBar>
         <div class="page-section">
@@ -67,10 +71,15 @@
                 </div>
             </el-form>
         </div>  
+<<<<<<< HEAD
+=======
+        <FooterCommon></FooterCommon>
+>>>>>>> master
     </div>
 </template>
 
 <script>
+<<<<<<< HEAD
 import Banner from "~/components/pageComponents/travel/customize/Banner";
 import StepBar from "~/components/pageComponents/travel/customize/StepBar";
 
@@ -78,14 +87,32 @@ import stepFormStorage from "~/assets/js/stepFormStorage.js";
 
 const storageKey = "STEP_3_FORM_STORAGE";
 
+=======
+import HeaderCommon from '~/components/HeaderCommon/HeaderCommon';
+import FooterCommon from '~/components/FooterCommon/FooterCommon';
+import Banner from "~/components/pageComponents/travel/customize/Banner";
+import StepBar from "~/components/pageComponents/travel/customize/StepBar";
+import stepFormStorage from "~/assets/js/stepFormStorage.js";
+const storageKey = "STEP_3_FORM_STORAGE";
+>>>>>>> master
 export default {
     name: "TravelCustomizeStep-3",
         components: {
         Banner,
+<<<<<<< HEAD
         StepBar
     },
     data() {
         return {
+=======
+        StepBar,
+        HeaderCommon,
+        FooterCommon
+    },
+    data() {
+        return {
+        	logIn:"",
+>>>>>>> master
             formReady: false,
             form: {
                 firstName: "",
@@ -136,6 +163,10 @@ export default {
         }
     },
     mounted: function() {
+<<<<<<< HEAD
+=======
+    	 this.logIn = window.localStorage.getItem("logstate");
+>>>>>>> master
         let formData = stepFormStorage.getStorage(storageKey);
         if(JSON.stringify(formData).length > 7){
             try{
@@ -156,12 +187,19 @@ export default {
 </style>
 <style lang="scss" scoped>
 @import "~assets/scss/base/_setting.scss";
+<<<<<<< HEAD
 
+=======
+>>>>>>> master
 .GUI-form__grid-col {
   padding-right: 24px;
   &:last-of-type {
     padding-right: 0;
   }
 }
+<<<<<<< HEAD
 </style>
 
+=======
+</style>
+>>>>>>> master

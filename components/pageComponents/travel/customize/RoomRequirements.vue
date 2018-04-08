@@ -23,7 +23,10 @@
 </template>
 <script>
     import OtherSpecify from '~/components/GUI/form/OtherSpecify';
+<<<<<<< HEAD
 
+=======
+>>>>>>> master
 	export default {
 		name: "RoomRequirements",
 		props: {
@@ -67,19 +70,28 @@
     .room-bed{
         &__cell{
             margin-bottom: 20px;
+<<<<<<< HEAD
 
+=======
+>>>>>>> master
             span{
                 display: inline-block;
                 font-size: 16px;
                 line-height: 40px;
             }
+<<<<<<< HEAD
 
+=======
+>>>>>>> master
             &-label{
                 width: 230px;
                 padding: 0 15px 0 20px;
                 text-align: right;
             }
+<<<<<<< HEAD
 
+=======
+>>>>>>> master
             &-count{
                 margin-right: 30px;
             }

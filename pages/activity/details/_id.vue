@@ -46,9 +46,7 @@
 	import Activities from "~/components/pageComponents/activity/details/Activities";
 	import Meau from "~/components/pageComponents/activity/details/Meau";
 	import { delNullArr,getUrlParams } from "~/assets/js/plugin/utils";
-
 	import Vue from 'vue';
-
 	export default {
 		name: "activitiesDetail",
 		async asyncData({
@@ -109,7 +107,6 @@
 					response.data.notice&&response.data.notice!=""?(data.notice=delNullArr(
 						response.data.notice.split("\n")
 					)):'';
-
 					if(response.data.latestBooking < 1) {
 						data.toast =
 							"This activity was booked by another guest in the past hour.";
@@ -127,12 +124,10 @@
 						message: "500"
 					});
 				}
-
 				apiActivityRecommendRes = await Vue.axios.get(
 					apiBasePath + "activity/recommend/" + id
 				);
 				data.recommed = apiActivityRecommendRes.data;
-
 				apiActivityPriceRes = await Vue.axios.get(
 					apiBasePath + "activity/price/" + id
 				);
@@ -152,7 +147,7 @@
 					message: JSON.stringify(err)
 				});
 			}
-			console.log(data.exclusions)
+			
 			return data;
 		},
 		head() {
@@ -171,7 +166,6 @@
 						name: "description",
 						content: description
 					}
-
 				]
 			};
 		},
@@ -194,7 +188,6 @@
 				document.getElementById("recommend").offsetTop ?
 					(recommendTop = document.getElementById("recommend").offsetTop) :
 					(recommendTop = 2000);
-
 				if(window.scrollY > hightLights && window.scrollY < recommendTop) {
 					data.isShowMeau = true;
 					data.isShowBookNow = true;

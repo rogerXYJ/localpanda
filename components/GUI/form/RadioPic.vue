@@ -24,7 +24,11 @@
                                 controls-position="right" 
                                 v-model="adultsNum" 
                                 @change="onChangeAdults" 
+<<<<<<< HEAD
                                 :min="0"
+=======
+                                :min="1"
+>>>>>>> master
                             >
                             </el-input-number>
                         </div>
@@ -54,7 +58,10 @@
 </template>
 <script>
     import OtherSpecify from '~/components/GUI/form/OtherSpecify';
+<<<<<<< HEAD
 
+=======
+>>>>>>> master
 	export default {
 		name: "GUI-RadioPic",
 		props: {
@@ -96,7 +103,11 @@
             return {
                 radioValue: this.value,
                 otherValue,
+<<<<<<< HEAD
                 adultsNum: this.initExtendData.adults || 0,
+=======
+                adultsNum: this.initExtendData.adults || 1,
+>>>>>>> master
                 childNum: this.initExtendData.children || 0,
             }
         },
@@ -114,6 +125,7 @@
                 return 'GUI-radio-pic__item' + (this.value == value ? ' GUI-radio-pic__item--current':'');
             },
             onChange(value, extendType){
+<<<<<<< HEAD
                 
                 this.adultsNum = 0;
                 this.childNum = 0;
@@ -121,6 +133,19 @@
                     adults: 0,
                     children: 0,
                 })
+=======
+                if(!extendType){
+                    this.onChangeExtend({
+                        adults: 0,
+                        children: 0,
+                    })
+                }else{
+                    this.onChangeExtend({
+                        adults: this.adultsNum,
+                        children: this.childNum,
+                    })
+                }
+>>>>>>> master
                 if(value != this.radioValue){
                     this.radioValue = value;
                     this.$emit('input', value);
@@ -152,12 +177,18 @@
 <style lang="scss">
     .GUI-radio-pic{
         overflow: hidden;
+<<<<<<< HEAD
 
+=======
+>>>>>>> master
         &__item{
             width: 216px;
             float: left;
             margin: 0 9px;
+<<<<<<< HEAD
 
+=======
+>>>>>>> master
             &-pic{
                 width: 216px;
                 height: 216px;
@@ -165,6 +196,7 @@
                 background: center center no-repeat;
                 background-size: cover;
             }
+<<<<<<< HEAD
 
             .el-radio{
                 display: block;
@@ -177,13 +209,26 @@
         overflow: hidden;
     }
 
+=======
+            .el-radio{
+                display: block;
+            }
+        }
+    }
+    .GUI-radio-pic__group{
+        overflow: hidden;
+    }
+>>>>>>> master
     .GUI-radio-item-extend{
         width: 100%;
         height: 20px;
         position: relative;
         margin-top: 18px;
         border-top: 2px solid #ebebeb;
+<<<<<<< HEAD
 
+=======
+>>>>>>> master
         &:after{
             content: '';
             width: 0;
@@ -196,18 +241,25 @@
             border-right: 20px solid transparent;
             border-top: 13px solid #ebebeb;
         }
+<<<<<<< HEAD
 
+=======
+>>>>>>> master
         &__item{
             display: none;
         }
     }
+<<<<<<< HEAD
 
+=======
+>>>>>>> master
     .GUI-radio-pic__item--current{
         .GUI-radio-item-extend{
             height: auto;
             padding: 18px;
             border-top: none;
             background: #ebebeb;
+<<<<<<< HEAD
 
             &:after{
                 display: none;
@@ -217,6 +269,14 @@
                 display: block;
                 padding-bottom: 10px;
 
+=======
+            &:after{
+                display: none;
+            }
+            &__item{
+                display: block;
+                padding-bottom: 10px;
+>>>>>>> master
                 &-title{
                     font-size: 16px;
                     padding-bottom: 10px;

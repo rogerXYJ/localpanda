@@ -550,8 +550,9 @@ export default {
             : null
         };
         orderInfo = JSON.stringify(orderInfo);
-        console.log(orderInfo);
+       
         localStorage.setItem("orderInfo", orderInfo);
+      
 		var ua = navigator.userAgent;
 		var ipad = ua.match(/(iPad).*OS\s([\d_]+)/),
 			isIphone = !ipad && ua.match(/(iPhone\sOS)\s([\d_]+)/),
@@ -1053,10 +1054,10 @@ export default {
 	            font-size: 18px;
 	            color: #878e95;
 	            vertical-align: middle;
-	            width: 20%;
 	            em{
 	            	color:#353a3f;
 	            	margin-left: 14px;
+	            	font-size: 18px;
 	            	
 	            }
 	          }
@@ -1065,6 +1066,8 @@ export default {
             font-size: 18px;
             width: 80%;
             word-wrap:break-word;
+            margin-top: 2px;
+            margin-left: 8px;
           }
         }
         .location{

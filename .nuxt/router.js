@@ -3,30 +3,31 @@ import Router from 'vue-router'
 
 Vue.use(Router)
 
-const _c39154ca = () => import('../pages/test/index.vue' /* webpackChunkName: "pages/test/index" */).then(m => m.default || m)
 const _75c1fb72 = () => import('../pages/error.vue' /* webpackChunkName: "pages/error" */).then(m => m.default || m)
+const _c39154ca = () => import('../pages/test/index.vue' /* webpackChunkName: "pages/test/index" */).then(m => m.default || m)
 const _7b9b046b = () => import('../pages/user/profile.vue' /* webpackChunkName: "pages/user/profile" */).then(m => m.default || m)
 const _79e26898 = () => import('../pages/user/myBookings.vue' /* webpackChunkName: "pages/user/myBookings" */).then(m => m.default || m)
-const _08f7fdee = () => import('../pages/info/about-us.vue' /* webpackChunkName: "pages/info/about-us" */).then(m => m.default || m)
-const _bce06a38 = () => import('../pages/payment/success.vue' /* webpackChunkName: "pages/payment/success" */).then(m => m.default || m)
-const _3402a6a0 = () => import('../pages/guide/booking.vue' /* webpackChunkName: "pages/guide/booking" */).then(m => m.default || m)
-const _3b595ee8 = () => import('../pages/activity/payment.vue' /* webpackChunkName: "pages/activity/payment" */).then(m => m.default || m)
 const _5d1d88a2 = () => import('../pages/activity/booking/index.vue' /* webpackChunkName: "pages/activity/booking/index" */).then(m => m.default || m)
 const _4091a4a0 = () => import('../pages/guide/payment/index.vue' /* webpackChunkName: "pages/guide/payment/index" */).then(m => m.default || m)
-const _2d58ec56 = () => import('../pages/info/contact-us.vue' /* webpackChunkName: "pages/info/contact-us" */).then(m => m.default || m)
+const _3b595ee8 = () => import('../pages/activity/payment.vue' /* webpackChunkName: "pages/activity/payment" */).then(m => m.default || m)
+const _3402a6a0 = () => import('../pages/guide/booking.vue' /* webpackChunkName: "pages/guide/booking" */).then(m => m.default || m)
+const _08f7fdee = () => import('../pages/info/about-us.vue' /* webpackChunkName: "pages/info/about-us" */).then(m => m.default || m)
+const _bce06a38 = () => import('../pages/payment/success.vue' /* webpackChunkName: "pages/payment/success" */).then(m => m.default || m)
 const _e65659a6 = () => import('../pages/info/privacy.vue' /* webpackChunkName: "pages/info/privacy" */).then(m => m.default || m)
+const _2d58ec56 = () => import('../pages/info/contact-us.vue' /* webpackChunkName: "pages/info/contact-us" */).then(m => m.default || m)
 const _6221f12a = () => import('../pages/travel/customize/step1.vue' /* webpackChunkName: "pages/travel/customize/step1" */).then(m => m.default || m)
-const _623e202c = () => import('../pages/travel/customize/step3.vue' /* webpackChunkName: "pages/travel/customize/step3" */).then(m => m.default || m)
 const _623008ab = () => import('../pages/travel/customize/step2.vue' /* webpackChunkName: "pages/travel/customize/step2" */).then(m => m.default || m)
-const _3c2b4005 = () => import('../pages/activity/booking/mobile/index.vue' /* webpackChunkName: "pages/activity/booking/mobile/index" */).then(m => m.default || m)
 const _198c3566 = () => import('../pages/travel/customize/done.vue' /* webpackChunkName: "pages/travel/customize/done" */).then(m => m.default || m)
+const _623e202c = () => import('../pages/travel/customize/step3.vue' /* webpackChunkName: "pages/travel/customize/step3" */).then(m => m.default || m)
+const _3c2b4005 = () => import('../pages/activity/booking/mobile/index.vue' /* webpackChunkName: "pages/activity/booking/mobile/index" */).then(m => m.default || m)
 const _489952a0 = () => import('../pages/activity/details/mobile/bookDetail.vue' /* webpackChunkName: "pages/activity/details/mobile/bookDetail" */).then(m => m.default || m)
 const _453966a4 = () => import('../pages/activity/details/mobile/_id.vue' /* webpackChunkName: "pages/activity/details/mobile/_id" */).then(m => m.default || m)
 const _881c497a = () => import('../pages/activity/list/_slug.vue' /* webpackChunkName: "pages/activity/list/_slug" */).then(m => m.default || m)
 const _a20d6e16 = () => import('../pages/guide/detail/_id.vue' /* webpackChunkName: "pages/guide/detail/_id" */).then(m => m.default || m)
-const _0d79335c = () => import('../pages/guide/list/_slug.vue' /* webpackChunkName: "pages/guide/list/_slug" */).then(m => m.default || m)
-const _4f99b173 = () => import('../pages/guide/activity/_id.vue' /* webpackChunkName: "pages/guide/activity/_id" */).then(m => m.default || m)
 const _b4b1871a = () => import('../pages/activity/details/_id.vue' /* webpackChunkName: "pages/activity/details/_id" */).then(m => m.default || m)
+const _4f99b173 = () => import('../pages/guide/activity/_id.vue' /* webpackChunkName: "pages/guide/activity/_id" */).then(m => m.default || m)
+const _0d79335c = () => import('../pages/guide/list/_slug.vue' /* webpackChunkName: "pages/guide/list/_slug" */).then(m => m.default || m)
+const _5399f92c = () => import('../pages/travel/article/_articleId.vue' /* webpackChunkName: "pages/travel/article/_articleId" */).then(m => m.default || m)
 const _564b2318 = () => import('../pages/activity/recommend/_loc/_keywords.vue' /* webpackChunkName: "pages/activity/recommend/_loc/_keywords" */).then(m => m.default || m)
 const _31fbdd3c = () => import('../pages/index.vue' /* webpackChunkName: "pages/index" */).then(m => m.default || m)
 
@@ -89,14 +90,14 @@ export function createRouter () {
     scrollBehavior,
     routes: [
 		{
-			path: "/test",
-			component: _c39154ca,
-			name: "test"
-		},
-		{
 			path: "/error",
 			component: _75c1fb72,
 			name: "error"
+		},
+		{
+			path: "/test",
+			component: _c39154ca,
+			name: "test"
 		},
 		{
 			path: "/user/profile",
@@ -109,26 +110,6 @@ export function createRouter () {
 			name: "user-myBookings"
 		},
 		{
-			path: "/info/about-us",
-			component: _08f7fdee,
-			name: "info-about-us"
-		},
-		{
-			path: "/payment/success",
-			component: _bce06a38,
-			name: "payment-success"
-		},
-		{
-			path: "/guide/booking",
-			component: _3402a6a0,
-			name: "guide-booking"
-		},
-		{
-			path: "/activity/payment",
-			component: _3b595ee8,
-			name: "activity-payment"
-		},
-		{
 			path: "/activity/booking",
 			component: _5d1d88a2,
 			name: "activity-booking"
@@ -139,9 +120,24 @@ export function createRouter () {
 			name: "guide-payment"
 		},
 		{
-			path: "/info/contact-us",
-			component: _2d58ec56,
-			name: "info-contact-us"
+			path: "/activity/payment",
+			component: _3b595ee8,
+			name: "activity-payment"
+		},
+		{
+			path: "/guide/booking",
+			component: _3402a6a0,
+			name: "guide-booking"
+		},
+		{
+			path: "/info/about-us",
+			component: _08f7fdee,
+			name: "info-about-us"
+		},
+		{
+			path: "/payment/success",
+			component: _bce06a38,
+			name: "payment-success"
 		},
 		{
 			path: "/info/privacy",
@@ -149,14 +145,14 @@ export function createRouter () {
 			name: "info-privacy"
 		},
 		{
+			path: "/info/contact-us",
+			component: _2d58ec56,
+			name: "info-contact-us"
+		},
+		{
 			path: "/travel/customize/step1",
 			component: _6221f12a,
 			name: "travel-customize-step1"
-		},
-		{
-			path: "/travel/customize/step3",
-			component: _623e202c,
-			name: "travel-customize-step3"
 		},
 		{
 			path: "/travel/customize/step2",
@@ -164,14 +160,19 @@ export function createRouter () {
 			name: "travel-customize-step2"
 		},
 		{
-			path: "/activity/booking/mobile",
-			component: _3c2b4005,
-			name: "activity-booking-mobile"
-		},
-		{
 			path: "/travel/customize/done",
 			component: _198c3566,
 			name: "travel-customize-done"
+		},
+		{
+			path: "/travel/customize/step3",
+			component: _623e202c,
+			name: "travel-customize-step3"
+		},
+		{
+			path: "/activity/booking/mobile",
+			component: _3c2b4005,
+			name: "activity-booking-mobile"
 		},
 		{
 			path: "/activity/details/mobile/bookDetail",
@@ -194,9 +195,9 @@ export function createRouter () {
 			name: "guide-detail-id"
 		},
 		{
-			path: "/guide/list/:slug?",
-			component: _0d79335c,
-			name: "guide-list-slug"
+			path: "/activity/details/:id?",
+			component: _b4b1871a,
+			name: "activity-details-id"
 		},
 		{
 			path: "/guide/activity/:id?",
@@ -204,9 +205,14 @@ export function createRouter () {
 			name: "guide-activity-id"
 		},
 		{
-			path: "/activity/details/:id?",
-			component: _b4b1871a,
-			name: "activity-details-id"
+			path: "/guide/list/:slug?",
+			component: _0d79335c,
+			name: "guide-list-slug"
+		},
+		{
+			path: "/travel/article/:articleId?",
+			component: _5399f92c,
+			name: "travel-article-articleId"
 		},
 		{
 			path: "/activity/recommend/:loc?/:keywords?",

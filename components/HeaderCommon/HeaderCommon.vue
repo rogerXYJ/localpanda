@@ -98,7 +98,7 @@
 			
 			isAnonymityback(val){
 				this.AnonymityStatus=val
-				console.log(val)
+				
 			},
 			isShowFn(val){
 				this.istrue=val
@@ -184,7 +184,7 @@
 					}
 				})
 				
-				console.log(that.flag)
+				
 				
 			},
 			ChangeCallback(response,flag) {
@@ -248,7 +248,7 @@
 				that.logimg=window.localStorage.getItem("key")
 			
 				that.fbToken=window.localStorage.getItem("fbToken")
-				console.log(this.logIn)
+				
 			
 		},
 		created() {
@@ -277,6 +277,7 @@
     }
 	#header{
 		height: 60px;
+		background: #fff;
 		.heder-cont{
 			width: 100%;
 			height: 60px;

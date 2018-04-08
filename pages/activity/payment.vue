@@ -58,6 +58,7 @@
 <script>
 	if (process.browser) {
 	  require('~/assets/js/pages/talk.js')
+	  //require('~/assets/js/pages/ga.js')
 	}
 	import { GetQueryString } from '~/assets/js/plugin/utils.js'
 	import HeaderCommon from '~/components/HeaderCommon/HeaderCommon'
@@ -65,6 +66,7 @@
 	import Loading from '~/components/Loading/Loading'
 	import api from '~/assets/js/plugin/api.js'
 	import Vue from 'vue'
+	
 	export default {
 	name: 'payNow',
 	head(){
@@ -73,7 +75,11 @@
 	        { 
 	          src: 'https://checkout.stripe.com/checkout.js', 
 	          type: 'text/javascript'
-	        }
+	        },
+	        /*{
+	        	src:'https://google-analytics.com/ga.js?id=UA-107010673-1',
+	        	type: 'text/javascript'
+	        }*/
 	      ]
 	    }
 	  },
@@ -90,9 +96,7 @@
 					childrenNum:0,
 					adultNum:0,
 					amount:0,
-					couponDiscount:0
-					
-					
+					couponDiscount:0	
 				},
 				stripeHandler: "",	
 				halfDates: '',
@@ -180,7 +184,10 @@
 							console.log(response.data)
 							if(response.data.succeed) {
 								that.loadingStatus = true
-								
+								var pageTracker =_gat._getTracker("UA-107010673-1");
+								pageTracker._addTrans(that.orderId,"",that.opctions.amount,"", "", "", "", "");
+								pageTracker._addItem(that.orderId, that.opctions.activityId,"","", that.opctions.amount,"1" );
+								pageTracker._trackTrans();
 								window.location.href = "/payment/success?orderId=" + that.orderId + '&amount=' + that.opctions.amount
 							}
 							//
@@ -192,10 +199,12 @@
 				let that=this
 				Vue.axios.get(this.apiBasePath+"activity/order/detail/"+that.orderId).then(function(res){
 					that.opctions=res.data
+					
 				},function(res){})
 			},
 			pay() {
 				let that = this;
+				
 				ga('gtag_UA_107010673_1.send', {
 						hitType: 'event',
 						eventCategory: 'Button',
@@ -206,7 +215,7 @@
 				that.stripeHandler.open({
 					name: 'Local panda', // 收款方或商家名称，比如 Beansmile
 					description: "", // 待支付商品的描述
-					amount: that.amount * 100, // 支付金额，单位是“分”
+					amount: that.opctions.amount* 100, // 支付金额，单位是“分”
 					locale: 'en_US',
 					closed: function() {
 

@@ -66,7 +66,11 @@ module.exports = {
         },
         {
             label: 'Xi’an',
+<<<<<<< HEAD
             src: cdnPath + "/static/customize/destination/XiAn.jpg",
+=======
+            src: cdnPath + '/static/customize/destination/xi\'an.jpg',
+>>>>>>> master
             value: 'Xi’an',
             des:[
                 'Terracotta Army',

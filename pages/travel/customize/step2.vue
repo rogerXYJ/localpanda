@@ -1,5 +1,9 @@
 <template >    
     <div class="page__container">
+<<<<<<< HEAD
+=======
+    	<<HeaderCommon :logIn="logIn"></HeaderCommon>
+>>>>>>> master
         <Banner></Banner>
         <StepBar step="2"></StepBar>
         <div class="page-section">
@@ -46,18 +50,31 @@
                     </div>
                 </div>
             </el-form>
+<<<<<<< HEAD
         </div>  
+=======
+        </div> 
+        <FooterCommon></FooterCommon>
+>>>>>>> master
     </div>
 </template>
 
 <script>    
     import RadioPic from '~/components/GUI/form/RadioPic';
     import LevelSelect from '~/components/GUI/form/LevelSelect';
+<<<<<<< HEAD
 
 	import Banner from '~/components/pageComponents/travel/customize/Banner';
     import StepBar from '~/components/pageComponents/travel/customize/StepBar';
     import RoomRequirements from '~/components/pageComponents/travel/customize/RoomRequirements';
     
+=======
+	import Banner from '~/components/pageComponents/travel/customize/Banner';
+    import StepBar from '~/components/pageComponents/travel/customize/StepBar';
+    import RoomRequirements from '~/components/pageComponents/travel/customize/RoomRequirements';
+    import HeaderCommon from '~/components/HeaderCommon/HeaderCommon';
+	import FooterCommon from '~/components/FooterCommon/FooterCommon';
+>>>>>>> master
 	import Consts from '~/assets/js/consts/travel/customize/step.js';
     import stepFormStorage from '~/assets/js/stepFormStorage.js';
     
@@ -71,9 +88,18 @@
             RadioPic,
             LevelSelect,
             RoomRequirements,
+<<<<<<< HEAD
 		},
         data() {
             return {
+=======
+            HeaderCommon,
+            FooterCommon
+		},
+        data() {
+            return {
+            	logIn:'',
+>>>>>>> master
                 formReady: false,
                 form: {
                     accommodation: {
@@ -114,9 +140,13 @@
                     // console.log(this.form);
                     if (valid) {
                         console.log('step2 submit success');
+<<<<<<< HEAD
 
                         let formData = Object.assign({},this.form);
 
+=======
+                        let formData = Object.assign({},this.form);
+>>>>>>> master
                         formData.accommodationMinPrice = formData.accommodation.accommodationMinPrice;
                         formData.accommodationMaxPrice = formData.accommodation.accommodationMaxPrice;
                         delete formData.accommodation;
@@ -138,6 +168,10 @@
             }
 		},
 		mounted: function() {
+<<<<<<< HEAD
+=======
+			this.logIn = window.localStorage.getItem("logstate");
+>>>>>>> master
             let formData = stepFormStorage.getStorage(storageKey);
             if(JSON.stringify(formData).length > 7){
                 try{
@@ -146,7 +180,10 @@
                         accommodationMinPrice: formData.accommodationMinPrice || 0,
                         accommodationMaxPrice: formData.accommodationMaxPrice || 0,
                     }
+<<<<<<< HEAD
 
+=======
+>>>>>>> master
                     delete formData.accommodationMinPrice;
                     delete formData.accommodationMaxPrice;
                     this.form = formData;
@@ -166,5 +203,9 @@
 </style>
 <style lang="scss" scoped>
     @import "~assets/scss/base/_setting.scss";
+<<<<<<< HEAD
 </style>
 
+=======
+</style>
+>>>>>>> master

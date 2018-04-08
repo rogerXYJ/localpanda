@@ -18,7 +18,7 @@
 					<span v-if="loc=='Chengdu'">Chengdu</span>
 					<span v-if="loc=='Xian'">Xi'an</span>
 					<span v-if="loc=='Guilin'">Guilin</span>
-					<el-select v-model="value">
+					<el-select v-model="value" @change="clearlocalStorage">
 						<a :href="item.url" v-for="item in options">
 							<el-option :key="item.value" :label="item.label" :value="item.value">
 
@@ -99,7 +99,7 @@
 							<i class="iconfont" v-if="!isshowtourtype" >&#xe666;</i>
 							<i class="iconfont" v-else>&#xe667;</i>
 						</div>
-						<div class="citysList" v-if="isshowtourtype" @click.stop="selectShow(3)">
+						<div class="citysList" :class="Object.keys(tourtype).length>10?'long':''" v-if="isshowtourtype" @click.stop="selectShow(3)">
 							<em class="cancel iconfont" @click.stop="cancel(3)">&#xe606;</em>
 							  <el-checkbox-group v-model="checkedTourtype" v-if="Object.keys(tourtype).length<10">
 							  	<div class="checkboxlist"  v-for="(i,key,index) in tourtype">
@@ -501,13 +501,17 @@
 							JSON.parse(localStorage.getItem("opctions")).tourtype[i]=JSON.parse(localStorage.getItem("opctions")).tourtype[i].replace(/And/g, "&")
 							
 					}
-						JSON.parse(localStorage.getItem("opctions")).tourtype=this.checkedTourtype
+						this.checkedTourtype=JSON.parse(localStorage.getItem("opctions")).tourtype
 					}else{
 						this.checkedTourtype=[]
 					}
 					
 					
 				}
+			},
+			clearlocalStorage(){
+				localStorage.clear()
+				console.log(111)
 			},
 			sort(val){
 				var sort={}
@@ -668,7 +672,7 @@
 					var opctions={
 						cities:this.removeCity,
 						category:this.removeCategory,
-						durations:this.removeTourtype,
+						durations:this.removeDurations,
 						tourtype:arr,
 					}
 					opctions=JSON.stringify(opctions)
@@ -1063,11 +1067,10 @@
 						width: 311px;
 						left: 50%;
 						margin-left: -50%;
+						
 						.checkboxlist{
-							margin-top: 20px;
-							&:first-child{
-								margin-top: 0;
-							}
+							margin-bottom: 20px;
+							
 						}
 						.cancel{
 							position: absolute;
@@ -1174,7 +1177,7 @@
 					}
 					.titleText {
 						width: 100%;
-						height: 42px;
+						height: 45px;
 						text-overflow: ellipsis;
 						display: -webkit-box;
 						display: -moz-box;
@@ -1237,7 +1240,11 @@
 		}
 		.floatbox{
 			float: left;
-			
+			width: 30%;
+			margin-left:5%;	
 		}
+		.long{
+				width:671px!important;
+			}
 	}
 </style>

@@ -147,7 +147,7 @@
 					message: JSON.stringify(err)
 				});
 			}
-			console.log(data.exclusions)
+			
 			return data;
 		},
 		head() {

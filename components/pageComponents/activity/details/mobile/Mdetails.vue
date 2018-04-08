@@ -12,7 +12,7 @@
 				<ul>
 					<li class="clearfix">
 						<label class="iconfont">&#xe653;</label>
-						<span>type: {{detail.trafficType}}</span>
+						<span>Type: {{detail.trafficType}}</span>
 					</li>
 					<li class="clearfix">
 						<label class="iconfont">&#xe610;</label>

@@ -1,0 +1,210 @@
+/* Form */
+
+.GUI-form{
+
+    .el-input--large{
+        .el-textarea__inner{
+            height: 258px;
+        }
+    }
+
+    .el-form-item.is-required .el-form-item__label{
+        &:before{
+            display: none;
+        }
+        &:after{
+            content: '*';
+            color: #f56c6c;
+            margin-left: 4px;
+        }
+    }
+
+    /* Radio */
+    .el-radio{
+        line-height: 20px;
+    }
+    
+    .el-radio__input{
+        display: block;
+        float: left;
+    }
+
+    .el-radio__inner{
+        width: 20px;
+        height: 20px;
+        border-color: #ebebeb;
+
+        &:after{
+            width: 10px;
+            height: 10px;
+            background-color: #1bbc9d;
+        }
+    }
+
+    .el-radio__input.is-checked{
+        .el-radio__inner{
+            border: 2px solid #8fdecf;
+            background-color: #ffffff;
+        }
+
+        &+.el-radio__label{
+            color: #353a3f;
+        }    
+
+    }
+
+    .el-radio__label{
+        display: block;
+        overflow: hidden;
+        color: #353a3f;
+        font-size: 16px;
+        white-space: normal;
+    }
+
+    .el-form-item.is-success .el-input__inner, .el-form-item.is-success .el-input__inner:focus, .el-form-item.is-success .el-textarea__inner, .el-form-item.is-success .el-textarea__inner:focus{
+        border-color: #dde0e0;
+    }
+
+    &__radio-group{
+        margin-top: 30px;
+        padding-left: 8px;
+    }
+
+    /* Grid */
+    &__grid{
+        display: flex;
+
+        &-col{
+            flex: 1;
+        }
+    }
+
+    /* Slider */
+    .el-slider__runway{
+        height: 14px;
+        border-radius: 4px;
+        background: #ebebeb;
+    }
+    
+    .el-slider__bar{
+        height: 14px;
+    }
+
+    .el-slider__button-wrapper{
+        height: 42px;
+    }
+
+    .el-slider__button{
+        width: 20px;
+        height: 20px;
+        border-radius: 4px;
+        background: #1bbc9d;
+        border: none;
+    }
+
+    /* Other */
+    &__tips{
+        padding-left: 8px;
+        font-size: 14px;
+        color: #878e95;
+    }
+
+    .el-button--default{
+        width: 300px;
+        height: 42px;
+        padding: 0;
+        background-image: linear-gradient(270deg, #009efd 0%, #1bbc9d 100%), linear-gradient( #1bbc9d, #1bbc9d);
+        line-height: 42px;
+        border: none;
+        border-radius: 42px;
+        color: #ffffff;
+        font-size: 16px;
+        text-align: center;
+    }
+}
+
+.GUI-form-block{
+    margin-bottom: 60px;
+
+    &__title{
+        line-height: 28px;
+        font-size: 18px;
+        margin-bottom: 30px;
+
+        &:before{
+            content: '\e65b';
+            width: 34px;
+            display: inline-block;
+            font-family:"iconfont" !important;
+            font-size: 17px;
+            font-style:normal;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            color: #e14f3f;
+        }
+
+        &:after{
+            content: '';
+        }
+        
+    }
+
+    &--require{
+        .GUI-form-block__title{
+            &:after{
+                content: '*';
+                display: inline-block;
+                color: #e14f3f;
+                margin-left: 3px;
+                line-height: 18px;
+            }
+        }
+    }
+}
+
+.GUI-form-block__inline{
+    .GUI-form-block{
+        &__title{
+            float: left;
+            line-height: 40px;
+        }
+
+        &__content{
+            overflow: hidden;
+            text-align: right;
+        }
+    }
+}
+
+.GUI-form-item{
+
+    &__title{
+        padding-left: 20px;
+        font-size: 16px;
+        margin-bottom: 20px;
+    }
+}
+
+.GUI-form-bar{
+    text-align: center;
+
+    .el-button--default{
+        margin: 0 12px;
+    }
+}
+
+.el-form-item__error{
+    width: 100%;
+    height: 40px;
+    padding: 0 14px;
+    margin-top: 10px;
+    position: relative;
+    left: auto;
+    border: 1px solid #e14f3f;
+    border-radius: 2px;
+    background: #f6cac5;
+    color: #e14f3f;
+    line-height: 40px;
+    font-weight: bold;
+    font-size: 16px;
+}

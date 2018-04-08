@@ -161,7 +161,7 @@
 						imgUrl:'https://d2q486kjf9cwwu.cloudfront.net/static/headerPhotos/PopularAndClassicTours.jpg'
 					},
 					{
-						keywords:"Sales & <br/>Deals",
+						keywords:"Neighborhood <br/>Life",
 						url:"/activity/recommend/Shanghai/Sales-and-Deals",
 						imgUrl:'https://d2q486kjf9cwwu.cloudfront.net/static/headerPhotos/SalesAndDeals.jpg'
 					},
@@ -219,7 +219,7 @@
 						imgUrl:'https://d2q486kjf9cwwu.cloudfront.net/static/headerPhotos/PopularAndClassicTours.jpg'
 					},
 					{
-						keywords: "Sales & Deals",
+						keywords: "Neighborhood <br/>Life",
 						url: "/activity/recommend/Beijing/Sales-and-Deals",
 						imgUrl:'https://d2q486kjf9cwwu.cloudfront.net/static/headerPhotos/SalesAndDeals.jpg'
 					},

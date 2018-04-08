@@ -29,6 +29,7 @@
 
 			</div>
 		</div>
+		<div style="background: #fff;">
 		<div class="selectType" v-if="loc!='Chengdu'&&loc!='Xian'&&loc!='Guilin'">
 			<ul class="clearfix">
 				<li>
@@ -52,6 +53,98 @@
 				</li>
 			</ul>
 		</div>
+		<div class="seach">
+			<h3>SORTBY</h3>
+			<div class="seach-table clearfix">
+				<div class="recommended">
+					<select style="border:none;font-size: 16px;" @change="sort(selected)" v-model="selected">
+						<!--<option>Recommended</option>
+						<option>Price</option>-->
+						<option v-for="(item,index) in select" v-model="item.selectText" >{{item.selectText}}</option>
+					</select>
+				</div>
+				<ul class="seach-type">
+					<li>
+						<div class="citys" @click.stop="showSelect(0)">Destinations
+							<i class="iconfont" v-if="!isshowcity" >&#xe666;</i>
+							<i class="iconfont" v-else>&#xe667;</i>
+						</div>
+						<div class="citysList" v-if="isshowcity" @click.stop="selectShow(0)">
+							  <em class="cancel iconfont" @click.stop="cancel(0)">&#xe606;</em>
+							  <el-checkbox-group v-model="checkedCities" >
+							  	<div class="checkboxlist" v-for="(city,key,index) in cities">
+							  		<el-checkbox  :label="key" :key="key">{{key}}({{city}})</el-checkbox>
+							  	</div>
+							  </el-checkbox-group>
+							  <div class="subimtbtn" @click.stop="apply()">Apply</div>
+						</div>
+					</li>
+					<li>
+						<div class="citys" @click.stop="showSelect(1)">Categories
+							<i class="iconfont" v-if="!isshowcategory" >&#xe666;</i>
+							<i class="iconfont" v-else>&#xe667;</i>
+						</div>
+						<div class="citysList" v-if="isshowcategory" @click.stop="selectShow(1)">
+							<em class="cancel iconfont" @click.stop="cancel(1)">&#xe606;</em>
+							  <el-checkbox-group v-model="checkedCategory" >
+							  	<div class="checkboxlist" v-for="(item,key,index) in category">
+							  		<el-checkbox  :label="key" :key="key">{{key}}({{item}})</el-checkbox>
+							  	</div>
+							  </el-checkbox-group>
+							  <div class="subimtbtn" @click.stop="apply()">Apply</div>
+						</div>
+					</li>
+					<li>
+						<div class="citys" @click.stop="showSelect(3)">Themes
+							<i class="iconfont" v-if="!isshowtourtype" >&#xe666;</i>
+							<i class="iconfont" v-else>&#xe667;</i>
+						</div>
+						<div class="citysList" v-if="isshowtourtype" @click.stop="selectShow(3)">
+							<em class="cancel iconfont" @click.stop="cancel(3)">&#xe606;</em>
+							  <el-checkbox-group v-model="checkedTourtype" v-if="Object.keys(tourtype).length<10">
+							  	<div class="checkboxlist"  v-for="(i,key,index) in tourtype">
+							  		<el-checkbox  :label="key" :key="key">{{key}}({{i}})</el-checkbox>
+							  	</div>
+							  </el-checkbox-group>
+							  <el-checkbox-group v-model="checkedTourtype" v-else>
+							  	<div class="checkboxlist floatbox"  v-for="(i,key,index) in tourtype">
+							  		<el-checkbox  :label="key" :key="key">{{key}}({{i}})</el-checkbox>
+							  	</div>
+							  </el-checkbox-group>
+							  <div class="subimtbtn" @click.stop="apply()">Apply</div>
+						</div>
+					</li>
+					<li>
+						<div class="citys" @click.stop="showSelect(2)">Duration
+							<i class="iconfont" v-if="!isshowdurations">&#xe666;</i>
+							<i class="iconfont" v-else>&#xe667;</i>
+						</div>
+						<div class="citysList" v-if="isshowdurations" @click.stop="selectShow(2)">
+							<em class="cancel iconfont" @click.stop="cancel(2)">&#xe606;</em>
+							  <el-checkbox-group v-model="checkedDurations" >
+							  	<div class="checkboxlist" v-for="(i,key,index) in durations">
+							  		<el-checkbox  v-if="key==0" :label="key" :key="key">Half Day({{i}})</el-checkbox>
+							  		<el-checkbox  v-if="key==1" :label="key" :key="key">{{key}} Day({{i}})</el-checkbox>
+							  		<el-checkbox  v-if="key>1" :label="key" :key="key">{{key}} Days({{i}})</el-checkbox>
+							  	</div>
+							  </el-checkbox-group>
+							   <div class="subimtbtn" @click.stop="apply()">Apply</div>
+						</div>
+					</li>
+					
+				</ul>
+			</div>
+			<div class="delSeach clearfix">
+				<div class="del">
+					<span v-if="removeCity.length>0" v-for="(item,index) in removeCity" @click="del(0,removeCity,index)">{{item}}<i class="iconfont">&#xe629;</i></span>
+					<span v-if="removeCategory.length>0" v-for="(item,index) in removeCategory" @click="del(1,removeCategory,index)">{{item}}<i class="iconfont">&#xe629;</i></span>
+					<span v-if="removeDurations.length>0" v-for="(item,index) in removeDurations" @click="del(2,removeDurations,index)">{{item}}<i class="iconfont">&#xe629;</i></span>
+					<span v-if="removeTourtype.length>0" v-for="(item,index) in removeTourtype" @click="del(3,removeTourtype,index)">{{item}}<i class="iconfont">&#xe629;</i></span>
+				</div>
+				<div class="pageSizeInfo">totally {{records}} activities</div>
+			</div>
+		</div>
+	</div>
 		<div class="list-cont">
 			<ul class="clearfix">
 				<li class="activity-item" v-for="item in activityList">
@@ -86,7 +179,18 @@
 
 				</li>
 			</ul>
-			<div v-if="!isdisabled" class="more" @click="more()">View More</div>
+			<!--<div v-if="!isdisabled" class="more" @click="more()">View More</div>-->
+			<div class="pagination-page" v-if="isdisabled">
+				<el-pagination
+				  background
+				  layout="prev, pager, next"
+				  :total="records"
+				 
+				  @current-change="handleCurrentChange"
+				  :page-size="20">
+				</el-pagination>
+			</div>
+			
 
 		</div>
 		<FooterCommon></FooterCommon>
@@ -98,7 +202,7 @@
 <script>
 	import Vue from 'vue'
 	import { SelectId } from 'element-ui';
-	//import {getUrlParams}from '~/assets/js/plugin/utils'
+	import {GetQueryString}from '~/assets/js/plugin/utils'
 	import HeaderCommon from '~/components/HeaderCommon/HeaderCommon';
 	import FooterCommon from '~/components/FooterCommon/FooterCommon';
 	import Loading from '~/components/Loading/Loading'
@@ -113,7 +217,8 @@
 			apiBasePath,
 			redirect
 		}) {
-
+			let opctions=route.query.opctions?JSON.parse(route.query.opctions):null
+			let sort=route.query.sort?JSON.parse(route.query.sort):{type:"DEFAULT"}
 			let slug = route.params.slug;
 			let data = {
 				options: [{
@@ -142,44 +247,144 @@
 						url: '/activity/list/Guilin'
 					}
 				],
-				value: slug == "Xian" ? "Xi\\'an" : slug,
+				value: slug == "Xian" ? "Xi\'an" : slug,
 				loc: slug,
 				activityList: [],
 				logIn: '',
-				pageSize: 16,
+				pageSize: 20,
 				pageNum: 1,
 				loadingStatus: false,
 				isdisabled: false,
 				isListPage: true,
-				apiBasePath: apiBasePath
+				apiBasePath: apiBasePath,
+				
+				selected:'Recommended',
+				select:[
+					{selectText:"Recommended",type:"DEFAULT",isSelect:true},
+					{selectText:"Price :Low to High",type:"PRICE",isSelect:true},
+					{selectText:"Price :High to Low",type:"PRICE",isSelect:false}
+				
+				],
+				
+				
+				isshowcity:false,
+				cities:["shanghai","beijing"],
+				checkedCities:[],
+				
+				isshowcategory:false,
+				category:["zhangsna","lisi"],
+				checkedCategory:[],
+				
+				isshowdurations:false,
+				durations:['1','0'],
+				checkedDurations:[],
+				
+				isshowtourtype:false,
+				tourtype:['end','ending'],
+				checkedTourtype:[],
+				records:'',
+				
+				removeCity:[],
+				removeCategory:[],
+				removeDurations:[],
+				removeTourtype:[],
+				
 
 			}
 			let listdata = {}
-			let obj = {
-				destination: data.loc == "Xian" ? "Xi\\'an" : data.loc,
-				pageNum: data.pageNum,
-				pageSize: data.pageSize
+			let filters=[]
+			let obj={}
+			/*opction=JSON.parse(opction)*/
+			if(sort){
+				if(sort.type=="DEFAULT"){
+					data.selected="Recommended"
+				}
+				if(sort.type=="PRICE"&&sort.reverse==true){
+					data.selected="Price :High to Low"
+				}
+				if(sort.type=="PRICE"&&sort.reverse==false){
+					data.selected="Price :Low to High"
+				}
 			}
+			if(opctions){
+				if(opctions.cities.length>0){
+					data.checkedCities=data.checkedCities.concat(opctions.cities)
+					//data.checkedCities.push(opctions.cities.join(","))
+					console.log(data.checkedCities)
+					let jsonCity={type:'CITY',filterValues:opctions.cities}
+					filters.push(jsonCity)
+				}
+				if(opctions.category.length>0){
+					data.checkedCategory=data.checkedCategory.concat(opctions.category)
+					let jsonCategory={type:'CATEGORY',filterValues:data.checkedCategory}
+					filters.push(jsonCategory)
+				}
+				if(opctions.durations.length>0){
+					data.checkedDurations=data.checkedDurations.concat(opctions.durations)
+					let jsonDurations={type:'DURATION',filterValues:data.checkedDurations}
+					filters.push(jsonDurations)
+				}
+				if(opctions.tourtype.length>0){
+					for(let i=0;i<opctions.tourtype.length;i++){
+						opctions.tourtype[i]=opctions.tourtype[i].replace(/And/g,'&')
+					}
+					data.checkedTourtype=data.checkedTourtype.concat(opctions.tourtype)
+					let jsonTourtype={type:'TOUR_TYPE',filterValues:data.checkedTourtype}
+					filters.push(jsonTourtype)
+				}
+				obj = {
+					location: data.loc == "Xian" ? "Xi\'an" : data.loc,
+					pageNum: data.pageNum,
+					pageSize: data.pageSize,
+					filters:filters,
+					sort:sort
+				}
+			}else{
+				obj = {
+					location: data.loc == "Xian" ? "Xi\'an" : data.loc,
+					pageNum: data.pageNum,
+					pageSize: data.pageSize,
+					sort:sort
+				}
+			}
+			console.log(obj)
+			 
+			//console.log(data.checkedCities)
 			try {
-				listdata = await Vue.axios.post(apiBasePath + "activity/list/", JSON.stringify(obj), {
+				listdata = await Vue.axios.post(apiBasePath + "search/activity", JSON.stringify(obj), {
 					headers: {
 						'Content-Type': 'application/json; charset=UTF-8'
 					}
 				})
+				data.records= listdata.data.records
+				data.activityList = listdata.data.entities
+				if(listdata.data.records>data.pageSize){
+					data.isdisabled=true
+				}
+				//转化显示选择项
+				for(let i=0;i<listdata.data.aggregations.length;i++){
+					if(listdata.data.aggregations[i].type=="CITY"){
+						data.cities=listdata.data.aggregations[i].items
+					}else if(listdata.data.aggregations[i].type=="CATEGORY"){
+						data.category=listdata.data.aggregations[i].items
+					}else if(listdata.data.aggregations[i].type=="DURATION"){
+						data.durations=listdata.data.aggregations[i].items
+					}else if(listdata.data.aggregations[i].type=="TOUR_TYPE"){
+						data.tourtype=listdata.data.aggregations[i].items
+					}
+					
+				}
+				
+				
+				
+				
 
 			} catch(err) {
 				//return error(JSON.stringify(err));
 			}
-
-			if(listdata.data.length > data.pageSize) {
-				data.activityList = listdata.data
-				data.activityList.pop()
-			} else {
-				data.activityList = listdata.data
-				data.isdisabled = true
-			}
-
 			return data
+			
+			console.log(opction)
 		},
 		head() {
 			let location = this.value;
@@ -214,48 +419,6 @@
 				]
 			};
 		},
-		/*	data() {
-				return {
-					options: [{
-						value: 'Shanghai',
-						label: 'Shanghai',
-						url:'https://www.localpanda.com/activity/list/Shanghai'
-					}, 
-					{
-						value: 'Beijing',
-						label: 'Beijing',
-						url:'https://www.localpanda.com/activity/list/Beijing'
-					},
-					{
-						value: 'Chengdu',
-						label: 'Chengdu',
-						url:'https://www.localpanda.com/activity/list/Chengdu'
-					},
-					{
-						value: "Xi'an",
-						label: "Xi'an",
-						url:'https://www.localpanda.com/activity/list/Xian'
-					},
-					{
-						value: "Guilin",
-						label: "Guilin",
-						url:'https://www.localpanda.com/activity/list/Guilin'
-					}
-					],
-					value:"",
-					loc:'',
-					activityList:[],
-					logIn:'',				
-					pageSize:16,
-					pageNum:1,
-					loadingStatus:false,
-					isdisabled:false,
-					isListPage:true
-					
-				}
-
-			},*/
-
 		components: {
 			HeaderCommon,
 			SelectId,
@@ -284,66 +447,363 @@
 				if(loc == 'Chengdu') return 'chengdu'
 				if(loc == 'Xian') return 'xian'
 				if(loc == 'Guilin') return 'guilin'
-			},
-
-			/*pageInit(){
-			 	let that=this
-			 	let obj={
-			 		destination:that.loc=="Xian"?"Xi\\'an":that.loc,
-			 		pageNum:that.pageNum,
-			 		pageSize:that.pageSize
-			 	}
-			 	that.axios.post('https://api.localpanda.com/api/activity/list',JSON.stringify(obj),{
-				headers: {
-					'Content-Type': 'application/json; charset=UTF-8'
-				}
-				}).then(function(response){
-					if(response.data.length>that.pageSize){
-						that.activityList=response.data
-						that.activityList.pop()
+			}, 
+			showSelect(id){
+				
+				if(id==0){
+					this.isshowcity=!this.isshowcity
+					this.isshowcategory=false
+					this.isshowdurations=false
+					this.isshowtourtype=false
+					if(JSON.parse(localStorage.getItem("opctions")).cities.length>0){
+						this.checkedCities=JSON.parse(localStorage.getItem("opctions")).cities
+						console.log(this.checkedCities)
 					}else{
-						that.activityList=response.data
-						that.isdisabled=true
+						this.checkedCities=[]
+					}
+					
+				}else if(id==1){
+					this.isshowcategory=!this.isshowcategory
+					this.isshowcity=false
+					this.isshowdurations=false
+					this.isshowtourtype=false
+					 if(JSON.parse(localStorage.getItem("opctions")).category.length>0){
+						this.checkedCategory=JSON.parse(localStorage.getItem("opctions")).category
+						
+					}else{
+						this.checkedCategory=[]	
 					}
 					
 					
+				}else if(id==2){
+					this.isshowdurations=!this.isshowdurations
+					this.isshowcategory=false
+					this.isshowcity=false
+					this.isshowtourtype=false
 					
 					
-				},function(response){
+					 if(JSON.parse(localStorage.getItem("opctions")).durations.length>0){
+						console.log()
+						this.checkedDurations=JSON.parse(localStorage.getItem("opctions")).durations	
+					}else{
+						this.checkedDurations=[]
+					}
+				
+				}else{
+					this.isshowtourtype=!this.isshowtourtype
+					this.isshowdurations=false
+					this.isshowcategory=false
+					this.isshowcity=false
 					
-				})
-			 },*/
-			more() {
-				let that = this
-				that.pageNum++
-					that.loadingStatus = true
-				let obj = {
-					destination: that.loc == "Xian" ? "Xi\\'an" : that.loc,
-					pageNum: that.pageNum,
-					pageSize: that.pageSize
+					if(JSON.parse(localStorage.getItem("opctions")).tourtype.length>0){
+						
+						for(let i=0;i<JSON.parse(localStorage.getItem("opctions")).tourtype.length;i++){
+							JSON.parse(localStorage.getItem("opctions")).tourtype[i]=JSON.parse(localStorage.getItem("opctions")).tourtype[i].replace(/And/g, "&")
+							
+					}
+						JSON.parse(localStorage.getItem("opctions")).tourtype=this.checkedTourtype
+					}else{
+						this.checkedTourtype=[]
+					}
+					
+					
+				}
+			},
+			sort(val){
+				var sort={}
+				if(val=="Recommended"){
+					sort={
+						type:"DEFAULT"
+					}
+				}else if(val=="Price :Low to High"){
+					sort={
+						type:"PRICE",
+						reverse:false
+					}
+				}else if(val=="Price :High to Low"){
+					sort={
+						type:"PRICE",
+						reverse:true
+					}
+				}
+				var opctions={
+					cities:this.checkedCities,
+					category:this.checkedCategory,
+					durations:this.checkedDurations,
+					tourtype:this.checkedTourtype,
+					
+				}
+				sort=JSON.stringify(sort)
+				opctions=JSON.stringify(opctions)
+				//console.log(opctions)
+				//localStorage.setItem("sort",sort)
+				location.href="/activity/list/"+this.loc+"?opctions="+opctions+"&sort="+sort
+								
+				
+			},
+			
+			//选项内容点击不收起
+			selectShow(id){
+				if(id==0){
+					this.isshowcity=true
+					
+					
+				}else if(id==1){
+					this.isshowcategory=true
+					
+					
+				}else if(id==2){
+					this.isshowdurations=true
+					
+					
+				}else{
+					this.isshowtourtype=true
+					
+					
+				}
+			},
+			cancel(id){
+				if(id==0){
+					this.isshowcity=false
+					if(JSON.parse(localStorage.getItem("opctions"))==null){
+						this.checkedCities=[]
+					}else if(JSON.parse(localStorage.getItem("opctions")).cities.length>0){
+						this.checkedCities=JSON.parse(localStorage.getItem("opctions")).cities
+						console.log(this.checkedCities)
+					}
+					
+				}else if(id==1){
+					this.isshowcategory=false
+					if(JSON.parse(localStorage.getItem("opctions"))==null){
+						this.checkedCategory=[]
+					}else if(JSON.parse(localStorage.getItem("opctions")).category.length>0){
+						this.checkedCategory=JSON.parse(localStorage.getItem("opctions")).category
+						
+					}
+					
+				}else if(id==2){
+					this.isshowdurations=false
+					if(JSON.parse(localStorage.getItem("opctions"))==null){
+						this.checkedDurations=[]
+					}else if(JSON.parse(localStorage.getItem("opctions")).durations.length>0){
+						this.checkedDurations=JSON.parse(localStorage.getItem("opctions")).durations
+						
+					}
+					
+				}else{
+					this.isshowtourtype=false
+					if(JSON.parse(localStorage.getItem("opctions"))==null){
+						this.checkedTourtype=[]
+					}else if(JSON.parse(localStorage.getItem("opctions")).tourtype.length>0){
+						
+						for(let i=0;i<JSON.parse(localStorage.getItem("opctions")).tourtype.length;i++){
+							JSON.parse(localStorage.getItem("opctions")).tourtype[i]=JSON.parse(localStorage.getItem("opctions")).tourtype[i].replace(/And/g, "&")
+							
+					}
+						JSON.parse(localStorage.getItem("opctions")).tourtype=this.checkedTourtype
+					}
+					
+				}
+			},
+			del(id,arr,index){
+				let sort={}
+				
+				for(let i=0;i<this.checkedTourtype.length;i++){
+					this.checkedTourtype[i]=this.checkedTourtype[i].replace(/&/g, "And")
+					
+				}
+				console.log(11)
+				if(this.selected=="Recommended"){
+					 sort={
+						type:"DEFAULT"
+					}
+				}else if(this.selected=="Price :Low to High"){
+					 sort={
+						type:"PRICE",
+						reverse:false
+					}
+				}else if(this.selected=="Price :High to Low"){
+					 sort={
+						type:"PRICE",
+						reverse:true
+					}
+				}
+				sort=JSON.stringify(sort)
+				
+				if(id==0){
+					arr.splice(index,1)
+					var opctions={
+						cities:arr,
+						category:this.removeCategory,
+						durations:this.removeDurations,
+						tourtype:this.removeTourtype,
+					}
+					opctions=JSON.stringify(opctions)
+					localStorage.setItem("opctions",opctions)
+					location.href="/activity/list/"+this.loc+"?opctions="+opctions+"&sort="+sort
+				}else if(id==1){
+					arr.splice(index,1)
+					var opctions={
+						cities:this.removeCity,
+						category:arr,
+						durations:this.removeDurations,
+						tourtype:this.removeTourtype,
+					}
+					opctions=JSON.stringify(opctions)
+					localStorage.setItem("opctions",opctions)
+					location.href="/activity/list/"+this.loc+"?opctions="+opctions+"&sort="+sort
+				}else if(id==2){
+					arr.splice(index,1)
+					var opctions={
+						cities:this.removeCity,
+						category:this.removeCategory,
+						durations:arr,
+						tourtype:this.removeTourtype,
+					}
+					opctions=JSON.stringify(opctions)
+					localStorage.setItem("opctions",opctions)
+					location.href="/activity/list/"+this.loc+"?opctions="+opctions+"&sort="+sort
+				}else{
+					arr.splice(index,1)
+					var opctions={
+						cities:this.removeCity,
+						category:this.removeCategory,
+						durations:this.removeTourtype,
+						tourtype:arr,
+					}
+					opctions=JSON.stringify(opctions)
+					localStorage.setItem("opctions",opctions)
+					location.href="/activity/list/"+this.loc+"?opctions="+opctions+"&sort="+sort
 				}
 				
-				Vue.axios.post(this.apiBasePath + 'activity/list', JSON.stringify(obj), {
+				
+				//arr.splice(index,1)
+			},
+			handleCurrentChange(val){
+				
+				let that=this
+				let obj={}
+				let filters=[]
+				let sort={}
+				that.pageNum=val
+				if(that.checkedCities.length>0){
+					let jsonCity={type:'CITY',filterValues:that.checkedCities}
+					filters.push(jsonCity)
+				}
+				if(that.checkedCategory.length>0){
+					let jsonCategory={type:'CATEGORY',filterValues:that.checkedCategory}
+					filters.push(jsonCategory)
+				}
+				if(that.checkedDurations.length>0){
+					let jsonDurations={type:'DURATION',filterValues:that.checkedDurations}
+					filters.push(jsonDurations)
+				}
+				if(that.checkedTourtype.length>0){
+					
+					let jsonTourtype={type:'TOUR_TYPE',filterValues:that.checkedTourtype}
+					filters.push(jsonTourtype)
+				}
+				if(this.selected=="Recommended"){
+					 sort={
+						type:"DEFAULT"
+					}
+				}else if(this.selected=="Price :Low to High"){
+					 sort={
+						type:"PRICE",
+						reverse:false
+					}
+				}else if(this.selected=="Price :High to Low"){
+					 sort={
+						type:"PRICE",
+						reverse:true
+					}
+				}
+				if(filters.length>0){
+					obj = {
+						location: that.loc == "Xian" ? "Xi\'an" : that.loc,
+						pageNum: val,
+						pageSize: that.pageSize,
+						filters:filters,
+						sort:sort
+						
+					}	
+				}else{
+					obj = {
+						location: that.loc == "Xian" ? "Xi\'an" : that.loc,
+						pageNum: val,
+						pageSize: that.pageSize,
+						sort:sort
+						
+					}
+				}
+				 
+				that.loadingStatus = true
+				Vue.axios.post(that.apiBasePath + "search/activity", JSON.stringify(obj), {
 					headers: {
 						'Content-Type': 'application/json; charset=UTF-8'
 					}
 				}).then(function(response) {
-					if(response.data.length) {
+					if(response.data.entities.length) {
 						that.loadingStatus = false
-						if(response.data.length > that.pageSize) {
-							that.activityList = that.activityList.concat(response.data)
-							that.activityList.pop()
-
-						} else {
-							that.activityList = that.activityList.concat(response.data)
-							that.isdisabled = true
-						}
+						that.activityList=response.data.entities
 
 					}
 
 				}, function(response) {
 
 				})
+			},
+			apply(){
+				let sort={}
+				
+				for(let i=0;i<this.checkedTourtype.length;i++){
+					this.checkedTourtype[i]=this.checkedTourtype[i].replace(/&/g, "And")
+					
+				}
+				console.log(11)
+				if(this.selected=="Recommended"){
+					 sort={
+						type:"DEFAULT"
+					}
+				}else if(this.selected=="Price :Low to High"){
+					 sort={
+						type:"PRICE",
+						reverse:false
+					}
+				}else if(this.selected=="Price :High to Low"){
+					 sort={
+						type:"PRICE",
+						reverse:true
+					}
+				}
+				var opctions={
+					cities:this.checkedCities,
+					category:this.checkedCategory,
+					durations:this.checkedDurations,
+					tourtype:this.checkedTourtype,
+					
+				}
+				opctions=JSON.stringify(opctions)
+				localStorage.setItem("opctions",opctions)
+				sort=JSON.stringify(sort)
+				
+				location.href="/activity/list/"+this.loc+"?opctions="+opctions+"&sort="+sort
+			},
+			
+		},
+		watch:{
+			checkedCities:function(val,oldVal){
+				console.log(val)
+			},
+			pageNum:function(val,oldVal){
+				console.log(val)
+			},
+			checkedDurations(val,oldVal){
+				console.log(val)
+			},
+			checkedTourtype(val,oldVal){
+				console.log(val)
+				
 			}
 		},
 		filters: {
@@ -360,10 +820,18 @@
 		},
 		mounted: function() {
 			const that = this
-			//that.pageInit()
-
+			that.removeCity=JSON.parse(localStorage.getItem("opctions"))!=null?JSON.parse(localStorage.getItem("opctions")).cities:[]
+			that.removeCategory=JSON.parse(localStorage.getItem("opctions"))!=null?JSON.parse(localStorage.getItem("opctions")).category:[]
+			that.removeDurations=JSON.parse(localStorage.getItem("opctions"))!=null?JSON.parse(localStorage.getItem("opctions")).durations:[]
+			that.removeTourtype=JSON.parse(localStorage.getItem("opctions"))!=null?JSON.parse(localStorage.getItem("opctions")).tourtype:[]
+			document.getElementsByTagName("body")[0].addEventListener("click",function(){
+				that.isshowcity=false
+				that.isshowcategory=false
+				that.isshowdurations=false
+				that.isshowtourtype=false		
+			})
 			that.logIn = localStorage.getItem("logstate") ? localStorage.getItem("logstate") : null
-
+			//console.log(Object.keys(this.tourtype).length)
 		}
 	}
 </script>
@@ -424,12 +892,33 @@
 	.el-select .el-input.is-focus .el-input__inner {
 		border-color: #b4bccc!important;
 	}
+	.el-checkbox__label{
+		font-size: 16px;
+	}
+	.el-pagination.is-background .el-pager li:not(.disabled).active{
+		background-image: linear-gradient(-90deg,#009efd 0%,#1bbc9d 100%) 
+	}
+	.el-pagination.is-background .btn-next, .el-pagination.is-background .btn-prev, .el-pagination.is-background .el-pager li{
+		background: #fff;
+		color: #353a3f;
+	}
+	#footercommon{
+		border-top: 1px solid #E6E6E6;
+		.footInfo{
+			width: 1284px!important;
+		}
+	}
 </style>
 <style lang="scss" scoped>
 	@import "~assets/scss/base/_setting.scss";
 	.activityList {
+		.pagination-page{
+			text-align: center;
+			margin-top:40px
+		}
 		overflow-x: hidden;
 		width: 100%;
+		background: #faf9f8;
 		.banner {
 			&.beijing {
 				background: url("https://d2q486kjf9cwwu.cloudfront.net/static/headerPhotos/Beijing.jpg") no-repeat;
@@ -498,7 +987,9 @@
 		}
 		.selectType {
 			width: 1284px;
-			margin: 20px auto 10px;
+			margin: 0 auto;
+			padding: 20px 0 10px;
+			background: #fff;
 			ul {
 				li {
 					width: 632px;
@@ -530,8 +1021,103 @@
 				}
 			}
 		}
-		.list-cont {
+		.seach{
+			padding: 24px 0;
+			width: 1284px;
+			margin: 0 auto;
 			background: #fff;
+			h3{
+				font-size: 14px;
+				color: #878e95;
+			}
+			.recommended{
+				float: left;
+			}
+			.seach-type{
+				float: left;
+				margin-left: 100px;
+				padding-bottom: 24px;
+				li{
+					float: left;
+					margin-left: 63px;
+					position:relative; 
+					&:first-child{
+						margin-left: 0;
+					}
+					.citys{
+						font-size: 16px;
+						cursor: pointer;
+						i{
+							margin-left: 10px;
+							font-size: 16px;
+							
+						}
+					}
+					.citysList{
+						position: absolute;
+						z-index: 999999999;
+						background: #fff;
+						box-shadow: 0px 12px 20px 0px rgba(0, 0, 0, 0.2);
+						border-radius: 3px;
+						padding:30px 0px 40px 27px;
+						width: 311px;
+						left: 50%;
+						margin-left: -50%;
+						.checkboxlist{
+							margin-top: 20px;
+							&:first-child{
+								margin-top: 0;
+							}
+						}
+						.cancel{
+							position: absolute;
+							top: 10px;
+							right: 10px;
+							font-size: 8px;
+							cursor: pointer;
+						}
+						.subimtbtn{
+							position: absolute;
+							bottom: 10px;
+							right: 10px;
+							color:#1bbc9d;
+							font-size: 14px;
+							cursor: pointer;
+							font-weight: bold;
+						}
+					}
+				}
+			}
+			.delSeach{
+				border-top: 1px solid #dde0e0;
+				padding-top: 28px;
+				.del{
+					width:85%;
+					float: left;
+					span{
+						cursor: pointer;
+						padding: 3px 14px;
+						border: 1px solid #878e95;
+						font-size: 16px;
+						border-radius: 20px;
+						i{
+							font-size: 7px;
+							margin-left: 6px;
+							color:#1bbc9d;
+						}
+						margin-right:15px;
+					}
+				}
+				.pageSizeInfo{
+					width: 15%;
+					float: right;
+					text-align: right;
+					font-size: 16px;
+				}
+			}
+		}
+		.list-cont {
+			background: #faf9f8;
 			margin: 0 auto 80px;
 			width: 1284px;
 			.activity-item {
@@ -648,6 +1234,10 @@
 				margin: 48px auto 0;
 				cursor: pointer;
 			}
+		}
+		.floatbox{
+			float: left;
+			
 		}
 	}
 </style>

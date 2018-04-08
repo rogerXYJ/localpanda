@@ -1,3 +1,8 @@
 import Vue from 'vue'
-import elementUi from 'element-ui';
-Vue.use(elementUi);
+import Element from 'element-ui'
+import '~/assets/scss/G-ui/element-variables.scss';
+import locale from 'element-ui/lib/locale/lang/en'
+
+export default () => {
+  Vue.use(Element, { locale })
+}

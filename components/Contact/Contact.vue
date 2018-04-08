@@ -30,6 +30,7 @@
 				
 				istrue: false,
 				destination: '',
+				isclick:false,
 				
 			}
 		},
@@ -128,13 +129,18 @@
 
 						}
 					}
+					
+					if(that.isclick==false){
+						that.isclick=true
 					that.axios.post("https://api.localpanda.com/api/user/feedback/commit", JSON.stringify(obj), {
 						headers: {
 							'Content-Type': 'application/json; charset=UTF-8'
 						}
 					}).then(function(response) {
-						console.log(response)
+						
+						
 						if(response.data.succeed) {
+							that.isclick=false
 							that.$emit("isshowfn", true);
 							that.$emit('contact-call-back', true);
 							that.contactActive = false;
@@ -167,6 +173,8 @@
 					}, function(response) {
 
 					})
+					}
+					
 				}
 
 			},
@@ -189,7 +197,7 @@
 		},
 		mounted() {
 
-			console.log(this.objectType)
+			
 			var that = this
 			document.getElementsByTagName("body")[0].addEventListener('click', function() {
 				that.isshowchoose = false
@@ -279,6 +287,7 @@
 
 				<div class="btn">
 					<a class="continue" @click.stop="ok()">SUBMIT</a>
+					
 				</div>
 
 			</div>

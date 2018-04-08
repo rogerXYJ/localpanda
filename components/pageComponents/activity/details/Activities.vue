@@ -549,8 +549,8 @@ export default {
             ? that.children * that.picInfo.childDiscount
             : null
         };
-       // orderInfo = JSON.stringify(orderInfo);
-        console.log(orderInfo);
+        orderInfo = JSON.stringify(orderInfo);
+       
         localStorage.setItem("orderInfo", orderInfo);
       
 		var ua = navigator.userAgent;
@@ -1054,7 +1054,6 @@ export default {
 	            font-size: 18px;
 	            color: #878e95;
 	            vertical-align: middle;
-	            width: 20%;
 	            em{
 	            	color:#353a3f;
 	            	margin-left: 14px;
@@ -1067,6 +1066,8 @@ export default {
             font-size: 18px;
             width: 80%;
             word-wrap:break-word;
+            margin-top: 2px;
+            margin-left: 8px;
           }
         }
         .location{

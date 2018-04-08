@@ -99,7 +99,30 @@ input {
         margin-top: 6px;
     }
 }
+//checkbox
+.el-checkbox__input.is-checked .el-checkbox__inner, .el-checkbox__input.is-indeterminate .el-checkbox__inner{
+    background: #1bbc9d;
+    border-color: #1bbc9d;
+}
+.el-checkbox__input.is-focus .el-checkbox__inner{
+    border-color: #1bbc9d;
+}
+.el-checkbox__inner{
+    width: 18px;
+    height: 18px;
+    border-radius: 3px;
+    &:after{
+        left: 6px;
+        top: 3px;
+    }
+    &:hover{
+         border-color: #1bbc9d;
+    }
+}
 
+.el-checkbox__input.is-checked+.el-checkbox__label{
+    color: #3a3a3a;
+}
 .gradeList {
     background-image: -webkit-linear-gradient(135deg, #009efd, #1bbc9d);
     -webkit-text-fill-color: transparent;

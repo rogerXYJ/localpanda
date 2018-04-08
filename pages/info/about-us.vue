@@ -101,27 +101,30 @@
             <h2>And finally...the Local Panda Team</h2>
             <h3>If you love to travel and want to build a product that changes the way people experience activities then join our talented team.</h3>
         </div>
-        <div class="about-media page-section">
-            <h3>Media</h3>
-            <h2>Stay up to date</h2>
-            <div class="about-media__cell">
-                <div class="about-media__cell-icon">
-                	<svg class="icon" aria-hidden="true">
-					    <use xlink:href="#icon-facebook"></use>
-					</svg>
-                </div>
-                <div class="about-media__cell-content">Follow us on <a href="https://www.facebook.com/LocalPandaGuides/?fref=ts"  target="_blank">Facebook</a> for the snazziest travel pictures to inspire your next trip.</div>
-            </div>
-            <div class="about-media__cell">
-                <div class="about-media__cell-icon">
-                	<svg class="icon" aria-hidden="true">
-					    <use xlink:href="#icon-twitter1"></use>
-					</svg>
-                </div>
-                <div class="about-media__cell-content">Follow us on <a href="https://twitter.com/LocalPandaGuide" target="_blank">Twitter</a> for the snazziest travel pictures to inspire your next trip.</div>
-            </div>
-
+        <div class="media">
+	        <div class="about-media page-section">
+	            <h3>Media</h3>
+	            <h2>Stay up to date</h2>
+	            <div class="about-media__cell">
+	                <div class="about-media__cell-icon">
+	                	<svg class="icon" aria-hidden="true">
+						    <use xlink:href="#icon-facebook"></use>
+						</svg>
+	                </div>
+	                <div class="about-media__cell-content">Follow us on <a href="https://www.facebook.com/LocalPandaGuides/?fref=ts"  target="_blank">Facebook</a> for the snazziest travel pictures to inspire your next trip.</div>
+	            </div>
+	            <div class="about-media__cell">
+	                <div class="about-media__cell-icon">
+	                	<svg class="icon" aria-hidden="true">
+						    <use xlink:href="#icon-twitter1"></use>
+						</svg>
+	                </div>
+	                <div class="about-media__cell-content">Follow us on <a href="https://twitter.com/LocalPandaGuide" target="_blank">Twitter</a> for the snazziest travel pictures to inspire your next trip.</div>
+	            </div>
+	
+	        </div>
         </div>
+        <!--<Foot></Foot>-->
         <FooterCommon></FooterCommon>
     </div>
 </template>
@@ -130,6 +133,7 @@
 import Vue from 'vue'
 import HeaderCommon from '~/components/HeaderCommon/HeaderCommon';
 import FooterCommon from '~/components/FooterCommon/FooterCommon';
+//import Foot from '~/components/FooterCommon/Foot';
 export default {
     name: 'about-us',
     data(){
@@ -393,6 +397,9 @@ export default {
     .about-leader {
     	padding-top: 30px;
     }
+    .media{
+    	background: #FAF9F8;
+    }
     .about-family{
         height: 944px;
         width: 100%;
@@ -424,6 +431,7 @@ export default {
     }
     .about-media{
         padding: 70px 0;
+       
         h2{
             padding: 10px 0 50px;
             font-size: 30px;

@@ -1,0 +1,172 @@
+<template >    
+    <div class="page__container">
+    	<<HeaderCommon :logIn="logIn"></HeaderCommon>
+        <Banner></Banner>
+        <StepBar step="2"></StepBar>
+        <div class="page-section">
+            <el-form 
+                v-if="formReady" 
+                ref="form" 
+                :model="form" 
+                :rules="formRules"
+                class="GUI-form"
+            >
+                <div class="GUI-form-block GUI-form-block--require">
+                    <div class="GUI-form-block__title">What is your preferred type of accommodation?</div>
+                    <div class="GUI-form-block__content">
+                        <el-form-item class="GUI-form-item" prop="accommodation">
+                            <LevelSelect :dataSource="accommodationDataSource" v-model="form.accommodation"></LevelSelect>
+                        </el-form-item>
+                    </div>
+                </div>
+                <div class="GUI-form-block GUI-form-block--require">
+                    <div class="GUI-form-block__title">What is your favorite type of accommodation?</div>
+                    <div class="GUI-form-block__content">
+                        <el-form-item class="GUI-form-item" prop="accommodationType">
+                            <RadioPic 
+                                :dataSource="accommodationTypeDataSource" 
+                                v-model="form.accommodationType"
+                                :otherSpecifyDisplay="true"
+                            >
+                            </RadioPic>
+                        </el-form-item>
+                    </div>
+                </div>
+
+                <div class="GUI-form-block">
+                    <div class="GUI-form-block__title">How many rooms & beds do you need?</div>
+                    <div class="GUI-form-block__content">
+                        <RoomRequirements :roomRequirementsValue="form.roomRequirements" :otherRoomRequirementsValue="form.otherRoomRequirements" :onChange="onChangeRoomRequirements"></RoomRequirements>
+                    </div>
+                </div>
+                
+                <div class="GUI-form-block">
+                    <div class="GUI-form-bar">
+                        <el-button @click="prevForm">Previous</el-button>
+                        <el-button @click="onSubmit('form')">Next</el-button>
+                    </div>
+                </div>
+            </el-form>
+        </div> 
+        <FooterCommon></FooterCommon>
+    </div>
+</template>
+
+<script>    
+    import RadioPic from '~/components/GUI/form/RadioPic';
+    import LevelSelect from '~/components/GUI/form/LevelSelect';
+	import Banner from '~/components/pageComponents/travel/customize/Banner';
+    import StepBar from '~/components/pageComponents/travel/customize/StepBar';
+    import RoomRequirements from '~/components/pageComponents/travel/customize/RoomRequirements';
+    import HeaderCommon from '~/components/HeaderCommon/HeaderCommon';
+	import FooterCommon from '~/components/FooterCommon/FooterCommon';
+	import Consts from '~/assets/js/consts/travel/customize/step.js';
+    import stepFormStorage from '~/assets/js/stepFormStorage.js';
+    
+    const storageKey = 'STEP_2_FORM_STORAGE';
+    
+	export default {
+		name: 'TravelCustomizeStep-2',
+		components: {
+            Banner,
+            StepBar,
+            RadioPic,
+            LevelSelect,
+            RoomRequirements,
+            HeaderCommon,
+            FooterCommon
+		},
+        data() {
+            return {
+            	logIn:'',
+                formReady: false,
+                form: {
+                    accommodation: {
+                        accommodationMinPrice: 0,
+                        accommodationMaxPrice: 0,
+                    },
+                    accommodationType: '',
+                    roomRequirements: [
+                        {
+                            "roomType": "King or Queen bed",
+                            "roomNumber": 0,
+                            "extraBed": false
+                        },
+                        {
+                            "roomType": "Double bed",
+                            "roomNumber": 0,
+                            "extraBed": false
+                        }
+                    ],
+                    otherRoomRequirements: '',
+                },
+                formRules: {
+                    accommodation: [
+                        { required: true, message: 'Field is required'},
+                    ],
+                    accommodationType: [
+                        { required: true, message: 'Field is required'},
+                    ],
+                },
+                accommodationDataSource: Consts.accommodationDataSource,
+                accommodationTypeDataSource: Consts.accommodationTypeDataSource,
+            }
+        },
+		methods: {
+            onSubmit(formName) {
+                this.$refs[formName].validate((valid) => {
+                    console.log(this.$refs[formName].model);
+                    // console.log(this.form);
+                    if (valid) {
+                        console.log('step2 submit success');
+                        let formData = Object.assign({},this.form);
+                        formData.accommodationMinPrice = formData.accommodation.accommodationMinPrice;
+                        formData.accommodationMaxPrice = formData.accommodation.accommodationMaxPrice;
+                        delete formData.accommodation;
+                        stepFormStorage.addStorage(storageKey, formData);
+                        window.location.href = "/travel/customize/step3";
+                    } else {
+                        console.log('error submit!!');
+                        return false;
+                    }
+                });
+            },
+            onChangeRoomRequirements(value){
+                console.log('onChangeRoomRequirements');
+                console.log(value);
+                this.form.otherRoomRequirements = value;
+            },
+            prevForm(){
+                window.location.href = "/travel/customize/step1";
+            }
+		},
+		mounted: function() {
+			this.logIn = window.localStorage.getItem("logstate");
+            let formData = stepFormStorage.getStorage(storageKey);
+            if(JSON.stringify(formData).length > 7){
+                try{
+                    
+                    formData.accommodation = {
+                        accommodationMinPrice: formData.accommodationMinPrice || 0,
+                        accommodationMaxPrice: formData.accommodationMaxPrice || 0,
+                    }
+                    delete formData.accommodationMinPrice;
+                    delete formData.accommodationMaxPrice;
+                    this.form = formData;
+                }catch(e){
+                    
+                }
+            }
+            this.formReady = true;
+        }
+	}
+</script>
+<style lang="scss">
+	@import '~assets/scss/_main.scss';
+	@import '~/assets/font/iconfont.css';
+    @import '~assets/scss/G-ui/base.scss';
+    @import '~assets/scss/G-ui/element-ui.scss';
+</style>
+<style lang="scss" scoped>
+    @import "~assets/scss/base/_setting.scss";
+</style>

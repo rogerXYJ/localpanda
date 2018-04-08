@@ -134,6 +134,7 @@
 <script>
 	if (process.browser) {
 	   require('~/assets/js/pages/talk.js')
+	   require('~/assets/js/pages/ga.js')
 	}
 	import Vue from 'vue'
 	import { regExp } from '~/assets/js/plugin/utils'
@@ -200,6 +201,15 @@
 			AlertGoBack,
 			Alert
 
+		},
+		head(){
+			return{
+				script:[
+					{src:'https://www.googletagmanager.com/gtag/js?id=AW-830736831',
+					type:'text/javascript'}
+				]
+			}
+			
 		},
 		methods: {
 			cutXiaoNum(num, len) {
@@ -382,6 +392,7 @@
 								"utcOffset": new Date().getTimezoneOffset() / 60 * -1
 							}
 							if(that.addOder == false) {
+								that.addOder = true
 								that.axios.put("https://api.localpanda.com/api/activity/order/create", JSON.stringify(obj), {
 									headers: {
 										'Content-Type': 'application/json; charset=UTF-8'
@@ -439,7 +450,7 @@
 			this.opctions = localStorage.getItem("orderInfo") ? JSON.parse(localStorage.getItem("orderInfo")) : ''
 			this.logIn = window.localStorage.getItem("logstate")
 			this.goBackFn()
-			console.log(this.opctions)
+			
 		},
 		watch: {
 

@@ -112,6 +112,8 @@
 				isShowAlert: false,//弹框返回状态
 				alertMessage: "",//弹框内容
 				alertTitle:'',
+				isclick:false
+				
 			}
 		},
 		components:{
@@ -122,6 +124,7 @@
 				this.isShowAlert = val;
 			},
 			submit() {
+				
 				const that = this
 				if(that.name==''|| regExp.isNub(that.name)||regExp.isCode(that.name)) {
 					that.nameError = true
@@ -146,12 +149,14 @@
 							message: that.textarea
 						}
 					}
+					if(that.isclick==false){
+						that.isclick=true
 						that.axios.post("https://api.localpanda.com/api/user/feedback/commit", JSON.stringify(obj), {
 							headers: {
 								'Content-Type': 'application/json; charset=UTF-8'
 							}
 						}).then(function(response) {
-							
+							that.isclick=false
 							if(response.data.succeed){
 								that.isShowAlert=true
 								that.alertTitle="Submission completed!"
@@ -170,6 +175,8 @@
 						}, function(response) {
 	
 						})
+					}
+						
 					
 				}
 			},

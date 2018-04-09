@@ -209,7 +209,6 @@
 	import FooterCommon from '~/components/FooterCommon/FooterCommon';
 	import Loading from '~/components/Loading/Loading'
 	import Bottom from '~/components/bottom/Bottom'
-
 	export default {
 		name: 'activityList',
 		async asyncData({
@@ -291,7 +290,6 @@
 				removeDurations:[],
 				removeTourtype:[],
 				
-
 			}
 			let listdata = {}
 			let filters=[]
@@ -380,7 +378,6 @@
 				
 				
 				
-
 			} catch(err) {
 				//return error(JSON.stringify(err));
 			}
@@ -404,7 +401,6 @@
 			} else {
 				var description="See top things to do in Xi’an, including Xi’an city tours, Xi’an walking tours, Xi’an history & culture tours, and Xi’an food tours. Visit the Terra-cotta Warriors, Xi’an City Wall, Muslim Quarter, Shaanxi History Museum, and Xi’an markets with our local China tour guides."
 			}
-
 			return {
 				title: title,
 				meta: [{
@@ -417,7 +413,6 @@
 						name: "description",
 						content: description
 					}
-
 				]
 			};
 		},
@@ -771,9 +766,7 @@
 						that.activityList=response.data.entities
 						window.scrollTo(100,0)
 					}
-
 				}, function(response) {
-
 				})
 			},
 			apply(){
@@ -830,7 +823,6 @@
 			}
 		},
 		filters: {
-
 			firstUpperCase(val) {
 				if(val)
 					return val.toLowerCase().replace(/( |^)[a-z]/g, (L) => L.toUpperCase());
@@ -839,7 +831,6 @@
 		created: function() {
 			const that = this
 			that.value = that.loc == "Xian" ? "Xi'an" : that.loc
-
 		},
 		mounted: function() {
 			const that = this

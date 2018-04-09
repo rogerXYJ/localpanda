@@ -69,7 +69,7 @@
                                         class="travel-interest__item"
                                         v-lazy:background-image="props.item.src"
                                     >
-                                        <div class="travel-interest__item-title">{{props.item.label}}</div>
+                                        <div class="travel-interest__item-title" v-html="props.item.label"></div>
                                     </div>
                                 </template>
                             </Checkbox>
@@ -92,7 +92,8 @@
                                         >
                                         </flatPickr>
                                     </div>
-                                    <input hidden v-model="form.arriveTime">
+
+                                    <el-input class="input-hidden" v-model="form.arriveTime"></el-input>
                                     <el-checkbox
                                         class="GUI-form__radio-group"
                                         v-model="arriveTimeNotDecided"
@@ -195,8 +196,9 @@
         data() {
             
             let arriveTimeNotDecidedCheck = (rule, value, callback) => {
+                console.log(123)
                 if(!value && !this.arriveTimeNotDecided){
-                    callback(new Error('Field is required (must be valid date'));
+                    callback(new Error('Field is required (must be valid date)'));
                 }else{
                     callback();
                 }
@@ -220,7 +222,7 @@
                     arriveTime: '',
                     firstTime: null,
                     accommodationIncluded: null,
-                    duration: 8,
+                    duration: 0,
                     arriveCity: '',
                 },
                 formRules: {
@@ -240,7 +242,7 @@
                         { required: true, message: 'Field is required'},
                     ],
                     arriveTime: [
-                        { validator: arriveTimeNotDecidedCheck},
+                        { validator: arriveTimeNotDecidedCheck, trigger: 'change'},
                     ],
                     arriveCity: [
                         { validator: arriveCityNotDecidedCheck},
@@ -252,7 +254,8 @@
                 whereDataSource: Consts.whereDataSource,
                 interestsDataSource: Consts.interestsDataSource,
 				dateOptions: {
-                    inline: true
+                    inline: true,
+                    minDate: new Date()
                 }
                 
             }
@@ -272,7 +275,11 @@
                             formData.arriveCity = 'Not Decided';
                         }
                         stepFormStorage.addStorage(storageKey, formData);
-                        window.location.href = "/travel/customize/step2";
+                        if(formData.accommodationIncluded){
+                            window.location.href = "/travel/customize/step2";
+                        }else{
+                            window.location.href = "/travel/customize/step3";
+                        }
                     } else {
                         console.log('error submit!!');
                         return false;
@@ -326,8 +333,7 @@
 </style>
 <style lang="scss" scoped>
     @import "~assets/scss/base/_setting.scss";
-    .travel-des{
-        
+    .travel-des{        
         &__item{
             border: 3px solid #fff;
             padding-bottom: 10px;
@@ -346,9 +352,6 @@
                 padding: 5px 0 0 10px;
                 font-size: 16px;
                 line-height: 24px;
-                h4{
-                    font-weight: bold;
-                }
             }
         }
         .GUI-checkbox__item--current{
@@ -399,4 +402,12 @@
         background: #ebebeb;
     }
     
+    .input-hidden{
+        width: 0;
+        height: 0;
+        position: absolute;
+        top: 0;
+        left: 0;
+        overflow: hidden;
+    }
 </style>

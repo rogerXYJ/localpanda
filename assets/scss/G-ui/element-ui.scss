@@ -8,14 +8,27 @@
         }
     }
 
-    .el-form-item.is-required .el-form-item__label{
-        &:before{
-            display: none;
+    .el-form-item{
+        &.is-error{
+
+            .el-form-item__content{
+                padding-top: 50px;
+            }
         }
-        &:after{
-            content: '*';
-            color: #f56c6c;
-            margin-left: 4px;
+
+        .el-form-item__label{
+            float: none;
+        }
+
+        &.is-required .el-form-item__label{            
+            &:before{
+                display: none;
+            }
+            &:after{
+                content: '*';
+                color: #f56c6c;
+                margin-left: 4px;
+            }
         }
     }
 
@@ -196,14 +209,9 @@
 .el-form-item__error{
     width: 100%;
     height: 40px;
-    padding: 0 14px;
-    margin-top: 10px;
-    position: relative;
-    left: auto;
-    border: 1px solid #e14f3f;
-    border-radius: 2px;
-    background: #f6cac5;
-    color: #e14f3f;
+    position: absolute;
+    top: 0;
+    left: 0;
     line-height: 40px;
     font-weight: bold;
     font-size: 16px;

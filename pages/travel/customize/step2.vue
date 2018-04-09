@@ -1,6 +1,6 @@
 <template >    
     <div class="page__container">
-    	<<HeaderCommon :logIn="logIn"></HeaderCommon>
+    	<HeaderCommon :logIn="logIn"></HeaderCommon>
         <Banner></Banner>
         <StepBar step="2"></StepBar>
         <div class="page-section">

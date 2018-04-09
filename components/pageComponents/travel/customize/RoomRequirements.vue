@@ -7,7 +7,7 @@
         >
             <span class="room-bed__cell-label">{{item.roomType}}:</span>
             <span class="room-bed__cell-count">
-                <el-input-number v-model="item.roomNumber" controls-position="right"></el-input-number>
+                <el-input-number v-model="item.roomNumber" controls-position="right" :min="0"></el-input-number>
             </span>
             <span class="room-bed__cell-extra">
                 <el-checkbox v-model="item.extraBed">Need an extra bed</el-checkbox>

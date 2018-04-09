@@ -136,7 +136,12 @@ export default {
             this.form.otherRoomRequirements = value;
         },
         prevForm(){
-            window.location.href = "/travel/customize/step2";
+            let formDataStep1 = stepFormStorage.getStorage('STEP_1_FORM_STORAGE');
+            if(formDataStep1.accommodationIncluded){
+                window.location.href = "/travel/customize/step2";
+            }else{
+                window.location.href = "/travel/customize/step1";
+            }
         }
     },
     mounted: function() {

@@ -66,7 +66,7 @@ module.exports = {
         },
         {
             label: 'Xi’an',
-            src: cdnPath + '/static/customize/destination/xi\'an.jpg',
+            src: cdnPath + "/static/customize/destination/XiAn.jpg",
             value: 'Xi’an',
             des:[
                 'Terracotta Army',
@@ -97,7 +97,7 @@ module.exports = {
             value: 'Art & Architecture',
         },
         {
-            label: 'Performances & Shows',
+            label: 'Performances &<br> Shows',
             src: cdnPath + '/static/customize/interest/PerformancesandShows.jpg',
             value: 'Performances & Shows',
         },
@@ -137,12 +137,12 @@ module.exports = {
             value: 'Hiking & Outdoor',
         },
         {
-            label: 'Chinese Cultural Activities',
+            label: 'Chinese Cultural<br> Activities',
             src: cdnPath + '/static/customize/interest/ChineseCulturalActivities.jpg',
             value: 'Chinese Cultural Activities',
         },
         {
-            label: 'Local life & Neighborhoods',
+            label: 'Local life &<br> Neighborhoods',
             src: cdnPath + '/static/customize/interest/LocallifeandNeighborhoods.jpg',
             value: 'Local life & Neighborhoods',
         },
@@ -185,12 +185,12 @@ module.exports = {
         },
         {
             label: 'Boutique and local luxury hotels',
-            src: cdnPath + '/static/customize/accommodation/Bontiqueandlocalluxuryhotels.jpg',
+            src: cdnPath + '/static/customize/accommodation/Boutiqueandlocalluxuryhotels.jpg',
             value: 'Boutique and local luxury hotels',
         },
         {
             label: 'BnB, home-stay, and budget hotels',
-            src: cdnPath + '/static/customize/accommodation/Bnbandbugethotels.jpg',
+            src: cdnPath + '/static/customize/accommodation/BnBandbudgethotels.jpg',
             value: 'BnB, home-stay, and budget hotels',
         },
     ]

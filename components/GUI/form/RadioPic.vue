@@ -62,9 +62,11 @@
             value: [String, Number],
             initExtendData: {
                 type: Object,
-                default: {
-                    adults: 0,
-                    children: 0,
+                default: () => {
+                    return {
+                        adults: 0,
+                        children: 0,
+                    }
                 }
             },
             otherSpecifyDisplay: {

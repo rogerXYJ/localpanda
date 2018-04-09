@@ -119,7 +119,11 @@ export default {
                     formData = Object.assign(formData, formDataStep1);
                     formData = Object.assign(formData, formDataStep2);
                     console.log(formData);
-                    this.axios.post('https://api.localpanda.com/api/user/customization/commit',JSON.stringify(formData)).then(function(response) {
+                    this.axios.post('https://api.localpanda.com/api/user/customization/commit',JSON.stringify(formData),{
+                    	headers: {
+							'Content-Type': 'application/json; charset=UTF-8'
+						}
+                    }).then(function(response) {
                         stepFormStorage.clearStorage('STEP_1_FORM_STORAGE');
                         stepFormStorage.clearStorage('STEP_2_FORM_STORAGE');
                         window.location.href = "/travel/customize/done";

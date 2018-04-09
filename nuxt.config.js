@@ -5,7 +5,7 @@ module.exports = {
     ]
   },
   build: {
-  	//publicPath: 'https://d2q486kjf9cwwu.cloudfront.net/static/js/',
+  	publicPath: 'https://d2q486kjf9cwwu.cloudfront.net/static/js/',
     vendor: [
         'axios',
         'vue-lazyload',
@@ -27,6 +27,7 @@ module.exports = {
 
   ],
   css: [
+    'element-ui/lib/theme-chalk/index.css',
     'swiper/dist/css/swiper.css',
   ],
 }

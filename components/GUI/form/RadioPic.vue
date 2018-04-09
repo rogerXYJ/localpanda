@@ -61,9 +61,12 @@
             value: [String, Number],
             initExtendData: {
                 type: Object,
-                default: {
-                    adultsNum: 1,
-                    childNum: 0,
+                default:function() {
+                	return{
+                		adultsNum: 1,
+                    	childNum: 0,
+                	}
+                    
                 }
             },
             otherSpecifyDisplay: {

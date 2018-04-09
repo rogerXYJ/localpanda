@@ -124,7 +124,7 @@
                             <div class="GUI-form-block__title">How many days do you want to travel?</div>
                             <div class="GUI-form-block__content">
                                 <div class="GUI-form-item">
-                                    <el-input-number v-model="form.duration" controls-position="right" :min="8"></el-input-number>
+                                    <el-input-number v-model="form.duration" controls-position="right" :min="0"></el-input-number>
                                 </div>
                             </div>
                         </div>

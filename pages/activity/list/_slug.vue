@@ -76,6 +76,7 @@
 							  		<el-checkbox  :label="key" :key="key">{{key}}({{city}})</el-checkbox>
 							  	</div>
 							  </el-checkbox-group>
+							  <!--<div class="clear">Clear</div>-->
 							  <div class="subimtbtn" @click.stop="apply()">Apply</div>
 						</div>
 					</li>
@@ -91,6 +92,7 @@
 							  		<el-checkbox  :label="key" :key="key">{{key}}({{item}})</el-checkbox>
 							  	</div>
 							  </el-checkbox-group>
+							  <!--<div class="clear">Clear</div>-->
 							  <div class="subimtbtn" @click.stop="apply()">Apply</div>
 						</div>
 					</li>
@@ -111,6 +113,7 @@
 							  		<el-checkbox  :label="key" :key="key">{{key}}({{i}})</el-checkbox>
 							  	</div>
 							  </el-checkbox-group>
+							  <!--<div class="clear">Clear</div>-->
 							  <div class="subimtbtn" @click.stop="apply()">Apply</div>
 						</div>
 					</li>
@@ -128,6 +131,7 @@
 							  		<el-checkbox  v-if="key>1" :label="key" :key="key">{{key}} Days({{i}})</el-checkbox>
 							  	</div>
 							  </el-checkbox-group>
+							  <!--<div class="clear">Clear</div>-->
 							   <div class="subimtbtn" @click.stop="apply()">Apply</div>
 						</div>
 					</li>
@@ -142,12 +146,15 @@
 					<span v-if="removeDurations.length>0 && item==1" v-for="(item,index) in removeDurations"  @click="del(2,removeDurations,index)">1 Day<i class="iconfont">&#xe629;</i></span>
 					<span v-if="removeDurations.length>0 && item>1" v-for="(item,index) in removeDurations"  @click="del(2,removeDurations,index)">{{item}} Days<i class="iconfont">&#xe629;</i></span>
 					<span v-if="removeTourtype.length>0" v-for="(item,index) in removeTourtype" @click="del(3,removeTourtype,index)">{{item.replace(/And/g,'&')}}<i class="iconfont">&#xe629;</i></span>
+					<em class="clearAll" @click="clearAll" v-if="removeCity.length>0||removeCategory.length>0||removeDurations.length>0||removeTourtype.length>0">Clear All</em>
 				</div>
-				<div class="pageSizeInfo">totally {{records}} activities</div>
+				<div class="pageSizeInfo" v-if="records==1">1 activity in total</div>
+				<div class="pageSizeInfo" v-if="records==0">0 activity in total</div>
+				<div class="pageSizeInfo" v-if="records>1">{{records}} activities in total</div>
 			</div>
 		</div>
 	</div>
-		<div class="list-cont">
+		<div class="list-cont" v-if="records>0">
 			<ul class="clearfix">
 				<li class="activity-item" v-for="item in activityList">
 
@@ -187,7 +194,7 @@
 				  background
 				  layout="prev, pager, next"
 				  :total="records"
-				 
+				  class="el-pagination is-background"
 				  @current-change="handleCurrentChange"
 				  :page-size="20">
 				</el-pagination>
@@ -195,20 +202,29 @@
 			
 
 		</div>
+		<div class="empty" v-else>
+			<p>No activities or tours that match your interests are found. </p>
+			<p>You can try to modify your screening conditions or choose our “Customize Your Trip” option.</p> 
+			<p>We can collect your preferences and customize your ideal trip, free of charge. <a  href="javascript:;" @click="showContact">Click here to start!</a></p>
+		</div>
 		<FooterCommon></FooterCommon>
 		<Loading :loadingStatus="loadingStatus"></Loading>
 		<Bottom :scrollTop="600" :isListPage="isListPage"></Bottom>
+		<Contact :ContactStatus="ContactStatus" v-on:isshowfn="isShowFn" v-on:contact-call-back="contactCallBack"  :objectType="objectType"></Contact>
+		<Alert   :isShowAlert="isShowAlert" :alertTitle="alertTitle" :alertMessage="alertMessage" v-on:setIsShowAlert="getIsShowAlert"></Alert>
 	</div>
 </template>
 
 <script>
 	import Vue from 'vue'
-	import { SelectId } from 'element-ui';
+	import { SelectId,Pagination } from 'element-ui';
 	import {GetQueryString}from '~/assets/js/plugin/utils'
 	import HeaderCommon from '~/components/HeaderCommon/HeaderCommon';
 	import FooterCommon from '~/components/FooterCommon/FooterCommon';
 	import Loading from '~/components/Loading/Loading'
 	import Bottom from '~/components/bottom/Bottom'
+	import Contact from '~/components/Contact/Contact';
+	import Alert from '~/components/Prompt/Alert';
 	export default {
 		name: 'activityList',
 		async asyncData({
@@ -258,6 +274,14 @@
 				isdisabled: false,
 				isListPage: true,
 				apiBasePath: apiBasePath,
+				//唤起定制
+				ContactStatus:false,
+				isShowAlert:false,
+				alertTitle:'',
+				alertMessage:"",
+				istrue:false,
+				objectType:'CONSULTING',
+				
 				
 				selected:'Recommended',
 				select:[
@@ -310,7 +334,7 @@
 				if(opctions.cities.length>0){
 					data.checkedCities=data.checkedCities.concat(opctions.cities)
 					//data.checkedCities.push(opctions.cities.join(","))
-					console.log(data.checkedCities)
+					
 					let jsonCity={type:'CITY',filterValues:opctions.cities}
 					filters.push(jsonCity)
 				}
@@ -331,6 +355,7 @@
 					data.checkedTourtype=data.checkedTourtype.concat(opctions.tourtype)
 					let jsonTourtype={type:'TOUR_TYPE',filterValues:data.checkedTourtype}
 					filters.push(jsonTourtype)
+					
 				}
 				obj = {
 					location: data.loc == "Xian" ? "Xi\'an" : data.loc,
@@ -347,7 +372,7 @@
 					sort:sort
 				}
 			}
-			console.log(obj)
+			
 			 
 			//console.log(data.checkedCities)
 			try {
@@ -358,6 +383,7 @@
 				})
 				data.records= listdata.data.records
 				data.activityList = listdata.data.entities
+				
 				if(listdata.data.records>data.pageSize){
 					data.isdisabled=true
 				}
@@ -383,7 +409,6 @@
 			}
 			return data
 			
-			console.log(opction)
 		},
 		head() {
 			let location = this.value;
@@ -421,9 +446,39 @@
 			SelectId,
 			FooterCommon,
 			Loading,
-			Bottom
+			Bottom,
+			Pagination,
+			Contact,
+			Alert
 		},
 		methods: {
+			isShowFn(val){
+				this.istrue=val
+				if(this.istrue==true){
+					this.isShowAlert=true
+					this.alertTitle="Submission completed!"
+					this.alertMessage="Thank you for your feedback.We will get back to you within 1 day."
+					this.istrue=false
+				}else{
+					this.isShowAlert=true
+					this.alertMessage="Failed!"
+				}
+			},
+			getIsShowAlert(val){
+				this.isShowAlert=val
+			},
+			showContact(){
+				
+				this.ContactStatus=true
+			},
+			contactCallBack(val){
+				this.ContactStatus=false
+			},
+			
+			
+			
+			
+			
 			returnFloat(value) {
 				var value = Math.round(parseFloat(value) * 100) / 100;
 				var xsd = value.toString().split(".");
@@ -454,7 +509,7 @@
 					this.isshowtourtype=false
 					if(JSON.parse(localStorage.getItem("opctions")).cities.length>0){
 						this.checkedCities=JSON.parse(localStorage.getItem("opctions")).cities
-						console.log(this.checkedCities)
+						
 					}else{
 						this.checkedCities=[]
 						this.checkedCategory=JSON.parse(localStorage.getItem("opctions")).category.length>0?JSON.parse(localStorage.getItem("opctions")).category:[]
@@ -486,7 +541,7 @@
 					
 					
 					 if(JSON.parse(localStorage.getItem("opctions")).durations.length>0){
-						console.log()
+						
 						this.checkedDurations=JSON.parse(localStorage.getItem("opctions")).durations	
 					}else{
 						this.checkedCities=JSON.parse(localStorage.getItem("opctions")).cities.length>0?JSON.parse(localStorage.getItem("opctions")).cities:[]
@@ -526,6 +581,9 @@
 				}
 				opctions=JSON.stringify(opctions)
 				localStorage.setItem("opctions",opctions)
+			},
+			clearAll(){
+				location.href="/activity/list/"+this.loc
 			},
 			sort(val){
 				var sort={}
@@ -587,7 +645,7 @@
 						this.checkedCities=[]
 					}else if(JSON.parse(localStorage.getItem("opctions")).cities.length>0){
 						this.checkedCities=JSON.parse(localStorage.getItem("opctions")).cities
-						console.log(this.checkedCities)
+						
 					}
 					
 				}else if(id==1){
@@ -630,7 +688,7 @@
 					this.checkedTourtype[i]=this.checkedTourtype[i].replace(/&/g, "And")
 					
 				}
-				console.log(11)
+				
 				if(this.selected=="Recommended"){
 					 sort={
 						type:"DEFAULT"
@@ -754,7 +812,7 @@
 						
 					}
 				}
-				 
+				
 				that.loadingStatus = true
 				Vue.axios.post(that.apiBasePath + "search/activity", JSON.stringify(obj), {
 					headers: {
@@ -776,7 +834,6 @@
 					this.checkedTourtype[i]=this.checkedTourtype[i].replace(/&/g, "And")
 					
 				}
-				console.log(11)
 				if(this.selected=="Recommended"){
 					 sort={
 						type:"DEFAULT"
@@ -809,16 +866,21 @@
 		},
 		watch:{
 			checkedCities:function(val,oldVal){
-				console.log(val)
+				
 			},
 			pageNum:function(val,oldVal){
-				console.log(val)
+				
 			},
 			checkedDurations(val,oldVal){
-				console.log(val)
+				
 			},
 			checkedTourtype(val,oldVal){
-				console.log(val)
+				if(val.length>0){
+					for(let i=0;i<val.length;i++){
+						val[i]=val[i].replace(/And/g, "&")
+					}
+				}
+				
 				
 			}
 		},
@@ -850,7 +912,7 @@
 				that.isshowtourtype=false		
 			})
 			that.logIn = localStorage.getItem("logstate") ? localStorage.getItem("logstate") : null
-			//console.log(Object.keys(this.tourtype).length)
+			
 			
 		},
 	}
@@ -939,6 +1001,20 @@
 		overflow-x: hidden;
 		width: 100%;
 		background: #faf9f8;
+		.empty{
+			width: 1284px;
+			margin: 0 auto;
+			
+			padding-bottom: 300px;
+			p{
+				font-size:16px;
+				margin-top: 20px;
+				text-align: center;
+				a{
+					color:#1bbc9d;
+				}
+			}
+		}
 		.banner {
 			&.beijing {
 				background: url("https://d2q486kjf9cwwu.cloudfront.net/static/headerPhotos/Beijing.jpg") no-repeat;
@@ -1095,12 +1171,21 @@
 							font-size: 8px;
 							cursor: pointer;
 						}
+						.clear{
+							position: absolute;
+							bottom: 23px;
+							left: 25px;
+							color:#1bbc9d;
+							font-size: 18px;
+							cursor: pointer;
+							font-weight: bold;
+						}
 						.subimtbtn{
 							position: absolute;
-							bottom: 10px;
-							right: 10px;
+							bottom: 25px;
+							right: 25px;
 							color:#1bbc9d;
-							font-size: 14px;
+							font-size: 18px;
 							cursor: pointer;
 							font-weight: bold;
 						}
@@ -1113,6 +1198,12 @@
 				.del{
 					width:85%;
 					float: left;
+					.clearAll{
+						font-size: 16px;
+						font-weight: bold;
+						color:#1bbc9d;
+						cursor: pointer;
+					}
 					span{
 						cursor: pointer;
 						padding: 3px 14px;
@@ -1125,6 +1216,7 @@
 							font-size: 7px;
 							margin-left: 6px;
 							color:#1bbc9d;
+							font-weight: bold;
 						}
 						margin-right:15px;
 					}

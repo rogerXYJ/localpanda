@@ -119,6 +119,16 @@
             .step-state__cell--first{
                 .step-state__cell-number{
                     background: #1bbc9d;
+                }
+            }
+        }
+        &--2{
+            &:before{
+                width: 212px;
+            }
+            .step-state__cell--first{
+                .step-state__cell-number{
+                    background: #1bbc9d;
                     span{
                         display: none;
                     }

@@ -88,6 +88,20 @@ export default {
         FooterCommon
     },
     data() {
+        let nameCheck = (rule, value, callback) => {
+            if(!/^[a-zA-Z]+$/g.test(value)){
+                callback(new Error('Field is required'));
+            }else{
+                callback();
+            }
+        }
+        let mailCheck = (rule, value, callback) => {
+            if(!/^([a-zA-Z0-9_-])+@(([a-zA-Z0-9_-])+\.)+(com|cn)/.test(value)){
+                callback(new Error('Field is required'));
+            }else{
+                callback();
+            }
+        }
         return {
         	logIn:"",
             formReady: false,
@@ -100,9 +114,15 @@ export default {
                 message: ""
             },
                 formRules: {
-                firstName: [{ required: true, message: "Field is required" }],
-                lastName: [{ required: true, message: "Field is required" }],
-                emailAddress: [{ required: true, message: "Field is required" }]
+                firstName: [
+                    { validator: nameCheck},
+                ],
+                lastName: [
+                    { validator: nameCheck},
+                ],
+                emailAddress: [
+                    { validator: mailCheck},
+                ],
             }
         };
     },

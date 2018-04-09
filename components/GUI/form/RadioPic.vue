@@ -42,6 +42,7 @@
                         </div>
                     </div>
                 </div>
+                <div v-if="adultsNum == 0" class="GUI-radio-item-extend__error">Please input right number of adults.</div>
             </div>
         </div>
         <OtherSpecify 
@@ -62,8 +63,8 @@
             initExtendData: {
                 type: Object,
                 default: {
-                    adultsNum: 1,
-                    childNum: 0,
+                    adults: 0,
+                    children: 0,
                 }
             },
             otherSpecifyDisplay: {
@@ -208,6 +209,11 @@
                     font-size: 16px;
                     padding-bottom: 10px;
                 }
+            }
+            &__error{
+                margin-top: 5px;
+                font-size: 12px;
+                color: #f56c6c;
             }
         }
     }

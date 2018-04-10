@@ -196,15 +196,14 @@ input {
         width: 346px!important;
         padding: 0 20px 20px 20px!important;
         border-radius: 3px!important;
-        box-shadow:0px 2px 6px 0px rgba(53, 58, 63, 0.1)!important;
+        box-shadow:0px 2px 6px rgba(53, 58, 63, 0.5)!important;
     }
+    .flatpickr-months .flatpickr-prev-month svg, .flatpickr-months .flatpickr-next-month svg{ margin-top: 10px;}
     
     .flatpickr-month {
         margin: 24px 0 12px !important;
     }
-    .flatpickr-next-month{
-        top: -6px!important;
-    }
+    
     .flatpickr-weekday {
         color: #424242!important;
     }

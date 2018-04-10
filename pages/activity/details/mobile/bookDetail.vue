@@ -10,7 +10,8 @@
 				<li class="clearfix" :class="{err:dateErr}">
 					<label>Date</label>
 					<div class="dateTime">
-						<flatPickr placeholder="Please Select" v-model="dateTime" :config="options"></flatPickr>
+						<!-- <flatPickr placeholder="Please Select" v-model="dateTime" :config="options"></flatPickr> -->
+						<input id="js_changetime" placeholder="Please Select" v-model="dateTime" readonly type="text">
 					</div>
 				</li>
 				<li class="clearfix" @click="show()" :class="{err:peopleErr}">
@@ -41,7 +42,13 @@
 		<transition name="slideleft">
 			<SelectPeople v-show="isshow" class="view" :picInfo="picInfo" @call-back="setCallBack" @sureSelect="getSave"></SelectPeople>
 		</transition>
+		
+		<transition name="fade">
+			<div class="win_bg" @click="showWinBg = false" v-if="showWinBg"></div>
+		</transition>
+		
 	</div>
+	
 </template>
 
 <script>
@@ -49,7 +56,8 @@
 		
 		require('~/assets/js/plugin/flexible.js')
 	}
-	import flatPickr from "vue-flatpickr-component";
+	//import flatPickr from "vue-flatpickr-component";
+	import Flatpickr from 'flatpickr';
 	import { GetDateStr, addmulMonth } from "~/assets/js/plugin/utils";
 	import SelectPeople from "~/components/pageComponents/activity/details/mobile/SelectPeople"
 	import Vue from 'vue';
@@ -74,12 +82,13 @@
 				dateErr:false,
 				peopleErr:false,
 				dateErrText:"",
+				showWinBg : false
 				
 			}
 		},
 
 		components: {
-			flatPickr,
+			//flatPickr,
 			SelectPeople
 		},
 		methods: {
@@ -150,7 +159,12 @@
 		      });
 		      let that = this;
 		      if (that.dateTime == "") {
-		       	that.dateErr=true
+				that.dateErr=true;
+
+				//弹出日历
+				that.flatPickr.open();
+				
+				   
 		      } else if (that.children + that.adults < that.picInfo.minParticipants) {
 		      	that.peopleErr=true
 		        that.dateErrText =
@@ -207,9 +221,23 @@
 			this.category=JSON.parse(window.localStorage.getItem("objDetail")).category
 			this.options = {
 				minDate: this.picInfo.earliestBookDate,
-				maxDate: addmulMonth(GetDateStr(this.picInfo.earliestBookDate), 12)
+				maxDate: addmulMonth(GetDateStr(this.picInfo.earliestBookDate), 12),
+				disableMobile: true,
+				onOpen : function(e){
+					let calendarContainer = this.calendarContainer.style;
+					setTimeout(function(){
+						calendarContainer.top = parseInt(calendarContainer.top)-60+'px';
+					},0);
+					that.showWinBg = true;
+				},
+				onChange(){
+					that.showWinBg = false;
+				}
 			}
 			
+			that.flatPickr = new Flatpickr('#js_changetime',this.options);
+			
+			console.log(that.flatPickr);
 		},
 		watch: {
 			dateTime:function(val,oldVal){
@@ -360,5 +388,16 @@
 		.placeho{
 			color:#878e95;
 		}
+		
+		.win_bg{ width:100%; height:100%; background-color:rgba(0,0,0,0.5); position: absolute; left:0; top:0;}
+		.fade-enter-active, .fade-leave-active {
+		transition: opacity .5s;
+		}
+		.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+		opacity: 0;
+		}
+		
 	}
+
+	
 </style>

@@ -164,7 +164,8 @@
 								<div class="select clearfix">
 									<div class="selectDate" :class="picInfo.departureTime?'':'long'">
 										<b>Date</b>
-										<flatPickr placeholder="Date" v-model="dateTime" :config="options"></flatPickr>
+										<!--<flatPickr placeholder="Date" v-model="dateTime" :config="options"></flatPickr>-->
+                    <input id="js_changetime" readonly v-model="dateTime" type="text" placeholder="Date" >
 									</div>
 									<div class="selectTime" v-if="picInfo.departureTime">
 										<b>Time</b>
@@ -254,7 +255,7 @@
 									</div>
 								</div>
 								<div class="inquiry">
-									<button class="bookNow" @click="order">Book Now</button>
+									<button class="bookNow" @click.stop="order">Book Now</button>
 									<div class="cancat" @click="showContact">
 										<p>Not sure if this is the tour for you? We can </br>help you design your dream tour!<span> Inquire</span> </p>
 										<i class="iconfont">&#xe64a;</i>
@@ -314,7 +315,9 @@ import {
 } from "~/assets/js/plugin/utils";
 import Contact from "~/components/Contact/Contact";
 import Alert from "~/components/Prompt/Alert";
-import flatPickr from "vue-flatpickr-component";
+//import flatPickr from "vue-flatpickr-component";
+import Flatpickr from 'flatpickr';
+
 export default {
   props: [
     "remark",
@@ -365,10 +368,11 @@ export default {
       isShowView: false,
 	  isShowPicNode: false,
 	  enName:'',
+    flatPickr : null
     };
   },
   components: {
-    flatPickr,
+    //flatPickr,
     Contact,
     Alert
   },
@@ -502,6 +506,7 @@ export default {
       this.isShowAdults = true;
     },
     order() {
+      
       window.ga && ga("gtag_UA_107010673_1.send", {
         hitType: "event",
         eventCategory: "Button",
@@ -512,8 +517,12 @@ export default {
       if (that.dateTime == "") {
         that.isSelectDate = true;
         that.dateErrText = "*Please select a date first.";
+        //弹出日历
+        that.flatPickr.open();
+        
       } else if (that.children + that.adults < that.picInfo.minParticipants) {
         that.error = true;
+        that.isShowAdults = true;
         that.dateErrText =
           "*Mimimum number of travelers:" + that.picInfo.minParticipants + ".";
       } else {
@@ -559,13 +568,9 @@ export default {
 			isAndroid = ua.match(/(Android)\s+([\d.]+)/),
 			isMobile = isIphone || isAndroid;
 		if(isMobile) {
-			
 			location.href = "/activity/booking/mobile"
-			that.dateTime = ""
 		} else {
-			
 			location.href = "/activity/booking"
-			that.dateTime = ""
 		}
         //routes.push('/fillYourInfo')
       }
@@ -629,6 +634,17 @@ export default {
   },
   mounted: function() {
     let that = this;
+
+    //初始化清空日期
+    that.dateTime = ""
+
+    //初始化日历
+    that.flatPickr = new Flatpickr('#js_changetime',that.options);
+    
+
+    
+    //aa.isOpen = true;
+    
     document
       .getElementsByTagName("body")[0]
       .addEventListener("click", function() {

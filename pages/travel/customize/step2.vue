@@ -11,7 +11,7 @@
                 :rules="formRules"
                 class="GUI-form"
             >
-                <div class="GUI-form-block GUI-form-block--require">
+                <div class="GUI-form-block">
                     <div class="GUI-form-block__title">What is your preferred type of accommodation?</div>
                     <div class="GUI-form-block__content">
                         <el-form-item class="GUI-form-item" prop="accommodation">
@@ -22,7 +22,10 @@
                 <div class="GUI-form-block GUI-form-block--require">
                     <div class="GUI-form-block__title">What is your favorite type of accommodation?</div>
                     <div class="GUI-form-block__content">
-                        <el-form-item class="GUI-form-item" prop="accommodationType">
+                        <el-form-item 
+                            class="GUI-form-item" 
+                            prop="accommodationType"
+                        >
                             <RadioPic 
                                 :dataSource="accommodationTypeDataSource" 
                                 v-model="form.accommodationType"
@@ -101,9 +104,6 @@
                     otherRoomRequirements: '',
                 },
                 formRules: {
-                    accommodation: [
-                        { required: true, message: 'Field is required'},
-                    ],
                     accommodationType: [
                         { required: true, message: 'Field is required'},
                     ],

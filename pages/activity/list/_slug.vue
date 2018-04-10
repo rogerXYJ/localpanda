@@ -18,7 +18,7 @@
 					<span v-if="loc=='Chengdu'">Chengdu</span>
 					<span v-if="loc=='Xian'">Xi'an</span>
 					<span v-if="loc=='Guilin'">Guilin</span>
-					<el-select v-model="value" @change="clearlocalStorage">
+					<el-select v-model="value">
 						<a :href="item.url" v-for="item in options">
 							<el-option :key="item.value" :label="item.label" :value="item.value">
 
@@ -57,11 +57,12 @@
 			<h3>SORTBY</h3>
 			<div class="seach-table clearfix">
 				<div class="recommended">
-					<select style="border:none;font-size: 16px;" @change="sort(selected)" v-model="selected">
+					<select class="selectSort" @change="sort(selected)" v-model="selected">
 						<!--<option>Recommended</option>
 						<option>Price</option>-->
 						<option v-for="(item,index) in select" v-model="item.selectText" >{{item.selectText}}</option>
 					</select>
+					<i class="iconfont">&#xe666;</i>
 				</div>
 				<ul class="seach-type">
 					<li>
@@ -73,9 +74,10 @@
 							  <em class="cancel iconfont" @click.stop="cancel(0)">&#xe606;</em>
 							  <el-checkbox-group v-model="checkedCities" >
 							  	<div class="checkboxlist" v-for="(city,key,index) in cities">
-							  		<el-checkbox  :label="key" :key="key">{{key}}({{city}})</el-checkbox>
+							  		<el-checkbox  :label="key" :key="key">{{key}} ({{city}})</el-checkbox>
 							  	</div>
 							  </el-checkbox-group>
+							  <!--<div class="clear">Clear</div>-->
 							  <div class="subimtbtn" @click.stop="apply()">Apply</div>
 						</div>
 					</li>
@@ -88,9 +90,10 @@
 							<em class="cancel iconfont" @click.stop="cancel(1)">&#xe606;</em>
 							  <el-checkbox-group v-model="checkedCategory" >
 							  	<div class="checkboxlist" v-for="(item,key,index) in category">
-							  		<el-checkbox  :label="key" :key="key">{{key}}({{item}})</el-checkbox>
+							  		<el-checkbox  :label="key" :key="key">{{key}} ({{item}})</el-checkbox>
 							  	</div>
 							  </el-checkbox-group>
+							  <!--<div class="clear">Clear</div>-->
 							  <div class="subimtbtn" @click.stop="apply()">Apply</div>
 						</div>
 					</li>
@@ -103,14 +106,15 @@
 							<em class="cancel iconfont" @click.stop="cancel(3)">&#xe606;</em>
 							  <el-checkbox-group v-model="checkedTourtype" v-if="Object.keys(tourtype).length<10">
 							  	<div class="checkboxlist"  v-for="(i,key,index) in tourtype">
-							  		<el-checkbox  :label="key" :key="key">{{key}}({{i}})</el-checkbox>
+							  		<el-checkbox  :label="key" :key="key">{{key}} ({{i}})</el-checkbox>
 							  	</div>
 							  </el-checkbox-group>
 							  <el-checkbox-group v-model="checkedTourtype" v-else>
 							  	<div class="checkboxlist floatbox"  v-for="(i,key,index) in tourtype">
-							  		<el-checkbox  :label="key" :key="key">{{key}}({{i}})</el-checkbox>
+							  		<el-checkbox  :label="key" :key="key">{{key}} ({{i}})</el-checkbox>
 							  	</div>
 							  </el-checkbox-group>
+							  <!--<div class="clear">Clear</div>-->
 							  <div class="subimtbtn" @click.stop="apply()">Apply</div>
 						</div>
 					</li>
@@ -123,11 +127,12 @@
 							<em class="cancel iconfont" @click.stop="cancel(2)">&#xe606;</em>
 							  <el-checkbox-group v-model="checkedDurations" >
 							  	<div class="checkboxlist" v-for="(i,key,index) in durations">
-							  		<el-checkbox  v-if="key==0" :label="key" :key="key">Half Day({{i}})</el-checkbox>
-							  		<el-checkbox  v-if="key==1" :label="key" :key="key">{{key}} Day({{i}})</el-checkbox>
-							  		<el-checkbox  v-if="key>1" :label="key" :key="key">{{key}} Days({{i}})</el-checkbox>
+							  		<el-checkbox  v-if="key==0" :label="key" :key="key">Half Day ({{i}})</el-checkbox>
+							  		<el-checkbox  v-if="key==1" :label="key" :key="key">{{key}} Day ({{i}})</el-checkbox>
+							  		<el-checkbox  v-if="key>1" :label="key" :key="key">{{key}} Days ({{i}})</el-checkbox>
 							  	</div>
 							  </el-checkbox-group>
+							  <!--<div class="clear">Clear</div>-->
 							   <div class="subimtbtn" @click.stop="apply()">Apply</div>
 						</div>
 					</li>
@@ -142,12 +147,15 @@
 					<span v-if="removeDurations.length>0 && item==1" v-for="(item,index) in removeDurations"  @click="del(2,removeDurations,index)">1 Day<i class="iconfont">&#xe629;</i></span>
 					<span v-if="removeDurations.length>0 && item>1" v-for="(item,index) in removeDurations"  @click="del(2,removeDurations,index)">{{item}} Days<i class="iconfont">&#xe629;</i></span>
 					<span v-if="removeTourtype.length>0" v-for="(item,index) in removeTourtype" @click="del(3,removeTourtype,index)">{{item.replace(/And/g,'&')}}<i class="iconfont">&#xe629;</i></span>
+					<em class="clearAll" @click="clearAll" v-if="removeCity.length>0||removeCategory.length>0||removeDurations.length>0||removeTourtype.length>0">Clear All</em>
 				</div>
-				<div class="pageSizeInfo">totally {{records}} activities</div>
+				<div class="pageSizeInfo" v-if="records==1">1 activity in total</div>
+				<div class="pageSizeInfo" v-if="records==0">0 activity in total</div>
+				<div class="pageSizeInfo" v-if="records>1">{{records}} activities in total</div>
 			</div>
 		</div>
 	</div>
-		<div class="list-cont">
+		<div class="list-cont" v-if="records>0">
 			<ul class="clearfix">
 				<li class="activity-item" v-for="item in activityList">
 
@@ -187,7 +195,7 @@
 				  background
 				  layout="prev, pager, next"
 				  :total="records"
-				 
+				  class="el-pagination is-background"
 				  @current-change="handleCurrentChange"
 				  :page-size="20">
 				</el-pagination>
@@ -195,21 +203,29 @@
 			
 
 		</div>
+		<div class="empty" v-else>
+			<p>No activities or tours that match your interests are found. </p>
+			<p>You can try to modify your screening conditions or choose our “Customize Your Trip” option.</p> 
+			<p>We can collect your preferences and customize your ideal trip, free of charge. <a  href="javascript:;" @click="showContact">Click here to start!</a></p>
+		</div>
 		<FooterCommon></FooterCommon>
 		<Loading :loadingStatus="loadingStatus"></Loading>
 		<Bottom :scrollTop="600" :isListPage="isListPage"></Bottom>
+		<Contact :ContactStatus="ContactStatus" v-on:isshowfn="isShowFn" v-on:contact-call-back="contactCallBack"  :objectType="objectType"></Contact>
+		<Alert   :isShowAlert="isShowAlert" :alertTitle="alertTitle" :alertMessage="alertMessage" v-on:setIsShowAlert="getIsShowAlert"></Alert>
 	</div>
 </template>
 
 <script>
 	import Vue from 'vue'
-	import { SelectId } from 'element-ui';
+	import { SelectId,Pagination } from 'element-ui';
 	import {GetQueryString}from '~/assets/js/plugin/utils'
 	import HeaderCommon from '~/components/HeaderCommon/HeaderCommon';
 	import FooterCommon from '~/components/FooterCommon/FooterCommon';
 	import Loading from '~/components/Loading/Loading'
 	import Bottom from '~/components/bottom/Bottom'
-
+	import Contact from '~/components/Contact/Contact';
+	import Alert from '~/components/Prompt/Alert';
 	export default {
 		name: 'activityList',
 		async asyncData({
@@ -259,6 +275,14 @@
 				isdisabled: false,
 				isListPage: true,
 				apiBasePath: apiBasePath,
+				//唤起定制
+				ContactStatus:false,
+				isShowAlert:false,
+				alertTitle:'',
+				alertMessage:"",
+				istrue:false,
+				objectType:'CONSULTING',
+				
 				
 				selected:'Recommended',
 				select:[
@@ -291,7 +315,6 @@
 				removeDurations:[],
 				removeTourtype:[],
 				
-
 			}
 			let listdata = {}
 			let filters=[]
@@ -309,10 +332,9 @@
 				}
 			}
 			if(opctions){
+				
 				if(opctions.cities.length>0){
 					data.checkedCities=data.checkedCities.concat(opctions.cities)
-					//data.checkedCities.push(opctions.cities.join(","))
-					console.log(data.checkedCities)
 					let jsonCity={type:'CITY',filterValues:opctions.cities}
 					filters.push(jsonCity)
 				}
@@ -333,6 +355,7 @@
 					data.checkedTourtype=data.checkedTourtype.concat(opctions.tourtype)
 					let jsonTourtype={type:'TOUR_TYPE',filterValues:data.checkedTourtype}
 					filters.push(jsonTourtype)
+					
 				}
 				obj = {
 					location: data.loc == "Xian" ? "Xi\'an" : data.loc,
@@ -349,9 +372,9 @@
 					sort:sort
 				}
 			}
-			console.log(obj)
+			
 			 
-			//console.log(data.checkedCities)
+			
 			try {
 				listdata = await Vue.axios.post(apiBasePath + "search/activity", JSON.stringify(obj), {
 					headers: {
@@ -360,6 +383,8 @@
 				})
 				data.records= listdata.data.records
 				data.activityList = listdata.data.entities
+				//console.log(data.activityList)
+				
 				if(listdata.data.records>data.pageSize){
 					data.isdisabled=true
 				}
@@ -376,17 +401,15 @@
 					}
 					
 				}
+				console.log(obj)
 				
 				
 				
-				
-
 			} catch(err) {
 				//return error(JSON.stringify(err));
 			}
 			return data
 			
-			console.log(opction)
 		},
 		head() {
 			let location = this.value;
@@ -404,7 +427,6 @@
 			} else {
 				var description="See top things to do in Xi’an, including Xi’an city tours, Xi’an walking tours, Xi’an history & culture tours, and Xi’an food tours. Visit the Terra-cotta Warriors, Xi’an City Wall, Muslim Quarter, Shaanxi History Museum, and Xi’an markets with our local China tour guides."
 			}
-
 			return {
 				title: title,
 				meta: [{
@@ -417,7 +439,6 @@
 						name: "description",
 						content: description
 					}
-
 				]
 			};
 		},
@@ -426,9 +447,39 @@
 			SelectId,
 			FooterCommon,
 			Loading,
-			Bottom
+			Bottom,
+			Pagination,
+			Contact,
+			Alert
 		},
 		methods: {
+			isShowFn(val){
+				this.istrue=val
+				if(this.istrue==true){
+					this.isShowAlert=true
+					this.alertTitle="Submission completed!"
+					this.alertMessage="Thank you for your feedback.We will get back to you within 1 day."
+					this.istrue=false
+				}else{
+					this.isShowAlert=true
+					this.alertMessage="Failed!"
+				}
+			},
+			getIsShowAlert(val){
+				this.isShowAlert=val
+			},
+			showContact(){
+				
+				this.ContactStatus=true
+			},
+			contactCallBack(val){
+				this.ContactStatus=false
+			},
+			
+			
+			
+			
+			
 			returnFloat(value) {
 				var value = Math.round(parseFloat(value) * 100) / 100;
 				var xsd = value.toString().split(".");
@@ -451,20 +502,20 @@
 				if(loc == 'Guilin') return 'guilin'
 			}, 
 			showSelect(id){
-				
+				let opctions=JSON.parse(this.getUrlParam("opctions"))
 				if(id==0){
 					this.isshowcity=!this.isshowcity
 					this.isshowcategory=false
 					this.isshowdurations=false
 					this.isshowtourtype=false
-					if(JSON.parse(localStorage.getItem("opctions")).cities.length>0){
-						this.checkedCities=JSON.parse(localStorage.getItem("opctions")).cities
-						console.log(this.checkedCities)
+					if(opctions&&opctions.cities.length>0){
+						this.checkedCities=opctions.cities
+						
 					}else{
 						this.checkedCities=[]
-						this.checkedCategory=JSON.parse(localStorage.getItem("opctions")).category.length>0?JSON.parse(localStorage.getItem("opctions")).category:[]
-						this.checkedDurations=JSON.parse(localStorage.getItem("opctions")).durations.length>0?JSON.parse(localStorage.getItem("opctions")).durations:[]
-						this.checkedTourtype=JSON.parse(localStorage.getItem("opctions")).tourtype.length>0?JSON.parse(localStorage.getItem("opctions")).tourtype:[]
+						this.checkedCategory=opctions&&opctions.category.length>0?opctions.category:[]
+						this.checkedDurations=opctions&&opctions.durations.length>0?opctions.durations:[]
+						this.checkedTourtype=opctions&&opctions.tourtype.length>0?opctions.tourtype:[]
 					}
 					
 				}else if(id==1){
@@ -472,14 +523,14 @@
 					this.isshowcity=false
 					this.isshowdurations=false
 					this.isshowtourtype=false
-					 if(JSON.parse(localStorage.getItem("opctions")).category.length>0){
-						this.checkedCategory=JSON.parse(localStorage.getItem("opctions")).category
+					 if(opctions&&opctions.category.length>0){
+						this.checkedCategory=opctions.category
 						
 					}else{
-						this.checkedCities=JSON.parse(localStorage.getItem("opctions")).cities.length>0?JSON.parse(localStorage.getItem("opctions")).cities:[]
+						this.checkedCities=opctions&&opctions.cities.length>0?opctions.cities:[]
 						this.checkedCategory=[]
-						this.checkedDurations=JSON.parse(localStorage.getItem("opctions")).durations.length>0?JSON.parse(localStorage.getItem("opctions")).durations:[]
-						this.checkedTourtype=JSON.parse(localStorage.getItem("opctions")).tourtype.length>0?JSON.parse(localStorage.getItem("opctions")).tourtype:[]
+						this.checkedDurations=opctions&&opctions.durations.length>0?opctions.durations:[]
+						this.checkedTourtype=opctions&&opctions.tourtype.length>0?opctions.tourtype:[]
 					}
 					
 					
@@ -490,14 +541,14 @@
 					this.isshowtourtype=false
 					
 					
-					 if(JSON.parse(localStorage.getItem("opctions")).durations.length>0){
-						console.log()
-						this.checkedDurations=JSON.parse(localStorage.getItem("opctions")).durations	
+					 if(opctions&&opctions.durations.length>0){
+						
+						this.checkedDurations=opctions.durations	
 					}else{
-						this.checkedCities=JSON.parse(localStorage.getItem("opctions")).cities.length>0?JSON.parse(localStorage.getItem("opctions")).cities:[]
-						this.checkedCategory=JSON.parse(localStorage.getItem("opctions")).category.length>0?JSON.parse(localStorage.getItem("opctions")).category:[]
+						this.checkedCities=opctions&&opctions.cities.length>0?opctions.cities:[]
+						this.checkedCategory=opctions&&opctions.category.length>0?opctions.category:[]
 						this.checkedDurations=[]
-						this.checkedTourtype=JSON.parse(localStorage.getItem("opctions")).tourtype.length>0?JSON.parse(localStorage.getItem("opctions")).tourtype:[]
+						this.checkedTourtype=opctions&&opctions.tourtype.length>0?opctions.tourtype:[]
 					}
 					
 				}else{
@@ -506,33 +557,29 @@
 					this.isshowcategory=false
 					this.isshowcity=false
 					
-					if(JSON.parse(localStorage.getItem("opctions")).tourtype.length>0){
+					if(opctions&&opctions.tourtype.length>0){
 						
-						for(let i=0;i<JSON.parse(localStorage.getItem("opctions")).tourtype.length;i++){
-							JSON.parse(localStorage.getItem("opctions")).tourtype[i]=JSON.parse(localStorage.getItem("opctions")).tourtype[i].replace(/And/g, "&")
+						for(let i=0;i<opctions.tourtype.length;i++){
+							opctions.tourtype[i]=opctions.tourtype[i].replace(/And/g, "&")
 							
 						}
-						this.checkedTourtype=JSON.parse(localStorage.getItem("opctions")).tourtype
+						this.checkedTourtype=opctions.tourtype
 					}else{
-						this.checkedCities=JSON.parse(localStorage.getItem("opctions")).cities.length>0?JSON.parse(localStorage.getItem("opctions")).cities:[]
-						this.checkedCategory=JSON.parse(localStorage.getItem("opctions")).category.length>0?JSON.parse(localStorage.getItem("opctions")).category:[]
-						this.checkedDurations=JSON.parse(localStorage.getItem("opctions")).durations.length>0?JSON.parse(localStorage.getItem("opctions")).durations:[]
+					this.checkedCities=opctions&&opctions.cities.length>0?opctions.cities:[]
+						this.checkedCategory=opctions&&opctions.category.length>0?opctions.category:[]
+						this.checkedDurations=opctions&&opctions.durations.length>0?opctions.durations:[]
 						this.checkedTourtype=[]
 					}
 					
 				}
 			},
-			clearlocalStorage(){
-				var opctions={
-					cities:[],
-					category:[],
-					durations:[],
-					tourtype:[],	
-				}
-				opctions=JSON.stringify(opctions)
-				localStorage.setItem("opctions",opctions)
+			clearAll(){
+				location.href="/activity/list/"+this.loc
 			},
 			sort(val){
+				for(let i=0;i<this.checkedTourtype.length;i++){
+					this.checkedTourtype[i]=this.checkedTourtype[i].replace(/&/g, "And")
+				}
 				var sort={}
 				if(val=="Recommended"){
 					sort={
@@ -586,44 +633,45 @@
 				}
 			},
 			cancel(id){
+				let that=this
 				if(id==0){
 					this.isshowcity=false
-					if(JSON.parse(localStorage.getItem("opctions"))==null){
+					if(!JSON.parse(that.getUrlParam("opctions"))){
 						this.checkedCities=[]
-					}else if(JSON.parse(localStorage.getItem("opctions")).cities.length>0){
-						this.checkedCities=JSON.parse(localStorage.getItem("opctions")).cities
-						console.log(this.checkedCities)
+					}else if(JSON.parse(that.getUrlParam("opctions")).cities.length>0){
+						this.checkedCities=JSON.parse(that.getUrlParam("opctions")).cities
+						
 					}
 					
 				}else if(id==1){
 					this.isshowcategory=false
-					if(JSON.parse(localStorage.getItem("opctions"))==null){
+					if(!JSON.parse(that.getUrlParam("opctions"))){
 						this.checkedCategory=[]
-					}else if(JSON.parse(localStorage.getItem("opctions")).category.length>0){
-						this.checkedCategory=JSON.parse(localStorage.getItem("opctions")).category
+					}else if(JSON.parse(that.getUrlParam("opctions")).category.length>0){
+						this.checkedCategory=JSON.parse(that.getUrlParam("opctions")).category
 						
 					}
 					
 				}else if(id==2){
 					this.isshowdurations=false
-					if(JSON.parse(localStorage.getItem("opctions"))==null){
+					if(!JSON.parse(that.getUrlParam("opctions"))){
 						this.checkedDurations=[]
-					}else if(JSON.parse(localStorage.getItem("opctions")).durations.length>0){
-						this.checkedDurations=JSON.parse(localStorage.getItem("opctions")).durations
+					}else if(JSON.parse(that.getUrlParam("opctions")).durations.length>0){
+						this.checkedDurations=JSON.parse(that.getUrlParam("opctions")).durations
 						
 					}
 					
 				}else{
 					this.isshowtourtype=false
-					if(JSON.parse(localStorage.getItem("opctions"))==null){
+					if(!JSON.parse(that.getUrlParam("opctions"))){
 						this.checkedTourtype=[]
-					}else if(JSON.parse(localStorage.getItem("opctions")).tourtype.length>0){
+					}else if(JSON.parse(that.getUrlParam("opctions")).tourtype.length>0){
 						
-						for(let i=0;i<JSON.parse(localStorage.getItem("opctions")).tourtype.length;i++){
-							JSON.parse(localStorage.getItem("opctions")).tourtype[i]=JSON.parse(localStorage.getItem("opctions")).tourtype[i].replace(/And/g, "&")
+						for(let i=0;i<JSON.parse(that.getUrlParam("opctions")).tourtype.length;i++){
+							JSON.parse(that.getUrlParam("opctions")).tourtype[i]=JSON.parse(that.getUrlParam("opctions")).tourtype[i].replace(/And/g, "&")
 							
 					}
-						JSON.parse(localStorage.getItem("opctions")).tourtype=this.checkedTourtype
+						JSON.parse(that.getUrlParam("opctions")).tourtype=this.checkedTourtype
 					}
 					
 				}
@@ -635,7 +683,7 @@
 					this.checkedTourtype[i]=this.checkedTourtype[i].replace(/&/g, "And")
 					
 				}
-				console.log(11)
+				
 				if(this.selected=="Recommended"){
 					 sort={
 						type:"DEFAULT"
@@ -662,7 +710,7 @@
 						tourtype:this.removeTourtype,
 					}
 					opctions=JSON.stringify(opctions)
-					localStorage.setItem("opctions",opctions)
+					//localStorage.setItem("opctions",opctions)
 					location.href="/activity/list/"+this.loc+"?opctions="+opctions+"&sort="+sort
 				}else if(id==1){
 					arr.splice(index,1)
@@ -673,7 +721,7 @@
 						tourtype:this.removeTourtype,
 					}
 					opctions=JSON.stringify(opctions)
-					localStorage.setItem("opctions",opctions)
+					//localStorage.setItem("opctions",opctions)
 					location.href="/activity/list/"+this.loc+"?opctions="+opctions+"&sort="+sort
 				}else if(id==2){
 					arr.splice(index,1)
@@ -684,7 +732,7 @@
 						tourtype:this.removeTourtype,
 					}
 					opctions=JSON.stringify(opctions)
-					localStorage.setItem("opctions",opctions)
+					//localStorage.setItem("opctions",opctions)
 					location.href="/activity/list/"+this.loc+"?opctions="+opctions+"&sort="+sort
 				}else{
 					arr.splice(index,1)
@@ -695,7 +743,7 @@
 						tourtype:arr,
 					}
 					opctions=JSON.stringify(opctions)
-					localStorage.setItem("opctions",opctions)
+					//localStorage.setItem("opctions",opctions)
 					location.href="/activity/list/"+this.loc+"?opctions="+opctions+"&sort="+sort
 				}
 				
@@ -759,7 +807,7 @@
 						
 					}
 				}
-				 
+				
 				that.loadingStatus = true
 				Vue.axios.post(that.apiBasePath + "search/activity", JSON.stringify(obj), {
 					headers: {
@@ -771,9 +819,7 @@
 						that.activityList=response.data.entities
 						window.scrollTo(100,0)
 					}
-
 				}, function(response) {
-
 				})
 			},
 			apply(){
@@ -783,7 +829,6 @@
 					this.checkedTourtype[i]=this.checkedTourtype[i].replace(/&/g, "And")
 					
 				}
-				console.log(11)
 				if(this.selected=="Recommended"){
 					 sort={
 						type:"DEFAULT"
@@ -807,30 +852,43 @@
 					
 				}
 				opctions=JSON.stringify(opctions)
-				localStorage.setItem("opctions",opctions)
+				//localStorage.setItem("opctions",opctions)
 				sort=JSON.stringify(sort)
 				
 				location.href="/activity/list/"+this.loc+"?opctions="+opctions+"&sort="+sort
 			},
+			 getUrlParam(k) {
+			    var regExp = new RegExp('([?]|&)' + k + '=([^&]*)(&|$)');
+			    var result = window.location.href.match(regExp);
+			    if (result) {
+			        return decodeURIComponent(result[2]);
+			    } else {
+			        return null;
+			    }
+			}
 			
 		},
 		watch:{
 			checkedCities:function(val,oldVal){
-				console.log(val)
+				
 			},
 			pageNum:function(val,oldVal){
-				console.log(val)
+				
 			},
 			checkedDurations(val,oldVal){
-				console.log(val)
+				
 			},
 			checkedTourtype(val,oldVal){
-				console.log(val)
+				if(val.length>0){
+					for(let i=0;i<val.length;i++){
+						val[i]=val[i].replace(/And/g, "&")
+					}
+				}
+				
 				
 			}
 		},
 		filters: {
-
 			firstUpperCase(val) {
 				if(val)
 					return val.toLowerCase().replace(/( |^)[a-z]/g, (L) => L.toUpperCase());
@@ -839,19 +897,14 @@
 		created: function() {
 			const that = this
 			that.value = that.loc == "Xian" ? "Xi'an" : that.loc
-
 		},
 		mounted: function() {
 			const that = this
-			if(window.location.search){
-				
-			}else{
-				this.clearlocalStorage()
-			}
-			that.removeCity=JSON.parse(localStorage.getItem("opctions"))!=null?JSON.parse(localStorage.getItem("opctions")).cities:[]
-			that.removeCategory=JSON.parse(localStorage.getItem("opctions"))!=null?JSON.parse(localStorage.getItem("opctions")).category:[]
-			that.removeDurations=JSON.parse(localStorage.getItem("opctions"))!=null?JSON.parse(localStorage.getItem("opctions")).durations:[]
-			that.removeTourtype=JSON.parse(localStorage.getItem("opctions"))!=null?JSON.parse(localStorage.getItem("opctions")).tourtype:[]
+			let opctions=JSON.parse(that.getUrlParam("opctions"))
+			that.removeCity=opctions&&opctions.cities.length>0?opctions.cities:[]
+			that.removeCategory=opctions&&opctions.category.length>0?opctions.category:[]
+			that.removeDurations=opctions&&opctions.durations.length>0?opctions.durations:[]
+			that.removeTourtype=opctions&&opctions.tourtype.length>0?opctions.tourtype:[]
 			document.getElementsByTagName("body")[0].addEventListener("click",function(){
 				that.isshowcity=false
 				that.isshowcategory=false
@@ -859,7 +912,8 @@
 				that.isshowtourtype=false		
 			})
 			that.logIn = localStorage.getItem("logstate") ? localStorage.getItem("logstate") : null
-			//console.log(Object.keys(this.tourtype).length)
+			
+			
 			
 		},
 	}
@@ -948,6 +1002,20 @@
 		overflow-x: hidden;
 		width: 100%;
 		background: #faf9f8;
+		.empty{
+			width: 1284px;
+			margin: 0 auto;
+			
+			padding-bottom: 300px;
+			p{
+				font-size:16px;
+				margin-top: 20px;
+				text-align: center;
+				a{
+					color:#1bbc9d;
+				}
+			}
+		}
 		.banner {
 			&.beijing {
 				background: url("https://d2q486kjf9cwwu.cloudfront.net/static/headerPhotos/Beijing.jpg") no-repeat;
@@ -1058,9 +1126,20 @@
 			h3{
 				font-size: 14px;
 				color: #878e95;
+				margin-bottom: 10px;
 			}
 			.recommended{
+				position: relative;
 				float: left;
+				.selectSort{
+					font-size: 16px;
+					-webkit-appearance:none;
+					-moz-appearance:none;
+					appearance:none;
+					background-color:transparent;
+					border:none;
+					min-width:160px;
+				}
 			}
 			.seach-type{
 				float: left;
@@ -1101,15 +1180,24 @@
 							position: absolute;
 							top: 10px;
 							right: 10px;
-							font-size: 8px;
+							font-size: 12px;
 							cursor: pointer;
+						}
+						.clear{
+							position: absolute;
+							bottom: 23px;
+							left: 25px;
+							color:#1bbc9d;
+							font-size: 18px;
+							cursor: pointer;
+							font-weight: bold;
 						}
 						.subimtbtn{
 							position: absolute;
-							bottom: 10px;
-							right: 10px;
+							bottom: 25px;
+							right: 25px;
 							color:#1bbc9d;
-							font-size: 14px;
+							font-size: 18px;
 							cursor: pointer;
 							font-weight: bold;
 						}
@@ -1122,6 +1210,12 @@
 				.del{
 					width:85%;
 					float: left;
+					.clearAll{
+						font-size: 16px;
+						font-weight: bold;
+						color:#1bbc9d;
+						cursor: pointer;
+					}
 					span{
 						cursor: pointer;
 						padding: 3px 14px;
@@ -1131,9 +1225,10 @@
 						margin-bottom: 15px;
 						display: inline-block;
 						i{
-							font-size: 7px;
+							font-size: 12px;
 							margin-left: 6px;
 							color:#1bbc9d;
+							font-weight: bold;
 						}
 						margin-right:15px;
 					}

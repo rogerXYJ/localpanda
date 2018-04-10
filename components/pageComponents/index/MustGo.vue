@@ -39,7 +39,7 @@
 						title: 'Beijing',
 						value: 'Beijing',
 						//linkUrl:'https://www.localpanda.com/activity/list/Beijing',
-						linkUrl:'/activity/recommend/Beijing/Popular-and-Classic-Tours',
+						linkUrl:'/activity/list/Beijing',
 						content: [
 							'See All Tours & Activities',
 							'The center of China’s imperial history & modern power, where the nation’s political and cultural elite still reside.',
@@ -55,7 +55,7 @@
 							'Nestled between the skyscrapers of this massive metropolis lies a city rich with history, secrets, and fun things to do!'
 						],
 						//linkUrl:'https://www.localpanda.com/activity/list/Shanghai',
-						linkUrl:'/activity/recommend/Shanghai/Popular-and-Classic-Tours'
+						linkUrl:'/activity/list/Shanghai'
 					},
 					{
 						cover: 'https://d2q486kjf9cwwu.cloudfront.net/static/homePage/Chengdu.jpg',

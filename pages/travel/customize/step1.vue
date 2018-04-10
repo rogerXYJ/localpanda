@@ -86,13 +86,12 @@
                                         <flatPickr
                                             class="arrive-time__flatpickr"
                                             placeholder="Date"
-                                            v-model="form.arriveTime" 
+                                            v-model="arriveTimeDate" 
                                             :config="dateOptions"
                                             hidden
                                         >
                                         </flatPickr>
                                     </div>
-
                                     <el-input class="input-hidden" v-model="form.arriveTime"></el-input>
                                     <el-checkbox
                                         class="GUI-form__radio-group"
@@ -110,7 +109,8 @@
                             <div class="GUI-form-block__title">Which city will you arrive at?</div>
                             <div class="GUI-form-block__content">
                                 <el-form-item class="GUI-form-item" prop="arriveCity">
-                                    <el-input v-model="form.arriveCity" placeholder="Please enter your destination or city, eg Shanghai."></el-input>
+                                    <el-input v-model="arriveCityInput" placeholder="Please enter your destination or city, eg Shanghai."></el-input>
+                                    <el-input class="input-hidden" v-model="form.arriveCity"></el-input>
                                     <el-checkbox
                                         class="GUI-form__radio-group"
                                         v-model="arriveCityNotDecided"
@@ -124,7 +124,7 @@
                             <div class="GUI-form-block__title">How many days do you want to travel?</div>
                             <div class="GUI-form-block__content">
                                 <div class="GUI-form-item">
-                                    <el-input-number v-model="form.duration" controls-position="right" :min="8"></el-input-number>
+                                    <el-input-number v-model="form.duration" controls-position="right" :min="0"></el-input-number>
                                 </div>
                             </div>
                         </div>
@@ -193,10 +193,8 @@
             FooterCommon
             
 		},
-        data() {
-            
+        data() {            
             let arriveTimeNotDecidedCheck = (rule, value, callback) => {
-                console.log(123)
                 if(!value && !this.arriveTimeNotDecided){
                     callback(new Error('Field is required (must be valid date)'));
                 }else{
@@ -242,12 +240,14 @@
                         { required: true, message: 'Field is required'},
                     ],
                     arriveTime: [
-                        { validator: arriveTimeNotDecidedCheck, trigger: 'change'},
+                        { validator: arriveTimeNotDecidedCheck},
                     ],
                     arriveCity: [
                         { validator: arriveCityNotDecidedCheck},
                     ],
                 },
+                arriveTimeDate: '',
+                arriveCityInput: '',
                 arriveTimeNotDecided: false,
                 arriveCityNotDecided: false,
                 whoDataSource: Consts.whoDataSource,
@@ -260,6 +260,32 @@
                 
             }
         },
+		watch: {
+			arriveTimeDate: function (newText, oldText) {
+                if(newText != oldText){
+                    this.form.arriveTime = newText;
+                }
+            },
+            arriveTimeNotDecided: function(newState, oldState){
+                console.log(newState);
+                if(newState){
+                    this.form.arriveTime = 'Not Decided';
+                }
+            },
+			arriveCityInput: function (newText, oldText) {
+                if(newText != oldText){
+                    this.form.arriveCity = newText;
+                }
+            },
+            arriveCityNotDecided: function(newState, oldState){
+                console.log(newState);
+                if(newState){
+                    this.form.arriveCity = 'Not Decided';
+                }else{
+                    this.form.arriveCity = '';
+                }
+            }
+		},
 		methods: {
             onSubmit(formName) {
                 this.$refs[formName].validate((valid) => {
@@ -267,6 +293,9 @@
                     // console.log(this.form);
                     if (valid) {
                         console.log('step1 submit success');
+                        if(this.form.participant !== 'On my own' && this.form.participant !== 'Couple' && this.form.adults == 0){
+                            return false;
+                        }
                         let formData = Object.assign({},this.form);
                         if(this.arriveTimeNotDecided){
                             formData.arriveTime = 'Not Decided';
@@ -299,10 +328,14 @@
                     if(formData.arriveTime === 'Not Decided'){
                         formData.arriveTime = '';
                         this.arriveTimeNotDecided = true;
+                    }else{
+                        this.arriveTimeDate = formData.arriveTime;
                     }
                     if(formData.arriveCity === 'Not Decided'){
                         formData.arriveCity = '';
                         this.arriveCityNotDecided = true;
+                    }else{
+                        this.arriveCity = formData.arriveCity;
                     }
                     this.form = formData;
                 }catch(e){

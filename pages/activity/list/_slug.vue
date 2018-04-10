@@ -18,7 +18,7 @@
 					<span v-if="loc=='Chengdu'">Chengdu</span>
 					<span v-if="loc=='Xian'">Xi'an</span>
 					<span v-if="loc=='Guilin'">Guilin</span>
-					<el-select v-model="value" @change="clearlocalStorage">
+					<el-select v-model="value">
 						<a :href="item.url" v-for="item in options">
 							<el-option :key="item.value" :label="item.label" :value="item.value">
 
@@ -331,10 +331,9 @@
 				}
 			}
 			if(opctions){
+				
 				if(opctions.cities.length>0){
 					data.checkedCities=data.checkedCities.concat(opctions.cities)
-					//data.checkedCities.push(opctions.cities.join(","))
-					
 					let jsonCity={type:'CITY',filterValues:opctions.cities}
 					filters.push(jsonCity)
 				}
@@ -374,7 +373,7 @@
 			}
 			
 			 
-			//console.log(data.checkedCities)
+			
 			try {
 				listdata = await Vue.axios.post(apiBasePath + "search/activity", JSON.stringify(obj), {
 					headers: {
@@ -383,6 +382,7 @@
 				})
 				data.records= listdata.data.records
 				data.activityList = listdata.data.entities
+				//console.log(data.activityList)
 				
 				if(listdata.data.records>data.pageSize){
 					data.isdisabled=true
@@ -400,7 +400,7 @@
 					}
 					
 				}
-				
+				console.log(obj)
 				
 				
 				
@@ -501,20 +501,20 @@
 				if(loc == 'Guilin') return 'guilin'
 			}, 
 			showSelect(id){
-				
+				let opctions=JSON.parse(this.getUrlParam("opctions"))
 				if(id==0){
 					this.isshowcity=!this.isshowcity
 					this.isshowcategory=false
 					this.isshowdurations=false
 					this.isshowtourtype=false
-					if(JSON.parse(localStorage.getItem("opctions")).cities.length>0){
-						this.checkedCities=JSON.parse(localStorage.getItem("opctions")).cities
+					if(opctions&&opctions.cities.length>0){
+						this.checkedCities=opctions.cities
 						
 					}else{
 						this.checkedCities=[]
-						this.checkedCategory=JSON.parse(localStorage.getItem("opctions")).category.length>0?JSON.parse(localStorage.getItem("opctions")).category:[]
-						this.checkedDurations=JSON.parse(localStorage.getItem("opctions")).durations.length>0?JSON.parse(localStorage.getItem("opctions")).durations:[]
-						this.checkedTourtype=JSON.parse(localStorage.getItem("opctions")).tourtype.length>0?JSON.parse(localStorage.getItem("opctions")).tourtype:[]
+						this.checkedCategory=opctions&&opctions.category.length>0?opctions.category:[]
+						this.checkedDurations=opctions&&opctions.durations.length>0?opctions.durations:[]
+						this.checkedTourtype=opctions&&opctions.tourtype.length>0?opctions.tourtype:[]
 					}
 					
 				}else if(id==1){
@@ -522,14 +522,14 @@
 					this.isshowcity=false
 					this.isshowdurations=false
 					this.isshowtourtype=false
-					 if(JSON.parse(localStorage.getItem("opctions")).category.length>0){
-						this.checkedCategory=JSON.parse(localStorage.getItem("opctions")).category
+					 if(opctions&&opctions.category.length>0){
+						this.checkedCategory=opctions.category
 						
 					}else{
-						this.checkedCities=JSON.parse(localStorage.getItem("opctions")).cities.length>0?JSON.parse(localStorage.getItem("opctions")).cities:[]
+						this.checkedCities=opctions&&opctions.cities.length>0?opctions.cities:[]
 						this.checkedCategory=[]
-						this.checkedDurations=JSON.parse(localStorage.getItem("opctions")).durations.length>0?JSON.parse(localStorage.getItem("opctions")).durations:[]
-						this.checkedTourtype=JSON.parse(localStorage.getItem("opctions")).tourtype.length>0?JSON.parse(localStorage.getItem("opctions")).tourtype:[]
+						this.checkedDurations=opctions&&opctions.durations.length>0?opctions.durations:[]
+						this.checkedTourtype=opctions&&opctions.tourtype.length>0?opctions.tourtype:[]
 					}
 					
 					
@@ -540,14 +540,14 @@
 					this.isshowtourtype=false
 					
 					
-					 if(JSON.parse(localStorage.getItem("opctions")).durations.length>0){
+					 if(opctions&&opctions.durations.length>0){
 						
-						this.checkedDurations=JSON.parse(localStorage.getItem("opctions")).durations	
+						this.checkedDurations=opctions.durations	
 					}else{
-						this.checkedCities=JSON.parse(localStorage.getItem("opctions")).cities.length>0?JSON.parse(localStorage.getItem("opctions")).cities:[]
-						this.checkedCategory=JSON.parse(localStorage.getItem("opctions")).category.length>0?JSON.parse(localStorage.getItem("opctions")).category:[]
+						this.checkedCities=opctions&&opctions.cities.length>0?opctions.cities:[]
+						this.checkedCategory=opctions&&opctions.category.length>0?opctions.category:[]
 						this.checkedDurations=[]
-						this.checkedTourtype=JSON.parse(localStorage.getItem("opctions")).tourtype.length>0?JSON.parse(localStorage.getItem("opctions")).tourtype:[]
+						this.checkedTourtype=opctions&&opctions.tourtype.length>0?opctions.tourtype:[]
 					}
 					
 				}else{
@@ -556,36 +556,29 @@
 					this.isshowcategory=false
 					this.isshowcity=false
 					
-					if(JSON.parse(localStorage.getItem("opctions")).tourtype.length>0){
+					if(opctions&&opctions.tourtype.length>0){
 						
-						for(let i=0;i<JSON.parse(localStorage.getItem("opctions")).tourtype.length;i++){
-							JSON.parse(localStorage.getItem("opctions")).tourtype[i]=JSON.parse(localStorage.getItem("opctions")).tourtype[i].replace(/And/g, "&")
+						for(let i=0;i<opctions.tourtype.length;i++){
+							opctions.tourtype[i]=opctions.tourtype[i].replace(/And/g, "&")
 							
 						}
-						this.checkedTourtype=JSON.parse(localStorage.getItem("opctions")).tourtype
+						this.checkedTourtype=opctions.tourtype
 					}else{
-						this.checkedCities=JSON.parse(localStorage.getItem("opctions")).cities.length>0?JSON.parse(localStorage.getItem("opctions")).cities:[]
-						this.checkedCategory=JSON.parse(localStorage.getItem("opctions")).category.length>0?JSON.parse(localStorage.getItem("opctions")).category:[]
-						this.checkedDurations=JSON.parse(localStorage.getItem("opctions")).durations.length>0?JSON.parse(localStorage.getItem("opctions")).durations:[]
+					this.checkedCities=opctions&&opctions.cities.length>0?opctions.cities:[]
+						this.checkedCategory=opctions&&opctions.category.length>0?opctions.category:[]
+						this.checkedDurations=opctions&&opctions.durations.length>0?opctions.durations:[]
 						this.checkedTourtype=[]
 					}
 					
 				}
 			},
-			clearlocalStorage(){
-				var opctions={
-					cities:[],
-					category:[],
-					durations:[],
-					tourtype:[],	
-				}
-				opctions=JSON.stringify(opctions)
-				localStorage.setItem("opctions",opctions)
-			},
 			clearAll(){
 				location.href="/activity/list/"+this.loc
 			},
 			sort(val){
+				for(let i=0;i<this.checkedTourtype.length;i++){
+					this.checkedTourtype[i]=this.checkedTourtype[i].replace(/&/g, "And")
+				}
 				var sort={}
 				if(val=="Recommended"){
 					sort={
@@ -639,44 +632,45 @@
 				}
 			},
 			cancel(id){
+				let that=this
 				if(id==0){
 					this.isshowcity=false
-					if(JSON.parse(localStorage.getItem("opctions"))==null){
+					if(!JSON.parse(that.getUrlParam("opctions"))){
 						this.checkedCities=[]
-					}else if(JSON.parse(localStorage.getItem("opctions")).cities.length>0){
-						this.checkedCities=JSON.parse(localStorage.getItem("opctions")).cities
+					}else if(JSON.parse(that.getUrlParam("opctions")).cities.length>0){
+						this.checkedCities=JSON.parse(that.getUrlParam("opctions")).cities
 						
 					}
 					
 				}else if(id==1){
 					this.isshowcategory=false
-					if(JSON.parse(localStorage.getItem("opctions"))==null){
+					if(!JSON.parse(that.getUrlParam("opctions"))){
 						this.checkedCategory=[]
-					}else if(JSON.parse(localStorage.getItem("opctions")).category.length>0){
-						this.checkedCategory=JSON.parse(localStorage.getItem("opctions")).category
+					}else if(JSON.parse(that.getUrlParam("opctions")).category.length>0){
+						this.checkedCategory=JSON.parse(that.getUrlParam("opctions")).category
 						
 					}
 					
 				}else if(id==2){
 					this.isshowdurations=false
-					if(JSON.parse(localStorage.getItem("opctions"))==null){
+					if(!JSON.parse(that.getUrlParam("opctions"))){
 						this.checkedDurations=[]
-					}else if(JSON.parse(localStorage.getItem("opctions")).durations.length>0){
-						this.checkedDurations=JSON.parse(localStorage.getItem("opctions")).durations
+					}else if(JSON.parse(that.getUrlParam("opctions")).durations.length>0){
+						this.checkedDurations=JSON.parse(that.getUrlParam("opctions")).durations
 						
 					}
 					
 				}else{
 					this.isshowtourtype=false
-					if(JSON.parse(localStorage.getItem("opctions"))==null){
+					if(!JSON.parse(that.getUrlParam("opctions"))){
 						this.checkedTourtype=[]
-					}else if(JSON.parse(localStorage.getItem("opctions")).tourtype.length>0){
+					}else if(JSON.parse(that.getUrlParam("opctions")).tourtype.length>0){
 						
-						for(let i=0;i<JSON.parse(localStorage.getItem("opctions")).tourtype.length;i++){
-							JSON.parse(localStorage.getItem("opctions")).tourtype[i]=JSON.parse(localStorage.getItem("opctions")).tourtype[i].replace(/And/g, "&")
+						for(let i=0;i<JSON.parse(that.getUrlParam("opctions")).tourtype.length;i++){
+							JSON.parse(that.getUrlParam("opctions")).tourtype[i]=JSON.parse(that.getUrlParam("opctions")).tourtype[i].replace(/And/g, "&")
 							
 					}
-						JSON.parse(localStorage.getItem("opctions")).tourtype=this.checkedTourtype
+						JSON.parse(that.getUrlParam("opctions")).tourtype=this.checkedTourtype
 					}
 					
 				}
@@ -715,7 +709,7 @@
 						tourtype:this.removeTourtype,
 					}
 					opctions=JSON.stringify(opctions)
-					localStorage.setItem("opctions",opctions)
+					//localStorage.setItem("opctions",opctions)
 					location.href="/activity/list/"+this.loc+"?opctions="+opctions+"&sort="+sort
 				}else if(id==1){
 					arr.splice(index,1)
@@ -726,7 +720,7 @@
 						tourtype:this.removeTourtype,
 					}
 					opctions=JSON.stringify(opctions)
-					localStorage.setItem("opctions",opctions)
+					//localStorage.setItem("opctions",opctions)
 					location.href="/activity/list/"+this.loc+"?opctions="+opctions+"&sort="+sort
 				}else if(id==2){
 					arr.splice(index,1)
@@ -737,7 +731,7 @@
 						tourtype:this.removeTourtype,
 					}
 					opctions=JSON.stringify(opctions)
-					localStorage.setItem("opctions",opctions)
+					//localStorage.setItem("opctions",opctions)
 					location.href="/activity/list/"+this.loc+"?opctions="+opctions+"&sort="+sort
 				}else{
 					arr.splice(index,1)
@@ -748,7 +742,7 @@
 						tourtype:arr,
 					}
 					opctions=JSON.stringify(opctions)
-					localStorage.setItem("opctions",opctions)
+					//localStorage.setItem("opctions",opctions)
 					location.href="/activity/list/"+this.loc+"?opctions="+opctions+"&sort="+sort
 				}
 				
@@ -857,11 +851,20 @@
 					
 				}
 				opctions=JSON.stringify(opctions)
-				localStorage.setItem("opctions",opctions)
+				//localStorage.setItem("opctions",opctions)
 				sort=JSON.stringify(sort)
 				
 				location.href="/activity/list/"+this.loc+"?opctions="+opctions+"&sort="+sort
 			},
+			 getUrlParam(k) {
+			    var regExp = new RegExp('([?]|&)' + k + '=([^&]*)(&|$)');
+			    var result = window.location.href.match(regExp);
+			    if (result) {
+			        return decodeURIComponent(result[2]);
+			    } else {
+			        return null;
+			    }
+			}
 			
 		},
 		watch:{
@@ -896,15 +899,11 @@
 		},
 		mounted: function() {
 			const that = this
-			if(window.location.search){
-				
-			}else{
-				this.clearlocalStorage()
-			}
-			that.removeCity=JSON.parse(localStorage.getItem("opctions"))!=null?JSON.parse(localStorage.getItem("opctions")).cities:[]
-			that.removeCategory=JSON.parse(localStorage.getItem("opctions"))!=null?JSON.parse(localStorage.getItem("opctions")).category:[]
-			that.removeDurations=JSON.parse(localStorage.getItem("opctions"))!=null?JSON.parse(localStorage.getItem("opctions")).durations:[]
-			that.removeTourtype=JSON.parse(localStorage.getItem("opctions"))!=null?JSON.parse(localStorage.getItem("opctions")).tourtype:[]
+			let opctions=JSON.parse(that.getUrlParam("opctions"))
+			that.removeCity=opctions&&opctions.cities.length>0?opctions.cities:[]
+			that.removeCategory=opctions&&opctions.category.length>0?opctions.category:[]
+			that.removeDurations=opctions&&opctions.durations.length>0?opctions.durations:[]
+			that.removeTourtype=opctions&&opctions.tourtype.length>0?opctions.tourtype:[]
 			document.getElementsByTagName("body")[0].addEventListener("click",function(){
 				that.isshowcity=false
 				that.isshowcategory=false
@@ -912,6 +911,7 @@
 				that.isshowtourtype=false		
 			})
 			that.logIn = localStorage.getItem("logstate") ? localStorage.getItem("logstate") : null
+			
 			
 			
 		},
@@ -1168,7 +1168,7 @@
 							position: absolute;
 							top: 10px;
 							right: 10px;
-							font-size: 8px;
+							font-size: 12px;
 							cursor: pointer;
 						}
 						.clear{
@@ -1213,7 +1213,7 @@
 						margin-bottom: 15px;
 						display: inline-block;
 						i{
-							font-size: 7px;
+							font-size: 12px;
 							margin-left: 6px;
 							color:#1bbc9d;
 							font-weight: bold;

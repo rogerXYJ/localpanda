@@ -254,7 +254,7 @@
 									</div>
 								</div>
 								<div class="inquiry">
-									<button class="bookNow" @click.stop="order">Book Now</button>
+									<button class="bookNow" @click="order">Book Now</button>
 									<div class="cancat" @click="showContact">
 										<p>Not sure if this is the tour for you? We can </br>help you design your dream tour!<span> Inquire</span> </p>
 										<i class="iconfont">&#xe64a;</i>
@@ -514,7 +514,6 @@ export default {
         that.dateErrText = "*Please select a date first.";
       } else if (that.children + that.adults < that.picInfo.minParticipants) {
         that.error = true;
-        that.isShowAdults=true
         that.dateErrText =
           "*Mimimum number of travelers:" + that.picInfo.minParticipants + ".";
       } else {

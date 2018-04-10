@@ -57,11 +57,12 @@
 			<h3>SORTBY</h3>
 			<div class="seach-table clearfix">
 				<div class="recommended">
-					<select style="border:none;font-size: 16px;" @change="sort(selected)" v-model="selected">
+					<select class="selectSort" @change="sort(selected)" v-model="selected">
 						<!--<option>Recommended</option>
 						<option>Price</option>-->
 						<option v-for="(item,index) in select" v-model="item.selectText" >{{item.selectText}}</option>
 					</select>
+					<i class="iconfont">&#xe666;</i>
 				</div>
 				<ul class="seach-type">
 					<li>
@@ -73,7 +74,7 @@
 							  <em class="cancel iconfont" @click.stop="cancel(0)">&#xe606;</em>
 							  <el-checkbox-group v-model="checkedCities" >
 							  	<div class="checkboxlist" v-for="(city,key,index) in cities">
-							  		<el-checkbox  :label="key" :key="key">{{key}}({{city}})</el-checkbox>
+							  		<el-checkbox  :label="key" :key="key">{{key}} ({{city}})</el-checkbox>
 							  	</div>
 							  </el-checkbox-group>
 							  <!--<div class="clear">Clear</div>-->
@@ -89,7 +90,7 @@
 							<em class="cancel iconfont" @click.stop="cancel(1)">&#xe606;</em>
 							  <el-checkbox-group v-model="checkedCategory" >
 							  	<div class="checkboxlist" v-for="(item,key,index) in category">
-							  		<el-checkbox  :label="key" :key="key">{{key}}({{item}})</el-checkbox>
+							  		<el-checkbox  :label="key" :key="key">{{key}} ({{item}})</el-checkbox>
 							  	</div>
 							  </el-checkbox-group>
 							  <!--<div class="clear">Clear</div>-->
@@ -105,12 +106,12 @@
 							<em class="cancel iconfont" @click.stop="cancel(3)">&#xe606;</em>
 							  <el-checkbox-group v-model="checkedTourtype" v-if="Object.keys(tourtype).length<10">
 							  	<div class="checkboxlist"  v-for="(i,key,index) in tourtype">
-							  		<el-checkbox  :label="key" :key="key">{{key}}({{i}})</el-checkbox>
+							  		<el-checkbox  :label="key" :key="key">{{key}} ({{i}})</el-checkbox>
 							  	</div>
 							  </el-checkbox-group>
 							  <el-checkbox-group v-model="checkedTourtype" v-else>
 							  	<div class="checkboxlist floatbox"  v-for="(i,key,index) in tourtype">
-							  		<el-checkbox  :label="key" :key="key">{{key}}({{i}})</el-checkbox>
+							  		<el-checkbox  :label="key" :key="key">{{key}} ({{i}})</el-checkbox>
 							  	</div>
 							  </el-checkbox-group>
 							  <!--<div class="clear">Clear</div>-->
@@ -126,9 +127,9 @@
 							<em class="cancel iconfont" @click.stop="cancel(2)">&#xe606;</em>
 							  <el-checkbox-group v-model="checkedDurations" >
 							  	<div class="checkboxlist" v-for="(i,key,index) in durations">
-							  		<el-checkbox  v-if="key==0" :label="key" :key="key">Half Day({{i}})</el-checkbox>
-							  		<el-checkbox  v-if="key==1" :label="key" :key="key">{{key}} Day({{i}})</el-checkbox>
-							  		<el-checkbox  v-if="key>1" :label="key" :key="key">{{key}} Days({{i}})</el-checkbox>
+							  		<el-checkbox  v-if="key==0" :label="key" :key="key">Half Day ({{i}})</el-checkbox>
+							  		<el-checkbox  v-if="key==1" :label="key" :key="key">{{key}} Day ({{i}})</el-checkbox>
+							  		<el-checkbox  v-if="key>1" :label="key" :key="key">{{key}} Days ({{i}})</el-checkbox>
 							  	</div>
 							  </el-checkbox-group>
 							  <!--<div class="clear">Clear</div>-->
@@ -1125,9 +1126,20 @@
 			h3{
 				font-size: 14px;
 				color: #878e95;
+				margin-bottom: 10px;
 			}
 			.recommended{
+				position: relative;
 				float: left;
+				.selectSort{
+					font-size: 16px;
+					-webkit-appearance:none;
+					-moz-appearance:none;
+					appearance:none;
+					background-color:transparent;
+					border:none;
+					min-width:160px;
+				}
 			}
 			.seach-type{
 				float: left;

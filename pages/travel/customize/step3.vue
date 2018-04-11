@@ -90,14 +90,14 @@ export default {
     data() {
         let nameCheck = (rule, value, callback) => {
             if(!/^[a-zA-Z]+$/g.test(value)){
-                callback(new Error('Field is required'));
+                callback(new Error('Please make sure you enter the correct information'));
             }else{
                 callback();
             }
         }
         let mailCheck = (rule, value, callback) => {
             if(!/^([a-zA-Z0-9_-])+@(([a-zA-Z0-9_-])+\.)+(com|cn)/.test(value)){
-                callback(new Error('Field is required'));
+                callback(new Error('Please make sure you enter the correct information'));
             }else{
                 callback();
             }

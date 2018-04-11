@@ -121,7 +121,7 @@ export default {
                     { validator: nameCheck},
                 ],
                 emailAddress: [
-                    { validator: mailCheck},
+                    { validator: mailCheck, trigger: 'blur'},
                 ],
             }
         };
@@ -190,10 +190,32 @@ export default {
 </style>
 <style lang="scss" scoped>
 @import "~assets/scss/base/_setting.scss";
-.GUI-form__grid-col {
-  padding-right: 24px;
-  &:last-of-type {
-    padding-right: 0;
-  }
-}
+
+</style>
+
+<style lang="scss">
+.GUI-form {
+    .GUI-form__grid-col {
+        padding-right: 24px;
+    }
+    .GUI-form-block__content {
+        padding-right: 24px;
+        &:last-of-type {
+            padding-right: 0;
+        }
+        .el-form-item{
+            .el-form-item__content{ 
+                padding-top: 0;
+                .el-form-item__error{
+                    top:40px;
+                    height: 22px;
+                    line-height: 22px;
+                    font-size:14px;
+                }
+            }
+        }
+    }
+
+    
+} 
 </style>

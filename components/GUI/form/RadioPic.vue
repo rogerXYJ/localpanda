@@ -42,7 +42,7 @@
                         </div>
                     </div>
                 </div>
-                <div v-if="adultsNum == 0" class="GUI-radio-item-extend__error">Please input right number of adults.</div>
+                <div v-if="adultsNum == 0 && item.extend" class="GUI-radio-item-extend__error">Please input right number of adults.</div>
             </div>
         </div>
         <OtherSpecify 

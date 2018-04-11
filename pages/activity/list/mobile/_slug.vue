@@ -18,7 +18,7 @@
 					</select>
 					<i class="iconfont">&#xe666;</i>
 				</div>
-				<div class="filter-cont">
+				<div class="filter-cont" @click="showFilter">
 					<i class="iconfont">&#xe668;</i>
 					<span>Filter</span>
 				</div>
@@ -65,6 +65,9 @@
 				</li>
 			</ul>
 		</div>
+		<transition name="slideleft">
+			<Mfilter v-show="isshow" class="view" ></Mfilter>
+		</transition>
 	</div>
 </template>
 <script>
@@ -72,6 +75,7 @@
 	  require('~/assets/js/plugin/flexible.js')
 	}
 	import { getUrlParams } from '~/assets/js/plugin/utils';
+	import Mfilter from '~/components/pageComponents/activity/list/M-filter'
 	export default {
 		name: 'M-activityList',
 		data() {
@@ -96,6 +100,7 @@
 					}
 
 				],
+				isshow:false,
 				records: '',
 				pageNum: 1,
 				pageSize: 10,
@@ -105,9 +110,12 @@
 			}
 		},
 		components: {
-
+			Mfilter
 		},
 		methods: {
+			showFilter(){
+				this.isshow=true
+			},
 			getActivity() {
 				let data = this
 				let obj = {
@@ -321,6 +329,22 @@
 					}
 				}
 			}
+		}
+		.view {
+			width: 100%;
+			transition: all .8s cubic-bezier(.55, 0, .1, 1);
+		}
+		.slideleft-enter-active,
+		.slideleft-leave-active {
+			opacity: 0;
+			-webkit-transform: translate(100%, 0);
+			transform: translate(100%, 0);
+		}
+		.slideleft-enter,
+		.slideleft-leave-to {
+			opacity: 0;
+			-webkit-transform: translate(100%, 0);
+			transform: translate(100%, 0);
 		}
 	}
 </style>

@@ -5,7 +5,7 @@
 			<div class="linerBackground"></div>
 			<div class="selectInfo">
 				<div class="position">
-					<h3>Destinations </h3>
+					<h3>Destination</h3>
 					<el-select v-model="value">
 						<a :href="item.url" v-for="item in options">
 							<el-option :key="item.value" :label="item.label" :value="item.value">
@@ -14,8 +14,9 @@
 						</a>
 					</el-select>
 				</div>
-				
-				<div class="seach">
+			</div>
+		</div>
+		<div class="seach">
 					<div class="seach-table clearfix">
 						<ul class="seach-type">
 							<li>
@@ -98,10 +99,6 @@
 						<div class="pageSizeInfo" v-if="records>1">{{records}} activities in total</div>
 					</div>
 				</div>
-			</div>
-
-		</div>
-
 		<div class="list-cont" v-if="records>0">
 			<ul class="clearfix">
 				<li class="activity-item" v-for="item in activityList">
@@ -1004,13 +1001,17 @@
 						}
 					}
 				}
-				.seach {
-					position: absolute;
-					top: 160px;
+				
+			}
+		}
+		.seach {
+					background: #fff;
 					padding: 24px 30px 29px;
 					width: 1224px;
-					margin: 0 auto;
+					margin: -120px auto 0;
 					background: #fff;
+					z-index: 999;
+					position: relative;
 					h3 {
 						font-size: 14px;
 						color: #878e95;
@@ -1126,11 +1127,9 @@
 						}
 					}
 				}
-			}
-		}
 		.list-cont {
 			background: #faf9f8;
-			margin: 100px auto 80px;
+			margin: 30px auto 80px;
 			width: 1284px;
 			.activity-item {
 				&:hover {

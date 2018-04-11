@@ -27,7 +27,7 @@ service@localpanda.com.
                 +1-818-404-8141
             </p>
         </div>
-        <div class="done-recommend page-section">
+       <!-- <div class="done-recommend page-section">
             <h2>The most popular activities in the hottest destinations loved by overseas travelers</h2>
             <ul class="done-recommend__list">
                 <li 
@@ -43,7 +43,7 @@ service@localpanda.com.
                 </li>
             </ul>
 
-        </div>
+        </div>-->
         <FooterCommon></FooterCommon>
     </div>
 </template>

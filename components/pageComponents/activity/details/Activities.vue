@@ -534,8 +534,12 @@ export default {
       } else if (that.children + that.adults < that.picInfo.minParticipants) {
         that.error = true;
         that.isShowAdults = true;
-        that.dateErrText =
-          "*Mimimum number of travelers:" + that.picInfo.minParticipants + ".";
+        //that.dateErrText = "*Mimimum number of travelers:" + that.picInfo.minParticipants + ".";
+        //默认帮用户选一个游玩人
+        if (that.people == "Please Select") {
+          that.adults = this.adults + 1;
+          that.people = this.adults + this.children;
+        }
       } else {
         that.error = false;
         that.isSelectDate = false;

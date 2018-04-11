@@ -90,14 +90,14 @@ export default {
     data() {
         let nameCheck = (rule, value, callback) => {
             if(!/^[a-zA-Z]+$/g.test(value)){
-                callback(new Error('Field is required'));
+                callback(new Error('Please make sure you enter the correct information'));
             }else{
                 callback();
             }
         }
         let mailCheck = (rule, value, callback) => {
             if(!/^([a-zA-Z0-9_-])+@(([a-zA-Z0-9_-])+\.)+(com|cn)/.test(value)){
-                callback(new Error('Field is required'));
+                callback(new Error('Please make sure you enter the correct information'));
             }else{
                 callback();
             }
@@ -121,7 +121,7 @@ export default {
                     { validator: nameCheck},
                 ],
                 emailAddress: [
-                    { validator: mailCheck},
+                    { validator: mailCheck, trigger: 'blur'},
                 ],
             }
         };
@@ -190,10 +190,32 @@ export default {
 </style>
 <style lang="scss" scoped>
 @import "~assets/scss/base/_setting.scss";
-.GUI-form__grid-col {
-  padding-right: 24px;
-  &:last-of-type {
-    padding-right: 0;
-  }
-}
+
+</style>
+
+<style lang="scss">
+.GUI-form {
+    .GUI-form__grid-col {
+        padding-right: 24px;
+    }
+    .GUI-form-block__content {
+        padding-right: 24px;
+        &:last-of-type {
+            padding-right: 0;
+        }
+        .el-form-item{
+            .el-form-item__content{ 
+                padding-top: 0;
+                .el-form-item__error{
+                    top:40px;
+                    height: 22px;
+                    line-height: 22px;
+                    font-size:14px;
+                }
+            }
+        }
+    }
+
+    
+} 
 </style>

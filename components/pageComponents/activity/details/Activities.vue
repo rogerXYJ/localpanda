@@ -1,8 +1,18 @@
 <template>
 	<div id="activities">
-
 		<div class="activitiesDel">
 			<div class="activitiesInfo">
+				<div class="linkseting">
+					<div class="linkinfo">
+						<a href="/">Home</a>
+						<em class="iconfont">&#xe64a;</em>
+						<a v-if="destination=='Xi\'an'" href="/activity/list/Xian">Xi'an Activities</a>
+						<a v-else :href="'/activity/list/'+destination">{{destination}} Activities</a>
+						
+						<em class="iconfont">&#xe64a;</em>
+						<span>Activity Details</span>
+					</div>
+				</div>
 				<div class="tags clearfix">
 					<span class="tag">{{detail.category}}</span>
 					<em class="productId">Product ID: {{detail.activityId}}</em>
@@ -118,7 +128,7 @@
 				<h3>Similar Experiences</h3>
 				<ul class="clearfix">
 					<li :key="index" v-for="(i,index) in recommed">
-						<a :href="'https://www.localpanda.com/activity/details/'+i.activityId">
+						<a :href="'	/activity/details/'+i.activityId">
 							<div class="activity-pic">
 								<img v-lazy="i.coverPhotoUrl">
 							</div>
@@ -333,7 +343,8 @@ export default {
 	"introduction",
 	"inclusions",
 	"exclusions",
-	"notice"
+	"notice",
+	"destination"
   ],
   name: "Activities",
   data() {
@@ -662,6 +673,32 @@ export default {
     position: relative;
     max-width: 1170px;
     margin: 0 auto;
+   .linkseting {
+    .linkinfo {
+   
+      
+      margin-top: 30px;
+      a {
+        color: #878e95;
+        font-size: 14px;
+        &:hover {
+          text-decoration: underline;
+          color: #353a3f;
+        }
+       
+      }
+      em {
+        font-size: 12px;
+        color: #878e95;
+        
+      }
+      span {
+        color: #878e95;
+        font-size: 14px;
+        
+      }
+    }
+  }
     .book {
       width: 386px;
       position: absolute;
@@ -1013,6 +1050,7 @@ export default {
           float: right;
           font-size: 12px;
           color: #878e95;
+          padding: 5px 0;
         }
       }
       .activitiyTitle {

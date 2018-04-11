@@ -1,16 +1,6 @@
 <template>
 	<div id="banner">
-		<div class="linkseting">
-			<div class="linkinfo">
-				<a href="/">Home</a>
-				<em class="iconfont">&#xe64a;</em>
-				<a v-if="destination=='Xi\'an'" href="/activity/list/Xian">Xi'an Activities</a>
-				<a v-else :href="'/activity/list/'+destination">{{destination}} Activities</a>
-				
-				<em class="iconfont">&#xe64a;</em>
-				<span>Activity Details</span>
-			</div>
-		</div>
+		
 		<div v-swiper:swiper="swiperOptionBannerPc">
 			<div class="swiper-wrapper">
 				<div class="swiper-slide" :key="index" v-for="(slide, index) in bannerPhotos">
@@ -33,7 +23,7 @@ if (process.browser){
   	
 };
 export default {
-  props: ["bannerPhotos", "destination"],
+  props: ["bannerPhotos"],
   name: "banner",
   data() {
     return {
@@ -70,33 +60,6 @@ export default {
     width: 100%;
     height: 100%;
   }
-  .linkseting {
-    width: 1170px;
-    margin: 0 auto;
-
-    .linkinfo {
-      position: absolute;
-      z-index: 200;
-      top: 24px;
-      a {
-        color: #fff;
-        font-size: 14px;
-        &:hover {
-          text-decoration: underline;
-        }
-        text-shadow: 2.5px 2.5px 10px rgba(0, 0, 0, 0.3);
-      }
-      em {
-        font-size: 12px;
-        color: #fff;
-        text-shadow: 2.5px 2.5px 10px rgba(0, 0, 0, 0.3);
-      }
-      span {
-        color: #fff;
-        font-size: 14px;
-        text-shadow: 2.5px 2.5px 10px rgba(0, 0, 0, 0.3);
-      }
-    }
-  }
+  
 }
 </style>

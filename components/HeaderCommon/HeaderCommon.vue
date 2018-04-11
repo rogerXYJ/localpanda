@@ -45,7 +45,7 @@
 			<h3 slot="alertTitleLogin">{{alertTitleLogin}}</h3>
 			<p slot="alertTitleMessage">{{alertTitleMessage}}</p>
 		</AlertTitle>
-		<Contact :ContactStatus="ContactStatus" v-on:isshowfn="isShowFn" v-on:contact-call-back="contactCallBack" :objectType="objectType"></Contact>
+		<!--<Contact :ContactStatus="ContactStatus" v-on:isshowfn="isShowFn" v-on:contact-call-back="contactCallBack" :objectType="objectType"></Contact>-->
 		<Alert   :isShowAlert="isShowAlert" :alertTitle="alertTitle" :alertMessage="alertMessage" v-on:setIsShowAlert="getIsShowAlert"></Alert>
 		<Anonymity :AnonymityStatus="AnonymityStatus"  v-on:anonymity-back="isAnonymityback"></Anonymity>
 	</div>
@@ -59,7 +59,7 @@
 	import AlertTitle from '~/components/Prompt/AlertTitle'
 	import Anonymity from '~/components/Prompt/Anonymity'
 	import Alert from '~/components/Prompt/Alert'
-	import Contact from '~/components/Contact/Contact'
+	//import Contact from '~/components/Contact/Contact'
 	export default {
 		props:["logIn","isAnonymity","isIndex"],
 		name: 'headercommon',
@@ -87,7 +87,7 @@
 		 components: {
 	        AlertTitle,
 	        Alert,
-	        Contact,
+	        //Contact,
 	        Anonymity
 	
 	    },
@@ -123,7 +123,7 @@
 				  eventAction: 'Click',
 				  eventLabel: 'trip_customizing'
 				});
-				that.ContactStatus=true
+				location.href="/travel/customize/step1"
 			},
 			contactCallBack(val){
 				this.ContactStatus=false

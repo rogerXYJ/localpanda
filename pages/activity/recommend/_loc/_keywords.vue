@@ -107,7 +107,7 @@
 				</div>
 			</div>
 		</div>
-		<Bottom :scrollTop="300"></Bottom>
+		<!--<Bottom :scrollTop="300"></Bottom>-->
 		<FooterCommon></FooterCommon>
 	</div>
 
@@ -117,7 +117,7 @@
 	import Vue from "vue";
 	import HeaderCommon from '~/components/HeaderCommon/HeaderCommon'
 	import FooterCommon from '~/components/FooterCommon/FooterCommon';
-	import Bottom from '~/components/bottom/Bottom'
+	/*import Bottom from '~/components/bottom/Bottom'*/
 	import bus from '~/assets/js/pages/bus.js'
 	if (process.browser) {
 	  	const VueAwesomeSwiper = require('vue-awesome-swiper/dist/ssr')
@@ -299,7 +299,7 @@
 		components: {
 			HeaderCommon,
 			FooterCommon,
-			Bottom
+			//Bottom
 		},
 		methods: {
 			delNullArr(array) {

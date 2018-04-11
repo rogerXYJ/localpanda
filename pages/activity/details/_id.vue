@@ -2,7 +2,7 @@
 	<div id="activitiesDetail">
 		<HeaderCommon :logIn="logIn"></HeaderCommon>
 		<Meau v-if="isShowMeau" :notice="notice" :exclusions="exclusions" :picInfo="picInfo"></Meau>
-		<ActivityBanner :bannerPhotos="detail.bannerPhotos" :destination="destination"></ActivityBanner>
+		<ActivityBanner :bannerPhotos="detail.bannerPhotos" ></ActivityBanner>
 
 		<Activities 
 			:remark="remark" 
@@ -18,6 +18,7 @@
 			:highlights="highlights" 
 			:destinations="destinations" 
 			:itemsIncluded="itemsIncluded" 
+			:destination="destination"
 			:recommed="recommed"></Activities>
 		<FooterCommon></FooterCommon>
 		<div class="toast-container" v-if="toastShow">

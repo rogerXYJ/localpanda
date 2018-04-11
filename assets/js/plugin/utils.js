@@ -46,7 +46,7 @@ var addmulMonth = function(dtstr, n) {
 	var dt = new Date(yy, mm, dd);
 	dt.setMonth(dt.getMonth() + n);
 	var month = parseInt(dt.getMonth()) + 1;
-	return dt.getFullYear() + "-" + month + "-" + dd;
+	return dt.getFullYear() + "-" + (month<10?'0'+month:month) + "-" + dd;
 }
 /**
  *@Function: 获取url?后面的参数

@@ -279,7 +279,7 @@
             },
             arriveCityNotDecided: function(newState, oldState){
                 console.log(newState);
-                if(newState){
+                if(newState&&!this.arriveCityInput){
                     this.form.arriveCity = 'Not Decided';
                 }else{
                     this.form.arriveCity = '';

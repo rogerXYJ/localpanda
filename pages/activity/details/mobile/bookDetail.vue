@@ -58,6 +58,7 @@
 	}
 	//import flatPickr from "vue-flatpickr-component";
 	import Flatpickr from 'flatpickr';
+	
 	import { GetDateStr, addmulMonth } from "~/assets/js/plugin/utils";
 	import SelectPeople from "~/components/pageComponents/activity/details/mobile/SelectPeople"
 	import Vue from 'vue';
@@ -221,7 +222,7 @@
 			this.category=JSON.parse(window.localStorage.getItem("objDetail")).category
 			this.options = {
 				minDate: this.picInfo.earliestBookDate,
-				maxDate: addmulMonth(GetDateStr(this.picInfo.earliestBookDate), 12),
+				maxDate: addmulMonth(this.picInfo.earliestBookDate, 12),
 				disableMobile: true,
 				onOpen : function(e){
 					let calendarContainer = this.calendarContainer.style;
@@ -240,6 +241,7 @@
 			}
 			
 			that.flatPickr = new Flatpickr('#js_changetime',this.options);
+			
 			
 			
 		},
@@ -278,8 +280,10 @@
 	};
 </script>
 <style lang="scss">
+	@import "~/assets/scss/G-ui/flatpickr.min.css";
 	@import "~assets/scss/_main.scss";
 	@import "~/assets/font/iconfont.css";
+	
 	#launcher {
 		bottom: 0.266666rem!important;
 	}

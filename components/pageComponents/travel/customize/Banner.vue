@@ -54,7 +54,7 @@
         position: absolute;
         bottom: 0;
         left: 0;
-        background: rgba(255, 255, 255, .3);
+        background: rgba(0, 0, 0, .3);
         color: #ffffff;
         line-height: 58px;
         font-size: 18px;

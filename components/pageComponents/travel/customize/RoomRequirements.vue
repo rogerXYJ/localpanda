@@ -72,7 +72,7 @@
                 line-height: 40px;
             }
             &-label{
-                width: 230px;
+                width: 200px;
                 padding: 0 15px 0 20px;
                 text-align: right;
             }
@@ -81,4 +81,14 @@
             }
         }
     }
+    
+</style>
+
+<style lang="scss">
+.el-input-number{
+    width: 120px;
+    &__increase,&__decrease{
+        width: 25px;
+    }
+}
 </style>

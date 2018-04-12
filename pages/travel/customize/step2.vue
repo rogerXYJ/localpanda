@@ -12,7 +12,7 @@
                 class="GUI-form"
             >
                 <div class="GUI-form-block">
-                    <div class="GUI-form-block__title">What is your preferred type of accommodation?</div>
+                    <div class="GUI-form-block__title mb10">What is your preferred type of accommodation?</div>
                     <div class="GUI-form-block__content">
                         <el-form-item class="GUI-form-item" prop="accommodation">
                             <LevelSelect :dataSource="accommodationDataSource" v-model="form.accommodation"></LevelSelect>
@@ -166,6 +166,32 @@
 	@import '~/assets/font/iconfont.css';
     @import '~assets/scss/G-ui/base.scss';
     @import '~assets/scss/G-ui/element-ui.scss';
+
+    .el-slider__runway{
+        .el-slider__bar{
+            opacity: 0.5;
+        }
+    }
+    .GUI-form-block{
+        &__title.mb10{
+            margin-bottom: 10px;
+        }
+        &--require{
+            padding-top: 50px;
+        }
+    }
+    .GUI-level-select{
+        width: 1080px;
+        margin: 0 auto;
+    }
+    .GUI-radio-pic{
+        &__group{
+           .GUI-radio-pic__item{
+                margin:0 34px 0 10px;
+            }
+        }
+    }
+    
 </style>
 <style lang="scss" scoped>
     @import "~assets/scss/base/_setting.scss";

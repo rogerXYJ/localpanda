@@ -56,7 +56,7 @@
                                 </template>
                             </Checkbox>
                         </el-form-item>
-                        <el-form-item class="GUI-form-item" prop="interests">
+                        <el-form-item class="GUI-form-item GUI-form-block__content_border" prop="interests">
                             <div class="GUI-form-item__title">Travel Interests</div>
                             <Checkbox 
                                 class="travel-interest"
@@ -298,11 +298,12 @@
                         }
                         let formData = Object.assign({},this.form);
                         if(this.arriveTimeNotDecided){
-                            formData.arriveTime = 'Not Decided';
+                            formData.arriveTime = '';
                         }
                         if(this.arriveCityNotDecided){
                             formData.arriveCity = 'Not Decided';
                         }
+                        console.log(formData.arriveCity);
                         stepFormStorage.addStorage(storageKey, formData);
                         if(formData.accommodationIncluded){
                             window.location.href = "/travel/customize/step2";
@@ -354,6 +355,8 @@
     .arrive-time{        
         .flatpickr-calendar{
             margin: 0 auto;
+            box-shadow:none !important;
+            -webkit-box-shadow:none !important;
         }
         .flatpickr-months .flatpickr-prev-month.flatpickr-prev-month, 
         .flatpickr-months .flatpickr-next-month.flatpickr-prev-month,
@@ -362,6 +365,7 @@
             top: 20px!important;
         }
     }
+    .flatpickr-months .flatpickr-prev-month svg, .flatpickr-months .flatpickr-next-month svg{ margin-top: 0;}
     
 </style>
 <style lang="scss" scoped>
@@ -378,7 +382,7 @@
                 background-size: cover;
             }
             &-title{
-                padding: 10px 15px;
+                padding: 10px 10px;
                 font-size: 22px;                
             }
             &-recommend{
@@ -427,6 +431,7 @@
                 border: 3px solid #1bbc9d;
             }
         }
+        
     }
     .arrive-time{
         width: 80%;
@@ -443,4 +448,26 @@
         left: 0;
         overflow: hidden;
     }
+    .GUI-form-block{
+        &__content_border{
+            border-top:#ddd solid 1px;
+            padding-top: 20px;
+        }
+        &__title:before{
+            width: 25px;
+        }
+    }
+    .GUI-form-item{
+        &__title{
+            margin-bottom: 5px;
+            padding-left: 12px;
+        }
+    }
+    .travel-des__item-recommend{
+        h4{
+            font-weight:bold;
+            color: #353a3f;
+        }
+    }
+    
 </style>

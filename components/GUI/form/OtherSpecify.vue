@@ -104,7 +104,7 @@
 .GUI-other-specify{
     width: 100%;
 	overflow: hidden;
-	margin-top: 40px;
+	margin-top: 30px;
     &__title{
 		float: left;
 		margin-right: 50px;
@@ -119,11 +119,12 @@
 		}
 		.el-checkbox__label, .el-radio__label{
 			font-size: 16px;
-			color: #1bbc9d;
+			color: #1bbc9d!important;
 		}
     }
     &__input{
-        overflow: hidden;
+		overflow: hidden;
+		width: 540px;
         &--error{
             background: #ff0000;
             .GUI-other-specify__error{

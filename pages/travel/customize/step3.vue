@@ -128,10 +128,14 @@ export default {
     },
     methods: {
         onSubmit(formName) {
+            if(this.isSubmiting){
+                return;
+            }
             this.$refs[formName].validate((valid) => {
                 console.log(this.$refs[formName].model);
                 // console.log(this.form);
                 if (valid) {
+                    this.isSubmiting = true;
                     console.log('step3 submit success');
                     let formData = this.form;
                     let formDataStep1 = stepFormStorage.getStorage('STEP_1_FORM_STORAGE');
@@ -147,9 +151,12 @@ export default {
                         stepFormStorage.clearStorage('STEP_1_FORM_STORAGE');
                         stepFormStorage.clearStorage('STEP_2_FORM_STORAGE');
                         window.location.href = "/travel/customize/done";
-                    }, function(response) {})
+                    }, function(response) {
+                        this.isSubmiting = false;
+                    })
                 } else {
                     console.log('error submit!!');
+                    this.isSubmiting = false;
                     return false;
                 }
             });

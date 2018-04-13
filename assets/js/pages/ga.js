@@ -3,6 +3,5 @@ window.dataLayer = window.dataLayer || [];
   gtag('js', new Date());
 
   gtag('config', 'AW-830736831');
-
  
 

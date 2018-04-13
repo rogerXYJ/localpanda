@@ -134,7 +134,7 @@
 <script>
 	if (process.browser) {
 	   require('~/assets/js/pages/talk.js')
-	   require('~/assets/js/pages/ga.js')
+	   //require('~/assets/js/pages/ga.js')
 	}
 	import Vue from 'vue'
 	import { regExp } from '~/assets/js/plugin/utils'

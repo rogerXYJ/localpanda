@@ -58,7 +58,7 @@
 <script>
 	if (process.browser) {
 	  require('~/assets/js/pages/talk.js')
-	  //require('~/assets/js/pages/ga.js')
+	  require('~/assets/js/pages/ga.js')
 	}
 	import { GetQueryString } from '~/assets/js/plugin/utils.js'
 	import HeaderCommon from '~/components/HeaderCommon/HeaderCommon'

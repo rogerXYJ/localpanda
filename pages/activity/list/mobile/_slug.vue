@@ -13,7 +13,7 @@
 				</el-select>
 			</div>
 		</div>
-		<div class="filter">
+		<div class="filter" :class="{scroll:isscroll}">
 			
 			<div class="filter-table clearfix">
 				
@@ -38,9 +38,9 @@
 				<span v-if="checkedTourtype&&checkedTourtype.length>0" v-for="(item,index) in checkedTourtype" @click="del(3,checkedTourtype,index)">{{item.replace(/And/g,'&')}}<i class="iconfont">&#xe629;</i></span>
 				
 			</div>
-			<div class="pageSizeInfo" v-if="records==1">1 activity in total</div>
-			<div class="pageSizeInfo" v-if="records==0">0 activity in total</div>
-			<div class="pageSizeInfo" v-if="records>1">{{records}} activities in total</div>
+			<div class="pageSizeInfo" v-if="records==1&&!isscroll">1 activity in total</div>
+			<div class="pageSizeInfo" v-if="records==0&&!isscroll">0 activity in total</div>
+			<div class="pageSizeInfo" v-if="records>1&&!isscroll">{{records}} activities in total</div>
 		</div>
 		<div class="list-cont" v-if="records>0">
 			<ul class="clearfix">
@@ -93,6 +93,7 @@
 				class="view" 
 				></Mfilter>
 		</transition>
+		<vueInfiniteLoading  @infinite="infiniteHandler"  ref="infiniteLoading"></vueInfiniteLoading>
 	</div>
 </template>
 <script>
@@ -102,6 +103,7 @@
 	import { getUrlParams } from '~/assets/js/plugin/utils';
 	import Mfilter from '~/components/pageComponents/activity/list/M-filter'
 	import Vue from 'vue'
+	import vueInfiniteLoading from 'vue-infinite-loading'
 	export default {
 		name: 'M-activityList',
 		async asyncData({
@@ -175,7 +177,7 @@
 				checkedCategory: [],
 				checkedDurations: [],
 				checkedTourtype: [],
-				removeFirst:'',
+				isscroll:false,
 			};
 			let listdata={}
 			let filters=[]
@@ -264,7 +266,8 @@
 			return data
 		},
 		components: {
-			Mfilter
+			Mfilter,
+			vueInfiniteLoading
 		},
 		methods: {
 			setCallBack(val){
@@ -359,6 +362,64 @@
 				} else {
 					return null;
 				}
+			},
+			infiniteHandler($state){
+				//console.log(1111)
+				let that=this
+				that.pageNum++
+				let filters=[]
+				let obj={}
+				if(that.checkedCategory&&that.checkedCategory.length > 0) {
+					let jsonCategory = {
+						type: 'CATEGORY',
+						filterValues: that.checkedCategory
+					}
+					filters.push(jsonCategory)
+				}
+				if(that.checkedDurations&&that.checkedDurations.length > 0) {
+					let jsonDurations = {
+						type: 'DURATION',
+						filterValues: that.checkedDurations
+					}
+					filters.push(jsonDurations)
+				}
+				if(that.checkedTourtype&&that.checkedTourtype.length > 0) {
+					let jsonTourtype = {
+						type: 'TOUR_TYPE',
+						filterValues: that.checkedTourtype
+					}
+					filters.push(jsonTourtype)
+				}
+				if(filters.length&&filters.length > 0) {
+					obj = {
+						location: that.loc == "Xian" ? "Xi\'an" : that.loc,
+						pageNum: that.pageNum,
+						pageSize: that.pageSize,
+						filters: filters,
+						sort: that.sort
+					}
+				} else {
+					obj = {
+						location: that.loc == "Xian" ? "Xi\'an" : that.loc,
+						pageNum: that.pageNum,
+						pageSize: that.pageSize,
+						sort: that.sort
+					}
+				}
+				Vue.axios.post(that.apiBasePath + "search/activity", JSON.stringify(obj), {
+					headers: {
+						'Content-Type': 'application/json; charset=UTF-8'
+					}
+				}).then(function(response) {
+					if(response.data.entities&&response.data.entities.length) {
+						that.activityList=that.activityList.concat(response.data.entities)
+						$state.loaded();
+					}else{
+						 $state.complete();
+					}
+				}, function(response) {
+					$state.complete();
+				})
 			}
 		},
 		filters: {
@@ -382,8 +443,13 @@
 		},
 		mounted: function() {
 			let opctions=JSON.parse(this.getUrlParam("opctions"))
+			let that=this
 			window.addEventListener("scroll", (e)=>{
-				console.log(e)
+				if(scrollY>400){
+					that.isscroll=true
+				}else{
+					that.isscroll=false
+				}
 			});
 		}
 	}
@@ -445,6 +511,13 @@
 			}
 		}
 		.filter{
+			&.scroll{
+				position: fixed;
+				top: 0;
+				left:0;
+				margin: 0;
+				width: calc(100% - 1.073333rem);
+			}
 			box-shadow: 0px 0px 0.4rem 0px rgba(0, 0, 0, 0.08);
 			border-radius: 0.04rem;
 			background: #fff;
@@ -580,10 +653,7 @@
 				}
 			}
 		}
-		.scroll{
-			position: fixed;
-			top: 0;
-		}
+		
 		.view {
 			width: 100%;
 			transition: all .8s cubic-bezier(.55, 0, .1, 1);

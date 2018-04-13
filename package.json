@@ -27,6 +27,7 @@
     "node-sass": "^4.7.2",
     "postcss-loader": "^2.1.1",
     "sass-loader": "^6.0.7",
-    "transform-runtime": "^0.0.0"
+    "transform-runtime": "^0.0.0",
+    "vue-infinite-loading": "^2.3.1"
   }
 }

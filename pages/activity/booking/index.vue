@@ -202,15 +202,6 @@
 			Alert
 
 		},
-		head(){
-			return{
-				script:[
-					{src:'https://www.googletagmanager.com/gtag/js?id=AW-830736831',
-					type:'text/javascript'}
-				]
-			}
-			
-		},
 		methods: {
 			cutXiaoNum(num, len) {
 				var numStr = num.toString();

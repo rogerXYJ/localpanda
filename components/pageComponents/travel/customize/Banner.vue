@@ -1,5 +1,6 @@
 <template>
 	<div class="page-banner">
+		<div class="mask"></div>
         <h2>Customize My Trip</h2>
         <h3>Create your own free China Itinerary, personalized to your schedule and interests.</h3>
         <div class="banner-bar">
@@ -40,12 +41,22 @@
             font-size: 44px;
             text-shadow: 0 5px 10px rgba(0,0,0,.3);
             color: #ffffff;
+            position: relative;
         }
         h3{
             margin-top: 10px;
             font-size: 20px;
             text-shadow: 0 5px 10px rgba(0,0,0,.3);
             color: #ffffff;
+            position: relative;
+        }
+        .mask{
+        	position: absolute;
+        	left: 0;
+        	top: 0;
+        	height: 500px;
+        	background:rgba(0,0,0,.2);
+        	width: 100%;
         }
     }
     .banner-bar{

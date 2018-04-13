@@ -17,7 +17,7 @@
 					</div>
 					<div class="detail">
 						<span>Order ID: {{orderId}}</span>
-						<span>Time of transaction: {{date}}</span>
+						
 					</div>
 					<div class="amount">Payment amount<b>${{amount}}</b></div>
 					<p style="margin-top: 10px;"> To view the details of your order, click “My Bookings” at the top of this page. If you ordered as a guest, you must enter your reservation email and the primary contact’s name to access your booking. </p>
@@ -59,30 +59,12 @@
 			FooterCommon
 		},
 		methods: {
-			fomtdate(){
-				var that=this
-				Date.prototype.Format = function (fmt) { //author: meizz 
-				    var o = {
-				        "M+": this.getMonth() + 1, //月份 
-				        "d+": this.getDate(), //日 
-				        "h+": this.getHours(), //小时 
-				        "m+": this.getMinutes(), //分 
-				        "s+": this.getSeconds(), //秒 
-				        "q+": Math.floor((this.getMonth() + 3) / 3), //季度 
-				        "S": this.getMilliseconds() //毫秒 
-				    };
-				    if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
-				    for (var k in o)
-				    if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
-				    return fmt;
-				}
-				that.date=new Date().Format("yyyy-MM-dd hh:mm:ss")
-			}
+			
 		},
 		mounted: function() {
 			this.orderId=GetQueryString("orderId")
 			this.amount=GetQueryString("amount")
-			this.fomtdate()
+			
 			this.logIn=window.localStorage.getItem("logstate")
 			this.userId=window.localStorage.getItem("userid")
 		}
@@ -161,19 +143,7 @@
 					margin-top: 10px;
 					span{
 						font-size: 18px;
-						&:last-child{
-							padding-left: 42px;
-							position:relative; 
-							&:after{
-								content: "";
-								position: absolute;
-								width: 2px;
-								height: 10px;
-								background: #878e95;
-								left: 21px;
-								top:8px
-							}
-						}
+						
 						
 					}
 				}

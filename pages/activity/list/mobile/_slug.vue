@@ -1,5 +1,6 @@
 <template>
 	<div class="M-activityList">
+		<Head></Head>
 		<div class="headpic">
 			<div class="linerBackground"></div>
 			<div class="position">
@@ -77,6 +78,10 @@
 				</li>
 			</ul>
 		</div>
+		<div class="empty" v-else>
+			<p>No activities or tours that match your interests are found.</p>
+			<p>You can try to modify your screening conditions.</p>
+		</div>
 		<transition name="slideleft">
 			<Mfilter 
 				v-show="isshow" 
@@ -93,15 +98,19 @@
 				class="view" 
 				></Mfilter>
 		</transition>
-		<infinite-loading  @infinite="infiniteHandler"  ref="infiniteLoading"></infinite-loading>
+		<infinite-loading  @infinite="infiniteHandler" spinner="bubbles"  ref="infiniteLoading">
+			<span slot="no-more">You've reached the bottom of the page.</span>
+			<span slot="no-results" class="no-results"></span>
+		</infinite-loading>
 	</div>
 </template>
 <script>
 	if (process.browser) {
 	  require('~/assets/js/plugin/flexible.js')
 	}
-	import InfiniteLoading from "vue-infinite-loading"
+	import Head from '~/components/headMobeil'
 	import { getUrlParams } from '~/assets/js/plugin/utils';
+	import InfiniteLoading from 'vue-infinite-loading/src/components/Infiniteloading.vue'
 	import Mfilter from '~/components/pageComponents/activity/list/M-filter'
 	import Vue from 'vue'
 	export default {
@@ -265,8 +274,39 @@
 			}
 			return data
 		},
+		head() {
+			let location = this.value;
+			let title = "The Top " + location + " Tours | " + location + " Local Activities and Experiences";
+			let keywords = "Best Things to do in " + location + ", " + location + " tours, " + location + " trip, " + location + " travel, " + location + " tour packages, " + location + " guide, china tours"
+			if(location == "Beijing") {
+				var description = "See top things to do in Beijing, including Beijing city tours, Beijing walking tours, Beijing history & culture tours, and Beijing food tours. Visit the Forbidden City, Temple of Heaven, Great Wall, Tiananmen Square, and Beijing Summer Palace with our local China tour guides."
+			} else if(location == "Shanghai") {
+				var description = "See top things to do in Shanghai, including Shanghai city tours, Shanghai walking tours, Shanghai history & culture tours, and Shanghai food tours. Visit the bund shanghai, the Shanghai Tower, the French concession, yu garden, zhujiajiao and Suzhou with our local China tour guides."
+			} else if(location == "Guilin") {
+				var description = "See top things to do in Guilin, including Guilin scenic tours, Guilin walking tours, Guilin history & culture tours, Guilin food tours, and Guilin Biking tours. See the best scenery in Guilin including Elephant Trunk Hill, Guilin Forest, Li River, Sun & Moon Pagodas, and Yaoshan Mountain."
+			} else if(location == "Chengdu") {
+				var description = "See top things to do in Chengdu, including Chengdu city tours, Chengdu walking tours, Chengdu history & culture tours, and Chengdu food tours. Visit the Giant Panda Breeding Research Base, Mount Qingcheng, Wenshu Yuan Monestary, Jinli Street, and Dujiangyan with our local China tour guides."
+			} else {
+				var description = "See top things to do in Xi’an, including Xi’an city tours, Xi’an walking tours, Xi’an history & culture tours, and Xi’an food tours. Visit the Terra-cotta Warriors, Xi’an City Wall, Muslim Quarter, Shaanxi History Museum, and Xi’an markets with our local China tour guides."
+			}
+			return {
+				title: title,
+				meta: [{
+						hid: "keywords",
+						name: "keywords",
+						content: keywords
+					},
+					{
+						hid: "description",
+						name: "description",
+						content: description
+					}
+				]
+			};
+		},
 		components: {
 			Mfilter,
+			Head,
 			InfiniteLoading
 		},
 		methods: {
@@ -278,6 +318,9 @@
 			},
 			del(id, arr, index) {
 				this.sort=JSON.stringify(this.sort)
+				for(let i = 0; i < this.checkedTourtype.length; i++) {
+					this.checkedTourtype[i] = this.checkedTourtype[i].replace(/&/g, "And")
+				}
 				arr.splice(index, 1)
 				if(id == 1) {
 					
@@ -572,7 +615,7 @@
 					font-size: 0.4rem;
 					margin-right: 0.24rem;
 					i{
-						font-size: 0.186666rem;
+						font-size:0.293333rem;
 						color: #1bbc9d;
 						font-weight: bold;
 						margin-left: 0.133333rem;
@@ -654,7 +697,13 @@
 				}
 			}
 		}
-		
+		.empty{
+			padding: 0.533333rem;
+			p{
+				text-align: center;
+				font-size: 0.32rem;
+			}
+		}
 		.view {
 			width: 100%;
 			transition: all .8s cubic-bezier(.55, 0, .1, 1);
@@ -670,6 +719,12 @@
 			opacity: 0;
 			-webkit-transform: translate(100%, 0);
 			transform: translate(100%, 0);
+		}
+		.no-results{
+			display: inline-block;
+			padding: 0 0.586666rem;
+			word-wrap:break-word; 
+			
 		}
 	}
 </style>

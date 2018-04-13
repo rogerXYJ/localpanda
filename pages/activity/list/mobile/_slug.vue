@@ -93,17 +93,17 @@
 				class="view" 
 				></Mfilter>
 		</transition>
-		<vueInfiniteLoading  @infinite="infiniteHandler"  ref="infiniteLoading"></vueInfiniteLoading>
+		<infinite-loading  @infinite="infiniteHandler"  ref="infiniteLoading"></infinite-loading>
 	</div>
 </template>
 <script>
 	if (process.browser) {
 	  require('~/assets/js/plugin/flexible.js')
 	}
+	import InfiniteLoading from "vue-infinite-loading"
 	import { getUrlParams } from '~/assets/js/plugin/utils';
 	import Mfilter from '~/components/pageComponents/activity/list/M-filter'
 	import Vue from 'vue'
-	import vueInfiniteLoading from 'vue-infinite-loading'
 	export default {
 		name: 'M-activityList',
 		async asyncData({
@@ -267,7 +267,7 @@
 		},
 		components: {
 			Mfilter,
-			vueInfiniteLoading
+			InfiniteLoading
 		},
 		methods: {
 			setCallBack(val){
@@ -443,6 +443,7 @@
 		},
 		mounted: function() {
 			let opctions=JSON.parse(this.getUrlParam("opctions"))
+			console.log()
 			let that=this
 			window.addEventListener("scroll", (e)=>{
 				if(scrollY>400){

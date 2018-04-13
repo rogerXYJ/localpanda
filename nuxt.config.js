@@ -24,7 +24,7 @@ module.exports = {
     { src: '~/plugins/axios.js'},
     { src: '~/plugins/vue-lazyload.js', ssr: false },
     { src: '~/plugins/element-ui.js', ssr: false },
-    { src: '~/plugins/vue-infinite-loading.js',ssr:false}
+    /*{ src: '~/plugins/vue-infinite-loading.js',ssr:false}*/
 
   ],
   css: [

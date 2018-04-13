@@ -1,30 +1,42 @@
 <template>
 	<div class="M-activityList">
-		<div class="headpic" :class="city(loc)">
+		<div class="headpic">
+			<div class="linerBackground"></div>
 			<div class="position">
-				<span v-if="loc=='Shanghai'">Shanghai</span>
-				<span v-if="loc=='Beijing'">Beijing</span>
-				<span v-if="loc=='Chengdu'">Chengdu</span>
-				<span v-if="loc=='Xian'">Xi'an</span>
-				<span v-if="loc=='Guilin'">Guilin</span>
+				<h3>Destination</h3>
+				<el-select v-model="value">
+					<a :href="item.url" v-for="item in options">
+						<el-option :key="item.value" :label="item.label" :value="item.value">
+
+						</el-option>
+					</a>
+				</el-select>
 			</div>
 		</div>
 		<div class="filter">
-			<h3>SORT BY</h3>
+			
 			<div class="filter-table clearfix">
-				<div class="recommended">
-					<select class="selectSort" @change="sort(selected)" v-model="selected">
-						<option v-for="(item,index) in select" v-model="item.selectText">{{item.selectText}}</option>
-					</select>
-					<i class="iconfont">&#xe666;</i>
-				</div>
+				
 				<div class="filter-cont" @click="showFilter">
 					<i class="iconfont">&#xe668;</i>
 					<span>Filter</span>
 				</div>
+				<div class="recommended">
+					<h3>SORT BY</h3>
+					<select class="selectSort" @change="sortFn(selected)" v-model="selected">
+						<option v-for="(item,index) in select" v-model="item.selectText">{{item.selectText}}</option>
+					</select>
+					<i class="iconfont">&#xe666;</i>
+				</div>
 			</div>
 			<div class="filter-list">
-				<span></span>
+				<!--<em class="clearAll" v-if="checkedCategory.length>0||checkedDurations.length>0||checkedTourtype.length>0">Clear All</em>-->
+				<span v-if="checkedCategory&&checkedCategory.length>0" v-for="(item,index) in checkedCategory" @click="del(1,checkedCategory,index)">{{item}}<i class="iconfont">&#xe629;</i></span>
+				<span v-if="checkedDurations&&checkedDurations.length>0 && item==0" v-for="(item,index) in checkedDurations" @click="del(2,checkedDurations,index)">Half Day<i class="iconfont">&#xe629;</i></span>
+				<span v-if="checkedDurations&&checkedDurations.length>0 && item==1" v-for="(item,index) in checkedDurations" @click="del(2,checkedDurations,index)">1 Day<i class="iconfont">&#xe629;</i></span>
+				<span v-if="checkedDurations&&checkedDurations.length>0 && item>1" v-for="(item,index) in checkedDurations" @click="del(2,checkedDurations,index)">{{item}} Days<i class="iconfont">&#xe629;</i></span>
+				<span v-if="checkedTourtype&&checkedTourtype.length>0" v-for="(item,index) in checkedTourtype" @click="del(3,checkedTourtype,index)">{{item.replace(/And/g,'&')}}<i class="iconfont">&#xe629;</i></span>
+				
 			</div>
 			<div class="pageSizeInfo" v-if="records==1">1 activity in total</div>
 			<div class="pageSizeInfo" v-if="records==0">0 activity in total</div>
@@ -66,7 +78,20 @@
 			</ul>
 		</div>
 		<transition name="slideleft">
-			<Mfilter v-show="isshow" class="view" ></Mfilter>
+			<Mfilter 
+				v-show="isshow" 
+				@callBack="setCallBack" 
+				:sort="sort" 
+				:category="category" 
+				:durations="durations" 
+				:tourtype="tourtype" 
+				:loc="loc"
+				:checkedCategory="checkedCategory"
+				:checkedDurations="checkedDurations"
+				:checkedTourtype="checkedTourtype"
+				
+				class="view" 
+				></Mfilter>
 		</transition>
 	</div>
 </template>
@@ -76,13 +101,52 @@
 	}
 	import { getUrlParams } from '~/assets/js/plugin/utils';
 	import Mfilter from '~/components/pageComponents/activity/list/M-filter'
+	import Vue from 'vue'
 	export default {
 		name: 'M-activityList',
-		data() {
-			return {
-				loc: '',
+		async asyncData({
+			route,
+			store,
+			error,
+			apiBasePath,
+			redirect
+		}) {
+			let loc=route.params.slug;
+			let sort = route.query.sort ? JSON.parse(route.query.sort) :{"type": "DEFAULT"};
+			let opctions = route.query.opctions ? JSON.parse(route.query.opctions) : null
+			let data={
+				options: [
+					{
+						value: 'Shanghai',
+						label: 'Shanghai',
+						url: '/activity/list/mobile/Shanghai'
+					},
+					{
+						value: 'Beijing',
+						label: 'Beijing',
+						url: '/activity/list/mobile/Beijing'
+					},
+					{
+						value: 'Chengdu',
+						label: 'Chengdu',
+						url: '/activity/list/mobile/Chengdu'
+					},
+					{
+						value: "Xi'an",
+						label: "Xi'an",
+						url: '/activity/list/mobile/Xian'
+					},
+					{
+						value: "Guilin",
+						label: "Guilin",
+						url: '/activity/list/mobile/Guilin'
+					}
+				],
+				value: loc == "Xian" ? "Xi\'an" : loc,
+				loc: loc,
 				activityList: '',
 				selected: 'Recommended',
+				apiBasePath: apiBasePath,
 				select: [{
 						selectText: "Recommended",
 						type: "DEFAULT",
@@ -104,45 +168,175 @@
 				records: '',
 				pageNum: 1,
 				pageSize: 10,
-				sort: {
-					"type": "DEFAULT"
+				sort: sort,
+				category:'',
+				durations:'',
+				tourtype:'',
+				checkedCategory: [],
+				checkedDurations: [],
+				checkedTourtype: [],
+				removeFirst:'',
+			};
+			let listdata={}
+			let filters=[]
+			let obj={}
+			if(sort) {
+				if(sort.type == "PRICE" && sort.reverse == true) {
+					data.selected = "Price :High to Low"
+				} 
+				if(sort.type == "PRICE" && sort.reverse == false) {
+					data.selected = "Price :Low to High"
+				}
+			}else{
+				data.selected = "Recommended"
+			}
+			if(opctions) {
+				if(opctions.category&&opctions.category.length > 0) {
+					data.checkedCategory = data.checkedCategory.concat(opctions.category)
+					let jsonCategory = {
+						type: 'CATEGORY',
+						filterValues: data.checkedCategory
+					}
+					filters.push(jsonCategory)
+				}
+				if(opctions.durations&&opctions.durations.length > 0) {
+					data.checkedDurations = data.checkedDurations.concat(opctions.durations)
+					let jsonDurations = {
+						type: 'DURATION',
+						filterValues: data.checkedDurations
+					}
+					filters.push(jsonDurations)
+				}
+				if(opctions.tourtype&&opctions.tourtype.length > 0) {
+					for(let i = 0; i < opctions.tourtype.length; i++) {
+						opctions.tourtype[i] = opctions.tourtype[i].replace(/And/g, '&')
+					}
+					data.checkedTourtype = data.checkedTourtype.concat(opctions.tourtype)
+					let jsonTourtype = {
+						type: 'TOUR_TYPE',
+						filterValues: data.checkedTourtype
+					}
+					filters.push(jsonTourtype)
+
+				}
+				obj = {
+					location: data.loc == "Xian" ? "Xi\'an" : data.loc,
+					pageNum: data.pageNum,
+					pageSize: data.pageSize,
+					filters: filters,
+					sort: sort
+				}
+			} else {
+				obj = {
+					location: data.loc == "Xian" ? "Xi\'an" : data.loc,
+					pageNum: data.pageNum,
+					pageSize: data.pageSize,
+					sort: sort
 				}
 			}
+			
+			
+			
+			try{
+				listdata = await Vue.axios.post(apiBasePath + "search/activity", JSON.stringify(obj), {
+					headers: {
+						'Content-Type': 'application/json; charset=UTF-8'
+					}
+				})
+				data.records = listdata.data.records
+				data.activityList = listdata.data.entities
+				for(let i = 0; i < listdata.data.aggregations.length; i++) {
+					/*if(listdata.data.aggregations[i].type=="CITY"){
+						data.cities=listdata.data.aggregations[i].items
+					}else*/
+					if(listdata.data.aggregations[i].type == "CATEGORY") {
+						data.category = listdata.data.aggregations[i].items
+					} else if(listdata.data.aggregations[i].type == "DURATION") {
+						data.durations = listdata.data.aggregations[i].items
+					} else if(listdata.data.aggregations[i].type == "TOUR_TYPE") {
+						data.tourtype = listdata.data.aggregations[i].items
+					}
+
+				}
+			}catch(err) {
+				//return error(JSON.stringify(err));
+			}
+			return data
 		},
 		components: {
 			Mfilter
 		},
 		methods: {
+			setCallBack(val){
+				this.isshow=val
+			},
 			showFilter(){
 				this.isshow=true
 			},
-			getActivity() {
-				let data = this
-				let obj = {
-					location: data.loc == "Xian" ? "Xi\'an" : data.loc,
-					pageNum: data.pageNum,
-					pageSize: data.pageSize,
-					sort: data.sort
-				}
-				data.axios.post("https://api.localpanda.com/api/search/activity", JSON.stringify(obj), {
-					headers: {
-						'Content-Type': 'application/json; charset=UTF-8'
+			del(id, arr, index) {
+				this.sort=JSON.stringify(this.sort)
+				arr.splice(index, 1)
+				if(id == 1) {
+					
+					var opctions = {
+						//cities:this.removeCity,
+						category: arr,
+						durations: this.checkedDurations,
+						tourtype: this.checkedTourtype,
 					}
-				}).then((e) => {
-					console.log(e.data)
-					data.records = e.data.records
-					data.activityList = e.data.entities
-				}, (e) => {
-
-				})
+					opctions = JSON.stringify(opctions)
+					//localStorage.setItem("opctions",opctions)
+					location.href = "/activity/list/mobile/" + this.loc + "?opctions=" + opctions + "&sort=" + this.sort
+				} else if(id == 2) {
+					
+					var opctions = {
+						//cities:this.removeCity,
+						category: this.checkedCategory,
+						durations: arr,
+						tourtype: this.checkedTourtype,
+					}
+					opctions = JSON.stringify(opctions)
+					//localStorage.setItem("opctions",opctions)
+					location.href = "/activity/list/mobile/" + this.loc + "?opctions=" + opctions + "&sort=" + this.sort
+				} else {
+					
+					var opctions = {
+						//cities:this.removeCity,
+						category: this.checkedCategory,
+						durations: this.checkedDurations,
+						tourtype: arr,
+					}
+					opctions = JSON.stringify(opctions)
+					//localStorage.setItem("opctions",opctions)
+					location.href = "/activity/list/mobile/" + this.loc + "?opctions=" + opctions + "&sort=" + this.sort
+				}
+				//arr.splice(index,1)
 			},
-			city(loc) {
-				if(loc == 'Shanghai') return 'shanghai'
-				if(loc == 'Beijing') return 'beijing'
-				if(loc == 'Chengdu') return 'chengdu'
-				if(loc == 'Xian') return 'xian'
-				if(loc == 'Guilin') return 'guilin'
-			}, 
+			sortFn(val){
+				let opctions=this.getUrlParam("opctions")?this.getUrlParam("opctions"):''
+				console.log(this.getUrlParam("opctions"))
+				if(val == "Recommended") {
+					location.href="/activity/list/mobile/"+this.loc+"?opctions="+opctions
+				} else{
+					if(val == "Price :Low to High") {
+						this.sort = {
+							type: "PRICE",
+							reverse: false
+						}
+					}
+					if(val == "Price :High to Low") {
+						this.sort = {
+							type: "PRICE",
+							reverse: true
+						}
+					}
+					this.sort=JSON.stringify(this.sort)
+					
+					location.href="/activity/list/mobile/"+this.loc+"?sort="+this.sort+"&opctions="+opctions
+				}
+				
+				
+			},
 			returnFloat(value) {
 				var value = Math.round(parseFloat(value) * 100) / 100;
 				var xsd = value.toString().split(".");
@@ -157,6 +351,15 @@
 					return value;
 				}
 			},
+			getUrlParam(k) {
+				var regExp = new RegExp('([?]|&)' + k + '=([^&]*)(&|$)');
+				var result = window.location.href.match(regExp);
+				if(result) {
+					return decodeURIComponent(result[2]);
+				} else {
+					return null;
+				}
+			}
 		},
 		filters: {
 			firstUpperCase(val) {
@@ -164,9 +367,24 @@
 					return val.toLowerCase().replace(/( |^)[a-z]/g, (L) => L.toUpperCase());
 			}
 		},
+		watch: {
+			pageNum: function(val, oldVal) {
+			},
+			checkedDurations(val, oldVal) {
+			},
+			checkedTourtype(val, oldVal) {
+				if(val.length > 0) {
+					for(let i = 0; i < val.length; i++) {
+						val[i] = val[i].replace(/And/g, "&")
+					}
+				}
+			}
+		},
 		mounted: function() {
-			this.loc = getUrlParams()
-			this.getActivity()
+			let opctions=JSON.parse(this.getUrlParam("opctions"))
+			window.addEventListener("scroll", (e)=>{
+				console.log(e)
+			});
 		}
 	}
 </script>
@@ -176,64 +394,75 @@
 	html,body{
 		background:  #faf9f8;
 	}
+	.el-input__inner {
+		width: 2.8rem;
+		height: 40px;
+		font-size: 0.453333rem;
+		color: #fff;
+		background: transparent;
+		border: none;
+		padding-left: 0;
+		font-weight: bold;
+	}
+	.el-select .el-input .el-select__caret {
+		color: #fff;
+		font-weight: bold;
+		font-size: 0.32rem;
+	}
+	.el-popper .popper__arrow,
+	.el-popper .popper__arrow::after {
+		border-style: none!important;
+	}
+	.el-popper[x-placement^="bottom"]{
+		margin-top: 0!important;
+	}
 </style>
 <style lang="scss" scoped>
 	@import "~assets/scss/base/_setting.scss";
 	.M-activityList{
 		
 		.headpic{
-			
-			&.beijing {
-				background: url("https://d2q486kjf9cwwu.cloudfront.net/static/headerPhotos/Beijing.jpg") no-repeat;
-				background-size: cover;
-				background-position:center;
-			}
-			&.shanghai {
-				background: url("https://d2q486kjf9cwwu.cloudfront.net/static/headerPhotos/Shanghai.jpg") no-repeat;
-				background-size: cover;
-				background-position:center;
-			}
-			&.chengdu {
-				background: url("https://d2q486kjf9cwwu.cloudfront.net/static/headerPhotos/Chengdu.jpg") no-repeat;
-				background-size: cover;
-				background-position:center;
-			}
-			&.xian {
-				background: url("https://d2q486kjf9cwwu.cloudfront.net/static/headerPhotos/Xian.jpg") no-repeat;
-				background-size: cover;
-				background-position:center;
-			}
-			&.guilin {
-				background: url("https://d2q486kjf9cwwu.cloudfront.net/static/headerPhotos/Guilin.jpg") no-repeat;
-				background-size: cover;
-				background-position:center;
+			position: relative;
+			background:url("https://d2q486kjf9cwwu.cloudfront.net/static/headerPhotos/BackGround.jpg") no-repeat;
+			background-size: cover;
+			background-position:center;
+			.linerBackground{
+				position: absolute;
+				bottom: 0;
+				background: linear-gradient(rgba(255,249,248,0),rgba(255,249,248,1));
+				height:2.4rem;
+				width: 100%;
 			}
 			height: 4.666666rem;
 			position:relative;
 			.position{
-				position: absolute;
-				top: 50%;
-				left: 50%;
-				transform: translate(-50%,-50%);
-				span{
+				padding: 0.533333rem 0.573333rem 0;
+				h3{
+					font-size: 0.266666rem;
 					color: #fff;
-					font-size:0.853333rem;
-					font-weight: bold;
-					text-shadow:2.5px 2.5px 10px rgba(0, 0, 0, .3);
+					margin-bottom: 0.186666rem;
 				}
 			}
 		}
 		.filter{
+			box-shadow: 0px 0px 0.4rem 0px rgba(0, 0, 0, 0.08);
+			border-radius: 0.04rem;
 			background: #fff;
-			padding: 0.546666rem 0.586666rem 0.48rem;
+			margin:0 0.586666rem;
+			padding: 0.546666rem 0.533333rem 0.48rem;
+			margin-top: -1.733333rem;
+			position: relative;
+			z-index: 10;
 			h3{
 				font-size: 0.346666rem;
 				color: #878e95;
+				margin-bottom: 0.133333rem;
 			}
 			.filter-table{
-				margin-top: 0.266666rem;
+				padding-bottom: 0.533333rem;
+				border-bottom: 1px solid #ebebeb;;
 				.recommended{
-					float:left;
+					float:right;
 					.selectSort{
 						font-size: 0.4rem;
 						-webkit-appearance:none;
@@ -246,7 +475,7 @@
 				}
 				.filter-cont{
 					float:left;
-					margin-left: 1.333333rem;
+					margin-top: 0.533333rem;
 					font-size: 0.4rem;
 					font-weight: bold;
 					i{
@@ -254,6 +483,27 @@
 					}
 				}
 				
+			}
+			.filter-list{
+				white-space:nowrap;
+				padding-bottom: 0.266666rem;
+				overflow-y: scroll;
+				-webkit-overflow-scrolling: touch;
+				span{
+					display: inline-block;
+					margin-top: 0.533333rem;
+					padding: 0.133333rem 0.333333rem;
+					border-radius: 0.533333rem;
+					border: solid 0.026666rem #878e95;
+					font-size: 0.4rem;
+					margin-right: 0.24rem;
+					i{
+						font-size: 0.186666rem;
+						color: #1bbc9d;
+						font-weight: bold;
+						margin-left: 0.133333rem;
+					}
+				}
 			}
 			.pageSizeInfo{
 				margin-top: 0.453333rem;
@@ -329,6 +579,10 @@
 					}
 				}
 			}
+		}
+		.scroll{
+			position: fixed;
+			top: 0;
 		}
 		.view {
 			width: 100%;

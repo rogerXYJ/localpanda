@@ -402,6 +402,8 @@
 													phoneNumber: that.Travellerphone,
 													emailAddress: that.TravelleremailAddress
 												},
+												"utcOffset": new Date().getTimezoneOffset() / 60 * -1,
+												"deviceType":"PC"
 											}
 
 											Vue.axios.put(this.apiBasePath + "order/create", JSON.stringify(obj), {
@@ -440,7 +442,9 @@
 												firstName: that.oderFirstName,
 												phoneNumber: that.phone,
 												emailAddress: that.emailAddress,
-											}
+											},
+											"utcOffset": new Date().getTimezoneOffset() / 60 * -1,
+											"deviceType":"PC"
 										}
 										if(that.addOder==false){
 											that.addOder=true
@@ -508,6 +512,8 @@
 													phoneNumber: that.Travellerphone,
 													emailAddress: that.TravelleremailAddress
 												},
+												"utcOffset": new Date().getTimezoneOffset() / 60 * -1,
+												"deviceType":"PC"
 
 											}
 
@@ -550,6 +556,8 @@
 													phoneNumber: that.phone,
 													emailAddress: that.emailAddress,
 												},
+												"utcOffset": new Date().getTimezoneOffset() / 60 * -1,
+												"deviceType":"PC"
 											}
 
 											Vue.axios.put(this.apiBasePath + "order/create", JSON.stringify(obj), {

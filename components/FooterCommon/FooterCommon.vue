@@ -139,14 +139,18 @@
 							objectType:"GENERAL",
 							userName: that.name,
 							emailAddress: that.email,
-							message: that.textarea
+							message: that.textarea,
+							"utcOffset": new Date().getTimezoneOffset() / 60 * -1
+							
 						}
 					}else{
 						var obj = {
 							objectType:"GENERAL",
 							userName: that.name,
 							emailAddress: that.email,
-							message: that.textarea
+							message: that.textarea,
+							"utcOffset": new Date().getTimezoneOffset() / 60 * -1
+							
 						}
 					}
 					if(that.isclick==false){

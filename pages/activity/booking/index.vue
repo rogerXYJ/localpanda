@@ -389,7 +389,8 @@
 									"phoneNumber": that.Travellerphone,
 									"emailAddress": that.TravelleremailAddress
 								},
-								"utcOffset": new Date().getTimezoneOffset() / 60 * -1
+								"utcOffset": new Date().getTimezoneOffset() / 60 * -1,
+								"deviceType":"PC"
 							}
 							if(that.addOder == false) {
 								that.addOder = true
@@ -423,7 +424,8 @@
 								"phoneNumber": that.phone ? that.phone : null,
 								"emailAddress": that.emailAddress
 							},
-							"utcOffset": new Date().getTimezoneOffset() / 60 * -1
+							"utcOffset": new Date().getTimezoneOffset() / 60 * -1,
+							"deviceType":"PC"
 						}
 						if(that.addOder == false) {
 							that.addOder = true

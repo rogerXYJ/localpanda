@@ -113,7 +113,8 @@
 							travelDate: that.dateTime ? that.dateTime : null,
 							participants: that.peopleNub,
 							objectId: that.objectId ? that.objectId : null,
-							destinations: that.destination ? that.destination : null
+							destinations: that.destination ? that.destination : null,
+							"utcOffset": new Date().getTimezoneOffset() / 60 * -1,
 						}
 					} else {
 						var obj = {
@@ -125,7 +126,9 @@
 							travelDate: that.dateTime ? that.dateTime : null,
 							participants: that.peopleNub,
 							objectId: that.objectId ? that.objectId : null,
-							destinations: that.destination ? that.destination : null
+							destinations: that.destination ? that.destination : null,
+							"utcOffset": new Date().getTimezoneOffset() / 60 * -1,
+							
 
 						}
 					}

@@ -149,6 +149,7 @@ export default {
 .done-tips{
     background: #faf9f8;
     padding: 0 40px 40px;
+    margin-bottom: 80px;
     font-size: 18px;
     h3{
         font-weight: bold;

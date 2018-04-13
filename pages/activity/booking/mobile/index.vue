@@ -274,7 +274,8 @@
 									"phoneNumber": that.Travellerphone,
 									"emailAddress": that.TravelleremailAddress
 								},
-								"utcOffset": new Date().getTimezoneOffset() / 60 * -1
+								"utcOffset": new Date().getTimezoneOffset() / 60 * -1,
+								"deviceType":"MOBILE"
 							}
 							if(that.addOder == false) {
 								Vue.axios.put(this.apiBasePath+"activity/order/create", JSON.stringify(obj), {
@@ -308,7 +309,8 @@
 								"phoneNumber": that.phone ? that.phone : null,
 								"emailAddress": that.emailAddress
 							},
-							"utcOffset": new Date().getTimezoneOffset() / 60 * -1
+							"utcOffset": new Date().getTimezoneOffset() / 60 * -1,
+							"deviceType":"MOBILE"
 						}
 						if(that.addOder == false) {
 							that.addOder = true

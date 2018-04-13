@@ -283,7 +283,11 @@
 	@import "~/assets/scss/G-ui/flatpickr.min.css";
 	@import "~assets/scss/_main.scss";
 	@import "~/assets/font/iconfont.css";
-	
+	.flatpickr-months .flatpickr-prev-month svg,
+	.flatpickr-months .flatpickr-next-month svg {
+		width: 20px!important;
+		height: 20px!important;
+	}
 	#launcher {
 		bottom: 0.266666rem!important;
 	}

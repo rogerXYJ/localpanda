@@ -2,56 +2,165 @@
 	<div class="M-filter">
 		<div class="cont">
 			<div class="head">
-				<i class="iconfont">&#xe629;</i>
+				<i class="iconfont" @click.stop="close">&#xe629;</i>
 				<div class="title">Filter</div>
-				<div class="clear">Clear</div>
+				<div class="clear" @click.stop="clear" v-if="checkedCategory.length>0||checkedDurations.length>0||checkedTourtype.length>0">Clear</div>
 			</div>
-		
+
 			<div class="filter-detail">
 				<ul>
 					<li>
-						<div class="filter-item">
+						<div class="filter-item" @click.stop="showSelect(1)">
 							Categories
-							<i class="iconfont">&#xe666;</i>
+							<i class="iconfont" v-if="!isshowcategory">&#xe666;</i>
+							<i class="iconfont" v-else>&#xe667;</i>
 						</div>
-						
+						<div class="fliterList" v-if="isshowcategory">
+							<el-checkbox-group v-model="checkedCategory">
+								<div class="checkboxlist" v-for="(item,key,index) in category">
+									<el-checkbox :label="key" :key="key">{{key}} ({{item}})</el-checkbox>
+								</div>
+							</el-checkbox-group>
+						</div>
+
 					</li>
 					<li>
-						<div class="filter-item">
+						<div class="filter-item" @click.stop="showSelect(2)">
 							Themes
-							<i class="iconfont">&#xe666;</i>
+							<i class="iconfont" v-if="!isshowtourtype">&#xe666;</i>
+							<i class="iconfont" v-else>&#xe667;</i>
+						</div>
+						<div class="fliterList" v-if="isshowtourtype">
+							<el-checkbox-group v-model="checkedTourtype">
+								<div class="checkboxlist" v-for="(i,key,index) in tourtype">
+									<el-checkbox :label="key" :key="key">{{key}} ({{i}})</el-checkbox>
+								</div>
+							</el-checkbox-group>
 						</div>
 					</li>
 					<li>
-						<div class="filter-item">
+						<div class="filter-item" @click.stop="showSelect(3)">
 							Duration
-							<i class="iconfont">&#xe666;</i>
+							<i class="iconfont" v-if="!isshowdurations">&#xe666;</i>
+							<i class="iconfont" v-else>&#xe667;</i>
+						</div>
+						<div class="fliterList" v-if="isshowdurations">
+							<el-checkbox-group v-model="checkedDurations">
+								<div class="checkboxlist" v-for="(i,key,index) in durations">
+									<el-checkbox v-if="key==0" :label="key" :key="key">Half Day ({{i}})</el-checkbox>
+									<el-checkbox v-if="key==1" :label="key" :key="key">{{key}} Day ({{i}})</el-checkbox>
+									<el-checkbox v-if="key>1" :label="key" :key="key">{{key}} Days ({{i}})</el-checkbox>
+								</div>
+							</el-checkbox-group>
 						</div>
 					</li>
 				</ul>
 			</div>
 		</div>
 		<div class="subimtBtn">
-			<button>See experiences</button>
+			<button @click.stop="submitFilter">See experiences</button>
 		</div>
 	</div>
 </template>
 
 <script>
-</script>
+	export default {
+		props: [
+		"category", 
+		"durations",
+		"tourtype",
+		"sort",
+		"loc",
+		"checkedCategory",
+		"checkedDurations",
+		"checkedTourtype"
+		],
+		name: "M-filter",
+		data() {
+			return {
+				isshowcategory: false,
+				//category: ["zhangsna", "lisi"],
+				
+				isshowdurations: false,
+				//durations: ['1', '0'],
+				
 
+				isshowtourtype: false,
+				//tourtype: ['end', 'ending', 'ending', 'ending', 'ending', 'ending', 'ending'],
+				
+				records: '',
+			}
+		},
+		methods: {
+			showSelect(id) {
+				if(id == 1) {
+					this.isshowcategory = !this.isshowcategory
+				} else if(id == 2) {
+					this.isshowtourtype = !this.isshowtourtype
+				} else {
+					this.isshowdurations = !this.isshowdurations
+				}
+			},
+			clear() {
+				location.href="/activity/list/mobile/"+this.loc
+			},
+			close() {
+				this.$emit("callBack", false)
+			},
+			submitFilter() {
+				for(let i = 0; i < this.checkedTourtype.length; i++) {
+					this.checkedTourtype[i] = this.checkedTourtype[i].replace(/&/g, "And")
+				}
+				let opctions = {
+					category: this.checkedCategory,
+					durations: this.checkedDurations,
+					tourtype: this.checkedTourtype,
+				}
+				opctions=JSON.stringify(opctions)
+				this.sort=JSON.stringify(this.sort)
+				location.href="/activity/list/mobile/"+this.loc+"?opctions="+opctions+"&sort="+this.sort
+
+			}
+		}
+
+	
+
+	}
+</script>
 <style lang="scss">
-	.M-filter{
+	.el-checkbox__inner {
+		width: 0.426666rem;
+		height: 0.426666rem;
+		border-radius: 0.04rem;
+		&:after {
+			left: 0.133333rem;
+			top: 0.066666rem;
+		}
+	}
+	
+	.el-checkbox__label {
+		font-size: 0.426666rem;
+		color: #353a3f;
+	}
+</style>
+<style lang="scss" scoped>
+	.M-filter {
 		position: fixed;
 		top: 0;
 		left: 0;
 		z-index: 9999;
 		background: #fff;
-		height:100%;
-		max-height: 100%;
-		.cont{
+		height: 100%;
+		.cont {
+			position: absolute;
+			background: #fff;
+			width: 100%;
+			height: calc(100% - 3.333333rem);
+			overflow-y: auto;
 			padding-bottom: 1.946666rem;
-			.head{
+			-webkit-overflow-scrolling: touch;
+			max-height: 100%;
+			.head {
 				border-bottom: 1px solid #dde0e0;
 				height: 1.386666rem;
 				line-height: 1.386666rem;
@@ -59,48 +168,62 @@
 				position: relative;
 				font-size: 0.373333rem;
 				font-weight: bold;
-				i{
+				position: fixed;
+				width: 100%;
+				z-index: 888;
+				background: #fff;
+				i {
 					position: absolute;
 					left: 0.586666rem;
 					font-size: 0.4rem;
-					
 				}
-				.clear{
+				.clear {
 					position: absolute;
 					right: 0.586666rem;
 					top: 0;
-					color:#1bbc9d;
+					color: #1bbc9d;
 				}
 			}
-			.filter-detail{
-				padding: 0 0.586666rem;
-				ul{
-					li{
+			.filter-detail {
+				padding: 1.386666rem 0.586666rem 0;
+				ul {
+					li {
 						border-bottom: 1px solid #dde0e0;
 						padding: 1.026666rem 0;
-						.filter-item{
-							font-size:0.48rem;
+						.filter-item {
+							font-size: 0.48rem;
 							font-weight: bold;
-							i{
-								font-size:0.48rem; 
+							i {
+								font-size: 0.48rem;
 								float: right;
+							}
+						}
+						.fliterList {
+							margin-top: 0.853333rem;
+							.checkboxlist {
+								margin-top: 0.213333rem;
+								&:first-child {
+									margin-top: 0;
+								}
 							}
 						}
 					}
 				}
 			}
 		}
-		.subimtBtn{
+		.subimtBtn {
 			position: fixed;
 			bottom: 0;
 			left: 0;
 			width: 100%;
 			padding: 0.373333rem 0.586666rem;
-			button{
+			z-index: 8999;
+			background: #fff;
+			button {
 				width: calc(100% - 1.173333rem);
-				height:1.2rem;
-				line-height:1.2rem;
-				background-image: linear-gradient(270deg,#009efd 0%,#1bbc9d 100%);
+				height: 1.2rem;
+				line-height: 1.2rem;
+				background-image: linear-gradient(270deg, #009efd 0%, #1bbc9d 100%);
 				text-align: center;
 				color: #fff;
 				border-radius: 0.6rem;
@@ -108,6 +231,5 @@
 				font-weight: bold;
 			}
 		}
-		
 	}
 </style>

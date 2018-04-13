@@ -223,7 +223,6 @@
 				alertMessage: "",
 				istrue: false,
 				objectType: 'CONSULTING',
-
 				//下拉选项
 				selected: 'Recommended',
 				select: [{
@@ -241,32 +240,25 @@
 						type: "PRICE",
 						isSelect: false
 					}
-
 				],
-
 				//checkbox 选中的项
 				/*isshowcity:false,
 				cities:["shanghai","beijing"],
 				checkedCities:[],*/
-
 				isshowcategory: false,
 				category: ["zhangsna", "lisi"],
 				checkedCategory: [],
-
 				isshowdurations: false,
 				durations: ['1', '0'],
 				checkedDurations: [],
-
 				isshowtourtype: false,
 				tourtype: ['end', 'ending'],
 				checkedTourtype: [],
 				records: '',
-
 				removeCity: [],
 				removeCategory: [],
 				removeDurations: [],
 				removeTourtype: [],
-
 			}
 			let listdata = {}
 			let filters = []
@@ -284,7 +276,6 @@
 				}
 			}
 			if(opctions) {
-
 				/*if(opctions.cities.length>0){
 					data.checkedCities=data.checkedCities.concat(opctions.cities)
 					let jsonCity={type:'CITY',filterValues:opctions.cities}
@@ -316,7 +307,6 @@
 						filterValues: data.checkedTourtype
 					}
 					filters.push(jsonTourtype)
-
 				}
 				obj = {
 					location: data.loc == "Xian" ? "Xi\'an" : data.loc,
@@ -333,7 +323,6 @@
 					sort: sort
 				}
 			}
-
 			try {
 				listdata = await Vue.axios.post(apiBasePath + "search/activity", JSON.stringify(obj), {
 					headers: {
@@ -343,7 +332,6 @@
 				data.records = listdata.data.records
 				data.activityList = listdata.data.entities
 				//console.log(data.activityList)
-
 				if(listdata.data.records > data.pageSize) {
 					data.isdisabled = true
 				}
@@ -359,21 +347,17 @@
 					} else if(listdata.data.aggregations[i].type == "TOUR_TYPE") {
 						data.tourtype = listdata.data.aggregations[i].items
 					}
-
 				}
 				console.log(obj)
-
 			} catch(err) {
 				//return error(JSON.stringify(err));
 			}
 			return data
-
 		},
 		head() {
 			let location = this.value;
 			let title = "The Top " + location + " Tours | " + location + " Local Activities and Experiences";
 			let keywords = "Best Things to do in " + location + ", " + location + " tours, " + location + " trip, " + location + " travel, " + location + " tour packages, " + location + " guide, china tours"
-
 			if(location == "Beijing") {
 				var description = "See top things to do in Beijing, including Beijing city tours, Beijing walking tours, Beijing history & culture tours, and Beijing food tours. Visit the Forbidden City, Temple of Heaven, Great Wall, Tiananmen Square, and Beijing Summer Palace with our local China tour guides."
 			} else if(location == "Shanghai") {
@@ -427,13 +411,11 @@
 				this.isShowAlert = val
 			},
 			showContact() {
-
 				this.ContactStatus = true
 			},
 			contactCallBack(val) {
 				this.ContactStatus = false
 			},
-
 			returnFloat(value) {
 				var value = Math.round(parseFloat(value) * 100) / 100;
 				var xsd = value.toString().split(".");
@@ -448,7 +430,6 @@
 					return value;
 				}
 			},
-
 			showSelect(id) {
 				let opctions = JSON.parse(this.getUrlParam("opctions"))
 				/*if(id==0){
@@ -474,22 +455,18 @@
 					this.isshowtourtype = false
 					if(opctions && opctions.category.length > 0) {
 						this.checkedCategory = opctions.category
-
 					} else {
 						//this.checkedCities=opctions&&opctions.cities.length>0?opctions.cities:[]
 						this.checkedCategory = []
 						this.checkedDurations = opctions && opctions.durations.length > 0 ? opctions.durations : []
 						this.checkedTourtype = opctions && opctions.tourtype.length > 0 ? opctions.tourtype : []
 					}
-
 				} else if(id == 2) {
 					this.isshowdurations = !this.isshowdurations
 					this.isshowcategory = false
 					this.isshowcity = false
 					this.isshowtourtype = false
-
 					if(opctions && opctions.durations.length > 0) {
-
 						this.checkedDurations = opctions.durations
 					} else {
 						//this.checkedCities=opctions&&opctions.cities.length>0?opctions.cities:[]
@@ -497,18 +474,14 @@
 						this.checkedDurations = []
 						this.checkedTourtype = opctions && opctions.tourtype.length > 0 ? opctions.tourtype : []
 					}
-
 				} else {
 					this.isshowtourtype = !this.isshowtourtype
 					this.isshowdurations = false
 					this.isshowcategory = false
 					this.isshowcity = false
-
 					if(opctions && opctions.tourtype.length > 0) {
-
 						for(let i = 0; i < opctions.tourtype.length; i++) {
 							opctions.tourtype[i] = opctions.tourtype[i].replace(/And/g, "&")
-
 						}
 						this.checkedTourtype = opctions.tourtype
 					} else {
@@ -517,7 +490,6 @@
 						this.checkedDurations = opctions && opctions.durations.length > 0 ? opctions.durations : []
 						this.checkedTourtype = []
 					}
-
 				}
 			},
 			clearAll() {
@@ -548,16 +520,13 @@
 					category: this.checkedCategory,
 					durations: this.checkedDurations,
 					tourtype: this.checkedTourtype,
-
 				}
 				sort = JSON.stringify(sort)
 				opctions = JSON.stringify(opctions)
 				//console.log(opctions)
 				//localStorage.setItem("sort",sort)
 				location.href = "/activity/list/" + this.loc + "?opctions=" + opctions + "&sort=" + sort
-
 			},
-
 			//选项内容点击不收起
 			selectShow(id) {
 				/*if(id==0){
@@ -567,13 +536,10 @@
 				}else*/
 				if(id == 1) {
 					this.isshowcategory = true
-
 				} else if(id == 2) {
 					this.isshowdurations = true
-
 				} else {
 					this.isshowtourtype = true
-
 				}
 			},
 			cancel(id) {
@@ -594,41 +560,31 @@
 						this.checkedCategory = []
 					} else if(JSON.parse(that.getUrlParam("opctions")).category.length > 0) {
 						this.checkedCategory = JSON.parse(that.getUrlParam("opctions")).category
-
 					}
-
 				} else if(id == 2) {
 					this.isshowdurations = false
 					if(!JSON.parse(that.getUrlParam("opctions"))) {
 						this.checkedDurations = []
 					} else if(JSON.parse(that.getUrlParam("opctions")).durations.length > 0) {
 						this.checkedDurations = JSON.parse(that.getUrlParam("opctions")).durations
-
 					}
-
 				} else {
 					this.isshowtourtype = false
 					if(!JSON.parse(that.getUrlParam("opctions"))) {
 						this.checkedTourtype = []
 					} else if(JSON.parse(that.getUrlParam("opctions")).tourtype.length > 0) {
-
 						for(let i = 0; i < JSON.parse(that.getUrlParam("opctions")).tourtype.length; i++) {
 							JSON.parse(that.getUrlParam("opctions")).tourtype[i] = JSON.parse(that.getUrlParam("opctions")).tourtype[i].replace(/And/g, "&")
-
 						}
 						JSON.parse(that.getUrlParam("opctions")).tourtype = this.checkedTourtype
 					}
-
 				}
 			},
 			del(id, arr, index) {
 				let sort = {}
-
 				for(let i = 0; i < this.checkedTourtype.length; i++) {
 					this.checkedTourtype[i] = this.checkedTourtype[i].replace(/&/g, "And")
-
 				}
-
 				if(this.selected == "Recommended") {
 					sort = {
 						type: "DEFAULT"
@@ -645,7 +601,6 @@
 					}
 				}
 				sort = JSON.stringify(sort)
-
 				/*if(id==0){
 					arr.splice(index,1)
 					var opctions={
@@ -692,11 +647,9 @@
 					//localStorage.setItem("opctions",opctions)
 					location.href = "/activity/list/" + this.loc + "?opctions=" + opctions + "&sort=" + sort
 				}
-
 				//arr.splice(index,1)
 			},
 			handleCurrentChange(val) {
-
 				let that = this
 				let obj = {}
 				let filters = []
@@ -721,7 +674,6 @@
 					filters.push(jsonDurations)
 				}
 				if(that.checkedTourtype.length > 0) {
-
 					let jsonTourtype = {
 						type: 'TOUR_TYPE',
 						filterValues: that.checkedTourtype
@@ -750,7 +702,6 @@
 						pageSize: that.pageSize,
 						filters: filters,
 						sort: sort
-
 					}
 				} else {
 					obj = {
@@ -758,10 +709,8 @@
 						pageNum: val,
 						pageSize: that.pageSize,
 						sort: sort
-
 					}
 				}
-
 				that.loadingStatus = true
 				Vue.axios.post(that.apiBasePath + "search/activity", JSON.stringify(obj), {
 					headers: {
@@ -777,10 +726,8 @@
 			},
 			apply() {
 				let sort = {}
-
 				for(let i = 0; i < this.checkedTourtype.length; i++) {
 					this.checkedTourtype[i] = this.checkedTourtype[i].replace(/&/g, "And")
-
 				}
 				if(this.selected == "Recommended") {
 					sort = {
@@ -802,12 +749,10 @@
 					category: this.checkedCategory,
 					durations: this.checkedDurations,
 					tourtype: this.checkedTourtype,
-
 				}
 				opctions = JSON.stringify(opctions)
 				//localStorage.setItem("opctions",opctions)
 				sort = JSON.stringify(sort)
-
 				location.href = "/activity/list/" + this.loc + "?opctions=" + opctions + "&sort=" + sort
 			},
 			getUrlParam(k) {
@@ -819,15 +764,11 @@
 					return null;
 				}
 			}
-
 		},
 		watch: {
-
 			pageNum: function(val, oldVal) {
-
 			},
 			checkedDurations(val, oldVal) {
-
 			},
 			checkedTourtype(val, oldVal) {
 				if(val.length > 0) {
@@ -835,7 +776,6 @@
 						val[i] = val[i].replace(/And/g, "&")
 					}
 				}
-
 			}
 		},
 		filters: {
@@ -849,6 +789,14 @@
 			that.value = that.loc == "Xian" ? "Xi'an" : that.loc
 		},
 		mounted: function() {
+			var ua = navigator.userAgent;
+			var ipad = ua.match(/(iPad).*OS\s([\d_]+)/),
+				isIphone = !ipad && ua.match(/(iPhone\sOS)\s([\d_]+)/),
+				isAndroid = ua.match(/(Android)\s+([\d.]+)/),
+				isMobile = isIphone || isAndroid;
+			if(isMobile) {
+				location.href = "/activity/list/mobile/"+this.loc
+			} 
 			const that = this
 			let opctions = JSON.parse(that.getUrlParam("opctions"))
 			//that.removeCity=opctions&&opctions.cities.length>0?opctions.cities:[]
@@ -862,7 +810,7 @@
 				that.isshowtourtype = false
 			})
 			that.logIn = localStorage.getItem("logstate") ? localStorage.getItem("logstate") : null
-
+			
 		},
 	}
 </script>

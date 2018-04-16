@@ -1,23 +1,28 @@
 <template>
 	<div class="payNow">
 		<div class="oderdetial">
+			<div class="back"><i class="iconfont" @click="back">&#xe615;</i></div>
+			<div class="head">payNow</div>
 			<div class="payfordetail">
-				<div class="head clearfix">
+				<div class="headcommon">
 					<div class="serviceform">
-					<h3>{{opctions.activityInfo?opctions.activityInfo.title:''}}</h3>
-						<p v-if="opctions.adultNum==1&&opctions.childrenNum==0">1 Person</p>
-						<p v-else>{{opctions.adultNum+opctions.childrenNum}} People</p>
+						<h3>{{opctions.activityInfo?opctions.activityInfo.title:''}}</h3>
+						<div class="service clearfix">
+							<div class="serviceTime">
+								<p>{{opctions.startDate}}<span v-if="opctions.startTime">opctions.startTime</span></p>
+							</div>
+							<div class="servicePepole">
+								<p v-if="opctions.adultNum==1&&opctions.childrenNum==0">1 Person</p>
+								<p v-else>{{opctions.adultNum+opctions.childrenNum}} People</p>
+							</div>
+						</div>
 					</div>
-				</div>
-				<div class="date">
-					<p>{{opctions.startDate}}</p>
-					<p v-if="opctions.startTime">{{opctions.startTime}}</p>
 				</div>
 				<div class="pic">
 					<div class="adult clearfix">
 						<div class="formula" v-if="opctions.childrenNum==0&&opctions.adultNum==1">${{returnFloat(opctions.averagePrice)}} x 1 Person</div>
 						<div class="formula" v-else>$ {{returnFloat(opctions.averagePrice)}} x {{opctions.adultNum+opctions.childrenNum}} People </div>
-						<div class="adultPic" >$ {{returnFloat(cutXiaoNum(opctions.averagePrice*(opctions.adultNum+opctions.childrenNum),1))}}</div>
+						<div class="adultPic">$ {{returnFloat(cutXiaoNum(opctions.averagePrice*(opctions.adultNum+opctions.childrenNum),1))}}</div>
 					</div>
 					<div class="child" v-if="opctions.childDiscount">
 						<b>- ${{returnFloat(opctions.childDiscount)}}</b> for child(ren)
@@ -25,82 +30,81 @@
 					<div class="child" v-if="opctions.couponDiscount">
 						<b>- ${{returnFloat(opctions.couponDiscount)}}</b> for discount
 					</div>
-					
+
 				</div>
 				<div class="total clearfix">
 					<div class="totle-title">Total (USD)</div>
 					<div class="totalPic">${{returnFloat(opctions.amount)}}</div>
 				</div>
+				<div class="hint">
+					<p>You ordered as a guest. To view your order details, you can click "MyBookings" on the top bar then type in the reservee's email address and name you entered before to access that information.</p>
+					<p>You can get a 100% refund up to xx hours before your trip.Please be assured to book your trip.</p>
+				</div>
 			</div>
-			<p class="refundPolicy" style="margin-top: 30px; color: red;">You can get a 100% refund up to {{opctions.refundTimeLimit}} hours before your trip.Please be assured to book your trip.</p>
-			<p style="width: 600px;margin-top: 20px;">You ordered as a guest. To view your order details, you can click "My Bookings" on the top bar then type in the reservee's email address and name you entered before to access that information.</p>
-			<button class="btnlinner paybtn" @click="pay">Pay Now</button>
+			<div class="btn">
+				<button @click="pay">Next</button>
+			</div>
 		</div>
-		<Loading :loadingStatus="loadingStatus"></Loading>
 	</div>
 
 </template>
 
 <script>
-	if (process.browser) {
-	  require('~/assets/js/pages/ga.js')
+	if(process.browser) {
+		require('~/assets/js/plugin/flexible.js')
+		require('~/assets/js/pages/ga.js')
 	}
 	import { GetQueryString } from '~/assets/js/plugin/utils.js'
-	import Loading from '~/components/Loading/Loading'
 	import api from '~/assets/js/plugin/api.js'
 	import Vue from 'vue'
-	
+
 	export default {
-	name: 'payNow',
-	head(){
-	    return {
-	      script: [
-	        { 
-	          src: 'https://checkout.stripe.com/checkout.js', 
-	          type: 'text/javascript'
-	        },
-	        /*{
-	        	src:'https://google-analytics.com/ga.js?id=UA-107010673-1',
-	        	type: 'text/javascript'
-	        }*/
-	      ]
-	    }
-	  },
-	  async asyncData({ apiBasePath }) {
-		  	return {
-	      apiBasePath: apiBasePath
-	    }	
-	  },
-		
+		name: 'payNow',
+		head() {
+			return {
+				script: [{
+						src: 'https://checkout.stripe.com/checkout.js',
+						type: 'text/javascript'
+					},
+					/*{
+						src:'https://google-analytics.com/ga.js?id=UA-107010673-1',
+						type: 'text/javascript'
+					}*/
+				]
+			}
+		},
+		async asyncData({
+			apiBasePath
+		}) {
+			return {
+				apiBasePath: apiBasePath
+			}
+		},
+
 		data() {
 			return {
-				opctions:{
-					averagePrice:0,
-					childrenNum:0,
-					adultNum:0,
-					amount:0,
-					couponDiscount:0	
+				opctions: {
+					averagePrice: 0,
+					childrenNum: 0,
+					adultNum: 0,
+					amount: 0,
+					couponDiscount: 0
 				},
-				stripeHandler: "",	
-				halfDates: '',
-				enName: '',
-				headPortraitUrl: '',
+				stripeHandler: "",
 				orderId: '',
 				logIn: '',
 				email: '',
 				token: '',
 				tokenType: '',
-				loadingStatus: false,
-				isPay: false
 
 			}
 		},
 		components: {
-			HeaderCommon,
-			FooterCommon,
-			Loading
 		},
 		methods: {
+			back(){
+				history.back()
+			},
 			cutXiaoNum(num, len) {
 				var numStr = num.toString();
 				if(len == null || len == undefined) {
@@ -120,7 +124,7 @@
 				if(typeof val === 'number' && val % 1 === 0) {
 					return val
 				} else {
-					return (parseFloat(this.cutXiaoNum(val, 1))+0.1).toFixed(1)
+					return(parseFloat(this.cutXiaoNum(val, 1)) + 0.1).toFixed(1)
 
 				}
 
@@ -147,7 +151,7 @@
 					alipay: true, // 启用支付宝支付
 					token: function(token) { // 用户填写完资料并且 Stripe 校验成功后的回调函数
 						// 此时应该提交 token.id 到后台，比如 http://example.com/orders/1?stripeToken={token.id}
-						that.loadingStatus = true
+
 						let obj = {
 							amount: that.opctions.amount * 100,
 							currency: "USD",
@@ -156,20 +160,20 @@
 							email: token.email,
 							tokenType: token.type,
 							objectType: "ACTIVITY"
-							
+
 						}
-						console.log(obj)
-						Vue.axios.post(that.apiBasePath+"payment/pay/stripe", JSON.stringify(obj), {
+
+						Vue.axios.post(that.apiBasePath + "payment/pay/stripe", JSON.stringify(obj), {
 							headers: {
 								'Content-Type': 'application/json; charset=UTF-8'
 							}
 						}).then(function(response) {
-							console.log(response.data)
+
 							if(response.data.succeed) {
-								that.loadingStatus = true
-								var pageTracker =_gat._getTracker("UA-107010673-1");
-								pageTracker._addTrans(that.orderId,"",that.opctions.amount,"", "", "", "", "");
-								pageTracker._addItem(that.orderId, that.opctions.activityId,"","", that.opctions.amount,"1" );
+
+								var pageTracker = _gat._getTracker("UA-107010673-1");
+								pageTracker._addTrans(that.orderId, "", that.opctions.amount, "", "", "", "", "");
+								pageTracker._addItem(that.orderId, that.opctions.activityId, "", "", that.opctions.amount, "1");
 								pageTracker._trackTrans();
 								window.location.href = "/payment/success?orderId=" + that.orderId + '&amount=' + that.opctions.amount
 							}
@@ -178,27 +182,27 @@
 					}
 				})
 			},
-			getInfo(){
-				let that=this
-				Vue.axios.get(this.apiBasePath+"activity/order/detail/"+that.orderId).then(function(res){
-					that.opctions=res.data
-					
-				},function(res){})
+			getInfo() {
+				let that = this
+				Vue.axios.get(this.apiBasePath + "activity/order/detail/" + that.orderId).then(function(res) {
+					that.opctions = res.data
+
+				}, function(res) {})
 			},
 			pay() {
 				let that = this;
-				
+
 				ga('gtag_UA_107010673_1.send', {
-						hitType: 'event',
-						eventCategory: 'Button',
-						eventAction: 'Click',
-						eventLabel: 'activity_pay',
-	
-					});
+					hitType: 'event',
+					eventCategory: 'Button',
+					eventAction: 'Click',
+					eventLabel: 'activity_pay',
+
+				});
 				that.stripeHandler.open({
 					name: 'Local panda', // 收款方或商家名称，比如 Beansmile
 					description: "", // 待支付商品的描述
-					amount: that.opctions.amount* 100, // 支付金额，单位是“分”
+					amount: that.opctions.amount * 100, // 支付金额，单位是“分”
 					locale: 'en_US',
 					closed: function() {
 
@@ -207,138 +211,120 @@
 			}
 		},
 		created: function() {
-			
-			
+
 		},
 		mounted: function() {
 			this.orderId = GetQueryString("objectId")
 			this.getInfo()
 			this.getToken()
-	
+
 		}
 	}
 </script>
 <style lang="scss">
 	@import '~assets/scss/_main.scss';
 	@import '~/assets/font/iconfont.css';
-	
 </style>
 <style lang="scss" scoped>
 	@import "~assets/scss/base/_setting.scss";
 	.payNow {
 		.oderdetial {
-			width: 1170px;
-			margin: 0 auto;
-			padding: 60px 0 100px;
-			position: relative;
-			.link {
-				a {
-					font-size: 16px;
-					color: #353a3f;
-					cursor: auto;
-					&:last-child {
-						color: #dde0e0;
-					}
-				}
-				i {
-					font-size: 10px;
-					color: #dde0e0;
-					margin: 0 20px;
-				}
+			padding: 0 0.586666rem 1.946666rem;
+			.back {
+				padding: 0.426666rem 0 0.8rem;
 			}
-			.title_head {
+			.head {
+				font-size: 0.8rem;
 				font-weight: bold;
-				font-size: 36px;
-				margin: 64px 0 44px;
 			}
 			.payfordetail {
-				margin-top: 10px;
-				box-shadow: 0px 2px 6px 0px rgba(53, 58, 63, 0.1);
-				background: #fff;
-				padding: 30px 30px 40px;
-				width: 316px;
-				.head {
-					padding-bottom: 30px;
+				.headcommon {
+					
+					padding:1.333333rem 0 0.693333rem;
 					border-bottom: 1px solid #dde0e0;
 					.serviceform {
 						h3 {
-							font-size: 18px;
-							margin-bottom: 0;
+							font-size: 0.453333rem;
 							font-weight: bold;
 						}
-						p {
-							margin-top: 12px;
-							font-size: 18px
+						.service{
+							margin-top: 0.32rem;
+							font-size: 0.346666rem;
+							.serviceTime{
+								float: left;
+								p{
+									span{
+										margin-left: 0.133333rem;
+									}
+								}
+							}
+							.servicePepole{
+								float: left;
+								margin-left: 0.4rem;
+							}
 						}
-					}
-					
-				}
-				.date {
-					padding: 30px 0;
-					border-bottom: 1px solid #dde0e0;
-					p {
-						font-size: 18px;
 					}
 				}
 				.pic {
-					padding: 30px 0;
+					padding: 0.666666rem 0;
 					border-bottom: 1px solid #dde0e0;
 					.adult {
 						.formula {
 							float: left;
-							font-size: 18px;
+							font-size: 0.48rem;
 						}
 						.adultPic {
 							float: right;
-							font-size: 18px;
+							font-size: 0.48rem;
 						}
 					}
 					.child {
-						margin-top: 20px;
-						font-size: 18px;
+						margin-top: 0.266666rem;
+						font-size: 0.48rem;
 					}
 				}
 				.total {
-					padding-top: 30px;
+					border-bottom: 1px solid #dde0e0;
+					padding: 0.666666rem 0;
 					.totle-title {
 						float: left;
-						font-size: 18px;
+						font-size: 0.48rem;
 					}
 					.totalPic {
 						float: right;
-						font-size: 18px;
+						font-size: 0.48rem;
 						font-weight: bold;
 					}
 				}
-				.refundPolicy{
-					font-size: 18px;
-					color: red;
-				}
-			}
-			.bookbtn {
-				width: 242px;
-				position: absolute;
-				top: 60px;
-				right: 0;
-				padding: 30px;
-				background: #faf9f8;
-				p {
-					font-size: 18px;
-					font-weight: bold;
-				}
-				.payfor {
-					span {
-						display: inline-block;
-						width: 58px;
-						height: 36px;
-						margin-right: 10px;
+				.hint{
+					padding-top: 0.666666rem;
+					p{
+						font-size: 0.293333rem;
+						color: #e14f3f;
+						&:last-child{
+							margin-top: 0.266666rem;
+						}
 					}
 				}
 			}
-		}
-		.paybtn {
-			font-size: 16px;
-			font-weight: bold;
+			.btn {
+				position: fixed;
+				bottom: 0;
+				left: 0;
+				width: 100%;
+				padding: 0.373333rem 0.586666rem;
+				button {
+					width: calc(100% - 1.173333rem);
+					height: 1.2rem;
+					line-height: 1.2rem;
+					background-image: linear-gradient(270deg, #009efd 0%, #1bbc9d 100%);
+					text-align: center;
+					color: #fff;
+					border-radius: 0.6rem;
+					font-size: 0.346666rem;
+					font-weight: bold;
+				}
+			}
 		}
 	}
 </style>

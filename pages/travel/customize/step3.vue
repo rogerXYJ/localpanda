@@ -111,7 +111,8 @@ export default {
                 emailAddress: "",
                 phoneNumber: "",
                 nationality: "",
-                message: ""
+                message: "",
+                utcOffset:new Date().getTimezoneOffset() / 60 * -1,
             },
                 formRules: {
                 firstName: [

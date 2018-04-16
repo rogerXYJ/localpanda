@@ -266,7 +266,7 @@
 								</div>
 								<div class="inquiry">
 									<button class="bookNow" @click.stop="order">Book Now</button>
-									<p style="color: red;margin-top: 20px;font-size: 14px;">You can get a 100% refund up to {{detail.refundTimeLimit}} hours before your trip.Please be assured to book your trip.</p>
+									<p style="color: red;margin-top: 20px;font-size: 14px;">You can get a 100% refund up to {{detail.refundTimeLimit*24}} hours before your trip.Please be assured to book your trip.</p>
 									<div class="cancat" @click="showContact">
 										
 										<p>Not sure if this is the tour for you? We can </br>help you design your dream tour!<span> Inquire</span> </p>
@@ -536,7 +536,7 @@ export default {
       } else if (that.children + that.adults < that.picInfo.minParticipants) {
         that.error = true;
         that.isShowAdults = true;
-        //that.dateErrText = "*Mimimum number of travelers:" + that.picInfo.minParticipants + ".";
+        that.dateErrText = "*Mimimum number of travelers:" + that.picInfo.minParticipants + ".";
         //默认帮用户选一个游玩人
         if (that.people == "Please Select") {
           that.adults = this.adults + 1;

@@ -88,6 +88,7 @@
                         accommodationMinPrice: 0,
                         accommodationMaxPrice: 0,
                     },
+                    
                     accommodationType: '',
                     roomRequirements: [
                         {
@@ -102,6 +103,7 @@
                         }
                     ],
                     otherRoomRequirements: '',
+                    utcOffset: new Date().getTimezoneOffset() / 60 * -1,
                 },
                 formRules: {
                     accommodationType: [

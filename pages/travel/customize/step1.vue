@@ -172,7 +172,7 @@
 	import FooterCommon from '~/components/FooterCommon/FooterCommon';
     import RadioPic from '~/components/GUI/form/RadioPic';
     import Checkbox from '~/components/GUI/form/Checkbox';
-    
+    import {GetDateStr} from '~/assets/js/plugin/utils.js'
 	import Banner from '~/components/pageComponents/travel/customize/Banner';
     import StepBar from '~/components/pageComponents/travel/customize/StepBar';
     
@@ -222,6 +222,7 @@
                     accommodationIncluded: null,
                     duration: 0,
                     arriveCity: '',
+                    utcOffset: new Date().getTimezoneOffset() / 60 * -1,
                 },
                 formRules: {
                     participant: [
@@ -255,7 +256,7 @@
                 interestsDataSource: Consts.interestsDataSource,
 				dateOptions: {
                     inline: true,
-                    minDate: new Date()
+                    minDate: GetDateStr(1)
                 }
                 
             }

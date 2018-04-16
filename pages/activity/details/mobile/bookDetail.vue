@@ -14,7 +14,7 @@
 						<input id="js_changetime" placeholder="Please Select" v-model="dateTime" readonly type="text">
 					</div>
 				</li>
-				<li class="clearfix" @click="show()" :class="{err:peopleErr}">
+				<li class="clearfix" @touchend="show()" :class="{err:peopleErr}">
 					<label>Guests</label>
 					<div v-if="adults+children<1" class="guests placeho">{{people}}</div>
 					<div v-if="adults+children==1" class="guests">{{adults+children}} Person</div>
@@ -97,6 +97,10 @@
 				history.back()
 			},
 			show() {
+				/*let that=this
+				setTimeout(()=>{
+					that.isshow = true
+				},0)*/
 				this.isshow = true
 			},
 			setCallBack(val) {
@@ -293,12 +297,14 @@
 	}
 	
 	.dateTime {
+		
 		.flatpickr-input {
 			border: none!important;
 			padding-left: 0!important;
 			height: 1.706666rem!important;
 			text-align: right;
 			color: #1bbc9d;
+			font-size: 0.48rem;
 		}
 	}
 </style>
@@ -378,7 +384,7 @@
 		.view {
 			position: absolute;
 			width: 100%;
-			transition: all .8s cubic-bezier(.55, 0, .1, 1);
+			transition: all .3s cubic-bezier(.55, 0, .1, 1);
 		}
 		.slideleft-enter-active,
 		.slideleft-leave-active {

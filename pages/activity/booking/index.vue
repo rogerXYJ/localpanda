@@ -76,10 +76,10 @@
 						<h4>Other required information</h4>
 						<textarea v-if="opctions.category=='Private Tour'" placeholder="please provide your hotel address so the guide can pick you up." v-model="comments"></textarea>
 						<textarea v-else v-model="comments"></textarea>
-
-						<div class="nextBtn clearfix">
+						<p class="refundPolicy" style="color: red;font-size: 14px;">You can get a 100% refund up to {{opctions.refundTimeLimit}} hours before your trip.Please be assured to book your trip.</p>
+						<p class="text" style="font-size: 14px;margin-top: 20px;">You ordered as a guest. To view your order details, you can click "My Bookings" on the top bar then type in the reservee's email address and name you entered before to access that information.</p>
+						<div class="nextBtn">
 							<div class="next" @click="next">NEXT</div>
-							<div class="text">You ordered as a guest. To view your order details, you can click "My Bookings" on the top bar then type in the reservee's email address and name you entered before to access that information.</div>
 						</div>
 
 					</div>
@@ -113,7 +113,7 @@
 						<div class="totle-title">Total (USD)</div>
 						<div class="totalPic">${{returnFloat(opctions.amount)}}</div>
 					</div>
-
+					
 				</div>
 				<div class="bookbtn">
 					<p>Pay with:</p>
@@ -739,7 +739,6 @@
 							width: 90px;
 							height: 46px;
 							font-weight: bold;
-							float: left;
 							text-align: center;
 							line-height: 46px;
 							background-image: linear-gradient(270deg, #009efd 0%, #1bbc9d 100%);
@@ -747,14 +746,6 @@
 							border-radius: 20px;
 							font-size: 16px;
 							cursor: pointer;
-						}
-						.text {
-							float: left;
-							width: 568px;
-							margin-left: 30px;
-							color: red;
-							font-size: 14px;
-							word-break: break-all;
 						}
 					}
 				}

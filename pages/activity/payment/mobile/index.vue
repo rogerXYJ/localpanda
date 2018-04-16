@@ -1,19 +1,6 @@
 <template>
 	<div class="payNow">
-		<HeaderCommon :logIn="logIn"></HeaderCommon>
 		<div class="oderdetial">
-			<div class="link">
-				<a href="javascript:">1. Fill in your information</a>
-				<i class="iconfont">&#xe620;</i>
-				<a href="javascript:">2. confirmation</a>
-			</div>
-		<div class="bookbtn">
-				<p>Pay with:</p>
-				<div class="payfor">
-					<img style="width: 200px;" src="https://d2q486kjf9cwwu.cloudfront.net/static/icon/stripe.png" />
-				</div>
-				<div style="font-size: 16px;line-height: 20px;display: block; margin-top: 20px;"><b>Secure Payment:</b></br>We use Stripe’s online payment system, which sends your payment info directly to Stripe’s secure servers, so your data is never sent to Local Panda’s servers and cannot be stolen.</div>
-			</div>
 			<div class="payfordetail">
 				<div class="head clearfix">
 					<div class="serviceform">
@@ -44,25 +31,21 @@
 					<div class="totle-title">Total (USD)</div>
 					<div class="totalPic">${{returnFloat(opctions.amount)}}</div>
 				</div>
-
 			</div>
-			<p style="width: 600px;color: red;margin-top: 10px;">You ordered as a guest. To view your order details, you can click "My Bookings" on the top bar then type in the reservee's email address and name you entered before to access that information.</p>
+			<p class="refundPolicy" style="margin-top: 30px; color: red;">You can get a 100% refund up to {{opctions.refundTimeLimit}} hours before your trip.Please be assured to book your trip.</p>
+			<p style="width: 600px;margin-top: 20px;">You ordered as a guest. To view your order details, you can click "My Bookings" on the top bar then type in the reservee's email address and name you entered before to access that information.</p>
 			<button class="btnlinner paybtn" @click="pay">Pay Now</button>
 		</div>
 		<Loading :loadingStatus="loadingStatus"></Loading>
-		<FooterCommon></FooterCommon>
 	</div>
 
 </template>
 
 <script>
 	if (process.browser) {
-	  require('~/assets/js/pages/talk.js')
 	  require('~/assets/js/pages/ga.js')
 	}
 	import { GetQueryString } from '~/assets/js/plugin/utils.js'
-	import HeaderCommon from '~/components/HeaderCommon/HeaderCommon'
-	import FooterCommon from '~/components/FooterCommon/FooterCommon';
 	import Loading from '~/components/Loading/Loading'
 	import api from '~/assets/js/plugin/api.js'
 	import Vue from 'vue'
@@ -231,18 +214,14 @@
 			this.orderId = GetQueryString("objectId")
 			this.getInfo()
 			this.getToken()
-			this.logIn = window.localStorage.getItem("logstate")
-			
-			
+	
 		}
 	}
 </script>
 <style lang="scss">
 	@import '~assets/scss/_main.scss';
 	@import '~/assets/font/iconfont.css';
-	#header{
-		box-shadow: 0px 2px 6px 0px rgba(53, 58, 63, 0.1);
-	}
+	
 </style>
 <style lang="scss" scoped>
 	@import "~assets/scss/base/_setting.scss";
@@ -330,6 +309,10 @@
 						font-size: 18px;
 						font-weight: bold;
 					}
+				}
+				.refundPolicy{
+					font-size: 18px;
+					color: red;
 				}
 			}
 			.bookbtn {

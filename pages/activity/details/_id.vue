@@ -207,14 +207,7 @@
 			data.id!='undefined'?data.id:getUrlParams()
 			this.logIn = window.localStorage.getItem("logstate");
 			window.addEventListener("scroll", this.scorllBar);
-			var ua = navigator.userAgent;
-			var ipad = ua.match(/(iPad).*OS\s([\d_]+)/),
-				isIphone = !ipad && ua.match(/(iPhone\sOS)\s([\d_]+)/),
-				isAndroid = ua.match(/(Android)\s+([\d.]+)/),
-				isMobile = isIphone || isAndroid;
-			if(isMobile) {
-				location.href = "/activity/details/mobile/"+data.id	
-			} 
+			
 		},
 		watch: {
 			"detail.latestBooking": function(val, oldVal) {

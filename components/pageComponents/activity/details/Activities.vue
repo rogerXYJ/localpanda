@@ -266,7 +266,9 @@
 								</div>
 								<div class="inquiry">
 									<button class="bookNow" @click.stop="order">Book Now</button>
+									<p style="color: red;margin-top: 20px;font-size: 14px;">You can get a 100% refund up to {{detail.refundTimeLimit}} hours before your trip.Please be assured to book your trip.</p>
 									<div class="cancat" @click="showContact">
+										
 										<p>Not sure if this is the tour for you? We can </br>help you design your dream tour!<span> Inquire</span> </p>
 										<i class="iconfont">&#xe64a;</i>
 									</div>
@@ -548,6 +550,7 @@ export default {
           userId: localStorage.getItem("userid")
             ? localStorage.getItem("userid"): null,
           activityId: that.detail.activityId,
+          refundTimeLimit:that.detail.refundTimeLimit*24,
           amount:
             that.children > 0 && that.picInfo.childDiscount
               ? that.cutXiaoNum(
@@ -573,20 +576,12 @@ export default {
             ? that.children * that.picInfo.childDiscount
             : null
         };
+        console.log(orderInfo)
         orderInfo = JSON.stringify(orderInfo);
-       
+       	
         localStorage.setItem("orderInfo", orderInfo);
-      
-		var ua = navigator.userAgent;
-		var ipad = ua.match(/(iPad).*OS\s([\d_]+)/),
-			isIphone = !ipad && ua.match(/(iPhone\sOS)\s([\d_]+)/),
-			isAndroid = ua.match(/(Android)\s+([\d.]+)/),
-			isMobile = isIphone || isAndroid;
-		if(isMobile) {
-			location.href = "/activity/booking/mobile"
-		} else {
-			location.href = "/activity/booking"
-		}
+      	location.href = "/activity/booking"
+		
         //routes.push('/fillYourInfo')
       }
     },

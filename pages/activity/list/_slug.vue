@@ -6,7 +6,7 @@
 			<div class="selectInfo">
 				<div class="position">
 					<h3>Destination</h3>
-					<el-select v-model="value">
+					<el-select v-model="value" @focus="stop">
 						<a :href="item.url" v-for="item in options">
 							<el-option :key="item.value" :label="item.label" :value="item.value">
 
@@ -395,6 +395,11 @@
 			Alert
 		},
 		methods: {
+			stop(){
+				this.isshowcategory = false
+				this.isshowdurations = false
+				this.isshowtourtype = false
+			},
 			isShowFn(val) {
 				this.istrue = val
 				if(this.istrue == true) {
@@ -789,14 +794,6 @@
 			that.value = that.loc == "Xian" ? "Xi'an" : that.loc
 		},
 		mounted: function() {
-			var ua = navigator.userAgent;
-			var ipad = ua.match(/(iPad).*OS\s([\d_]+)/),
-				isIphone = !ipad && ua.match(/(iPhone\sOS)\s([\d_]+)/),
-				isAndroid = ua.match(/(Android)\s+([\d.]+)/),
-				isMobile = isIphone || isAndroid;
-			if(isMobile) {
-				location.href = "/activity/list/mobile/"+this.loc
-			} 
 			const that = this
 			let opctions = JSON.parse(that.getUrlParam("opctions"))
 			//that.removeCity=opctions&&opctions.cities.length>0?opctions.cities:[]
@@ -818,7 +815,7 @@
 	@import '~assets/scss/_main.scss';
 	@import '~/assets/font/iconfont.css';
 	.el-input__inner {
-		width: 188px;
+		width: 160px;
 		height: 40px;
 		font-size: 28px!important;
 		color: #fff;
@@ -840,9 +837,12 @@
 	.el-select .el-input .el-select__caret {
 		color: #fff;
 		font-weight: bold;
-		font-size: 18px;
+		font-size: 22px;
+		line-height: 22px;
 	}
-	
+	.el-input__suffix{
+		right: 0;
+	}
 	.el-select-dropdown {
 		text-align: center;
 		border-radius: 20px!important;
@@ -940,7 +940,6 @@
 					top: 42px;
 					h3 {
 						font-size: 18px;
-						margin-bottom: 16px;
 						color: #fff;
 					}
 					.el-select {
@@ -953,6 +952,8 @@
 			}
 		}
 		.seach {
+					box-shadow: 0px 0px 30px 0px rgba(0, 0, 0, 0.08);
+					border-radius: 3px;
 					background: #fff;
 					padding: 24px 30px 29px;
 					width: 1224px;

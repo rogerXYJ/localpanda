@@ -92,6 +92,7 @@
 		
 		
 		}
+		
 
 	.swiper-pagination-fraction, .swiper-pagination-custom, .swiper-container-horizontal > .swiper-pagination-bullets{
 		bottom: 20px!important;
@@ -101,56 +102,12 @@
 			margin:0 2.5px!important;
 			border:2px solid #fff;
 			opacity: 1!important;
-			
+			width: 10px;
+			height: 10px;
+			background: transparent;
 			
 	}
-	/*@media (max-width: 767px){
-		.imgBanner{
-			width:100%;
-			height:7.04rem!important;
-			background-size: cover!important;
-			background-position:center!important;
-			text-align: center;
-			span{
-				font-size: 0.266666rem!important;
-			}
-			
-			
-		}
-		.swiper-pagination-bullet{
-				width:0.106666rem!important;
-				height: 0.106666rem!important;
-				border:2px solid #fff;
-		}
-		.swiper-pagination-bullet-active {
-			background:#fff!important;
-			width:0.106666rem!important;
-			height: 0.106666rem!important;
-			border:2px solid #1bbc9d!important;
-		
-		}
-		.text{
-				width: 100%!important;
-				text-align: center;
-				height: auto!important;
-			
-				p{
-				
-					font-weight: bold;
-					font-size:0.853333rem!important;
-					color:#fff;
-					text-shadow :2.5px 2.5px 10px rgba(0,0,0,.3);
-					&:last-child{
-						padding-top: 0;
-						font-size: 0.426666rem!important;
-						margin-top: 0.133333rem;
-						
-						
-					}
-				}
-				
-			}
-	}*/
+	
 </style>
 <style lang="scss" scoped>
 	@import "~assets/scss/base/_setting.scss";

@@ -1,5 +1,6 @@
 <template>
 	<div id="activitiesDetail">
+		<Head></Head>
 		<Mbanner :bannerPhotos="detail.bannerPhotos" :destination="destination"></Mbanner>
 		<Mdetails
 			:remark="remark" 
@@ -32,7 +33,7 @@
 	  require('~/assets/js/plugin/flexible.js')
 	}
 	
-	
+	import Head from '~/components/headMobeil'
 	import Mbanner from "~/components/pageComponents/activity/details/mobile/Mbanner";
 	import Mdetails from "~/components/pageComponents/activity/details/mobile/Mdetails";
 	import Mmeau from '~/components/pageComponents/activity/details/mobile/m-meau'
@@ -172,7 +173,8 @@
 		components: {
 			Mbanner,
 			Mdetails,
-			Mmeau
+			Mmeau,
+			Head
 		},
 		methods: {
 			showMeau(){

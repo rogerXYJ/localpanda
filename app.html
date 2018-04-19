@@ -15,11 +15,12 @@
       gtag('config', 'UA-107010673-1');
     </script>
     <script>
-    	
-    		if(window.location.href.startsWith("https://www.localpanda.com/activity/booking/mobile")
-    		||window.location.href.startsWith("https://www.localpanda.com/activity/details/mobile/")
-    		||window.location.href.startsWith("https://www.localpanda.com/activity/list/mobile/")
-    		||window.location.href.startsWith("https://www.localpanda.com/activity/payment/mobile")
+    		let parth="https://www.localpanda.com/activity/"
+    		//let parth="http://localhost:3000/activity/"
+    		if(window.location.href.startsWith(parth+"booking/mobile")
+    		||window.location.href.startsWith(parth+"details/mobile/")
+    		||window.location.href.startsWith(parth+"list/mobile/")
+    		||window.location.href.startsWith(parth+"payment/mobile")
     ){
     		viewport = document.querySelector("meta[name=viewport]");
 	    		viewport.setAttribute('content', "width=device-width, initial-scale=1.0, maximum-scale=1.0");
@@ -31,16 +32,18 @@
     	
     	function viewport(){
     		var ua = navigator.userAgent;
+    		console.log(ua)
 			var ipad = ua.match(/(iPad).*OS\s([\d_]+)/),
 				isIphone = !ipad && ua.match(/(iPhone\sOS)\s([\d_]+)/),
 				isAndroid = ua.match(/(Android)\s+([\d.]+)/),
 				isMobile = isIphone || isAndroid,
 			 	viewport = document.querySelector("meta[name=viewport]");
 			if(isIphone || ipad) {
+					
 					viewport.setAttribute('content', "width=1500 ,user-scalable=yes,maximum-scale=0.5");
-			} else {
-					viewport.setAttribute('content', "width=device-width, initial-scale=0,user-scalable=yes,maximum-scale=1.0");
-			}
+				} else {
+						viewport.setAttribute('content', "width=device-width, initial-scale=0,user-scalable=yes,maximum-scale=1.0");
+				}
     	}
 		
 	</script>

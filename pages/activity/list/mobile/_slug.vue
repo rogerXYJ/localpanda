@@ -653,7 +653,7 @@
 					}
 					.titleText {
 						width: 100%;
-						height:1rem;
+						height:0.869999rem;
 						text-overflow: ellipsis;
 						display: -webkit-box;
 						display: -moz-box;

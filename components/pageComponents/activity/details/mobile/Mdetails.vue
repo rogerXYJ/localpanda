@@ -191,7 +191,9 @@
 					id:this.id,
 					picInfo:this.picInfo,
 					title:this.detail.title,
-					category:this.detail.category
+					category:this.detail.category,
+					refundTimeLimit:this.detail.refundTimeLimit
+					
 				}
 				objDetail=JSON.stringify(objDetail)
 				localStorage.setItem("objDetail",objDetail)

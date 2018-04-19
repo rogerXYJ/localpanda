@@ -35,6 +35,7 @@
 				</li>
 			</ul>
 			<p>{{dateErrText}}</p>
+			<p>You can get a 100% refund up to {{refundTimeLimit}} hours before your trip.Please be assured to book your trip.</p>
 		</div>
 		<div class="btn">
 			<button @click="order">Next</button>
@@ -71,6 +72,7 @@
 				logIn: '',
 				people: "Please Select",
 				picInfo: '',
+				refundTimeLimit:'',
 				options: {},
 				isshow: false,
 				adults: 0,
@@ -192,6 +194,7 @@
 		              : that.adultsPic,
 		          currency: "USD",
 		          adultNum: that.adults,
+		          refundTimeLimit:that.refundTimeLimit,
 		          childrenNum: that.children,
 		          infantNum: that.infant,
 		          startDate: that.dateTime,
@@ -224,6 +227,7 @@
 			this.id=JSON.parse(window.localStorage.getItem("objDetail")).id
 			this.title=JSON.parse(window.localStorage.getItem("objDetail")).title
 			this.category=JSON.parse(window.localStorage.getItem("objDetail")).category
+			this.refundTimeLimit=JSON.parse(window.localStorage.getItem("objDetail")).refundTimeLimit*24
 			this.options = {
 				minDate: this.picInfo.earliestBookDate,
 				maxDate: addmulMonth(this.picInfo.earliestBookDate, 12),

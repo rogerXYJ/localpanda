@@ -13,7 +13,7 @@
 			</ul>
 			<ul class="init" v-if="(logIn==0||logIn==null)&&!isAnonymity">
 				
-				<li @click="showContact">Customize Your Trip</li>
+				<li @click="showContact">Customize Your Trip<em class="hot">HOT</em></li>
 				<li @click="isShowAnonymityback">My Bookings</li>
 				<li @click="show" v-if="isIndex">Log In</li>
 				<li @click="goAboutUs">About Us</li>
@@ -22,7 +22,7 @@
 			</ul>
 			<ul class="login" v-if="logIn==1">
 				
-				<li @click="showContact">Customize Your Trip</li>
+				<li @click="showContact">Customize Your Trip<em class="hot">HOT</em></li>
 				<li @click="goBook" style="margin-right: 40px;">My Bookings</li>
 				<li @click="goAboutUs" style="margin-right: 40px;">About Us</li>
 				<li @click="getscoll">Contact Us</li>
@@ -308,6 +308,16 @@
 					font-size: 16px;
 					margin-left: 40px;
 					line-height:60px; 
+					height: 60px;
+					.hot{
+						padding: 3px 9px;
+						background: #e14f3f;
+						border-radius: 20px;
+						font-size: 12px;
+						color: #fff;
+						font-weight: bold;
+						margin-left: 8px;
+					}
 					&:first-child{
 						margin-left: 0;
 					}
@@ -334,7 +344,15 @@
 				height: 55px;
 				
 					li{
-						
+						.hot{
+							padding: 3px 9px;
+							background: #e14f3f;
+							border-radius: 20px;
+							font-size: 12px;
+							color: #fff;
+							font-weight: bold;
+							margin-left: 8px;
+						}
 						line-height: 55px;
 						float: left;
 						font-size: 16px;

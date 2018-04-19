@@ -68,6 +68,7 @@
 					<textarea v-if="opctions.category=='Private Tour'" v-model="comments" placeholder="please provide your hotel address so the guide can pick you up." onfocus="this.placeholder=''" onblur="this.placeholder='please provide your hotel address so the guide can pick you up.'"></textarea>
 					<textarea v-else v-model="comments"></textarea>
 				</div>
+				<p>You can get a 100% refund up to {{opctions.refundTimeLimit}} hours before your trip.Please be assured to book your trip.</p>
 			</div>
 		</div>
 		<div class="nextBtn">
@@ -278,13 +279,13 @@
 								"deviceType":"MOBILE"
 							}
 							if(that.addOder == false) {
-								Vue.axios.put(this.apiBasePath+"activity/order/create", JSON.stringify(obj), {
+								Vue.axios.put(that.apiBasePath+"activity/order/create", JSON.stringify(obj), {
 									headers: {
 										'Content-Type': 'application/json; charset=UTF-8'
 									}
 								}).then(function(response) {
 
-									window.location.href = "/activity/payment?objectId=" + response.data
+									window.location.href = "/activity/payment/mobile?objectId=" + response.data
 								}, function(response) {})
 							}
 						}
@@ -314,13 +315,13 @@
 						}
 						if(that.addOder == false) {
 							that.addOder = true
-							Vue.axios.put(this.apiBasePath+"activity/order/create", JSON.stringify(obj), {
+							Vue.axios.put(that.apiBasePath+"activity/order/create", JSON.stringify(obj), {
 								headers: {
 									'Content-Type': 'application/json; charset=UTF-8'
 								}
 							}).then(function(response) {
 
-								window.location.href = "/activity/payment?objectId=" + response.data
+								window.location.href = "/activity/payment/mobile?objectId=" + response.data
 							}, function(response) {})
 						}
 					}
@@ -463,6 +464,11 @@
     						color: #dde0e0; 
 						}
 					}
+				}
+				p{
+					margin-top: 0.266666rem;
+					color: red;
+					width: 90%;
 				}
 			}
 			

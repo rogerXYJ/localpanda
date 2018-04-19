@@ -2,7 +2,7 @@
 	<div class="payNow">
 		<div class="oderdetial">
 			<div class="back"><i class="iconfont" @click="back">&#xe615;</i></div>
-			<div class="head">payNow</div>
+			<div class="head">Pay Now</div>
 			<div class="payfordetail">
 				<div class="headcommon">
 					<div class="serviceform">
@@ -37,8 +37,8 @@
 					<div class="totalPic">${{returnFloat(opctions.amount)}}</div>
 				</div>
 				<div class="hint">
-					<p>You ordered as a guest. To view your order details, you can click "MyBookings" on the top bar then type in the reservee's email address and name you entered before to access that information.</p>
-					<p>You can get a 100% refund up to xx hours before your trip.Please be assured to book your trip.</p>
+					<p>You ordered as a guest. To view your order details, go to the homepage, click "My Bookings" at the top of the page, and type in the name and email address for your reservation.</p>
+					<p>You can get a 100% refund up to {{refundTimeLimit}} hours before your trip.Please be assured to book your trip.</p>
 				</div>
 			</div>
 			<div class="btn">
@@ -96,6 +96,7 @@
 				email: '',
 				token: '',
 				tokenType: '',
+				refundTimeLimit:"",
 
 			}
 		},
@@ -186,7 +187,7 @@
 				let that = this
 				Vue.axios.get(this.apiBasePath + "activity/order/detail/" + that.orderId).then(function(res) {
 					that.opctions = res.data
-
+					that.refundTimeLimit=res.data.activityInfo.refundTimeLimit*24
 				}, function(res) {})
 			},
 			pay() {

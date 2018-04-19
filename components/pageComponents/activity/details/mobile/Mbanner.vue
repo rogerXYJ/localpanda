@@ -1,6 +1,6 @@
 <template>
 	<div id="banner">
-		<div class="back"><i class="iconfont" @click="back">&#xe615;</i></div>
+		<!--<div class="back"><i class="iconfont" @click="back">&#xe615;</i></div>-->
 		<div v-swiper:swiper="swiperOptionBanner">
 			<div class="swiper-wrapper">
 				<div class="swiper-slide" :key="index" v-for="(slide, index) in bannerPhotos">

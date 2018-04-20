@@ -29,7 +29,7 @@
 						<img :src="item.photo.url"/>
 					</div>
 					<div class="introduce-text" :class="item.photo?'':'noImg'">
-						{{item.description}}
+						<p v-for="j in delNullArr(item.description.split('\n'))">{{j}}</p>
 					</div>
 				</div>
 				<div class="recommend-activity" v-if="item.products">
@@ -123,7 +123,7 @@
 		</div>
 		<services></services>
 		<FooterCommon></FooterCommon>
-		<themeMenu v-if="isMenu" :tags="tags" :loc="loc" :keywords="keywords"></themeMenu>
+		<themeMenu v-if="isMenu" :tags="tags" :loc="loc" :subject="subject" :keywords="keywords"></themeMenu>
 		
 	</div>
 
@@ -140,12 +140,12 @@
 		name: 'landingPage',
 		async asyncData ({route, store, error, apiBasePath, redirect }) {
 			let loc=route.params.loc;
-			let keywords=route.params.keywords;
+			let keyword=route.params.keywords;
 			let subject=route.params.subject
 			let data={
 			 	logIn: '',
 			 	loc:loc,
-			 	keywords:keywords,
+			 	keywords:keyword,
 			 	subject:subject,
 			 	title:'',   //广告位 title
 			 	photo:'',	//头图
@@ -442,6 +442,18 @@
 								p{
 									font-size: 18px;
 									font-weight: bold;
+									height: 48px;
+						              line-height: 24px;
+						              text-overflow: ellipsis;
+						              display: -webkit-box;
+						              display: -moz-box;
+						              -moz-box-orient: vertical;
+						              -webkit-box-orient: vertical;
+						              -webkit-line-clamp: 2;
+						              word-wrap: break-word;
+						              overflow: hidden;
+						              margin-top: 14px;
+						              font-weight: bold;
 								}
 								.price{
 									margin-top: 10px;
@@ -461,6 +473,7 @@
 						display: block;
 						margin-top:38px;
 						color:#1bbc9d;
+						text-align: right;
 						font-size:20px;
 							i{
 								vertical-align: middle;

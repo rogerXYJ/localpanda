@@ -1,20 +1,17 @@
 <template>
 	<div class="themMenu">
 		<ul class="clearfix">
-			<li v-for="i in tags"><a :href="'/travel/landingPage/'+loc+'/'+keywords+'/'+i.urlField">{{i.keywords}}</a></li>
+			<li v-for="i in tags" ><a :href="'/travel/landingPage/'+loc+'/'+keywords+'/'+i.urlField" :class="subject==i.urlField?'active':''">{{i.keywords}}</a></li>
 		</ul>
 	</div>
 </template>
 
 <script>
 	export default {
-		props:["tags","loc","keywords"],
+		props:["tags","loc","subject","keywords"],
 		name: "themMenu",
 		data() {
 			return {
-				
-				
-				
 				
 			}
 		},
@@ -24,6 +21,11 @@
 		},
 		methods: {
 			
+		},
+		watch:{
+			"subject":function(val,oldVal){
+				console.log(val)
+			}
 		}
 	} 
 </script>
@@ -60,6 +62,15 @@
 						a{
 							&:hover{
 								color: #1bbc9d;
+								&:after{
+									content: "";
+									position: absolute;
+									width: 100%;
+									height: 3px;
+									background:#1bbc9d;
+									bottom:0;
+									left: 0;
+								}
 							}	
 						}
 						
@@ -73,6 +84,17 @@
 						transform: translateY(0);
 					}
 				}
-      
+      			.active{
+					color: #1bbc9d!important;
+					&:after {
+						content: "";
+						position: absolute;
+						width: 100%;
+						height: 3px;
+						background: #1bbc9d;
+						bottom: 0;
+						left: 0;
+					}
+				}
 	}
 </style>

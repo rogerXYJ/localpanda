@@ -370,12 +370,13 @@
 						}
 				}
 				.recommend-activity{
-					margin-top: 24px;
+					
 					ul{
 						li{
+							margin-top: 24px;
 							float: left;
 							width: 274px;
-							margin-left: 24px;
+							margin-right: 24px;
 							.headPic{
 								height: 182px;
 								img{
@@ -402,8 +403,8 @@
 									}
 								}
 							}
-							&:first-child{
-								margin-left: 0;
+							&:nth-child(4n+4){
+								margin-right: 0;
 							}
 						}
 					}

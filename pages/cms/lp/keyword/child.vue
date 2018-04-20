@@ -34,7 +34,7 @@
           border
           empty-text="没有匹配数据！！！"
           class="keyword-table">
-          <el-table-column prop="id" label="编号" width="50"></el-table-column>
+          <el-table-column prop="id" label="ID" width="50"></el-table-column>
           <el-table-column prop="keywords" label="关键词"></el-table-column>
           <el-table-column prop="destination" label="目的地" width="120"></el-table-column>
           <el-table-column prop="binding" label="优先级" width="120">
@@ -128,7 +128,7 @@
             border
             empty-text="没有匹配数据！！！"
             class="keyword-table">
-            <el-table-column prop="id" label="编号" width="50"></el-table-column>
+            <el-table-column prop="id" label="ID" width="50"></el-table-column>
             <el-table-column prop="keywords" label="关键词"></el-table-column>
             <el-table-column prop="destination" label="目的地" width="120"></el-table-column>
             <el-table-column prop="level" label="模版" width="120">
@@ -269,7 +269,10 @@ export default {
       this.dialogTipTxt = txt;
     },
     removeBind(row,index){
-
+      var removebind = confirm('你确定要解绑吗？');
+      if(!removebind){
+        return;
+      }
       
       var self = this;
       let param = new FormData()  // 创建form对象
@@ -348,7 +351,7 @@ export default {
       for(let key in formData){
         param.append(key, formData[key])  // 通过append向form对象添加数据
       }
-
+      //绑定子模版
       this.axios.post('https://api.localpanda.com/api/content/landingpage/binding/commit',param,{
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded;'
@@ -358,7 +361,9 @@ export default {
           
           self.bindTableData.list[bindIndex].isbind = true;
           self.showDialogLever = false;
-          console.log(123);
+
+          //重刷关联列表数据
+          self.getBindList();
 
         }
       }, function(response) {
@@ -382,10 +387,15 @@ export default {
         }
           //window.location.href = "/travel/customize/done";
       }, function(response) {
-        //this.isSubmiting = false;
+        self.dialogTxt('基本信息查询失败!');
       });
 
-
+      //渲染关联列表
+      this.getBindList();
+    },
+    //渲染关联列表
+    getBindList(){
+      var self = this;
       //请求关联列表
       this.axios.get('https://api.localpanda.com/api/content/landingpage/children/'+this.pageId).then(function(response) {
         if(response.status == 200){
@@ -394,7 +404,7 @@ export default {
         }
           //window.location.href = "/travel/customize/done";
       }, function(response) {
-        //this.isSubmiting = false;
+        self.dialogTxt('关联列表查询失败!');
       });
     },
     onSubmit(){

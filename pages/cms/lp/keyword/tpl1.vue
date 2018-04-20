@@ -123,7 +123,7 @@
               border
               empty-text="没有匹配数据！！！"
               class="keyword-table">
-              <el-table-column prop="id" label="编号" width="50"></el-table-column>
+              <el-table-column prop="id" label="ID" width="50"></el-table-column>
               <el-table-column prop="keywords" label="关键词"></el-table-column>
               <el-table-column prop="destination" label="目的地" width="120"></el-table-column>
               <el-table-column prop="level" label="模版" width="120">

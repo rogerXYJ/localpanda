@@ -10,7 +10,7 @@
 				<h4>Explore</h4>
 				<ul class="clearfix">
 					<li v-for="i in tags">
-						<a :href="'/travel/landingPage/'+loc+'/'+keywords+'/'+i.keywords">
+						<a :href="'/travel/landingPage/'+loc+'/'+keywords+'/'+i.urlField">
 							<img :src="i.photo.url" />
 							<span>{{i.keywords}}</span>	
 							<div class="mask"></div>
@@ -25,10 +25,10 @@
 			<div class="recommend" :key="index" v-for="(item,index) in items">
 				<h3>{{item.title}}</h3>
 				<div class="introduce clearfix">
-					<div class="introduce-pic" v-if="item.photo.url">
+					<div class="introduce-pic" v-if="item.photo">
 						<img :src="item.photo.url"/>
 					</div>
-					<div class="introduce-text" :class="item.photo.url?'':'noImg'">
+					<div class="introduce-text" :class="item.photo?'':'noImg'">
 						{{item.description}}
 					</div>
 				</div>
@@ -55,32 +55,67 @@
 		<div class="visitor">
 			<div class="visitor-cont page-size">
 				<h3>This is what guests are saying about our service</h3>
-				<ul class="clearfix">
+				<ul class="clearfix" v-if="loc=='Shanghai'">
 					<li>
 						<div class="visitor-headPic">
-							<img src="~static/banner/6.png"/>
+							<img src="https://d2q486kjf9cwwu.cloudfront.net/static/content/reviews/Claudia.jpg"/>
 						</div>
 						<div class="visitor-message">
-							<b>Christophe</b>
-							<p>I am the one who is in love with travel. I use to work at a hostel before and every time I get a chance I try to explore a new place here in Shanghai.</p>
+							<b>Claudia Flores </b>
+							<em>Mexico City, Mexico</em>
+							<p>Local Panda had an incredible amount of attention and patience throughout my trip. I had a great tour that went way beyond my expectations.  The sites and smells of everywhere we visited around Shanghai were fantastic as well. My guide, Jamie, was nice, intelligent, great English, everything you want in a tour guide. Thanks again!!!</p>
 						</div>
 					</li>
 					<li>
 						<div class="visitor-headPic">
-							<img src="~static/banner/6.png"/>
+							<img src="https://d2q486kjf9cwwu.cloudfront.net/static/content/reviews/SamMorgan.jpg"/>
 						</div>
 						<div class="visitor-message">
-							<b>Christophe</b>
-							<p>I am the one who is in love with travel. I use to work at a hostel before and every time I get a chance I try to explore a new place here in Shanghai.</p>
+							<b>Sam Morgan </b>
+							<em>Brisbane, Australia</em>
+							<p>I would like to say a very big thank you to our tour guide while visiting Shanghai. Jamie was very knowledgeable and very easy to get on with, with her lovely personality. We all enjoyed the two days spent with her. Thank you to Local Panda for helping with organizing our itinerary. </p>
 						</div>
 					</li>
 					<li>
 						<div class="visitor-headPic">
-							<img src="~static/banner/6.png"/>
+							<img src="https://d2q486kjf9cwwu.cloudfront.net/static/content/reviews/Cynthia.jpg"/>
 						</div>
 						<div class="visitor-message">
-							<b>Christophe</b>
-							<p>I am the one who is in love with travel. I use to work at a hostel before and every time I get a chance I try to explore a new place here in Shanghai.</p>
+							<b>Cynthia Huang</b>
+							<em>Los Angeles, California</em>
+							<p>Local Panda takes the worry out of organizing things on your own in China. However beautiful China is, navigating the system can be daunting, if not impossible. I highly recommend Local Panda to help travelers who like to do things away from the cookie-cutter tours that are available to most travelers. </p>
+						</div>
+					</li>
+				</ul>
+				<ul class="clearfix" v-if="loc=='Beijing'">
+					<li>
+						<div class="visitor-headPic">
+							<img src="https://d2q486kjf9cwwu.cloudfront.net/static/content/reviews/Claudia.jpg"/>
+						</div>
+						<div class="visitor-message">
+							<b>Claudia Flores </b>
+							<em>Mexico City, Mexico</em>
+							<p>Local Panda had an incredible amount of attention and patience throughout my trip. I had a great tour that went way beyond my expectations.  The sites and smells of everywhere we visited around Shanghai were fantastic as well. My guide, Jamie, was nice, intelligent, great English, everything you want in a tour guide. Thanks again!!!</p>
+						</div>
+					</li>
+					<li>
+						<div class="visitor-headPic">
+							<img src="https://d2q486kjf9cwwu.cloudfront.net/static/content/reviews/Selvarani.jpg"/>
+						</div>
+						<div class="visitor-message">
+							<b>Selvarani Saravanamuthu</b>
+							<em> Seattle, Washington</em>
+							<p>I have to say a huge thank you to Local Panda for putting together this memorable trip. The tours have been par excellence, and I can't be happy enough about it. Local Panda have provided us with a wonderful and memorable experience we will cherish forever. I will not hesitate to recommend Local Panda to my friends when they plan their trip to China.   </p>
+						</div>
+					</li>
+					<li>
+						<div class="visitor-headPic">
+							<img src="https://d2q486kjf9cwwu.cloudfront.net/static/content/reviews/Cynthia.jpg"/>
+						</div>
+						<div class="visitor-message">
+							<b>Cynthia Huang</b>
+							<em>Los Angeles, California</em>
+							<p>Local Panda Exceeded our </br>expectations in every way. Our guide Rebecca was a Hangzhou native whose local knowledge of the city was beyond anything we could have hoped for. The personalized service sets Local Panda apart. If you want to see something, or do something off of the beaten path, they will go above and beyond to accommodate you." </p>
 						</div>
 					</li>
 				</ul>
@@ -88,6 +123,8 @@
 		</div>
 		<services></services>
 		<FooterCommon></FooterCommon>
+		<themeMenu v-if="isMenu" :tags="tags" :loc="loc" :keywords="keywords"></themeMenu>
+		
 	</div>
 
 </template>
@@ -97,6 +134,7 @@
 	import HeaderCommon from '~/components/HeaderCommon/HeaderCommon'
 	import FooterCommon from '~/components/FooterCommon/FooterCommon';
 	import services from '~/components/pageComponents/landingPage/services'
+	import themeMenu from '~/components/pageComponents/landingPage/themeMenu'
 	import { delNullArr } from "~/assets/js/plugin/utils";
 	export default {
 		name: 'landingPage',
@@ -118,27 +156,54 @@
 			 		linkUrl:'',
 			 		linkText:''
 			 	},
+			 	tdk:{},
 				tags:[],
-				
-				
-				items:""
+				items:"",
+				isMenu:false
 			}
 			let listdata={}
-			/*try {
-		        listdata = await Vue.axios.get(apiBasePath+"/recommend/"+ data.loc + "/" + data.keyword)
-		       
+			let obj={
+				"destination": data.loc,
+				"urlField": data.keywords,
+				"subject": data.subject
+			}
+			try {
+				
+		        listdata = await Vue.axios.post(apiBasePath+"content/landingpage/subject",JSON.stringify(obj), {
+							headers: {
+								'Content-Type': 'application/json; charset=UTF-8'
+							}
+						});
+						
+			       	data.title=listdata.data.title
+					data.photo=listdata.data.photo.url
+					data.tags=listdata.data.subjects
+					data.items=listdata.data.items
+					data.tdk=listdata.data.tdk
+					//主题 标题和内容
+					for(let i=0;i<listdata.data.subjects.length;i++){
+						if(data.subject==listdata.data.subjects[i].keywords){
+							data.theme={
+								title:listdata.data.subjects[i].title,
+								description:delNullArr(listdata.data.subjects[i].description.split("\n")),
+								linkUrl:listdata.data.subjects[i].linkUrl,
+	 							linkText:listdata.data.subjects[i].linkText
+							}
+							
+						}
+					}
 			 	
 		      } catch (err) {
 		      	
-		    }*/
+		    }
 	 		
 			 
 			return data
 		},
 		head(){
-			let title="22"
-			let keywords="33"
-			let description="111"
+			let title=this.tdk.title
+			let keywords=this.tdk.keywords
+			let description=this.tdk.description
 			return {
 				title: title,
 				meta: [{
@@ -158,7 +223,8 @@
 		components: {
 			HeaderCommon,
 			FooterCommon,
-			services
+			services,
+			themeMenu
 		},
 		methods: {
 			delNullArr(array) {
@@ -187,7 +253,15 @@
 					return value;
 				}
 			},
-			
+			scorllBar(){
+				let height=document.querySelector(".tags").offsetTop
+				if(window.scrollY>height){
+					this.isMenu=true
+				}else{
+					this.isMenu=false
+				}
+				
+			}
 
 		},
 		filters: {
@@ -199,36 +273,8 @@
 		},
 		mounted: function() {
 			let that = this
-			let obj={
-					"destination": that.loc,
-					"keywords": that.keywords,
-					"subject": that.subject
-			}
-			that.axios.post('https://api.localpanda.com/api/content/landingpage/subject',JSON.stringify(obj), {
-							headers: {
-								'Content-Type': 'application/json; charset=UTF-8'
-							}
-						}).then((res)=>{
-							that.title=res.data.title
-							that.photo=res.data.photo.url
-							that.tags=res.data.subjects
-							that.items=res.data.items
-							//主题 标题和内容
-							for(let i=0;i<res.data.subjects.length;i++){
-								if(that.subject==res.data.subjects[i].keywords){
-									that.theme={
-										title:res.data.subjects[i].title,
-										description:delNullArr(res.data.subjects[i].description.split("\n")),
-										linkUrl:res.data.subjects[i].linkUrl,
-			 							linkText:res.data.subjects[i].linkText
-									}
-									
-								}
-							}
-							
-						},(res)=>{})
 			that.logIn = localStorage.getItem("logstate");
-			
+			window.addEventListener("scroll", this.scorllBar);
 		}
 	}
 </script>
@@ -260,13 +306,16 @@
 			color:#fff;
 			font-size:86px;
 			font-weight:bold;
-			line-height:500px;
 			text-align: center;
 			position:relative;
 			font-family:"pacifico";
+			display: flex;
+            justify-content: center;/*实现水平居中*/
+            align-items:center; /*实现垂直居中*/
 			span{
 				position: relative;
 				z-index: 2;
+				
 			}
 			
 		}
@@ -292,7 +341,7 @@
     					overflow:hidden; 
     					&:hover{
     						img{
-    							transform: scale(1.5);	
+    							transform: scale(1.2);	
     						}  
 						}
     					
@@ -474,8 +523,19 @@
 						.visitor-message{
 							b{
 								display: block;
-								font-size: 18px;
-								margin: 24px 0 11px;
+								font-size: 20px;
+								margin-top: 24px;
+								
+							}
+							em{
+								display: block;
+								font-size: 16px;
+								font-weight: bold;
+								margin: 4px 0 12px;
+								
+							}
+							p{
+								font-size: 16px;
 							}
 							text-align: center;
 						}

@@ -18,16 +18,18 @@
           </el-select>
         </el-form-item>
 
+        
+
+        <el-form-item label="关键词">
+          <el-input v-model="formInline.keywords" placeholder="关键词"></el-input>
+        </el-form-item>
+
         <el-form-item label="状态" class="el-form-min">
           <el-select v-model="formInline.valid" placeholder="请选择要查询的状态">
             <el-option label="全部" value=""></el-option>
             <el-option label="有效" value="1"></el-option>
             <el-option label="无效" value="0"></el-option>
           </el-select>
-        </el-form-item>
-
-        <el-form-item label="关键词">
-          <el-input v-model="formInline.keywords" placeholder="关键词"></el-input>
         </el-form-item>
         
         <el-form-item>
@@ -37,6 +39,8 @@
         <el-form-item class="ml20">
           <el-button @click="onAddKeywordBtn">新增关键词</el-button>
         </el-form-item>
+
+        <p class="red fs14" v-show="searchTip">请输入目的地或关键词！</p>
       </el-form>
 
       
@@ -121,6 +125,7 @@ export default {
       activeTitle: '1-1', //导航高亮位置
       showPage : false,
       tableShow : false,
+      searchTip : false,
 
       addKeyword : {
         showAddKeyword: false, //显示新增关键词
@@ -212,15 +217,19 @@ export default {
       }).then(function(response) {
 
         if(response.status == 200){
+          self.searchTip = false;
           self.tableData.list = response.data;
           //设置数据条数
           self.tableShow = true;
           //self.setLevel();
           self.tableData.length = self.tableData.list.length;
+        }else{
+          self.searchTip = true;
         }
       
         
       }, function(response) {
+        self.searchTip = true;
         //this.isSubmiting = false;
       })
     },
@@ -238,7 +247,7 @@ export default {
         return;
       }
       //成功跳转新增关键词页面
-      location.href = '/cms/lp/keyword?tpl='+(keyData.resourceArr[keyData.resource]+1);
+      location.href = '/cms/lp/keyword/tpl'+(keyData.resourceArr.getIndex(keyData.resource)+1);
     },
     handleCurrentChange(val) {
       console.log(`每页 ${val} 条`);
@@ -280,7 +289,7 @@ export default {
   .el-form--inline .el-form-item{
     margin-right: 20px;
   }
-  .el-form-min .el-form-item__content{ width:150px;}
+  .el-form-min .el-form-item__content{ width:100px;}
   .keyword-table{ 
     margin-top: 20px;
     width: 100%;

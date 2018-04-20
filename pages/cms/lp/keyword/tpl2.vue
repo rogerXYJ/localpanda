@@ -84,7 +84,7 @@ import {urlData} from '~/assets/js/cms/main';
   
 
 export default {
-  name: 'addKeyword',
+  name: 'tpl2',
   components: {
     cmsAside
   },
@@ -93,9 +93,9 @@ export default {
 
     return {
       //页面配置
-      title : 'LP管理-新增关键词',
-      keywords: '新增关键词',
-      description: '新增关键词',
+      title : 'LP管理-新增/编辑关键词',
+      keywords: 'LP管理-新增/编辑关键词',
+      description: 'LP管理-新增/编辑关键词',
       activeTitle: '1-1', //导航高亮位置
       showPage : false,
       dialogShow : false,

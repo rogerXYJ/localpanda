@@ -7,20 +7,23 @@
       <h3 class="text_c">关键词子项管理</h3>
 
       <!-- 筛选 -->
-      <el-form :model="formInline" class="mt40" label-width="130px">
+      <el-form class="mt40" label-width="130px">
+        
         
 
         <el-form-item label="所属关键词：">
-          <span>{{keywords}}</span>
-          <a class="btn_text" :href="'/cms/lp/keyword/tpl'+pageLevel+'?id='+pageId">编辑</a>
+          <el-badge>{{keywords}}</el-badge>
+          <el-badge><a class="btn_text" :href="'/cms/lp/keyword/tpl'+pageLevel+'?id='+pageId">编辑</a></el-badge>
         </el-form-item>
-
+        
         <el-form-item label="目的地：">
-          <span>{{destination}}</span>
-          <a class="fr el-button el-button--primary" @click="bindChild">关联新子项</a>
+          <el-badge>{{destination}}</el-badge>
+          <el-badge class="fr"><a class="el-button el-button--primary" @click="bindChild">关联新子项</a></el-badge>
         </el-form-item>
         
       </el-form>
+      
+      
 
       <div class="hr"></div>
 
@@ -90,6 +93,16 @@
 
         <!-- 筛选 -->
         <el-form :inline="true" :model="formInline" class="mt40">
+
+          <el-form-item label="目的地">
+            <el-select v-model="formInline.destination" placeholder="请选择一个目的地">
+              <el-option label="Shanghai" value="Shanghai"></el-option>
+              <el-option label="Beijing" value="Beijing"></el-option>
+              <el-option label="Chengdu" value="Chengdu"></el-option>
+              <el-option label="Xi'an" value="Xi'an"></el-option>
+              <el-option label="Guilin" value="Guilin"></el-option>
+            </el-select>
+          </el-form-item>
 
           <el-form-item label="关键词">
             <el-input v-model="formInline.keywords" placeholder="关键词"></el-input>
@@ -190,6 +203,7 @@ export default {
       //数据操作
       formInline: {
         valid : '',
+        destination : '',
         level : 3,
         keywords: ''
       },
@@ -372,8 +386,9 @@ export default {
     },
     onSubmit(){
       var self = this;
-      
-      this.axios.post('https://api.localpanda.com/api/content/landingpage/info',JSON.stringify(this.formInline),{
+      var searchData = this.formInline;
+      searchData.level = this.pageLevel+1;
+      this.axios.post('https://api.localpanda.com/api/content/landingpage/info',JSON.stringify(searchData),{
         headers: {
           'Content-Type': 'application/json; charset=UTF-8'
         }
@@ -386,6 +401,8 @@ export default {
           })
           //设置数据条数
           self.bindTableData.length = self.bindTableData.list.length;
+        }else{
+          alert('查询失败');
         }
       
         

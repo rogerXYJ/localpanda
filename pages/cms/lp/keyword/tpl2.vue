@@ -8,12 +8,12 @@
       <p v-show="showPageTip">此ID暂无数据！</p>
 
       <div v-show="showPage">
-
+        <el-button type="primary" class="fr mr20 zindex9" @click="bindChild" v-show="pageId">关联子项</el-button>
+        <a class="fr el-button el-button--primary mr20 zindex9" :href="'/cms/lp/keyword/child?id='+pageId" v-show="pageId">查看子项</a>
+        
         <el-form ref="addForm" :model="addForm" label-width="150px" :rules="addFormRules" :show-message="true">
           <el-form-item label="模  版：" required>
             <span>{{templateName}}</span>
-            <a class="fr el-button el-button--primary mr20" v-show="pageId">关联子项</a>
-            <a class="fr el-button el-button--primary mr20" :href="'/cms/lp/keyword/child?id='+pageId" v-show="pageId">查看子项</a>
           </el-form-item>
           <el-form-item label="关键词：" required prop="keywords">
             <el-input v-model="addForm.keywords"></el-input>
@@ -39,13 +39,16 @@
           </el-form-item>
 
           <div class="hr"></div>
+          <el-form-item label="头图图片：" prop="file" v-show="addFormRules.file">
+            <img width="80%" :src="addForm.photo.url" alt="">
+            <input type="file" @change="changeImg" accept="image/*">
+          </el-form-item>
           <el-form-item label="图片描述：">
             <el-input v-model="addForm.content" v-show="!pageId"></el-input>
             <el-input v-model="addForm.photo.content" v-show="pageId"></el-input>
           </el-form-item>
-          <el-form-item label="头图图片：" prop="file" v-show="addFormRules.file">
-            <input type="file" @change="changeImg" accept="image/*">
-            <img width="50%" :src="addForm.photo.url" alt="">
+          <el-form-item v-show="pageId">
+            <el-button type="primary" plain @click="editPhoto">修改图片和描述</el-button>
           </el-form-item>
 
 
@@ -94,6 +97,16 @@
 
           <!-- 筛选 -->
           <el-form :inline="true" :model="formInline" class="mt40">
+
+            <el-form-item label="目的地">
+              <el-select v-model="formInline.destination" placeholder="请选择一个目的地">
+                <el-option label="Shanghai" value="Shanghai"></el-option>
+                <el-option label="Beijing" value="Beijing"></el-option>
+                <el-option label="Chengdu" value="Chengdu"></el-option>
+                <el-option label="Xi'an" value="Xi'an"></el-option>
+                <el-option label="Guilin" value="Guilin"></el-option>
+              </el-select>
+            </el-form-item>
 
             <el-form-item label="关键词">
               <el-input v-model="formInline.keywords" placeholder="关键词"></el-input>
@@ -146,11 +159,20 @@
 
         </el-dialog>
 
+
+        <!-- 文字提示 -->
+        <el-dialog title="温馨提示" :visible.sync="showDialogTip" width="500px" class="bind_dialog">
+          <p>{{dialogTipTxt}}</p>
+          <span slot="footer" class="dialog-footer">
+            <el-button type="primary" @click="showDialogTip = false">确 定</el-button>
+          </span>
+        </el-dialog>
+
       </div>
     </div>
 
     
-
+    
     
 
   </div>
@@ -180,7 +202,8 @@ export default {
       showPage : false,
       showPageTip : false,
       dialogTip : '',
-
+      showDialogTip : false,
+      dialogTipTxt : '',
 
 
       showDialog : false,
@@ -188,6 +211,7 @@ export default {
       //数据操作
       formInline: {
         valid : '',
+        destination : '',
         level : 3,
         keywords: ''
       },
@@ -262,10 +286,12 @@ export default {
       }).then(function(response) {
         if(response.status == 200){
           var data = response.data;
-          data.photo = {
-            photoId : '',
-            url : '',
-            content : ''
+          if(!data.photo){
+            data.photo = {
+              photoId : '',
+              url : '',
+              content : ''
+            }
           }
           self.addForm = data;
           //如果是编辑页面 头图可以不验证
@@ -296,7 +322,43 @@ export default {
       //change后校验
       this.$refs.addForm.validateField('file');
     },
+    dialogTxt(txt){
+      this.showDialogTip = true;
+      this.dialogTipTxt = txt;
+    },
+    editPhoto(){
+      var self = this;
+      var formData = {
+        objectId : this.pageId,
+        objectType : 'LANDING_PAGE',
+        content : self.addForm.photo.content,
+        file : self.addForm.file
+      };
+      let param = new FormData()  // 创建form对象
+      for(let key in formData){
+        param.append(key, formData[key])  // 通过append向form对象添加数据
+      }
+      //编辑和新增
+      this.axios.post('https://api.localpanda.com/api/content/photo/update',param,{
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      }).then(function(response) {
+        
+        var resData = response.data;
+        if(response.status == 200 && resData.succeed){
+           self.dialogTxt('修改成功！');
+        }else{
+          self.dialogTxt('更新失败，请确认是否选择图片!');
+        }
 
+      }, function(response) {
+        self.dialogTxt('更新失败，请确认是否选择图片!');
+      })
+
+
+
+    },
 
     //关联子项
     getLevel(number){
@@ -321,8 +383,9 @@ export default {
     },
     onSubmit(){
       var self = this;
-      
-      this.axios.post('https://api.localpanda.com/api/content/landingpage/info',JSON.stringify(this.formInline),{
+      var searchData = this.formInline;
+      searchData.level = this.pageLevel+1;
+      this.axios.post('https://api.localpanda.com/api/content/landingpage/info',JSON.stringify(searchData),{
         headers: {
           'Content-Type': 'application/json; charset=UTF-8'
         }
@@ -335,6 +398,8 @@ export default {
           })
           //设置数据条数
           self.bindTableData.length = self.bindTableData.list.length;
+        }else{
+          alert('查询失败');
         }
       
         
@@ -396,19 +461,13 @@ export default {
           if(self.pageId){
             postUrl = 'https://api.localpanda.com/api/content/landingpage/info/update';
             contentType = 'application/x-www-form-urlencoded; charset=UTF-8';
-
-            
-            formData = JSON.stringify(formData);
-          }else{
-            let param = new FormData()  // 创建form对象
-            
-            for(let key in formData){
-              param.append(key, formData[key])  // 通过append向form对象添加数据
-            }
-
-            formData = param;
-            
           }
+          
+          let param = new FormData()  // 创建form对象
+          for(let key in formData){
+            param.append(key, formData[key])  // 通过append向form对象添加数据
+          }
+          formData = param;
 
           //编辑和新增
           this.axios.post(postUrl,formData,{
@@ -420,14 +479,16 @@ export default {
             var resData = response.data;
             if(response.status == 200 && resData.succeed){
               if(!self.pageId){
-                location.href = '/cms/lp/keyword/tpl1?id='+resData.response;
+                location.href = '/cms/lp/keyword/tpl2?id='+resData.response;
               }else if(self.pageId){
                 location.reload();
               }
+            }else{
+              alert('参数错误！');
             }
               //window.location.href = "/travel/customize/done";
           }, function(response) {
-            //this.isSubmiting = false;
+            alert('请求失败！');
           })
           //https://api.localpanda.com/api/content/landingpage/info/commit
         } else {//失败

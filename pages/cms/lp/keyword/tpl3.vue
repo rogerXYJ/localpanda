@@ -37,13 +37,16 @@
           </el-form-item>
 
           <div class="hr"></div>
+          <el-form-item label="头图图片：" prop="file" v-show="addFormRules.file">
+            <img width="80%" :src="addForm.photo.url" alt="">
+            <input type="file" @change="changeImg" accept="image/*">
+          </el-form-item>
           <el-form-item label="图片描述：">
             <el-input v-model="addForm.content" v-show="!pageId"></el-input>
             <el-input v-model="addForm.photo.content" v-show="pageId"></el-input>
           </el-form-item>
-          <el-form-item label="头图图片：" prop="file" v-show="addFormRules.file">
-            <input type="file" @change="changeImg" accept="image/*">
-            <img width="50%" :src="addForm.photo.url" alt="">
+          <el-form-item v-show="pageId">
+            <el-button type="primary" plain @click="editPhoto">修改图片和描述</el-button>
           </el-form-item>
 
 
@@ -69,6 +72,16 @@
           </el-form-item>
 
         </el-form>
+
+
+
+        <!-- 文字提示 -->
+        <el-dialog title="温馨提示" :visible.sync="showDialogTip" width="500px" class="bind_dialog">
+          <p>{{dialogTipTxt}}</p>
+          <span slot="footer" class="dialog-footer">
+            <el-button type="primary" @click="showDialogTip = false">确 定</el-button>
+          </span>
+        </el-dialog>
       
       
       </div>
@@ -107,6 +120,8 @@ export default {
       showPageTip : false,
       dialogShow : false,
       dialogTip : '',
+      showDialogTip : false,
+      dialogTipTxt : '',
 
       pageId : urlQuery.id,
       
@@ -164,10 +179,12 @@ export default {
         if(response.status == 200){
 
           var data = response.data;
-          data.photo = {
-            photoId : '',
-            url : '',
-            content : ''
+          if(!data.photo){
+            data.photo = {
+              photoId : '',
+              url : '',
+              content : ''
+            }
           }
           self.addForm = data;
           //如果是编辑页面 头图可以不验证
@@ -198,6 +215,45 @@ export default {
       //change后校验
       this.$refs.addForm.validateField('file');
     },
+    dialogTxt(txt){
+      this.showDialogTip = true;
+      this.dialogTipTxt = txt;
+    },
+    editPhoto(){
+      var self = this;
+      var formData = {
+        objectId : this.pageId,
+        objectType : 'LANDING_PAGE',
+        content : self.addForm.photo.content,
+        file : self.addForm.file
+      };
+      let param = new FormData()  // 创建form对象
+      for(let key in formData){
+        param.append(key, formData[key])  // 通过append向form对象添加数据
+      }
+      //编辑和新增
+      this.axios.post('https://api.localpanda.com/api/content/photo/update',param,{
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      }).then(function(response) {
+        
+        var resData = response.data;
+        if(response.status == 200 && resData.succeed){
+           self.dialogTxt('修改成功！');
+        }else{
+          self.dialogTxt('更新失败，请确认是否选择图片!');
+        }
+
+      }, function(response) {
+        self.dialogTxt('更新失败，请确认是否选择图片!');
+      })
+
+
+
+    },
+
+
     submitForm(formName){
       var self = this;
       //校验
@@ -216,19 +272,13 @@ export default {
           if(self.pageId){
             postUrl = 'https://api.localpanda.com/api/content/landingpage/info/update';
             contentType = 'application/x-www-form-urlencoded; charset=UTF-8';
-
-            
-            formData = JSON.stringify(formData);
-          }else{
-            let param = new FormData()  // 创建form对象
-            
-            for(let key in formData){
-              param.append(key, formData[key])  // 通过append向form对象添加数据
-            }
-
-            formData = param;
-            
           }
+          
+          let param = new FormData()  // 创建form对象
+          for(let key in formData){
+            param.append(key, formData[key])  // 通过append向form对象添加数据
+          }
+          formData = param;
 
           //编辑和新增
           this.axios.post(postUrl,formData,{
@@ -239,14 +289,17 @@ export default {
             var resData = response.data;
             if(response.status == 200 && resData.succeed){
               if(!self.pageId){
-                location.href = '/cms/lp/keyword/tpl1?id='+resData.response;
+                location.href = '/cms/lp/keyword/tpl3?id='+resData.response;
               }else if(self.pageId){
                 location.reload();
               }
+            }else{
+              alert('参数错误！');
             }
               //window.location.href = "/travel/customize/done";
           }, function(response) {
             //this.isSubmiting = false;
+            alert('请求失败！');
           })
         } else {//失败
           return false;

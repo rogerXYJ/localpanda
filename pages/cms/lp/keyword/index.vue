@@ -188,8 +188,12 @@ export default {
       var formData = {
         id : row.id,
         valid : row.valid?0:1
+      };
+      let param = new FormData()  // 创建form对象
+      for(let key in formData){
+        param.append(key, formData[key])  // 通过append向form对象添加数据
       }
-      this.axios.post('https://api.localpanda.com/api/content/landingpage/valid/update',JSON.stringify(formData),{
+      this.axios.post('https://api.localpanda.com/api/content/landingpage/valid/update',param,{
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
         }

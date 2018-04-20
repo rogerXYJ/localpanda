@@ -149,7 +149,7 @@ export default {
     .privacy-banner{
         height: 210px;
         overflow: hidden;
-        background: url('~/static/banner/privacy.jpg') no-repeat top center;
+       /* background: url('~/static/banner/privacy.jpg') no-repeat top center;*/
         h2{
             margin-top: 80px;
             font-size: 38px;

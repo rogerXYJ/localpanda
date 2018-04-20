@@ -128,7 +128,6 @@
 		</div>
 		<PackageOptions :guideId="guideId" :detail="detail"></PackageOptions>
 		<FooterCommon></FooterCommon>
-		<pic :alertPicStatus="alertPicStatus" v-on:alert-call-back="alertCallBack"></pic>
 		<Explanation :alertTitleStatus="alertTitleStatus" v-on:alert-title-call-back="alertTitleCallBack"></Explanation>
 		<Contact :ContactStatus="ContactStatus" v-on:isshowfn="isShowFn" v-on:contact-call-back="contactCallBack" :objectId="guideId" :enName="detail.enName" :objectType="objectType"></Contact>
 		<Alert :isShowAlert="isShowAlert" :alertTitle="alertTitle" :alertMessage="alertMessage" v-on:setIsShowAlert="getIsShowAlert"></Alert>
@@ -146,7 +145,6 @@
 	import Explanation from "~/components/Prompt/Explanation";
 
 	import Contact from "~/components/Contact/Contact";
-	import Pic from "~/components/pageComponents/guide/detail/Pic";
 	import PackageOptions from "~/components/pageComponents/guide/detail/PackageOptions";
 
 	import { GetQueryString, getUrlParams } from "~/assets/js/plugin/utils";
@@ -289,7 +287,6 @@
 			FooterCommon,
 			PackageOptions,
 			Explanation,
-			Pic,
 			Contact,
 			Alert
 		},

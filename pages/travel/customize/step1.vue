@@ -13,7 +13,7 @@
                 class="GUI-form"
             >
                 <div class="GUI-form-block GUI-form-block--require">
-                    <div class="GUI-form-block__title">Who will be traveling?</div>
+                    <div class="GUI-form-block__title" id="traveling">Who will be traveling?</div>
                     <div class="GUI-form-block__content">
                         <el-form-item class="GUI-form-item" prop="participant">
                             <RadioPic 
@@ -290,11 +290,16 @@
 		methods: {
             onSubmit(formName) {
                 this.$refs[formName].validate((valid) => {
-                    console.log(this.$refs[formName].model);
                     // console.log(this.form);
+                    var errorDom = document.getElementsByClassName('is-error');
+                    var htmlBody = document.querySelectorAll('body,html')[0];
+
                     if (valid) {
                         console.log('step1 submit success');
                         if(this.form.participant !== 'On my own' && this.form.participant !== 'Couple' && this.form.adults == 0){
+
+                            console.log(document.getElementById('traveling').offsetTop);
+                            htmlBody.scrollTop = document.getElementById('traveling').offsetTop;
                             return false;
                         }
                         let formData = Object.assign({},this.form);
@@ -313,6 +318,12 @@
                         }
                     } else {
                         console.log('error submit!!');
+                        //var valModel = this.$refs[formName].model;
+                        //console.log(valModel);
+                        if(errorDom.length){
+                            htmlBody.scrollTop = errorDom[0].offsetTop;
+                        }
+                        
                         return false;
                     }
                 });

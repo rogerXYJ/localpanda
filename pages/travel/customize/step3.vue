@@ -177,6 +177,11 @@ export default {
         }
     },
     mounted: function() {
+        //定位banner位置
+        var htmlBody = document.querySelectorAll('body,html')[0];
+        htmlBody.scrollTop = document.getElementById('banner-bar').offsetTop+60;
+
+
     	 this.logIn = window.localStorage.getItem("logstate");
         let formData = stepFormStorage.getStorage(storageKey);
         if(JSON.stringify(formData).length > 7){

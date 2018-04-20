@@ -182,7 +182,7 @@
 					data.tdk=listdata.data.tdk
 					//主题 标题和内容
 					for(let i=0;i<listdata.data.subjects.length;i++){
-						if(data.subject==listdata.data.subjects[i].keywords){
+						if(data.subject==listdata.data.subjects[i].urlField){
 							data.theme={
 								title:listdata.data.subjects[i].title,
 								description:delNullArr(listdata.data.subjects[i].description.split("\n")),
@@ -192,7 +192,7 @@
 							
 						}
 					}
-			 	
+			 	console.log(data.theme)
 		      } catch (err) {
 		      	
 		    }
@@ -275,6 +275,7 @@
 			let that = this
 			that.logIn = localStorage.getItem("logstate");
 			window.addEventListener("scroll", this.scorllBar);
+			
 		}
 	}
 </script>
@@ -389,7 +390,7 @@
 				}
 			}
 			.recommend{
-				margin-top: 88px;
+				margin-top: 60px;
 				
 				h3{
 					font-size: 30px;

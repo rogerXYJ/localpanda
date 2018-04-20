@@ -3,70 +3,150 @@
     <!-- 侧边栏导航，activeTitle传入1-1的格式，即可展开并高亮对应的导航 -->
     <cmsAside :activeTitle="activeTitle"></cmsAside>
 
-    <div class="cms-main" v-show="showPage">
+    <div class="cms-main">
       <h3 class="text_c">新增关键词</h3>
+      <p v-show="showPageTip">此ID暂无数据！</p>
 
-      <el-form ref="addForm" :model="addForm" label-width="150px" :rules="addFormRules" :show-message="true">
-        <el-form-item label="模  版：" required>
-          <span>{{templateName}}</span>
-        </el-form-item>
-        <el-form-item label="关键词：" required prop="keywords">
-          <el-input v-model="addForm.keywords"></el-input>
-        </el-form-item>
-        <el-form-item label="目的地：" required prop="destination">
-          <el-select v-model="addForm.destination" placeholder="请选择目的地">
-            <el-option label="Shanghai" value="Shanghai"></el-option>
-            <el-option label="Beijing" value="Beijing"></el-option>
-            <el-option label="Chengdu" value="Chengdu"></el-option>
-            <el-option label="Xi'an" value="Xi'an"></el-option>
-            <el-option label="Guilin" value="Guilin"></el-option>
-          </el-select>
-        </el-form-item>
+      <div v-show="showPage">
 
-        <div class="hr"></div>
+        <el-form ref="addForm" :model="addForm" label-width="150px" :rules="addFormRules" :show-message="true">
+          <el-form-item label="模  版：" required>
+            <span>{{templateName}}</span>
+            <a class="fr el-button el-button--primary mr20" v-show="pageId">关联子项</a>
+            <a class="fr el-button el-button--primary mr20" :href="'/cms/lp/keyword/child?id='+pageId" v-show="pageId">查看子项</a>
+          </el-form-item>
+          <el-form-item label="关键词：" required prop="keywords">
+            <el-input v-model="addForm.keywords"></el-input>
+          </el-form-item>
+          <el-form-item label="目的地：" required prop="destination">
+            <el-select v-model="addForm.destination" placeholder="请选择目的地">
+              <el-option label="Shanghai" value="Shanghai"></el-option>
+              <el-option label="Beijing" value="Beijing"></el-option>
+              <el-option label="Chengdu" value="Chengdu"></el-option>
+              <el-option label="Xi'an" value="Xi'an"></el-option>
+              <el-option label="Guilin" value="Guilin"></el-option>
+            </el-select>
+          </el-form-item>
 
-        <el-form-item label="标   题：" prop="title">
-          <el-input v-model="addForm.title"></el-input>
-        </el-form-item>
+          <div class="hr"></div>
 
-        <el-form-item label="描   述：" prop="description" v-show="addFormRules.description">
-          <el-input v-model="addForm.description" type="textarea" :autosize="{ minRows: 6, maxRows: 6 }"></el-input>
-        </el-form-item>
+          <el-form-item label="标   题：" prop="title">
+            <el-input v-model="addForm.title"></el-input>
+          </el-form-item>
 
-        <div class="hr"></div>
-        <el-form-item label="图片描述：">
-          <el-input v-model="addForm.content" v-show="!pageId"></el-input>
-          <el-input v-model="addForm.photo.content" v-show="pageId"></el-input>
-        </el-form-item>
-        <el-form-item label="头图图片：" prop="file" v-show="addFormRules.file">
-          <input type="file" @change="changeImg" accept="image/*">
-          <img width="50%" :src="addForm.photo.url" alt="">
-        </el-form-item>
+          <el-form-item label="描   述：" prop="description" v-show="addFormRules.description">
+            <el-input v-model="addForm.description" type="textarea" :autosize="{ minRows: 6, maxRows: 6 }"></el-input>
+          </el-form-item>
+
+          <div class="hr"></div>
+          <el-form-item label="图片描述：">
+            <el-input v-model="addForm.content" v-show="!pageId"></el-input>
+            <el-input v-model="addForm.photo.content" v-show="pageId"></el-input>
+          </el-form-item>
+          <el-form-item label="头图图片：" prop="file" v-show="addFormRules.file">
+            <input type="file" @change="changeImg" accept="image/*">
+            <img width="50%" :src="addForm.photo.url" alt="">
+          </el-form-item>
 
 
-        <div class="hr"></div>
+          <div class="hr"></div>
 
-        <el-form-item label="导向产品标题：" prop="linkText" v-show="addFormRules.linkText">
-          <el-input v-model="addForm.linkText"></el-input>
-          <p class="c_999">如：View all food activities</p>
-        </el-form-item>
+          <el-form-item label="导向产品标题：" prop="linkText" v-show="addFormRules.linkText">
+            <el-input v-model="addForm.linkText"></el-input>
+            <p class="c_999">如：View all food activities</p>
+          </el-form-item>
 
-        <el-form-item label="导向产品URL：" prop="linkUrl" v-show="addFormRules.linkUrl">
-          <el-input v-model="addForm.linkUrl"></el-input>
-          <p class="c_999">如：https://www.localpanda.com/activity/list/Shanghai?opctions=Food</p>
-        </el-form-item>
+          <el-form-item label="导向产品URL：" prop="linkUrl" v-show="addFormRules.linkUrl">
+            <el-input v-model="addForm.linkUrl"></el-input>
+            <p class="c_999">如：https://www.localpanda.com/activity/list/Shanghai?opctions=Food</p>
+          </el-form-item>
 
+          
+
+          <el-form-item>
+            <el-button type="primary" @click="submitForm('addForm')">{{pageId?'修改关键词':'新增关键词'}}</el-button>
+          </el-form-item>
+
+        </el-form>
         
+        
+        <!-- 关联子项弹窗 -->
+        <el-dialog title="关联子项" :visible.sync="showDialog" width="1200px" class="bind_dialog">
 
-        <el-form-item>
-          <el-button type="primary" @click="submitForm('addForm')">{{pageId?'修改关键词':'新增关键词'}}</el-button>
-        </el-form-item>
+          <el-dialog
+          width="40%"
+          title="设置该子项优先级"
+          :visible.sync="showDialogLever"
+          append-to-body>
+            <el-form :model="bindForm" :rules="bindRules" ref="bindForm" label-width="140px" class="demo-ruleForm">
+              <el-form-item label="该子项优先级">
+                <el-input type="text" class="w100 mr20" v-model="bindForm.ranking" auto-complete="off"></el-input>
+                <span>数值越小，排序越靠前</span>
+              </el-form-item>
 
-      </el-form>
-      
-      
-      
+              <el-form-item>
+                <el-button type="primary" @click="onBind">绑定</el-button>
+              </el-form-item>
+            </el-form>
+            
+          </el-dialog>
 
+
+          <!-- 筛选 -->
+          <el-form :inline="true" :model="formInline" class="mt40">
+
+            <el-form-item label="关键词">
+              <el-input v-model="formInline.keywords" placeholder="关键词"></el-input>
+            </el-form-item>
+
+            <el-form-item label="状态" class="el-form-min">
+              <el-select v-model="formInline.valid" placeholder="请选择状态">
+                <el-option label="全部" value=""></el-option>
+                <el-option label="有效" value="1"></el-option>
+                <el-option label="无效" value="0"></el-option>
+              </el-select>
+            </el-form-item>
+            
+            <el-form-item>
+              <el-button type="primary" @click="onSubmit">查询</el-button>
+            </el-form-item>
+          </el-form>
+
+          <!-- 表格 -->
+          <div class="keyword-table-box">
+            <el-table
+              :data="bindTableData.list"
+              border
+              empty-text="没有匹配数据！！！"
+              class="keyword-table">
+              <el-table-column prop="id" label="编号" width="50"></el-table-column>
+              <el-table-column prop="keywords" label="关键词"></el-table-column>
+              <el-table-column prop="destination" label="目的地" width="120"></el-table-column>
+              <el-table-column prop="level" label="模版" width="120">
+                <template slot-scope="scope"><span>{{getLevel(scope.row.level)}}</span></template>
+              </el-table-column>
+              <el-table-column label="状态" width="120">
+                <template slot-scope="scope"><span>{{scope.row.valid?'有效':'无效'}}</span></template>
+              </el-table-column>
+              <el-table-column prop="createTime" label="创建时间" width="200"></el-table-column>
+              <el-table-column label="操作" width="140">
+                <template slot-scope="scope">
+                  <a class="btn_text" :class="{c_999:scope.row.isbind}" @click="btnBind(scope.row.id,scope.$index)">关联</a>
+                  <!-- setValidBtnTxt(scope.row.valid) -->
+                </template>
+              </el-table-column>
+            </el-table>
+
+            <!-- 分页 -->
+            <el-pagination class="mt20" background layout="prev, pager, next" :page-size="bindTableData.pageLength" :total="bindTableData.length"></el-pagination>
+          </div>
+
+
+          
+
+        </el-dialog>
+
+      </div>
     </div>
 
     
@@ -96,10 +176,38 @@ export default {
       title : 'LP管理-新增/编辑关键词',
       keywords: 'LP管理-新增/编辑关键词',
       description: 'LP管理-新增/编辑关键词',
-      activeTitle: '1-1', //导航高亮位置
+      activeTitle: '1-1',
       showPage : false,
-      dialogShow : false,
+      showPageTip : false,
       dialogTip : '',
+
+
+
+      showDialog : false,
+      showDialogLever : false,
+      //数据操作
+      formInline: {
+        valid : '',
+        level : 3,
+        keywords: ''
+      },
+      //表格数据
+      bindTableData:{
+        list : [],
+        pageLength : 20,
+        length: 1
+      },
+      //优先级
+      childId : '',
+      bindIndex : '',
+      bindForm:{
+        ranking : 3
+      },
+      bindRules: {
+        ranking: [
+          { required: true, message: '请输入优先级', trigger: 'blur' },
+        ]
+      },
 
       pageId : urlQuery.id,
       
@@ -144,7 +252,6 @@ export default {
   },
   mounted(){
     var self = this;
-    this.showPage = true;
 
     //请求编辑数据
     if(this.pageId){
@@ -154,17 +261,29 @@ export default {
         }
       }).then(function(response) {
         if(response.status == 200){
-          self.addForm = response.data;
+          var data = response.data;
+          data.photo = {
+            photoId : '',
+            url : '',
+            content : ''
+          }
+          self.addForm = data;
           //如果是编辑页面 头图可以不验证
           if(self.addFormRules.file.required){
             self.addFormRules.file.required = self.pageId?false:true;
           }
-          
+          self.showPage = true;
+        }else{
+          self.showPage = false;
+          self.showPageTip = true;
         }
           //window.location.href = "/travel/customize/done";
       }, function(response) {
-        //this.isSubmiting = false;
+        self.showPage = false;
+        self.showPageTip = true;
       });
+    }else{
+      self.showPage = true;
     }
 
   },
@@ -177,6 +296,88 @@ export default {
       //change后校验
       this.$refs.addForm.validateField('file');
     },
+
+
+    //关联子项
+    getLevel(number){
+      return ['外层模版','其他/中层','底层模版'][number-1];
+    },
+    bindChild(){
+      this.showDialog = true;
+    },
+    btnBind(childId,index){
+      var self = this;
+
+      if(self.bindTableData.list[index].isbind){
+        return;
+      };
+
+
+      this.bindIndex = index;
+      this.childId = childId;
+      
+      //显示子弹窗
+      self.showDialogLever = true;
+    },
+    onSubmit(){
+      var self = this;
+      
+      this.axios.post('https://api.localpanda.com/api/content/landingpage/info',JSON.stringify(this.formInline),{
+        headers: {
+          'Content-Type': 'application/json; charset=UTF-8'
+        }
+      }).then(function(response) {
+
+        if(response.status == 200){
+          self.bindTableData.list = response.data.map(function(item){
+            item.isbind = false;
+            return item;
+          })
+          //设置数据条数
+          self.bindTableData.length = self.bindTableData.list.length;
+        }
+      
+        
+      }, function(response) {
+        //this.isSubmiting = false;
+      })
+    },
+    onBind(){
+
+      var self = this;
+      var bindIndex = self.bindIndex;
+      
+
+      
+      var formData = {
+        parentId: this.pageId,
+        childId: this.childId,
+        ranking : bindIndex
+      };
+      let param = new FormData()  // 创建form对象
+      for(let key in formData){
+        param.append(key, formData[key])  // 通过append向form对象添加数据
+      }
+
+      this.axios.post('https://api.localpanda.com/api/content/landingpage/binding/commit',param,{
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded;'
+        }
+      }).then(function(response) {
+        if(response.status == 200 && response.data.succeed){
+          
+          self.bindTableData.list[bindIndex].isbind = true;
+          self.showDialogLever = false;
+          console.log(123);
+
+        }
+      }, function(response) {
+        //this.isSubmiting = false;
+      });
+    },
+
+
+
     submitForm(formName){
       var self = this;
       //校验
@@ -217,9 +418,11 @@ export default {
           }).then(function(response) {
               
             var resData = response.data;
-            if(response.status == 200){
-              if(self.pageId && resData.succeed || !self.pageId){
-                location.href = '/cms/lp/keyword/tpl1?id='+resData;
+            if(response.status == 200 && resData.succeed){
+              if(!self.pageId){
+                location.href = '/cms/lp/keyword/tpl1?id='+resData.response;
+              }else if(self.pageId){
+                location.reload();
               }
             }
               //window.location.href = "/travel/customize/done";
@@ -268,6 +471,11 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss">
   .el-form-item{
+    margin-bottom: 30px;
+  }
+  .upload_box{ 
+    padding: 20px 0 0;
+    background-color: #f2f2f2;
     margin-bottom: 30px;
   }
 </style>

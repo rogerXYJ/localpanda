@@ -10,7 +10,7 @@
 				<h4>Explore</h4>
 				<ul class="clearfix">
 					<li v-for="i in tags">
-						<a :href="'/travel/landingPage/'+loc+'/'+keywords+'/'+i.urlField">
+						<a :href="'/travel/'+loc+'/'+keywords+'/'+i.urlField">
 							<img :src="i.photo.url" />
 							<span>{{i.keywords}}</span>	
 							<div class="mask"></div>
@@ -35,7 +35,7 @@
 				<div class="recommend-activity" v-if="item.products">
 					<ul class="clearfix">
 						<li v-for="i in item.products">
-							<a :href="'/activity/details/'+i.activityId">
+							<a :href="'/activity/details/'+i.activityId" target="_blank">
 								<div class="headPic">
 									<img :src="i.coverPhotoUrl"/>
 								</div>
@@ -47,10 +47,10 @@
 							</a>
 						</li>
 					</ul>
-					<a v-if="item.linkUrl" :href="item.linkUrl" class="moreLink">{{item.linkText}} <i class="iconfont">&#xe620;</i></a>
+					<a v-if="item.linkUrl" :href="item.linkUrl" class="moreLink" target="_blank">{{item.linkText}} <i class="iconfont">&#xe620;</i></a>
 				</div>
 			</div>
-			<div v-if="theme.linkUrl" class="btn"><a :href="theme.linkUrl">{{theme.linkText}}</a></div>
+			<div v-if="theme.linkUrl" class="btn"><a :href="theme.linkUrl" target="_blank">{{theme.linkText}}</a></div>
 		</div>
 		<div class="visitor">
 			<div class="visitor-cont page-size">

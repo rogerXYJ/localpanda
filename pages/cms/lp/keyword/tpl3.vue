@@ -37,17 +37,20 @@
           </el-form-item>
 
           <div class="hr"></div>
-          <el-form-item label="头图图片：" prop="file" v-show="addFormRules.file">
-            <img width="80%" :src="addForm.photo.url" alt="">
-            <input type="file" @change="changeImg" accept="image/*">
-          </el-form-item>
-          <el-form-item label="图片描述：">
-            <el-input v-model="addForm.content" v-show="!pageId"></el-input>
-            <el-input v-model="addForm.photo.content" v-show="pageId"></el-input>
-          </el-form-item>
-          <el-form-item v-show="pageId">
-            <el-button type="primary" plain @click="editPhoto">修改图片和描述</el-button>
-          </el-form-item>
+
+          <div class="upload_box">
+            <el-form-item label="头图图片：" prop="file" v-show="addFormRules.file">
+              <img width="80%" :src="addForm.photo.url" alt="">
+              <input type="file" @change="changeImg" accept="image/*">
+            </el-form-item>
+            <el-form-item label="图片描述：">
+              <el-input v-model="addForm.content" v-show="!pageId"></el-input>
+              <el-input v-model="addForm.photo.content" v-show="pageId"></el-input>
+            </el-form-item>
+            <el-form-item v-show="pageId">
+              <el-button type="primary" plain @click="editPhoto">修改图片和描述</el-button>
+            </el-form-item>
+          </div>
 
 
           <div class="hr"></div>
@@ -344,7 +347,7 @@ export default {
     margin-bottom: 30px;
   }
   .upload_box{ 
-    padding: 20px 0 0;
+    padding: 20px 0 5px;
     background-color: #f2f2f2;
     margin-bottom: 30px;
   }

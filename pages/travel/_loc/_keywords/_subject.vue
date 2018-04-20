@@ -22,15 +22,19 @@
 					<p :key="index" v-for="(item,index) in theme.description">{{item}}</p>
 				</div>
 			</div>
-			<div class="recommend" :key="index" v-for="(item,index) in items">
+			<div class="recommend" :class="{right:index%2}" :key="index" v-for="(item,index) in items">
 				<h3>{{item.title}}</h3>
 				<div class="introduce clearfix">
+					
 					<div class="introduce-pic" v-if="item.photo">
 						<img :src="item.photo.url"/>
 					</div>
+					
 					<div class="introduce-text" :class="item.photo?'':'noImg'">
 						<p v-for="j in delNullArr(item.description.split('\n'))">{{j}}</p>
 					</div>
+					
+					
 				</div>
 				<div class="recommend-activity" v-if="item.products">
 					<ul class="clearfix">
@@ -192,7 +196,7 @@
 							
 						}
 					}
-			 	console.log(data.theme)
+			 	//console.log(data.theme)
 		      } catch (err) {
 		      	
 		    }
@@ -389,6 +393,7 @@
 					}
 				}
 			}
+			
 			.recommend{
 				margin-top: 60px;
 				
@@ -402,21 +407,20 @@
 						float: left;
 						width: 478px;
 						height: 318px;
+						margin-right:50px;
 						img{
 							width: 100%;
 							height: 100%;
 						}
 					}
 					.introduce-text{
-						
-						margin-left: 508px;
-						
+						padding-left: 528px;
 						font-size:18px;
 						line-height: 24px;
 						
 					}
 					.noImg{
-							margin-left: 0!important;
+							padding: 0!important;
 						}
 				}
 				.recommend-activity{
@@ -490,6 +494,17 @@
 						
 					}
 				}
+			}
+			.right{
+				.introduce{
+					.introduce-pic{
+						float:right;
+						margin-right: 0;
+						margin-left: 50px;
+					}
+					.introduce-text{ padding-left: 0; padding-right: 528px;}
+				}
+				
 			}
 			.btn{
 				width: 573px;

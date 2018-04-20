@@ -204,7 +204,6 @@ export default {
       formInline: {
         valid : '',
         destination : '',
-        level : 3,
         keywords: ''
       },
 
@@ -387,7 +386,7 @@ export default {
     onSubmit(){
       var self = this;
       var searchData = this.formInline;
-      searchData.level = this.pageLevel+1;
+      searchData.id = this.pageId;
       this.axios.post('https://api.localpanda.com/api/content/landingpage/info',JSON.stringify(searchData),{
         headers: {
           'Content-Type': 'application/json; charset=UTF-8'

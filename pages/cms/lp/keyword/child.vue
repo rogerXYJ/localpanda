@@ -157,6 +157,14 @@
 
       
 
+      <!-- 文字提示 -->
+      <el-dialog title="温馨提示" :visible.sync="showDialogTip" width="500px" class="bind_dialog">
+        <p>{{dialogTipTxt}}</p>
+        <span slot="footer" class="dialog-footer">
+          <el-button type="primary" @click="showDialogTip = false">确 定</el-button>
+        </span>
+      </el-dialog>
+
 
     </div>
 
@@ -192,6 +200,8 @@ export default {
       tableShow : false,
       showDialog : false,
       showDialogLever : false,
+      showDialogTip : false,
+      dialogTipTxt : '',
 
       pageLevel : '',
       pageId : urlQuery.id,
@@ -253,6 +263,10 @@ export default {
   methods:{
     getLevel(number){
       return ['外层模版','其他/中层','底层模版'][number-1];
+    },
+    dialogTxt(txt){
+      this.showDialogTip = true;
+      this.dialogTipTxt = txt;
     },
     removeBind(row,index){
 
@@ -328,7 +342,7 @@ export default {
       var formData = {
         parentId: this.pageId,
         childId: this.childId,
-        ranking : bindIndex
+        ranking : this.bindForm.ranking
       };
       let param = new FormData()  // 创建form对象
       for(let key in formData){
@@ -387,6 +401,13 @@ export default {
       var self = this;
       var searchData = this.formInline;
       searchData.id = this.pageId;
+
+      
+      if(!searchData.destination && !searchData.keywords){
+        self.dialogTxt('查询失败，请输入目的地或关键词!');
+        return;
+      }
+
       this.axios.post('https://api.localpanda.com/api/content/landingpage/info',JSON.stringify(searchData),{
         headers: {
           'Content-Type': 'application/json; charset=UTF-8'
@@ -401,12 +422,12 @@ export default {
           //设置数据条数
           self.bindTableData.length = self.bindTableData.list.length;
         }else{
-          alert('查询失败');
+          self.dialogTxt('查询失败，请输入目的地或关键词!');
         }
       
         
       }, function(response) {
-        //this.isSubmiting = false;
+        self.dialogTxt('查询失败，请输入目的地或关键词!');
       })
     },
     onAddKeywordBtn(){

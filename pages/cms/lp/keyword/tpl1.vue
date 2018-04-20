@@ -406,7 +406,7 @@ export default {
       var formData = {
         parentId: this.pageId,
         childId: this.childId,
-        ranking : bindIndex
+        ranking : this.bindForm.ranking
       };
       let param = new FormData()  // 创建form对象
       for(let key in formData){

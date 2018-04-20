@@ -23,9 +23,9 @@ export default {
   },
   data () {
     return {
-      title : 'LP管理',
-      keywords: 'LP管理',
-      description: 'LP管理'
+      title : 'Localpanda CMS 管理系统',
+      keywords: 'Localpanda CMS 管理系统',
+      description: 'Localpanda CMS 管理系统'
     }
   },
   head(){

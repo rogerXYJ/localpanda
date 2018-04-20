@@ -13,11 +13,11 @@ h3{ font-size: 24px;}
 h4{ font-size: 16px;}
 
 /*快捷色值、属性*/
-.c_f60{ color:#F60;}
-.c_e38{ color:#e38;}
-.c_333{ color:#333;}
-.c_666{ color:#666;}
-.c_999{ color:#999;}
+.c_f60{ color:#F60 !important;}
+.c_e38{ color:#e38 !important;}
+.c_333{ color:#333 !important;}
+.c_666{ color:#666 !important;}
+.c_999{ color:#999 !important;}
 .red{ color:red;}
 .green{ color: green;}
 
@@ -33,6 +33,10 @@ h4{ font-size: 16px;}
 .ml30{ margin-left:30px !important;}
 .mt40 { margin-top: 40px !important;}
 
+.mr10{ margin-right: 10px;}
+.mr20{ margin-right: 20px;}
+.mr30{ margin-right: 30px;}
+
 .fl{ float:left;}
 .fr{ float:right;}
 
@@ -44,6 +48,9 @@ h4{ font-size: 16px;}
 
 .text_c{ text-align: center;}
 .text_r{ text-align: center;}
+
+.w50{ width: 50px!important;}
+.w100{ width: 100px!important;}
 
 .btn_text{ color: #1bbc9d; margin-right:15px; cursor: pointer;}
 

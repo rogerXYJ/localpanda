@@ -9,6 +9,9 @@
       <el-form ref="addForm" :model="addForm" label-width="150px" :rules="addFormRules" :show-message="true">
         <el-form-item label="模  版：" required>
           <span>{{templateName}}</span>
+          <a class="fr el-button el-button--primary mr20">关联子项</a>
+          <a class="fr el-button el-button--primary mr20" :href="'/cms/lp/keyword/child1?id='+pageId">查看子项</a>
+          
         </el-form-item>
         <el-form-item label="关键词：" required prop="keywords">
           <el-input v-model="addForm.keywords"></el-input>
@@ -68,7 +71,7 @@ import {urlData} from '~/assets/js/cms/main';
   
 
 export default {
-  name: 'addKeyword',
+  name: 'tpl1',
   components: {
     cmsAside
   },
@@ -77,9 +80,9 @@ export default {
 
     return {
       //页面配置
-      title : 'LP管理-新增关键词',
-      keywords: '新增关键词',
-      description: '新增关键词',
+      title : 'LP管理-新增/编辑关键词',
+      keywords: 'LP管理-新增/编辑关键词',
+      description: 'LP管理-新增/编辑关键词',
       activeTitle: '1-1', //导航高亮位置
       showPage : false,
       dialogShow : false,
@@ -170,20 +173,16 @@ export default {
           //编辑请求
           if(self.pageId){
             postUrl = 'https://api.localpanda.com/api/content/landingpage/info/update';
-            contentType = 'application/x-www-form-urlencoded; charset=UTF-8';
-
-            //console.log(formData);
-            formData = JSON.stringify(formData);
-          }else{
-            let param = new FormData()  // 创建form对象
-            
-            for(let key in formData){
-              param.append(key, formData[key])  // 通过append向form对象添加数据
-            }
-
-            formData = param;
-            
+            contentType = 'application/x-www-form-urlencoded';
           }
+
+
+          let param = new FormData()  // 创建form对象
+          for(let key in formData){
+            param.append(key, formData[key])  // 通过append向form对象添加数据
+          }
+          formData = param;
+
 
           //编辑和新增
           this.axios.post(postUrl,formData,{
@@ -194,8 +193,10 @@ export default {
             
             var resData = response.data;
             if(response.status == 200){
-              if(self.pageId && resData.succeed || !self.pageId){
+              if(!self.pageId){
                 location.href = '/cms/lp/keyword/tpl1?id='+resData;
+              }else if(self.pageId && resData.succeed){
+                location.reload();
               }
             }
 
@@ -243,5 +244,8 @@ export default {
 <style lang="scss">
   .el-form-item{
     margin-bottom: 30px;
+  }
+  .mr30{ 
+    margin-right: 30px;
   }
 </style>

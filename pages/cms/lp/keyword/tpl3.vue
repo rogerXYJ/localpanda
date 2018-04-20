@@ -152,7 +152,7 @@ export default {
         destination: { required: true, message: '请选择目的地', trigger:'blur'},
         title: { required: true, message: '请输入标题', trigger:'blur'},
         description: { required: true, message: '请输入描述', trigger: 'blur'},
-        file: { required: true, message: '请选择头图', trigger: 'change,blur'},
+        file: { required: false, message: '请选择头图', trigger: 'change,blur'},
         imgAlt: { required: false, message: '请选择头图', trigger: 'blur'},
         linkText: { required: false, message: '请输入导向产品标题', trigger: 'blur'},
         linkUrl: { required: false, message: '请输入导向产品URL', trigger: 'blur'},

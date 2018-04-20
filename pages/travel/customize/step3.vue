@@ -96,7 +96,7 @@ export default {
             }
         }
         let mailCheck = (rule, value, callback) => {
-            if(!/^([a-zA-Z0-9_-])+@(([a-zA-Z0-9_-])+\.)+(com|cn)/.test(value)){
+            if(!/^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/.test(value)){
                 callback(new Error('Please make sure you enter the correct information'));
             }else{
                 callback();

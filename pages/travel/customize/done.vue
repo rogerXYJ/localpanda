@@ -23,8 +23,8 @@ service@localpanda.com.
             </p>
             <h3>Customer service number</h3>
             <p>
-                0086 21 80182090<br>
-                +1-818-404-8141
+                +86 (21) 8018-2090<br>
+                +1 (888) 930-8849 (US toll free)
             </p>
         </div>
        <!-- <div class="done-recommend page-section">
@@ -108,7 +108,11 @@ export default {
     }
   },
   mounted: function() {
-  	 this.logIn = window.localStorage.getItem("logstate");
+       this.logIn = window.localStorage.getItem("logstate");
+       
+       //定位banner位置
+        var htmlBody = document.querySelectorAll('body,html')[0];
+        htmlBody.scrollTop = document.getElementById('banner-bar').offsetTop+60;
   }
 };
 </script>

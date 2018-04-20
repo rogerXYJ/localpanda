@@ -149,6 +149,7 @@
 
 			this.logIn = window.localStorage.getItem("logstate");
             let formData = stepFormStorage.getStorage(storageKey);
+            console.log(formData);
             if(JSON.stringify(formData).length > 7){
                 try{
                     

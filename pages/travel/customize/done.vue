@@ -111,7 +111,7 @@ export default {
        this.logIn = window.localStorage.getItem("logstate");
        
        //定位banner位置
-        var htmlBody = document.querySelectorAll('body,html')[0];
+        var htmlBody = document.documentElement;
         htmlBody.scrollTop = document.getElementById('banner-bar').offsetTop+60;
   }
 };

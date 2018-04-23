@@ -292,7 +292,7 @@
                 this.$refs[formName].validate((valid) => {
                     // console.log(this.form);
                     var errorDom = document.getElementsByClassName('is-error');
-                    var htmlBody = document.querySelectorAll('body,html')[0];
+                    var htmlBody = document.documentElement;
 
                     if (valid) {
                         console.log('step1 submit success');

@@ -3,7 +3,7 @@
 		<div class="mask"></div>
         <h2>Customize My Trip</h2>
         <h3>Create your own free China Itinerary, personalized to your schedule and interests.</h3>
-        <div class="banner-bar">
+        <div class="banner-bar" id="banner-bar">
             <ul>
                 <li><i class="iconfont icon-icon-test1"></i>Completely free</li>
                 <li><i class="iconfont icon-icon-test1"></i>Professional Advice</li>

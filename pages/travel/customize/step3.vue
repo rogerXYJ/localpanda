@@ -157,6 +157,12 @@ export default {
                     })
                 } else {
                     console.log('error submit!!');
+                    var errorDom = document.getElementsByClassName('page-section');
+                    var htmlBody = document.documentElement;
+                    if(errorDom.length){
+                        htmlBody.scrollTop = errorDom[0].offsetTop;
+                    }
+                    
                     this.isSubmiting = false;
                     return false;
                 }

@@ -129,6 +129,13 @@
                         window.location.href = "/travel/customize/step3";
                     } else {
                         console.log('error submit!!');
+                        setTimeout(function(){
+                            var errorDom = document.getElementsByClassName('is-error');
+                            var htmlBody = document.documentElement;
+                            if(errorDom.length){
+                                htmlBody.scrollTop = errorDom[0].offsetTop;
+                            }
+                        },150);
                         return false;
                     }
                 });

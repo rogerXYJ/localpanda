@@ -83,6 +83,55 @@
 					</ul>
 
 				</div>
+				<div class="provide">
+					<h3>The price detail</h3>
+					 <el-table
+					    :data="sixArr"
+					    stripe
+					    style="width: 100%"
+					    >
+					    <el-table-column
+					      prop="capacity"
+					      label="Number of adults"
+					      width="183"
+					      >
+					      <template slot-scope="scope">
+					      	<span v-if="scope.row.capacity==1">1 person</span>
+					      	<span v-else>{{scope.row.capacity}} people</span>
+					      </template>
+					    </el-table-column>
+					    <el-table-column
+					      prop="price"
+					      label="Total cost of adults"
+					      width="183"
+					      >
+					      <template slot-scope="scope">
+						      	<span>$ {{returnFloat(scope.row.price)}} USD</span>
+					      	</template>
+					    </el-table-column>
+					    <el-table-column
+					      prop="chlidenNumb"
+					      label="Number of children"
+					      width="183"
+					      >
+					      <template slot-scope="scope">
+					      	<span v-if="scope.row.capacity==1">1 child</span>
+					      	<span v-else>{{scope.row.capacity}} children</span>
+					      </template>
+					    </el-table-column>
+					     <el-table-column
+					      prop="childenTotal"
+					      label="Total cost of childen"
+					      width="185"
+					      align="center">
+					       <template slot-scope="scope">
+					      	<span v-if="picInfo.childDiscount">$ {{returnFloat(scope.row.price-picInfo.childDiscount)}} USD</span>
+					      	<span v-else>$ {{returnFloat(scope.row.price)}} USD</span>
+					      </template>
+					    </el-table-column>
+					  </el-table>
+					  <div class="view" v-if="isShowTable" @click="showTable">View More</div>
+				</div>
 				<div class="provide" id="provide">
 					<h3>What's Included?</h3>
 					<ul v-if="itemsIncluded">
@@ -121,9 +170,19 @@
 					<p v-if="remark" :key="index" v-for="(item,index) in remark">{{item}}</p>
 					<!--<p v-if="detail.venues" :key="index" v-for="(i,index) in detail.venues">{{i}}</p>-->
 				</div>
-			
-
+				<div class="notes">
+					<h3>Pictures from our users</h3>
+					<div class="photoCover" v-lazy:background-image="photoList[0].url">
+						<div class="mask"></div>
+						<div class="cover">
+							<h4>Check out our customers’ travel experiences with us!</h4>
+							<button>Have a look</button>
+						</div>
+					</div>
+					
+				</div>
 			</div>
+			
 			<div class="recommend" id="recommend" v-if="recommed.length>0">
 				<h3>Similar Experiences</h3>
 				<ul class="clearfix">
@@ -314,8 +373,8 @@
 				</div>
 			</div>
 		</div>
-		<Contact :ContactStatus="ContactStatus" v-on:isshowfn="isShowFn" v-on:contact-call-back="contactCallBack" :enName="enName" :objectId="detail.activityId" :objectType="objectType"></Contact>
-		<Alert :isShowAlert="isShowAlert" :alertTitle="alertTitle" :alertMessage="alertMessage" v-on:setIsShowAlert="getIsShowAlert"></Alert>
+		<!--<Contact :ContactStatus="ContactStatus" v-on:isshowfn="isShowFn" v-on:contact-call-back="contactCallBack" :enName="enName" :objectId="detail.activityId" :objectType="objectType"></Contact>
+		<Alert :isShowAlert="isShowAlert" :alertTitle="alertTitle" :alertMessage="alertMessage" v-on:setIsShowAlert="getIsShowAlert"></Alert>-->
 	</div>
 </template>
 
@@ -346,11 +405,13 @@ export default {
 	"inclusions",
 	"exclusions",
 	"notice",
-	"destination"
+	"destination",
+	"photoList"
   ],
   name: "Activities",
   data() {
     return {
+      PriceDetail:[],//价格明细
       open: null,
       infant: 0, //婴儿
       dateTime: "", //riqi
@@ -363,16 +424,16 @@ export default {
       isShowTime: false,
       options: {
         minDate: this.picInfo.earliestBookDate,
-        maxDate: addmulMonth(GetDateStr(this.picInfo.earliestBookDate), 12)
+        maxDate: addmulMonth(this.picInfo.earliestBookDate, 12)
       },
       adultsPic: "",
       objectType: "ACTIVITY",
       //tangkuang
-      ContactStatus: false,
+      /*ContactStatus: false,
       isShowAlert: false,
       alertTitle: "",
       alertMessage: "",
-      istrue: false,
+      istrue: false,*/
       error: false,
       isSelectDate: false,
       dateErrText: "*Final headcount does not include babies.",
@@ -381,6 +442,8 @@ export default {
       isShowView: false,
 	  isShowPicNode: false,
 	  enName:'',
+	  sixArr:[],
+	  isShowTable:false,//价格明细
     flatPickr : null
     };
   },
@@ -446,7 +509,11 @@ export default {
 		}
 		
 	},
-    isShowFn(val) {
+	showTable(){
+		this.isShowTable=false
+		this.sixArr=this.picInfo.details
+	},
+  /*  isShowFn(val) {
       this.istrue = val;
       if (this.istrue == true) {
         this.isShowAlert = true;
@@ -461,21 +528,22 @@ export default {
     },
     getIsShowAlert(val) {
       this.isShowAlert = val;
-    },
+    },*/
     	
     showContact() {
       let that = this;
-      that.ContactStatus = true;
+     
       window.ga && ga("gtag_UA_107010673_1.send", {
         hitType: "event",
         eventCategory: "Button",
         eventAction: "Click",
         eventLabel: "activity_inquiry"
       });
+      location.href="/travel/customize/step1"
     },
-    contactCallBack(val) {
+   /* contactCallBack(val) {
       this.ContactStatus = false;
-    },
+    },*/
     add(id) {
       if (id == 0) {
         this.adults++;
@@ -650,6 +718,12 @@ export default {
 
     //初始化日历
     that.flatPickr = new Flatpickr('#js_changetime',that.options);
+    if(that.picInfo.details.length>6){
+    	that.sixArr=that.picInfo.details.slice(0,6)
+    	that.isShowTable=true
+    }else{
+    	that.sixArr=that.picInfo.details
+    }
     
 
     
@@ -664,11 +738,55 @@ export default {
   }
 };
 </script>
+<style lang="scss">
+	.el-table__row .cell{
+		text-align: center;
+		span{
+			font-size: 18px;
+			color: #353a3f;
+			line-height: 35px;
+		}
+	}
+	.el-table th > .cell{
+		font-size: 16px;
+		font-weight: bold;
+		color: #353a3f;
+	}
+	.el-table{
+		margin-top:34px;
+	}
+	.el-table--group::after, .el-table--border::after, .el-table::before{
+		height: 0;
+	}
+	.el-table--striped .el-table__body tr.el-table__row--striped td{
+		background:rgba(27,188,157, 0.06)!important;
+		
+	}
+	.el-table th, .el-table td{
+		padding: 6px 0;
+	}
+	.el-table tr:hover{
+		background: #fff;
+	}
+	.el-table--enable-row-hover .el-table__body tr:hover>td{
+		background: #fff;
+	}
+	.el-table th.is-leaf, .el-table td{
+		border: 0;
+	}
+</style>
 
 <style lang="scss" scoped>
 @import "~/assets/font/iconfont.css";
 #activities {
+	
   .activitiesDel {
+  	.view{
+		font-size:18px;
+		color:#1bbc9d;
+		cursor: pointer;
+		margin-top: 20px;
+	}
     position: relative;
     max-width: 1170px;
     margin: 0 auto;
@@ -1281,6 +1399,35 @@ export default {
           line-height: 26px;
           margin-top: 10px;
         }
+        .photoCover{
+        	height: 300px;
+        	background-repeat: no-repeat!important;
+        	background-size: cover!important;
+        	background-position: center;
+        	position: relative;
+        	.mask{
+        		position: absolute;
+        		left: 0;
+        		top: 0;
+        		width: 100%;
+        		height: 100%;
+        		background: linear-gradient( to left, rgba(255,249,248,0.6),rgba(255,249,248,1));
+        	}
+        	.cover{
+        		padding: 92px 0 16px 39px;
+        		h4{
+        			font-size: 24px;
+        			position: relative;
+        		}
+        		button{
+        			height:46px;
+        			width: 242px;
+        			line-height: 46px;
+        			text-align: center;
+        		}
+        	}
+
+        }
       }
     }
     .recommend {
@@ -1352,14 +1499,14 @@ export default {
             }
             h4 {
               color: #353a3f;
-              height: 48px;
+              height: 74px;
               line-height: 24px;
               text-overflow: ellipsis;
               display: -webkit-box;
               display: -moz-box;
               -moz-box-orient: vertical;
               -webkit-box-orient: vertical;
-              -webkit-line-clamp: 2;
+              -webkit-line-clamp: 3;
               word-wrap: break-word;
               overflow: hidden;
               margin-top: 14px;

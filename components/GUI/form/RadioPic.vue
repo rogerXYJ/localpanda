@@ -219,4 +219,9 @@
             }
         }
     }
+    .GUI-form{
+        .el-radio__inner{
+            border-color: #bbb;
+        }
+    }
 </style>

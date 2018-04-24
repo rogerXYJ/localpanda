@@ -96,7 +96,7 @@ export default {
             }
         }
         let mailCheck = (rule, value, callback) => {
-            if(!/^([a-zA-Z0-9_-])+@(([a-zA-Z0-9_-])+\.)+(com|cn)/.test(value)){
+            if(!/^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/.test(value)){
                 callback(new Error('Please make sure you enter the correct information'));
             }else{
                 callback();
@@ -157,6 +157,12 @@ export default {
                     })
                 } else {
                     console.log('error submit!!');
+                    var errorDom = document.getElementsByClassName('page-section');
+                    var htmlBody = document.documentElement;
+                    if(errorDom.length){
+                        htmlBody.scrollTop = errorDom[0].offsetTop;
+                    }
+                    
                     this.isSubmiting = false;
                     return false;
                 }
@@ -177,6 +183,11 @@ export default {
         }
     },
     mounted: function() {
+        //定位banner位置
+        var htmlBody = document.documentElement;
+        htmlBody.scrollTop = document.getElementById('banner-bar').offsetTop+60;
+
+
     	 this.logIn = window.localStorage.getItem("logstate");
         let formData = stepFormStorage.getStorage(storageKey);
         if(JSON.stringify(formData).length > 7){

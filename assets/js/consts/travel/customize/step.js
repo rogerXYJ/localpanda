@@ -156,21 +156,21 @@ module.exports = {
             }
         },
         {
-            label: "Standard & Comfort <br> $75 or less",
+            label: "Standard & Comfort <br> 75 USD or less",
             value: {
                 accommodationMinPrice: 0,
                 accommodationMaxPrice: 75
             }
         },
         {
-            label: "4-star & Superior <br> $75 -- 150",
+            label: "4-star & Superior <br> 75 USD to 150 USD",
             value: {
                 accommodationMinPrice: 75,
                 accommodationMaxPrice: 150
             }
         },
         {
-            label: "5-star & Luxury <br> $150 or more",
+            label: "5-star & Luxury <br> 150 USD to more",
             value: {
                 accommodationMinPrice: 150,
                 accommodationMaxPrice: 150

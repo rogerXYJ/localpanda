@@ -13,7 +13,7 @@
                 class="GUI-form"
             >
                 <div class="GUI-form-block GUI-form-block--require">
-                    <div class="GUI-form-block__title">Who will be traveling?</div>
+                    <div class="GUI-form-block__title" id="traveling">Who will be traveling?</div>
                     <div class="GUI-form-block__content">
                         <el-form-item class="GUI-form-item" prop="participant">
                             <RadioPic 
@@ -33,7 +33,7 @@
                     <div class="GUI-form-block__title">Where do you want to travel and what are you interested in doing?</div>
                     <div class="GUI-form-block__content">
                         <el-form-item class="GUI-form-item" prop="destinations">
-                            <div class="GUI-form-item__title">Travel destinations</div>
+                            <div class="GUI-form-item__title">Travel destinations <span class="red">*</span></div>
                             <Checkbox 
                                 class="travel-des"
                                 :dataSource="whereDataSource" 
@@ -57,7 +57,7 @@
                             </Checkbox>
                         </el-form-item>
                         <el-form-item class="GUI-form-item GUI-form-block__content_border" prop="interests">
-                            <div class="GUI-form-item__title">Travel Interests</div>
+                            <div class="GUI-form-item__title">Travel Interests <span class="red">*</span></div>
                             <Checkbox 
                                 class="travel-interest"
                                 :dataSource="interestsDataSource" 
@@ -293,13 +293,17 @@
 		methods: {
             onSubmit(formName) {
                 this.$refs[formName].validate((valid) => {
-                    console.log(this.$refs[formName].model);
                     // console.log(this.form);
+                    
+                    var htmlBody = document.documentElement;
+                    if(this.form.participant !== 'On my own' && this.form.participant !== 'Couple' && this.form.adults == 0){
+                        htmlBody.scrollTop = document.getElementById('traveling').offsetTop;
+                        return false;
+                    }
+
                     if (valid) {
                         console.log('step1 submit success');
-                        if(this.form.participant !== 'On my own' && this.form.participant !== 'Couple' && this.form.adults == 0){
-                            return false;
-                        }
+                        
                         let formData = Object.assign({},this.form);
                         if(this.arriveTimeNotDecided){
                             formData.arriveTime = '';
@@ -316,6 +320,15 @@
                         }
                     } else {
                         console.log('error submit!!');
+                        //var valModel = this.$refs[formName].model;
+                        //console.log(valModel);
+                        setTimeout(function(){
+                            var errorDom = document.getElementsByClassName('is-error');
+                            if(errorDom.length){
+                                htmlBody.scrollTop = errorDom[0].offsetTop;
+                            }
+                        },200);
+                        
                         return false;
                     }
                 });
@@ -472,6 +485,10 @@
             font-weight:bold;
             color: #353a3f;
         }
+    }
+    .red{ 
+        color:#e14f3f;
+        font-size:16px;
     }
     
 </style>

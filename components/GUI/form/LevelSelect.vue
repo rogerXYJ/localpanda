@@ -84,9 +84,9 @@
         li{
             flex: 1;
             p{
-                width: 150px;
+                width: 250px;
                 position: relative;
-                margin-left: -75px;
+                margin-left: -125px;
                 text-align: center;
                 line-height: 24px;
                 &:before{
@@ -105,7 +105,7 @@
                 right: 0;
                 top: 0;
                 p{
-                    margin: 0 -75px 0 0;
+                    margin: 0 -125px 0 0;
                 }
             }
             

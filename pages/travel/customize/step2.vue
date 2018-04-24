@@ -12,7 +12,7 @@
                 class="GUI-form"
             >
                 <div class="GUI-form-block">
-                    <div class="GUI-form-block__title mb10">What is your preferred type and budget of accommodation?</div>
+                    <div class="GUI-form-block__title mb10">What is your preferred type and budget of accommodation (per night)?</div>
                     <div class="GUI-form-block__content">
                         <el-form-item class="GUI-form-item" prop="accommodation">
                             <LevelSelect :dataSource="accommodationDataSource" v-model="form.accommodation"></LevelSelect>

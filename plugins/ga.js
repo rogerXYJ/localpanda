@@ -5,12 +5,19 @@ const nuxtConfig = require('../nuxt.config');
 export default ({ app }) => {
 
 
-  // console.log(app.router.options);
-  // window.app = app;
-  //检测线上环境
-  if (process.env.NODE_ENV !== 'production' && !nuxtConfig.build.publicPath) {
+  let NODE_ENV = process.env.NODE_ENV,
+  buildData = nuxtConfig.build;
+
+  //检测线上环境，或者 检测测试环境使用ga（在nuxt.config里配置在测试环境是否显示ga）
+  if (NODE_ENV !== 'production' && !buildData.publicPath || NODE_ENV !== 'production' && !buildData.testGa) {
     //测试环境支付key
     window.fb_code = "pk_test_ymxnY3KoqRcjCEElfvFxPy1G"
+    
+    //防止ga报错，默认添加ga方法
+    window.ga = function(){
+      console.log('this is test! no ga code!');
+    };
+    //跳出，不走ga
     return;
   }else{
     //线上环境支付key

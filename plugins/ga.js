@@ -17,6 +17,11 @@ export default ({ app }) => {
     window.ga = function(){
       console.log('this is test! no ga code!');
     };
+    window._gat = {
+      _getTracker(){
+        return {_addTrans(){},_addItem(){},_trackTrans(){}};
+      }
+    }
     //跳出，不走ga
     return;
   }else{

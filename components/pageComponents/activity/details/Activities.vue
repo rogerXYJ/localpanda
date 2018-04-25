@@ -21,7 +21,6 @@
 					<h3>{{detail.title}}</h3>
 					<div class="types">
 						<span v-for="i in detail.tourTypes">{{i}}</span>
-
 					</div>
 				</div>
 				<ul class="description clearfix">
@@ -83,7 +82,7 @@
 					</ul>
 
 				</div>
-				<div class="provide">
+				<div class="provide" v-if="picInfo.details.length>0">
 					<h3>The price detail</h3>
 					 <el-table
 					    :data="sixArr"
@@ -111,12 +110,13 @@
 					    </el-table-column>
 					    <el-table-column
 					      prop="chlidenNumb"
-					      label="Number of children"
+					      label="Number of adults"
 					      width="183"
 					      >
 					      <template slot-scope="scope">
-					      	<span v-if="scope.row.capacity==1">1 child</span>
-					      	<span v-else>{{scope.row.capacity}} children</span>
+					      	<div  v-show="scope.row.right.capacity">
+								<span>{{scope.row.right.capacity}} people</span>
+							</div>
 					      </template>
 					    </el-table-column>
 					     <el-table-column
@@ -125,8 +125,9 @@
 					      width="185"
 					      align="center">
 					       <template slot-scope="scope">
-					      	<span v-if="picInfo.childDiscount">$ {{returnFloat(scope.row.price-picInfo.childDiscount)}} USD</span>
-					      	<span v-else>$ {{returnFloat(scope.row.price)}} USD</span>
+					       	<div  v-show="scope.row.right.capacity">
+						      	<span>$ {{returnFloat(scope.row.right.price)}} USD</span>
+					      	</div>
 					      </template>
 					    </el-table-column>
 					  </el-table>
@@ -170,12 +171,12 @@
 					<p v-if="remark" :key="index" v-for="(item,index) in remark">{{item}}</p>
 					<!--<p v-if="detail.venues" :key="index" v-for="(i,index) in detail.venues">{{i}}</p>-->
 				</div>
-				<div class="notes">
+				<div class="notes" v-if="photoList.length>0" @click="showPhoto">
 					<h3>Pictures from our users</h3>
-					<div class="photoCover" v-lazy:background-image="photoList[0].url">
+					<div class="photoCover" v-lazy:background-image="photoList.length>0?photoList[0].url:''">
 						<div class="mask"></div>
 						<div class="cover">
-							<h4>Check out our customers’ travel experiences with us!</h4>
+							<h4>Check out our customers' travel experiences with us!</h4>
 							<button>Have a look</button>
 						</div>
 					</div>
@@ -373,9 +374,9 @@
 				</div>
 			</div>
 		</div>
-		<!--<Contact :ContactStatus="ContactStatus" v-on:isshowfn="isShowFn" v-on:contact-call-back="contactCallBack" :enName="enName" :objectId="detail.activityId" :objectType="objectType"></Contact>
-		<Alert :isShowAlert="isShowAlert" :alertTitle="alertTitle" :alertMessage="alertMessage" v-on:setIsShowAlert="getIsShowAlert"></Alert>-->
+		<Pic :photoList="photoList" :alertPicStatus="alertPicStatus" @alert-call-back="setCallBack"></Pic>
 	</div>
+	
 </template>
 
 <script>
@@ -384,11 +385,9 @@ import {
   addmulMonth,
   getUrlParams
 } from "~/assets/js/plugin/utils";
-import Contact from "~/components/Contact/Contact";
-import Alert from "~/components/Prompt/Alert";
-//import flatPickr from "vue-flatpickr-component";
-import Flatpickr from 'flatpickr';
 
+import Flatpickr from 'flatpickr';
+import Pic from "~/components/pageComponents/activity/details/Pic"
 export default {
   props: [
     "remark",
@@ -407,6 +406,7 @@ export default {
 	"notice",
 	"destination",
 	"photoList"
+	
   ],
   name: "Activities",
   data() {
@@ -428,12 +428,6 @@ export default {
       },
       adultsPic: "",
       objectType: "ACTIVITY",
-      //tangkuang
-      /*ContactStatus: false,
-      isShowAlert: false,
-      alertTitle: "",
-      alertMessage: "",
-      istrue: false,*/
       error: false,
       isSelectDate: false,
       dateErrText: "*Final headcount does not include babies.",
@@ -444,15 +438,22 @@ export default {
 	  enName:'',
 	  sixArr:[],
 	  isShowTable:false,//价格明细
-    flatPickr : null
+      flatPickr : null,
+      alertPicStatus:false,
     };
   },
   components: {
     //flatPickr,
-    Contact,
-    Alert
+    Pic
+   
   },
   methods: {
+  	showPhoto(){
+  		this.alertPicStatus=true
+  	},
+  	setCallBack(val){
+  		this.alertPicStatus=val
+  	},
     showVeiwMore() {
       this.isShowView = true;
       window.ga && ga("gtag_UA_107010673_1.send", {
@@ -511,25 +512,10 @@ export default {
 	},
 	showTable(){
 		this.isShowTable=false
-		this.sixArr=this.picInfo.details
+		
+	
+		
 	},
-  /*  isShowFn(val) {
-      this.istrue = val;
-      if (this.istrue == true) {
-        this.isShowAlert = true;
-        this.alertTitle = "Submission completed!";
-        this.alertMessage =
-          "Thank you for your feedback.We will get back to you within 1 day.";
-        this.istrue = false;
-      } else {
-        this.isShowAlert = true;
-        this.alertMessage = "Failed!";
-      }
-    },
-    getIsShowAlert(val) {
-      this.isShowAlert = val;
-    },*/
-    	
     showContact() {
       let that = this;
      
@@ -541,9 +527,6 @@ export default {
       });
       location.href="/travel/customize/step1"
     },
-   /* contactCallBack(val) {
-      this.ContactStatus = false;
-    },*/
     add(id) {
       if (id == 0) {
         this.adults++;
@@ -644,7 +627,7 @@ export default {
             ? that.children * that.picInfo.childDiscount
             : null
         };
-        console.log(orderInfo)
+        //console.log(orderInfo)
         orderInfo = JSON.stringify(orderInfo);
        	
         localStorage.setItem("orderInfo", orderInfo);
@@ -718,12 +701,43 @@ export default {
 
     //初始化日历
     that.flatPickr = new Flatpickr('#js_changetime',that.options);
-    if(that.picInfo.details.length>6){
-    	that.sixArr=that.picInfo.details.slice(0,6)
-    	that.isShowTable=true
-    }else{
-    	that.sixArr=that.picInfo.details
+    
+    
+    let thisDetails = this.picInfo.details;
+    
+    let newDetails = [];
+    for(let i=thisDetails.length-1;i>0;i--){
+    	if(thisDetails[i].capacity-thisDetails[i-1].capacity>1){
+    		
+    		for(let j=0;j<thisDetails[i].capacity-thisDetails[i-1].capacity-1;j++){
+    			
+    			newDetails.push(thisDetails[i])
+    		}
+    	}
+    	
     }
+    thisDetails=thisDetails.concat(newDetails)
+	thisDetails.sort((x,y)=>{
+		 return (y.capacity < x.capacity) ? 1 : -1
+	})
+	console.log(thisDetails)
+	var list=[]
+	for(let i=0;i<thisDetails.length;i++){
+		
+		if(i>11) this.isShowTable=true;
+		if(i%2==0){
+			//newDetails[parseInt(i/2)] = [];
+			list.push(thisDetails[i]);
+			if(thisDetails.length-1==i){
+				list[list.length-1].right = {};
+			}
+		}else{
+			list[list.length-1].right = thisDetails[i];
+		}
+	}
+    that.sixArr=list;
+    
+    
     
 
     
@@ -775,7 +789,6 @@ export default {
 		border: 0;
 	}
 </style>
-
 <style lang="scss" scoped>
 @import "~/assets/font/iconfont.css";
 #activities {
@@ -1400,6 +1413,7 @@ export default {
           margin-top: 10px;
         }
         .photoCover{
+        	cursor: pointer;
         	height: 300px;
         	background-repeat: no-repeat!important;
         	background-size: cover!important;
@@ -1414,16 +1428,23 @@ export default {
         		background: linear-gradient( to left, rgba(255,249,248,0.6),rgba(255,249,248,1));
         	}
         	.cover{
-        		padding: 92px 0 16px 39px;
+        		padding: 92px 0 0 39px;
+        		position: relative;
         		h4{
         			font-size: 24px;
-        			position: relative;
+        			width:385px;
         		}
         		button{
         			height:46px;
         			width: 242px;
         			line-height: 46px;
         			text-align: center;
+        			border-radius: 30px;
+        			background: #fff;
+					box-shadow: 0px 2px 20px 0px rgba(0, 0, 0, 0.1);
+					margin-top: 16px;
+					font-size: 16px;
+					font-weight: bold;
         		}
         	}
 

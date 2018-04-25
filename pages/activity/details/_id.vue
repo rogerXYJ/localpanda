@@ -148,7 +148,7 @@
 					}
 				);
 				data.photoList=photoList.data
-				console.log(data.photoList)
+				
 				//价格
 				apiActivityPriceRes = await Vue.axios.get(
 					apiBasePath + "activity/price/" + id

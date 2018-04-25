@@ -9,7 +9,7 @@ export default ({ app }) => {
   buildData = nuxtConfig.build;
 
   //检测线上环境，或者 检测测试环境使用ga（在nuxt.config里配置在测试环境是否显示ga）
-  if (NODE_ENV !== 'production' && !buildData.publicPath || NODE_ENV !== 'production' && !buildData.testGa) {
+  if (NODE_ENV !== 'production' && !buildData.publicPath || NODE_ENV == 'production' && !buildData.testGa && !buildData.publicPath) {
     //测试环境支付key
     window.fb_code = "pk_test_ymxnY3KoqRcjCEElfvFxPy1G"
     

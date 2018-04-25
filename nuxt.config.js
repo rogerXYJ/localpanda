@@ -24,6 +24,7 @@ module.exports = {
     { src: '~/plugins/axios.js'},
     { src: '~/plugins/vue-lazyload.js', ssr: false },
     { src: '~/plugins/element-ui.js', ssr: false },
+    { src: '~plugins/ga.js', ssr: false }
     /*{ src: '~/plugins/vue-infinite-loading.js'}*/
 
   ],
@@ -31,4 +32,8 @@ module.exports = {
     'element-ui/lib/theme-chalk/index.css',
     'swiper/dist/css/swiper.css',
   ],
+  render : {
+    //禁用预加载
+    resourceHints : false
+  }
 }

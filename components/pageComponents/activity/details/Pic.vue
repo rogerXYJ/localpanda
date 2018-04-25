@@ -16,11 +16,13 @@ export default {
 					},
 			        swiperOptionThumbs: {
 			          spaceBetween: 10,
-			          slidesPerView:6,
+			          slidesPerView:this.photoList.length,
+			           
 			          touchRatio: 0.2,
 			          loop:true,
 			          slideToClickedSlide: true,
 			          loopedSlides: this.photoList.length, 
+			          
 			           
 			        }
 			      
@@ -52,7 +54,7 @@ export default {
 		        const swiperTop = that.swiperTop;
 		        
 		        
-		        console.log(that)
+		       
 		        const swiperThumbs = that.swiperThumbs;
 		        swiperTop.controller.control = swiperThumbs
         		swiperThumbs.controller.control = swiperTop
@@ -138,11 +140,8 @@ export default {
 			    
 			         .swiper-slide {
 			         	text-align: center;
-					    img{
-					    	
-					    }
-					    
-  					
+					    overflow: hidden;
+			
 			    }
 			    .gallery-top {
 			        height: 574px;

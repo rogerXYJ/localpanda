@@ -45,7 +45,7 @@
 					<div class="totalPic">${{returnFloat(opctions.amount)}}</div>
 				</div>
 			</div>
-			<p class="refundPolicy" style="margin-top: 30px; color: red;">You can get a 100% refund up to {{refundTimeLimit}} hours before your trip.Please be assured to book your trip.</p>
+			<p class="refundPolicy" style="margin-top: 30px; color: red;">You can get a 100% refund up to {{refundTimeLimit}} hours before your trip.</p>
 			<p style="width: 600px;margin-top: 20px;">You ordered as a guest. To view your order details, you can click "My Bookings" on the top bar then type in the reservee's email address and name you entered before to access that information.</p>
 			<button class="btnlinner paybtn" @click="pay">Pay Now</button>
 		</div>

@@ -35,6 +35,6 @@ module.exports = {
   ],
   render : {
     //禁用预加载
-    resourceHints : false
+    resourceHints : false,
   }
 }

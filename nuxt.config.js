@@ -5,7 +5,8 @@ module.exports = {
     ]
   },
   build: {
-  	//publicPath: 'https://d2q486kjf9cwwu.cloudfront.net/static/js/',
+    //publicPath: 'https://d2q486kjf9cwwu.cloudfront.net/static/js/',
+    testGa : false,
     vendor: [
         'axios',
         'vue-lazyload',
@@ -24,6 +25,7 @@ module.exports = {
     { src: '~/plugins/axios.js'},
     { src: '~/plugins/vue-lazyload.js', ssr: false },
     { src: '~/plugins/element-ui.js', ssr: false },
+    { src: '~plugins/ga.js', ssr: false }
     /*{ src: '~/plugins/vue-infinite-loading.js'}*/
 
   ],
@@ -31,4 +33,8 @@ module.exports = {
     'element-ui/lib/theme-chalk/index.css',
     'swiper/dist/css/swiper.css',
   ],
+  render : {
+    //禁用预加载
+    resourceHints : false
+  }
 }

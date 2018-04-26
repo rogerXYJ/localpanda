@@ -35,7 +35,7 @@
 				</li>
 			</ul>
 			<p>{{dateErrText}}</p>
-			<p>You can get a 100% refund up to {{refundTimeLimit}} hours before your trip.Please be assured to book your trip.</p>
+			<p>You can get a 100% refund up to {{refundTimeLimit}} hours before your trip.</p>
 		</div>
 		<div class="btn">
 			<button @click="order">Next</button>

@@ -1,7 +1,7 @@
 <template>
 	<div class="themMenu">
 		<ul class="clearfix">
-			<li v-for="i in tags" ><a :href="'/travel/'+loc+'/'+keywords+'/'+i.urlField" :class="subject==i.urlField?'active':''">{{i.keywords}}</a></li>
+			<li v-for="i in tags" ><a :href="'/travel/'+loc+'/'+keywords+'/'+i.urlField+'#'" :class="subject==i.urlField?'active':''"><span>{{i.keywords}}</span></a></li>
 		</ul>
 	</div>
 </template>
@@ -53,13 +53,21 @@
 					width: 1170px;
 					margin: 0 auto;
 					li {
+						
 						float: left;
-						line-height: 76px;
+						
 						font-size: 16px;
-						margin-right: 36px;
+						margin-right: 20px;
 						cursor: pointer;
 						position:relative;
+						
 						a{
+							display:block; 
+							height: 76px;
+							width: 120px;
+							display: flex;
+				            justify-content: center;/*实现水平居中*/
+				            align-items:center; /*实现垂直居中*/
 							&:hover{
 								color: #1bbc9d;
 								&:after{
@@ -68,7 +76,7 @@
 									width: 100%;
 									height: 3px;
 									background:#1bbc9d;
-									bottom:0;
+									bottom:0px;
 									left: 0;
 								}
 							}	

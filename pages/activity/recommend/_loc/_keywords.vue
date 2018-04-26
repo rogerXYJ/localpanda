@@ -560,14 +560,14 @@
 							}
 							.titleText {
 								width: 100%;
-								height: 48px;
+								height: 78px;
 								text-overflow: ellipsis;
 								display: -webkit-box;
 								display: -moz-box;
 								-moz-box-orient: vertical;
 								-webkit-box-orient: vertical;
-								-webkit-line-clamp: 2;
-								-moz-line-clamp: 2;
+								-webkit-line-clamp: 3;
+								-moz-line-clamp: 3;
 								-o-text-overflow: ellipsis;
 								word-wrap: break-word;
 								font-size: 20px;

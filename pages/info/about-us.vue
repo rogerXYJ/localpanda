@@ -124,16 +124,16 @@
 	
 	        </div>
         </div>
-        <!--<Foot></Foot>-->
-        <FooterCommon></FooterCommon>
+        <Foot></Foot>
+        <!--<FooterCommon></FooterCommon>-->
     </div>
 </template>
 
 <script>
 import Vue from 'vue'
 import HeaderCommon from '~/components/HeaderCommon/HeaderCommon';
-import FooterCommon from '~/components/FooterCommon/FooterCommon';
-//import Foot from '~/components/FooterCommon/Foot';
+//import FooterCommon from '~/components/FooterCommon/FooterCommon';
+import Foot from '~/components/FooterCommon/Foot';
 export default {
     name: 'about-us',
     data(){
@@ -145,7 +145,8 @@ export default {
     },
     components: {
     	HeaderCommon,
-    	FooterCommon
+    	//FooterCommon,
+    	Foot
     },
     methods: {
     	videoPlay(){

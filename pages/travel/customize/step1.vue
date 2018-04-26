@@ -274,18 +274,21 @@
                 }
             },
 			arriveCityInput: function (newText, oldText) {
-                if(newText != oldText){
+                if(newText==oldText){
                     this.form.arriveCity = newText;
                 }
             },
             arriveCityNotDecided: function(newState, oldState){
-                console.log(newState);
+               console.log(newState)
                 if(newState&&!this.arriveCityInput){
                     this.form.arriveCity = 'Not Decided';
                 }else{
                     this.form.arriveCity = '';
                 }
-            }
+            },
+            /*"form.arriveCity":function(val,oldVal){
+            	console.log(val)
+            }*/
 		},
 		methods: {
             onSubmit(formName) {

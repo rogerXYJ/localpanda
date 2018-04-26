@@ -19,6 +19,7 @@
 			:destinations="destinations" 
 			:itemsIncluded="itemsIncluded" 
 			:destination="destination"
+			:photoList="photoList"
 			:recommed="recommed"></Activities>
 		<FooterCommon></FooterCommon>
 		<div class="toast-container" v-if="toastShow">
@@ -76,12 +77,15 @@
 				toastShow: false,
 				inclusions:[],
 				exclusions:[],
-				notice:[]
+				notice:[],
+				photoList:""
 			};
 			let response = {};
 			let apiActivityPriceRes = {};
 			let apiActivityRecommendRes = {};
+			let photoList={};
 			try {
+				//活动详情
 				response = await Vue.axios.get(apiBasePath + "activity/basic/" + id);
 				if(response.data.valid == 1) {
 					data.detail = response.data;
@@ -125,10 +129,27 @@
 						message: "500"
 					});
 				}
+				//推荐活动
 				apiActivityRecommendRes = await Vue.axios.get(
 					apiBasePath + "activity/recommend/" + id
 				);
+				
 				data.recommed = apiActivityRecommendRes.data;
+				//游客图片
+				let photoParams={
+					"objectId": id,
+					"objectType": "ACTIVITY_TRAVELER"
+				}
+				photoList=await Vue.axios.post(
+					apiBasePath+"activity/traveler/photo/all",JSON.stringify(photoParams),{
+						headers: {
+						'Content-Type': 'application/json; charset=UTF-8'
+						}
+					}
+				);
+				data.photoList=photoList.data
+				
+				//价格
 				apiActivityPriceRes = await Vue.axios.get(
 					apiBasePath + "activity/price/" + id
 				);

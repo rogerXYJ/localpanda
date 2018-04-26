@@ -8,7 +8,7 @@
 						<em class="iconfont">&#xe64a;</em>
 						<a v-if="destination=='Xi\'an'" href="/activity/list/Xian">Xi'an Activities</a>
 						<a v-else :href="'/activity/list/'+destination">{{destination}} Activities</a>
-						
+
 						<em class="iconfont">&#xe64a;</em>
 						<span>Activity Details</span>
 					</div>
@@ -21,7 +21,6 @@
 					<h3>{{detail.title}}</h3>
 					<div class="types">
 						<span v-for="i in detail.tourTypes">{{i}}</span>
-
 					</div>
 				</div>
 				<ul class="description clearfix">
@@ -40,14 +39,14 @@
 					</li>
 				</ul>
 				<div class="languages clearfix">
-						
-						<label class="iconfont">&#xe627;<em>Languages: </em></label>
-						<span> English, French, Spanish, Russian, German, Japanese, Korean</span>
-					</div>
-					<div class="location clearfix">
-						<label class="iconfont" style="font-size: 20px;">&#xe610;<em>Location:</em></label>
-						<span>{{destinations}}</span>
-					</div>
+
+					<label class="iconfont">&#xe627;<em>Languages: </em></label>
+					<span> English, French, Spanish, Russian, German, Japanese, Korean</span>
+				</div>
+				<div class="location clearfix">
+					<label class="iconfont" style="font-size: 20px;">&#xe610;<em>Location:</em></label>
+					<span>{{destinations}}</span>
+				</div>
 				<p class="says">{{detail.recommendedReason}}</p>
 				<div class="heightLights" id="heightLights">
 					<p :key="index" class="clearfix" v-for="(item,index) in highlights"><i class="iconfont">&#xe654;</i><span>{{item}}</span></p>
@@ -82,6 +81,49 @@
 						</li>
 					</ul>
 
+				</div>
+				<!--<div class="notes" v-if="photoList.length>0" @click="showPhoto">
+					<h3>Pictures from our users</h3>
+					<div class="photoCover" v-lazy:background-image="photoList.length>0?photoList[0].url:''">
+						<div class="mask"></div>
+						<div class="cover">
+							<h4>Check out our customers' travel experiences with us!</h4>
+							<button>Have a look</button>
+						</div>
+					</div>
+
+				</div>-->
+				<div class="provide" v-if="picInfo.details.length>0">
+					<h3>Pricing Details</h3>
+					<p style="font-size: 16px;margin-top: 10px;" v-if="picInfo.childDiscount">Children’s price is   $  {{picInfo.childDiscount}} USD  less than adults’ price.</p>
+					<el-table :data="sixArr" stripe style="width: 100%">
+						<el-table-column prop="capacity" label="Number of people" width="183" align="center">
+							<template slot-scope="scope">
+								<span v-if="scope.row.capacity==1">1 person</span>
+								<span v-else>{{scope.row.capacity}} people</span>
+							</template>
+						</el-table-column>
+						<el-table-column prop="price" label="Total cost" width="183" align="center">
+							<template slot-scope="scope">
+								<span>$ {{returnFloat(scope.row.price)}} USD</span>
+							</template>
+						</el-table-column>
+						<el-table-column prop="chlidenNumb" label="Number of people" width="183">
+							<template slot-scope="scope">
+								<div v-show="scope.row.right.capacity">
+									<span>{{scope.row.right.capacity}} people</span>
+								</div>
+							</template>
+						</el-table-column>
+						<el-table-column prop="childenTotal" label="Total cost" width="185" align="center">
+							<template slot-scope="scope">
+								<div v-show="scope.row.right.capacity">
+									<span>$ {{returnFloat(scope.row.right.price)}} USD</span>
+								</div>
+							</template>
+						</el-table-column>
+					</el-table>
+					<div class="view" v-if="isShowTable" @click="showTable">View More</div>
 				</div>
 				<div class="provide" id="provide">
 					<h3>What's Included?</h3>
@@ -121,9 +163,9 @@
 					<p v-if="remark" :key="index" v-for="(item,index) in remark">{{item}}</p>
 					<!--<p v-if="detail.venues" :key="index" v-for="(i,index) in detail.venues">{{i}}</p>-->
 				</div>
-			
-
+				
 			</div>
+
 			<div class="recommend" id="recommend" v-if="recommed.length>0">
 				<h3>Similar Experiences</h3>
 				<ul class="clearfix">
@@ -175,7 +217,7 @@
 									<div class="selectDate" :class="picInfo.departureTime?'':'long'">
 										<b>Date</b>
 										<!--<flatPickr placeholder="Date" v-model="dateTime" :config="options"></flatPickr>-->
-                    <input id="js_changetime" readonly v-model="dateTime" type="text" placeholder="Date" >
+										<input id="js_changetime" readonly v-model="dateTime" type="text" placeholder="Date">
 									</div>
 									<div class="selectTime" v-if="picInfo.departureTime">
 										<b>Time</b>
@@ -266,9 +308,9 @@
 								</div>
 								<div class="inquiry">
 									<button class="bookNow" @click.stop="order">Book Now</button>
-									<p style="color: red;margin-top: 20px;font-size: 14px;">You can get a 100% refund up to {{detail.refundTimeLimit*24}} hours before your trip.Please be assured to book your trip.</p>
+									<p style="color: red;margin-top: 20px;font-size: 14px;">You can get a 100% refund up to {{detail.refundTimeLimit*24}} hours before your trip.</p>
 									<div class="cancat" @click="showContact">
-										
+
 										<p>Not sure if this is the tour for you? We can </br>help you design your dream tour!<span> Inquire</span> </p>
 										<i class="iconfont">&#xe64a;</i>
 									</div>
@@ -314,1110 +356,1218 @@
 				</div>
 			</div>
 		</div>
-		<Contact :ContactStatus="ContactStatus" v-on:isshowfn="isShowFn" v-on:contact-call-back="contactCallBack" :enName="enName" :objectId="detail.activityId" :objectType="objectType"></Contact>
-		<Alert :isShowAlert="isShowAlert" :alertTitle="alertTitle" :alertMessage="alertMessage" v-on:setIsShowAlert="getIsShowAlert"></Alert>
+		<Pic :photoList="photoList" :alertPicStatus="alertPicStatus" @alert-call-back="setCallBack"></Pic>
 	</div>
+
 </template>
 
 <script>
-import {
-  GetDateStr,
-  addmulMonth,
-  getUrlParams
-} from "~/assets/js/plugin/utils";
-import Contact from "~/components/Contact/Contact";
-import Alert from "~/components/Prompt/Alert";
-//import flatPickr from "vue-flatpickr-component";
-import Flatpickr from 'flatpickr';
+	import {
+		GetDateStr,
+		addmulMonth,
+		getUrlParams
+	} from "~/assets/js/plugin/utils";
 
-export default {
-  props: [
-    "remark",
-	"detail",
-	"highlights",
-	"destinations",
-	"itemsIncluded",
-	"id",
-	"isscroll",
-	"isShowBookNow",
-	"picInfo",
-	"recommed",
-	"introduction",
-	"inclusions",
-	"exclusions",
-	"notice",
-	"destination"
-  ],
-  name: "Activities",
-  data() {
-    return {
-      open: null,
-      infant: 0, //婴儿
-      dateTime: "", //riqi
-      adults: 0, //成人  默认1人
-      children: 0, //儿童
-      people: "Please Select",
-      time: "",
-      isShowBook: false,
-      isShowAdults: false,
-      isShowTime: false,
-      options: {
-        minDate: this.picInfo.earliestBookDate,
-        maxDate: addmulMonth(GetDateStr(this.picInfo.earliestBookDate), 12)
-      },
-      adultsPic: "",
-      objectType: "ACTIVITY",
-      //tangkuang
-      ContactStatus: false,
-      isShowAlert: false,
-      alertTitle: "",
-      alertMessage: "",
-      istrue: false,
-      error: false,
-      isSelectDate: false,
-      dateErrText: "*Final headcount does not include babies.",
-      isShow: false, //价格说明
-      margin: 0,
-      isShowView: false,
-	  isShowPicNode: false,
-	  enName:'',
-    flatPickr : null
-    };
-  },
-  components: {
-    //flatPickr,
-    Contact,
-    Alert
-  },
-  methods: {
-    showVeiwMore() {
-      this.isShowView = true;
-      window.ga && ga("gtag_UA_107010673_1.send", {
-        hitType: "event",
-        eventCategory: "Button",
-        eventAction: "Click",
-        eventLabel: "activity_view_more"
-      });
-    },
-    showNode() {
-      this.isShowPicNode = true;
-    },
-    hidden() {
-      this.isShowPicNode = false;
-    },
-    cutXiaoNum(num, len) {
-      var numStr = num.toString();
-      if (len == null || len == undefined) {
-        len = numStr.length;
-      }
-      var index = numStr.indexOf(".");
-      if (index == -1) {
-        index = numStr.length;
-        numStr += ".0000000000000";
-      } else {
-        numStr += "0000000000000";
-      }
-      var newNum = numStr.substring(0, index + len + 1);
-      return newNum;
-    },
-    round(val) {
-      if (typeof val === "number" && val % 1 === 0) {
-        return val;
-      } else if (val.toString().split(".")[1].length <= 1) {
-        return val;
-      } else {
-        return (parseFloat(this.cutXiaoNum(val, 1)) + 0.1).toFixed(1);
-      }
-    },
-    returnFloat(value) {
-		if(value){
-			var value = Math.round(parseFloat(value) * 100) / 100;
-			var xsd = value.toString().split(".");
-			if(xsd.length == 1) {
-				value = value.toString() + ".00";
-				return value;
-			}
-			if(xsd.length > 1) {
-				if(xsd[1].length < 2) {
-					value = value.toString() + "0";
+	import Flatpickr from 'flatpickr';
+	require('~/assets/scss/G-ui/flatpickr.min.css')
+	import Pic from "~/components/pageComponents/activity/details/Pic"
+	export default {
+		props: [
+			"remark",
+			"detail",
+			"highlights",
+			"destinations",
+			"itemsIncluded",
+			"id",
+			"isscroll",
+			"isShowBookNow",
+			"picInfo",
+			"recommed",
+			"introduction",
+			"inclusions",
+			"exclusions",
+			"notice",
+			"destination",
+			"photoList"
+
+		],
+		name: "Activities",
+		data() {
+			return {
+				PriceDetail: [], //价格明细
+				open: null,
+				infant: 0, //婴儿
+				dateTime: "", //riqi
+				adults: 0, //成人  默认1人
+				children: 0, //儿童
+				people: "Please Select",
+				time: "",
+				isShowBook: false,
+				isShowAdults: false,
+				isShowTime: false,
+				options: {
+					minDate: this.picInfo.earliestBookDate,
+					maxDate: addmulMonth(this.picInfo.earliestBookDate, 12)
+				},
+				adultsPic: "",
+				objectType: "ACTIVITY",
+				error: false,
+				isSelectDate: false,
+				dateErrText: "*Final headcount does not include babies.",
+				isShow: false, //价格说明
+				margin: 0,
+				isShowView: false,
+				isShowPicNode: false,
+				enName: '',
+				sixArr: [],
+				isShowTable: false, //价格明细
+				flatPickr: null,
+				alertPicStatus: false,
+			};
+		},
+		components: {
+			//flatPickr,
+			Pic
+
+		},
+		methods: {
+			showPhoto() {
+				this.alertPicStatus = true
+			},
+			setCallBack(val) {
+				this.alertPicStatus = val
+			},
+			showVeiwMore() {
+				this.isShowView = true;
+				window.ga && ga("gtag_UA_107010673_1.send", {
+					hitType: "event",
+					eventCategory: "Button",
+					eventAction: "Click",
+					eventLabel: "activity_view_more"
+				});
+			},
+			showNode() {
+				this.isShowPicNode = true;
+			},
+			hidden() {
+				this.isShowPicNode = false;
+			},
+			cutXiaoNum(num, len) {
+				var numStr = num.toString();
+				if(len == null || len == undefined) {
+					len = numStr.length;
 				}
-				return value;
+				var index = numStr.indexOf(".");
+				if(index == -1) {
+					index = numStr.length;
+					numStr += ".0000000000000";
+				} else {
+					numStr += "0000000000000";
+				}
+				var newNum = numStr.substring(0, index + len + 1);
+				return newNum;
+			},
+			round(val) {
+				if(typeof val === "number" && val % 1 === 0) {
+					return val;
+				} else if(val.toString().split(".")[1].length <= 1) {
+					return val;
+				} else {
+					return(parseFloat(this.cutXiaoNum(val, 1)) + 0.1).toFixed(1);
+				}
+			},
+			returnFloat(value) {
+				if(value) {
+					var value = Math.round(parseFloat(value) * 100) / 100;
+					var xsd = value.toString().split(".");
+					if(xsd.length == 1) {
+						value = value.toString() + ".00";
+						return value;
+					}
+					if(xsd.length > 1) {
+						if(xsd[1].length < 2) {
+							value = value.toString() + "0";
+						}
+						return value;
+					}
+				}
+
+			},
+			showTable() {
+				this.isShowTable = false
+				this.sixArr=this.tableData(this.picInfo.details,true)
+
+			},
+			showContact() {
+				let that = this;
+
+				window.ga && ga("gtag_UA_107010673_1.send", {
+					hitType: "event",
+					eventCategory: "Button",
+					eventAction: "Click",
+					eventLabel: "activity_inquiry"
+				});
+				location.href = "/travel/customize/step1"
+			},
+			add(id) {
+				if(id == 0) {
+					this.adults++;
+				} else if(id == 1) {
+					this.children++;
+				} else {
+					this.infant++;
+				}
+			},
+			del(id) {
+				if(id == 0) {
+					this.adults--;
+				} else if(id == 1) {
+					this.children--;
+				} else {
+					this.infant--;
+				}
+			},
+			showTime() {
+				this.isShowTime = true;
+				if(this.isShowAdults == true) {
+					this.isShowAdults = false;
+				}
+			},
+			confirmTime(index) {
+				this.time = this.picInfo.departureTime[index];
+				this.isShowTime = false;
+			},
+			showAdults() {
+				window.ga && ga("gtag_UA_107010673_1.send", {
+					hitType: "event",
+					eventCategory: "Selection",
+					eventAction: "Click",
+					eventLabel: "activity_guests_select"
+				});
+				if(this.people == "Please Select") {
+					this.adults = this.adults + 1;
+					this.people = this.adults + this.children;
+				}
+				if(this.isShowTime == true) this.isShowTime = false;
+				this.isShowAdults = true;
+			},
+			order() {
+
+				window.ga && ga("gtag_UA_107010673_1.send", {
+					hitType: "event",
+					eventCategory: "Button",
+					eventAction: "Click",
+					eventLabel: "activity_book"
+				});
+				let that = this;
+				if(that.dateTime == "") {
+					that.isSelectDate = true;
+					that.dateErrText = "*Please select a date first.";
+					//弹出日历
+					that.flatPickr.open();
+
+				} else if(that.children + that.adults < that.picInfo.minParticipants) {
+					that.error = true;
+					that.isShowAdults = true;
+					that.dateErrText = "*Mimimum number of travelers:" + that.picInfo.minParticipants + ".";
+					//默认帮用户选一个游玩人
+					if(that.people == "Please Select") {
+						that.adults = this.adults + 1;
+						that.people = this.adults + this.children;
+					}
+				} else {
+					that.error = false;
+					that.isSelectDate = false;
+					that.dateErrText = "*Final headcount does not include babies.";
+					var orderInfo = {
+						userId: localStorage.getItem("userid") ?
+							localStorage.getItem("userid") : null,
+						activityId: that.detail.activityId,
+						refundTimeLimit: that.detail.refundTimeLimit * 24,
+						amount: that.children > 0 && that.picInfo.childDiscount ?
+							that.cutXiaoNum(
+								that.adultsPic - that.children * that.picInfo.childDiscount,
+								1
+							) :
+							that.adultsPic,
+						currency: "USD",
+						adultNum: that.adults,
+						childrenNum: that.children,
+						infantNum: that.infant,
+						startDate: that.dateTime,
+						startTime: that.time ? that.time : null,
+						adultsPic: that.adultsPic,
+						coverPhotoUrl: that.detail.coverPhotoUrl,
+						title: that.detail.title,
+						childDiscountP: that.picInfo.childDiscount,
+						category: that.detail.category,
+						averagePrice: that.round(
+							that.adultsPic / (that.adults + that.children)
+						),
+						childDiscount: that.picInfo.childDiscount ?
+							that.children * that.picInfo.childDiscount :
+							null
+					};
+					//console.log(orderInfo)
+					orderInfo = JSON.stringify(orderInfo);
+
+					localStorage.setItem("orderInfo", orderInfo);
+					location.href = "/activity/booking"
+
+					//routes.push('/fillYourInfo')
+				}
+			},
+			tableData(details,isshow) {
+				console.log(details);
+				var newObj = function(obj) {
+					var o = {};
+					for(var key in obj) {
+						o[key] = obj[key];
+					}
+					return o;
+				}
+
+				let newArr = [],
+					tableD = [];
+				for(let i = 0; i < details.length; i++) {
+					let thisD = details[i];
+					newArr.push(thisD);
+					if(i + 1 > details.length - 1) break;
+
+					var thisC = thisD.capacity;
+					var nextC = details[i + 1].capacity;
+					var forLen = nextC - thisC - 1;
+					for(let j = 0; j < forLen; j++) {
+						var midArr = newObj(details[i+1]);
+						//console.log(midArr)
+						newArr.push(midArr);
+					}
+					//console.log(newArr)
+				}
+
+				for(var k = 0; k < newArr.length; k++) {
+					newArr[k].capacity = k + 1;
+				}
+
+				for(var k = 0; k < newArr.length; k++) {
+					if(isshow){
+						this.isShowTable=false;
+					}else if(k>11){
+						 this.isShowTable=true;break
+					}
+					let thisA = newArr[k];
+					let thisB = tableD.length - 1;
+					var last = tableD[thisB];
+					if(k % 2 == 0) {
+						tableD.push(thisA);
+						if(k >= newArr.length - 1) {
+							tableD[tableD.length-1].right = {};
+						}
+					} else {
+						last.right = thisA;
+					}
+				}
+				return tableD;
+			}
+		},
+		watch: {
+			dateTime(val, oldVal) {
+				window.ga && ga("gtag_UA_107010673_1.send", {
+					hitType: "event",
+					eventCategory: "Selection",
+					eventAction: "Click",
+					eventLabel: "activity_date_select"
+				});
+				if(val == "") {
+					this.isSelectDate = true;
+					this.dateErrText = "*Please select a date first.";
+				} else {
+					this.isSelectDate = false;
+				}
+			},
+			adults(val, odlVal) {
+				this.people = val + this.children;
+			},
+			children(val, oldVal) {
+				this.people = val + this.adults;
+			},
+			people(val, odlVal) {
+				let that = this;
+				that.isShowBook = true;
+				if(val >= that.picInfo.minParticipants) {
+					that.error = false;
+					that.dateErrText = "*Final headcount does not include babies.";
+				}
+				for(var i = 0; i < that.picInfo.details.length; i++) {
+					if(that.adults + that.children == that.picInfo.details[i].capacity) {
+						that.adultsPic = that.picInfo.details[i].price;
+
+						break;
+					} else {
+						if(that.adults + that.children < that.picInfo.details[i].capacity) {
+							that.adultsPic = that.picInfo.details[i].price;
+
+							break;
+						}
+					}
+				}
+			},
+			isShowBook(val, oldVal) {
+				if(val) {
+					this.isShow = true;
+				} else {
+					this.isShow = false;
+				}
+			},
+			
+		},
+		filters: {
+			firstUpperCase(val) {
+				if(val)
+					return val.toLowerCase().replace(/( |^)[a-z]/g, L => L.toUpperCase());
+			}
+		},
+		mounted: function() {
+			let that = this;
+
+			//初始化清空日期
+			that.dateTime = ""
+			that.sixArr=that.tableData(that.picInfo.details)
+			//初始化日历
+			that.flatPickr = new Flatpickr('#js_changetime', that.options);
+			
+			document
+				.getElementsByTagName("body")[0]
+				.addEventListener("click", function() {
+					that.isShowTime = false;
+					that.isShowAdults = false;
+				});
+		}
+	};
+</script>
+<style lang="scss">
+	.el-table__row .cell {
+		text-align: center;
+		span {
+			font-size: 18px;
+			color: #353a3f;
+			line-height: 35px;
+		}
+	}
+	
+	.el-table th>.cell {
+		font-size: 16px;
+		font-weight: bold;
+		color: #353a3f;
+	}
+	
+	.el-table {
+		margin-top: 34px;
+	}
+	
+	.el-table--group::after,
+	.el-table--border::after,
+	.el-table::before {
+		height: 0;
+	}
+	
+	.el-table--striped .el-table__body tr.el-table__row--striped td {
+		background: rgba(27, 188, 157, 0.06)!important;
+	}
+	
+	.el-table th,
+	.el-table td {
+		padding: 6px 0;
+	}
+	
+	.el-table tr:hover {
+		background: #fff;
+	}
+	
+	.el-table--enable-row-hover .el-table__body tr:hover>td {
+		background: #fff;
+	}
+	
+	.el-table th.is-leaf,
+	.el-table td {
+		border: 0;
+	}
+</style>
+<style lang="scss" scoped>
+	@import "~/assets/font/iconfont.css";
+	#activities {
+		.activitiesDel {
+			.view {
+				font-size: 18px;
+				color: #1bbc9d;
+				cursor: pointer;
+				margin-top: 20px;
+			}
+			position: relative;
+			max-width: 1170px;
+			margin: 0 auto;
+			.linkseting {
+				.linkinfo {
+					margin-top: 30px;
+					a {
+						color: #878e95;
+						font-size: 14px;
+						&:hover {
+							text-decoration: underline;
+							color: #353a3f;
+						}
+					}
+					em {
+						font-size: 12px;
+						color: #878e95;
+					}
+					span {
+						color: #878e95;
+						font-size: 14px;
+					}
+				}
+			}
+			.book {
+				width: 386px;
+				position: absolute;
+				right: 0;
+				top: 0;
+				.boxshowdow {
+					width: 386px;
+					background: #fff;
+					position: relative;
+					z-index: 200;
+					box-shadow: 0px 2px 6px 0px rgba(53, 58, 63, 0.1);
+					.bookbox {
+						.picPp {
+							cursor: pointer;
+							padding: 0 20px;
+							height: 50px;
+							line-height: 50px;
+							background: #353a3f;
+							font-size: 14px;
+							.picLeft {
+								color: #fff;
+								float: left;
+								b {
+									font-size: 24px !important;
+									vertical-align: middle;
+									margin: 0 6px;
+								}
+								span {
+									text-decoration: line-through;
+									margin-left: 5px;
+								}
+							}
+							.picRight {
+								color: #fff;
+								float: right;
+								position: relative;
+								opacity: 0.5;
+								span {
+									font-size: 10px;
+								}
+							}
+							.priceNote {
+								width: 200px;
+								background: #fff;
+								padding: 16px;
+								position: absolute;
+								z-index: 200;
+								top: -10px;
+								font-size: 14px;
+								box-shadow: 0px 2px 6px 0px rgba(53, 58, 63, 0.1);
+								h4 {
+									font-weight: bold;
+									line-height: 20px;
+								}
+								p {
+									margin-top: 14px;
+									line-height: 20px;
+								}
+							}
+						}
+						.selectBox {
+							padding: 20px;
+							.select {
+								.selectDate {
+									b {
+										font-size: 14px;
+										margin-bottom: 10px;
+										display: block;
+									}
+									width: 50%;
+									float: left;
+									.flatpickr-input {
+										height: 40px !important;
+										padding-left: 10px !important;
+										width: calc(100% - 10px)!important;
+										border-color: #e3e5e9;
+										border-right: none;
+										border-radius: 0px 3px 0px 3px !important;
+										&:hover {
+											border-color: #e3e5e9 !important;
+										}
+									}
+								}
+								.selectTime {
+									b {
+										font-size: 14px;
+										margin-bottom: 10px;
+										display: block;
+									}
+									width: 50%;
+									float: left;
+									.time {
+										position: relative;
+										input {
+											width: calc(100% - 10px);
+											height: 40px;
+											border: 1px solid #e3e5e9;
+											border-radius: 3px 0px 3px 0;
+											cursor: pointer;
+											font-size: 16px;
+										}
+										i {
+											position: absolute;
+											right: 10px;
+											font-size: 10px;
+											top: 50%;
+											margin-top: -5px;
+										}
+										.timeList {
+											position: absolute;
+											top: 47px;
+											max-width: 175px;
+											max-height: 300px;
+											overflow: auto;
+											background: #fff;
+											box-shadow: 0px 2px 10px 0px rgba(53, 58, 63, 0.2);
+											z-index: 300;
+											ul {
+												li {
+													height: 50px;
+													width: 175px;
+													text-align: center;
+													line-height: 50px;
+													font-size: 18px;
+													cursor: pointer;
+													&:hover {
+														background-image: linear-gradient( -90deg, #009efd 0%, #1bbc9d 100%);
+														color: #fff;
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+							.selectPepole {
+								width: 100%;
+								margin-top: 10px;
+								b {
+									font-size: 14px;
+									margin-bottom: 10px;
+									display: block;
+								}
+								.Guests {
+									position: relative;
+									font-size: 16px;
+									.people {
+										line-height: 40px;
+										border: 1px solid #e3e5e9;
+										border-radius: 3px;
+										cursor: pointer;
+										padding-left: 10px;
+									}
+									i {
+										position: absolute;
+										right: 10px;
+										font-size: 8px;
+										top: 50%;
+										margin-top: -15px;
+									}
+									.choose {
+										position: absolute;
+										top: -132px;
+										left: -20px;
+										width: 346px;
+										box-shadow: 0px 2px 10px 0px rgba(53, 58, 63, 0.2);
+										background: #fff;
+										padding: 20px;
+										b {
+											font-size: 18px;
+											line-height: 40px;
+											display: inline-block;
+											margin: 0;
+											span {
+												font-weight: normal;
+												color: #878e95;
+												font-size: 14px;
+												margin-left: 10px;
+											}
+										}
+										.children {
+											margin-top: 10px;
+										}
+										.adults,
+										.children {
+											.color {
+												color: #1bbc9d;
+											}
+											.selectAdults {
+												float: right;
+												input {
+													width: 30px;
+													height: 30px;
+													font-size: 18px;
+													font-weight: bold;
+													padding: 0;
+													border: solid 2px #ebebeb;
+													border-radius: 2px;
+													text-align: center;
+													line-height: 30px;
+													margin: 0 10px;
+												}
+												em {
+													cursor: pointer;
+													font-weight: bold;
+												}
+											}
+										}
+										.apply {
+											width: 100%;
+											height: 42px;
+											text-align: center;
+											background-image: linear-gradient( 270deg, #009efd 0%, #1bbc9d 100%);
+											color: #f5f5f5;
+											line-height: 42px;
+											font-size: 16px;
+											font-weight: bold;
+											border-radius: 30px;
+											margin-top: 20px;
+										}
+									}
+								}
+							}
+							.picDetail {
+								.headTitle {
+									display: block;
+									font-size: 14px;
+									margin-top: 24px;
+									padding-bottom: 10px;
+								}
+								ul {
+									border-bottom: 1px solid #ebebeb;
+									border-top: 1px solid #ebebeb;
+									padding: 14px 0;
+									li {
+										&:nth-child(2) {
+											padding-top: 14px;
+										}
+										b {
+											margin: 0;
+											font-size: 16px;
+										}
+										.formula {
+											float: left;
+											font-size: 16px;
+										}
+										.pic {
+											float: right;
+											font-size: 16px;
+										}
+									}
+								}
+								.total {
+									width: 100%;
+									padding-top: 14px;
+									.totalText {
+										float: left;
+										font-size: 16px;
+									}
+									.totalPic {
+										font-weight: bold;
+										float: right;
+										font-size: 24px;
+									}
+								}
+							}
+							.inquiry {
+								.bookNow {
+									width: 100%;
+									height: 42px;
+									text-align: center;
+									background-image: linear-gradient( 270deg, #009efd 0%, #1bbc9d 100%);
+									color: #f5f5f5;
+									line-height: 42px;
+									font-size: 16px;
+									font-weight: bold;
+									border-radius: 30px;
+									margin-top: 20px;
+								}
+								.cancat {
+									margin-top: 20px;
+									position: relative;
+									cursor: pointer;
+									p {
+										font-size: 14px;
+										line-height: 20px;
+										span {
+											color: #1bbc9d;
+										}
+									}
+									i {
+										position: absolute;
+										right: 0;
+										top: 50%;
+										margin-top: -4px;
+									}
+								}
+							}
+						}
+					}
+				}
+				.blockUsPs {
+					background: #f1f1f1;
+					padding: 9px 20px 24px 20px;
+					overflow: hidden;
+					position: relative;
+					ul {
+						li {
+							margin-top: 15px;
+							i {
+								font-size: 12px;
+								color: #1bbc9d;
+							}
+							p {
+								display: inline-block;
+								margin-left: 14px;
+								font-size: 16px;
+							}
+						}
+					}
+				}
+			}
+			.activitiesInfo {
+				width: 734px;
+				.tags {
+					margin: 33px 0;
+					.tag {
+						float: left;
+						color: #1bbc9d;
+						font-size: 14px;
+						border-top: 1px solid #1bbc9d;
+						border-bottom: 1px solid #1bbc9d;
+						padding: 3px 0;
+					}
+					.productId {
+						float: right;
+						font-size: 12px;
+						color: #878e95;
+						padding: 5px 0;
+					}
+				}
+				.activitiyTitle {
+					h3 {
+						font-weight: bold;
+						font-size: 32px;
+					}
+					.types {
+						margin: 29px 0 24px;
+						span {
+							font-size: 18px;
+							position: relative;
+							padding: 0 16px;
+							&:first-child {
+								padding-left: 0;
+							}
+							&:not(:first-child) {
+								&:after {
+									content: "";
+									width: 4px;
+									height: 4px;
+									border-radius: 50%;
+									background: #353a3f;
+									position: absolute;
+									left: 0px;
+									top: 9px;
+								}
+							}
+						}
+					}
+				}
+				.description {
+					padding-top: 33px;
+					border-top: 1px solid #dde0e0;
+					li {
+						float: left;
+						width: 33.33333%;
+						label {
+							margin-right: 14px;
+							font-size: 18px;
+							color: #878e95;
+						}
+						span {
+							font-size: 18px;
+						}
+					}
+				}
+				.location,
+				.languages {
+					width: 100%;
+					margin-top: 24px;
+					label {
+						float: left;
+						font-size: 18px;
+						color: #878e95;
+						vertical-align: middle;
+						em {
+							color: #353a3f;
+							margin-left: 14px;
+							font-size: 18px;
+						}
+					}
+					span {
+						float: left;
+						font-size: 18px;
+						width: 80%;
+						word-wrap: break-word;
+						margin-top: 2px;
+						margin-left: 8px;
+					}
+				}
+				.location {
+					padding-bottom: 33px;
+					border-bottom: 1px solid #dde0e0;
+				}
+				.says {
+					padding: 33px 0;
+					font-style: oblique;
+					border-bottom: 1px solid #dde0e0;
+					font-size: 18px;
+					line-height: 26px;
+					color: #353a3f;
+				}
+				.heightLights {
+					padding: 33px 0;
+					border-bottom: 1px solid #dde0e0;
+					p {
+						font-size: 18px;
+						margin-top: 16px;
+						&:first-child {
+							margin-top: 0;
+						}
+						i {
+							font-size: 12px;
+							color: #1bbc9d;
+							float: left;
+							margin-top: 3px;
+						}
+						span {
+							width: 90%;
+							float: left;
+							margin-left: 12px;
+						}
+					}
+				}
+				.journey {
+					margin-top: 34px;
+					.expect {
+						h3 {
+							font-size: 24px;
+							font-weight: bold;
+						}
+						p {
+							margin: 15px 0 20px;
+							font-size: 18px;
+							line-height: 26px;
+						}
+						.introduction {
+							overflow: hidden;
+						}
+						.viewMore {
+							color: #1bbc9d;
+							font-size: 18px;
+							cursor: pointer;
+							margin: 6px 0 30px;
+						}
+					}
+					ul {
+						padding-bottom: 34px;
+						border-bottom: 1px solid #dde0e0;
+						li {
+							&:nth-of-type(odd) {
+								background: rgba(27, 188, 157, 0.06);
+							}
+							.item {
+								padding: 24px 0;
+								.cont_title {
+									float: left;
+									width: calc(50% - 20px);
+									font-size: 18px;
+									margin-left: 20px;
+									font-weight: bold;
+								}
+								.cont {
+									float: right;
+									width: 50%;
+									font-size: 18px;
+									line-height: 26px;
+								}
+							}
+							.item_v {
+								.contTitle {
+									width: calc(50% - 50px);
+									float: left;
+									padding: 24px 30px 0 20px;
+									h3 {
+										font-size: 18px;
+										font-weight: bold;
+									}
+									p {
+										font-size: 18px;
+										line-height: 26px;
+										margin-top: 15px;
+									}
+								}
+								.cont {
+									width: 50%;
+									float: right;
+									img {
+										width: 100%;
+										height: 255px;
+									}
+								}
+							}
+						}
+					}
+				}
+				.provide {
+					margin-top: 34px;
+					padding-bottom: 34px;
+					border-bottom: 1px solid #dde0e0;
+					h3 {
+						font-size: 24px;
+						font-weight: bold;
+					}
+					ul {
+						li {
+							padding-left: 20px;
+							display: inherit;
+							margin-top: 15px;
+							font-size: 18px;
+							position: relative;
+							h5 {
+								font-size: 18px;
+							}
+							p {
+								font-size: 14px;
+								margin-top: 4px;
+							}
+							&:after {
+								content: "";
+								position: absolute;
+								width: 4px;
+								height: 4px;
+								border-radius: 50%;
+								background: #353a3f;
+								left: 0px;
+								top: 10px;
+							}
+							&:first-child {
+								margin-top: 30px;
+							}
+						}
+					}
+				}
+				.notes {
+					margin-top: 34px;
+					padding-bottom: 34px;
+					border-bottom: 1px solid #dde0e0;
+					h3 {
+						font-size: 24px;
+						font-weight: bold;
+						margin-bottom: 24px;
+					}
+					p {
+						font-size: 18px;
+						line-height: 26px;
+						margin-top: 10px;
+					}
+					.photoCover {
+						cursor: pointer;
+						height: 300px;
+						background-repeat: no-repeat!important;
+						background-size: cover!important;
+						background-position: center;
+						position: relative;
+						.mask {
+							position: absolute;
+							left: 0;
+							top: 0;
+							width: 100%;
+							height: 100%;
+							background: linear-gradient( to left, rgba(255, 249, 248, 0.6), rgba(255, 249, 248, 1));
+						}
+						.cover {
+							padding: 92px 0 0 39px;
+							position: relative;
+							h4 {
+								font-size: 24px;
+								width: 385px;
+							}
+							button {
+								height: 46px;
+								width: 242px;
+								line-height: 46px;
+								text-align: center;
+								border-radius: 30px;
+								background: #fff;
+								box-shadow: 0px 2px 20px 0px rgba(0, 0, 0, 0.1);
+								margin-top: 16px;
+								font-size: 16px;
+								font-weight: bold;
+							}
+						}
+					}
+				}
+			}
+			.recommend {
+				margin-top: 34px;
+				padding-bottom: 82px;
+				h3 {
+					font-size: 24px;
+					font-weight: bold;
+					margin-bottom: 30px;
+				}
+				ul {
+					li {
+						float: left;
+						margin-right: 20px;
+						width: 376px;
+						transition: 0.3s transform;
+						&:hover {
+							transform: translateY(-10px);
+							box-shadow: 0px 10px 20px 0px rgba(53, 58, 63, 0.1);
+						}
+						&:last-child {
+							margin-right: 0;
+						}
+						.activity-pic {
+							width: 376px;
+							height: 188px;
+							position: relative;
+							img {
+								width: 100%;
+								height: 100%;
+							}
+							span {
+								position: absolute;
+								top: 10px;
+								left: 10px;
+								padding: 5px;
+								font-size: 14px;
+								font-weight: bold;
+								background: #f4b33f;
+								color: #fff;
+							}
+						}
+						.activity-cont {
+							height: 146px;
+							position: relative;
+							padding: 20px;
+							box-shadow: 0px 2px 3px 0px rgba(53, 58, 63, 0.1);
+							.activity-info {
+								.duration {
+									float: right;
+									font-size: 14px;
+									color: #878e95;
+									i {
+										font-size: 12px;
+										color: #878e95;
+										margin-right: 6px;
+									}
+								}
+								.activity-cont-type {
+									float: left;
+									font-size: 14px;
+									color: #d87b65;
+									i {
+										font-size: 12px;
+										color: #d87b65;
+										margin-right: 6px;
+									}
+								}
+							}
+							h4 {
+								color: #353a3f;
+								height: 74px;
+								line-height: 24px;
+								text-overflow: ellipsis;
+								display: -webkit-box;
+								display: -moz-box;
+								-moz-box-orient: vertical;
+								-webkit-box-orient: vertical;
+								-webkit-line-clamp: 3;
+								word-wrap: break-word;
+								overflow: hidden;
+								margin-top: 14px;
+								font-size: 20px;
+								font-weight: bold;
+							}
+							.activity-cont-duration {
+								margin-top: 17px;
+								i {
+									font-size: 12px;
+									color: #878e95;
+									margin-right: 6px;
+								}
+								font-size: 14px;
+								color: #878e95;
+							}
+							.pic {
+								position: absolute;
+								right: 20px;
+								bottom: 20px;
+								.old-pic {
+									text-align: right;
+									font-size: 14px;
+									color: #878e95;
+									text-decoration: line-through;
+								}
+								.current-price {
+									font-size: 14px;
+									color: #878e95;
+									margin-top: 3px;
+									b {
+										font-size: 20px;
+										color: #353a3f;
+										margin-left: 6px;
+									}
+									span {
+										color: #353a3f;
+									}
+								}
+							}
+						}
+					}
+				}
 			}
 		}
-		
-	},
-    isShowFn(val) {
-      this.istrue = val;
-      if (this.istrue == true) {
-        this.isShowAlert = true;
-        this.alertTitle = "Submission completed!";
-        this.alertMessage =
-          "Thank you for your feedback.We will get back to you within 1 day.";
-        this.istrue = false;
-      } else {
-        this.isShowAlert = true;
-        this.alertMessage = "Failed!";
-      }
-    },
-    getIsShowAlert(val) {
-      this.isShowAlert = val;
-    },
-    	
-    showContact() {
-      let that = this;
-      that.ContactStatus = true;
-      window.ga && ga("gtag_UA_107010673_1.send", {
-        hitType: "event",
-        eventCategory: "Button",
-        eventAction: "Click",
-        eventLabel: "activity_inquiry"
-      });
-    },
-    contactCallBack(val) {
-      this.ContactStatus = false;
-    },
-    add(id) {
-      if (id == 0) {
-        this.adults++;
-      } else if (id == 1) {
-        this.children++;
-      } else {
-        this.infant++;
-      }
-    },
-    del(id) {
-      if (id == 0) {
-        this.adults--;
-      } else if (id == 1) {
-        this.children--;
-      } else {
-        this.infant--;
-      }
-    },
-    showTime() {
-      this.isShowTime = true;
-      if (this.isShowAdults == true) {
-        this.isShowAdults = false;
-      }
-    },
-    confirmTime(index) {
-      this.time = this.picInfo.departureTime[index];
-      this.isShowTime = false;
-    },
-    showAdults() {
-      window.ga && ga("gtag_UA_107010673_1.send", {
-        hitType: "event",
-        eventCategory: "Selection",
-        eventAction: "Click",
-        eventLabel: "activity_guests_select"
-      });
-      if (this.people == "Please Select") {
-        this.adults = this.adults + 1;
-        this.people = this.adults + this.children;
-      }
-      if (this.isShowTime == true) this.isShowTime = false;
-      this.isShowAdults = true;
-    },
-    order() {
-      
-      window.ga && ga("gtag_UA_107010673_1.send", {
-        hitType: "event",
-        eventCategory: "Button",
-        eventAction: "Click",
-        eventLabel: "activity_book"
-      });
-      let that = this;
-      if (that.dateTime == "") {
-        that.isSelectDate = true;
-        that.dateErrText = "*Please select a date first.";
-        //弹出日历
-        that.flatPickr.open();
-        
-      } else if (that.children + that.adults < that.picInfo.minParticipants) {
-        that.error = true;
-        that.isShowAdults = true;
-        that.dateErrText = "*Mimimum number of travelers:" + that.picInfo.minParticipants + ".";
-        //默认帮用户选一个游玩人
-        if (that.people == "Please Select") {
-          that.adults = this.adults + 1;
-          that.people = this.adults + this.children;
-        }
-      } else {
-        that.error = false;
-        that.isSelectDate = false;
-        that.dateErrText = "*Final headcount does not include babies.";
-        var orderInfo = {
-          userId: localStorage.getItem("userid")
-            ? localStorage.getItem("userid"): null,
-          activityId: that.detail.activityId,
-          refundTimeLimit:that.detail.refundTimeLimit*24,
-          amount:
-            that.children > 0 && that.picInfo.childDiscount
-              ? that.cutXiaoNum(
-                  that.adultsPic - that.children * that.picInfo.childDiscount,
-                  1
-                )
-              : that.adultsPic,
-          currency: "USD",
-          adultNum: that.adults,
-          childrenNum: that.children,
-          infantNum: that.infant,
-          startDate: that.dateTime,
-          startTime: that.time ? that.time : null,
-          adultsPic: that.adultsPic,
-          coverPhotoUrl: that.detail.coverPhotoUrl,
-          title: that.detail.title,
-          childDiscountP: that.picInfo.childDiscount,
-          category: that.detail.category,
-          averagePrice: that.round(
-            that.adultsPic / (that.adults + that.children)
-          ),
-          childDiscount: that.picInfo.childDiscount
-            ? that.children * that.picInfo.childDiscount
-            : null
-        };
-        console.log(orderInfo)
-        orderInfo = JSON.stringify(orderInfo);
-       	
-        localStorage.setItem("orderInfo", orderInfo);
-      	location.href = "/activity/booking"
-		
-        //routes.push('/fillYourInfo')
-      }
-    },
-  },
-  watch: {
-    dateTime(val, oldVal) {
-      window.ga && ga("gtag_UA_107010673_1.send", {
-        hitType: "event",
-        eventCategory: "Selection",
-        eventAction: "Click",
-        eventLabel: "activity_date_select"
-      });
-      if (val == "") {
-        this.isSelectDate = true;
-        this.dateErrText = "*Please select a date first.";
-      } else {
-        this.isSelectDate = false;
-      }
-    },
-    adults(val, odlVal) {
-      this.people = val + this.children;
-    },
-    children(val, oldVal) {
-      this.people = val + this.adults;
-    },
-    people(val, odlVal) {
-      let that = this;
-      that.isShowBook = true;
-      if (val >= that.picInfo.minParticipants) {
-        that.error = false;
-        that.dateErrText = "*Final headcount does not include babies.";
-      }
-      for (var i = 0; i < that.picInfo.details.length; i++) {
-        if (that.adults + that.children == that.picInfo.details[i].capacity) {
-          that.adultsPic = that.picInfo.details[i].price;
-          
-          break;
-        } else {
-          if (that.adults + that.children < that.picInfo.details[i].capacity) {
-            that.adultsPic = that.picInfo.details[i].price;
-            
-            break;
-          }
-        }
-      }
-    },
-    isShowBook(val, oldVal) {
-      if (val) {
-        this.isShow = true;
-      } else {
-        this.isShow = false;
-      }
-    }
-  },
-  filters: {
-    firstUpperCase(val) {
-      if (val)
-        return val.toLowerCase().replace(/( |^)[a-z]/g, L => L.toUpperCase());
-    }
-  },
-  mounted: function() {
-    let that = this;
-
-    //初始化清空日期
-    that.dateTime = ""
-
-    //初始化日历
-    that.flatPickr = new Flatpickr('#js_changetime',that.options);
-    
-
-    
-    //aa.isOpen = true;
-    
-    document
-      .getElementsByTagName("body")[0]
-      .addEventListener("click", function() {
-        that.isShowTime = false;
-        that.isShowAdults = false;
-      });
-  }
-};
-</script>
-
-<style lang="scss" scoped>
-@import "~/assets/font/iconfont.css";
-#activities {
-  .activitiesDel {
-    position: relative;
-    max-width: 1170px;
-    margin: 0 auto;
-   .linkseting {
-    .linkinfo {
-   
-      
-      margin-top: 30px;
-      a {
-        color: #878e95;
-        font-size: 14px;
-        &:hover {
-          text-decoration: underline;
-          color: #353a3f;
-        }
-       
-      }
-      em {
-        font-size: 12px;
-        color: #878e95;
-        
-      }
-      span {
-        color: #878e95;
-        font-size: 14px;
-        
-      }
-    }
-  }
-    .book {
-      width: 386px;
-      position: absolute;
-      right: 0;
-      top: 0;
-      .boxshowdow {
-        width: 386px;
-        background: #fff;
-        position: relative;
-        z-index: 200;
-        box-shadow: 0px 2px 6px 0px rgba(53, 58, 63, 0.1);
-        .bookbox {
-          .picPp {
-            cursor: pointer;
-            padding: 0 20px;
-            height: 50px;
-            line-height: 50px;
-            background: #353a3f;
-            font-size: 14px;
-            .picLeft {
-              color: #fff;
-              float: left;
-              b {
-                font-size: 24px !important;
-                vertical-align: middle;
-                margin: 0 6px;
-              }
-              span {
-                text-decoration: line-through;
-                margin-left: 5px;
-              }
-            }
-            .picRight {
-              color: #fff;
-              float: right;
-              position: relative;
-              opacity: 0.5;
-              span {
-                font-size: 10px;
-              }
-            }
-            .priceNote {
-              width: 200px;
-              background: #fff;
-              padding: 16px;
-              position: absolute;
-              z-index: 200;
-              top: -10px;
-              font-size: 14px;
-              box-shadow: 0px 2px 6px 0px rgba(53, 58, 63, 0.1);
-              h4 {
-                font-weight: bold;
-                line-height: 20px;
-              }
-              p {
-                margin-top: 14px;
-                line-height: 20px;
-              }
-            }
-          }
-          .selectBox {
-            padding: 20px;
-            .select {
-              .selectDate {
-                b {
-                  font-size: 14px;
-                  margin-bottom: 10px;
-                  display: block;
-                }
-                width: 50%;
-                float: left;
-                .flatpickr-input {
-                  height: 40px !important;
-                  padding-left: 10px !important;
-                  width: calc(100% - 10px)!important;
-                  border-color: #e3e5e9;
-                  border-right: none;
-                  border-radius: 0px 3px 0px 3px !important;
-                  &:hover {
-                    border-color: #e3e5e9 !important;
-                  }
-                }
-              }
-              .selectTime {
-                b {
-                  font-size: 14px;
-                  margin-bottom: 10px;
-                  display: block;
-                }
-                width: 50%;
-                float: left;
-                .time {
-                  position: relative;
-                  input {
-                    width: calc(100% - 10px);
-                    height: 40px;
-                    border: 1px solid #e3e5e9;
-                    border-radius: 3px 0px 3px 0;
-                    cursor: pointer;
-                    font-size: 16px;
-                  }
-                  i {
-                    position: absolute;
-                    right: 10px;
-                    font-size: 10px;
-                    top: 50%;
-                    margin-top: -5px;
-                  }
-                  .timeList {
-                    position: absolute;
-                    top: 47px;
-                    max-width: 175px;
-                    max-height: 300px;
-                    overflow: auto;
-                    background: #fff;
-                    box-shadow: 0px 2px 10px 0px rgba(53, 58, 63, 0.2);
-                    z-index: 300;
-                    ul {
-                      li {
-                        height: 50px;
-                        width: 175px;
-                        text-align: center;
-                        line-height: 50px;
-                        font-size: 18px;
-                        cursor: pointer;
-                        &:hover {
-                          background-image: linear-gradient(
-                            -90deg,
-                            #009efd 0%,
-                            #1bbc9d 100%
-                          );
-                          color: #fff;
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-            .selectPepole {
-              width: 100%;
-              margin-top: 10px;
-              b {
-                font-size: 14px;
-                margin-bottom: 10px;
-                display: block;
-              }
-              .Guests {
-                position: relative;
-                font-size: 16px;
-                .people {
-                  line-height: 40px;
-                  border: 1px solid #e3e5e9;
-                  border-radius: 3px;
-                  cursor: pointer;
-                  padding-left: 10px;
-                 
-                }
-                i {
-                  position: absolute;
-                  right: 10px;
-                  font-size: 8px;
-                  top: 50%;
-                  margin-top: -15px;
-                }
-                .choose {
-                  position: absolute;
-                  top: -132px;
-                  left: -20px;
-                  width: 346px;
-                  box-shadow: 0px 2px 10px 0px rgba(53, 58, 63, 0.2);
-                  background: #fff;
-                  padding: 20px;
-                  b {
-                    font-size: 18px;
-                    line-height: 40px;
-                    display: inline-block;
-                    margin: 0;
-                    span {
-                      font-weight: normal;
-                      color: #878e95;
-                      font-size: 14px;
-                      margin-left: 10px;
-                    }
-                  }
-                  .children {
-                    margin-top: 10px;
-                  }
-                  .adults,
-                  .children {
-                    .color {
-                      color: #1bbc9d;
-                    }
-                    .selectAdults {
-                      float: right;
-                      input {
-                        width: 30px;
-                        height: 30px;
-                        font-size: 18px;
-                        font-weight: bold;
-                        padding: 0;
-                        border: solid 2px #ebebeb;
-                        border-radius: 2px;
-                        text-align: center;
-                        line-height: 30px;
-                        margin: 0 10px;
-                      }
-                      em {
-                        cursor: pointer;
-                        font-weight: bold;
-                      }
-                    }
-                  }
-                  .apply {
-                    width: 100%;
-                    height: 42px;
-                    text-align: center;
-                    background-image: linear-gradient(
-                      270deg,
-                      #009efd 0%,
-                      #1bbc9d 100%
-                    );
-                    color: #f5f5f5;
-                    line-height: 42px;
-                    font-size: 16px;
-                    font-weight: bold;
-                    border-radius: 30px;
-                    margin-top: 20px;
-                  }
-                }
-              }
-            }
-            .picDetail {
-              .headTitle {
-                display: block;
-                font-size: 14px;
-                margin-top: 24px;
-                padding-bottom: 10px;
-              }
-              ul {
-                border-bottom: 1px solid #ebebeb;
-                border-top: 1px solid #ebebeb;
-                padding: 14px 0;
-                li {
-                  &:nth-child(2) {
-                    padding-top: 14px;
-                  }
-                  b {
-                    margin: 0;
-                    font-size: 16px;
-                  }
-                  .formula {
-                    float: left;
-                    font-size: 16px;
-                  }
-                  .pic {
-                    float: right;
-                    font-size: 16px;
-                  }
-                }
-              }
-              .total {
-                width: 100%;
-                padding-top: 14px;
-                .totalText {
-                  float: left;
-                  font-size: 16px;
-                }
-                .totalPic {
-                  font-weight: bold;
-                  float: right;
-                  font-size: 24px;
-                }
-              }
-            }
-            .inquiry {
-              .bookNow {
-                width: 100%;
-                height: 42px;
-                text-align: center;
-                background-image: linear-gradient(
-                  270deg,
-                  #009efd 0%,
-                  #1bbc9d 100%
-                );
-                color: #f5f5f5;
-                line-height: 42px;
-                font-size: 16px;
-                font-weight: bold;
-                border-radius: 30px;
-                margin-top: 20px;
-              }
-              .cancat {
-                margin-top: 20px;
-                position: relative;
-                cursor: pointer;
-                p {
-                  font-size: 14px;
-                  line-height: 20px;
-                  span {
-                    color: #1bbc9d;
-                  }
-                }
-                i {
-                  position: absolute;
-                  right: 0;
-                  top: 50%;
-                  margin-top: -4px;
-                }
-              }
-            }
-          }
-        }
-      }
-      .blockUsPs {
-        background: #f1f1f1;
-        padding: 9px 20px 24px 20px;
-        overflow: hidden;
-        position: relative;
-        ul {
-          li {
-            margin-top: 15px;
-            i {
-              font-size: 12px;
-              color: #1bbc9d;
-            }
-            p {
-              display: inline-block;
-              margin-left: 14px;
-              font-size: 16px;
-            }
-          }
-        }
-      }
-    }
-    .activitiesInfo {
-      width: 734px;
-      .tags {
-        margin: 33px 0;
-        .tag {
-          float: left;
-          color: #1bbc9d;
-          font-size: 14px;
-          border-top: 1px solid #1bbc9d;
-          border-bottom: 1px solid #1bbc9d;
-          padding: 3px 0;
-        }
-        .productId {
-          float: right;
-          font-size: 12px;
-          color: #878e95;
-          padding: 5px 0;
-        }
-      }
-      .activitiyTitle {
-        h3 {
-          font-weight: bold;
-          font-size: 32px;
-        }
-        .types {
-          margin: 29px 0 24px;
-          span {
-            font-size: 18px;
-            position: relative;
-            padding: 0 16px;
-            &:first-child {
-              padding-left: 0;
-            }
-            &:not(:first-child) {
-              &:after {
-                content: "";
-                width: 4px;
-                height: 4px;
-                border-radius: 50%;
-                background: #353a3f;
-                position: absolute;
-                left: 0px;
-                top: 9px;
-              }
-            }
-          }
-        }
-      }
-      .description {
-        padding-top: 33px;
-        border-top: 1px solid #dde0e0;
-        
-        li {
-          float: left;
-          width: 33.33333%;
-          label {
-            margin-right: 14px;
-            font-size: 18px;
-            color: #878e95;
-          }
-          span {
-            font-size: 18px;
-          }
-        }
-        
-      }
-      .location,.languages{
-        	width: 100%;
-        	margin-top: 24px;
-        	label {
-        		float: left;
-	            font-size: 18px;
-	            color: #878e95;
-	            vertical-align: middle;
-	            em{
-	            	color:#353a3f;
-	            	margin-left: 14px;
-	            	font-size: 18px;
-	            	
-	            }
-	          }
-          span {
-          	float: left;
-            font-size: 18px;
-            width: 80%;
-            word-wrap:break-word;
-            margin-top: 2px;
-            margin-left: 8px;
-          }
-        }
-        .location{
-        	padding-bottom: 33px;
-        	border-bottom: 1px solid #dde0e0;
-        }
-      .says {
-        padding: 33px 0;
-        font-style: oblique;
-        border-bottom: 1px solid #dde0e0;
-        font-size: 18px;
-        line-height: 26px;
-        color: #353a3f;
-      }
-      .heightLights {
-        padding: 33px 0;
-        border-bottom: 1px solid #dde0e0;
-        p {
-          font-size: 18px;
-          margin-top: 16px;
-          &:first-child {
-            margin-top: 0;
-          }
-          i {
-            font-size: 12px;
-            color: #1bbc9d;
-            float: left;
-            margin-top: 3px;
-          }
-          span {
-            width: 90%;
-            float: left;
-            margin-left: 12px;
-          }
-        }
-      }
-      .journey {
-        margin-top: 34px;
-        .expect {
-          h3 {
-            font-size: 24px;
-            font-weight: bold;
-          }
-          p {
-            margin: 15px 0 20px;
-            font-size: 18px;
-            line-height: 26px;
-          }
-          .introduction {
-            overflow: hidden;
-          }
-          .viewMore {
-            color: #1bbc9d;
-            font-size: 18px;
-            cursor: pointer;
-            margin: 6px 0 30px;
-          }
-        }
-        ul {
-          padding-bottom: 34px;
-          border-bottom: 1px solid #dde0e0;
-          li {
-            &:nth-of-type(odd) {
-              background: rgba(27, 188, 157, 0.06);
-            }
-            .item {
-              padding: 24px 0;
-              .cont_title {
-                float: left;
-                width: calc(50% - 20px);
-                font-size: 18px;
-                margin-left: 20px;
-                font-weight: bold;
-              }
-              .cont {
-                float: right;
-                width: 50%;
-                font-size: 18px;
-                line-height: 26px;
-              }
-            }
-            .item_v {
-              .contTitle {
-                width: calc(50% - 50px);
-                float: left;
-                padding: 24px 30px 0 20px;
-                h3 {
-                  font-size: 18px;
-                  font-weight: bold;
-                }
-                p {
-                  font-size: 18px;
-                  line-height: 26px;
-                  margin-top: 15px;
-                }
-              }
-              .cont {
-                width: 50%;
-                float: right;
-                img {
-                  width: 100%;
-                  height: 255px;
-                }
-              }
-            }
-          }
-        }
-      }
-      .provide {
-        margin-top: 34px;
-        padding-bottom: 34px;
-        border-bottom: 1px solid #dde0e0;
-        h3 {
-          font-size: 24px;
-          font-weight: bold;
-        }
-        ul {
-          li {
-            padding-left: 20px;
-            display: inherit;
-            margin-top: 15px;
-            font-size: 18px;
-            position: relative;
-            h5 {
-				font-size: 18px;
-			}
-			p {
-				font-size: 14px;
-				margin-top: 4px;
-			}
-            &:after {
-              content: "";
-              position: absolute;
-              width: 4px;
-              height: 4px;
-              border-radius: 50%;
-              background: #353a3f;
-              left: 0px;
-              top: 10px;
-            }
-            &:first-child {
-              margin-top: 30px;
-            }
-          }
-        }
-      }
-      .notes {
-        margin-top: 34px;
-        padding-bottom: 34px;
-        border-bottom: 1px solid #dde0e0;
-        h3 {
-          font-size: 24px;
-          font-weight: bold;
-          margin-bottom: 24px;
-        }
-        p {
-          font-size: 18px;
-          line-height: 26px;
-          margin-top: 10px;
-        }
-      }
-    }
-    .recommend {
-      margin-top: 34px;
-      padding-bottom: 82px;
-      h3 {
-        font-size: 24px;
-        font-weight: bold;
-        margin-bottom: 30px;
-      }
-      ul {
-        li {
-          float: left;
-          margin-right: 20px;
-          width: 376px;
-          transition: 0.3s transform;
-          &:hover {
-            transform: translateY(-10px);
-            box-shadow: 0px 10px 20px 0px rgba(53, 58, 63, 0.1);
-          }
-          &:last-child {
-            margin-right: 0;
-          }
-          .activity-pic {
-            width: 376px;
-            height: 188px;
-            position: relative;
-            img {
-              width: 100%;
-              height: 100%;
-            }
-            span {
-              position: absolute;
-              top: 10px;
-              left: 10px;
-              padding: 5px;
-              font-size: 14px;
-              font-weight: bold;
-              background: #f4b33f;
-              color: #fff;
-            }
-          }
-          .activity-cont {
-            height: 146px;
-            position: relative;
-            padding: 20px;
-            box-shadow: 0px 2px 3px 0px rgba(53, 58, 63, 0.1);
-            .activity-info {
-              .duration {
-                float: right;
-                font-size: 14px;
-                color: #878e95;
-                i {
-                  font-size: 12px;
-                  color: #878e95;
-                  margin-right: 6px;
-                }
-              }
-              .activity-cont-type {
-                float: left;
-                font-size: 14px;
-                color: #d87b65;
-                i {
-                  font-size: 12px;
-                  color: #d87b65;
-                  margin-right: 6px;
-                }
-              }
-            }
-            h4 {
-              color: #353a3f;
-              height: 48px;
-              line-height: 24px;
-              text-overflow: ellipsis;
-              display: -webkit-box;
-              display: -moz-box;
-              -moz-box-orient: vertical;
-              -webkit-box-orient: vertical;
-              -webkit-line-clamp: 2;
-              word-wrap: break-word;
-              overflow: hidden;
-              margin-top: 14px;
-              font-size: 20px;
-              font-weight: bold;
-            }
-            .activity-cont-duration {
-              margin-top: 17px;
-              i {
-                font-size: 12px;
-                color: #878e95;
-                margin-right: 6px;
-              }
-              font-size: 14px;
-              color: #878e95;
-            }
-            .pic {
-              position: absolute;
-              right: 20px;
-              bottom: 20px;
-              .old-pic {
-                text-align: right;
-                font-size: 14px;
-                color: #878e95;
-                text-decoration: line-through;
-              }
-              .current-price {
-                font-size: 14px;
-                color: #878e95;
-                margin-top: 3px;
-                b {
-                  font-size: 20px;
-                  color: #353a3f;
-                  margin-left: 6px;
-                }
-                span {
-                  color: #353a3f;
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-  .overflow {
-    overflow: inherit !important;
-    height: auto !important;
-  }
-  .block {
-    display: none !important;
-  }
-  .position {
-    position: fixed !important;
-    top: 96px !important;
-  }
-  .long {
-    width: 100% !important;
-  }
-}
+		.overflow {
+			overflow: inherit !important;
+			height: auto !important;
+		}
+		.block {
+			display: none !important;
+		}
+		.position {
+			position: fixed !important;
+			top: 96px !important;
+		}
+		.long {
+			width: 100% !important;
+		}
+	}
 </style>

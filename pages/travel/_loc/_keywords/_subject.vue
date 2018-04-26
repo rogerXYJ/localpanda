@@ -1,43 +1,47 @@
 <template>
 	<div class="landingPage">
 		<HeaderCommon :logIn="logIn"></HeaderCommon>
-		<div class="banner" :style="{backgroundImage:'url('+photo+')'}">
+		<div class="banner" v-lazy:background-image="photo">
 			<div class="mask"></div>
 			<span>{{title}}</span>
 		</div>
 		<div class="pageCont page-size">
-			<div class="tags">
+			<div class="tags" >
 				<h4>Explore</h4>
 				<ul class="clearfix">
 					<li v-for="i in tags">
 						<a :href="'/travel/'+loc+'/'+keywords+'/'+i.urlField">
-							<img :src="i.photo.url" />
+							<img v-lazy="i.photo.url" />
 							<span>{{i.keywords}}</span>	
 							<div class="mask"></div>
 						</a>
 					</li>
 				</ul>
-				<div class="main-title">
+				<div class="main-title" id="tags">
 					<h3>{{theme.title}}</h3>
 					<p :key="index" v-for="(item,index) in theme.description">{{item}}</p>
 				</div>
 			</div>
-			<div class="recommend" :key="index" v-for="(item,index) in items">
+			<div class="recommend" :class="{right:index%2}" :key="index" v-for="(item,index) in items">
 				<h3>{{item.title}}</h3>
 				<div class="introduce clearfix">
+					
 					<div class="introduce-pic" v-if="item.photo">
-						<img :src="item.photo.url"/>
+						<img v-lazy="item.photo.url"/>
 					</div>
+					
 					<div class="introduce-text" :class="item.photo?'':'noImg'">
 						<p v-for="j in delNullArr(item.description.split('\n'))">{{j}}</p>
 					</div>
+					
+					
 				</div>
 				<div class="recommend-activity" v-if="item.products">
 					<ul class="clearfix">
 						<li v-for="i in item.products">
 							<a :href="'/activity/details/'+i.activityId" target="_blank">
 								<div class="headPic">
-									<img :src="i.coverPhotoUrl"/>
+									<img v-lazy="i.coverPhotoUrl"/>
 								</div>
 								<div class="activityInfo">
 									<div class="tourType">{{i.category}} · {{i.duration}} {{i.durationUnit|firstUpperCase}}</div>
@@ -58,7 +62,7 @@
 				<ul class="clearfix" v-if="loc=='Shanghai'">
 					<li>
 						<div class="visitor-headPic">
-							<img src="https://d2q486kjf9cwwu.cloudfront.net/static/content/reviews/Claudia.jpg"/>
+							<img v-lazy="'https://d2q486kjf9cwwu.cloudfront.net/static/content/reviews/Claudia.jpg'"/>
 						</div>
 						<div class="visitor-message">
 							<b>Claudia Flores </b>
@@ -68,7 +72,7 @@
 					</li>
 					<li>
 						<div class="visitor-headPic">
-							<img src="https://d2q486kjf9cwwu.cloudfront.net/static/content/reviews/SamMorgan.jpg"/>
+							<img v-lazy="'https://d2q486kjf9cwwu.cloudfront.net/static/content/reviews/SamMorgan.jpg'"/>
 						</div>
 						<div class="visitor-message">
 							<b>Sam Morgan </b>
@@ -78,7 +82,7 @@
 					</li>
 					<li>
 						<div class="visitor-headPic">
-							<img src="https://d2q486kjf9cwwu.cloudfront.net/static/content/reviews/Cynthia.jpg"/>
+							<img v-lazy="'https://d2q486kjf9cwwu.cloudfront.net/static/content/reviews/Cynthia.jpg'"/>
 						</div>
 						<div class="visitor-message">
 							<b>Cynthia Huang</b>
@@ -90,7 +94,7 @@
 				<ul class="clearfix" v-if="loc=='Beijing'">
 					<li>
 						<div class="visitor-headPic">
-							<img src="https://d2q486kjf9cwwu.cloudfront.net/static/content/reviews/Claudia.jpg"/>
+							<img v-lazy="'https://d2q486kjf9cwwu.cloudfront.net/static/content/reviews/Claudia.jpg'"/>
 						</div>
 						<div class="visitor-message">
 							<b>Claudia Flores </b>
@@ -100,7 +104,7 @@
 					</li>
 					<li>
 						<div class="visitor-headPic">
-							<img src="https://d2q486kjf9cwwu.cloudfront.net/static/content/reviews/Selvarani.jpg"/>
+							<img v-lazy="'https://d2q486kjf9cwwu.cloudfront.net/static/content/reviews/Selvarani.jpg'"/>
 						</div>
 						<div class="visitor-message">
 							<b>Selvarani Saravanamuthu</b>
@@ -110,7 +114,7 @@
 					</li>
 					<li>
 						<div class="visitor-headPic">
-							<img src="https://d2q486kjf9cwwu.cloudfront.net/static/content/reviews/Cynthia.jpg"/>
+							<img v-lazy="'https://d2q486kjf9cwwu.cloudfront.net/static/content/reviews/Cynthia.jpg'"/>
 						</div>
 						<div class="visitor-message">
 							<b>Cynthia Huang</b>
@@ -159,7 +163,7 @@
 			 	tdk:{},
 				tags:[],
 				items:"",
-				isMenu:false
+				isMenu:false,
 			}
 			let listdata={}
 			let obj={
@@ -192,7 +196,7 @@
 							
 						}
 					}
-			 	console.log(data.theme)
+			 	//console.log(data.theme)
 		      } catch (err) {
 		      	
 		    }
@@ -275,6 +279,10 @@
 			let that = this
 			that.logIn = localStorage.getItem("logstate");
 			window.addEventListener("scroll", this.scorllBar);
+			if(location.href.indexOf("#")!=-1){
+				document.querySelectorAll("body,html")[0].scrollTop=document.querySelector("#tags").offsetTop-100
+			}
+			
 			
 		}
 	}
@@ -389,8 +397,9 @@
 					}
 				}
 			}
+			
 			.recommend{
-				margin-top: 60px;
+				margin-top: 50px;
 				
 				h3{
 					font-size: 30px;
@@ -402,27 +411,32 @@
 						float: left;
 						width: 478px;
 						height: 318px;
+						margin-right:50px;
 						img{
 							width: 100%;
 							height: 100%;
 						}
 					}
 					.introduce-text{
-						
-						margin-left: 508px;
-						
+						padding-left: 528px;
 						font-size:18px;
 						line-height: 24px;
 						
 					}
 					.noImg{
-							margin-left: 0!important;
+							padding: 0!important;
 						}
 				}
 				.recommend-activity{
 					
 					ul{
 						li{
+							&:hover {
+								transform: translateY(-10px);
+								box-shadow: 0px 10px 20px 0px rgba(53, 58, 63, 0.1);
+							}
+							transition: .3s transform;
+							box-shadow: 0 2px 6px 0 rgba(53,58,63,.1);
 							margin-top: 24px;
 							float: left;
 							width: 274px;
@@ -435,6 +449,8 @@
 								}
 							}
 							.activityInfo{
+								
+								padding: 0 20px 20px;
 								.tourType{
 									font-size: 14px;
 									color:#d87b65;
@@ -443,17 +459,17 @@
 								p{
 									font-size: 18px;
 									font-weight: bold;
-									height: 48px;
+									height: 74px;
 						              line-height: 24px;
 						              text-overflow: ellipsis;
 						              display: -webkit-box;
 						              display: -moz-box;
 						              -moz-box-orient: vertical;
 						              -webkit-box-orient: vertical;
-						              -webkit-line-clamp: 2;
+						              -webkit-line-clamp: 3;
 						              word-wrap: break-word;
 						              overflow: hidden;
-						              margin-top: 14px;
+						     
 						              font-weight: bold;
 								}
 								.price{
@@ -490,6 +506,17 @@
 						
 					}
 				}
+			}
+			.right{
+				.introduce{
+					.introduce-pic{
+						float:right;
+						margin-right: 0;
+						margin-left: 50px;
+					}
+					.introduce-text{ padding-left: 0; padding-right: 528px;}
+				}
+				
 			}
 			.btn{
 				width: 573px;

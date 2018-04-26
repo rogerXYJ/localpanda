@@ -9,7 +9,7 @@ export default ({ app }) => {
   var buildData = nuxtConfig.build;
 
   //默认使用线上key
-  window.fb_code = "pk_test_ymxnY3KoqRcjCEElfvFxPy1G";
+  window.payCode = buildData.payCode;
   //判断是否禁用ga
   if(!buildData.testGa){
     //防止ga报错，默认添加ga方法
@@ -18,6 +18,7 @@ export default ({ app }) => {
     };
     window._gat = {
       _getTracker(){
+        console.log('this is test! no ga code!');
         return {_addTrans(){},_addItem(){},_trackTrans(){}};
       }
     }
@@ -44,7 +45,7 @@ export default ({ app }) => {
   //检测线上环境，或者 检测测试环境使用ga（在nuxt.config里配置在测试环境是否显示ga）
   // if (NODE_ENV !== 'production' && !buildData.publicPath || NODE_ENV == 'production' && !buildData.testGa && !buildData.publicPath) {
   //   //测试环境支付key
-  //   window.fb_code = "pk_test_ymxnY3KoqRcjCEElfvFxPy1G"
+  //   window.payCode = "pk_test_ymxnY3KoqRcjCEElfvFxPy1G"
     
   //   //防止ga报错，默认添加ga方法
   //   window.ga = function(){
@@ -59,7 +60,7 @@ export default ({ app }) => {
   //   return;
   // }else{
   //   //线上环境支付key
-  //   window.fb_code = "pk_live_mRSdUvgwE4pZo2IVofL4cVch"
+  //   window.payCode = "pk_live_mRSdUvgwE4pZo2IVofL4cVch"
   // }
 
   

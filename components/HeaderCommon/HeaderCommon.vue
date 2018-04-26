@@ -279,8 +279,8 @@
 		height: 60px;
 		background: #fff;
 		.heder-cont{
-			width: 1170px;
-			margin: 0 auto;
+			width: 100%;
+			min-width: 1170px;
 			height: 60px;
 			.log{
 				margin-left:38px;

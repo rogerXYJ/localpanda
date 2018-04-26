@@ -21,8 +21,8 @@
 		<transition name="slideleft">
             <Mmeau v-show="isShowMeau" class="Mmeau" :notice="notice" :exclusions="exclusions" :picInfo="picInfo"></Mmeau>
         </transition>
-      	<div class="marsk" v-if="isscroll">
-        	<i class="iconfont" @click.stop="showMeau">&#xe665;</i>
+      	<div class="marsk" v-if="isscroll" @click.stop="showMeau">
+        	<i class="iconfont">&#xe665;</i>
         </div>
 	</div>
 </template>
@@ -199,7 +199,7 @@
 			let data = this;
 			data.id!='undefined'?data.id:getUrlParams()
 			this.logIn = window.localStorage.getItem("logstate");
-			window.addEventListener("click", function(){data.isShowMeau=false});
+			document.addEventListener("click", function(){data.isShowMeau=false});
 			window.addEventListener("scroll", this.scorllBar);
 		},
 		watch: {

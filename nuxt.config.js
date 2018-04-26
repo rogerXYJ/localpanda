@@ -33,6 +33,9 @@ module.exports = {
   ],
   render: {
     resourceHints:false
+  },
+  performance: {
+    prefetch: false
   }
 }
 

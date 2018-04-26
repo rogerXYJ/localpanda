@@ -6,8 +6,8 @@ module.exports = {
   },
   build: {
     //publicPath: 'https://d2q486kjf9cwwu.cloudfront.net/static/js/',
-    testGa: false,
-    payCode: 'pk_test_ymxnY3KoqRcjCEElfvFxPy1G',
+    // testGa: true,
+    // payCode: 'pk_live_mRSdUvgwE4pZo2IVofL4cVch',
     vendor: [
         'axios',
         'vue-lazyload',

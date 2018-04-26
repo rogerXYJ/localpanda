@@ -8,8 +8,8 @@ export default ({ app }) => {
   //let NODE_ENV = process.env.NODE_ENV,
   var buildData = nuxtConfig.build;
 
-  //默认使用线上key
-  window.payCode = buildData.payCode;
+  //测试和线上key
+  window.payCode = buildData.payCode ? buildData.payCode : 'pk_test_ymxnY3KoqRcjCEElfvFxPy1G';
   //判断是否禁用ga
   if(!buildData.testGa){
     //防止ga报错，默认添加ga方法

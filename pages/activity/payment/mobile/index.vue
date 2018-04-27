@@ -147,7 +147,7 @@
 			getToken() {
 				let that = this
 				that.stripeHandler = StripeCheckout.configure({
-					key: fb_code,
+					key: payCode,
 					image: 'https://d2q486kjf9cwwu.cloudfront.net/static/icon/logo.png', // 显示在支付对话框的图片，可自己指定
 					alipay: true, // 启用支付宝支付
 					token: function(token) { // 用户填写完资料并且 Stripe 校验成功后的回调函数

@@ -6,14 +6,15 @@ module.exports = {
     ]
   },
   build: {
-    //publicPath: 'https://d2q486kjf9cwwu.cloudfront.net/static/js/',
-	    testGa : false,
-	    vendor: [
-	        'axios',
-	        'vue-lazyload',
-	        'element-ui',
-	        '~/assets/font/iconfont.js',
-	    ]
+    // publicPath: 'https://d2q486kjf9cwwu.cloudfront.net/static/js/',
+    // testGa: true,
+    // payCode: 'pk_live_mRSdUvgwE4pZo2IVofL4cVch',
+    vendor: [
+        'axios',
+        'vue-lazyload',
+        'element-ui',
+        '~/assets/font/iconfont.js',
+    ]
   },
   babel: {
     plugins: [['component', [{
@@ -26,14 +27,19 @@ module.exports = {
     { src: '~/plugins/axios.js'},
     { src: '~/plugins/vue-lazyload.js', ssr: false },
     { src: '~/plugins/element-ui.js', ssr: false },
-    { src: '~plugins/ga.js', ssr: false },
+    { src: '~plugins/ga.js', ssr: false }
   ],
   css: [
     'element-ui/lib/theme-chalk/index.css',
     'swiper/dist/css/swiper.css'
   ],
-  render : {
-    //禁用预加载
-    resourceHints : false,
+  render: {
+    resourceHints:false
+  },
+  performance: {
+    prefetch: false
+
   }
 }
+
+//{ src: '~/plugins/vue-infinite-loading.js'}

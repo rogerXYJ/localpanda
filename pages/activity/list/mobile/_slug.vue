@@ -480,15 +480,6 @@
 <style lang="scss">
 	@import '~assets/scss/_main.scss';
 	@import '~/assets/font/iconfont.css';
-	.weui-cells__title{
-		margin: 0!important;
-		padding-top: 0.77em;
-		padding-bottom: 0.77em;
-		background: #faf9f8;
-	}
-	.weui-cell:before{
-		right: 15px!important;
-	}
 </style>
 <style lang="scss" scoped>
 	@import "~assets/scss/base/_setting.scss";

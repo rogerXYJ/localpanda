@@ -1,52 +1,23 @@
 <!DOCTYPE html>
 <html {{ HTML_ATTRS }}>
   <head>  
-    <meta name="viewport" content="">
+    <meta id="viewport" name="viewport" content="">
     <link rel="shortcut icon" href="https://d2q486kjf9cwwu.cloudfront.net/static/icon/favicon.ico" type="image/x-icon">
-    {{ HEAD }}
-	<!-- <script async src="https://www.googletagmanager.com/gtag/js?id=UA-107010673-1"></script>
-	<script async src="https://www.google-analytics.com/ga.js?id=UA-107010673-1"></script>
-	<script async src="https://www.googletagmanager.com/gtag/js?id=AW-830736831"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments)};
-      gtag('js', new Date());
+		{{ HEAD }}
+		<script>
+			//检测手机页面
+			var viewport = document.getElementById('viewport');
+			var winW = window.screen.width;
+			if(/\/mobile/.test(window.location.href)){
+				viewport.setAttribute('content', "width=device-width, initial-scale=1.0, maximum-scale=1.0");
+			}else{
+				var ua = navigator.userAgent;
+				if(/(iPad|iPhone|Android)/.test(ua)){
+					viewport.setAttribute('content', "width=1200");
 
-      gtag('config', 'UA-107010673-1');
-    </script> -->
-    <script>
-    		//let parth="https://www.localpanda.com/activity/"
-    		let parth="http://localhost:3000/activity/"
-    		if(window.location.href.startsWith(parth+"booking/mobile")
-    		||window.location.href.startsWith(parth+"details/mobile/")
-    		||window.location.href.startsWith(parth+"list/mobile/")
-    		||window.location.href.startsWith(parth+"payment/mobile")
-    ){
-    		viewport = document.querySelector("meta[name=viewport]");
-	    		viewport.setAttribute('content', "width=device-width, initial-scale=1.0, maximum-scale=1.0");
-	    	}else{
-	    		viewport()
-	    	}
-    	
-    	
-    	
-    	function viewport(){
-    		var ua = navigator.userAgent;
-    		console.log(ua)
-			var ipad = ua.match(/(iPad).*OS\s([\d_]+)/),
-				isIphone = !ipad && ua.match(/(iPhone\sOS)\s([\d_]+)/),
-				isAndroid = ua.match(/(Android)\s+([\d.]+)/),
-				isMobile = isIphone || isAndroid,
-			 	viewport = document.querySelector("meta[name=viewport]");
-			if(isIphone || ipad) {
-					
-					viewport.setAttribute('content', "width=1500 ,user-scalable=yes,maximum-scale=0.5");
-				} else {
-						viewport.setAttribute('content', "width=device-width, initial-scale=0,user-scalable=yes,maximum-scale=1.0");
 				}
-    	}
-		
-	</script>
+			}
+		</script>
   </head>
   <body {{ BODY_ATTRS }} >
     {{ APP }}

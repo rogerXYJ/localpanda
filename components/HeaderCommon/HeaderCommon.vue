@@ -15,7 +15,7 @@
 				
 				<li @click="showContact">Customize Your Trip<em class="hot">HOT</em></li>
 				<li @click="isShowAnonymityback">My Bookings</li>
-				<li @click="show" v-if="isIndex">Log In</li>
+				<li @click="show">Log In</li>
 				<li @click="goAboutUs">About Us</li>
 				<li  @click="getscoll">Contact Us</li>
 				
@@ -280,6 +280,7 @@
 		background: #fff;
 		.heder-cont{
 			width: 100%;
+			min-width: 1170px;
 			height: 60px;
 			.log{
 				margin-left:38px;

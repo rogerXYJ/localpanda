@@ -269,7 +269,7 @@
             },
             arriveTimeNotDecided: function(newState, oldState){
                 if(newState){
-                    this.form.arriveTime = newState;
+                    this.form.arriveTime = '';
                     this.$refs.form.validateField('arriveTime');
                 }
             },
@@ -282,7 +282,7 @@
                 if(newState&&!this.arriveCityInput){
                     this.form.arriveCity = 'Not Decided';
                 }else{
-                    this.form.arriveCity = this.arriveCityInput;
+                    this.form.arriveCity = '';
                     
                 }
             },

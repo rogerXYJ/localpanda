@@ -67,6 +67,11 @@
 	                }
 	        
 				}
+
+				//优化手机滑动
+				m.addEventListener('touchmove',function(e){
+					e.preventDefault();
+				},false);
 			}
 	}
 </script>

@@ -13,7 +13,7 @@
 				Filter
 			</span>
 			<span class="destination">
-				<i class="iconfont">&#xe610;</i>
+				<i class="iconfont">&#xe66b;</i>
 				<select  @change="sortFn(selected)" v-model="selected">
 					<option v-for="item in select">{{item.selectText}}</option>
 				</select>
@@ -493,9 +493,6 @@
 				&:first-child{
 					margin-left: 0;
 				}
-				&:last-child{
-					padding-right: 0;
-				}
 				border: solid 0.026666rem #dde0e0;
 				border-radius: 8px;
 				height: 0.773333rem;
@@ -558,7 +555,7 @@
 					}
 					.titleText {
 						width: 100%;
-						height:1.45555rem;
+						height:1.35555rem;
 						text-overflow: ellipsis;
 						display: -webkit-box;
 						display: -moz-box;

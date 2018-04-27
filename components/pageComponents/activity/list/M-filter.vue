@@ -32,13 +32,13 @@
 					
 					<div class="title">DURATION</div>
 					<div class="detail">
-					<el-checkbox-group v-model="checkedDurations">
-						<div class="checkboxlist" v-for="(i,key,index) in durations">
-							<el-checkbox v-if="key==0" :label="key" :key="key">Half Day ({{i}})</el-checkbox>
-							<el-checkbox v-if="key==1" :label="key" :key="key">{{key}} Day ({{i}})</el-checkbox>
-							<el-checkbox v-if="key>1" :label="key" :key="key">{{key}} Days ({{i}})</el-checkbox>
-						</div>
-					</el-checkbox-group>
+						<el-checkbox-group v-model="checkedDurations">
+							<div class="checkboxlist" v-for="(i,key,index) in durations">
+								<el-checkbox v-if="key==0" :label="key" :key="key">Half Day ({{i}})</el-checkbox>
+								<el-checkbox v-if="key==1" :label="key" :key="key">{{key}} Day ({{i}})</el-checkbox>
+								<el-checkbox v-if="key>1" :label="key" :key="key">{{key}} Days ({{i}})</el-checkbox>
+							</div>
+						</el-checkbox-group>
 					</div>
 				</div>
 				

@@ -26,7 +26,7 @@ module.exports = {
     { src: '~/plugins/swiper.js', ssr: false },
     { src: '~/plugins/axios.js'},
     { src: '~/plugins/vue-lazyload.js', ssr: false },
-    { src: '~/plugins/element-ui.js', ssr: false },
+    { src: '~/plugins/element-ui.js', ssr: true },
     { src: '~plugins/ga.js', ssr: false }
   ],
   css: [

@@ -678,7 +678,7 @@
 			line-height: 40px;
 			border-radius: 50%;
 			left: -20px;
-			z-index: 999;
+			z-index: 99;
 			opacity: 1;
 			&:hover{
 				background: linear-gradient(270deg,#009efd 0%,#1bbc9d 100%);
@@ -697,7 +697,7 @@
 			line-height: 40px;
 			border-radius: 50%;
 			right: -20px;
-			z-index: 999;
+			z-index: 99;
 			opacity: 1;
 			&:hover{
 				background: linear-gradient(270deg,#009efd 0%,#1bbc9d 100%);

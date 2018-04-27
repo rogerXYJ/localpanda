@@ -247,7 +247,7 @@
 				<div class="facebook">
 					<h3 class="title">Log in with Facebook</h3>
 					<p>If you have already logged in via your Facebook account and placed an order, you can login through Facebook and view the status of your order.</p>
-					<div class="btn" @click="ok"><button><span class="iconfont">&#xe61d;</span>Log in with Facebook</button></div>
+					<div class="btn" @click="ok"><button><span class="iconfont">&#xe613;</span>Log in with Facebook</button></div>
 				</div>
 				<div class="others">
 					<h3>For Guest Users</h3>

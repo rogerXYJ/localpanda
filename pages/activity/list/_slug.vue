@@ -959,7 +959,7 @@
 					width: 1224px;
 					margin: -120px auto 0;
 					background: #fff;
-					z-index: 999;
+					z-index: 99;
 					position: relative;
 					h3 {
 						font-size: 14px;

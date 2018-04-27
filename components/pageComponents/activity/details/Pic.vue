@@ -6,8 +6,8 @@ export default {
 				alertPicActive: "",
 				 swiperOptionTop: {
 			          spaceBetween: 10,
-			          loop:this.photoList.length>6?true:false,
-			          loopedSlides: this.photoList.length>6?this.photoList.length:null,
+			          loop:this.photoList.length>=6?true:false,
+			          loopedSlides: this.photoList.length>=6?this.photoList.length:null,
 			          navigation: {
 			            nextEl: '.swiper-button-next',
 			            prevEl: '.swiper-button-prev'
@@ -16,12 +16,12 @@ export default {
 					},
 			        swiperOptionThumbs: {
 			          spaceBetween: 10,
-			         slidesPerView:this.photoList.length,
+			          slidesPerView:"auto",
 			           
-			          touchRatio: 0.2,
+			          touchRatio: 0.5,
 			          loop:true,
-			          loop:this.photoList.length>6?true:false,
-			          loopedSlides: this.photoList.length>6?this.photoList.length:null,
+			          loop:this.photoList.length>=6?true:false,
+			          loopedSlides: this.photoList.length>=6?this.photoList.length:null,
 			          
 			           
 			        }
@@ -52,9 +52,6 @@ export default {
 			let that=this
 			that.$nextTick(function(){
 		        const swiperTop = that.swiperTop;
-		        
-		        
-		       
 		        const swiperThumbs = that.swiperThumbs;
 		        swiperTop.controller.control = swiperThumbs
         		swiperThumbs.controller.control = swiperTop

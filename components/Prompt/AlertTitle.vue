@@ -187,13 +187,13 @@
 				<slot name="alertTitleMessage"></slot>
 
 			</div>
-			<div class="btn" @click="ok"><button><span class="iconfont">&#xe61d;</span>Log in with Facebook</button></div>
+			<div class="btn" @click="ok"><button><span class="iconfont">&#xe613;</span>Log in with Facebook</button></div>
 		</div>
 	</div>
 </template>
 <style lang="scss" scoped>
-	@import "../../assets/scss/base/_setting.scss";
-	@import "../../assets/scss/base/_animate.scss";
+	@import "~assets/scss/base/_setting.scss";
+	@import "~assets/scss/base/_animate.scss";
 	.alertTitleOuter {
 		background: rgba(0, 0, 0, 0.5);
 		height: 100%;

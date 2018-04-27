@@ -1,60 +1,47 @@
 <template>
 	<div class="M-filter">
+		
 		<div class="cont">
 			<div class="head">
 				<i class="iconfont" @click.stop="close">&#xe629;</i>
 				<div class="title">Filter</div>
 				<div class="clear" @click.stop="clear" v-if="checkedCategory.length>0||checkedDurations.length>0||checkedTourtype.length>0">Clear</div>
 			</div>
-
 			<div class="filter-detail">
-				<ul>
-					<li>
-						<div class="filter-item" @click.stop="showSelect(1)">
-							Categories
-							<i class="iconfont" v-if="!isshowcategory">&#xe666;</i>
-							<i class="iconfont" v-else>&#xe667;</i>
+				<div class="fliterList">
+					<div class="title">CATEGORIES</div>
+					<div class="detail">
+						<el-checkbox-group v-model="checkedCategory">
+							<div class="checkboxlist" v-for="(item,key,index) in category">
+								<el-checkbox :label="key" :key="key">{{key}} ({{item}})</el-checkbox>
+							</div>
+						</el-checkbox-group>
+					</div>
+				</div>
+				<div class="fliterList" >
+					<div class="title">THEMES</div>
+					<div class="detail">
+						<el-checkbox-group v-model="checkedTourtype">
+							<div class="checkboxlist" v-for="(i,key,index) in tourtype">
+								<el-checkbox :label="key" :key="key">{{key}} ({{i}})</el-checkbox>
+							</div>
+						</el-checkbox-group>
+					</div>
+				</div>
+				<div class="fliterList">
+					
+					<div class="title">DURATION</div>
+					<div class="detail">
+					<el-checkbox-group v-model="checkedDurations">
+						<div class="checkboxlist" v-for="(i,key,index) in durations">
+							<el-checkbox v-if="key==0" :label="key" :key="key">Half Day ({{i}})</el-checkbox>
+							<el-checkbox v-if="key==1" :label="key" :key="key">{{key}} Day ({{i}})</el-checkbox>
+							<el-checkbox v-if="key>1" :label="key" :key="key">{{key}} Days ({{i}})</el-checkbox>
 						</div>
-						<div class="fliterList" v-if="isshowcategory">
-							<el-checkbox-group v-model="checkedCategory">
-								<div class="checkboxlist" v-for="(item,key,index) in category">
-									<el-checkbox :label="key" :key="key">{{key}} ({{item}})</el-checkbox>
-								</div>
-							</el-checkbox-group>
-						</div>
-
-					</li>
-					<li>
-						<div class="filter-item" @click.stop="showSelect(2)">
-							Themes
-							<i class="iconfont" v-if="!isshowtourtype">&#xe666;</i>
-							<i class="iconfont" v-else>&#xe667;</i>
-						</div>
-						<div class="fliterList" v-if="isshowtourtype">
-							<el-checkbox-group v-model="checkedTourtype">
-								<div class="checkboxlist" v-for="(i,key,index) in tourtype">
-									<el-checkbox :label="key" :key="key">{{key}} ({{i}})</el-checkbox>
-								</div>
-							</el-checkbox-group>
-						</div>
-					</li>
-					<li>
-						<div class="filter-item" @click.stop="showSelect(3)">
-							Duration
-							<i class="iconfont" v-if="!isshowdurations">&#xe666;</i>
-							<i class="iconfont" v-else>&#xe667;</i>
-						</div>
-						<div class="fliterList" v-if="isshowdurations">
-							<el-checkbox-group v-model="checkedDurations">
-								<div class="checkboxlist" v-for="(i,key,index) in durations">
-									<el-checkbox v-if="key==0" :label="key" :key="key">Half Day ({{i}})</el-checkbox>
-									<el-checkbox v-if="key==1" :label="key" :key="key">{{key}} Day ({{i}})</el-checkbox>
-									<el-checkbox v-if="key>1" :label="key" :key="key">{{key}} Days ({{i}})</el-checkbox>
-								</div>
-							</el-checkbox-group>
-						</div>
-					</li>
-				</ul>
+					</el-checkbox-group>
+					</div>
+				</div>
+				
 			</div>
 		</div>
 		<div class="subimtBtn">
@@ -64,6 +51,8 @@
 </template>
 
 <script>
+	
+	//import { checklist } from 'vux'
 	export default {
 		props: [
 		"category", 
@@ -80,26 +69,23 @@
 			return {
 				isshowcategory: false,
 				//category: ["zhangsna", "lisi"],
-				
+				commonList:["shanghai","beijing"],
 				isshowdurations: false,
 				//durations: ['1', '0'],
-				
-
+				checklist001:[],
+				labelPosition:'',
 				isshowtourtype: false,
 				//tourtype: ['end', 'ending', 'ending', 'ending', 'ending', 'ending', 'ending'],
 				
 				records: '',
 			}
 		},
+		 components: {
+		    //checklist
+		 },
 		methods: {
-			showSelect(id) {
-				if(id == 1) {
-					this.isshowcategory = !this.isshowcategory
-				} else if(id == 2) {
-					this.isshowtourtype = !this.isshowtourtype
-				} else {
-					this.isshowdurations = !this.isshowdurations
-				}
+			change(){
+				console.log(this.checkedCategory)
 			},
 			clear() {
 				location.href="/activity/list/mobile/"+this.loc
@@ -121,8 +107,10 @@
 				location.href="/activity/list/mobile/"+this.loc+"?opctions="+opctions+"&sort="+this.sort
 
 			}
+		},
+		mounted:function(){
+			console.log(this.category)
 		}
-
 	
 
 	}
@@ -185,30 +173,31 @@
 				}
 			}
 			.filter-detail {
-				padding: 1.386666rem 0.586666rem 0;
-				ul {
-					li {
-						border-bottom: 1px solid #dde0e0;
-						padding: 1.026666rem 0;
-						.filter-item {
-							font-size: 0.48rem;
-							font-weight: bold;
-							i {
-								font-size: 0.48rem;
-								float: right;
-							}
-						}
-						.fliterList {
-							margin-top: 0.853333rem;
-							.checkboxlist {
-								margin-top: 0.213333rem;
-								&:first-child {
-									margin-top: 0;
-								}
-							}
+				padding-top: 1.386666rem;
+				
+				.title{
+					padding-left: 0.586666rem;
+					font-size: 0.32rem;
+					line-height: 0.986666rem;
+					height: 0.986666rem;
+					background: #faf9f8;
+					
+					
+				}
+				.detail{
+					border-top: 1px solid #dde0e0;
+					border-bottom:1px solid #dde0e0;
+					.checkboxlist{
+						margin:0 0.586666rem;
+						line-height: 1.24rem;
+						height: 1.24rem;
+						border-bottom:1px solid #dde0e0;
+						&:last-child{
+							border: 0;
 						}
 					}
 				}
+				
 			}
 		}
 		.subimtBtn {

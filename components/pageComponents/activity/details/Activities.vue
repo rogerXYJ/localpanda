@@ -82,7 +82,7 @@
 					</ul>
 
 				</div>
-				<div class="notes" v-if="photoList.length>0" @click="showPhoto">
+				<!--<div class="notes" v-if="photoList.length>0" @click="showPhoto">
 					<h3>Pictures from our users</h3>
 					<div class="photoCover" v-lazy:background-image="photoList.length>0?photoList[0].url:''">
 						<div class="mask"></div>
@@ -92,29 +92,30 @@
 						</div>
 					</div>
 
-				</div>
+				</div>-->
 				<div class="provide" v-if="picInfo.details.length>0">
-					<h3>The Pricing Details</h3>
+					<h3>Pricing Details</h3>
+					<p style="font-size: 16px;margin-top: 10px;" v-if="picInfo.childDiscount">Children’s price is   $  {{picInfo.childDiscount}} USD  less than adults’ price.</p>
 					<el-table :data="sixArr" stripe style="width: 100%">
-						<el-table-column prop="capacity" label="Number of adults" width="183">
+						<el-table-column prop="capacity" label="Number of people" width="183" align="center">
 							<template slot-scope="scope">
 								<span v-if="scope.row.capacity==1">1 person</span>
 								<span v-else>{{scope.row.capacity}} people</span>
 							</template>
 						</el-table-column>
-						<el-table-column prop="price" label="Total cost of adults" width="183">
+						<el-table-column prop="price" label="Total cost" width="183" align="center">
 							<template slot-scope="scope">
 								<span>$ {{returnFloat(scope.row.price)}} USD</span>
 							</template>
 						</el-table-column>
-						<el-table-column prop="chlidenNumb" label="Number of adults" width="183">
+						<el-table-column prop="chlidenNumb" label="Number of people" width="183">
 							<template slot-scope="scope">
 								<div v-show="scope.row.right.capacity">
 									<span>{{scope.row.right.capacity}} people</span>
 								</div>
 							</template>
 						</el-table-column>
-						<el-table-column prop="childenTotal" label="Total cost of childen" width="185" align="center">
+						<el-table-column prop="childenTotal" label="Total cost" width="185" align="center">
 							<template slot-scope="scope">
 								<div v-show="scope.row.right.capacity">
 									<span>$ {{returnFloat(scope.row.right.price)}} USD</span>
@@ -630,8 +631,6 @@
 					tableD = [];
 				for(let i = 0; i < details.length; i++) {
 					let thisD = details[i];
-
-					//console.log(thisD);
 					newArr.push(thisD);
 					if(i + 1 > details.length - 1) break;
 
@@ -639,9 +638,11 @@
 					var nextC = details[i + 1].capacity;
 					var forLen = nextC - thisC - 1;
 					for(let j = 0; j < forLen; j++) {
-						var midArr = newObj(thisD);
+						var midArr = newObj(details[i+1]);
+						//console.log(midArr)
 						newArr.push(midArr);
 					}
+					//console.log(newArr)
 				}
 
 				for(var k = 0; k < newArr.length; k++) {

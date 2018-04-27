@@ -1,47 +1,23 @@
 <template>
 	<div class="M-activityList">
 		<Head></Head>
-		<div class="headpic">
-			<div class="linerBackground"></div>
-			<div class="position">
-				<h3>Destination</h3>
-				<el-select v-model="value">
-					<a :href="item.url" v-for="item in options">
-						<el-option :key="item.value" :label="item.label" :value="item.value">
-
-						</el-option>
-					</a>
-				</el-select>
-			</div>
-		</div>
-		<div class="filter" :class="{scroll:isscroll}">
-			
-			<div class="filter-table clearfix">
-				
-				<div class="filter-cont" @click="showFilter">
-					<i class="iconfont">&#xe668;</i>
-					<span>Filter</span>
-				</div>
-				<div class="recommended">
-					<h3>SORT BY</h3>
-					<select class="selectSort" @change="sortFn(selected)" v-model="selected">
-						<option v-for="(item,index) in select" v-model="item.selectText">{{item.selectText}}</option>
-					</select>
-					<i class="iconfont">&#xe666;</i>
-				</div>
-			</div>
-			<div class="filter-list">
-				<!--<em class="clearAll" v-if="checkedCategory.length>0||checkedDurations.length>0||checkedTourtype.length>0">Clear All</em>-->
-				<span v-if="checkedCategory&&checkedCategory.length>0" v-for="(item,index) in checkedCategory" @click="del(1,checkedCategory,index)">{{item}}<i class="iconfont">&#xe629;</i></span>
-				<span v-if="checkedDurations&&checkedDurations.length>0 && item==0" v-for="(item,index) in checkedDurations" @click="del(2,checkedDurations,index)">Half Day<i class="iconfont">&#xe629;</i></span>
-				<span v-if="checkedDurations&&checkedDurations.length>0 && item==1" v-for="(item,index) in checkedDurations" @click="del(2,checkedDurations,index)">1 Day<i class="iconfont">&#xe629;</i></span>
-				<span v-if="checkedDurations&&checkedDurations.length>0 && item>1" v-for="(item,index) in checkedDurations" @click="del(2,checkedDurations,index)">{{item}} Days<i class="iconfont">&#xe629;</i></span>
-				<span v-if="checkedTourtype&&checkedTourtype.length>0" v-for="(item,index) in checkedTourtype" @click="del(3,checkedTourtype,index)">{{item.replace(/And/g,'&')}}<i class="iconfont">&#xe629;</i></span>
-				
-			</div>
-			<div class="pageSizeInfo" v-if="records==1&&!isscroll">1 activity in total</div>
-			<div class="pageSizeInfo" v-if="records==0&&!isscroll">0 activity in total</div>
-			<div class="pageSizeInfo" v-if="records>1&&!isscroll">{{records}} activities in total</div>
+		<div class="filterInfo">
+			<span class="destination ">
+				<i class="iconfont">&#xe610;</i>
+				<select v-model="value" @change="locationFn(value)">
+					<option v-for="item in options">{{item.label}}</option>
+				</select>
+			</span>
+			<span class="destination" @touchend="showFilter">
+				<i class="iconfont">&#xe668;</i>
+				Filter
+			</span>
+			<span class="destination">
+				<i class="iconfont">&#xe610;</i>
+				<select  @change="sortFn(selected)" v-model="selected">
+					<option v-for="item in select">{{item.selectText}}</option>
+				</select>
+			</span>
 		</div>
 		<div class="list-cont" v-if="records>0">
 			<ul class="clearfix">
@@ -58,16 +34,15 @@
 						<div class="activitDe">
 							<div class="info">
 								<div class="activeType">
-									<div class="tourType">{{item.category}}</div>
+									<div class="tourType">{{item.category}} · {{item.duration}} {{item.durationUnit|firstUpperCase}}</div>
 
 								</div>
 								<div class="titleText" style="-moz-box-orient: vertical;
 							    -webkit-box-orient:vertical;">
 									{{item.title}}
 								</div>
-								<div class="duration">Duration: {{item.duration}} {{item.durationUnit|firstUpperCase}}</div>
+								
 								<div class="totalPic">
-
 									<div class="nowPic">From <b>${{returnFloat(item.bottomPrice)}}</b><span>  pp</span></div>
 								</div>
 							</div>
@@ -310,6 +285,9 @@
 			InfiniteLoading
 		},
 		methods: {
+			locationFn(loc){
+				location.href="/activity/list/mobile/"+loc
+			},
 			setCallBack(val){
 				this.isshow=val
 			},
@@ -359,7 +337,8 @@
 				//arr.splice(index,1)
 			},
 			sortFn(val){
-				let opctions=this.getUrlParam("opctions")?this.getUrlParam("opctions"):''
+				let opctions=this.getUrlParam("opctions");
+				
 				console.log(this.getUrlParam("opctions"))
 				if(val == "Recommended") {
 					location.href="/activity/list/mobile/"+this.loc+"?opctions="+opctions
@@ -501,166 +480,100 @@
 <style lang="scss">
 	@import '~assets/scss/_main.scss';
 	@import '~/assets/font/iconfont.css';
-	html,body{
-		background:  #faf9f8;
+	.weui-cells__title{
+		margin: 0!important;
+		padding-top: 0.77em;
+		padding-bottom: 0.77em;
+		background: #faf9f8;
 	}
-	.el-input__inner {
-		width: 2.8rem;
-		height: 40px;
-		font-size: 0.453333rem;
-		color: #fff;
-		background: transparent;
-		border: none;
-		padding-left: 0;
-		font-weight: bold;
-	}
-	.el-select .el-input .el-select__caret {
-		color: #fff;
-		font-weight: bold;
-		font-size: 0.32rem;
-	}
-	.el-popper .popper__arrow,
-	.el-popper .popper__arrow::after {
-		border-style: none!important;
-	}
-	.el-popper[x-placement^="bottom"]{
-		margin-top: 0!important;
+	.weui-cell:before{
+		right: 15px!important;
 	}
 </style>
 <style lang="scss" scoped>
 	@import "~assets/scss/base/_setting.scss";
 	.M-activityList{
-		
-		.headpic{
-			position: relative;
-			background:url("https://d2q486kjf9cwwu.cloudfront.net/static/headerPhotos/BackGround.jpg") no-repeat;
-			background-size: cover;
-			background-position:center;
-			.linerBackground{
-				position: absolute;
-				bottom: 0;
-				background: linear-gradient(rgba(255,249,248,0),rgba(255,249,248,1));
-				height:2.4rem;
-				width: 100%;
-			}
-			height: 4.666666rem;
-			position:relative;
-			.position{
-				padding: 0.533333rem 0.573333rem 0;
-				h3{
-					font-size: 0.266666rem;
-					color: #fff;
-					margin-bottom: 0.186666rem;
-				}
-			}
-		}
-		.filter{
-			&.scroll{
-				position: fixed;
-				top: 0;
-				left:0;
-				margin: 0;
-				width: calc(100% - 1.073333rem);
-			}
-			box-shadow: 0px 0px 0.4rem 0px rgba(0, 0, 0, 0.08);
-			border-radius: 0.04rem;
-			background: #fff;
-			margin:0 0.586666rem;
-			padding: 0.546666rem 0.533333rem 0.48rem;
-			margin-top: -1.733333rem;
-			position: relative;
-			z-index: 10;
-			h3{
-				font-size: 0.346666rem;
-				color: #878e95;
-				margin-bottom: 0.133333rem;
-			}
-			.filter-table{
-				padding-bottom: 0.533333rem;
-				border-bottom: 1px solid #ebebeb;;
-				.recommended{
-					float:right;
-					.selectSort{
-						font-size: 0.4rem;
-						-webkit-appearance:none;
-						-moz-appearance:none;
-						appearance:none;
-						background-color:transparent;
-						border:none;
-						min-width:2.133333rem;
-					}
-				}
-				.filter-cont{
-					float:left;
-					margin-top: 0.533333rem;
-					font-size: 0.4rem;
-					font-weight: bold;
-					i{
-						margin-right: 0.266666rem;
-					}
-				}
+		.filterInfo{
+			padding:0 0.586666rem 0.453333rem;
+			border-bottom:1px solid #dde0e0;
+			.destination{
 				
-			}
-			.filter-list{
-				white-space:nowrap;
-				padding-bottom: 0.266666rem;
-				overflow-y: scroll;
-				-webkit-overflow-scrolling: touch;
-				span{
-					display: inline-block;
-					margin-top: 0.533333rem;
-					padding: 0.133333rem 0.333333rem;
-					border-radius: 0.533333rem;
-					border: solid 0.026666rem #878e95;
-					font-size: 0.4rem;
-					margin-right: 0.24rem;
+				margin-left: 0.186666rem;
+				&:first-child{
+					margin-left: 0;
+				}
+				&:last-child{
+					padding-right: 0;
+				}
+				border: solid 0.026666rem #dde0e0;
+				border-radius: 8px;
+				height: 0.773333rem;
+				display: inline-block;
+				height: auto;
+				padding:0.24rem 0.266666rem;
+				&:nth-child(2){
 					i{
-						font-size:0.293333rem;
-						color: #1bbc9d;
-						font-weight: bold;
-						margin-left: 0.133333rem;
+						margin-right:0;
 					}
 				}
+				i{
+					font-size: 0.293333rem;
+					margin-right: 0.16rem;
+					color:#cacccc;
+					
+				}
+				select{
+					-webkit-appearance: none;
+					-moz-appearance: none;
+					appearance: none;
+					border: none;
+					font-size: 0.346666rem;
+					background:transparent;
+				}	
 			}
-			.pageSizeInfo{
-				margin-top: 0.453333rem;
-				font-size: 0.4rem;
-			}
+			
+			
 		}
+		
+		
+		
 		.list-cont{
-			padding: 0 0.586666rem;
+			padding:0.133333rem  0.586666rem 0;
 			.activity-item {
-				box-shadow: 0px 2px 6px 0px rgba(53,58,63,0.1);
-				background: #fff;
-				margin-top: 0.4rem;
+				&:nth-child(2n+2){
+					margin-right: 0;
+				}
+				float:left;
+				width:4.28rem;
+				margin:0.586666rem 0.266666rem 0 0;
 				.activity {
 					.activity-photo {
-						height: 4.413333rem;
+						height: 2.853333rem;
 						background-repeat: no-repeat!important;
 						background-size: cover!important;
 						position: relative;
 					}
 				}
 				.activitDe {
-					padding: 0 0.4rem 0.4rem;
 					.activeType {
 						height: 0.893333rem;
 						line-height: 0.893333rem;
 						.tourType {
 							color: #d87b65;
-							font-size: 0.373333rem;
+							font-size:0.293333rem;
+							
 						}
 					}
 					.titleText {
 						width: 100%;
-						height:0.869999rem;
+						height:1.6rem;
 						text-overflow: ellipsis;
 						display: -webkit-box;
 						display: -moz-box;
 						-moz-box-orient: vertical;
 						-webkit-box-orient: vertical;
-						-webkit-line-clamp: 2;
-						-moz-line-clamp: 2;
+						-webkit-line-clamp: 3;
+						-moz-line-clamp: 3;
 						-o-text-overflow: ellipsis;
 						word-wrap: break-word;
 						font-size: 0.373333rem;
@@ -674,7 +587,7 @@
 						color: #878e95;
 					}
 					.totalPic {
-						padding-top: 0.4rem;
+						padding-top: 0.226666rem;
 						.oldpic {
 							text-align: right;
 							font-size: 14px;
@@ -682,7 +595,7 @@
 							text-decoration: line-through;
 						}
 						.nowPic {
-							text-align: right;
+							text-align:left;
 							font-size: 0.293333rem;
 							color: #878e95;
 							b {

@@ -79,7 +79,7 @@
                 <div class="GUI-form__grid">
                     <div class="GUI-form__grid-col">
                         <div class="GUI-form-block GUI-form-block--require">
-                            <div class="GUI-form-block__title">When will you arrive in China?</div>
+                            <div class="GUI-form-block__title" id="arriveTime">When will you arrive in China?</div>
                             <div class="GUI-form-block__content">
                                 <el-form-item class="GUI-form-item" prop="arriveTime">
                                     <div class="arrive-time">
@@ -268,22 +268,22 @@
                 }
             },
             arriveTimeNotDecided: function(newState, oldState){
-                console.log(newState);
                 if(newState){
-                    this.form.arriveTime = 'Not Decided';
+                    this.form.arriveTime = newState;
+                    this.$refs.form.validateField('arriveTime');
                 }
             },
 			arriveCityInput: function (newText, oldText) {
-                if(newText==oldText){
+                if(newText!=oldText){
                     this.form.arriveCity = newText;
                 }
             },
             arriveCityNotDecided: function(newState, oldState){
-               console.log(newState)
                 if(newState&&!this.arriveCityInput){
                     this.form.arriveCity = 'Not Decided';
                 }else{
-                    this.form.arriveCity = '';
+                    this.form.arriveCity = this.arriveCityInput;
+                    
                 }
             },
             /*"form.arriveCity":function(val,oldVal){
@@ -311,7 +311,7 @@
                         if(this.arriveCityNotDecided){
                             formData.arriveCity = 'Not Decided';
                         }
-                        console.log(formData.arriveCity);
+                        
                         stepFormStorage.addStorage(storageKey, formData);
                         if(formData.accommodationIncluded){
                             window.location.href = "/travel/customize/step2";
@@ -325,7 +325,7 @@
                         setTimeout(function(){
                             var errorDom = document.getElementsByClassName('is-error');
                             if(errorDom.length){
-                                htmlBody.scrollTop = errorDom[0].offsetTop;
+                                htmlBody.scrollTop = errorDom[0].offsetTop-80;
                             }
                         },200);
                         
@@ -354,6 +354,7 @@
                         this.arriveCityNotDecided = true;
                     }else{
                         this.arriveCity = formData.arriveCity;
+                        this.arriveCityInput = formData.arriveCity;
                     }
                     this.form = formData;
                 }catch(e){

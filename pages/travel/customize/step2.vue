@@ -133,7 +133,7 @@
                             var errorDom = document.getElementsByClassName('is-error');
                             var htmlBody = document.documentElement;
                             if(errorDom.length){
-                                htmlBody.scrollTop = errorDom[0].offsetTop;
+                                htmlBody.scrollTop = errorDom[0].offsetTop-80;
                             }
                         },150);
                         return false;

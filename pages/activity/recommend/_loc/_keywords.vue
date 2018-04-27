@@ -158,57 +158,57 @@
 					{
 						keywords:"Popular & <br/>Classic Tours",
 						url:"/activity/recommend/Shanghai/Popular-And-Classic-Tours",
-						imgUrl:'https://d2q486kjf9cwwu.cloudfront.net/static/headerPhotos/PopularAndClassicTours.jpg'
+						imgUrl:'https://cloud.localpanda.com/static/headerPhotos/PopularAndClassicTours.jpg'
 					},
 					{
 						keywords:"Neighborhood <br/>Life",
 						url:"/activity/recommend/Shanghai/Sales-and-Deals",
-						imgUrl:'https://d2q486kjf9cwwu.cloudfront.net/static/headerPhotos/SalesAndDeals.jpg'
+						imgUrl:'https://cloud.localpanda.com/static/headerPhotos/SalesAndDeals.jpg'
 					},
 					{
 						keywords:"Ancient <br/>Water Towns",
 						url:"/activity/recommend/Shanghai/Ancient-Water-Towns",
-						imgUrl:'https://d2q486kjf9cwwu.cloudfront.net/static/headerPhotos/AncientWaterTowns.jpg'
+						imgUrl:'https://cloud.localpanda.com/static/headerPhotos/AncientWaterTowns.jpg'
 					},
 					{
 						keywords:"Day Trips & Excursions",
 						url:"/activity/recommend/Shanghai/Day-Trips-and-Excursions",
-						imgUrl:'https://d2q486kjf9cwwu.cloudfront.net/static/headerPhotos/DayTripsAndExcursions.jpg'
+						imgUrl:'https://cloud.localpanda.com/static/headerPhotos/DayTripsAndExcursions.jpg'
 					},
 					{
 						keywords:"City Tours",
 						url:"/activity/recommend/Shanghai/City-Tours",
-						imgUrl:'https://d2q486kjf9cwwu.cloudfront.net/static/headerPhotos/CityTours.jpg'
+						imgUrl:'https://cloud.localpanda.com/static/headerPhotos/CityTours.jpg'
 					},
 					{
 						keywords:"Layover<br/> Tours & Quick Excursions",
 						url:"/activity/recommend/Shanghai/Layover-Tours-and-Quick-Excursions",
-						imgUrl:'https://d2q486kjf9cwwu.cloudfront.net/static/headerPhotos/LayoverToursAndQuickExcursions.jpg'
+						imgUrl:'https://cloud.localpanda.com/static/headerPhotos/LayoverToursAndQuickExcursions.jpg'
 					},
 					{
 						keywords:"Food & Local Experiences",
 						url:"/activity/recommend/Shanghai/Food-and-Local-Experiences",
-						imgUrl:'https://d2q486kjf9cwwu.cloudfront.net/static/headerPhotos/FoodAndLocalExperiences.jpg'
+						imgUrl:'https://cloud.localpanda.com/static/headerPhotos/FoodAndLocalExperiences.jpg'
 					},
 					{
 						keywords:"Affordable Group Tours",
 						url:"/activity/recommend/Shanghai/Affordable-Group-Tours",
-						imgUrl:'https://d2q486kjf9cwwu.cloudfront.net/static/headerPhotos/AffordableGroupTours.jpg'
+						imgUrl:'https://cloud.localpanda.com/static/headerPhotos/AffordableGroupTours.jpg'
 					},
 					{
 						keywords:"Multi-day & Extended <br/> Tours",
 						url:"/activity/recommend/Shanghai/Multi-day-and-Extended-Tours",
-						imgUrl:'https://d2q486kjf9cwwu.cloudfront.net/static/headerPhotos/Multi-dayAndExtendedTours.jpg'
+						imgUrl:'https://cloud.localpanda.com/static/headerPhotos/Multi-dayAndExtendedTours.jpg'
 					},
 					{
 						keywords:"Shows & <br/>Tickets",
 						url:"/activity/recommend/Shanghai/Shows-and-Tickets",
-						imgUrl:'https://d2q486kjf9cwwu.cloudfront.net/static/headerPhotos/ShowsAndTickets.jpg'
+						imgUrl:'https://cloud.localpanda.com/static/headerPhotos/ShowsAndTickets.jpg'
 					},
 					{
 						keywords:"Huangpu <br/> River Cruises",
 						url:"/activity/recommend/Shanghai/Huangpu-River-Cruises",
-						imgUrl:'https://d2q486kjf9cwwu.cloudfront.net/static/headerPhotos/HuangpuRiverCruises.jpg'
+						imgUrl:'https://cloud.localpanda.com/static/headerPhotos/HuangpuRiverCruises.jpg'
 					}
 				],
 				//beijing
@@ -216,43 +216,43 @@
 					{
 						keywords: "Popular & Classic Tours",
 						url: "/activity/recommend/Beijing/Popular-and-Classic-Tours",
-						imgUrl:'https://d2q486kjf9cwwu.cloudfront.net/static/headerPhotos/PopularAndClassicTours.jpg'
+						imgUrl:'https://cloud.localpanda.com/static/headerPhotos/PopularAndClassicTours.jpg'
 					},
 					{
 						keywords: "Neighborhood <br/>Life",
 						url: "/activity/recommend/Beijing/Sales-and-Deals",
-						imgUrl:'https://d2q486kjf9cwwu.cloudfront.net/static/headerPhotos/SalesAndDeals.jpg'
+						imgUrl:'https://cloud.localpanda.com/static/headerPhotos/SalesAndDeals.jpg'
 					},
 					{
 						keywords: "Great Wall of China",
 						url: "/activity/recommend/Beijing/Great-Wall-of-China",
-						imgUrl:'https://d2q486kjf9cwwu.cloudfront.net/static/headerPhotos/GreatWallofChina.jpg'
+						imgUrl:'https://cloud.localpanda.com/static/headerPhotos/GreatWallofChina.jpg'
 					},
 					{
 						keywords: "Walking & <br/>City Tours",
 						url: "/activity/recommend/Beijing/Walking-and-City-Tours",
-						imgUrl:'https://d2q486kjf9cwwu.cloudfront.net/static/headerPhotos/WalkingAndCityTours.jpg'
+						imgUrl:'https://cloud.localpanda.com/static/headerPhotos/WalkingAndCityTours.jpg'
 					},
 					
 					{
 						keywords: "Layover <br/>Tours & Quick Excursions",
 						url: "/activity/recommend/Beijing/Layover-Tours-and-Quick-Excursions",
-						imgUrl:'https://d2q486kjf9cwwu.cloudfront.net/static/headerPhotos/LayoverToursAndQuickExcursions.jpg'
+						imgUrl:'https://cloud.localpanda.com/static/headerPhotos/LayoverToursAndQuickExcursions.jpg'
 					},
 					{
 						keywords: "Food & Local Experiences",
 						url: "/activity/recommend/Beijing/Food-and-Local-Experiences",
-						imgUrl:'https://d2q486kjf9cwwu.cloudfront.net/static/headerPhotos/FoodAndLocalExperiences.jpg'
+						imgUrl:'https://cloud.localpanda.com/static/headerPhotos/FoodAndLocalExperiences.jpg'
 					},
 					{
 						keywords: "Multi-day & Extended <br/> Tours",
 						url: "/activity/recommend/Beijing/Multi-day-and-Extended-Tours",
-						imgUrl:'https://d2q486kjf9cwwu.cloudfront.net/static/headerPhotos/Multi-dayAndExtendedTours.jpg'
+						imgUrl:'https://cloud.localpanda.com/static/headerPhotos/Multi-dayAndExtendedTours.jpg'
 					},
 					{
 						keywords: "Shows &<br/> Tickets",
 						url: "/activity/recommend/Beijing/Shows-and-Tickets",
-						imgUrl:'https://d2q486kjf9cwwu.cloudfront.net/static/headerPhotos/ShowsAndTickets.jpg'
+						imgUrl:'https://cloud.localpanda.com/static/headerPhotos/ShowsAndTickets.jpg'
 					},
 				]
 			}
@@ -403,11 +403,11 @@
 			-webkit-box-pack: center;
 			-webkit-box-align: center;
 			&.beijing {
-				background: url("https://d2q486kjf9cwwu.cloudfront.net/static/headerPhotos/Beijing.jpg") no-repeat;
+				background: url("https://cloud.localpanda.com/static/headerPhotos/Beijing.jpg") no-repeat;
 				background-size: cover;
 			}
 			&.shanghai {
-				background: url("https://d2q486kjf9cwwu.cloudfront.net/static/headerPhotos/Shanghai.jpg") no-repeat;
+				background: url("https://cloud.localpanda.com/static/headerPhotos/Shanghai.jpg") no-repeat;
 				background-size: cover;
 			}
 			height:260px;

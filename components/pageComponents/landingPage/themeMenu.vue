@@ -1,7 +1,7 @@
 <template>
 	<div class="themMenu">
 		<ul class="clearfix">
-			<li v-for="i in tags" ><a :href="'/travel/'+loc+'/'+keywords+'/'+i.urlField+'#'" :class="subject==i.urlField?'active':''"><span>{{i.keywords}}</span></a></li>
+			<li v-for="i in tags" ><a :href="i.keywords=='Customize Your Trip'?'/travel/customize/step1':'/travel/'+loc+'/'+keywords+'/'+i.urlField+'#'" :class="subject==i.urlField?'active':''"><span>{{i.keywords}}</span></a></li>
 		</ul>
 	</div>
 </template>

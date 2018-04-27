@@ -2,7 +2,7 @@
     <div class="page__container about__container">
     	<HeaderCommon :logIn="logIn"></HeaderCommon>
         <div class="about-cover">
-        	<!--<video id="video" style="object-fit: fill;" height="800" width="100%" controls poster="https://d2q486kjf9cwwu.cloudfront.net/static/headerPhotos/AmazingExperiences.jpg">
+        	<!--<video id="video" style="object-fit: fill;" height="800" width="100%" controls poster="https://cloud.localpanda.com/static/headerPhotos/AmazingExperiences.jpg">
         		<source src="http://video.699pic.com/videos/79/53/73/mWXcVs6K9gEh1512795373_10s.mp4" type="video/mp4" ></source>
         	</video>
         	<div class="video-rs" v-if="!isPlay">
@@ -243,7 +243,7 @@ export default {
         height: 800px;
         position: relative;
         overflow: hidden;
-        background: url('https://d2q486kjf9cwwu.cloudfront.net/static/headerPhotos/AmazingExperiences.jpg') no-repeat;
+        background: url('https://cloud.localpanda.com/static/headerPhotos/AmazingExperiences.jpg') no-repeat;
         background-size: cover;
         background-position: center;
         clip-path: polygon(0 0%,100% 0%,100% 95%,0 100%);
@@ -385,7 +385,7 @@ export default {
             height: 465px;
             float: right;
             margin-left: 150px;
-            background: url('https://d2q486kjf9cwwu.cloudfront.net/static/headerPhotos/Jun.jpg');
+            background: url('https://cloud.localpanda.com/static/headerPhotos/Jun.jpg');
         }
         &__content{
             overflow: hidden;
@@ -406,7 +406,7 @@ export default {
         width: 100%;
         position: relative;
         overflow: hidden;
-        background: url('https://d2q486kjf9cwwu.cloudfront.net/static/headerPhotos/LocalpandaTeam.jpg') no-repeat ;
+        background: url('https://cloud.localpanda.com/static/headerPhotos/LocalpandaTeam.jpg') no-repeat ;
         background-size:cover ;
         background-position: center;
         clip-path: polygon(0 5%, 100% 0, 100% 100%, 0 100%);

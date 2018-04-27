@@ -11,13 +11,11 @@ export default {
 			          navigation: {
 			            nextEl: '.swiper-button-next',
 			            prevEl: '.swiper-button-prev'
-			          },
-			          
+					  }
 					},
 			        swiperOptionThumbs: {
 			          spaceBetween: 10,
-			          slidesPerView:"auto",
-			           
+			          slidesPerView:"6",
 			          touchRatio: 0.5,
 			          loop:true,
 			          loop:this.photoList.length>=6?true:false,
@@ -74,8 +72,9 @@ export default {
 						<div class="swiper-wrapper">
 							<div class="swiper-slide" v-for="i in photoList">
 								<img :src="i.url" />
-							</div>					
-						</div>
+							</div>	
+								
+						</div>	
 					</div>
 				
 					<div v-swiper:swiperThumbs="swiperOptionThumbs" class="gallery-thumbs" ref="swiperThumbs">
@@ -154,7 +153,8 @@ export default {
 			    .gallery-thumbs .swiper-slide {
 			        height: 100%;
 			        width: 138px;
-			        opacity: 0.4;   
+			        opacity: 0.4; 
+					overflow: hidden;  
 			       img{
 					    height: 92px;	
 					    }

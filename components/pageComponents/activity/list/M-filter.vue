@@ -125,7 +125,9 @@
 			top: 0.066666rem;
 		}
 	}
-	
+	.el-checkbox{
+		width:100%;
+	}
 	.el-checkbox__label {
 		font-size: 0.426666rem;
 		color: #353a3f;

@@ -919,7 +919,7 @@
 		}
 		.banner {
 			position: relative;
-			background:url("https://d2q486kjf9cwwu.cloudfront.net/static/headerPhotos/BackGround.jpg") no-repeat;
+			background:url("https://cloud.localpanda.com/static/headerPhotos/BackGround.jpg") no-repeat;
 			background-size: cover;
 			height: 260px;
 			.linerBackground{

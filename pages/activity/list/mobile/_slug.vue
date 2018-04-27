@@ -488,7 +488,7 @@
 			padding:0 0.586666rem 0.453333rem;
 			border-bottom:1px solid #dde0e0;
 			.destination{
-				
+				font-size: 0.346666rem;
 				margin-left: 0.186666rem;
 				&:first-child{
 					margin-left: 0;
@@ -535,8 +535,9 @@
 					margin-right: 0;
 				}
 				float:left;
-				width:4.28rem;
-				margin:0.586666rem 0.266666rem 0 0;
+				width:48%;
+				margin-right: 4%;
+				margin-top:0.586666rem;
 				.activity {
 					.activity-photo {
 						height: 2.853333rem;
@@ -557,7 +558,7 @@
 					}
 					.titleText {
 						width: 100%;
-						height:1.6rem;
+						height:1.45555rem;
 						text-overflow: ellipsis;
 						display: -webkit-box;
 						display: -moz-box;

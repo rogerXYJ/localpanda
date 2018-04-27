@@ -82,7 +82,7 @@
 					</ul>
 
 				</div>
-				<!--<div class="notes" v-if="photoList.length>0" @click="showPhoto">
+				<div class="notes" v-if="photoList.length>0" @click="showPhoto">
 					<h3>Pictures from our users</h3>
 					<div class="photoCover" v-lazy:background-image="photoList.length>0?photoList[0].url:''">
 						<div class="mask"></div>
@@ -92,7 +92,7 @@
 						</div>
 					</div>
 
-				</div>-->
+				</div>
 				<div class="provide" v-if="picInfo.details.length>0">
 					<h3>Pricing Details</h3>
 					<p style="font-size: 16px;margin-top: 10px;" v-if="picInfo.childDiscount">Children’s price is   $  {{picInfo.childDiscount}} USD  less than adults’ price.</p>
@@ -431,6 +431,7 @@
 
 		},
 		methods: {
+			//唤起图片轮播
 			showPhoto() {
 				this.alertPicStatus = true
 			},

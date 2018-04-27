@@ -6,8 +6,8 @@ export default {
 				alertPicActive: "",
 				 swiperOptionTop: {
 			          spaceBetween: 10,
-			          loop:true,
-			          loopedSlides: this.photoList.length,
+			          loop:this.photoList.length>6?true:false,
+			          loopedSlides: this.photoList.length>6?this.photoList.length:null,
 			          navigation: {
 			            nextEl: '.swiper-button-next',
 			            prevEl: '.swiper-button-prev'
@@ -16,12 +16,12 @@ export default {
 					},
 			        swiperOptionThumbs: {
 			          spaceBetween: 10,
-			          slidesPerView:this.photoList.length,
+			         slidesPerView:this.photoList.length,
 			           
 			          touchRatio: 0.2,
 			          loop:true,
-			          slideToClickedSlide: true,
-			          loopedSlides: this.photoList.length, 
+			          loop:this.photoList.length>6?true:false,
+			          loopedSlides: this.photoList.length>6?this.photoList.length:null,
 			          
 			           
 			        }
@@ -136,18 +136,14 @@ export default {
 			        height: 300px;
 			        margin-left: auto;
 			        margin-right: auto;
-			    }
-			    
-			         .swiper-slide {
-			         	text-align: center;
-					    overflow: hidden;
-			
-			    }
+			   }
 			    .gallery-top {
 			        height: 574px;
 			        width: 100%;
 			    	.swiper-slide{
 			    		height: 574px;
+			    		text-align: center;
+					    overflow: hidden;
 			    		img{
 			    			height: 100%;
 			    		}

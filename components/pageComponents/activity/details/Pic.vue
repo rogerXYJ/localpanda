@@ -180,7 +180,9 @@ export default {
 			    .gallery-thumbs .swiper-slide {
 			        height: 100%;
 			        width: 138px;
-			        opacity: 0.4;   
+					opacity: 0.4; 
+					text-align: center;
+					overflow: hidden;
 			       img{
 					    height: 92px;	
 					    }

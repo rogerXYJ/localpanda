@@ -411,7 +411,7 @@
 													'Content-Type': 'application/json; charset=UTF-8'
 												}
 											}).then(function(response) {
-													window.location.href = "/guide/payment?orderId=" + response.data
+													window.location.href = "/guide/payment?orderId=" + response.data.response
 											}, function(response) {})
 										}
 									} else {
@@ -453,7 +453,7 @@
 													'Content-Type': 'application/json; charset=UTF-8'
 												}
 											}).then(function(response) {
-													window.location.href = "/guide/payment?orderId=" + response.data
+													window.location.href = "/guide/payment?orderId=" + response.data.response
 											}, function(response) {})
 										}
 										
@@ -522,7 +522,7 @@
 													'Content-Type': 'application/json; charset=UTF-8'
 												}
 											}).then(function(response) {
-													window.location.href = "/guide/payment?orderId=" + response.data
+													window.location.href = "/guide/payment?orderId=" + response.data.response
 
 											}, function(response) {})
 										}
@@ -565,7 +565,7 @@
 													'Content-Type': 'application/json; charset=UTF-8'
 												}
 											}).then(function(response) {
-												window.location.href = "/guide/payment?orderId=" + response.data
+												window.location.href = "/guide/payment?orderId=" + response.data.response
 
 											}, function(response) {})
 									}

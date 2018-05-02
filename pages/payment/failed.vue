@@ -19,7 +19,7 @@
 						<span>Order ID: {{orderId}}</span><em>|</em><span>Payment amount: <b>${{amount}}</b></span>
 						
 					</div>
-                    <P></P>
+                    <P v-if="errMsg">Your order failed to submit. The payment failure is due to {{errMsg}}</P>
 					<p style="margin-top: 47px;"> Our staff will confirm with you as soon as possible. We will reply you within one business day. You can know the details furthur by look at your 
 order details.You can also email service@localpanda.com or call us at +86 (21) 8018-2090/ +1 (888) 930-8849 (US toll free).</p>
                     <button class="backorderbtn">Try again</button>
@@ -42,7 +42,8 @@ order details.You can also email service@localpanda.com or call us at +86 (21) 8
 				logIn:'',
 				date:"",
                 userId:'',
-                type:''
+                type:'',
+                errMsg:""
 				
 				
 			}
@@ -64,7 +65,8 @@ order details.You can also email service@localpanda.com or call us at +86 (21) 8
 		mounted: function() {
 			this.orderId=GetQueryString("orderId")
 			this.amount=GetQueryString("amount")
-			this.type=GetQueryString("type")
+            this.type=GetQueryString("type")
+            this.errMsg= decodeURI(GetQueryString("errMsg"))
 			this.logIn=window.localStorage.getItem("logstate")
 			this.userId=window.localStorage.getItem("userid")
 		}

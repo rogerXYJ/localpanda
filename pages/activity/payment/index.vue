@@ -109,7 +109,8 @@
 				tokenType: '',
 				loadingStatus: false,
 				isPay: false,
-				refundTimeLimit:''
+				refundTimeLimit:'',
+				errMsg:''
 
 			}
 		},
@@ -182,19 +183,24 @@
 								'Content-Type': 'application/json; charset=UTF-8'
 							}
 						}).then(function(response) {
-							
-							if(response.data.succeed) {
+							that.errMsg=response.data.errorMessage
+							if(response.data.succeed&&response.status==200&&response.data.errorMessage==null) {
 								that.loadingStatus = true
 								var pageTracker =_gat._getTracker("UA-107010673-1");
 								pageTracker._addTrans(that.orderId,"",that.opctions.amount,"", "", "", "", "");
 								pageTracker._addItem(that.orderId, that.opctions.activityId,"","", that.opctions.amount,"1" );
 								pageTracker._trackTrans();
-								window.location.href = "/payment/success?orderId=" + that.orderId + '&amount=' + that.opctions.amount
+								
+								window.location.href = "/payment/success?orderId=" + that.orderId + '&amount=' + that.opctions.amount+"&succeed=true"
 							}else{
-								window.location.href = "/payment/success?orderId=" + that.orderId + '&amount=' + that.opctions.amount+"&type=1"
+								
+								that.loadingStatus = true
+								window.location.href = "/payment/failed?orderId=" + that.orderId + '&amount=' + that.opctions.amount+"&type=1"+"&errMsg="+that.errMsg
 							}
 							//
-						}, function(response) {})
+						}, function(response) {
+							window.location.href = "/payment/failed?orderId=" + that.orderId + '&amount=' + that.opctions.amount+"&type=1"
+						})
 					}
 				})
 			},

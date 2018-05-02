@@ -3,6 +3,8 @@
 			<div class="menu_list">
 				<ul class="clearfix">
 					<li @click="goAnchor('journey')">What to Expect</li>
+					<li v-if="photoList.length>0" @click="goAnchor('photoList')">Moments in Travel</li>
+					<li v-if="picInfo.details.length>0" @click="goAnchor('picDetails')">Price Details</li>
 					<li @click="goAnchor('provide')">What's Included</li>
 					<li v-if="exclusions" @click="goAnchor('exclusions')">Exclusions</li>
 					<li v-if="notice.length>0" @click="goAnchor('notice')">Additional Info</li>
@@ -20,7 +22,9 @@
 		props:[
 		'notice',
 		'exclusions',
-		'picInfo'
+		'picInfo',
+		'photoList',
+
 		
 		],
 		name: "menuType",

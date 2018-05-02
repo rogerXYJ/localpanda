@@ -1,7 +1,7 @@
 <template>
 	<div id="activitiesDetail">
 		<HeaderCommon :logIn="logIn"></HeaderCommon>
-		<Meau v-if="isShowMeau" :notice="notice" :exclusions="exclusions" :picInfo="picInfo"></Meau>
+		<Meau v-if="isShowMeau" :notice="notice" :exclusions="exclusions" :picInfo="picInfo" :photoList="photoList"></Meau>
 		<ActivityBanner :bannerPhotos="detail.bannerPhotos" ></ActivityBanner>
 
 		<Activities 

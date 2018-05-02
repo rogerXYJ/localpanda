@@ -144,7 +144,8 @@ export default {
             token: token.id,
             email: token.email,
             tokenType: token.type,
-            objectType: "GUIDE_SERVICE"
+						objectType: "GUIDE_SERVICE",
+						errMsg:''
           };
 
           that.axios
@@ -159,23 +160,23 @@ export default {
             )
             .then(
               function(response) {
+								that.errMsg=response.data.errorMessage
                 if (response.data.succeed) {
                   that.loadingStatus = true;
                   window.location.href =
                     "/payment/success?orderId=" +
                     that.orderId +
                     "&amount=" +
-                    that.amount;
+                    that.amount+"&succeed=true";
                 }else{
-									 window.location.href =
-                    "/payment/failed?orderId=" +
-                    that.orderId +
-                    "&amount=" +
-                    that.amount+"type=0";
+									that.loadingStatus = true
+								window.location.href = "/payment/failed?orderId=" + that.orderId + '&amount=' + that.opctions.amount+"&type=0"+"&errMsg="+that.errMsg
 								}
                 //
               },
-              function(response) {}
+              function(response) {
+									window.location.href = "/payment/failed?orderId=" + that.orderId + '&amount=' + that.opctions.amount+"&type=0"
+							}
             );
         }
       });

@@ -22,7 +22,7 @@
                     <P v-if="errMsg" style="margin-top: 47px;">Your order failed to submit. The payment failure is due to {{errMsg}}</P>
 					<p style="margin-top: 30px;"> Our staff will confirm with you as soon as possible. We will reply you within one business day. You can know the details furthur by look at your 
 order details.You can also email service@localpanda.com or call us at +86 (21) 8018-2090/ +1 (888) 930-8849 (US toll free).</p>
-                    <button class="backorderbtn">Try again</button>
+                    <button class="backorderbtn" @click="tryAgain(type)">Try again</button>
 				</div>
 			</div>
 		<FooterCommon></FooterCommon>

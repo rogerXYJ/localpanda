@@ -170,12 +170,12 @@ export default {
                     that.amount+"&succeed=true";
                 }else{
 									that.loadingStatus = true
-								window.location.href = "/payment/failed?orderId=" + that.orderId + '&amount=' + that.opctions.amount+"&type=0"+"&errMsg="+that.errMsg
+								window.location.href = "/payment/failed?orderId=" + that.orderId + '&amount=' + that.opctions.amount+"&type=0"+"&errMsg="+that.errMsg+"&succeed=false";
 								}
                 //
               },
               function(response) {
-									window.location.href = "/payment/failed?orderId=" + that.orderId + '&amount=' + that.opctions.amount+"&type=0"
+									window.location.href = "/payment/failed?orderId=" + that.orderId + '&amount=' + that.opctions.amount+"&type=0"+"&succeed=false";
 							}
             );
         }

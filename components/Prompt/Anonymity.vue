@@ -205,7 +205,7 @@
 					}).then(function(response) {
 						/*console.log("getToken"+response)*/
 						
-						$this.userid = response.data
+						$this.userid = response.data.response
 						
 						window.localStorage.setItem("userid", $this.userid)
 						

@@ -181,6 +181,7 @@
 								if(!thisData.succeed && thisData.errorMessage) {
 									msg = thisData.errorMessage;
 								}
+
 							}
 							//跳转
 							window.location.href = "/payment/mobile/success?orderId=" + that.orderId + '&amount=' + that.opctions.amount+'&succeed='+thisData.succeed+'&msg='+msg

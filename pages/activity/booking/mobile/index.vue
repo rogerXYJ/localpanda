@@ -285,7 +285,7 @@
 									}
 								}).then(function(response) {
 
-									window.location.href = "/activity/payment/mobile?objectId=" + response.data
+									window.location.href = "/activity/payment/mobile?objectId=" + response.data.response
 								}, function(response) {})
 							}
 						}
@@ -321,7 +321,7 @@
 								}
 							}).then(function(response) {
 
-								window.location.href = "/activity/payment/mobile?objectId=" + response.data
+								window.location.href = "/activity/payment/mobile?objectId=" + response.data.response
 							}, function(response) {})
 						}
 					}

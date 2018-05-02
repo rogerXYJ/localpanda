@@ -82,8 +82,8 @@
 					</ul>
 
 				</div>
-				 <div class="notes" v-if="photoList.length>0" @click="showPhoto">
-					<h3>Pictures from our users</h3>
+				 <div class="notes" v-if="photoList.length>0" @click="showPhoto" id="photoList">
+					<h3>Pictures of our travelers</h3>
 					<div class="photoCover" v-lazy:background-image="photoList.length>0?photoList[0].url:''">
 						<div class="mask"></div>
 						<div class="cover">
@@ -625,7 +625,7 @@
 				}
 			},
 			tableData(details) {
-				console.log(details);
+				//console.log(details);
 				var newObj = function(obj) {
 					var o = {};
 					for(var key in obj) {
@@ -636,21 +636,35 @@
 
 				let newArr = [],
 					tableD = [];
-				for(let i = 0; i < details.length; i++) {
-					let thisD = details[i];
-					newArr.push(thisD);
-					if(i + 1 > details.length - 1) break;
 
-					var thisC = thisD.capacity;
-					var nextC = details[i + 1].capacity;
-					var forLen = nextC - thisC - 1;
-					for(let j = 0; j < forLen; j++) {
-						var midArr = newObj(details[i+1]);
-						//console.log(midArr)
-						newArr.push(midArr);
+
+
+				if(details.length==1){
+					console.log(1)
+					console.log(details[0].capacity)
+					for(let i=0;i<details[0].capacity;i++){
+						var s=newObj(details[0]);
+						newArr.push(s)
 					}
-					//console.log(newArr)
+					
+				}else{
+					for(let i = 0; i < details.length; i++) {
+						let thisD = details[i];
+						newArr.push(thisD);
+						if(i + 1 > details.length - 1) break;
+
+						var thisC = thisD.capacity;
+						var nextC = details[i + 1].capacity;
+						var forLen = nextC - thisC - 1;
+						for(let j = 0; j < forLen; j++) {
+							var midArr = newObj(details[i+1]);
+							//console.log(midArr)
+							newArr.push(midArr);
+						}
+						//console.log(newArr)
+					}
 				}
+				
 
 				for(var k = 0; k < newArr.length; k++) {
 					newArr[k].capacity = k + 1;
@@ -740,9 +754,11 @@
 
 			//初始化清空日期
 			that.dateTime = ""
-			if(that.tableData(that.picInfo.details).length>=5){
+			if(that.tableData(that.picInfo.details).length>5){
 				this.isShowTable=true
 				that.sixArr=that.tableData(that.picInfo.details).splice(0,6)
+			}else{
+				that.sixArr=that.tableData(that.picInfo.details)
 			}
 			//that.sixArr=that.tableData(that.picInfo.details)
 			//初始化日历

@@ -390,8 +390,8 @@
 										'Content-Type': 'application/json; charset=UTF-8'
 									}
 								}).then(function(response) {
-
-									window.location.href = "/activity/payment?objectId=" + response.data
+									console.log(response)
+									window.location.href = "/activity/payment?objectId=" + response.data.response
 								}, function(response) {})
 							}
 						}
@@ -425,8 +425,8 @@
 									'Content-Type': 'application/json; charset=UTF-8'
 								}
 							}).then(function(response) {
-
-								window.location.href = "/activity/payment?objectId=" + response.data
+								console.log(response)
+								window.location.href = "/activity/payment?objectId=" + response.data.response
 							}, function(response) {})
 						}
 					}

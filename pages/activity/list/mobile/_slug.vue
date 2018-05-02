@@ -1,7 +1,7 @@
 <template>
 	<div class="M-activityList">
 		<Head></Head>
-		<div class="filterInfo">
+		<div class="filterInfo" :class="{xiding:isscroll}">
 			<span class="destination ">
 				<i class="iconfont">&#xe610;</i>
 				<select v-model="value" @change="locationFn(value)">
@@ -555,7 +555,7 @@
 					}
 					.titleText {
 						width: 100%;
-						height:1.35555rem;
+						height:1.29rem;
 						text-overflow: ellipsis;
 						display: -webkit-box;
 						display: -moz-box;
@@ -598,6 +598,15 @@
 					}
 				}
 			}
+		}
+		.xiding{
+			position: fixed;
+			top:0;
+			left:0;
+			right:0;
+			background:#fff;
+			z-index: 9;
+			padding-top:0.453333rem;
 		}
 		.empty{
 			padding: 0.533333rem;

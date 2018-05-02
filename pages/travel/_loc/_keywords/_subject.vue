@@ -62,7 +62,7 @@
 				<ul class="clearfix" v-if="loc=='Shanghai'">
 					<li>
 						<div class="visitor-headPic">
-							<img v-lazy="'https://cloud.localpanda.com/static/content/reviews/Claudia.jpg'"/>
+							<img v-lazy="'https://d2q486kjf9cwwu.cloudfront.net/static/content/reviews/Claudia.jpg'"/>
 						</div>
 						<div class="visitor-message">
 							<b>Claudia Flores </b>
@@ -72,7 +72,7 @@
 					</li>
 					<li>
 						<div class="visitor-headPic">
-							<img v-lazy="'https://cloud.localpanda.com/static/content/reviews/SamMorgan.jpg'"/>
+							<img v-lazy="'https://d2q486kjf9cwwu.cloudfront.net/static/content/reviews/SamMorgan.jpg'"/>
 						</div>
 						<div class="visitor-message">
 							<b>Sam Morgan </b>
@@ -82,7 +82,7 @@
 					</li>
 					<li>
 						<div class="visitor-headPic">
-							<img v-lazy="'https://cloud.localpanda.com/static/content/reviews/Cynthia.jpg'"/>
+							<img v-lazy="'https://d2q486kjf9cwwu.cloudfront.net/static/content/reviews/Cynthia.jpg'"/>
 						</div>
 						<div class="visitor-message">
 							<b>Cynthia Huang</b>
@@ -94,7 +94,7 @@
 				<ul class="clearfix" v-if="loc=='Beijing'">
 					<li>
 						<div class="visitor-headPic">
-							<img v-lazy="'https://cloud.localpanda.com/static/content/reviews/Claudia.jpg'"/>
+							<img v-lazy="'https://d2q486kjf9cwwu.cloudfront.net/static/content/reviews/Claudia.jpg'"/>
 						</div>
 						<div class="visitor-message">
 							<b>Claudia Flores </b>
@@ -104,7 +104,7 @@
 					</li>
 					<li>
 						<div class="visitor-headPic">
-							<img v-lazy="'https://cloud.localpanda.com/static/content/reviews/Selvarani.jpg'"/>
+							<img v-lazy="'https://d2q486kjf9cwwu.cloudfront.net/static/content/reviews/Selvarani.jpg'"/>
 						</div>
 						<div class="visitor-message">
 							<b>Selvarani Saravanamuthu</b>
@@ -114,7 +114,7 @@
 					</li>
 					<li>
 						<div class="visitor-headPic">
-							<img v-lazy="'https://cloud.localpanda.com/static/content/reviews/Cynthia.jpg'"/>
+							<img v-lazy="'https://d2q486kjf9cwwu.cloudfront.net/static/content/reviews/Cynthia.jpg'"/>
 						</div>
 						<div class="visitor-message">
 							<b>Cynthia Huang</b>
@@ -292,7 +292,7 @@
 	@import '~/assets/font/iconfont.css';
 	@font-face {
 		font-family:"pacifico";
-		src: url('https://cloud.localpanda.com/static/font/pacifico.ttf');
+		src: url('https://d2q486kjf9cwwu.cloudfront.net/static/font/pacifico.ttf');
 		
 	}
 	#header {

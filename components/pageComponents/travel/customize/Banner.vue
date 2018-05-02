@@ -35,7 +35,7 @@
         height: 500px;
         position: relative;
         overflow: hidden;
-        background: url(https://cloud.localpanda.com/static/customize/customizebanner.jpg) center center no-repeat #efefef;
+        background: url(https://d2q486kjf9cwwu.cloudfront.net/static/customize/customizebanner.jpg) center center no-repeat #efefef;
         h2{
             margin-top: 184px;
             font-size: 44px;

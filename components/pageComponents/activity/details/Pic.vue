@@ -2,40 +2,42 @@
 export default {
 		name: "pic",
 		data() {
+			const self=this
 			return {
 				alertPicActive: "",
 				 swiperOptionTop: {
 			          spaceBetween: 10,
-			          loop:this.photoList.length>=6?true:false,
-			          loopedSlides: this.photoList.length>=6?this.photoList.length:null,
+			        //   loop:this.photoList.length>=6?true:false,
+			        //   loopedSlides: this.photoList.length>=6?this.photoList.length:null,
 			          navigation: {
 			            nextEl: '.swiper-button-next',
 			            prevEl: '.swiper-button-prev'
-					  }
+					  },
+					  pagination: {
+						el: '.swiper-pagination',
+						clickable: true,
+						renderBullet: function (index, className) {
+							return '<span class="' + className + '"><image src="'+self.photoList[index].url+'"></span>';
+						},
 					},
-			        swiperOptionThumbs: {
-			          spaceBetween: 10,
-			          slidesPerView:"6",
-			          touchRatio: 0.5,
-			          loop:true,
-			          loop:this.photoList.length>=6?true:false,
-			          loopedSlides: this.photoList.length>=6?this.photoList.length:null,
+			        // swiperOptionThumbs: {
+			        //   spaceBetween: 10,
+			        //   slidesPerView:"6",
+			        //   touchRatio: 0.5,
+			        //   loop:true,
+			        //   loop:this.photoList.length>=6?true:false,
+			        //   loopedSlides: this.photoList.length>=6?this.photoList.length:null,
 			          
 			           
-			        }
-			      
+			        // }
+				 }    
 			}
 		},
 		methods: {
-			next(){
-				
-			},
 			cancle() {
 				this.$emit('alert-call-back', false);
 				this.alertPicActive = false;
 			}
-			
-
 		},
 		watch: {
 			alertPicStatus: function(val, oldVal) {
@@ -47,14 +49,7 @@ export default {
 			}
 		},
 		mounted:function() {
-			let that=this
-			that.$nextTick(function(){
-		        const swiperTop = that.swiperTop;
-		        const swiperThumbs = that.swiperThumbs;
-		        swiperTop.controller.control = swiperThumbs
-        		swiperThumbs.controller.control = swiperTop
-		      })
-				
+			console.log(this.photoList)	
 		},
 		props: ['alertPicStatus','photoList']
 	}
@@ -72,19 +67,10 @@ export default {
 						<div class="swiper-wrapper">
 							<div class="swiper-slide" v-for="i in photoList">
 								<img :src="i.url" />
-							</div>	
-								
+							</div>		
 						</div>	
 					</div>
-				
-					<div v-swiper:swiperThumbs="swiperOptionThumbs" class="gallery-thumbs" ref="swiperThumbs">
-						<div class="swiper-wrapper">
-							<div class="swiper-slide" v-for="i in photoList">
-								<img :src="i.url" />
-							</div>
-							
-						</div>
-					</div>
+					<div class="swiper-pagination"></div>
 			</div>
 		</div>
 	</div>
@@ -145,24 +131,8 @@ export default {
 			    		}
 			    	}
 			    }
-			    .gallery-thumbs {
-			        height: 92px;
-			        box-sizing: border-box;
-			        margin-top: 26px;
-			    }
-			    .gallery-thumbs .swiper-slide {
-			        height: 100%;
-			        width: 138px;
-			        opacity: 0.4; 
-					overflow: hidden;  
-			       img{
-					    height: 92px;	
-					    }
-			       
-			    }
-			    .gallery-thumbs .swiper-slide-active {
-			        opacity: 1;
-			    }
+			   
+				 
 			   
 		}
 		.false {
@@ -180,5 +150,21 @@ export default {
 	}
 </style>
 <style lang="scss">
+.swiper-pagination{
+	position: relative;
+	width: 100%;
+	height:92px;
+	margin-top:26px;
+	overflow: hidden;
+	
+}
+.swiper-pagination-bullet{
+		width: 138px;
+		height:92px;
+		background:transparent;
+		img{
+			height: 100%;
+		}  
 
+	}
 </style>

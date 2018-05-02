@@ -50,7 +50,7 @@
 		</div>
 		<div class="bg">
 			<div class="log-bg">
-				<img class="icon" src="https://cloud.localpanda.com/static/content/wave-center-right.svg" />
+				<img class="icon" src="https://d2q486kjf9cwwu.cloudfront.net/static/content/wave-center-right.svg" />
 			</div>
 			
 		</div>
@@ -199,7 +199,7 @@
 				}
 			}
 			height: 576px;
-			background:url("https://cloud.localpanda.com/static/headerPhotos/LP_background.jpg") no-repeat;
+			background:url("https://d2q486kjf9cwwu.cloudfront.net/static/headerPhotos/LP_background.jpg") no-repeat;
 			position: relative;
 			background-size: cover;
 			background-position: center;

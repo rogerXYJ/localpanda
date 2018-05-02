@@ -41,7 +41,6 @@
 	import HeaderCommon from '~/components/HeaderCommon/HeaderCommon'
 	import FooterCommon from '~/components/FooterCommon/FooterCommon';
 	export default {
-
 		name: 'payNow',
 		data() {
 			return {

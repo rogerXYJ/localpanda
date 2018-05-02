@@ -286,12 +286,12 @@ export default {
   width: 100%;
   .banner {
     &.beijing {
-      background: url("https://cloud.localpanda.com/static/headerPhotos/Beijing.jpg")
+      background: url("https://d2q486kjf9cwwu.cloudfront.net/static/headerPhotos/Beijing.jpg")
         no-repeat;
       background-size: cover;
     }
     &.shanghai {
-      background: url("https://cloud.localpanda.com/static/headerPhotos/Shanghai.jpg")
+      background: url("https://d2q486kjf9cwwu.cloudfront.net/static/headerPhotos/Shanghai.jpg")
         no-repeat;
       background-size: cover;
     }
@@ -354,11 +354,11 @@ export default {
         background-size: cover;
         &:first-child {
           margin-right: 20px;
-          background: url("https://cloud.localpanda.com/static/headerPhotos/Activities.jpg")
+          background: url("https://d2q486kjf9cwwu.cloudfront.net/static/headerPhotos/Activities.jpg")
             no-repeat;
         }
         &:last-child {
-          background: url("https://cloud.localpanda.com/static/headerPhotos/Guides.jpg")
+          background: url("https://d2q486kjf9cwwu.cloudfront.net/static/headerPhotos/Guides.jpg")
             no-repeat;
         }
         .bg {

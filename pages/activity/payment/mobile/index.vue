@@ -38,7 +38,7 @@
 				</div>
 				<div class="hint">
 					<p>You ordered as a guest. To view your order details, go to the homepage, click "My Bookings" at the top of the page, and type in the name and email address for your reservation.</p>
-					<p>You can get a 100% refund up to {{refundTimeLimit}} hours before your trip.Please be assured to book your trip.</p>
+					<p>You can get a 100% refund up to {{refundTimeLimit}} hours before your trip.</p>
 				</div>
 			</div>
 			<div class="btn">
@@ -148,7 +148,7 @@
 				let that = this
 				that.stripeHandler = StripeCheckout.configure({
 					key: payCode,
-					image: 'https://cloud.localpanda.com/static/icon/logo.png', // 显示在支付对话框的图片，可自己指定
+					image: 'https://d2q486kjf9cwwu.cloudfront.net/static/icon/logo.png', // 显示在支付对话框的图片，可自己指定
 					alipay: true, // 启用支付宝支付
 					token: function(token) { // 用户填写完资料并且 Stripe 校验成功后的回调函数
 						// 此时应该提交 token.id 到后台，比如 http://example.com/orders/1?stripeToken={token.id}

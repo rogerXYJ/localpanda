@@ -6,9 +6,9 @@ module.exports = {
     ]
   },
   build: {
-    // publicPath: 'https://cloud.localpanda.com/static/js/',
-    // testGa: true,
-    // payCode: 'pk_live_mRSdUvgwE4pZo2IVofL4cVch',
+     publicPath: 'https://d2q486kjf9cwwu.cloudfront.net/static/js/',
+     testGa: true,
+     payCode: 'pk_live_mRSdUvgwE4pZo2IVofL4cVch',
     vendor: [
         'axios',
         'vue-lazyload',

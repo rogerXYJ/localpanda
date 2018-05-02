@@ -82,7 +82,7 @@
 					</ul>
 
 				</div>
-				<div class="notes" v-if="photoList.length>0" @click="showPhoto">
+				 <div class="notes" v-if="photoList.length>0" @click="showPhoto">
 					<h3>Pictures from our users</h3>
 					<div class="photoCover" v-lazy:background-image="photoList.length>0?photoList[0].url:''">
 						<div class="mask"></div>

@@ -52,7 +52,7 @@ service@localpanda.com.
 import HeaderCommon from '~/components/HeaderCommon/HeaderCommon';
 import FooterCommon from '~/components/FooterCommon/FooterCommon';
 import Banner from "~/components/pageComponents/travel/customize/Banner";
-const cdnPath = 'https://cloud.localpanda.com';
+const cdnPath = 'https://d2q486kjf9cwwu.cloudfront.net';
 export default {
   name: "TravelCustomizeStep-3",
   components: {

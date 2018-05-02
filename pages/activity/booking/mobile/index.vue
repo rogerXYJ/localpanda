@@ -68,7 +68,7 @@
 					<textarea v-if="opctions.category=='Private Tour'" v-model="comments" placeholder="please provide your hotel address so the guide can pick you up." onfocus="this.placeholder=''" onblur="this.placeholder='please provide your hotel address so the guide can pick you up.'"></textarea>
 					<textarea v-else v-model="comments"></textarea>
 				</div>
-				<p>You can get a 100% refund up to {{opctions.refundTimeLimit}} hours before your trip.Please be assured to book your trip.</p>
+				<p>You can get a 100% refund up to {{opctions.refundTimeLimit}} hours before your trip.</p>
 			</div>
 		</div>
 		<div class="nextBtn">

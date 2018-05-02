@@ -18,16 +18,6 @@
 						</el-checkbox-group>
 					</div>
 				</div>
-				<div class="fliterList" >
-					<div class="title">THEMES</div>
-					<div class="detail">
-						<el-checkbox-group v-model="checkedTourtype">
-							<div class="checkboxlist" v-for="(i,key,index) in tourtype">
-								<el-checkbox :label="key" :key="key">{{key}} ({{i}})</el-checkbox>
-							</div>
-						</el-checkbox-group>
-					</div>
-				</div>
 				<div class="fliterList">
 					
 					<div class="title">DURATION</div>
@@ -41,6 +31,17 @@
 						</el-checkbox-group>
 					</div>
 				</div>
+				<div class="fliterList" >
+					<div class="title">THEMES</div>
+					<div class="detail">
+						<el-checkbox-group v-model="checkedTourtype">
+							<div class="checkboxlist" v-for="(i,key,index) in tourtype">
+								<el-checkbox :label="key" :key="key">{{key}} ({{i}})</el-checkbox>
+							</div>
+						</el-checkbox-group>
+					</div>
+				</div>
+				
 				
 			</div>
 		</div>

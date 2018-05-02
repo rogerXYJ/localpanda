@@ -740,7 +740,7 @@
 
 			//初始化清空日期
 			that.dateTime = ""
-			if(that.tableData(that.picInfo.details).length>=5){
+			if(that.tableData(that.picInfo.details).length>5){
 				this.isShowTable=true
 				that.sixArr=that.tableData(that.picInfo.details).splice(0,6)
 			}

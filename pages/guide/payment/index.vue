@@ -166,7 +166,13 @@ export default {
                     that.orderId +
                     "&amount=" +
                     that.amount;
-                }
+                }else{
+									 window.location.href =
+                    "/payment/failed?orderId=" +
+                    that.orderId +
+                    "&amount=" +
+                    that.amount+"type=0";
+								}
                 //
               },
               function(response) {}

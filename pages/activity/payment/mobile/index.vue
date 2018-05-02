@@ -177,6 +177,8 @@
 								pageTracker._addItem(that.orderId, that.opctions.activityId, "", "", that.opctions.amount, "1");
 								pageTracker._trackTrans();
 								window.location.href = "/payment/success?orderId=" + that.orderId + '&amount=' + that.opctions.amount
+							}else{
+								window.location.href = "/payment/failed?orderId=" + that.orderId + '&amount=' + that.opctions.amount
 							}
 							//
 						}, function(response) {})

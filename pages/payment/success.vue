@@ -16,31 +16,22 @@
 						<b>Your booking is Complete! You made a great choice :)</b>
 					</div>
 					<div class="detail">
-						<span>Order ID: {{orderId}}</span>
+						<span>Order ID: {{orderId}}</span><em>|</em><span>Payment amount: <b>${{amount}}</b></span>
 						
 					</div>
-					<div class="amount">Payment amount<b>${{amount}}</b></div>
-					<p style="margin-top: 10px;"> To view the details of your order, click “My Bookings” at the top of this page. If you ordered as a guest, you must enter your reservation email and the primary contact’s name to access your booking. </p>
-					<p>Our staff are in the process of finalizing your booking. You will receive a confirmation email within 1 business day.</p>
-					
+					<p style="margin-top: 10px;"> Our staff will confirm with you as soon as possible. We will reply you within one business day. You can know the details furthur by look at your 
+order details.You can also email service@localpanda.com or call us at +86 (21) 8018-2090/ +1 (888) 930-8849 (US toll free).</p>				
 				</div>
-				
-				<div class="contact ">
-					<p>You can contact us by mail</p>
-					<p>service@localpanda.com</p>
-				</div>
-		</div>
-
+			</div>
 		<FooterCommon></FooterCommon>
 	</div>
-
 </template>
-
 <script>
 	import { GetQueryString } from '~/assets/js/plugin/utils.js'
 	import HeaderCommon from '~/components/HeaderCommon/HeaderCommon'
 	import FooterCommon from '~/components/FooterCommon/FooterCommon';
 	export default {
+
 		name: 'payNow',
 		data() {
 			return {
@@ -116,7 +107,6 @@
 			
 		}
 			.odermesg{
-				width:650px;
 				padding:60px 0 54px 84px;
 				box-shadow: 0px 2px 6px 0px rgba(53, 58, 63, 0.1);
 				.title{
@@ -142,28 +132,23 @@
 					margin-top: 10px;
 					span{
 						font-size: 18px;
-						
-						
+						b{
+							color: #1bbc9d;
+							margin-left: 5px;
+						}	
 					}
-				}
-				.amount{
-					margin-top: 10px;
-					font-size: 18px;
-					b{
-						color: #1bbc9d;
-						margin-left: 5px;
-					}
-					a{
-						color:#d87b65;
-						font-size: 16px;
-						margin-left: 20px;
+					em{
+						vertical-align: top;
+						color:#878e95;
+						margin:3px 22px 0px;
+						display: inline-block;
 					}
 				}
 				p{
 					margin-top: 10px;
 					font-size:16px;
 					color: #878e95;
-					width: 560px;
+					
 				}
 				.backorderbtn{
 					width: 200px;

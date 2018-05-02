@@ -93,32 +93,32 @@
 					</div>
 
 				</div>
-				<div class="provide" v-if="picInfo.details.length>0">
-					<h3>Pricing Details</h3>
+				<div class="provide" v-if="picInfo.details.length>0" id="picDetails">
+					<h3>Price Details</h3>
 					<p style="font-size: 16px;margin-top: 10px;" v-if="picInfo.childDiscount">Children’s price is   $  {{picInfo.childDiscount}} USD  less than adults’ price.</p>
 					<el-table :data="sixArr" stripe style="width: 100%">
-						<el-table-column prop="capacity" label="Number of people" width="183" align="center">
+						<el-table-column prop="capacity" label="Number of people" width="244.6" align="center">
 							<template slot-scope="scope">
 								<span v-if="scope.row.capacity==1">1 person</span>
 								<span v-else>{{scope.row.capacity}} people</span>
 							</template>
 						</el-table-column>
-						<el-table-column prop="price" label="Total cost" width="183" align="center">
+						<el-table-column prop="price" label="Total cost" width="244.6" align="center">
 							<template slot-scope="scope">
 								<span>$ {{returnFloat(scope.row.price)}} USD</span>
 							</template>
 						</el-table-column>
-						<el-table-column prop="chlidenNumb" label="Number of people" width="183">
+						<!-- <el-table-column prop="chlidenNumb" label="Number of people" width="183">
 							<template slot-scope="scope">
 								<div v-show="scope.row.right.capacity">
 									<span>{{scope.row.right.capacity}} people</span>
 								</div>
 							</template>
-						</el-table-column>
-						<el-table-column prop="childenTotal" label="Total cost" width="185" align="center">
+						</el-table-column> -->
+						<el-table-column prop="childenTotal" label="Price per person" width="245" align="center">
 							<template slot-scope="scope">
-								<div v-show="scope.row.right.capacity">
-									<span>$ {{returnFloat(scope.row.right.price)}} USD</span>
+								<div v-show="scope.row.capacity">
+									<span>$ {{returnFloat(round(scope.row.price/scope.row.capacity))}} USD</span>
 								</div>
 							</template>
 						</el-table-column>
@@ -288,7 +288,7 @@
 									</div>
 								</div>
 								<div class="picDetail" v-if="isShowBook">
-									<b class='headTitle'>Price Breakdown</b>
+									<b class='headTitle'>Price Breakdown<span @click.stop="picDetailposition('picDetails')">Price Details</span></b>
 									<ul>
 										<li class="clearfix">
 											<div class="formula" v-if="children==0&&adults==1">${{returnFloat(round(adultsPic/(adults+children)))}} x {{adults+children}} Person</div>
@@ -431,6 +431,12 @@
 
 		},
 		methods: {
+			//定位到价格明细
+			picDetailposition(selector){
+				var anchor = document.getElementById(selector)
+				document.body.scrollTop = anchor.offsetTop+document.getElementById("banner").offsetHeight+60-76
+				document.documentElement.scrollTop =anchor.offsetTop+document.getElementById("banner").offsetHeight+60-76
+			},
 			//唤起图片轮播
 			showPhoto() {
 				this.alertPicStatus = true
@@ -496,7 +502,7 @@
 			},
 			showTable() {
 				this.isShowTable = false
-				this.sixArr=this.tableData(this.picInfo.details,true)
+				this.sixArr=this.tableData(this.picInfo.details)
 
 			},
 			showContact() {
@@ -618,7 +624,7 @@
 					//routes.push('/fillYourInfo')
 				}
 			},
-			tableData(details,isshow) {
+			tableData(details) {
 				console.log(details);
 				var newObj = function(obj) {
 					var o = {};
@@ -648,27 +654,28 @@
 
 				for(var k = 0; k < newArr.length; k++) {
 					newArr[k].capacity = k + 1;
+
 				}
 
-				for(var k = 0; k < newArr.length; k++) {
-					if(isshow){
-						this.isShowTable=false;
-					}else if(k>11){
-						 this.isShowTable=true;break
-					}
-					let thisA = newArr[k];
-					let thisB = tableD.length - 1;
-					var last = tableD[thisB];
-					if(k % 2 == 0) {
-						tableD.push(thisA);
-						if(k >= newArr.length - 1) {
-							tableD[tableD.length-1].right = {};
-						}
-					} else {
-						last.right = thisA;
-					}
-				}
-				return tableD;
+				// for(var k = 0; k < newArr.length; k++) {
+				// 	if(isshow){
+				// 		this.isShowTable=false;
+				// 	}else if(k>11){
+				// 		 this.isShowTable=true;break
+				// 	}
+				// 	let thisA = newArr[k];
+				// 	let thisB = tableD.length - 1;
+				// 	var last = tableD[thisB];
+				// 	if(k % 2 == 0) {
+				// 		tableD.push(thisA);
+				// 		if(k >= newArr.length - 1) {
+				// 			tableD[tableD.length-1].right = {};
+				// 		}
+				// 	} else {
+				// 		last.right = thisA;
+				// 	}
+				// }
+				return newArr;
 			}
 		},
 		watch: {
@@ -733,7 +740,11 @@
 
 			//初始化清空日期
 			that.dateTime = ""
-			that.sixArr=that.tableData(that.picInfo.details)
+			if(that.tableData(that.picInfo.details).length>=5){
+				this.isShowTable=true
+				that.sixArr=that.tableData(that.picInfo.details).splice(0,6)
+			}
+			//that.sixArr=that.tableData(that.picInfo.details)
 			//初始化日历
 			that.flatPickr = new Flatpickr('#js_changetime', that.options);
 			
@@ -1057,6 +1068,12 @@
 									font-size: 14px;
 									margin-top: 24px;
 									padding-bottom: 10px;
+									span{
+										color:#1bbc9d;
+										float:right;
+										text-decoration: underline;
+										cursor: pointer;
+									}
 								}
 								ul {
 									border-bottom: 1px solid #ebebeb;

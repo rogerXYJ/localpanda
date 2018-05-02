@@ -55,23 +55,19 @@ export default {
 									list[i].className = list[i].className.replace(/imgActive/,'');
 								}
 							}
-
 						}
 					}
 							
 				},
 				swiperOptionThumbs: {
 					
-
 					watchSlidesProgress : true,
 					watchSlidesVisibility : true,
 					slidesPerView : 5,
 					on:{
 						tap: function(e){
 							self.swiperTop.slideTo(this.clickedIndex);
-
 							var list = this.$el[0].getElementsByClassName('swiper-slide');
-
 							for(var i=0;i<list.length;i++){
 								if(i==this.clickedIndex){
 									list[i].className = 'swiper-slide swiper-slide-visible imgActive';
@@ -84,14 +80,18 @@ export default {
 					}
 						
 				}
-
+			      
 			}
 		},
 		methods: {
+			next(){
+				
+			},
 			cancle() {
 				this.$emit('alert-call-back', false);
 				this.alertPicActive = false;
 			}
+			
 		},
 		watch: {
 			alertPicStatus: function(val, oldVal) {
@@ -110,31 +110,11 @@ export default {
 			// 	// swiperTop.controller.control = swiperThumbs
 			// 	// swiperThumbs.controller.control = swiperTop
 			// })
+				
 		},
 		props: ['alertPicStatus','photoList']
 	}
 </script>
-<template>
-	<div id="pic" v-bind:class="['alertPicOuter',alertPicActive ? 'on' : 'off']">
-		<div class="false" @click="cancle"><i class="iconfont">&#xe606;</i></div>
-		
-			 
-			<div v-bind:class="{'boxshow animated zoomIn' : alertPicActive , 'boxshow animated zoomOut' : !alertPicActive}">
-				<div class="conter">
-					 <div class="swiper-button-next swiper-button-white" slot="button-next"></div>
-	        		<div class="swiper-button-prev swiper-button-white" slot="button-prev"></div>
-					<div v-swiper:swiperTop="swiperOptionTop" class="gallery-top" ref="swiperTop">
-						<div class="swiper-wrapper">
-							<div class="swiper-slide" v-for="i in photoList">
-								<img :src="i.url" />
-							</div>		
-						</div>	
-					</div>
-					<div class="swiper-pagination"></div>
-			</div>
-		</div>
-	</div>
-</template>
 
 <style lang="scss" scoped>
 	@import "~assets/scss/base/_setting.scss";
@@ -192,7 +172,6 @@ export default {
 			    		}
 			    	}
 			    }
-
 			    .gallery-thumbs {
 			        height: 92px;
 			        box-sizing: border-box;
@@ -227,21 +206,4 @@ export default {
 	}
 </style>
 <style lang="scss">
-.swiper-pagination{
-	position: relative;
-	width: 100%;
-	height:92px;
-	margin-top:26px;
-	overflow: hidden;
-	
-}
-.swiper-pagination-bullet{
-		width: 138px;
-		height:92px;
-		background:transparent;
-		img{
-			height: 100%;
-		}  
-
-	}
 </style>

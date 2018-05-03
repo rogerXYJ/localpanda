@@ -1337,17 +1337,16 @@
 							.item {
 								padding: 24px 0;
 								.cont_title {
-									float: left;
 									width: calc(50% - 20px);
 									font-size: 18px;
 									margin-left: 20px;
 									font-weight: bold;
 								}
 								.cont {
-									float: right;
-									width: 50%;
+									clear: both;
 									font-size: 18px;
 									line-height: 26px;
+									margin:15px 0 0 20px;
 								}
 							}
 							.item_v {

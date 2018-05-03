@@ -169,19 +169,27 @@
 								'Content-Type': 'application/json; charset=UTF-8'
 							}
 						}).then(function(response) {
-
-							if(response.data.succeed) {
-
+							var thisData = response.data;
+							var msg = '';
+							//成功
+							if(response.status==200){
 								var pageTracker = _gat._getTracker("UA-107010673-1");
 								pageTracker._addTrans(that.orderId, "", that.opctions.amount, "", "", "", "", "");
 								pageTracker._addItem(that.orderId, that.opctions.activityId, "", "", that.opctions.amount, "1");
 								pageTracker._trackTrans();
-								window.location.href = "/payment/success?orderId=" + that.orderId + '&amount=' + that.opctions.amount
-							}else{
-								window.location.href = "/payment/failed?orderId=" + that.orderId + '&amount=' + that.opctions.amount
+
+								if(!thisData.succeed && thisData.errorMessage) {
+									msg = thisData.errorMessage;
+								}
+
 							}
+							//跳转
+							window.location.href = "/payment/mobile/success?orderId=" + that.orderId + '&amount=' + that.opctions.amount+'&succeed='+thisData.succeed+'&msg='+msg
 							//
-						}, function(response) {})
+						}, function(response) {
+							//请求失败跳转
+							window.location.href = "/payment/mobile/success?orderId=" + that.orderId + '&amount=' + that.opctions.amount+'&succeed=false'
+						})
 					}
 				})
 			},

@@ -73,7 +73,7 @@
 						float: left;
 						line-height: 76px;
 						font-size: 16px;
-						margin-right: 36px;
+						margin-right: 24px;
 						cursor: pointer;
 						position:relative;
 						&:hover{
@@ -88,6 +88,9 @@
 								left: 0;
 							}
 						}
+					}
+					li:nth-last-child(1){
+						margin-right: 0;
 					}
 				}
 				@keyframes fadein{

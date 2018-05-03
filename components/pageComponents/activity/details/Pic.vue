@@ -120,7 +120,7 @@ export default {
 	@import "~assets/scss/base/_setting.scss";
 	@import "~assets/scss/base/_animate.scss";
 	.alertPicOuter {
-		background: rgba(0, 0, 0, 0.5);
+		background: rgba(0, 0, 0, 0.8);
 		height: 100%;
 		width: 100%;
 		position: fixed;
@@ -146,7 +146,7 @@ export default {
 		.boxshow {
 			
 			/*height: 4.4rem;*/
-			background: #7F828B;
+			//background: #7F828B;
 			
 			position: absolute;
 			height: 700px;

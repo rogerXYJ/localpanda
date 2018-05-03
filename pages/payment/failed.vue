@@ -68,7 +68,7 @@
 			this.orderId=GetQueryString("orderId")
 			this.amount=GetQueryString("amount")
             this.type=GetQueryString("type")
-            this.errMsg= decodeURI(GetQueryString("errMsg"))
+			this.errMsg=GetQueryString("errMsg")?decodeURI(GetQueryString("errMsg")):'';
 			this.logIn=window.localStorage.getItem("logstate")
 			this.userId=window.localStorage.getItem("userid")
 		}

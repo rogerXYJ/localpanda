@@ -148,39 +148,37 @@ export default {
 						errMsg:''
           };
 
-          that.axios
-            .post(
-              "https://api.localpanda.com/api/payment/pay/stripe",
-              JSON.stringify(obj),
+          that.axios.post("https://api.localpanda.com/api/payment/pay/stripe",JSON.stringify(obj),
               {
                 headers: {
                   "Content-Type": "application/json; charset=UTF-8"
                 }
               }
-            )
-            .then(
-              function(response) {
+            ).then(function(response) {
 								that.errMsg=response.data.errorMessage
-                if (response.data.succeed) {
-                  that.loadingStatus = true;
-                  window.location.href =
-                    "/payment/success?orderId=" +
-                    that.orderId +
-                    "&amount=" +
-                    that.amount+"&succeed=true";
-                }else{
-									that.loadingStatus = true
-								window.location.href = "/payment/failed?orderId=" + that.orderId + '&amount=' + that.opctions.amount+"&type=0"+"&errMsg="+that.errMsg+"&succeed=false";
+								let reg=/'Exception'/g
+								if(response.data.errorMessage&&reg.test(response.data.errorMessage)){
+									window.location.href = "/payment/failed?orderId=" + that.orderId + '&amount=' + that.opctions.amount+"&type=1"+"&succeed=false"
+								}else{
+									if(response.data.succeed&&!response.data.errorMessage){
+										that.loadingStatus = true
+										var pageTracker =_gat._getTracker("UA-107010673-1");
+										pageTracker._addTrans(that.orderId,"",that.opctions.amount,"", "", "", "", "");
+										pageTracker._addItem(that.orderId, that.opctions.activityId,"","", that.opctions.amount,"1" );
+										pageTracker._trackTrans();
+										
+										window.location.href = "/payment/success?orderId=" + that.orderId + '&amount=' + that.opctions.amount+"&succeed=true"
+									}else{
+										that.loadingStatus = true
+										window.location.href = "/payment/failed?orderId=" + that.orderId + '&amount=' + that.opctions.amount+"&type=1"+"&errMsg="+that.errMsg+"&succeed=false"
+									}	
 								}
-                //
-              },
-              function(response) {
-									window.location.href = "/payment/failed?orderId=" + that.orderId + '&amount=' + that.opctions.amount+"&type=0"+"&succeed=false";
-							}
-            );
-        }
-      });
-    },
+						}, function(response) {
+							window.location.href = "/payment/failed?orderId=" + that.orderId + '&amount=' + that.opctions.amount+"&type=1"+"&succeed=false"
+						})
+				}
+			})
+		},
     pay() {
       let that = this;
       ga("gtag_UA_107010673_1.send", {

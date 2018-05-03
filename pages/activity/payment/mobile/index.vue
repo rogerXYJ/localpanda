@@ -178,7 +178,7 @@
 								pageTracker._addItem(that.orderId, that.opctions.activityId, "", "", that.opctions.amount, "1");
 								pageTracker._trackTrans();
 
-								if(!thisData.succeed && thisData.errorMessage) {
+								if(!thisData.succeed && thisData.errorMessage && !/Exception/.test(thisData.errorMessage)) {
 									msg = thisData.errorMessage;
 								}
 

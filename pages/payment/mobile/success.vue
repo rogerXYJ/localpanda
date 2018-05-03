@@ -15,8 +15,8 @@
     <p class="order_info">Payment amount: <span>${{amount}}</span></p>
 
     <p class="order_contact" v-show="success">Our staff will confirm with you as soon as possible. We will reply you within one business day. You can know the details furthur by look at your order details.You can also email service@localpanda.com or call us at +86 (21) 8018-2090/ +1 (888) 930-8849 (US toll free).</p>
-    <p class="order_contact" v-show="!success"><span v-show="msg">Your order failed to submit. The payment failure is due to {{msg}}</span><br><br>
-      You can click "Pay" to submit your order again. If the payment does not go through, we suggest you try using another card or talk to our online assistant at the bottom right of the webpage to get payment help. You can also email service@localpanda.com or call us at +86 (21) 8018-2090/ +1 (888) 930-8849 (US toll free).</p>
+    <p class="order_contact" v-show="!success"><span v-show="msg">Your payment did not go through. Here is the error that you can reference:{{msg}}</span><br><br>
+      If you want to proceed with payment, click “Try again.” If your payment problems continue, we suggest you try using another card or talk to our online assistant at the bottom right of the webpage to get payment help. You can also email service@localpanda.com or call us at +86 (21) 8081-2090/+1 (888) 9390-8839 (US toll free).</p>
 
     <a class="btn_href" href="/" v-if="success">Back to home</a>
     <a class="btn_href" href="/activity/payment/mobile/" v-else>Try again</a>

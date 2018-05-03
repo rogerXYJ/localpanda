@@ -184,9 +184,13 @@
 							}
 						}).then(function(response) {
 							that.errMsg=response.data.errorMessage
-							if(response.status==200) {
-								if(response.data.succeed && response.data.errorMessage==null){
-									that.loadingStatus = true
+							let reg=/'Exception'/g
+							if(response.data.errorMessage&&reg.test(response.data.errorMessage)){
+								console.log(response.data.errorMessage)
+								window.location.href = "/payment/failed?orderId=" + that.orderId + '&amount=' + that.opctions.amount+"&type=1"+"&succeed=false"
+							}else{
+								if(response.data.succeed&&!response.data.errorMessage){
+							 		that.loadingStatus = true
 									var pageTracker =_gat._getTracker("UA-107010673-1");
 									pageTracker._addTrans(that.orderId,"",that.opctions.amount,"", "", "", "", "");
 									pageTracker._addItem(that.orderId, that.opctions.activityId,"","", that.opctions.amount,"1" );
@@ -195,15 +199,33 @@
 									window.location.href = "/payment/success?orderId=" + that.orderId + '&amount=' + that.opctions.amount+"&succeed=true"
 								}else{
 									that.loadingStatus = true
-									window.location.href = "/payment/failed?orderId=" + that.orderId + '&amount=' + that.opctions.amount+"&type=1"+"&errMsg="+that.errMsg+"&succeed=false"
-								}
-								
-							}else{
-								window.location.href = "/payment/failed?orderId=" + that.orderId + '&amount=' + that.opctions.amount+"&type=1"+"&succeed=false"
-								
+							 		window.location.href = "/payment/failed?orderId=" + that.orderId + '&amount=' + that.opctions.amount+"&type=1"+"&errMsg="+that.errMsg+"&succeed=false"
+								}	
 							}
+
+
+
+							// if(response.status==200) {
+							// 	if(response.data.succeed && response.data.errorMessage==null){
+							// 		that.loadingStatus = true
+							// 		var pageTracker =_gat._getTracker("UA-107010673-1");
+							// 		pageTracker._addTrans(that.orderId,"",that.opctions.amount,"", "", "", "", "");
+							// 		pageTracker._addItem(that.orderId, that.opctions.activityId,"","", that.opctions.amount,"1" );
+							// 		pageTracker._trackTrans();
+									
+							// 		window.location.href = "/payment/success?orderId=" + that.orderId + '&amount=' + that.opctions.amount+"&succeed=true"
+							// 	}else if(){
+							// 		that.loadingStatus = true
+							// 		window.location.href = "/payment/failed?orderId=" + that.orderId + '&amount=' + that.opctions.amount+"&type=1"+"&errMsg="+that.errMsg+"&succeed=false"
+							// 	}
+								
+							// }else{
+							// 	window.location.href = "/payment/failed?orderId=" + that.orderId + '&amount=' + that.opctions.amount+"&type=1"+"&succeed=false"
+								
+							// }
 							//
 						}, function(response) {
+							console.log(response)
 							window.location.href = "/payment/failed?orderId=" + that.orderId + '&amount=' + that.opctions.amount+"&type=1"+"&succeed=false"
 						})
 					}

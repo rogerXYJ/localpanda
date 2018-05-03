@@ -1439,9 +1439,9 @@
 							position: absolute;
 							left: 0;
 							top: 0;
-							width: 100%;
+							width: 660px;
 							height: 100%;
-							background: linear-gradient( to left, rgba(255, 249, 248, 0.6), rgba(255, 249, 248, 1));
+							background: linear-gradient( to right, rgba(255, 249, 248,1) 40%, rgba(255, 249, 248, 0) );
 						}
 						.cover {
 							padding: 92px 0 0 39px;

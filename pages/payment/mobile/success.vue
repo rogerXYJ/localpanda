@@ -19,12 +19,14 @@
       If you want to proceed with payment, click “Try again.” If your payment problems continue, we suggest you try using another card or talk to our online assistant at the bottom right of the webpage to get payment help. You can also email service@localpanda.com or call us at +86 (21) 8081-2090/+1 (888) 9390-8839 (US toll free).</p>
 
     <a class="btn_href" href="/" v-if="success">Back to home</a>
-    <a class="btn_href" :href="'/activity/payment/mobile/'+orderId" v-else>Try again</a>
+    <a class="btn_href" :href="'/activity/payment/mobile?objectId='+orderId" v-else>Try again</a>
   </div>
 </template>
 
 <script>
-
+	if (process.browser) {
+	  require('~/assets/js/pages/talk.js')
+	}
 export default {
 
 		name: 'payResult',
@@ -133,7 +135,7 @@ export default {
     
   }
   
-
+ #launcher{  bottom: 60px!important;}
   
 
 </style>

@@ -24,7 +24,7 @@
 						<h3>COMPANY</h3>
 						<div class="company">
 							<a href="/info/about-us">About Us</a>
-							<a>Contact Us</a>
+							<a href="/info/contact-us">Contact Us</a>
 						</div>
 						
 					</li>

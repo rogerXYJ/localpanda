@@ -91,6 +91,7 @@ export default {
     name: 'about-us',
     data(){
     	return {
+            logIn:'',
     		name: '',
             email: '',
             textarea: '',

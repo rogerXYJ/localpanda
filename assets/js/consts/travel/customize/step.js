@@ -65,9 +65,9 @@ module.exports = {
             ]
         },
         {
-            label: 'Xi’an',
+            label: 'Xi\'an',
             src: cdnPath + "/static/customize/destination/XiAn.jpg",
-            value: 'Xi’an',
+            value: 'Xi\'an',
             des:[
                 'Terracotta Army',
                 'Ancient City Wall',

@@ -185,7 +185,7 @@ export default {
       location +
       ", authentic tours & experiences, real local activities, cut the lines with professional guides, " +
       location +
-      "’s best history, culture, food, architecture, art, and photo, and nightlife tours."
+      "'s best history, culture, food, architecture, art, and photo, and nightlife tours."
     return {
       title: title,
       meta: [

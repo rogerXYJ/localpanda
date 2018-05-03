@@ -13,16 +13,14 @@
 				<div class="odermesg">
 					<div class="title">
 						<span class="iconfont">&#xe606;</span>
-						<b>Oops! Some went wrong.</b>
+						<b>Oops! Something went wrong.</b>
 					</div>
 					<div class="detail">
 						<span>Order ID: {{orderId}}</span><em>|</em><span>Payment amount: <b>${{amount}}</b></span>
 						
 					</div>
-                    <P v-if="errMsg" style="margin-top: 47px;">Your order failed to submit. The payment failure is due to {{errMsg}}</P>
-					<p style="margin-top: 30px;"> You can click “Pay”to submit your order again. If the payment does not go through, we suggest you try using another card or talk to our 
-online assistant at the bottom right of the webpage to get payment help. You can also email service@localpanda.com or call us at 
-+86 (21) 8018-2090/ +1 (888) 930-8849 (US toll free).</p>
+                    <P v-if="errMsg" style="margin-top: 47px;">Your payment did not go through. Here is the error that you can reference: {{errMsg}}</P>
+					<p style="margin-top: 30px;">If you want to proceed with payment, click "Try again." If your payment problems continue, we suggest you try using another card or talk to our online assistant at the bottom right of the webpage to get payment help. You can also email service@localpanda.com or call us at +86 (21) 8081-2090/+1 (888) 9390-8839 (US toll free).</p>
                     <button class="backorderbtn" @click="tryAgain(type)">Try again</button>
 				</div>
 			</div>
@@ -30,6 +28,9 @@ online assistant at the bottom right of the webpage to get payment help. You can
 	</div>
 </template>
 <script>
+	if (process.browser) {
+	  require('~/assets/js/pages/talk.js')
+	}
 	import { GetQueryString } from '~/assets/js/plugin/utils.js'
 	import HeaderCommon from '~/components/HeaderCommon/HeaderCommon'
 	import FooterCommon from '~/components/FooterCommon/FooterCommon';
@@ -120,7 +121,7 @@ online assistant at the bottom right of the webpage to get payment help. You can
 			
 		}
 			.odermesg{
-				padding:60px 0 54px 84px;
+				padding:60px 68px 54px 84px;
 				box-shadow: 0px 2px 6px 0px rgba(53, 58, 63, 0.1);
 				.title{
 					position: relative;

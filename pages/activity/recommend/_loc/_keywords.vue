@@ -3,11 +3,11 @@
 		<HeaderCommon :logIn="logIn"></HeaderCommon>
 		<div class="hotbanner" :class="loc=='Beijing'?'beijing':'shanghai'">
 			<p v-if="loc=='Beijing'">
-				<span>Beijing</span> History, Culture, and Art in China’s Capital
+				<span>Beijing</span> History, Culture, and Art in China's Capital
 				</br> <em>Our guides can speak English, Spanish, Russian, Japanese, Korean and other languages.</em>
 			</p>
 			<p v-else>
-				<span>Shanghai</span> Where China’s past and future collide
+				<span>Shanghai</span> Where China's past and future collide
 			</br><em>Our guides can speak English, Spanish, Russian, Japanese, Korean and other languages.</em>
 			</p>
 		</div>

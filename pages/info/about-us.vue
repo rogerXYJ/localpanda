@@ -19,7 +19,7 @@
 	            <h3>About</h3>
 	            <h2>Local Panda</h2>
 	            <div class="about__welcome-content">
-	                <p>We are a new, different kind of China travel platform that is dedicated to improving tourists’ travel experiences. Made up of a diverse team of Chinese and Westerners, we share a fascination with China and a deep love of travel. </p>
+	                <p>We are a new, different kind of China travel platform that is dedicated to improving tourists' travel experiences. Made up of a diverse team of Chinese and Westerners, we share a fascination with China and a deep love of travel. </p>
 	
 	                <p>Our goal is to make traveling in China burden-free by delivering real, memorable experiences, connecting customers directly with knowledgeable local guides, personalizing trip-planning, and streamlining the booking process. </p>
 	            </div>
@@ -89,7 +89,7 @@
 	            <h2>The birth of a panda family</h2>
 	            <div class="about-leader__pic"></div>
 	            <div class="about-leader__content">
-	                <p>Raised by a family of pandas in China’s southwest Sichuan province, Jun grew up with a deep love for all things China. At the age of 18 he moved to Beijing for university, where he discovered his passion for travel. Soon after graduating, he moved to Shanghai and co-founded a start-up dedicated to helping Chinese tourists travel abroad and explore the world beyond his home. </p>
+	                <p>Raised by a family of pandas in China's southwest Sichuan province, Jun grew up with a deep love for all things China. At the age of 18 he moved to Beijing for university, where he discovered his passion for travel. Soon after graduating, he moved to Shanghai and co-founded a start-up dedicated to helping Chinese tourists travel abroad and explore the world beyond his home. </p>
 	
 	                <p>After successfully growing the business to a valuation of $1 billion, he finally took his chance to experience the world outside China by pursuing a masters at Stanford University. While surrounded by people from all over the world at Stanford, Jun was surprised by both the curiosity and misconceptions that his friends and classmates had about his home. </p>
 	

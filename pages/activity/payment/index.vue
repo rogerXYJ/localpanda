@@ -184,18 +184,23 @@
 							}
 						}).then(function(response) {
 							that.errMsg=response.data.errorMessage
-							if(response.data.succeed&&response.status==200&&response.data.errorMessage==null) {
-								that.loadingStatus = true
-								var pageTracker =_gat._getTracker("UA-107010673-1");
-								pageTracker._addTrans(that.orderId,"",that.opctions.amount,"", "", "", "", "");
-								pageTracker._addItem(that.orderId, that.opctions.activityId,"","", that.opctions.amount,"1" );
-								pageTracker._trackTrans();
+							if(response.status==200) {
+								if(response.data.succeed && response.data.errorMessage==null){
+									that.loadingStatus = true
+									var pageTracker =_gat._getTracker("UA-107010673-1");
+									pageTracker._addTrans(that.orderId,"",that.opctions.amount,"", "", "", "", "");
+									pageTracker._addItem(that.orderId, that.opctions.activityId,"","", that.opctions.amount,"1" );
+									pageTracker._trackTrans();
+									
+									window.location.href = "/payment/success?orderId=" + that.orderId + '&amount=' + that.opctions.amount+"&succeed=true"
+								}else{
+									that.loadingStatus = true
+									window.location.href = "/payment/failed?orderId=" + that.orderId + '&amount=' + that.opctions.amount+"&type=1"+"&errMsg="+that.errMsg+"&succeed=false"
+								}
 								
-								window.location.href = "/payment/success?orderId=" + that.orderId + '&amount=' + that.opctions.amount+"&succeed=true"
 							}else{
+								window.location.href = "/payment/failed?orderId=" + that.orderId + '&amount=' + that.opctions.amount+"&type=1"+"&succeed=false"
 								
-								that.loadingStatus = true
-								window.location.href = "/payment/failed?orderId=" + that.orderId + '&amount=' + that.opctions.amount+"&type=1"+"&errMsg="+that.errMsg+"&succeed=false"
 							}
 							//
 						}, function(response) {

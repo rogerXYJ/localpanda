@@ -42,7 +42,7 @@
 						linkUrl:'/activity/list/Beijing',
 						content: [
 							'See All Tours & Activities',
-							'The center of China’s imperial history & modern power, where the nation’s political and cultural elite still reside.',
+							'The center of China\'s imperial history & modern power, where the nation\'s political and cultural elite still reside.',
 						
 						],
 					},
@@ -75,7 +75,7 @@
 						linkUrl:'/activity/list/Xian',
 						content: [
 							'See All Tours & Activities',
-							'Home to the legendary Terra-cotta Warriors of Qin Shi Huang, China’s first emperor, Xi’an holds the heart of Chinese civilization. '
+							'Home to the legendary Terra-cotta Warriors of Qin Shi Huang, China\'s first emperor, Xi\'an holds the heart of Chinese civilization. '
 						]
 					},
 					{
@@ -84,7 +84,7 @@
 						linkUrl:'/activity/list/Guilin',
 						value:'Guilin',
 						content: ['Float down the Li river and bike',
-							'through thousand-year-old villages as you take in the stunning beauty of Southern China’s Iconic Karsk Mountains.'
+							'through thousand-year-old villages as you take in the stunning beauty of Southern China\'s Iconic Karsk Mountains.'
 							]
 					},
 					

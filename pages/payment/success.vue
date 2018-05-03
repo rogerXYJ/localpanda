@@ -27,6 +27,9 @@ order details.You can also email service@localpanda.com or call us at +86 (21) 8
 	</div>
 </template>
 <script>
+	if (process.browser) {
+	  require('~/assets/js/pages/talk.js')
+	}
 	import { GetQueryString } from '~/assets/js/plugin/utils.js'
 	import HeaderCommon from '~/components/HeaderCommon/HeaderCommon'
 	import FooterCommon from '~/components/FooterCommon/FooterCommon';
@@ -107,7 +110,7 @@ order details.You can also email service@localpanda.com or call us at +86 (21) 8
 			
 		}
 			.odermesg{
-				padding:60px 0 54px 84px;
+				padding:60px 68px 54px 84px;
 				box-shadow: 0px 2px 6px 0px rgba(53, 58, 63, 0.1);
 				.title{
 					position: relative;

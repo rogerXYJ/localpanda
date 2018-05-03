@@ -19,7 +19,7 @@
 							<!--<span>View Photos (5)</span>-->
 						</div>
 						<div class="guidePic-right">
-							<h3>Hi, I’m {{detail.enName}}!</h3>
+							<h3>Hi, I'm {{detail.enName}}!</h3>
 							<p>{{detail.location}} · {{detail.gender}}</p>
 							<div class="tags">
 								<span :key="index" v-for="(item,index) in tourTypesInStr">{{item}}</span>
@@ -235,7 +235,7 @@
 			let detail = this.detail;
 			let location = detail.location;
 			let title =
-				"I’m Local Guide " +
+				"I'm Local Guide " +
 				detail.enName +
 				" | The Best Professional " +
 				location +
@@ -265,7 +265,7 @@
 				location +
 				", authentic tours & experiences, real local activities, cut the lines with professional guides, " +
 				location +
-				"’s best history, culture, food, architecture, art, and photo, and nightlife tours.";
+				"'s best history, culture, food, architecture, art, and photo, and nightlife tours.";
 			return {
 				title: title,
 				meta: [{

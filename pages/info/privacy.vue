@@ -10,7 +10,7 @@
                 <span class="privacy-tab__cell">Terms of Use</span>
             </div>
             <div class="privacy-detail">
-                <p>Local Panda Technology Limited, Local Panda Technology Pte Ltd, Local Panda Technology LLC and Local Panda Taiwan Limited ('Local Panda', 'we', 'us', 'our') are committed to protecting and respecting your personal data privacy and complying with data protection principles and provisions under the Personal Data (Privacy) Ordinance (the 'Ordinance’).</p>
+                <p>Local Panda Technology Limited, Local Panda Technology Pte Ltd, Local Panda Technology LLC and Local Panda Taiwan Limited ('Local Panda', 'we', 'us', 'our') are committed to protecting and respecting your personal data privacy and complying with data protection principles and provisions under the Personal Data (Privacy) Ordinance (the 'Ordinance').</p>
 
                 <p>We may collect, process, use and disclose your information when you use this website (this 'Website') and the services offered by Local Panda or the third party operators (the'Operators') through this Website (the 'Services'). 'You' and 'your' when used in this Privacy Policy includes any person who accesses this Website or use the Services.</p>
 

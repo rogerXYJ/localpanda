@@ -184,9 +184,8 @@
 							}
 						}).then(function(response) {
 							that.errMsg=response.data.errorMessage
-							let reg=/'Exception'/g
+							let reg=/Exception/g
 							if(response.data.errorMessage&&reg.test(response.data.errorMessage)){
-								console.log(response.data.errorMessage)
 								window.location.href = "/payment/failed?orderId=" + that.orderId + '&amount=' + that.opctions.amount+"&type=1"+"&succeed=false"
 							}else{
 								if(response.data.succeed&&!response.data.errorMessage){

@@ -7,7 +7,7 @@
     </div>
     <div class="pay_tip" v-show="!success">
       <span class="iconfont icon_error">&#xe606;</span>
-      <span class="tip_text">Oops! something went wrong.</span>
+      <span class="tip_text">Oops! Something went wrong.</span>
     </div>
 
     <p class="order_info">Order ID: {{orderId}}</p>

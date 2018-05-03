@@ -10,7 +10,7 @@
 		<div class="bookbtn">
 				<p>Pay with:</p>
 				<div class="payfor">
-					<img style="width: 200px;" src="https://d2q486kjf9cwwu.cloudfront.net/static/icon/stripe.png" />
+					<img style="width: 200px;" src="https://resource.localpanda.cn/static/icon/stripe.png" />
 				</div>
 				<div style="font-size: 16px;line-height: 20px;display: block; margin-top: 20px;"><b>Secure Payment:</b></br>We use Stripe’s online payment system, which sends your payment info directly to Stripe’s secure servers, so your data is never sent to Local Panda’s servers and cannot be stolen.</div>
 			</div>
@@ -162,7 +162,7 @@
 				let that = this
 				that.stripeHandler = StripeCheckout.configure({
 					key: payCode,
-					image: 'https://d2q486kjf9cwwu.cloudfront.net/static/icon/logo.png', // 显示在支付对话框的图片，可自己指定
+					image: 'https://resource.localpanda.cn/static/icon/logo.png', // 显示在支付对话框的图片，可自己指定
 					alipay: true, // 启用支付宝支付
 					token: function(token) { // 用户填写完资料并且 Stripe 校验成功后的回调函数
 						// 此时应该提交 token.id 到后台，比如 http://example.com/orders/1?stripeToken={token.id}
@@ -184,18 +184,23 @@
 							}
 						}).then(function(response) {
 							that.errMsg=response.data.errorMessage
-							if(response.data.succeed&&response.status==200&&response.data.errorMessage==null) {
-								that.loadingStatus = true
-								var pageTracker =_gat._getTracker("UA-107010673-1");
-								pageTracker._addTrans(that.orderId,"",that.opctions.amount,"", "", "", "", "");
-								pageTracker._addItem(that.orderId, that.opctions.activityId,"","", that.opctions.amount,"1" );
-								pageTracker._trackTrans();
+							if(response.status==200) {
+								if(response.data.succeed && response.data.errorMessage==null){
+									that.loadingStatus = true
+									var pageTracker =_gat._getTracker("UA-107010673-1");
+									pageTracker._addTrans(that.orderId,"",that.opctions.amount,"", "", "", "", "");
+									pageTracker._addItem(that.orderId, that.opctions.activityId,"","", that.opctions.amount,"1" );
+									pageTracker._trackTrans();
+									
+									window.location.href = "/payment/success?orderId=" + that.orderId + '&amount=' + that.opctions.amount+"&succeed=true"
+								}else{
+									that.loadingStatus = true
+									window.location.href = "/payment/failed?orderId=" + that.orderId + '&amount=' + that.opctions.amount+"&type=1"+"&errMsg="+that.errMsg+"&succeed=false"
+								}
 								
-								window.location.href = "/payment/success?orderId=" + that.orderId + '&amount=' + that.opctions.amount+"&succeed=true"
 							}else{
+								window.location.href = "/payment/failed?orderId=" + that.orderId + '&amount=' + that.opctions.amount+"&type=1"+"&succeed=false"
 								
-								that.loadingStatus = true
-								window.location.href = "/payment/failed?orderId=" + that.orderId + '&amount=' + that.opctions.amount+"&type=1"+"&errMsg="+that.errMsg+"&succeed=false"
 							}
 							//
 						}, function(response) {

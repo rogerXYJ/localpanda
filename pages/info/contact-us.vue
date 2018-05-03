@@ -211,7 +211,7 @@ export default {
     	width: 100%;
     	height: 260px;
     	position: relative;
-    	background: url("https://d2q486kjf9cwwu.cloudfront.net/static/headerPhotos/ContactUs.jpg") no-repeat;
+    	background: url("https://resource.localpanda.cn/static/headerPhotos/ContactUs.jpg") no-repeat;
     	background-size: cover;
     	overflow: hidden;
     	background-position: center;

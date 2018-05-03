@@ -130,12 +130,12 @@
 				<div class="payformoney">
 					<span>Tour code: {{ActivitiesInfo.id}}</span>
 					<!--<p>From<b>${{ActivitiesInfo.price}}</b></p>-->
-					<p>Chinese’ New Year is approaching! Get a <b>$30</b> refund by simply sending us an inquiry about your upcoming trip!</p>
+					<p>Chinese' New Year is approaching! Get a <b>$30</b> refund by simply sending us an inquiry about your upcoming trip!</p>
 					
 				</div>
 				<div class="bookbtn">
 					<button class="btnlinner" @click="showContact">Free Inquiry</button>
-					<!--<p>This tour is led by {{ActivitiesInfo.guideName}}. Click below to visit the guide’s page and book their time!</p>
+					<!--<p>This tour is led by {{ActivitiesInfo.guideName}}. Click below to visit the guide's page and book their time!</p>
 					<em><a :href="'https://www.localpanda.com/guide/detail/'+ActivitiesInfo.guideId+'#'" target="_blank">Book this guide</a></em>-->
 				</div>
 			</div>

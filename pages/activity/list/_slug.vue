@@ -142,7 +142,7 @@
 		</div>
 		<div class="empty" v-else>
 			<p>No activities or tours that match your interests are found. </p>
-			<p>You can try to modify your screening conditions or choose our “Customize Your Trip” option.</p>
+			<p>You can try to modify your screening conditions or choose our "Customize Your Trip" option.</p>
 			<p>We can collect your preferences and customize your ideal trip, free of charge.
 				<a href="javascript:;" @click="showContact">Click here to start!</a>
 			</p>
@@ -241,10 +241,6 @@
 						isSelect: false
 					}
 				],
-				//checkbox 选中的项
-				/*isshowcity:false,
-				cities:["shanghai","beijing"],
-				checkedCities:[],*/
 				isshowcategory: false,
 				category: [],
 				checkedCategory: [],
@@ -263,7 +259,6 @@
 			let listdata = {}
 			let filters = []
 			let obj = {}
-			/*opction=JSON.parse(opction)*/
 			if(sort) {
 				if(sort.type == "DEFAULT") {
 					data.selected = "Recommended"
@@ -276,11 +271,6 @@
 				}
 			}
 			if(opctions) {
-				/*if(opctions.cities.length>0){
-					data.checkedCities=data.checkedCities.concat(opctions.cities)
-					let jsonCity={type:'CITY',filterValues:opctions.cities}
-					filters.push(jsonCity)
-				}*/
 				if(opctions.category.length > 0) {
 					data.checkedCategory = data.checkedCategory.concat(opctions.category)
 					let jsonCategory = {
@@ -331,15 +321,11 @@
 				})
 				data.records = listdata.data.records
 				data.activityList = listdata.data.entities
-				//console.log(data.activityList)
 				if(listdata.data.records > data.pageSize) {
 					data.isdisabled = true
 				}
 				//转化显示选择项
 				for(let i = 0; i < listdata.data.aggregations.length; i++) {
-					/*if(listdata.data.aggregations[i].type=="CITY"){
-						data.cities=listdata.data.aggregations[i].items
-					}else*/
 					if(listdata.data.aggregations[i].type == "CATEGORY") {
 						data.category = listdata.data.aggregations[i].items
 					} else if(listdata.data.aggregations[i].type == "DURATION") {
@@ -437,22 +423,6 @@
 			},
 			showSelect(id) {
 				let opctions = JSON.parse(this.getUrlParam("opctions"))
-				/*if(id==0){
-					this.isshowcity=!this.isshowcity
-					this.isshowcategory=false
-					this.isshowdurations=false
-					this.isshowtourtype=false
-					if(opctions&&opctions.cities.length>0){
-						this.checkedCities=opctions.cities
-						
-					}else{
-						this.checkedCities=[]
-						this.checkedCategory=opctions&&opctions.category.length>0?opctions.category:[]
-						this.checkedDurations=opctions&&opctions.durations.length>0?opctions.durations:[]
-						this.checkedTourtype=opctions&&opctions.tourtype.length>0?opctions.tourtype:[]
-					}
-					
-				}else*/
 				if(id == 1) {
 					this.isshowcategory = !this.isshowcategory
 					this.isshowcity = false
@@ -461,7 +431,7 @@
 					if(opctions && opctions.category.length > 0) {
 						this.checkedCategory = opctions.category
 					} else {
-						//this.checkedCities=opctions&&opctions.cities.length>0?opctions.cities:[]
+						
 						this.checkedCategory = []
 						this.checkedDurations = opctions && opctions.durations.length > 0 ? opctions.durations : []
 						this.checkedTourtype = opctions && opctions.tourtype.length > 0 ? opctions.tourtype : []
@@ -474,7 +444,7 @@
 					if(opctions && opctions.durations.length > 0) {
 						this.checkedDurations = opctions.durations
 					} else {
-						//this.checkedCities=opctions&&opctions.cities.length>0?opctions.cities:[]
+						
 						this.checkedCategory = opctions && opctions.category.length > 0 ? opctions.category : []
 						this.checkedDurations = []
 						this.checkedTourtype = opctions && opctions.tourtype.length > 0 ? opctions.tourtype : []
@@ -490,7 +460,7 @@
 						}
 						this.checkedTourtype = opctions.tourtype
 					} else {
-						//this.checkedCities=opctions&&opctions.cities.length>0?opctions.cities:[]
+						
 						this.checkedCategory = opctions && opctions.category.length > 0 ? opctions.category : []
 						this.checkedDurations = opctions && opctions.durations.length > 0 ? opctions.durations : []
 						this.checkedTourtype = []
@@ -521,24 +491,16 @@
 					}
 				}
 				var opctions = {
-					//cities:this.checkedCities,
 					category: this.checkedCategory,
 					durations: this.checkedDurations,
 					tourtype: this.checkedTourtype,
 				}
 				sort = JSON.stringify(sort)
 				opctions = JSON.stringify(opctions)
-				//console.log(opctions)
-				//localStorage.setItem("sort",sort)
 				location.href = "/activity/list/" + this.loc + "?opctions=" + opctions + "&sort=" + sort
 			},
 			//选项内容点击不收起
 			selectShow(id) {
-				/*if(id==0){
-					this.isshowcity=true
-					
-					
-				}else*/
 				if(id == 1) {
 					this.isshowcategory = true
 				} else if(id == 2) {
@@ -549,16 +511,6 @@
 			},
 			cancel(id) {
 				let that = this
-				/*if(id==0){
-					this.isshowcity=false
-					if(!JSON.parse(that.getUrlParam("opctions"))){
-						this.checkedCities=[]
-					}else if(JSON.parse(that.getUrlParam("opctions")).cities.length>0){
-						this.checkedCities=JSON.parse(that.getUrlParam("opctions")).cities
-						
-					}
-					
-				}else*/
 				if(id == 1) {
 					this.isshowcategory = false
 					if(!JSON.parse(that.getUrlParam("opctions"))) {
@@ -606,28 +558,14 @@
 					}
 				}
 				sort = JSON.stringify(sort)
-				/*if(id==0){
-					arr.splice(index,1)
-					var opctions={
-						cities:arr,
-						category:this.removeCategory,
-						durations:this.removeDurations,
-						tourtype:this.removeTourtype,
-					}
-					opctions=JSON.stringify(opctions)
-					//localStorage.setItem("opctions",opctions)
-					location.href="/activity/list/"+this.loc+"?opctions="+opctions+"&sort="+sort
-				}else*/
 				if(id == 1) {
 					arr.splice(index, 1)
 					var opctions = {
-						//cities:this.removeCity,
 						category: arr,
 						durations: this.removeDurations,
 						tourtype: this.removeTourtype,
 					}
 					opctions = JSON.stringify(opctions)
-					//localStorage.setItem("opctions",opctions)
 					location.href = "/activity/list/" + this.loc + "?opctions=" + opctions + "&sort=" + sort
 				} else if(id == 2) {
 					arr.splice(index, 1)
@@ -638,21 +576,17 @@
 						tourtype: this.removeTourtype,
 					}
 					opctions = JSON.stringify(opctions)
-					//localStorage.setItem("opctions",opctions)
 					location.href = "/activity/list/" + this.loc + "?opctions=" + opctions + "&sort=" + sort
 				} else {
 					arr.splice(index, 1)
 					var opctions = {
-						//cities:this.removeCity,
 						category: this.removeCategory,
 						durations: this.removeDurations,
 						tourtype: arr,
 					}
 					opctions = JSON.stringify(opctions)
-					//localStorage.setItem("opctions",opctions)
 					location.href = "/activity/list/" + this.loc + "?opctions=" + opctions + "&sort=" + sort
 				}
-				//arr.splice(index,1)
 			},
 			handleCurrentChange(val) {
 				let that = this
@@ -660,10 +594,6 @@
 				let filters = []
 				let sort = {}
 				that.pageNum = val
-				/*if(that.checkedCities.length>0){
-					let jsonCity={type:'CITY',filterValues:that.checkedCities}
-					filters.push(jsonCity)
-				}*/
 				if(that.checkedCategory.length > 0) {
 					let jsonCategory = {
 						type: 'CATEGORY',
@@ -731,6 +661,7 @@
 			},
 			apply() {
 				let sort = {}
+				//转url带&符号
 				for(let i = 0; i < this.checkedTourtype.length; i++) {
 					this.checkedTourtype[i] = this.checkedTourtype[i].replace(/&/g, "And")
 				}
@@ -750,13 +681,11 @@
 					}
 				}
 				var opctions = {
-					//cities:this.checkedCities,
 					category: this.checkedCategory,
 					durations: this.checkedDurations,
 					tourtype: this.checkedTourtype,
 				}
 				opctions = JSON.stringify(opctions)
-				//localStorage.setItem("opctions",opctions)
 				sort = JSON.stringify(sort)
 				location.href = "/activity/list/" + this.loc + "?opctions=" + opctions + "&sort=" + sort
 			},
@@ -796,12 +725,12 @@
 		mounted: function() {
 			const that = this
 			let opctions = JSON.parse(that.getUrlParam("opctions"))
-			//that.removeCity=opctions&&opctions.cities.length>0?opctions.cities:[]
 			that.removeCategory = opctions && opctions.category.length > 0 ? opctions.category : []
 			that.removeDurations = opctions && opctions.durations.length > 0 ? opctions.durations : []
 			that.removeTourtype = opctions && opctions.tourtype.length > 0 ? opctions.tourtype : []
+
+
 			document.getElementsByTagName("body")[0].addEventListener("click", function() {
-				//that.isshowcity=false
 				that.isshowcategory = false
 				that.isshowdurations = false
 				that.isshowtourtype = false
@@ -919,7 +848,7 @@
 		}
 		.banner {
 			position: relative;
-			background:url("https://d2q486kjf9cwwu.cloudfront.net/static/headerPhotos/BackGround.jpg") no-repeat;
+			background:url("https://resource.localpanda.cn/static/headerPhotos/BackGround.jpg") no-repeat;
 			background-size: cover;
 			height: 260px;
 			.linerBackground{

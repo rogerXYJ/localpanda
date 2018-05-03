@@ -262,7 +262,7 @@
 			} else if(location == "Chengdu") {
 				var description = "See top things to do in Chengdu, including Chengdu city tours, Chengdu walking tours, Chengdu history & culture tours, and Chengdu food tours. Visit the Giant Panda Breeding Research Base, Mount Qingcheng, Wenshu Yuan Monestary, Jinli Street, and Dujiangyan with our local China tour guides."
 			} else {
-				var description = "See top things to do in Xi’an, including Xi’an city tours, Xi’an walking tours, Xi’an history & culture tours, and Xi’an food tours. Visit the Terra-cotta Warriors, Xi’an City Wall, Muslim Quarter, Shaanxi History Museum, and Xi’an markets with our local China tour guides."
+				var description = "See top things to do in Xi'an, including Xi'an city tours, Xi'an walking tours, Xi'an history & culture tours, and Xi'an food tours. Visit the Terra-cotta Warriors, Xi'an City Wall, Muslim Quarter, Shaanxi History Museum, and Xi'an markets with our local China tour guides."
 			}
 			return {
 				title: title,

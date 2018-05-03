@@ -1,4 +1,4 @@
-const cdnPath = 'https://d2q486kjf9cwwu.cloudfront.net';
+const cdnPath = 'https://resource.localpanda.cn';
 module.exports = {
     whoDataSource: [
         {
@@ -65,9 +65,9 @@ module.exports = {
             ]
         },
         {
-            label: 'Xi’an',
+            label: 'Xi\'an',
             src: cdnPath + "/static/customize/destination/XiAn.jpg",
-            value: 'Xi’an',
+            value: 'Xi\'an',
             des:[
                 'Terracotta Army',
                 'Ancient City Wall',

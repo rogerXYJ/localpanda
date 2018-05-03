@@ -13,7 +13,7 @@
             <h3>What happens now? </h3>
             <p>
                 You'll receive your personalized itinerary within 1 business day. To ensure delivery please add service@localpanda.com to your e-mail
-contacts list and check your spam folder too! If you haven’t heard from us within 2 business days, do let us know. 
+contacts list and check your spam folder too! If you haven't heard from us within 2 business days, do let us know. 
             </p>
             <h3>Can I make changes to my personalized itinerary?  </h3>
             <p>
@@ -52,7 +52,7 @@ service@localpanda.com.
 import HeaderCommon from '~/components/HeaderCommon/HeaderCommon';
 import FooterCommon from '~/components/FooterCommon/FooterCommon';
 import Banner from "~/components/pageComponents/travel/customize/Banner";
-const cdnPath = 'https://d2q486kjf9cwwu.cloudfront.net';
+const cdnPath = 'https://resource.localpanda.cn';
 export default {
   name: "TravelCustomizeStep-3",
   components: {

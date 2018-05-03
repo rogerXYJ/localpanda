@@ -35,19 +35,19 @@
 			return {
 				dataSource: [
 					{
-						cover: 'https://d2q486kjf9cwwu.cloudfront.net/static/homePage/Beijing.jpg',
+						cover: 'https://resource.localpanda.cn/static/homePage/Beijing.jpg',
 						title: 'Beijing',
 						value: 'Beijing',
 						//linkUrl:'https://www.localpanda.com/activity/list/Beijing',
 						linkUrl:'/activity/list/Beijing',
 						content: [
 							'See All Tours & Activities',
-							'The center of China’s imperial history & modern power, where the nation’s political and cultural elite still reside.',
+							'The center of China\'s imperial history & modern power, where the nation\'s political and cultural elite still reside.',
 						
 						],
 					},
 					{
-						cover: 'https://d2q486kjf9cwwu.cloudfront.net/static/homePage/Shanghai.png',
+						cover: 'https://resource.localpanda.cn/static/homePage/Shanghai.png',
 						title: 'Shanghai',
 						value: 'Shanghai',
 						content: [
@@ -58,7 +58,7 @@
 						linkUrl:'/activity/list/Shanghai'
 					},
 					{
-						cover: 'https://d2q486kjf9cwwu.cloudfront.net/static/homePage/Chengdu.jpg',
+						cover: 'https://resource.localpanda.cn/static/homePage/Chengdu.jpg',
 						title: 'Chengdu',
 						value: 'Chengdu',
 						linkUrl:'/activity/list/Chengdu',
@@ -69,22 +69,22 @@
 					},
 
 					{
-						cover: "https://d2q486kjf9cwwu.cloudfront.net/static/homePage/Xi'an.png",
+						cover: "https://resource.localpanda.cn/static/homePage/Xi'an.png",
 						title: 'Xi\'an',
 						value: 'Xi\'an',
 						linkUrl:'/activity/list/Xian',
 						content: [
 							'See All Tours & Activities',
-							'Home to the legendary Terra-cotta Warriors of Qin Shi Huang, China’s first emperor, Xi’an holds the heart of Chinese civilization. '
+							'Home to the legendary Terra-cotta Warriors of Qin Shi Huang, China\'s first emperor, Xi\'an holds the heart of Chinese civilization. '
 						]
 					},
 					{
-						cover: 'https://d2q486kjf9cwwu.cloudfront.net/static/homePage/Guilin.png',
+						cover: 'https://resource.localpanda.cn/static/homePage/Guilin.png',
 						title: 'Guilin',
 						linkUrl:'/activity/list/Guilin',
 						value:'Guilin',
 						content: ['Float down the Li river and bike',
-							'through thousand-year-old villages as you take in the stunning beauty of Southern China’s Iconic Karsk Mountains.'
+							'through thousand-year-old villages as you take in the stunning beauty of Southern China\'s Iconic Karsk Mountains.'
 							]
 					},
 					

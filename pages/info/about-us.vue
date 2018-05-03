@@ -2,7 +2,7 @@
     <div class="page__container about__container">
     	<HeaderCommon :logIn="logIn"></HeaderCommon>
         <div class="about-cover">
-        	<!--<video id="video" style="object-fit: fill;" height="800" width="100%" controls poster="https://d2q486kjf9cwwu.cloudfront.net/static/headerPhotos/AmazingExperiences.jpg">
+        	<!--<video id="video" style="object-fit: fill;" height="800" width="100%" controls poster="https://resource.localpanda.cn/static/headerPhotos/AmazingExperiences.jpg">
         		<source src="http://video.699pic.com/videos/79/53/73/mWXcVs6K9gEh1512795373_10s.mp4" type="video/mp4" ></source>
         	</video>
         	<div class="video-rs" v-if="!isPlay">
@@ -19,7 +19,7 @@
 	            <h3>About</h3>
 	            <h2>Local Panda</h2>
 	            <div class="about__welcome-content">
-	                <p>We are a new, different kind of China travel platform that is dedicated to improving tourists’ travel experiences. Made up of a diverse team of Chinese and Westerners, we share a fascination with China and a deep love of travel. </p>
+	                <p>We are a new, different kind of China travel platform that is dedicated to improving tourists' travel experiences. Made up of a diverse team of Chinese and Westerners, we share a fascination with China and a deep love of travel. </p>
 	
 	                <p>Our goal is to make traveling in China burden-free by delivering real, memorable experiences, connecting customers directly with knowledgeable local guides, personalizing trip-planning, and streamlining the booking process. </p>
 	            </div>
@@ -89,7 +89,7 @@
 	            <h2>The birth of a panda family</h2>
 	            <div class="about-leader__pic"></div>
 	            <div class="about-leader__content">
-	                <p>Raised by a family of pandas in China’s southwest Sichuan province, Jun grew up with a deep love for all things China. At the age of 18 he moved to Beijing for university, where he discovered his passion for travel. Soon after graduating, he moved to Shanghai and co-founded a start-up dedicated to helping Chinese tourists travel abroad and explore the world beyond his home. </p>
+	                <p>Raised by a family of pandas in China's southwest Sichuan province, Jun grew up with a deep love for all things China. At the age of 18 he moved to Beijing for university, where he discovered his passion for travel. Soon after graduating, he moved to Shanghai and co-founded a start-up dedicated to helping Chinese tourists travel abroad and explore the world beyond his home. </p>
 	
 	                <p>After successfully growing the business to a valuation of $1 billion, he finally took his chance to experience the world outside China by pursuing a masters at Stanford University. While surrounded by people from all over the world at Stanford, Jun was surprised by both the curiosity and misconceptions that his friends and classmates had about his home. </p>
 	
@@ -243,7 +243,7 @@ export default {
         height: 800px;
         position: relative;
         overflow: hidden;
-        background: url('https://d2q486kjf9cwwu.cloudfront.net/static/headerPhotos/AmazingExperiences.jpg') no-repeat;
+        background: url('https://resource.localpanda.cn/static/headerPhotos/AmazingExperiences.jpg') no-repeat;
         background-size: cover;
         background-position: center;
         clip-path: polygon(0 0%,100% 0%,100% 95%,0 100%);
@@ -385,7 +385,7 @@ export default {
             height: 465px;
             float: right;
             margin-left: 150px;
-            background: url('https://d2q486kjf9cwwu.cloudfront.net/static/headerPhotos/Jun.jpg');
+            background: url('https://resource.localpanda.cn/static/headerPhotos/Jun.jpg');
         }
         &__content{
             overflow: hidden;
@@ -406,7 +406,7 @@ export default {
         width: 100%;
         position: relative;
         overflow: hidden;
-        background: url('https://d2q486kjf9cwwu.cloudfront.net/static/headerPhotos/LocalpandaTeam.jpg') no-repeat ;
+        background: url('https://resource.localpanda.cn/static/headerPhotos/LocalpandaTeam.jpg') no-repeat ;
         background-size:cover ;
         background-position: center;
         clip-path: polygon(0 5%, 100% 0, 100% 100%, 0 100%);

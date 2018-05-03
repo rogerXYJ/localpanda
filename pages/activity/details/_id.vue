@@ -1,7 +1,7 @@
 <template>
 	<div id="activitiesDetail">
 		<HeaderCommon :logIn="logIn"></HeaderCommon>
-		<Meau v-if="isShowMeau" :notice="notice" :exclusions="exclusions" :picInfo="picInfo" :photoList="photoList"></Meau>
+		<Meau v-if="isShowMeau" :notice="notice" :exclusions="exclusions" :picInfo="picInfo" :photoList="photoList" :recommed="recommed"></Meau>
 		<ActivityBanner :bannerPhotos="detail.bannerPhotos" ></ActivityBanner>
 
 		<Activities 
@@ -200,6 +200,7 @@
 		},
 		methods: {
 			scorllBar() {
+				
 				let data = this;
 				var hightLights =
 					document.getElementById("heightLights").offsetTop +
@@ -207,9 +208,11 @@
 					60 -
 					76;
 				var recommendTop;
-				document.getElementById("recommend").offsetTop ?
+				
+				document.getElementById("recommend") ?
 					(recommendTop = document.getElementById("recommend").offsetTop) :
 					(recommendTop = 2000);
+					
 				if(window.scrollY > hightLights && window.scrollY < recommendTop) {
 					data.isShowMeau = true;
 					data.isShowBookNow = true;

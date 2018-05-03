@@ -3,7 +3,7 @@
 
 		<div class="PackageOptionsDetail clearfix">
 			<h3>Booking Options</h3>
-			<p class="text">Booking here gives you access to any of this guide’s tours. We will follow up to confirm which tour/s you are interested in. Please pay attention to whether the tour requires a car.</p>
+			<p class="text">Booking here gives you access to any of this guide's tours. We will follow up to confirm which tour/s you are interested in. Please pay attention to whether the tour requires a car.</p>
 			<ul>
 				<li v-if="picmsg.vehicleAvailable==1">
 					<div class="iconfont font-type">&#xe616;</div>
@@ -32,7 +32,7 @@
 									<i class="iconfont">&#xe63d;</i>
 									<el-select v-model="valueCarall" placeholder="Please Select" @change="changeselet">
 										<el-option v-for="item in carTourPic" :key="item.people" :label="item.people" :value="item.people"></el-option>
-										<div class="TourGuidePicE">{{picmsg.maxVehicleParticipants}} guests maximum. Infants don’t count toward the number of guests.</div>
+										<div class="TourGuidePicE">{{picmsg.maxVehicleParticipants}} guests maximum. Infants don't count toward the number of guests.</div>
 									</el-select>
 								</div>
 
@@ -85,7 +85,7 @@
 									<i class="iconfont">&#xe63d;</i>
 									<el-select v-model="value" placeholder="Please Select" @change="changeTour">
 										<el-option v-for="item in allTourPic" :key="item.people" :label="item.people" :value="item.people"></el-option>
-										<div class="TourGuidePicE">{{picmsg.maxHikingParticipants}} guests maximum. Infants don’t count toward the number of guests.</div>
+										<div class="TourGuidePicE">{{picmsg.maxHikingParticipants}} guests maximum. Infants don't count toward the number of guests.</div>
 									</el-select>
 								</div>
 							</div>

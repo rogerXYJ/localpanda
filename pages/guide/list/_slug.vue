@@ -185,7 +185,7 @@ export default {
       location +
       ", authentic tours & experiences, real local activities, cut the lines with professional guides, " +
       location +
-      "’s best history, culture, food, architecture, art, and photo, and nightlife tours."
+      "'s best history, culture, food, architecture, art, and photo, and nightlife tours."
     return {
       title: title,
       meta: [
@@ -286,12 +286,12 @@ export default {
   width: 100%;
   .banner {
     &.beijing {
-      background: url("https://d2q486kjf9cwwu.cloudfront.net/static/headerPhotos/Beijing.jpg")
+      background: url("https://resource.localpanda.cn/static/headerPhotos/Beijing.jpg")
         no-repeat;
       background-size: cover;
     }
     &.shanghai {
-      background: url("https://d2q486kjf9cwwu.cloudfront.net/static/headerPhotos/Shanghai.jpg")
+      background: url("https://resource.localpanda.cn/static/headerPhotos/Shanghai.jpg")
         no-repeat;
       background-size: cover;
     }
@@ -354,11 +354,11 @@ export default {
         background-size: cover;
         &:first-child {
           margin-right: 20px;
-          background: url("https://d2q486kjf9cwwu.cloudfront.net/static/headerPhotos/Activities.jpg")
+          background: url("https://resource.localpanda.cn/static/headerPhotos/Activities.jpg")
             no-repeat;
         }
         &:last-child {
-          background: url("https://d2q486kjf9cwwu.cloudfront.net/static/headerPhotos/Guides.jpg")
+          background: url("https://resource.localpanda.cn/static/headerPhotos/Guides.jpg")
             no-repeat;
         }
         .bg {

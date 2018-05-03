@@ -1344,10 +1344,11 @@
 									font-weight: bold;
 								}
 								.cont {
-									float: right;
-									width: 50%;
+									float: left;
+									width: 100%;
 									font-size: 18px;
 									line-height: 26px;
+									margin:15px 0 0 20px;
 								}
 							}
 							.item_v {

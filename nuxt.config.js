@@ -6,7 +6,7 @@ module.exports = {
     ]
   },
   build: {
-     //publicPath: 'https://d2q486kjf9cwwu.cloudfront.net/static/js/',
+     //publicPath: 'https://resource.localpanda.cn/static/js/',
      //testGa: true,
      //payCode: 'pk_live_mRSdUvgwE4pZo2IVofL4cVch',
     vendor: [

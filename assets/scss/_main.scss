@@ -28,11 +28,11 @@ html {
 // 字体上传到cdn再引用 不要引用无效地址
 @font-face{
     font-family: "Ubuntu";
-    src:url('https://d2q486kjf9cwwu.cloudfront.net/static/font/ubuntu-r.woff2');
+    src:url('https://resource.localpanda.cn/static/font/ubuntu-r.woff2');
 }
 @font-face {
     font-family:"coopbl";
-    src: url('https://d2q486kjf9cwwu.cloudfront.net/static/font/COOPBL.TTF');
+    src: url('https://resource.localpanda.cn/static/font/COOPBL.TTF');
 }
 
 * {

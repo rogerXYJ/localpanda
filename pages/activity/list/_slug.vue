@@ -627,7 +627,6 @@
 						tourtype: this.removeTourtype,
 					}
 					opctions = JSON.stringify(opctions)
-					//localStorage.setItem("opctions",opctions)
 					location.href = "/activity/list/" + this.loc + "?opctions=" + opctions + "&sort=" + sort
 				} else if(id == 2) {
 					arr.splice(index, 1)
@@ -638,7 +637,6 @@
 						tourtype: this.removeTourtype,
 					}
 					opctions = JSON.stringify(opctions)
-					//localStorage.setItem("opctions",opctions)
 					location.href = "/activity/list/" + this.loc + "?opctions=" + opctions + "&sort=" + sort
 				} else {
 					arr.splice(index, 1)
@@ -649,7 +647,6 @@
 						tourtype: arr,
 					}
 					opctions = JSON.stringify(opctions)
-					//localStorage.setItem("opctions",opctions)
 					location.href = "/activity/list/" + this.loc + "?opctions=" + opctions + "&sort=" + sort
 				}
 				//arr.splice(index,1)
@@ -756,7 +753,6 @@
 					tourtype: this.checkedTourtype,
 				}
 				opctions = JSON.stringify(opctions)
-				//localStorage.setItem("opctions",opctions)
 				sort = JSON.stringify(sort)
 				location.href = "/activity/list/" + this.loc + "?opctions=" + opctions + "&sort=" + sort
 			},
@@ -800,6 +796,8 @@
 			that.removeCategory = opctions && opctions.category.length > 0 ? opctions.category : []
 			that.removeDurations = opctions && opctions.durations.length > 0 ? opctions.durations : []
 			that.removeTourtype = opctions && opctions.tourtype.length > 0 ? opctions.tourtype : []
+
+
 			document.getElementsByTagName("body")[0].addEventListener("click", function() {
 				//that.isshowcity=false
 				that.isshowcategory = false

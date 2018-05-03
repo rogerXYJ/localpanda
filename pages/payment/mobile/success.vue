@@ -24,7 +24,9 @@
 </template>
 
 <script>
-
+	if (process.browser) {
+	  require('~/assets/js/pages/talk.js')
+	}
 export default {
 
 		name: 'payResult',
@@ -133,7 +135,7 @@ export default {
     
   }
   
-
+ #launcher{  bottom: 60px!important;}
   
 
 </style>

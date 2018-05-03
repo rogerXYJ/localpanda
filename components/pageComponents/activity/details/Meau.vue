@@ -11,7 +11,7 @@
 					<li v-if="picInfo.priceInstructions" @click="goAnchor('PriceNote')">Price Note</li>
 					<li v-if="picInfo.refundInstructions" @click="goAnchor('CancellationPolicy')">Cancellation Policy</li>
 					<li @click="goAnchor('notes')">Notes</li>
-					<li @click="goAnchor('recommend')">Similar Experiences</li>
+					<li v-if="recommed.length>0"@click="goAnchor('recommend')">Similar Experiences</li>
 				</ul>
 			</div>
 		</div>
@@ -24,6 +24,7 @@
 		'exclusions',
 		'picInfo',
 		'photoList',
+		"recommed"
 
 		
 		],

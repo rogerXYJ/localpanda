@@ -184,11 +184,11 @@
 
 							}
 							//跳转
-							window.location.href = "/payment/mobile/success?orderId=" + that.orderId + '&amount=' + that.opctions.amount+'&succeed='+thisData.succeed+'&msg='+msg
+							window.location.href = "/payment/mobile/success?email="+that.email+"&orderId=" + that.orderId + '&amount=' + that.opctions.amount+'&succeed='+thisData.succeed+'&msg='+msg
 							//
 						}, function(response) {
 							//请求失败跳转
-							window.location.href = "/payment/mobile/success?orderId=" + that.orderId + '&amount=' + that.opctions.amount+'&succeed=false'
+							window.location.href = "/payment/mobile/success?email="+that.email+"&orderId=" + that.orderId + '&amount=' + that.opctions.amount+'&succeed=false'
 						})
 					}
 				})
@@ -196,7 +196,8 @@
 			getInfo() {
 				let that = this
 				Vue.axios.get(this.apiBasePath + "activity/order/detail/" + that.orderId).then(function(res) {
-					that.opctions = res.data
+					that.opctions = res.data;
+					that.email = res.data.contactInfo.emailAddress;
 					that.refundTimeLimit=res.data.activityInfo.refundTimeLimit*24
 				}, function(res) {})
 			},
@@ -228,7 +229,7 @@
 			this.orderId = GetQueryString("objectId")
 			this.getInfo()
 			this.getToken()
-
+			console.log(this);
 		}
 	}
 </script>

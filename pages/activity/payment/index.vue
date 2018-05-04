@@ -195,14 +195,14 @@
 									pageTracker._addItem(that.orderId, that.opctions.activityId,"","", that.opctions.amount,"1" );
 									pageTracker._trackTrans();
 									
-									window.location.href = "/payment/success?orderId=" + that.orderId + '&amount=' + that.opctions.amount+"&succeed=true"
+									window.location.href = "/payment/success?email="+that.email+"&orderId=" + that.orderId + '&amount=' + that.opctions.amount+"&succeed=true"
 								}else{
 									that.loadingStatus = true
-							 		window.location.href = "/payment/failed?orderId=" + that.orderId + '&amount=' + that.opctions.amount+"&type=1"+"&errMsg="+that.errMsg+"&succeed=false"
+							 		window.location.href = "/payment/failed?email="+that.email+"&orderId=" + that.orderId + '&amount=' + that.opctions.amount+"&type=1"+"&errMsg="+that.errMsg+"&succeed=false"
 								}	
 							}
 						}, function(response) {
-							window.location.href = "/payment/failed?orderId=" + that.orderId + '&amount=' + that.opctions.amount+"&type=1"+"&succeed=false"
+							window.location.href = "/payment/failed?email="+that.email+"&orderId=" + that.orderId + '&amount=' + that.opctions.amount+"&type=1"+"&succeed=false"
 						})
 					}
 				})
@@ -212,6 +212,7 @@
 				Vue.axios.get(this.apiBasePath+"activity/order/detail/"+that.orderId).then(function(res){
 					
 					that.opctions=res.data
+					that.email = res.data.contactInfo.emailAddress;
 					that.refundTimeLimit=that.opctions.activityInfo.refundTimeLimit*24
 					
 				},function(res){})

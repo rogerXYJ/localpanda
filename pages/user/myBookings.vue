@@ -97,7 +97,7 @@
 						</div>
 					</li>
 				</ul>
-				 <div class="empty" v-else>
+				 <div class="empty" v-show="nobooking">
 					<span>
 						<svg class="icon" aria-hidden="true">
 						    <use xlink:href="#icon-lvyou"></use>
@@ -128,6 +128,8 @@
 		async asyncData({ route, store, error, apiBasePath, redirect }) {
 			let menu = route.query.menu || 0;
 			let flag = route.query.flag || 1;
+			let urlOrderId = route.query.orderid || '';
+			let urlEmail = route.query.email || '';
 			let data = {
 				activityList:'',
 				logIn: '',
@@ -136,9 +138,12 @@
 				alertMessage: '',
 				alertTitle: '',
 				orderId: '',
+				urlOrderId: urlOrderId,
+				urlEmail:urlEmail,
 				url: '',
 				businessType:'',
-				apiBasePath
+				apiBasePath,
+				nobooking : false
 			}
 			return data;
 		},
@@ -199,8 +204,13 @@
 		mounted: function() {
 			let that = this
 			that.logIn = window.localStorage.getItem("logstate")
-			var obj
-			if(localStorage.getItem("userid")!=null){
+			var obj;
+			if(this.urlOrderId && this.urlEmail){
+				obj={
+					orderId:this.urlOrderId,
+					emailAddress:this.urlEmail
+				}
+			}else if(localStorage.getItem("userid")!=null){
 				 obj = {
 					"userId": localStorage.getItem("userid")
 					//userId:10024
@@ -219,17 +229,36 @@
 					'Content-Type': 'application/json; charset=UTF-8'
 				}
 			}).then(function(response) {
-				console.log(response.data)
-				that.activityList=response.data
-			}, function(response) {})
-			that.axios.post(this.apiBasePath + "order/list", JSON.stringify(obj), {
-				headers: {
-					'Content-Type': 'application/json; charset=UTF-8'
+				if(response.status==200 || response.status == 304){
+					that.activityList = response.data
+					that.nobooking = false;
+				}else{
+					that.nobooking = true;
 				}
-			}).then(function(response) {
-				
-				that.bookList = response.data
-			}, function(response) {})
+			}, function(response) {
+				that.nobooking = true;
+			})
+
+			if(!this.urlOrderId && !this.urlEmail){
+
+			
+				that.axios.post(this.apiBasePath + "order/list", JSON.stringify(obj), {
+					headers: {
+						'Content-Type': 'application/json; charset=UTF-8'
+					}
+				}).then(function(response) {
+					if(response.status==200 || response.status == 304){
+						that.bookList = response.data
+						that.nobooking = false;
+					}else{
+						that.nobooking = true;
+					}
+					
+				}, function(response) {
+					that.nobooking = true;
+				})
+
+			}
 		}
 	}
 </script>

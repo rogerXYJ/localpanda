@@ -222,11 +222,11 @@
 				window.location.href="/user/profile?menu=1&flag=1"
 			},
 			reload(){
-				if(GetQueryString("flag")){
-					//console.log(window.localStorage.getItem("flag"))
+
+				if(/\/user\//.test(location.pathname)){
 					window.location.href="/"
 				}else{
-					location.reload()
+					location.reload();
 				}
 				
 			},

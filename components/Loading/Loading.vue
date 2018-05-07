@@ -63,6 +63,7 @@
   width: 60px;
   height: 60px;
   position: relative;
+  margin: -30px 0 0 -30px;
 }
  
 .container1 > div, .container2 > div, .container3 > div {

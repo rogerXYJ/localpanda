@@ -27,11 +27,11 @@
 			</div>
 			<div class="reachout">
 				<h3>Reach out</h3>
-				<p>We provide private tours specifically for you! Contact our guides today with your questions. </p>
+				<p>We provide destination tours and activities. Contact us with any questions you have!  </p>
                 <dl>
                     <dt>General Enquiries</dt>
                     <dd>
-                        <div class="info_list"><span class="iconfont">&#xe662;</span>(+86) 80 182 090</div>
+                        <div class="info_list"><span class="iconfont">&#xe662;</span>+86 (21) 8018-2090<br>+1 (888) 930-8849 (US toll free)</div>
                         <div class="info_list"><span class="iconfont">&#xe60e;</span>service@localpanda.com</div>
                     </dd>
                 </dl>

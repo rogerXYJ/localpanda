@@ -56,6 +56,11 @@
 										<use xlink:href="#icon-visa"></use>
 								</svg>
 							</span>
+							<span class="footer_weixin">
+								<svg class="icon" aria-hidden="true">
+										<use xlink:href="#icon-weixin"></use>
+								</svg>
+							</span>
 						</div>
 						
 					</li>
@@ -65,11 +70,12 @@
 				</ul>
 			</div>
 			<div class="cooperation ">
-				<span class="cooperation-text">© 2017–2018 Local Panda. Made in Shanghai,China</span>
-				
 				<svg class="icon1" aria-hidden="true">
 						<use xlink:href="#icon-logo_"></use>
 				</svg>
+				<span class="cooperation-text">© 2017–2018 Local Panda. Made in Shanghai,China</span>
+				
+				
 				
 				<div class="cooperationIcon">
 					<a href="https://www.facebook.com/LocalPandaGuides/?fref=ts">
@@ -144,12 +150,13 @@ import { fail } from 'assert';
 	   border-radius: 5px;
     }
     .icon1{
-    	width: 514px; 
+    	width: 140px; 
        height: 50px;
     	vertical-align: middle;
        fill: currentColor;
        overflow: hidden;
-       border-radius: 5px;
+			 border-radius: 5px;
+			 margin-right: 20px;
        
     }
     .icon2{
@@ -238,6 +245,18 @@ import { fail } from 'assert';
 										margin-left: 6px;
 										&:first-child{
 											margin-left: 0;
+										}
+									}
+									.footer_weixin{
+										background-color: #0eb20a;
+										width: 42px;
+										height: 26px;
+										display: inline-block;
+										border-radius: 5px;
+										text-align: center;
+										svg{
+											color: #fff;
+											width: 22px;
 										}
 									}
 								}

@@ -18,7 +18,7 @@
     <p class="order_contact" v-show="!success"><span v-show="msg">Your payment did not go through. Here is the error that you can reference:{{msg}}</span><br><br>
       If you want to proceed with payment, click “Try again.” If your payment problems continue, we suggest you try using another card or talk to our online assistant at the bottom right of the webpage to get payment help. You can also email service@localpanda.com or call us at +86 (21) 8081-2090/+1 (888) 9390-8839 (US toll free).</p>
 
-    <p class="order_contact c_666" v-if="logIn">You ordered as a guest. You can click this button to view your order details.</p>
+    <p class="order_contact c_666" v-if="showTipTxt">You ordered as a guest. You can click this button to view your order details.</p>
 
     <a class="btn_href" :href="logIn ? '/user/myBookings' : '/user/myBookings?email='+email+'&orderid='+orderId" v-if="success && email">View My Order</a>
     <a class="btn_href" href="/" v-else-if="!email">Back to home</a>
@@ -44,7 +44,8 @@ export default {
         userId: '',
         email: query.email,
         success: query.succeed=='true'?true:false,
-        msg: query.msg
+        msg: query.msg,
+        showTipTxt: false
 			}
 		},
 		components: {
@@ -55,7 +56,11 @@ export default {
 		},
 		mounted: function() {
 			this.logIn=window.localStorage.getItem("logstate")
-			this.userId=window.localStorage.getItem("userid")
+      this.userId=window.localStorage.getItem("userid")
+      
+      if(!this.logIn){
+				this.showTipTxt = true;
+			}
 		}
 	}
 

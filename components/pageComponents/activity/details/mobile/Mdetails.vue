@@ -379,8 +379,9 @@
 		font-weight: bold;
 		color: #353a3f;
 		word-wrap:break-word!important;
+		padding: 0;
+		
 	}
-	
 	.el-table {
 		margin-top: 0.64rem;
 	}
@@ -412,6 +413,7 @@
 	.el-table td {
 		border: 0;
 	}
+	/*@import "~assets/scss/_table.scss";*/
 </style>
 
 <style lang="scss" scoped>
@@ -565,6 +567,7 @@
 				}
 				.childDiscount{
 					margin-top: 0.266666rem;
+					font-size: 0.32rem;
 				}
 				ul {
 					li {

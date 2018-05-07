@@ -1,30 +1,33 @@
 <template>
 	<div class="priceDetail">
 		<div class="cont">
-			<div class="back"><i class="iconfont" @click="back">&#xe615;</i></div>
+			<div class="back"><i class="iconfont" @click="back">&#xe606;</i></div>
 			<div class="head">
 				<h3>Price details</h3>
 			</div>
-			<el-table :data="sixArr" stripe style="width: 100%">
-				<el-table-column prop="capacity" label="Number of people"  align="center">
-					<template slot-scope="scope">
-						<span v-if="scope.row.capacity==1">1 person</span>
-						<span v-else>{{scope.row.capacity}} people</span>
-					</template>
-				</el-table-column>
-				<el-table-column prop="price" label="Total cost" align="center">
-					<template slot-scope="scope">
-						<span>$ {{returnFloat(scope.row.price)}} USD</span>
-					</template>
-				</el-table-column>
-				<el-table-column prop="childenTotal" label="Price per person"  align="center">
-					<template slot-scope="scope">
-						<div v-show="scope.row.capacity">
-							<span>$ {{returnFloat(round(scope.row.price/scope.row.capacity))}} USD</span>
-						</div>
-					</template>
-				</el-table-column>
-			</el-table>
+			<div class="details">
+				<p class="childDiscount" v-if="picInfo.childDiscount">Children's price is   $  {{picInfo.childDiscount}} USD  less than adults’ price.</p>
+				<el-table :data="sixArr" stripe style="width: 100%">
+					<el-table-column prop="capacity" label="Number of people"  align="center">
+						<template slot-scope="scope">
+							<span v-if="scope.row.capacity==1">1 person</span>
+							<span v-else>{{scope.row.capacity}} people</span>
+						</template>
+					</el-table-column>
+					<el-table-column prop="price" label="Total cost" align="center">
+						<template slot-scope="scope">
+							<span>$ {{returnFloat(scope.row.price)}} USD</span>
+						</template>
+					</el-table-column>
+					<el-table-column prop="childenTotal" label="Price per person"  align="center">
+						<template slot-scope="scope">
+							<div v-show="scope.row.capacity">
+								<span>$ {{returnFloat(round(scope.row.price/scope.row.capacity))}} USD</span>
+							</div>
+						</template>
+					</el-table-column>
+				</el-table>
+			</div>
 		</div>
 	</div>
 </template>
@@ -148,7 +151,66 @@
 		}
 	}
 </script>
-
+<style lang="scss">
+	.el-table__row .cell {
+		text-align: center;
+		line-height: 0.56rem!important;
+		word-wrap:break-word!important;
+		
+		span {
+			font-size: 0.32rem;
+			color: #353a3f;
+			
+		}
+	}
+	.el-table th{
+		word-wrap:break-word!important;
+	}
+	.el-table thead tr th{
+		word-wrap:break-word!important;
+		
+	}
+	.el-table th>.cell {
+		
+		font-size: 0.32rem;
+		font-weight: bold;
+		color: #353a3f;
+		word-wrap:break-word!important;
+		padding: 0;
+		
+	}
+	.el-table {
+		margin-top: 0.64rem;
+	}
+	
+	.el-table--group::after,
+	.el-table--border::after,
+	.el-table::before {
+		height: 0;
+	}
+	
+	.el-table--striped .el-table__body tr.el-table__row--striped td {
+		background: rgba(27, 188, 157, 0.06)!important;
+	}
+	
+	.el-table th,
+	 .el-table td {
+	 	padding:0.146666rem 0;
+	 }
+	
+	.el-table tr:hover {
+		background: #fff;
+	}
+	
+	.el-table--enable-row-hover .el-table__body tr:hover>td {
+		background: #fff;
+	}
+	
+	.el-table th.is-leaf,
+	.el-table td {
+		border: 0;
+	}
+</style>
 <style lang="scss" scoped>
 	.priceDetail{
 		position: fixed;
@@ -168,6 +230,12 @@
 					font-size:0.8rem;
 					font-weight: bold;
 				}
+			}
+		}
+		.details{
+			p{
+				font-size: 0.32rem;
+				margin-top: 0.266666rem;
 			}
 		}
 	}

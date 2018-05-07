@@ -26,10 +26,10 @@
 					<li>
 						<h3>NEED HELP</h3>
 						<div class="need-help">
-							<a href="javascript:;" @click="showInquiry">Inquiry</a>
-							<!-- <a>Legal</a>
-							<a>Terms of Use</a>
-							<a href="/info/privacy" target="_blank">Privacy Policy</a> -->
+							<!-- <a href="javascript:;" @click="showInquiry">Inquiry</a> -->
+							<a class="run_stop">Legal</a>
+							<a class="run_stop">Terms of Use</a>
+							<a class="run_stop">Privacy Policy</a>
 						</div>
 						
 					</li>
@@ -96,14 +96,14 @@
 			</div>
 		</div>
 
-		<Contact :ContactStatus="ContactStatus" v-on:isshowfn="isShowFn" v-on:contact-call-back="contactCallBack" :objectType="objectType"></Contact>
+		
 
 	</div>
 </template>
 
 <script>
 
-import Contact from "~/components/Contact/Contact";
+
 import { fail } from 'assert';
 
 	if (process.BROWSER_BUILD) {
@@ -120,28 +120,10 @@ import { fail } from 'assert';
 			}
 		},
 		components:{
-			Contact
+			
 		},
 		methods: {
-			isShowFn(val) {
-				this.istrue = val;
-				if(this.istrue == true) {
-					this.isShowAlert = true;
-					this.alertTitle = "Submission completed!";
-					this.alertMessage =
-						"Thank you for your feedback.We will get back to you within 1 day.";
-					this.istrue = false;
-				} else {
-					this.isShowAlert = true;
-					this.alertMessage = "Failed!";
-				}
-			},
-			contactCallBack(val) {
-				this.ContactStatus = false;
-			},
-			showInquiry(){
-				this.ContactStatus = true;
-			}
+			
 		},
 		mounted() {
 			
@@ -232,6 +214,14 @@ import { fail } from 'assert';
 										transform: translateX(10px);
 									}
 									
+								}
+								.run_stop{
+									color: #878E95;
+									&:hover{
+										-webkit-transform: translateX(0px);
+										transform: translateX(0px);
+										color: #878E95;
+									}
 								}
 								.city{
 									div{

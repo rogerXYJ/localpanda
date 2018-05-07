@@ -82,7 +82,7 @@
 	import { regExp } from '~/assets/js/plugin/utils'
 	if (process.browser) {
 	  require('~/assets/js/plugin/flexible.js')
-	   require('~/assets/js/pages/talk.js')
+	  // require('~/assets/js/pages/talk.js')
 	}
 	export default {
 		name: 'fillYourInfo',
@@ -213,6 +213,9 @@
 			next() {
 				const that = this
 				var obj;
+
+				var deviceType  = /(iPad)/i.test(navigator.userAgent)?'IPAD':'MOBILE';
+
 				//that.addOder = true
 				if(that.oderFirstName == "" || regExp.isNub(that.oderFirstName) || regExp.isCode(that.oderFirstName)) {
 					that.oderFirstNameErr = true
@@ -276,7 +279,7 @@
 									"emailAddress": that.TravelleremailAddress
 								},
 								"utcOffset": new Date().getTimezoneOffset() / 60 * -1,
-								"deviceType":"MOBILE"
+								"deviceType":deviceType
 							}
 							if(that.addOder == false) {
 								Vue.axios.put(that.apiBasePath+"activity/order/create", JSON.stringify(obj), {
@@ -311,7 +314,7 @@
 								"emailAddress": that.emailAddress
 							},
 							"utcOffset": new Date().getTimezoneOffset() / 60 * -1,
-							"deviceType":"MOBILE"
+							"deviceType":deviceType
 						}
 						if(that.addOder == false) {
 							that.addOder = true

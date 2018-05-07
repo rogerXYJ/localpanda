@@ -83,7 +83,7 @@
 <script>
 import Vue from 'vue'
 import HeaderCommon from '~/components/HeaderCommon/HeaderCommon';
-import Foot from '~/components/FooterCommon/Foot';
+import Foot from '~/components/FooterCommon/FooterCommon';
 import { regExp } from '~/assets/js/plugin/utils'
 import Alert from '~/components/Prompt/Alert'
 

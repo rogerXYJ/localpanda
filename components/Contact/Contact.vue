@@ -300,12 +300,12 @@
 </template>
 <style lang="scss">
 	.datetime{
-	width: 357px;
 	margin-top: 10px;
 	.flatpickr-input{
 		height: 30px!important;
-		width: 300px!important;
+		width: 347px!important;
 		border: 1px solid  #dde0e0;
+		box-sizing: border-box;
 	}
 	.flatpickr-calendar:before{
 		border:none!important;
@@ -404,11 +404,12 @@
 							border: solid 1px #dde0e0;
 							margin-top: 10px;
 							font-size: 16px;
+							box-sizing: border-box;
 						}
 					}
 					.phone {
 						float: left;
-						margin-left: 20px;
+						margin-left: 30px;
 						input {
 							width: 347px;
 							height: 30px;
@@ -416,6 +417,7 @@
 							border: solid 1px #dde0e0;
 							margin-top: 10px;
 							font-size: 16px;
+							box-sizing: border-box;
 						}
 					}
 				}
@@ -457,10 +459,8 @@
 				.fillDate {
 					margin-top: 15px;
 					.date {
-						width: 357px;
 						float: left;
 						.datetime {
-							width: 357px;
 							position: relative;
 							line-height: 30px;
 							i {
@@ -480,7 +480,7 @@
 					}
 					.nuber {
 						float: left;
-						margin-left: 20px;
+						margin-left: 30px;
 						width: 347px;
 						position: relative;
 						/*input{
@@ -496,12 +496,13 @@
 							.peopleshow {
 								margin-top: 10px;
 								padding: 0 21px;
-								width: 315px;
+								width: 347px;
 								height: 30px;
 								line-height: 30px;
 								border-radius: 3px;
 								border: solid 1px #dde0e0;
 								position: relative;
+								box-sizing: border-box;
 								cursor: pointer;
 								i {
 									position: absolute;

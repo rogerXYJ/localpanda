@@ -91,7 +91,7 @@
 						</div>
 					</li>
 				</ul>
-				<ul class="clearfix" v-if="loc=='Beijing'">
+				<ul class="clearfix" v-if="loc=='Beijing'||'beijing'">
 					<li>
 						<div class="visitor-headPic">
 							<img v-lazy="'https://resource.localpanda.cn/static/content/reviews/Claudia.jpg'"/>

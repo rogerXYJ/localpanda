@@ -174,9 +174,13 @@
 			apiBasePath,
 			redirect
 		}) {
-			let opctions = route.query.opctions ? JSON.parse(route.query.opctions) : null
+			let opctions = route.query.opctions ? JSON.parse(route.query.opctions) : null;
+			if(!route.query.opctions){
+				opctions = route.query.options ? JSON.parse(route.query.options) : null;
+			}
 			let sort = route.query.sort ? JSON.parse(route.query.sort) : {
-				type: "DEFAULT"
+				type: "DEFAULT",
+				
 			}
 			let slug = route.params.slug;
 			let data = {
@@ -271,7 +275,7 @@
 				}
 			}
 			if(opctions) {
-				if(opctions.category.length > 0) {
+				if(opctions.category) {
 					data.checkedCategory = data.checkedCategory.concat(opctions.category)
 					let jsonCategory = {
 						type: 'CATEGORY',
@@ -279,7 +283,7 @@
 					}
 					filters.push(jsonCategory)
 				}
-				if(opctions.durations.length > 0) {
+				if(opctions.durations) {
 					data.checkedDurations = data.checkedDurations.concat(opctions.durations)
 					let jsonDurations = {
 						type: 'DURATION',
@@ -287,7 +291,7 @@
 					}
 					filters.push(jsonDurations)
 				}
-				if(opctions.tourtype.length > 0) {
+				if(opctions.tourtype) {
 					for(let i = 0; i < opctions.tourtype.length; i++) {
 						opctions.tourtype[i] = opctions.tourtype[i].replace(/And/g, '&')
 					}
@@ -433,8 +437,8 @@
 					} else {
 						
 						this.checkedCategory = []
-						this.checkedDurations = opctions && opctions.durations.length > 0 ? opctions.durations : []
-						this.checkedTourtype = opctions && opctions.tourtype.length > 0 ? opctions.tourtype : []
+						this.checkedDurations = opctions && opctions.durations ? opctions.durations : []
+						this.checkedTourtype = opctions && opctions.tourtype ? opctions.tourtype : []
 					}
 				} else if(id == 2) {
 					this.isshowdurations = !this.isshowdurations
@@ -445,24 +449,24 @@
 						this.checkedDurations = opctions.durations
 					} else {
 						
-						this.checkedCategory = opctions && opctions.category.length > 0 ? opctions.category : []
+						this.checkedCategory = opctions && opctions.category ? opctions.category : []
 						this.checkedDurations = []
-						this.checkedTourtype = opctions && opctions.tourtype.length > 0 ? opctions.tourtype : []
+						this.checkedTourtype = opctions && opctions.tourtype ? opctions.tourtype : []
 					}
 				} else {
 					this.isshowtourtype = !this.isshowtourtype
 					this.isshowdurations = false
 					this.isshowcategory = false
 					this.isshowcity = false
-					if(opctions && opctions.tourtype.length > 0) {
+					if(opctions && opctions.tourtype) {
 						for(let i = 0; i < opctions.tourtype.length; i++) {
 							opctions.tourtype[i] = opctions.tourtype[i].replace(/And/g, "&")
 						}
 						this.checkedTourtype = opctions.tourtype
 					} else {
 						
-						this.checkedCategory = opctions && opctions.category.length > 0 ? opctions.category : []
-						this.checkedDurations = opctions && opctions.durations.length > 0 ? opctions.durations : []
+						this.checkedCategory = opctions && opctions.category ? opctions.category : []
+						this.checkedDurations = opctions && opctions.durations ? opctions.durations : []
 						this.checkedTourtype = []
 					}
 				}
@@ -490,14 +494,14 @@
 						reverse: true
 					}
 				}
-				var opctions = {
+				var opctions = this.delNull({
 					category: this.checkedCategory,
 					durations: this.checkedDurations,
 					tourtype: this.checkedTourtype,
-				}
+				})
 				sort = JSON.stringify(sort)
 				opctions = JSON.stringify(opctions)
-				location.href = "/activity/list/" + this.loc + "?opctions=" + opctions + "&sort=" + sort
+				location.href = "/activity/list/" + this.loc + "?options=" + opctions + (/DEFAULT/.test(sort)?"":"&sort=" + sort);
 			},
 			//选项内容点击不收起
 			selectShow(id) {
@@ -515,21 +519,21 @@
 					this.isshowcategory = false
 					if(!JSON.parse(that.getUrlParam("opctions"))) {
 						this.checkedCategory = []
-					} else if(JSON.parse(that.getUrlParam("opctions")).category.length > 0) {
+					} else if(JSON.parse(that.getUrlParam("opctions")).category) {
 						this.checkedCategory = JSON.parse(that.getUrlParam("opctions")).category
 					}
 				} else if(id == 2) {
 					this.isshowdurations = false
 					if(!JSON.parse(that.getUrlParam("opctions"))) {
 						this.checkedDurations = []
-					} else if(JSON.parse(that.getUrlParam("opctions")).durations.length > 0) {
+					} else if(JSON.parse(that.getUrlParam("opctions")).durations) {
 						this.checkedDurations = JSON.parse(that.getUrlParam("opctions")).durations
 					}
 				} else {
 					this.isshowtourtype = false
 					if(!JSON.parse(that.getUrlParam("opctions"))) {
 						this.checkedTourtype = []
-					} else if(JSON.parse(that.getUrlParam("opctions")).tourtype.length > 0) {
+					} else if(JSON.parse(that.getUrlParam("opctions")).tourtype) {
 						for(let i = 0; i < JSON.parse(that.getUrlParam("opctions")).tourtype.length; i++) {
 							JSON.parse(that.getUrlParam("opctions")).tourtype[i] = JSON.parse(that.getUrlParam("opctions")).tourtype[i].replace(/And/g, "&")
 						}
@@ -560,32 +564,32 @@
 				sort = JSON.stringify(sort)
 				if(id == 1) {
 					arr.splice(index, 1)
-					var opctions = {
+					var opctions = this.delNull({
 						category: arr,
 						durations: this.removeDurations,
 						tourtype: this.removeTourtype,
-					}
+					})
 					opctions = JSON.stringify(opctions)
-					location.href = "/activity/list/" + this.loc + "?opctions=" + opctions + "&sort=" + sort
+					location.href = "/activity/list/" + this.loc + "?options=" + opctions  + (/DEFAULT/.test(sort)?"":"&sort=" + sort);
 				} else if(id == 2) {
 					arr.splice(index, 1)
-					var opctions = {
+					var opctions = this.delNull({
 						//cities:this.removeCity,
 						category: this.removeCategory,
 						durations: arr,
 						tourtype: this.removeTourtype,
-					}
+					})
 					opctions = JSON.stringify(opctions)
-					location.href = "/activity/list/" + this.loc + "?opctions=" + opctions + "&sort=" + sort
+					location.href = "/activity/list/" + this.loc + "?options=" + opctions  + (/DEFAULT/.test(sort)?"":"&sort=" + sort);
 				} else {
 					arr.splice(index, 1)
-					var opctions = {
+					var opctions = this.delNull({
 						category: this.removeCategory,
 						durations: this.removeDurations,
 						tourtype: arr,
-					}
+					})
 					opctions = JSON.stringify(opctions)
-					location.href = "/activity/list/" + this.loc + "?opctions=" + opctions + "&sort=" + sort
+					location.href = "/activity/list/" + this.loc + "?options=" + opctions + (/DEFAULT/.test(sort)?"":"&sort=" + sort);
 				}
 			},
 			handleCurrentChange(val) {
@@ -680,14 +684,17 @@
 						reverse: true
 					}
 				}
-				var opctions = {
+				var opctions = this.delNull({
 					category: this.checkedCategory,
 					durations: this.checkedDurations,
 					tourtype: this.checkedTourtype,
-				}
+				});
+				
+				
+
 				opctions = JSON.stringify(opctions)
 				sort = JSON.stringify(sort)
-				location.href = "/activity/list/" + this.loc + "?opctions=" + opctions + "&sort=" + sort
+				location.href = "/activity/list/" + this.loc + "?options=" + opctions  + (/DEFAULT/.test(sort)?"":"&sort=" + sort);
 			},
 			getUrlParam(k) {
 				var regExp = new RegExp('([?]|&)' + k + '=([^&]*)(&|$)');
@@ -697,6 +704,15 @@
 				} else {
 					return null;
 				}
+			},
+			delNull(obj){
+				var newOpctions = {};
+				for(var key in obj){
+					if(obj[key].length){
+						newOpctions[key] = obj[key];
+					}
+				}
+				return newOpctions;
 			}
 		},
 		watch: {
@@ -725,9 +741,9 @@
 		mounted: function() {
 			const that = this
 			let opctions = JSON.parse(that.getUrlParam("opctions"))
-			that.removeCategory = opctions && opctions.category.length > 0 ? opctions.category : []
-			that.removeDurations = opctions && opctions.durations.length > 0 ? opctions.durations : []
-			that.removeTourtype = opctions && opctions.tourtype.length > 0 ? opctions.tourtype : []
+			that.removeCategory = opctions && opctions.category ? opctions.category : []
+			that.removeDurations = opctions && opctions.durations ? opctions.durations : []
+			that.removeTourtype = opctions && opctions.tourtype ? opctions.tourtype : []
 
 
 			document.getElementsByTagName("body")[0].addEventListener("click", function() {

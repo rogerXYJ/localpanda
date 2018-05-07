@@ -7,7 +7,7 @@
 					<img :src="slide"  />
 				</div>
 			</div>
-			 <div class="swiper-pagination"></div>
+			
 		</div>
 		
 	</div>
@@ -37,14 +37,6 @@ export default {
         autoplayDisableOnInteraction: false,
         speed: 1000,
         loop: true,
-        
-        /*pagination: {
-		    el: '.swiper-pagination',
-		    type: 'fraction',
-		    //type: 'fraction',
-		    //type : 'progressbar',
-		    //type : 'custom',
-		  },*/
         WrapperSize: true,
 		initialSlide: 0,
       },

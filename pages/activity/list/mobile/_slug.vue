@@ -23,7 +23,7 @@
 			<ul class="clearfix">
 				<li class="activity-item" v-for="item in activityList">
 
-					<a :href="'/activity/details/'+item.activityId" target="_blank">
+					<a :href="'/activity/details/mobile/'+item.activityId" target="_blank">
 						<div class="activity">
 
 							<div class="activity-photo" v-lazy:background-image="item.coverPhotoUrl">
@@ -98,7 +98,7 @@
 			redirect
 		}) {
 			let loc=route.params.slug;
-			let sort = route.query.sort ? JSON.parse(route.query.sort) :{"type": "DEFAULT"};
+			let sort = route.query.sort ? JSON.parse(route.query.sort) :{"type": "SCORE"};
 			let opctions = route.query.opctions ? JSON.parse(route.query.opctions) : null
 			if(!route.query.opctions){
 				opctions = route.query.options ? JSON.parse(route.query.options) : null;
@@ -138,7 +138,7 @@
 				apiBasePath: apiBasePath,
 				select: [{
 						selectText: "Recommended",
-						type: "DEFAULT",
+						type: "SCORE",
 						isSelect: true
 					},
 					{
@@ -299,10 +299,10 @@
 			},
 		
 			sortFn(val){
-				let opctions=this.getUrlParam("opctions");
+				let opctions=this.getUrlParam("opctions")?JSON.parse(this.getUrlParam("opctions")):JSON.parse(this.getUrlParam("options"))
 				if(val == "Recommended") {
 					this.sort = {
-						type: "DEFAULT"
+						type: "SCORE"
 					}
 				} 
 				if(val == "Price :Low to High") {
@@ -319,7 +319,7 @@
 				}
 					this.sort=JSON.stringify(this.sort)
 					
-					location.href = "/activity/list/mobile/" + this.loc + "?options=" + opctions  + (/DEFAULT/.test(this.sort)?"":"&sort=" + this.sort);
+					location.href = "/activity/list/mobile/" + this.loc + "?options=" + opctions  + (/SCORE/.test(this.sort)?"":"&sort=" + this.sort);
 				
 				
 				
@@ -426,7 +426,7 @@
 			}
 		},
 		mounted: function() {
-			let opctions=JSON.parse(this.getUrlParam("opctions"))
+			let opctions=JSON.parse(this.getUrlParam("opctions"))?JSON.parse(this.getUrlParam("opctions")):JSON.parse(this.getUrlParam("options"))
 			console.log()
 			let that=this
 			window.addEventListener("scroll", (e)=>{

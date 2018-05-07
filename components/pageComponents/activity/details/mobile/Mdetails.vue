@@ -59,7 +59,7 @@
 					
 				</div>
 			</div>
-			 <!--<div class="notes" v-if="photoList.length>0" @click="showPhoto" id="photoList">
+			 <div class="notes" v-if="photoList.length>0" @click="showPhoto" id="photoList">
 					<h3>Pictures of our travelers</h3>
 					<div class="photoCover" v-lazy:background-image="photoList.length>0?photoList[0].url:''">
 						<div class="mask"></div>
@@ -69,23 +69,23 @@
 						</div>
 					</div>
 
-				</div>-->
+				</div>
 			<div class="provide" v-if="picInfo.details.length>0" id="picDetails">
 					<h3>Price Details</h3>
-					<p class="childDiscount" v-if="picInfo.childDiscount">Children's price is   $  {{picInfo.childDiscount}} USD  less than adults’ price.</p>
+					<p class="childDiscount" v-if="picInfo.childDiscount">Children's price is   $  {{picInfo.childDiscount}} USD  less than adults' price.</p>
 					<el-table :data="sixArr" stripe style="width: 100%">
-						<el-table-column prop="capacity" label="Number of people"  align="center">
+						<el-table-column prop="capacity" label="Number of people"  align="left">
 							<template slot-scope="scope">
 								<span v-if="scope.row.capacity==1">1 person</span>
 								<span v-else>{{scope.row.capacity}} people</span>
 							</template>
 						</el-table-column>
-						<el-table-column prop="price" label="Total cost" align="center">
+						<el-table-column prop="price" label="Total cost" align="left">
 							<template slot-scope="scope">
 								<span>$ {{returnFloat(scope.row.price)}} USD</span>
 							</template>
 						</el-table-column>
-						<el-table-column prop="childenTotal" label="Price per person"  align="center">
+						<el-table-column prop="childenTotal" label="Price per person"  align="left">
 							<template slot-scope="scope">
 								<div v-show="scope.row.capacity">
 									<span>$ {{returnFloat(round(scope.row.price/scope.row.capacity))}} USD</span>
@@ -167,19 +167,22 @@
 				<p>From <b>$ {{returnFloat(picInfo.bottomPrice)}}</b> pp</p>
 			</div>
 			<button class="bookBtn" @click="goBooking">Book Now</button>
-			
 		</div>
+		<photo :photoList="photoList" :alertPicStatus="alertPicStatus" @alert-call-back="setCallBack"></photo>
 	</div>
+	
 </template>
 
 <script>
 	import bus from '~/assets/js/pages/bus.js'
+	import photo from '~/components/pageComponents/activity/details/mobile/photo'
 	if(process.browser) {
 		const VueAwesomeSwiper = require('vue-awesome-swiper/dist/ssr')
 		bus.use(VueAwesomeSwiper)
 		require('swiper/dist/css/swiper.css')
 		require('~/assets/js/plugin/flexible.js')
 	}
+	
 	export default {
 		props: [
 			"remark",
@@ -211,9 +214,12 @@
 				},
 				sixArr: [],
 				isShowTable: false, //价格明细
+				alertPicStatus: false,
 		}
 	},
-	components: {},
+	components: {
+		photo
+	},
 		methods: {
 			showMore(id) {
 				if(id == 0) {
@@ -282,8 +288,13 @@
 					}
 				}
 			},
-			showPhoto(){
-				
+			//唤起图片轮播
+			showPhoto() {
+				this.alertPicStatus = true
+			},
+			//图片轮播状态回调
+			setCallBack(val) {
+				this.alertPicStatus = val
 			},
 			tableData(details) {
 				//console.log(details);
@@ -356,7 +367,6 @@
 </script>
 <style lang="scss">
 .el-table__row .cell {
-		text-align: center;
 		line-height: 0.56rem!important;
 		word-wrap:break-word!important;
 		
@@ -373,6 +383,9 @@
 		word-wrap:break-word!important;
 		
 	}
+	.el-table__header .cell{
+		text-align: center;
+	}
 	.el-table th>.cell {
 		
 		font-size: 0.32rem;
@@ -383,7 +396,7 @@
 		
 	}
 	.el-table {
-		margin-top: 0.64rem;
+		margin-top: 0.4rem;
 	}
 	
 	.el-table--group::after,
@@ -612,6 +625,7 @@
 					line-height: 0.48rem;
 				}
 				.photoCover {
+						margin-top: 0.4rem;
 						cursor: pointer;
 						height: 3.6rem;
 						background-repeat: no-repeat!important;

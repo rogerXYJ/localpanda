@@ -6,6 +6,12 @@
 				<li>
 					<a href="#journey">What You Can Expect</a>
 				</li>
+				<li v-if="photoList">
+					<a href="#photoList">Moments in Travel</a>
+				</li>
+				<li v-if="picInfo.details.length>0">
+					<a href="#picDetails">Price Details</a>
+				</li>
 				<li>
 					<a href="#provide">What's Included</a>
 				</li>
@@ -36,7 +42,8 @@
 		props: [
 			'notice',
 			'exclusions',
-			'picInfo'
+			'picInfo',
+			"photoList"
 
 		],
 		name: "Mmenu",

@@ -179,7 +179,7 @@
 				opctions = route.query.options ? JSON.parse(route.query.options) : null;
 			}
 			let sort = route.query.sort ? JSON.parse(route.query.sort) : {
-				type: "DEFAULT",
+				type: "SCORE",
 				
 			}
 			let slug = route.params.slug;
@@ -231,7 +231,7 @@
 				selected: 'Recommended',
 				select: [{
 						selectText: "Recommended",
-						type: "DEFAULT",
+						type: "SCORE",
 						isSelect: true
 					},
 					{
@@ -264,7 +264,7 @@
 			let filters = []
 			let obj = {}
 			if(sort) {
-				if(sort.type == "DEFAULT") {
+				if(sort.type == "SCORE") {
 					data.selected = "Recommended"
 				}
 				if(sort.type == "PRICE" && sort.reverse == true) {
@@ -426,7 +426,7 @@
 				}
 			},
 			showSelect(id) {
-				let opctions = JSON.parse(this.getUrlParam("opctions"))
+				let opctions = JSON.parse(this.getUrlParam("opctions")) ? JSON.parse(this.getUrlParam("opctions")) : JSON.parse(this.getUrlParam("options"));
 				if(id == 1) {
 					this.isshowcategory = !this.isshowcategory
 					this.isshowcity = false
@@ -481,7 +481,7 @@
 				var sort = {}
 				if(val == "Recommended") {
 					sort = {
-						type: "DEFAULT"
+						type: "SCORE"
 					}
 				} else if(val == "Price :Low to High") {
 					sort = {
@@ -501,7 +501,7 @@
 				})
 				sort = JSON.stringify(sort)
 				opctions = JSON.stringify(opctions)
-				location.href = "/activity/list/" + this.loc + "?options=" + opctions + (/DEFAULT/.test(sort)?"":"&sort=" + sort);
+				location.href = "/activity/list/" + this.loc + "?options=" + opctions + (/SCORE/.test(sort)?"":"&sort=" + sort);
 			},
 			//选项内容点击不收起
 			selectShow(id) {
@@ -515,29 +515,30 @@
 			},
 			cancel(id) {
 				let that = this
+				let opctions = JSON.parse(that.getUrlParam("opctions")) ? JSON.parse(that.getUrlParam("opctions")) : JSON.parse(that.getUrlParam("options"));
 				if(id == 1) {
 					this.isshowcategory = false
-					if(!JSON.parse(that.getUrlParam("opctions"))) {
+					if(!opctions) {
 						this.checkedCategory = []
-					} else if(JSON.parse(that.getUrlParam("opctions")).category) {
-						this.checkedCategory = JSON.parse(that.getUrlParam("opctions")).category
+					} else if(opctions.category) {
+						this.checkedCategory = opctions.category
 					}
 				} else if(id == 2) {
 					this.isshowdurations = false
-					if(!JSON.parse(that.getUrlParam("opctions"))) {
+					if(!opctions) {
 						this.checkedDurations = []
-					} else if(JSON.parse(that.getUrlParam("opctions")).durations) {
-						this.checkedDurations = JSON.parse(that.getUrlParam("opctions")).durations
+					} else if(opctions.durations) {
+						this.checkedDurations =opctions.durations
 					}
 				} else {
 					this.isshowtourtype = false
-					if(!JSON.parse(that.getUrlParam("opctions"))) {
+					if(!opctions) {
 						this.checkedTourtype = []
-					} else if(JSON.parse(that.getUrlParam("opctions")).tourtype) {
-						for(let i = 0; i < JSON.parse(that.getUrlParam("opctions")).tourtype.length; i++) {
-							JSON.parse(that.getUrlParam("opctions")).tourtype[i] = JSON.parse(that.getUrlParam("opctions")).tourtype[i].replace(/And/g, "&")
+					} else if(opctions) {
+						for(let i = 0; i < opctions.tourtype.length; i++) {
+							opctions.tourtype[i] = opctions.tourtype[i].replace(/And/g, "&")
 						}
-						JSON.parse(that.getUrlParam("opctions")).tourtype = this.checkedTourtype
+						opctions.tourtype = this.checkedTourtype
 					}
 				}
 			},
@@ -548,7 +549,7 @@
 				}
 				if(this.selected == "Recommended") {
 					sort = {
-						type: "DEFAULT"
+						type: "SCORE"
 					}
 				} else if(this.selected == "Price :Low to High") {
 					sort = {
@@ -570,7 +571,7 @@
 						tourtype: this.removeTourtype,
 					})
 					opctions = JSON.stringify(opctions)
-					location.href = "/activity/list/" + this.loc + "?options=" + opctions  + (/DEFAULT/.test(sort)?"":"&sort=" + sort);
+					location.href = "/activity/list/" + this.loc + "?options=" + opctions  + (/SCORE/.test(sort)?"":"&sort=" + sort);
 				} else if(id == 2) {
 					arr.splice(index, 1)
 					var opctions = this.delNull({
@@ -580,7 +581,7 @@
 						tourtype: this.removeTourtype,
 					})
 					opctions = JSON.stringify(opctions)
-					location.href = "/activity/list/" + this.loc + "?options=" + opctions  + (/DEFAULT/.test(sort)?"":"&sort=" + sort);
+					location.href = "/activity/list/" + this.loc + "?options=" + opctions  + (/SCORE/.test(sort)?"":"&sort=" + sort);
 				} else {
 					arr.splice(index, 1)
 					var opctions = this.delNull({
@@ -589,7 +590,7 @@
 						tourtype: arr,
 					})
 					opctions = JSON.stringify(opctions)
-					location.href = "/activity/list/" + this.loc + "?options=" + opctions + (/DEFAULT/.test(sort)?"":"&sort=" + sort);
+					location.href = "/activity/list/" + this.loc + "?options=" + opctions + (/SCORE/.test(sort)?"":"&sort=" + sort);
 				}
 			},
 			handleCurrentChange(val) {
@@ -621,7 +622,7 @@
 				}
 				if(this.selected == "Recommended") {
 					sort = {
-						type: "DEFAULT"
+						type: "SCORE"
 					}
 				} else if(this.selected == "Price :Low to High") {
 					sort = {
@@ -671,7 +672,7 @@
 				}
 				if(this.selected == "Recommended") {
 					sort = {
-						type: "DEFAULT"
+						type: "SCORE"
 					}
 				} else if(this.selected == "Price :Low to High") {
 					sort = {
@@ -694,7 +695,7 @@
 
 				opctions = JSON.stringify(opctions)
 				sort = JSON.stringify(sort)
-				location.href = "/activity/list/" + this.loc + "?options=" + opctions  + (/DEFAULT/.test(sort)?"":"&sort=" + sort);
+				location.href = "/activity/list/" + this.loc + "?options=" + opctions  + (/SCORE/.test(sort)?"":"&sort=" + sort);
 			},
 			getUrlParam(k) {
 				var regExp = new RegExp('([?]|&)' + k + '=([^&]*)(&|$)');
@@ -740,11 +741,18 @@
 		},
 		mounted: function() {
 			const that = this
-			let opctions = JSON.parse(that.getUrlParam("opctions"))
+			let opctions = JSON.parse(that.getUrlParam("opctions")) ? JSON.parse(that.getUrlParam("opctions")) : JSON.parse(that.getUrlParam("options"));
+			/*if(!JSON.parse(that.getUrlParam("opctions"))){
+				opctions = JSON.parse(that.getUrlParam("opctions"))? JSON.parse(that.getUrlParam("options")) : null;
+			}*/
 			that.removeCategory = opctions && opctions.category ? opctions.category : []
 			that.removeDurations = opctions && opctions.durations ? opctions.durations : []
 			that.removeTourtype = opctions && opctions.tourtype ? opctions.tourtype : []
-
+			console.log(opctions)
+			console.log(that.removeCategory)
+			console.log(that.removeDurations)
+			console.log(that.removeTourtype)
+			
 
 			document.getElementsByTagName("body")[0].addEventListener("click", function() {
 				that.isshowcategory = false

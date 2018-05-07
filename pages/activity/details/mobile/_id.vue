@@ -20,7 +20,7 @@
 			:photoList="photoList"
 			></Mdetails>
 		<transition name="slideleft">
-            <Mmeau v-show="isShowMeau" class="Mmeau" :notice="notice" :exclusions="exclusions" :picInfo="picInfo"></Mmeau>
+            <Mmeau v-show="isShowMeau" class="Mmeau" :notice="notice" :exclusions="exclusions" :picInfo="picInfo" :photoList="photoList"></Mmeau>
         </transition>
       	<div class="marsk" v-if="isscroll" @click.stop="showMeau">
         	<i class="iconfont">&#xe665;</i>
@@ -38,7 +38,6 @@
 	import Mbanner from "~/components/pageComponents/activity/details/mobile/Mbanner";
 	import Mdetails from "~/components/pageComponents/activity/details/mobile/Mdetails";
 	import Mmeau from '~/components/pageComponents/activity/details/mobile/m-meau'
-	
 	
 	import { delNullArr,getUrlParams } from "~/assets/js/plugin/utils";
 

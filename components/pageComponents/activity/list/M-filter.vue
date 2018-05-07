@@ -105,7 +105,7 @@
 				})
 				opctions=JSON.stringify(opctions)
 				this.sort=JSON.stringify(this.sort)
-				location.href = "/activity/list/mobile/" + this.loc + "?options=" + opctions  + (/DEFAULT/.test(this.sort)?"":"&sort=" + this.sort);
+				location.href = "/activity/list/mobile/" + this.loc + "?options=" + opctions  + (/SCORE/.test(this.sort)?"":"&sort=" + this.sort);
 
 			},
 			delNull(obj){

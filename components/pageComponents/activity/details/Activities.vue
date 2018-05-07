@@ -26,7 +26,7 @@
 				<ul class="description clearfix">
 					<li>
 						<label class="iconfont">&#xe653;</label>
-						<span>Type: {{detail.trafficType}}</span>
+						<span>Mode: {{detail.trafficType}}</span>
 					</li>
 					<li>
 						<label class="iconfont">&#xe624;</label>

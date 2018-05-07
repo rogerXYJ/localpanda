@@ -1031,7 +1031,7 @@
 				}
 		.list-cont {
 			background: #faf9f8;
-			margin: 30px auto 80px;
+			margin: 0 auto 80px;
 			width: 1284px;
 			.activity-item {
 				&:hover {
@@ -1087,7 +1087,7 @@
 					}
 					.titleText {
 						width: 100%;
-						height: 66px;
+						height: 72px;
 						text-overflow: ellipsis;
 						display: -webkit-box;
 						display: -moz-box;

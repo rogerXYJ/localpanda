@@ -30,7 +30,7 @@
 
 <script>
 	if (process.browser) {
-	  require('~/assets/js/pages/talk.js')
+	  //require('~/assets/js/pages/talk.js')
 	  require('~/assets/js/plugin/flexible.js')
 	}
 	

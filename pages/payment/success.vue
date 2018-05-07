@@ -22,7 +22,7 @@
 					<p style="margin-top: 10px;"> Our staff will confirm with you as soon as possible. We will reply you within one business day. You can know the details furthur by look at your 
 order details.You can also email service@localpanda.com or call us at +86 (21) 8018-2090/ +1 (888) 930-8849 (US toll free).</p>				
 
-					<p class="c_666" v-if="logIn">You ordered as a guest. You can click this button to view your order details.</p>
+					<p class="c_666" v-if="showTipTxt">You ordered as a guest. You can click this button to view your order details.</p>
 
 					<a class="backorderbtn" :href="logIn ? '/user/myBookings' : '/user/myBookings?email='+email+'&orderid='+orderId">View My Order</a>
 				</div>
@@ -47,7 +47,8 @@ order details.You can also email service@localpanda.com or call us at +86 (21) 8
 				logIn:'',
 				date:"",
 				userId:'',
-				email: this.$route.query.email
+				email: this.$route.query.email,
+				showTipTxt: false
 				
 				
 			}
@@ -65,6 +66,10 @@ order details.You can also email service@localpanda.com or call us at +86 (21) 8
 			
 			this.logIn=window.localStorage.getItem("logstate")
 			this.userId=window.localStorage.getItem("userid")
+
+			if(!this.logIn){
+				this.showTipTxt = true;
+			}
 		}
 	}
 </script>

@@ -46,7 +46,7 @@
 				</div>
 			</div>
 			<p class="refundPolicy" style="margin-top: 30px; color: red;">You can get a 100% refund up to {{refundTimeLimit}} hours before your trip.</p>
-			<p style="width: 600px;margin-top: 20px;">You ordered as a guest. To view your order details, you can click "My Bookings" on the top bar then type in the reservee's email address and name you entered before to access that information.</p>
+			<p style="width: 600px;margin-top: 20px; color: red;" v-if="logInHide">You ordered as a guest. To view your order details, you can click "My Bookings" on the top bar then type in the reservee's email address and name you entered before to access that information.</p>
 			<button class="btnlinner paybtn" @click="pay">Pay Now</button>
 		</div>
 		<Loading :loadingStatus="loadingStatus"></Loading>
@@ -110,7 +110,8 @@
 				loadingStatus: false,
 				isPay: false,
 				refundTimeLimit:'',
-				errMsg:''
+				errMsg:'',
+				logInHide : false
 
 			}
 		},
@@ -248,6 +249,9 @@
 			this.getToken()
 			this.logIn = window.localStorage.getItem("logstate")
 			
+			if(!this.logIn){
+				this.logInHide = true;
+			}
 			
 		}
 	}

@@ -100,6 +100,9 @@
 			let loc=route.params.slug;
 			let sort = route.query.sort ? JSON.parse(route.query.sort) :{"type": "DEFAULT"};
 			let opctions = route.query.opctions ? JSON.parse(route.query.opctions) : null
+			if(!route.query.opctions){
+				opctions = route.query.options ? JSON.parse(route.query.options) : null;
+			}
 			let data={
 				options: [
 					{
@@ -294,71 +297,30 @@
 			showFilter(){
 				this.isshow=true
 			},
-			del(id, arr, index) {
-				this.sort=JSON.stringify(this.sort)
-				for(let i = 0; i < this.checkedTourtype.length; i++) {
-					this.checkedTourtype[i] = this.checkedTourtype[i].replace(/&/g, "And")
-				}
-				arr.splice(index, 1)
-				if(id == 1) {
-					
-					var opctions = {
-						//cities:this.removeCity,
-						category: arr,
-						durations: this.checkedDurations,
-						tourtype: this.checkedTourtype,
-					}
-					opctions = JSON.stringify(opctions)
-					//localStorage.setItem("opctions",opctions)
-					location.href = "/activity/list/mobile/" + this.loc + "?opctions=" + opctions + "&sort=" + this.sort
-				} else if(id == 2) {
-					
-					var opctions = {
-						//cities:this.removeCity,
-						category: this.checkedCategory,
-						durations: arr,
-						tourtype: this.checkedTourtype,
-					}
-					opctions = JSON.stringify(opctions)
-					//localStorage.setItem("opctions",opctions)
-					location.href = "/activity/list/mobile/" + this.loc + "?opctions=" + opctions + "&sort=" + this.sort
-				} else {
-					
-					var opctions = {
-						//cities:this.removeCity,
-						category: this.checkedCategory,
-						durations: this.checkedDurations,
-						tourtype: arr,
-					}
-					opctions = JSON.stringify(opctions)
-					//localStorage.setItem("opctions",opctions)
-					location.href = "/activity/list/mobile/" + this.loc + "?opctions=" + opctions + "&sort=" + this.sort
-				}
-				//arr.splice(index,1)
-			},
+		
 			sortFn(val){
 				let opctions=this.getUrlParam("opctions");
-				
-				console.log(this.getUrlParam("opctions"))
 				if(val == "Recommended") {
-					location.href="/activity/list/mobile/"+this.loc+"?opctions="+opctions
-				} else{
-					if(val == "Price :Low to High") {
-						this.sort = {
-							type: "PRICE",
-							reverse: false
-						}
+					this.sort = {
+						type: "DEFAULT"
 					}
-					if(val == "Price :High to Low") {
-						this.sort = {
-							type: "PRICE",
-							reverse: true
-						}
+				} 
+				if(val == "Price :Low to High") {
+					this.sort = {
+						type: "PRICE",
+						reverse: false
 					}
+				}
+				if(val == "Price :High to Low") {
+					this.sort = {
+						type: "PRICE",
+						reverse: true
+					}
+				}
 					this.sort=JSON.stringify(this.sort)
 					
-					location.href="/activity/list/mobile/"+this.loc+"?sort="+this.sort+"&opctions="+opctions
-				}
+					location.href = "/activity/list/mobile/" + this.loc + "?options=" + opctions  + (/DEFAULT/.test(this.sort)?"":"&sort=" + this.sort);
+				
 				
 				
 			},

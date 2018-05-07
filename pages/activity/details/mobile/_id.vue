@@ -17,6 +17,7 @@
 			:destinations="destinations" 
 			:itemsIncluded="itemsIncluded" 
 			:recommed="recommed"
+			:photoList="photoList"
 			></Mdetails>
 		<transition name="slideleft">
             <Mmeau v-show="isShowMeau" class="Mmeau" :notice="notice" :exclusions="exclusions" :picInfo="picInfo"></Mmeau>
@@ -72,12 +73,14 @@
 				inclusions:[],
 				exclusions:[],
 				notice:[],
+				photoList:[]
 				
 				
 			};
 			let response = {};
 			let apiActivityPriceRes = {};
 			let apiActivityRecommendRes = {};
+			let photoList={};
 			try {
 				response = await Vue.axios.get(apiBasePath + "activity/basic/" + id);
 				if(response.data.valid == 1) {
@@ -123,7 +126,21 @@
 						message: "500"
 					});
 				}
-
+				
+				//游客图片
+				let photoParams={
+					"objectId": id,
+					"objectType": "ACTIVITY_TRAVELER"
+				}
+				photoList=await Vue.axios.post(
+					apiBasePath+"activity/traveler/photo/all",JSON.stringify(photoParams),{
+						headers: {
+						'Content-Type': 'application/json; charset=UTF-8'
+						}
+					}
+				);
+				data.photoList=photoList.data
+				
 				apiActivityRecommendRes = await Vue.axios.get(
 					apiBasePath + "activity/recommend/" + id
 				);

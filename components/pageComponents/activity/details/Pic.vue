@@ -43,6 +43,9 @@ export default {
 						nextEl: '.swiper-button-next',
 						prevEl: '.swiper-button-prev'
 					},
+					 lazy: {
+						loadPrevNext: true,
+					},
 					on: {
 						slideChangeTransitionStart: function(){
 							var activeIndex = this.activeIndex;
@@ -60,7 +63,9 @@ export default {
 							
 				},
 				swiperOptionThumbs: {
-					
+					lazy: {
+						loadPrevNext: true,
+					},
 					watchSlidesProgress : true,
 					watchSlidesVisibility : true,
 					slidesPerView : 5,

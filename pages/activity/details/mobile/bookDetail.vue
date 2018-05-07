@@ -26,7 +26,7 @@
 					<label v-else>${{returnFloat(round(adultsPic/(adults+children)))}} x {{adults+children}} People 
 					<br/><em v-if="children>0&&picInfo.childDiscount">- ${{returnFloat(children*picInfo.childDiscount)}}</b> for child(ren)</em>
 					</label>
-					<span>${{returnFloat(adultsPic)}}</span>
+					<span @click.stop="showPriceDetail"><i class="iconfont">&#xe659;</i>{{returnFloat(adultsPic)}}</span>
 				</li>
 				<li class="clearfix" v-if="adults+children>=1">
 					<label>Total</label>
@@ -43,7 +43,13 @@
 		<transition name="slideleft">
 			<SelectPeople v-show="isshow" class="view" :picInfo="picInfo" @call-back="setCallBack" @sureSelect="getSave"></SelectPeople>
 		</transition>
+		<transition name="slideleft">
+			<PriceDetail v-show="isshowDetail" class="view" :picInfo="picInfo" @call-back-detail="setCallBackDetail"></PriceDetail>
+		</transition>
 		
+		<transition name="fade">
+			<div class="win_bg" @click="showWinBg = false" v-if="showWinBg"></div>
+		</transition>
 		<transition name="fade">
 			<div class="win_bg" @click="showWinBg = false" v-if="showWinBg"></div>
 		</transition>
@@ -62,6 +68,7 @@
 	
 	import { GetDateStr, addmulMonth } from "~/assets/js/plugin/utils";
 	import SelectPeople from "~/components/pageComponents/activity/details/mobile/SelectPeople"
+	import PriceDetail from "~/components/pageComponents/activity/details/mobile/PriceDetail"
 	import Vue from 'vue';
 
 	export default {
@@ -85,14 +92,16 @@
 				dateErr:false,
 				peopleErr:false,
 				dateErrText:"",
-				showWinBg : false
+				showWinBg : false,
+				isshowDetail:false //priceDetail
 				
 			}
 		},
 
 		components: {
 			//flatPickr,
-			SelectPeople
+			SelectPeople,
+			PriceDetail
 		},
 		methods: {
 			back() {
@@ -110,11 +119,16 @@
 				this.isshow = val
 
 			},
+			setCallBackDetail(val){
+				this.isshowDetail=val
+			},
 			getSave(val) {
 				this.adults = val.adults
 				this.children = val.children
 				this.infant = val.infant
-				console.log(val)
+			},
+			showPriceDetail(){
+				this.isshowDetail=true
 			},
 			cutXiaoNum(num, len) {
 				var numStr = num.toString();
@@ -353,6 +367,11 @@
 						font-size: 0.48rem;
 					}
 					span{
+						i{
+							color: rgba(135,142,149,0.5);
+							font-size: 0.48rem;
+							margin-right: 0.173333rem;
+						}
 						float: right;
 						width: 40%;
 						text-align: right;
@@ -386,7 +405,7 @@
 			}
 		}
 		.view {
-			position: absolute;
+			
 			width: 100%;
 			transition: all .3s cubic-bezier(.55, 0, .1, 1);
 		}

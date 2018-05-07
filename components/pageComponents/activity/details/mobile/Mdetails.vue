@@ -59,6 +59,42 @@
 					
 				</div>
 			</div>
+			 <!--<div class="notes" v-if="photoList.length>0" @click="showPhoto" id="photoList">
+					<h3>Pictures of our travelers</h3>
+					<div class="photoCover" v-lazy:background-image="photoList.length>0?photoList[0].url:''">
+						<div class="mask"></div>
+						<div class="cover">
+							<h4>Check out our customers' travel experiences with us!</h4>
+							<button>Have a look</button>
+						</div>
+					</div>
+
+				</div>-->
+			<div class="provide" v-if="picInfo.details.length>0" id="picDetails">
+					<h3>Price Details</h3>
+					<p class="childDiscount" v-if="picInfo.childDiscount">Children's price is   $  {{picInfo.childDiscount}} USD  less than adults’ price.</p>
+					<el-table :data="sixArr" stripe style="width: 100%">
+						<el-table-column prop="capacity" label="Number of people"  align="center">
+							<template slot-scope="scope">
+								<span v-if="scope.row.capacity==1">1 person</span>
+								<span v-else>{{scope.row.capacity}} people</span>
+							</template>
+						</el-table-column>
+						<el-table-column prop="price" label="Total cost" align="center">
+							<template slot-scope="scope">
+								<span>$ {{returnFloat(scope.row.price)}} USD</span>
+							</template>
+						</el-table-column>
+						<el-table-column prop="childenTotal" label="Price per person"  align="center">
+							<template slot-scope="scope">
+								<div v-show="scope.row.capacity">
+									<span>$ {{returnFloat(round(scope.row.price/scope.row.capacity))}} USD</span>
+								</div>
+							</template>
+						</el-table-column>
+					</el-table>
+					<div class="view" v-if="isShowTable" @click="showTable">View More</div>
+				</div>
 			<div class="provide" id="provide">
 				<h3>What's Included?</h3>
 				<ul v-if="itemsIncluded">
@@ -159,7 +195,8 @@
 			"introduction",
 			"inclusions",
 			"exclusions",
-			"notice"
+			"notice",
+			"photoList"
 		],
 		name: 'm-details',
 		data() {
@@ -172,6 +209,8 @@
 					initialSlide: 0,
 					spaceBetween:17,
 				},
+				sixArr: [],
+				isShowTable: false, //价格明细
 		}
 	},
 	components: {},
@@ -185,6 +224,34 @@
 					this.isShowMore = true
 				}
 
+			},
+			cutXiaoNum(num, len) {
+				var numStr = num.toString();
+				if(len == null || len == undefined) {
+					len = numStr.length;
+				}
+				var index = numStr.indexOf(".");
+				if(index == -1) {
+					index = numStr.length;
+					numStr += ".0000000000000";
+				} else {
+					numStr += "0000000000000";
+				}
+				var newNum = numStr.substring(0, index + len + 1);
+				return newNum;
+			},
+			round(val) {
+				if(typeof val === "number" && val % 1 === 0) {
+					return val;
+				} else if(val.toString().split(".")[1].length <= 1) {
+					return val;
+				} else {
+					return(parseFloat(this.cutXiaoNum(val, 1)) + 0.1).toFixed(1);
+				}
+			},
+			showTable() {
+				this.isShowTable = false
+				this.sixArr=this.tableData(this.picInfo.details)
 			},
 			goBooking(){
 				let objDetail={
@@ -214,6 +281,57 @@
 						return value;
 					}
 				}
+			},
+			showPhoto(){
+				
+			},
+			tableData(details) {
+				//console.log(details);
+				var newObj = function(obj) {
+					var o = {};
+					for(var key in obj) {
+						o[key] = obj[key];
+					}
+					return o;
+				}
+
+				let newArr = [],
+					tableD = [];
+
+
+
+				if(details.length==1){
+					console.log(1)
+					console.log(details[0].capacity)
+					for(let i=0;i<details[0].capacity;i++){
+						var s=newObj(details[0]);
+						newArr.push(s)
+					}
+					
+				}else{
+					for(let i = 0; i < details.length; i++) {
+						let thisD = details[i];
+						newArr.push(thisD);
+						if(i + 1 > details.length - 1) break;
+
+						var thisC = thisD.capacity;
+						var nextC = details[i + 1].capacity;
+						var forLen = nextC - thisC - 1;
+						for(let j = 0; j < forLen; j++) {
+							var midArr = newObj(details[i+1]);
+							//console.log(midArr)
+							newArr.push(midArr);
+						}
+						//console.log(newArr)
+					}
+				}
+				
+
+				for(var k = 0; k < newArr.length; k++) {
+					newArr[k].capacity = k + 1;
+
+				}
+				return newArr;
 			}
 		},
 		filters: {
@@ -222,12 +340,81 @@
 					return val.toLowerCase().replace(/( |^)[a-z]/g, L => L.toUpperCase());
 			}
 		},
-		mounted: function() {},
+		mounted: function() {
+			let that=this
+			if(that.tableData(that.picInfo.details).length>5){
+				this.isShowTable=true
+				that.sixArr=that.tableData(that.picInfo.details).splice(0,6)
+			}else{
+				that.sixArr=that.tableData(that.picInfo.details)
+			}
+		},
 		watch:{
 			
 		}
 	}
 </script>
+<style lang="scss">
+.el-table__row .cell {
+		text-align: center;
+		line-height: 0.56rem!important;
+		word-wrap:break-word!important;
+		
+		span {
+			font-size: 0.32rem;
+			color: #353a3f;
+			
+		}
+	}
+	.el-table th{
+		word-wrap:break-word!important;
+	}
+	.el-table thead tr th{
+		word-wrap:break-word!important;
+		
+	}
+	.el-table th>.cell {
+		
+		font-size: 0.32rem;
+		font-weight: bold;
+		color: #353a3f;
+		word-wrap:break-word!important;
+		padding: 0;
+		
+	}
+	.el-table {
+		margin-top: 0.64rem;
+	}
+	
+	.el-table--group::after,
+	.el-table--border::after,
+	.el-table::before {
+		height: 0;
+	}
+	
+	.el-table--striped .el-table__body tr.el-table__row--striped td {
+		background: rgba(27, 188, 157, 0.06)!important;
+	}
+	
+	.el-table th,
+	 .el-table td {
+	 	padding:0.146666rem 0;
+	 }
+	
+	.el-table tr:hover {
+		background: #fff;
+	}
+	
+	.el-table--enable-row-hover .el-table__body tr:hover>td {
+		background: #fff;
+	}
+	
+	.el-table th.is-leaf,
+	.el-table td {
+		border: 0;
+	}
+	/*@import "~assets/scss/_table.scss";*/
+</style>
 
 <style lang="scss" scoped>
 	@import "~/assets/font/iconfont.css";
@@ -378,6 +565,10 @@
 					font-size: 0.4rem;
 					font-weight: bold;
 				}
+				.childDiscount{
+					margin-top: 0.266666rem;
+					font-size: 0.32rem;
+				}
 				ul {
 					li {
 						padding-left: 0.266666rem;
@@ -420,6 +611,42 @@
 					font-size: 0.346666rem;
 					line-height: 0.48rem;
 				}
+				.photoCover {
+						cursor: pointer;
+						height: 3.6rem;
+						background-repeat: no-repeat!important;
+						background-size: cover!important;
+						background-position: center;
+						position: relative;
+						.mask {
+							position: absolute;
+							left: 0;
+							top: 0;
+							width: 8.24rem;
+							height: 100%;
+							background: linear-gradient( to right, rgba(255, 249, 248,1) 40%, rgba(255, 249, 248, 0) );
+						}
+						.cover {
+							padding: 0.613333rem 0 0 0.4rem;
+							position: relative;
+							h4 {
+								font-size: 0.346666rem;
+								width: 4.866666rem;
+							}
+							button {
+								height: 1.12rem;
+								width: 4.266666rem;
+								line-height: 1.12rem;
+								text-align: center;
+								border-radius: 0.56rem;
+								background: #fff;
+								box-shadow: 0px 0.026666rem 0.266666rem 0px rgba(0, 0, 0, 0.1);
+								margin-top: 0.426666rem;
+								font-size: 0.346666rem;
+								font-weight: bold;
+							}
+						}
+					}
 			}
 			.recommend {
 				margin-top: 0.626666rem;
@@ -578,6 +805,11 @@
 					border-radius: 0.6rem;
 					margin-top: 0.373333rem;
 				}
+			}
+			.view{
+				margin-top: 0.266666rem;
+				color:#1bbc9d;
+				font-size: 0.346666rem;
 			}
 		.show {
 			overflow: inherit!important;

@@ -98,15 +98,24 @@
 				for(let i = 0; i < this.checkedTourtype.length; i++) {
 					this.checkedTourtype[i] = this.checkedTourtype[i].replace(/&/g, "And")
 				}
-				let opctions = {
+				let opctions =this.delNull({
 					category: this.checkedCategory,
 					durations: this.checkedDurations,
 					tourtype: this.checkedTourtype,
-				}
+				})
 				opctions=JSON.stringify(opctions)
 				this.sort=JSON.stringify(this.sort)
-				location.href="/activity/list/mobile/"+this.loc+"?opctions="+opctions+"&sort="+this.sort
+				location.href = "/activity/list/mobile/" + this.loc + "?options=" + opctions  + (/DEFAULT/.test(this.sort)?"":"&sort=" + this.sort);
 
+			},
+			delNull(obj){
+				var newOpctions = {};
+				for(var key in obj){
+					if(obj[key].length){
+						newOpctions[key] = obj[key];
+					}
+				}
+				return newOpctions;
 			}
 		},
 		mounted:function(){

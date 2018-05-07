@@ -357,6 +357,8 @@
 			</div>
 		</div>
 		<Pic :photoList="photoList" :alertPicStatus="alertPicStatus" @alert-call-back="setCallBack"></Pic>
+		<Contact :ContactStatus="ContactStatus" v-on:isshowfn="isShowFn" v-on:contact-call-back="contactCallBack"  :objectType="objectType"></Contact>
+		<Alert   :isShowAlert="isShowAlert" :alertTitle="alertTitle" :alertMessage="alertMessage" v-on:setIsShowAlert="getIsShowAlert"></Alert>
 	</div>
 
 </template>
@@ -367,7 +369,8 @@
 		addmulMonth,
 		getUrlParams
 	} from "~/assets/js/plugin/utils";
-
+	import Contact from '~/components/Contact/Contact';
+	import Alert from '~/components/Prompt/Alert';
 	import Flatpickr from 'flatpickr';
 	require('~/assets/scss/G-ui/flatpickr.min.css')
 	import Pic from "~/components/pageComponents/activity/details/Pic"
@@ -423,14 +426,55 @@
 				isShowTable: false, //价格明细
 				flatPickr: null,
 				alertPicStatus: false,
+				// inquery
+				ContactStatus:false,
+				isShowAlert:false,
+				alertTitle:'',
+				alertMessage:"",
+				istrue:false,
+				objectType:'ACTIVITY'
 			};
+			
 		},
 		components: {
 			//flatPickr,
-			Pic
-
+			Pic,
+			Contact,
+			Alert
 		},
 		methods: {
+			//inquery
+			isShowFn(val){
+				this.istrue=val
+				if(this.istrue==true){
+					this.isShowAlert=true
+					this.alertTitle="Submission completed!"
+					this.alertMessage="Thank you for your feedback.We will get back to you within 1 day."
+					this.istrue=false
+				}else{
+					this.isShowAlert=true
+					this.alertMessage="Failed!"
+				}
+			},
+			getIsShowAlert(val){
+				this.isShowAlert=val
+			},
+			contactCallBack(val){
+				this.ContactStatus=false
+			},
+			showContact() {
+				let that = this;
+
+				window.ga && ga("gtag_UA_107010673_1.send", {
+					hitType: "event",
+					eventCategory: "Button",
+					eventAction: "Click",
+					eventLabel: "activity_inquiry"
+				});
+				that.ContactStatus=true
+			},
+			
+			
 			//定位到价格明细
 			picDetailposition(selector){
 				var anchor = document.getElementById(selector)
@@ -505,17 +549,7 @@
 				this.sixArr=this.tableData(this.picInfo.details)
 
 			},
-			showContact() {
-				let that = this;
-
-				window.ga && ga("gtag_UA_107010673_1.send", {
-					hitType: "event",
-					eventCategory: "Button",
-					eventAction: "Click",
-					eventLabel: "activity_inquiry"
-				});
-				location.href = "/travel/customize/step1"
-			},
+			
 			add(id) {
 				if(id == 0) {
 					this.adults++;
@@ -670,25 +704,6 @@
 					newArr[k].capacity = k + 1;
 
 				}
-
-				// for(var k = 0; k < newArr.length; k++) {
-				// 	if(isshow){
-				// 		this.isShowTable=false;
-				// 	}else if(k>11){
-				// 		 this.isShowTable=true;break
-				// 	}
-				// 	let thisA = newArr[k];
-				// 	let thisB = tableD.length - 1;
-				// 	var last = tableD[thisB];
-				// 	if(k % 2 == 0) {
-				// 		tableD.push(thisA);
-				// 		if(k >= newArr.length - 1) {
-				// 			tableD[tableD.length-1].right = {};
-				// 		}
-				// 	} else {
-				// 		last.right = thisA;
-				// 	}
-				// }
 				return newArr;
 			}
 		},
@@ -1429,6 +1444,7 @@
 						margin-top: 10px;
 					}
 					.photoCover {
+						margin-top: 0.64rem;
 						cursor: pointer;
 						height: 300px;
 						background-repeat: no-repeat!important;

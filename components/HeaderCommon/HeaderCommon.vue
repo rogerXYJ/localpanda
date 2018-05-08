@@ -199,7 +199,7 @@
 			},
 			logOut(){
 				let that=this
-				window.localStorage.setItem("logstate",0)
+				window.localStorage.removeItem("logstate")
 				window.localStorage.removeItem("fbToken")
 				window.localStorage.removeItem("key")
 				window.localStorage.removeItem("userid")

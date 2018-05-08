@@ -158,18 +158,18 @@ export default {
 								that.errMsg=response.data.errorMessage
 								let reg=/'Exception'/g
 								if(response.data.errorMessage&&reg.test(response.data.errorMessage)){
-									window.location.href = "/payment/failed?orderId=" + that.orderId + '&amount=' + that.amount+"&type=1"+"&succeed=false"
+									window.location.href = "/payment/failed?payType=guide&orderId=" + that.orderId + '&amount=' + that.amount+"&type=1"+"&succeed=false"
 								}else{
 									if(response.data.succeed&&!response.data.errorMessage){
 										that.loadingStatus = false
-										window.location.href = "/payment/success?orderId=" + that.orderId + '&amount=' + that.amount+"&succeed=true"
+										window.location.href = "/payment/success?payType=guide&orderId=" + that.orderId + '&amount=' + that.amount+"&succeed=true"
 									}else{
 										that.loadingStatus = true
-										window.location.href = "/payment/failed?orderId=" + that.orderId + '&amount=' + that.amount+"&type=1"+"&errMsg="+that.errMsg+"&succeed=false"
+										window.location.href = "/payment/failed?payType=guide&orderId=" + that.orderId + '&amount=' + that.amount+"&type=1"+"&errMsg="+that.errMsg+"&succeed=false"
 									}	
 								}
 						}, function(response) {
-							window.location.href = "/payment/failed?orderId=" + that.orderId + '&amount=' + that.amount+"&type=1"+"&succeed=false"
+							window.location.href = "/payment/failed?payType=guide&orderId=" + that.orderId + '&amount=' + that.amount+"&type=1"+"&succeed=false"
 						})
 				}
 			})

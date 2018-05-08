@@ -77,7 +77,7 @@
 						<textarea v-if="opctions.category=='Private Tour'" placeholder="please provide your hotel address so the guide can pick you up." v-model="comments"></textarea>
 						<textarea v-else v-model="comments"></textarea>
 						<p class="refundPolicy" style="color: red;font-size: 14px;">You can get a 100% refund up to {{opctions.refundTimeLimit}} hours before your trip.</p>
-						<p class="text" style="font-size: 14px;margin-top: 20px;">You ordered as a guest. To view your order details, you can click "My Bookings" on the top bar then type in the reservee's email address and name you entered before to access that information.</p>
+						<p class="text" style="font-size: 14px;margin-top: 20px;" v-if="logIn!=1">You ordered as a guest. To view your order details, you can click "My Bookings" on the top bar then type in the reservee's email address and name you entered before to access that information.</p>
 						<div class="nextBtn">
 							<div class="next" @click="next">NEXT</div>
 						</div>

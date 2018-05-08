@@ -19,8 +19,9 @@
       If you want to proceed with payment, click “Try again.” If your payment problems continue, we suggest you try using another card or talk to our online assistant at the bottom right of the webpage to get payment help. You can also email service@localpanda.com or call us at +86 (21) 8081-2090/+1 (888) 9390-8839 (US toll free).</p>
 
     <p class="order_contact c_666" v-if="showTipTxt">You ordered as a guest. You can click this button to view your order details.</p>
+    <p class="order_contact c_666" v-else>Click this button and view your order details.</p>
 
-    <a class="btn_href" :href="logIn ? '/user/myBookings' : '/user/myBookings?email='+email+'&orderid='+orderId" v-if="success && email">View My Order</a>
+    <a class="btn_href" :href="getJumpUrl(logIn)" v-if="success && email">View My Order</a>
     <a class="btn_href" href="/" v-else-if="!email">Back to home</a>
     <a class="btn_href" :href="'/activity/payment/mobile?objectId='+orderId" v-else>Try again</a>
   </div>
@@ -52,7 +53,12 @@ export default {
 			
 		},
 		methods: {
-			
+			getJumpUrl(isLogin){
+        if(isLogin){
+          return '/user/myBookings';
+        }
+        return '/user/myBookings?email='+this.email+'&orderid='+this.orderId;
+      }
 		},
 		mounted: function() {
 			this.logIn=window.localStorage.getItem("logstate")

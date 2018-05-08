@@ -65,7 +65,7 @@ export default {
 					  },
 					watchSlidesProgress : true,
 					watchSlidesVisibility : true,
-					slidesPerView:"2.3",
+					slidesPerView:"auto",
 					on:{
 						tap: function(e){
 							self.swiperTop.slideTo(this.clickedIndex);
@@ -103,12 +103,20 @@ export default {
 				}
 			}
 		},
+		created:function(){
+			if(process.browser){
+				let u = navigator.userAgent
+				console.log(navigator.userAgent)
+				u.indexOf('Android') > -1||u.indexOf('iPhone') > -1?this.swiperOptionThumbs.slidesPerView=2.3:this.swiperOptionThumbs.slidesPerView=3
+				console.log(this.swiperOptionThumbs.slidesPerView)
+			}
+			 
+			 //
+			
+		},
 		mounted:function() {
-			let that=this
-			
-			
-			
-				
+			 
+			 
 		},
 		props: ['alertPicStatus','photoList']
 	}

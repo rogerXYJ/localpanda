@@ -219,7 +219,13 @@
 			window.addEventListener("scroll", this.scorllBar);
 		},
 		watch: {
-			
+			isShowMeau:function(val,oldVal){
+				if(val){
+					document.getElementsByTagName("body")[0].style.overflow="hidden";
+				}else{
+					document.getElementsByTagName("body")[0].style.overflow="visible";
+				}
+			}
 		}
 	};
 </script>

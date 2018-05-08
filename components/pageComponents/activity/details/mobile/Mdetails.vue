@@ -392,7 +392,7 @@
 		font-weight: bold;
 		color: #353a3f;
 		word-wrap:break-word!important;
-		padding: 0;
+		padding: 0!important;
 		
 	}
 	.el-table {

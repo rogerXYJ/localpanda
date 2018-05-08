@@ -383,8 +383,8 @@
 		word-wrap:break-word!important;
 		
 	}
-	.el-table__header .cell{
-		text-align: center;
+	.el-table__header tr th .cell{
+		padding: 0 10px;
 	}
 	.el-table th>.cell {
 		

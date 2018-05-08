@@ -6,7 +6,7 @@
 				<h3>Price details</h3>
 			</div>
 			<div class="details">
-				<p class="childDiscount" v-if="picInfo.childDiscount">Children's price is   $  {{picInfo.childDiscount}} USD  less than adults’ price.</p>
+				<p class="childDiscount" v-if="picInfo.childDiscount">Children's price is   $  {{picInfo.childDiscount}} USD  less than adults' price.</p>
 				<el-table :data="sixArr" stripe style="width: 100%">
 					<el-table-column prop="capacity" label="Number of people"  align="left">
 						<template slot-scope="scope">
@@ -163,7 +163,7 @@
 		}
 	}
 	.el-table__header .cell{
-		text-align: center;
+		
 	}
 	.el-table th{
 		word-wrap:break-word!important;

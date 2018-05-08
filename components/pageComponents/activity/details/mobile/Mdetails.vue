@@ -387,7 +387,6 @@
 		padding: 0 10px;
 	}
 	.el-table th>.cell {
-		
 		font-size: 0.32rem;
 		font-weight: bold;
 		color: #353a3f;

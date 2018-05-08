@@ -91,7 +91,39 @@
 						</div>
 					</li>
 				</ul>
-				<ul class="clearfix" v-if="loc=='Beijing'||'beijing'">
+				<ul class="clearfix" v-if="loc=='Beijing'">
+					<li>
+						<div class="visitor-headPic">
+							<img v-lazy="'https://resource.localpanda.cn/static/content/reviews/Claudia.jpg'"/>
+						</div>
+						<div class="visitor-message">
+							<b>Claudia Flores </b>
+							<em>Mexico City, Mexico</em>
+							<p>Local Panda had an incredible amount of attention and patience throughout my trip. I had a great tour that went way beyond my expectations.  The sites and smells of everywhere we visited around Shanghai were fantastic as well. My guide, Jamie, was nice, intelligent, great English, everything you want in a tour guide. Thanks again!!!</p>
+						</div>
+					</li>
+					<li>
+						<div class="visitor-headPic">
+							<img v-lazy="'https://resource.localpanda.cn/static/content/reviews/Selvarani.jpg'"/>
+						</div>
+						<div class="visitor-message">
+							<b>Selvarani Saravanamuthu</b>
+							<em> Seattle, Washington</em>
+							<p>I have to say a huge thank you to Local Panda for putting together this memorable trip. The tours have been par excellence, and I can't be happy enough about it. Local Panda have provided us with a wonderful and memorable experience we will cherish forever. I will not hesitate to recommend Local Panda to my friends when they plan their trip to China.   </p>
+						</div>
+					</li>
+					<li>
+						<div class="visitor-headPic">
+							<img v-lazy="'https://resource.localpanda.cn/static/content/reviews/Cynthia.jpg'"/>
+						</div>
+						<div class="visitor-message">
+							<b>Cynthia Huang</b>
+							<em>Los Angeles, California</em>
+							<p>Local Panda Exceeded our </br>expectations in every way. Our guide Rebecca was a Hangzhou native whose local knowledge of the city was beyond anything we could have hoped for. The personalized service sets Local Panda apart. If you want to see something, or do something off of the beaten path, they will go above and beyond to accommodate you." </p>
+						</div>
+					</li>
+				</ul>
+				<ul class="clearfix" v-if="loc=='beijing'">
 					<li>
 						<div class="visitor-headPic">
 							<img v-lazy="'https://resource.localpanda.cn/static/content/reviews/Claudia.jpg'"/>

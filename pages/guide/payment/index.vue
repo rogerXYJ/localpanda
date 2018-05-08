@@ -167,14 +167,14 @@ export default {
 										pageTracker._addItem(that.orderId, that.opctions.activityId,"","", that.opctions.amount,"1" );
 										pageTracker._trackTrans();
 										
-										window.location.href = "/payment/success?orderId=" + that.orderId + '&amount=' + that.opctions.amount+"&succeed=true"
+										window.location.href = "/payment/success?payType=guide&orderId=" + that.orderId + '&amount=' + that.opctions.amount+"&succeed=true"
 									}else{
 										that.loadingStatus = true
-										window.location.href = "/payment/failed?orderId=" + that.orderId + '&amount=' + that.opctions.amount+"&type=1"+"&errMsg="+that.errMsg+"&succeed=false"
+										window.location.href = "/payment/failed?payType=guide&orderId=" + that.orderId + '&amount=' + that.opctions.amount+"&type=1"+"&errMsg="+that.errMsg+"&succeed=false"
 									}	
 								}
 						}, function(response) {
-							window.location.href = "/payment/failed?orderId=" + that.orderId + '&amount=' + that.opctions.amount+"&type=1"+"&succeed=false"
+							window.location.href = "/payment/failed?payType=guide&orderId=" + that.orderId + '&amount=' + that.opctions.amount+"&type=1"+"&succeed=false"
 						})
 				}
 			})

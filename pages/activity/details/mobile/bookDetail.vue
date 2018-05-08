@@ -115,7 +115,6 @@
 				this.isshow = true
 			},
 			setCallBack(val) {
-				console.log(val)
 				this.isshow = val
 
 			},
@@ -235,6 +234,7 @@
 			}
 		},
 		mounted: function() {
+			
 			let that=this
 			this.logIn = window.localStorage.getItem("logstate");
 			this.picInfo = JSON.parse(window.localStorage.getItem("objDetail")).picInfo
@@ -249,9 +249,13 @@
 				onOpen : function(e){
 					let calendarContainer = this.calendarContainer.style;
 					let winW = document.documentElement.clientWidth;
+					console.log(winW)
 					setTimeout(function(){
 						calendarContainer.top = parseInt(calendarContainer.top)-100+'px';
 						calendarContainer.left = (winW-parseInt(calendarContainer.width)-38)/2+'px';
+						console.log(calendarContainer.left)
+						console.log(winW)
+						console.log(parseInt(calendarContainer.top))
 						// calendarContainer.transform = 'translateX(-50%)';
 						// calendarContainer.right = 'auto';
 					},0);
@@ -268,6 +272,9 @@
 			
 		},
 		watch: {
+			"flatPickr.isOpen":function(val,oldVal){
+				console.log(val)
+			},
 			dateTime:function(val,oldVal){
 				if(val){
 					this.dateErr=false

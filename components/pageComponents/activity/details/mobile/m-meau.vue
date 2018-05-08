@@ -6,7 +6,7 @@
 				<li>
 					<a href="#journey">What You Can Expect</a>
 				</li>
-				<li v-if="photoList">
+				<li v-if="photoList.length>0">
 					<a href="#photoList">Moments in Travel</a>
 				</li>
 				<li v-if="picInfo.details.length>0">

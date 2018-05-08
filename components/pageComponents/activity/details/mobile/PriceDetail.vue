@@ -8,18 +8,18 @@
 			<div class="details">
 				<p class="childDiscount" v-if="picInfo.childDiscount">Children's price is   $  {{picInfo.childDiscount}} USD  less than adults’ price.</p>
 				<el-table :data="sixArr" stripe style="width: 100%">
-					<el-table-column prop="capacity" label="Number of people"  align="left">
+					<el-table-column prop="capacity" label="Number of people"  align="center">
 						<template slot-scope="scope">
 							<span v-if="scope.row.capacity==1">1 person</span>
 							<span v-else>{{scope.row.capacity}} people</span>
 						</template>
 					</el-table-column>
-					<el-table-column prop="price" label="Total cost" align="left">
+					<el-table-column prop="price" label="Total cost" align="center">
 						<template slot-scope="scope">
 							<span>$ {{returnFloat(scope.row.price)}} USD</span>
 						</template>
 					</el-table-column>
-					<el-table-column prop="childenTotal" label="Price per person"  align="left">
+					<el-table-column prop="childenTotal" label="Price per person"  align="center">
 						<template slot-scope="scope">
 							<div v-show="scope.row.capacity">
 								<span>$ {{returnFloat(round(scope.row.price/scope.row.capacity))}} USD</span>

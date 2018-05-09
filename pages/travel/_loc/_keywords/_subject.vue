@@ -91,6 +91,38 @@
 						</div>
 					</li>
 				</ul>
+				<ul class="clearfix" v-if="loc=='shanghai'">
+					<li>
+						<div class="visitor-headPic">
+							<img v-lazy="'https://resource.localpanda.cn/static/content/reviews/Claudia.jpg'"/>
+						</div>
+						<div class="visitor-message">
+							<b>Claudia Flores </b>
+							<em>Mexico City, Mexico</em>
+							<p>Local Panda had an incredible amount of attention and patience throughout my trip. I had a great tour that went way beyond my expectations.  The sites and smells of everywhere we visited around Shanghai were fantastic as well. My guide, Jamie, was nice, intelligent, great English, everything you want in a tour guide. Thanks again!!!</p>
+						</div>
+					</li>
+					<li>
+						<div class="visitor-headPic">
+							<img v-lazy="'https://resource.localpanda.cn/static/content/reviews/SamMorgan.jpg'"/>
+						</div>
+						<div class="visitor-message">
+							<b>Sam Morgan </b>
+							<em>Brisbane, Australia</em>
+							<p>I would like to say a very big thank you to our tour guide while visiting Shanghai. Jamie was very knowledgeable and very easy to get on with, with her lovely personality. We all enjoyed the two days spent with her. Thank you to Local Panda for helping with organizing our itinerary. </p>
+						</div>
+					</li>
+					<li>
+						<div class="visitor-headPic">
+							<img v-lazy="'https://resource.localpanda.cn/static/content/reviews/Cynthia.jpg'"/>
+						</div>
+						<div class="visitor-message">
+							<b>Cynthia Huang</b>
+							<em>Los Angeles, California</em>
+							<p>Local Panda takes the worry out of organizing things on your own in China. However beautiful China is, navigating the system can be daunting, if not impossible. I highly recommend Local Panda to help travelers who like to do things away from the cookie-cutter tours that are available to most travelers. </p>
+						</div>
+					</li>
+				</ul>
 				<ul class="clearfix" v-if="loc=='Beijing'">
 					<li>
 						<div class="visitor-headPic">

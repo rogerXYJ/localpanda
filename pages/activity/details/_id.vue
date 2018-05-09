@@ -251,9 +251,13 @@
 <style lang="scss">
 	@import "~assets/scss/_main.scss";
 	@import "~/assets/font/iconfont.css";
+	body{
+		min-width:1200px;
+	}
 </style>
 <style lang="scss" scoped>
 	@import "~assets/scss/base/_setting.scss";
+	
 	.icon {
 		width: 36px;
 		height: 36px;

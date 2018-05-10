@@ -153,6 +153,7 @@
 </script>
 <style lang="scss">
 	.el-table__row .cell {
+		text-align: center;
 		line-height: 0.56rem!important;
 		word-wrap:break-word!important;
 		
@@ -177,7 +178,7 @@
 		font-size: 0.32rem;
 		font-weight: bold;
 		color: #353a3f;
-		word-wrap:break-word!important;
+		
 		padding: 0;
 		
 	}
@@ -223,7 +224,14 @@
 		z-index: 99999999;
 		background: #fff;
 		.cont{
-			padding:0 0.586666rem;
+			position: absolute;
+			left: 0;
+			top: 0;
+			height: 100%;
+			width:calc(100% - 1.066666rem;);
+			overflow: scroll;
+			padding:0 0.533333rem 0.533333rem;
+			
 			.back{
 				padding:0.426666rem 0 0.8rem;
 			}
@@ -235,6 +243,7 @@
 			}
 		}
 		.details{
+			
 			p{
 				font-size: 0.32rem;
 				margin-top: 0.266666rem;

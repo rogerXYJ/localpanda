@@ -143,7 +143,8 @@
 				that.alertTitleStatus = false;
 			},
 			getscoll(){
-				window.scrollTo(100,document.body.scrollHeight)
+				//window.scrollTo(100,document.body.scrollHeight)
+				window.location.href="/info/contact-us"
 			},
 			loadScript(url, callback) {
 				var that=this

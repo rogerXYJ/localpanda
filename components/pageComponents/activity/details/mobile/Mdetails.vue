@@ -829,7 +829,7 @@
 					
 				}
 				.bookBtn{
-					float: left;
+					float: right;
 					width: 4.373333rem;
 					height: 1.2rem;
 					line-height:1.2rem;
@@ -839,6 +839,7 @@
 					background-image: linear-gradient(270deg, #009efd 0%, #1bbc9d 100%);
 					border-radius: 0.6rem;
 					margin-top: 0.373333rem;
+					font-size: 0.48rem;
 				}
 			}
 			.view{

@@ -3,22 +3,57 @@
 		
 		<div v-swiper:mySwiper="swiperOptionBannerPc">
 	    <div class="swiper-wrapper">
-	      <div class="swiper-slide" v-for="(slide,index) in swiperSlides" :key="index">
-	        <a :href="slide.link">
-				<div class="imgBanner" :style="{background:'url('+slide.url+')'}">
-					
-					<span>{{slide.loc}}</span>
-				</div>
-				
-			</a>
+
+				<div class="swiper-slide">
+	        <a href="https://www.localpanda.com/travel/customize/step1">
+						<div class="imgBanner" :style="{background:'url(https://resource.localpanda.cn/static/homePage/banner3.jpg)'}">
+							<p class="banner_tit_s">With Local Panda</p>
+							<h3>BY YOU. / FOR YOU.</h3>
+							<p>Choose your cities, match your dates, design your own bespoke journey</p>
+							<span class="banner_btn">Build Your Adventure</span>
+						</div>
+					</a>
 	      </div>
+				<div class="swiper-slide">
+	        <a href="https://www.localpanda.com/activity/details/11201">
+						<div class="imgBanner" :style="{background:'url(https://resource.localpanda.cn/static/homePage/banner4.jpg)'}">
+							<p class="banner_tit_s">Looking for adventure on a budget?</p>
+							<h3 class="txtUppercase">Small group cultural experiences</h3>
+							<p>Explore Shanghai’s Yu Garden and experience an authentic Chinese tea ceremony with a local guide</p>
+							<span class="banner_btn">Book Now</span>
+						</div>
+					</a>
+	      </div>
+
+	      <div class="swiper-slide">
+	        <a href="/activity/recommend/Beijing/Popular-and-Classic-Tours">
+						<div class="imgBanner" :style="{background:'url(https://resource.localpanda.cn/static/homePage/banner1.jpg)'}">
+							<span class="banner_tag">Beijing Tours</span>
+						</div>
+						<div class="text">
+							<p>Guides, Tours, and Activities</p>
+							<p>It's your China adventure, led by locals</p>
+						</div>
+						
+					</a>
+	      </div>
+				<div class="swiper-slide">
+	        <a href="/activity/recommend/Shanghai/Popular-and-Classic-Tours">
+						<div class="imgBanner" :style="{background:'url(https://resource.localpanda.cn/static/homePage/banner2.jpg)'}">
+							<span class="banner_tag">Shanghai Tours</span>
+						</div>
+						<div class="text">
+							<p>Guides, Tours, and Activities</p>
+							<p>It's your China adventure, led by locals</p>
+						</div>
+						
+					</a>
+	      </div>
+				
 	    </div>
 	    <div class="swiper-pagination"></div>
 	  </div>
-		<div class="text">
-			<p>Guides, Tours, and Activities</p>
-			<p>It's your China adventure, led by locals</p>
-		</div>
+		
 	</div>
 
 </template>
@@ -119,11 +154,11 @@
 		.imgBanner{
 			width:100%;
 			height:500px;
-			
+			color: #fff;
 			background-size: cover!important;
 			background-position:center!important;
 			text-align: center;	
-			span{
+			.banner_tag{
 				position: absolute;
 				right: 20px;
 				bottom:25px;
@@ -132,6 +167,36 @@
 				font-size: 18px;
 				
 				
+			}
+
+			.banner_tit_s{
+				text-shadow:0 5px 10px rgba(0,0,0,0.5);
+				padding-top: 130px;
+				font-size:24px;
+			}
+			h3{
+				font-size:50px;
+				font-weight: bold;
+				text-shadow:0 5px 10px rgba(0,0,0,0.5);
+			}
+			.txtUppercase{
+				text-transform: uppercase;
+			}
+			p{
+				font-size:24px;
+				text-shadow:0 5px 10px rgba(0,0,0,0.5);
+			}
+			.banner_btn{
+				display: inline-block;
+				width: 268px;
+				height: 56px;
+				line-height: 56px;
+				font-size:18px;
+				margin-top: 60px;
+				background-image: linear-gradient(-90deg, #009efd 0%, #1bbc9d 100%), 
+				linear-gradient(#1bbc9d, #1bbc9d);
+				background-blend-mode: normal, normal;
+				border-radius: 28px;
 			}
 		}
 

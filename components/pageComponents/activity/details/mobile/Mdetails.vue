@@ -132,6 +132,10 @@
 				<h3>Notes</h3>
 				<p v-if="remark" :key="index" v-for="(item,index) in remark">{{item}}</p>
 			</div>
+			<div class="inqury" @click="goInqury">
+				Send us any questions you have here
+				<i class="iconfont">&#xe620;</i>
+			</div>
 			<div class="recommend" id="recommend" v-if="recommed.length>0">
 				<h3>Similar Experiences</h3>
 				<div v-swiper:swiper="swiperOption">
@@ -221,6 +225,9 @@
 		photo
 	},
 		methods: {
+			goInqury(){
+				location.href="/inquiry"
+			},
 			showMore(id) {
 				if(id == 0) {
 					this.showbtn = 0
@@ -609,6 +616,21 @@
 							margin-top: 0.64rem;
 						}
 					}
+				}
+			}
+			.inqury{
+				border-bottom: 1px solid #dde0e0;
+				height: 1.706666rem;
+				line-height: 1.706666rem;
+				font-size:0.346666rem;
+				font-weight: bold;
+				color: #1bbc9d;
+				position: relative;
+				i{
+					position: absolute;	
+					right: 0;
+					font-size: 0.346666rem;
+					color: #dde0e0;
 				}
 			}
 			.notes {

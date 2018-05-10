@@ -17,21 +17,21 @@
 				
 				<div class="inputItem" :class="{err:oderFirstNameErr}">
 					<p>First name</p>
-					<input :class="{err:oderFirstNameErr}" @focus="fousOderfisrtname" v-model="oderFirstName" />
+					<input :class="{err:oderFirstNameErr}" placeholder="First name" @focus="fousOderfisrtname" v-model="oderFirstName" />
 				</div>
 				<div class="inputItem" :class="{err:oderlastNameErr}">
 					<p>Last name</p>
-					<input :class="{err:oderlastNameErr}" @focus="fousoderlastName" v-model="oderlastName" />
+					<input :class="{err:oderlastNameErr}" placeholder="Last name" @focus="fousoderlastName" v-model="oderlastName" />
 				</div>
 			
 			
 				<div class="inputItem" :class="{err:emailAddressErr}">
 					<p>Email Address</p>
-					<input :class="{err:emailAddressErr}" @focus="fousEmal" @blur="gabulr" v-model="emailAddress" />
+					<input :class="{err:emailAddressErr}" placeholder="Email Address" @focus="fousEmal" @blur="gabulr" v-model="emailAddress" />
 				</div>
 				<div class="inputItem" :class="{err:phoneErr}">
 					<p>Mobile phone(optional)</p>
-					<input :class="{err:phoneErr}" @focus="fousPhone" v-model="phone" />
+					<input :class="{err:phoneErr}" placeholder="Mobile phone" @focus="fousPhone" v-model="phone" />
 				</div>
 			</div>
 			<div class="check">
@@ -44,22 +44,22 @@
 				<h4>Key Traveler</h4>
 				<div class="inputItem" :class="{err:TravellerFirstNameErr}">
 					<p>First name</p>
-					<input :class="{err:TravellerFirstNameErr}" @focus="fousFirst()" v-model="TravellerFirstName" />
+					<input :class="{err:TravellerFirstNameErr}" placeholder="First name" @focus="fousFirst()" v-model="TravellerFirstName" />
 
 				</div>
 				<div class="inputItem" :class="{err:TravellerlastNameErr}">
 					<p>Last name</p>
-					<input :class="{err:TravellerlastNameErr}" @focus="fousLastName()" v-model="TravellerlastName" />
+					<input :class="{err:TravellerlastNameErr}" placeholder="Last name" @focus="fousLastName()" v-model="TravellerlastName" />
 				</div>
 			
 			
 				<div class="inputItem" :class="{err:TravelleremailAddressErr}">
 					<p>Email Address</p>
-					<input :class="{err:TravelleremailAddressErr}" @focus="fousidcard" v-model="TravelleremailAddress" />
+					<input :class="{err:TravelleremailAddressErr}" placeholder="Email Address" @focus="fousidcard" v-model="TravelleremailAddress" />
 				</div>
 				<div class="inputItem" :class="{err:TravellerphoneErr}">
 					<p>Mobile phone(optional)</p>
-					<input :class="{err:TravellerphoneErr}" @focus="fousphonenumb()" v-model="Travellerphone" />
+					<input :class="{err:TravellerphoneErr}" placeholder="Mobile phone" @focus="fousphonenumb()" v-model="Travellerphone" />
 				</div>
 			</div>
 			<div class="Comments">
@@ -357,6 +357,9 @@
 	#launcher{
 		bottom: 2.133333rem!important;
 	}
+	::-webkit-input-placeholder { /* WebKit browsers */
+	    color:    #878e95; 
+	}
 	
 </style>
 <style lang="scss" scoped>
@@ -373,7 +376,7 @@
 		.fillInfo{
 			margin-top: 0.493333rem;
 			h3{
-				font-size: 0.8rem;
+				font-size:0.8rem;
 				font-weight: bold;
 			}
 			.oderInfo{
@@ -402,16 +405,23 @@
 				.inputItem{
 					margin-top:0.56rem;
 					padding-bottom: 0.28rem;
-					border-bottom: 2px solid #ebebeb;
+					/*border-bottom: 2px solid #ebebeb;*/
 					p{
 						font-size:0.32rem;
+						color:#878e95;
 					}
 					input{
-						width: 100%;
-						border:none;
-						padding-left: 0;
-						font-size: 0.56rem;
+						width:calc(100% - 0.24rem);
+						height: 1.146666rem;
+						border:1px solid #dde0e0;
+						border-radius: 0.08rem;
+						padding-left: 0.24rem;
+						font-size: 0.48rem;
 						margin-top: 0.133333rem;
+						&:-webkit-placeholder { /* Mozilla Firefox 4 to 18 */
+    						color: #878e95; 
+						}
+						
 					}
 				}
 			}
@@ -450,7 +460,7 @@
 				padding-bottom: 0.8rem;
 				.information{
 					padding-bottom: 0.266666rem;
-					border-bottom: 2px solid #ebebeb;
+					
 					h4{
 						font-size: 0.32rem;
 						span{
@@ -458,10 +468,12 @@
 						}
 					};
 					textarea{
-						height: 1.2rem;
-						width: 100%;
-						padding-left: 0;
-						border: none;
+						height:1.893333rem;
+						border:1px solid #dde0e0;
+						border-radius: 0.08rem;
+						width: calc(100% - 0.24rem);
+						padding-left: 0.24rem;
+						padding-top: 0.293333rem;
 						margin-top: 0.346666rem;
 						font-size: 0.346666rem;
 						&:-webkit-placeholder { /* Mozilla Firefox 4 to 18 */
@@ -502,6 +514,8 @@
 				border-color: red!important;
 				color: red!important;
 			}
+			
 	}
+	
 	
 </style>

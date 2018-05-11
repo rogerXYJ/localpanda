@@ -343,9 +343,9 @@
 				window.ga &&
 					ga("gtag_UA_107010673_1.send", {
 						hitType: "event",
-						eventCategory: "Button",
-						eventAction: "Click",
-						eventLabel: "guide_check",
+						eventCategory: "guide_detail",
+						eventAction: "click",
+						eventLabel: "guide_checking",
 						eventValue: that.guideId
 					});
 				document.querySelector("#packageOptions").scrollIntoView();
@@ -358,14 +358,6 @@
 				} else {
 					that.active = true;
 					that.showbtn = 1;
-					window.ga &&
-						ga("gtag_UA_107010673_1.send", {
-							hitType: "event",
-							eventCategory: "Button",
-							eventAction: "Click",
-							eventLabel: "guide_view_more",
-							eventValue: that.guideId
-						});
 				}
 			},
 			gets() {

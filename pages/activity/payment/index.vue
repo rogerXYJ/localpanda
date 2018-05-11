@@ -223,16 +223,16 @@
 				
 				ga('gtag_UA_107010673_1.send', {
 						hitType: 'event',
-						eventCategory: 'Button',
-						eventAction: 'Click',
+						eventCategory: 'activity_payment',
+						eventAction: 'click',
 						eventLabel: 'activity_pay',
 	
 					});
 				that.stripeHandler.open({
 					name: 'Local panda', // 收款方或商家名称，比如 Beansmile
 					description: "", // 待支付商品的描述
+					currency:that.opctions.currency,
 					amount: that.opctions.amount* 100, // 支付金额，单位是“分”
-					locale: 'en_US',
 					closed: function() {
 
 					}

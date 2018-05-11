@@ -11,7 +11,7 @@
 					<label>Date</label>
 					<div class="dateTime">
 						<!-- <flatPickr placeholder="Please Select" v-model="dateTime" :config="options"></flatPickr> -->
-						<input id="js_changetime" placeholder="Please Select" v-model="dateTime" readonly type="text">
+						<input id="js_changetime" placeholder="Please Select" onfocus="blur()" v-model="dateTime" readonly type="text">
 					</div>
 				</li>
 				<li class="clearfix" @touchend="show()" :class="{err:peopleErr}">
@@ -265,10 +265,21 @@
 			
 			that.flatPickr = new Flatpickr('#js_changetime',this.options);
 			
-			
+			document.getElementsByTagName("body")[0].addEventListener('touchstart', function() {
+				that.showWinBg=false
+					
+			})
 			
 		},
 		watch: {
+			"flatPickr.isOpen":function(val,oldVal){
+	    		if(val){
+	    			this.isshowchoose = false
+	    			document.getElementsByTagName("html")[0].style.overflow="hidden"
+	    		}else{
+	    			document.getElementsByTagName("html")[0].style.overflow="inherit"
+	    		}
+    		},
 			dateTime:function(val,oldVal){
 				if(val){
 					this.dateErr=false

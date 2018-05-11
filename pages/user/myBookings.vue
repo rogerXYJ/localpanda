@@ -232,6 +232,9 @@
 				if(response.status==200 || response.status == 304){
 					that.activityList = response.data
 					that.nobooking = false;
+					if(response.data.length<=0){
+						that.nobooking = true
+					}
 				}else{
 					that.nobooking = true;
 				}
@@ -250,6 +253,9 @@
 					if(response.status==200 || response.status == 304){
 						that.bookList = response.data
 						that.nobooking = false;
+						if(response.data.length<=0){
+							that.nobooking = true
+						}
 					}else{
 						that.nobooking = true;
 					}

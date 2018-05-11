@@ -233,12 +233,20 @@ on a 1-1 basis.</p>
       	that.flatPickr = new Flatpickr('#js_changetime',this.options);
       	document.getElementsByTagName("body")[0].addEventListener('click', function() {
 				that.isshowchoose = false
+				
+		})
+      	document.getElementsByTagName("body")[0].addEventListener('touchstart', function() {
+				that.showWinBg=false
+				
 		})
     },
     watch:{
     	"flatPickr.isOpen":function(val,oldVal){
     		if(val){
     			this.isshowchoose = false
+    			document.getElementsByTagName("html")[0].style.overflow="hidden"
+    		}else{
+    			document.getElementsByTagName("html")[0].style.overflow="inherit"
     		}
     	}
     }
@@ -411,7 +419,7 @@ on a 1-1 basis.</p>
 				border-radius:0.573333rem;
 			};
 		}
-		.win_bg{ width:100%; height:100%; background-color:rgba(0,0,0,0.5); position: fixed; left:0; top:0;}
+		.win_bg{ width:100%;height: 100%; background-color:rgba(0,0,0,0.5); position:fixed; left:0; top:0;}
 		.fade-enter-active, .fade-leave-active {
 		transition: opacity .5s;
 		}

@@ -17,17 +17,17 @@
 				
 				<div class="inputItem" :class="{err:oderFirstNameErr}">
 					<p>First name</p>
-					<input :class="{err:oderFirstNameErr}"  @focus="fousOderfisrtname" v-model="oderFirstName" />
+					<input :class="{err:oderFirstNameErr}"  @focus="fousOderfisrtname"  v-model="oderFirstName" />
 				</div>
 				<div class="inputItem" :class="{err:oderlastNameErr}">
 					<p>Last name</p>
-					<input :class="{err:oderlastNameErr}"  @focus="fousoderlastName" v-model="oderlastName" />
+					<input :class="{err:oderlastNameErr}"  @focus="fousoderlastName"   v-model="oderlastName" />
 				</div>
 			
 			
 				<div class="inputItem" :class="{err:emailAddressErr}">
 					<p>Email Address</p>
-					<input :class="{err:emailAddressErr}"  @focus="fousEmal" @blur="gabulr" v-model="emailAddress" />
+					<input :class="{err:emailAddressErr}"  @focus="fousEmal"  v-model="emailAddress" />
 				</div>
 				<div class="inputItem" :class="{err:phoneErr}">
 					<p>Mobile phone(optional)</p>
@@ -178,14 +178,7 @@
 
 				}
 			},
-			gabulr() {
-				ga('gtag_UA_107010673_1.send', {
-					hitType: 'event',
-					eventCategory: 'Text Input',
-					eventAction: 'Lose Focus',
-					eventLabel: 'activity_booking_email',
-				});
-			},
+			
 			fousOderfisrtname() {
 				this.oderFirstNameErr = false
 			},

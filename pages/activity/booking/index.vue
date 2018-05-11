@@ -14,17 +14,17 @@
 					<div class="cont">
 						<div class="emalAddress">
 							<p>First name<b>*</b></p>
-							<input :class="{err:oderFirstNameErr}" @focus="fousOderfisrtname" v-model="oderFirstName" />
+							<input :class="{err:oderFirstNameErr}" @focus="fousOderfisrtname" @blur="gabulr(0)" v-model="oderFirstName" />
 						</div>
 						<div class="phone">
 							<p>Last name<b>*</b></p>
-							<input :class="{err:oderlastNameErr}" @focus="fousoderlastName" v-model="oderlastName" />
+							<input :class="{err:oderlastNameErr}" @focus="fousoderlastName" @blur="gabulr(1)" v-model="oderlastName" />
 						</div>
 					</div>
 					<div class="cont">
 						<div class="emalAddress">
 							<p>Email Address<b>*</b></p>
-							<input :class="{err:emailAddressErr}" @focus="fousEmal" @blur="gabulr" v-model="emailAddress" />
+							<input :class="{err:emailAddressErr}" @focus="fousEmal" @blur="gabulr(2)" v-model="emailAddress" />
 						</div>
 						<div class="phone">
 							<p>Mobile phone(optional)</p>
@@ -74,8 +74,8 @@
 				<div class="Comments">
 					<div class="information">
 						<h4>Other required information</h4>
-						<textarea v-if="opctions.category=='Private Tour'" placeholder="please provide your hotel address so the guide can pick you up." v-model="comments"></textarea>
-						<textarea v-else v-model="comments"></textarea>
+						<textarea v-if="opctions.category=='Private Tour'" @blur="gabulr(3)" placeholder="please provide your hotel address so the guide can pick you up." v-model="comments"></textarea>
+						<textarea v-else v-model="comments" @blur="gabulr(3)"></textarea>
 						<p class="refundPolicy" style="color: red;font-size: 14px;">You can get a 100% refund up to {{opctions.refundTimeLimit}} hours before your trip.</p>
 						<p class="text" style="font-size: 14px;margin-top: 20px;" v-if="logIn!=1">You ordered as a guest. To view your order details, you can click "My Bookings" on the top bar then type in the reservee's email address and name you entered before to access that information.</p>
 						<div class="nextBtn">
@@ -267,13 +267,73 @@
 
 				}
 			},
-			gabulr() {
-				ga('gtag_UA_107010673_1.send', {
-					hitType: 'event',
-					eventCategory: 'Text Input',
-					eventAction: 'Lose Focus',
-					eventLabel: 'activity_booking_email',
-				});
+			gabulr(id) {
+				if(id==0){
+					if(this.oderFirstName){
+						ga('gtag_UA_107010673_1.send', {
+							hitType: 'event',
+							eventCategory: 'activity_booking',
+							eventAction: 'input',
+							eventLabel: 'first_name',
+						});	
+						ga('gtag_UA_107010673_1.send', {
+							hitType: 'event',
+							eventCategory: 'activity_booking',
+							eventAction: 'input',
+							eventLabel: 'booking_input',
+						});
+					}
+					
+				}else if(id==1){
+					if(this.oderlastName){
+						ga('gtag_UA_107010673_1.send', {
+							hitType: 'event',
+							eventCategory: 'activity_booking',
+							eventAction: 'input',
+							eventLabel: 'last_name',
+						});
+						ga('gtag_UA_107010673_1.send', {
+							hitType: 'event',
+							eventCategory: 'activity_booking',
+							eventAction: 'input',
+							eventLabel: 'booking_input',
+						});
+					}
+					
+				}else if(id==2){
+					if(this.emailAddress){
+						ga('gtag_UA_107010673_1.send', {
+							hitType: 'event',
+							eventCategory: 'activity_booking',
+							eventAction: 'input',
+							eventLabel: 'email_address',
+						});	
+						ga('gtag_UA_107010673_1.send', {
+							hitType: 'event',
+							eventCategory: 'activity_booking',
+							eventAction: 'input',
+							eventLabel: 'booking_input',
+						});
+					}
+					
+				}else{
+					if(this.comments){
+						ga('gtag_UA_107010673_1.send', {
+							hitType: 'event',
+							eventCategory: 'activity_booking',
+							eventAction: 'input',
+							eventLabel: 'comment',
+						});
+						ga('gtag_UA_107010673_1.send', {
+							hitType: 'event',
+							eventCategory: 'activity_booking',
+							eventAction: 'input',
+							eventLabel: 'booking_input',
+						});
+					}
+					
+				}
+				
 			},
 			fousOderfisrtname() {
 				this.oderFirstNameErr = false
@@ -318,6 +378,12 @@
 
 			},
 			next() {
+				ga('gtag_UA_107010673_1.send', {
+					hitType: 'event',
+					eventCategory: 'activity_booking',
+					eventAction: 'click',
+					eventLabel: 'order',
+				});
 				const that = this
 				var obj; //that.addOder = true
 				if(that.oderFirstName == "" || regExp.isNub(that.oderFirstName) || regExp.isCode(that.oderFirstName)) {

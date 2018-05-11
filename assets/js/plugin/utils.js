@@ -356,7 +356,25 @@ function getNowFormatDate(date) {
         }
         var currentdate = year + seperator1 + month + seperator1 + strDate;
         return currentdate;
-    }
+		}
+		
+
+//获取货币单位和货币符号，第二个参数为true就获取的货币单位
+var getPriceMark = function(cur,str){
+	var currencyAll = [
+		{'sign':'$','str':'USD'},
+		{'sign':'¥','str':'CNY'}
+	];
+	var thisCur = {};
+	for(var i=0;i<currencyAll.length;i++){
+		if(cur==currencyAll[i].str){
+			thisCur = currencyAll[i];
+		}
+	}
+	return str ? thisCur.str : thisCur.sign;
+}
+
+
 //return {
 //  GetQueryString,
 //  regExp,
@@ -403,5 +421,6 @@ export {
 	isEmpty,
 	toThousands,
 	getArrayItems,
-	formatMoney
+	formatMoney,
+	getPriceMark
 }

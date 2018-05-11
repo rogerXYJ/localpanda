@@ -82,13 +82,13 @@
 						</el-table-column>
 						<el-table-column prop="price" label="Total cost" align="center">
 							<template slot-scope="scope">
-								<span>$ {{returnFloat(scope.row.price)}} USD</span>
+								<span>{{getPriceMark(picInfo.currency)}} {{returnFloat(scope.row.price)}} {{getPriceMark(picInfo.currency,1)}}</span>
 							</template>
 						</el-table-column>
 						<el-table-column prop="childenTotal" label="Price per person"  align="center">
 							<template slot-scope="scope">
 								<div v-show="scope.row.capacity">
-									<span>$ {{returnFloat(round(scope.row.price/scope.row.capacity))}} USD</span>
+									<span>{{getPriceMark(picInfo.currency)}} {{returnFloat(round(scope.row.price/scope.row.capacity))}} {{getPriceMark(picInfo.currency,1)}}</span>
 								</div>
 							</template>
 						</el-table-column>
@@ -163,10 +163,18 @@
 		</div>
 		<div class="book clearfix">
 			<div class="picinfo">
-				<p v-if="picInfo.originalPrice" class="oldpic">$ {{returnFloat(picInfo.originalPrice)}}</p>
-				<p>From <b>$ {{returnFloat(picInfo.bottomPrice)}}</b> pp</p>
+				<p v-if="picInfo.originalPrice" class="oldpic">{{getPriceMark(picInfo.currency)}} {{returnFloat(picInfo.originalPrice)}}</p>
+				<p>From <b>{{getPriceMark(picInfo.currency)}} {{returnFloat(picInfo.bottomPrice)}}</b> pp</p>
 			</div>
+			
 			<button class="bookBtn" @click="goBooking">Book Now</button>
+			<div class="picRate" v-show="isWx">
+				<select class="currency_type" @change="changeCurrency">
+					<option value="USD">USD</option>
+					<option value="CNY">CNY</option>
+				</select>
+				<span class="iconfont">&#xe666;</span>
+			</div>
 		</div>
 		<photo :photoList="photoList" :alertPicStatus="alertPicStatus" @alert-call-back="setCallBack"></photo>
 	</div>
@@ -174,6 +182,11 @@
 </template>
 
 <script>
+
+	import {
+		getPriceMark
+	} from "~/assets/js/plugin/utils";
+
 	import bus from '~/assets/js/pages/bus.js'
 	import photo from '~/components/pageComponents/activity/details/mobile/photo'
 	if(process.browser) {
@@ -215,12 +228,78 @@
 				sixArr: [],
 				isShowTable: false, //价格明细
 				alertPicStatus: false,
+				rate: 6.3710,
+				isWx : false
+				
 		}
 	},
 	components: {
 		photo
 	},
 		methods: {
+			getPriceMark:getPriceMark,
+			changeCurrency(e){
+				var self = this;
+				var value = e.target.value;
+				var picInfo = this.picInfo;
+
+				console.log(picInfo);
+				if(value == 'USD'){
+					picInfo.currency = 'USD';
+					picInfo.bottomPrice = picInfo.priceAll.bottomPrice.usd;
+					picInfo.originalPrice = picInfo.priceAll.originalPrice.usd;
+				}else{
+					picInfo.currency = 'CNY';
+					picInfo.bottomPrice = picInfo.priceAll.bottomPrice.cny;
+					picInfo.originalPrice = picInfo.priceAll.originalPrice.cny;
+				}
+				console.log(this.picInfo);
+				console.log(this.adultsPic);
+
+				
+
+				//价格详情币种切换
+				var thisDetail = picInfo.details;
+				for(var i=0;i<thisDetail.length;i++){
+					if(value == 'USD'){
+						thisDetail[i].price = thisDetail[i].priceAll.usd
+					}else{
+						thisDetail[i].price = thisDetail[i].priceAll.cny
+					}
+				}
+				
+				if(this.people>0){
+					if(value == 'USD'){
+						this.adultsPic = thisDetail[this.people-1].priceAll.usd;
+					}else{
+						this.adultsPic = thisDetail[this.people-1].priceAll.cny;
+					}
+				}
+			},
+			setPriceData(){
+				var picInfo = this.picInfo;
+				var thisDetail = picInfo.details;
+
+				picInfo.priceAll = {
+					bottomPrice:{
+						cny: (picInfo.bottomPrice*this.rate).toFixed(2),
+						usd: picInfo.bottomPrice
+					},
+					originalPrice:{
+						cny: (picInfo.originalPrice*this.rate).toFixed(2),
+						usd: picInfo.originalPrice
+					}
+					
+				};
+				for(var i=0; i<thisDetail.length; i++){
+					var thisPrice = thisDetail[i].price;
+					thisDetail[i].priceAll = {
+						cny: (thisPrice*this.rate).toFixed(2),
+						usd: thisPrice
+					}
+				}
+			},
+
 			showMore(id) {
 				if(id == 0) {
 					this.showbtn = 0
@@ -352,6 +431,12 @@
 			}
 		},
 		mounted: function() {
+			
+			//调整不同币种价格数据
+			this.setPriceData();
+
+			
+
 			let that=this
 			if(that.tableData(that.picInfo.details).length>5){
 				this.isShowTable=true
@@ -359,6 +444,9 @@
 			}else{
 				that.sixArr=that.tableData(that.picInfo.details)
 			}
+
+			var ua = window.navigator.userAgent.toLowerCase();
+			that.isWx = (ua.match(/MicroMessenger/i) == 'micromessenger') ? true : false;
 		},
 		watch:{
 			
@@ -778,10 +866,11 @@
 			
 		}
 		.book{
-				width: calc(100% - 1.146666rem;);
+				width:100%;
+				box-sizing:border-box;
 				position: fixed;
 				height: 1.946666rem;
-				padding:0 0.573333rem;
+				padding:0 0.4rem;
 				bottom: 0;
 				left: 0;
 				z-index: 9999;
@@ -790,7 +879,6 @@
 				
 				.picinfo{
 					float:left;
-					width:50%;
 					margin-top:0.626666rem;
 					p{
 						font-size: 0.266666rem;
@@ -806,9 +894,41 @@
 					
 					
 				}
+				.picRate {
+					float: right;
+					color: #fff;
+					position: relative;
+					opacity: 0.5;
+					margin-right: 0.2rem;
+					span {
+						font-size: 10px;
+					}
+					.iconfont{
+						float: right;
+						margin-top: 0.6rem;
+						height: 0.8rem;
+						line-height: 0.8rem;
+						text-align:center;
+						font-size:22px;
+						color:#666;
+					}
+					.currency_type{
+						background: none;
+						color:#666;
+						border:none;
+						height: 0.8rem;
+						padding: 0 0 0 0.2rem;
+						font-size:0.34rem;
+						margin-top: 0.6rem;
+						
+						-webkit-appearance: none;
+						-moz-appearance: none;
+						appearance: none;
+					}
+				}
 				.bookBtn{
-					float: left;
-					width: 4.373333rem;
+					float: right;
+					width: 3.6rem;
 					height: 1.2rem;
 					line-height:1.2rem;
 					text-align: center;

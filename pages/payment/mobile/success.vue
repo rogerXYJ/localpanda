@@ -12,7 +12,7 @@
 
     <p class="order_info">Order ID: {{orderId}}</p>
     <!-- <p class="order_info" v-show="success">Time of transaction: 2017-12-20 09:32:51</p> -->
-    <p class="order_info">Payment amount: <span>${{amount}}</span></p>
+    <p class="order_info">Payment amount: <span>{{payType}}{{amount}}</span></p>
 
     <p class="order_contact" v-show="success">Our staff will confirm with you as soon as possible. We will reply you within one business day. You can know the details furthur by look at your order details.You can also email service@localpanda.com or call us at +86 (21) 8018-2090/ +1 (888) 930-8849 (US toll free).</p>
     <p class="order_contact" v-show="!success"><span v-show="msg">Your payment did not go through. Here is the error that you can reference:{{msg}}</span><br><br>
@@ -36,7 +36,7 @@ export default {
 		name: 'payResult',
 		data() {
       var query = this.$route.query;
-
+      
 			return {
 				orderId: query.orderId,
 				amount: query.amount,
@@ -46,7 +46,8 @@ export default {
         email: query.email,
         success: query.succeed=='true'?true:false,
         msg: query.msg,
-        showTipTxt: false
+        showTipTxt: false,
+        payType: query.payType=='CNY'?'¥':'$'
 			}
 		},
 		components: {
@@ -63,7 +64,6 @@ export default {
 		mounted: function() {
 			this.logIn=window.localStorage.getItem("logstate")
       this.userId=window.localStorage.getItem("userid")
-      
       if(!this.logIn){
 				this.showTipTxt = true;
 			}

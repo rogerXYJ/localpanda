@@ -258,7 +258,7 @@
 								"userId": that.opctions.userId,
 								"activityId": that.opctions.activityId,
 								"amount": that.opctions.amount,
-								"currency": "USD",
+								"currency": that.opctions.currency,
 								"adultNum": that.opctions.adultNum,
 								"childrenNum": that.opctions.childrenNum,
 								"infantNum": that.opctions.infantNum,
@@ -289,7 +289,7 @@
 									}
 								}).then(function(response) {
 
-									window.location.href = "/activity/payment/mobile?objectId=" + response.data.response
+									window.location.href = "https://www.localpanda.cn/activity/payment/mobile/?objectId=" + response.data.response + '&payType=' + obj.currency + '&login='+(that.logIn?that.logIn:0) +'&aaa='+obj.currency;
 								}, function(response) {})
 							}
 						}
@@ -299,7 +299,7 @@
 							"userId": that.opctions.userId,
 							"activityId": that.opctions.activityId,
 							"amount": that.opctions.amount,
-							"currency": "USD",
+							"currency": that.opctions.currency,
 							"adultNum": that.opctions.adultNum,
 							"childrenNum": that.opctions.childrenNum,
 							"infantNum": that.opctions.infantNum,
@@ -325,7 +325,7 @@
 								}
 							}).then(function(response) {
 
-								window.location.href = "/activity/payment/mobile?objectId=" + response.data.response
+								window.location.href = "https://www.localpanda.cn/activity/payment/mobile/?objectId=" + response.data.response + '&payType=' + obj.currency + '&login='+(that.logIn?that.logIn:0) +'&aaa='+obj.currency;
 							}, function(response) {})
 						}
 					}

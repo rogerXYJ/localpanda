@@ -21,17 +21,17 @@
 					<div v-if="adults+children>1" class="guests">{{adults+children}} People</div>
 				</li>
 				<li class="clearfix" v-if="adults+children>=1">
-					<label v-if="children==0&&adults==1">${{round(adultsPic/(adults+children))}} x {{adults+children}} Person</label>
+					<label v-if="children==0&&adults==1">{{getPriceMark(picInfo.currency)}}{{round(adultsPic/(adults+children))}} x {{adults+children}} Person</label>
 					
-					<label v-else>${{returnFloat(round(adultsPic/(adults+children)))}} x {{adults+children}} People 
-					<br/><em v-if="children>0&&picInfo.childDiscount">- ${{returnFloat(children*picInfo.childDiscount)}}</b> for child(ren)</em>
+					<label v-else>{{getPriceMark(picInfo.currency)}}{{returnFloat(round(adultsPic/(adults+children)))}} x {{adults+children}} People 
+					<br/><em v-if="children>0&&picInfo.childDiscount">- {{getPriceMark(picInfo.currency)}}{{returnFloat(children*picInfo.childDiscount)}}</b> for child(ren)</em>
 					</label>
 					<span @click.stop="showPriceDetail"><i class="iconfont">&#xe659;</i>{{returnFloat(adultsPic)}}</span>
 				</li>
 				<li class="clearfix" v-if="adults+children>=1">
 					<label>Total</label>
-					<span class="weight" v-if="children>0&&picInfo.childDiscount">${{returnFloat(cutXiaoNum(adultsPic-children*picInfo.childDiscount,1))}}</span>
-					<span class="weight" v-else>${{returnFloat(adultsPic)}}</span>
+					<span class="weight" v-if="children>0&&picInfo.childDiscount">{{getPriceMark(picInfo.currency)}}{{returnFloat(cutXiaoNum(adultsPic-children*picInfo.childDiscount,1))}}</span>
+					<span class="weight" v-else>{{getPriceMark(picInfo.currency)}}{{returnFloat(adultsPic)}}</span>
 				</li>
 			</ul>
 			<p>{{dateErrText}}</p>
@@ -66,7 +66,7 @@
 	//import flatPickr from "vue-flatpickr-component";
 	import Flatpickr from 'flatpickr';
 	
-	import { GetDateStr, addmulMonth } from "~/assets/js/plugin/utils";
+	import { GetDateStr, addmulMonth, getPriceMark} from "~/assets/js/plugin/utils";
 	import SelectPeople from "~/components/pageComponents/activity/details/mobile/SelectPeople"
 	import PriceDetail from "~/components/pageComponents/activity/details/mobile/PriceDetail"
 	import Vue from 'vue';
@@ -104,6 +104,7 @@
 			PriceDetail
 		},
 		methods: {
+			getPriceMark:getPriceMark,
 			back() {
 				history.back()
 			},
@@ -205,7 +206,7 @@
 		                  1
 		                )
 		              : that.adultsPic,
-		          currency: "USD",
+		          currency: that.picInfo.currency,
 		          adultNum: that.adults,
 		          refundTimeLimit:that.refundTimeLimit,
 		          childrenNum: that.children,

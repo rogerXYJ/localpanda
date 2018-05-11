@@ -6,7 +6,7 @@
 				<h3>Price details</h3>
 			</div>
 			<div class="details">
-				<p class="childDiscount" v-if="picInfo.childDiscount">Children's price is   $  {{picInfo.childDiscount}} USD  less than adults' price.</p>
+				<p class="childDiscount" v-if="picInfo.childDiscount">Children's price is   {{getPriceMark(picInfo.currency)}}  {{picInfo.childDiscount}} USD  less than adults' price.</p>
 				<el-table :data="sixArr" stripe style="width: 100%">
 					<el-table-column prop="capacity" label="Number of people"  align="center">
 						<template slot-scope="scope">
@@ -16,13 +16,13 @@
 					</el-table-column>
 					<el-table-column prop="price" label="Total cost" align="center">
 						<template slot-scope="scope">
-							<span>$ {{returnFloat(scope.row.price)}} USD</span>
+							<span>{{getPriceMark(picInfo.currency)}} {{returnFloat(scope.row.price)}} USD</span>
 						</template>
 					</el-table-column>
 					<el-table-column prop="childenTotal" label="Price per person"  align="center">
 						<template slot-scope="scope">
 							<div v-show="scope.row.capacity">
-								<span>$ {{returnFloat(round(scope.row.price/scope.row.capacity))}} USD</span>
+								<span>{{getPriceMark(picInfo.currency)}} {{returnFloat(round(scope.row.price/scope.row.capacity))}} USD</span>
 							</div>
 						</template>
 					</el-table-column>
@@ -33,6 +33,8 @@
 </template>
 
 <script>
+	import { getPriceMark} from "~/assets/js/plugin/utils";
+
 	export default {
 		props: [
 			'picInfo'
@@ -48,6 +50,7 @@
 
 		},
 		methods: {
+			getPriceMark:getPriceMark,
 			back() {
 				this.$emit('call-back-detail', false);
 			},

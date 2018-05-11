@@ -815,10 +815,10 @@
 					width:50%;
 					margin-top:0.626666rem;
 					p{
-						font-size: 0.266666rem;
+						font-size:0.373333rem;
 						color: #878e95;
 						b{
-							font-size: 0.346666rem;
+							font-size:0.426666rem;
 							color: #353a3f;
 						}
 						&.oldpic{

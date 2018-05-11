@@ -17,19 +17,19 @@ on a 1-1 basis.</p>
 			</div>
 			<div class="inputItem">
 				<p>Date of Arrival</p>
-				<input id="js_changetime" class="inputin" placeholder="Please Select" v-model="dateTime" readonly type="text">
+				<input id="js_changetime" class="inputin" placeholder="Select Date" onfocus="this.blur()" v-model="dateTime" readonly type="text">
 			</div>
 			<div class="inputItem">
 				<p>Number of People<span>*</span></p>
 				<div class="peopleN">
-					<div class="peopleshow"  @click.stop="showchoose">
+					<div class="peopleshow" :class="peopleNub==0?'color8':''"  @click.stop="showchoose">
 						<span v-if="peopleNub==0">Select People</span>
 						<span v-if="peopleNub==1">1 Person</span>
 						<span v-if="peopleNub>1">{{peopleNub}} People</span>
 						<i class="iconfont icon-down" v-if="!isshowchoose">&#xe60f;</i>
 						<i class="iconfont icon-down" v-else>&#xe63f;</i>
 					</div>
-					<div class="choosePeople" v-if="isshowchoose==true" @click.stop="peopleNubfocus">
+					<div class="choosePeople" v-if="isshowchoose" @click.stop="peopleNubfocus">
 						<b>People</b>
 						<div class="operation">
 							<em class="iconfont" @click.stop="del(0)">&#xe64d;</em>
@@ -46,7 +46,7 @@ on a 1-1 basis.</p>
 		</div>
 		
 		<div class="btn">
-			<button @click="submit">Submit</button>
+			<button @click.stop="submit">Submit</button>
 		</div>
 		<Dialog @setIsShowAlert="setShowAlert" 
 				:isShowAlert="isShowAlert"
@@ -104,7 +104,7 @@ on a 1-1 basis.</p>
        	 history.back()
        },
        namefocus() {
-			this.nameErr = false
+			this.nameError = false
 		},
 		emailfocus() {
 			this.emailErr = false
@@ -113,18 +113,15 @@ on a 1-1 basis.</p>
 			this.textInfoErr = false
 		},
        submit(){
-       		
-       		
-       		
        		let that = this
 			if(that.name == '' || regExp.isNub(that.name) || regExp.isCode(that.name)) {
 				that.nameError = true
 			} else if(!regExp.isEmail(that.email)) {
 				that.emailErr = true
 			}else if(that.peopleNub==0){
-				
+				console.log(111)
 				that.isshowchoose=true
-				
+				console.log(that.isshowchoose)
 			}else if(that.textInfo == '') {
 				that.textInfoErr = true
 			}else{
@@ -181,28 +178,23 @@ on a 1-1 basis.</p>
 			}	
 		},
     },
-    mounted: function() {
-      	let that=this
-      	this.options = {
+  	created:function(){
+  		let that=this
+  		if(process.browser){
+  			this.options = {
 				minDate: GetDateStr(1),
 				maxDate: addmulMonth(GetDateStr(1), 12),
 				disableMobile: true,
 				onOpen : function(selectedDates, dateStr, instance){
 					let calendarContainer = this.calendarContainer.style;
-					let className=this.calendarContainer.className
 					let winW = document.documentElement.clientWidth;
-					console.log(instance.calendarContainer.className)
-					console.log(instance.calendarContainer)
+					let winH=document.documentElement.clientHeight;
+					let calendarContainerClientHeight=this.calendarContainer.clientHeight
+					
 					setTimeout(function(){
-						if(/arrowTop/.test(className)){
-							console.log(calendarContainer.top)
-							calendarContainer.top = parseInt(calendarContainer.top)+100+'px';
-							
-						}else if(/arrowBottom/.test(className)){
-							
-							calendarContainer.top = parseInt(calendarContainer.top)-176+'px';
-							
-						}
+				
+						calendarContainer.top = parseInt(winH-calendarContainerClientHeight)/2 +'px';
+						
 						calendarContainer.left = (winW-parseInt(calendarContainer.width)-38)/2+'px';
 					},0);
 					that.showWinBg = true;
@@ -211,6 +203,33 @@ on a 1-1 basis.</p>
 					that.showWinBg = false;
 				}
 			}
+  		}
+      	
+  	},
+    mounted: function() {
+      	let that=this
+//    	this.options = {
+//				minDate: GetDateStr(1),
+//				maxDate: addmulMonth(GetDateStr(1), 12),
+//				disableMobile: true,
+//				onOpen : function(selectedDates, dateStr, instance){
+//					let calendarContainer = this.calendarContainer.style;
+//					let winW = document.documentElement.clientWidth;
+//					let winH=document.documentElement.clientHeight;
+//					let calendarContainerClientHeight=this.calendarContainer.clientHeight
+//					
+//					setTimeout(function(){
+//				
+//						calendarContainer.top = parseInt(winH-calendarContainerClientHeight)/2 +'px';
+//						
+//						calendarContainer.left = (winW-parseInt(calendarContainer.width)-38)/2+'px';
+//					},0);
+//					that.showWinBg = true;
+//				},
+//				onChange(){
+//					that.showWinBg = false;
+//				}
+//			}
       	that.flatPickr = new Flatpickr('#js_changetime',this.options);
       	document.getElementsByTagName("body")[0].addEventListener('click', function() {
 				that.isshowchoose = false
@@ -229,15 +248,30 @@ on a 1-1 basis.</p>
 	@import "~/assets/scss/G-ui/flatpickr.min.css";
 	@import '~assets/scss/_main.scss';
 	@import '~/assets/font/iconfont.css';
+	input::-webkit-input-placeholder, textarea::-webkit-input-placeholder {   
+	 /* WebKit browsers */   
+	color: #878e95;   
+	}   
+	input:-moz-placeholder, textarea:-moz-placeholder {   
+	/* Mozilla Firefox 4 to 18 */   
+	color: #878e95   
+	}   
+	input::-moz-placeholder, textarea::-moz-placeholder {   
+	 /* Mozilla Firefox 19+ */   
+	color: #878e95
+	}   
+	input:-ms-input-placeholder, textarea:-ms-input-placeholder {   
+	 /* Internet Explorer 10+ */   
+	color: #878e95  
+	}
 	.inputItem {
-		
 		.flatpickr-input {
 			width:calc(100% - 0.24rem)!important;
 			height: 1.146666rem;
 			border:1px solid #dde0e0;
 			border-radius: 0.08rem;
 			padding-left: 0.24rem!important;
-			font-size: 0.48rem;
+			font-size: 0.48rem!important;
 		}
 	}
 </style> 
@@ -292,6 +326,7 @@ on a 1-1 basis.</p>
 							color: #878e95;
 							
 						}
+						
 					}
 					.choosePeople{
 						position: absolute;
@@ -386,6 +421,9 @@ on a 1-1 basis.</p>
 		.err {
 			border-color: red!important;
 			color: red!important;
+		}
+		.color8{
+			color: #878e95;
 		}
 	}
 </style> 

@@ -314,7 +314,22 @@
 	#launcher {
 		bottom: 0.266666rem!important;
 	}
-	
+	input::-webkit-input-placeholder, textarea::-webkit-input-placeholder {   
+	 /* WebKit browsers */   
+	color: #878e95;   
+	}   
+	input:-moz-placeholder, textarea:-moz-placeholder {   
+	/* Mozilla Firefox 4 to 18 */   
+	color: #878e95   
+	}   
+	input::-moz-placeholder, textarea::-moz-placeholder {   
+	 /* Mozilla Firefox 19+ */   
+	color: #878e95
+	}   
+	input:-ms-input-placeholder, textarea:-ms-input-placeholder {   
+	 /* Internet Explorer 10+ */   
+	color: #878e95  
+	}
 	.dateTime {
 		
 		.flatpickr-input {
@@ -323,7 +338,7 @@
 			height: 1.706666rem!important;
 			text-align: right;
 			color: #1bbc9d;
-			font-size: 0.48rem;
+			font-size: 0.48rem!important;
 		}
 	}
 </style>

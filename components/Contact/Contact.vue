@@ -16,7 +16,6 @@
 				textInfo: '',
 				textInfoErr: false,
 				
-				
 				peopleNub: 0,
 				
 				//日期参数 
@@ -530,7 +529,8 @@
 								border-right: 1px solid #dde0e0;
 								border-bottom: 1px solid #dde0e0;
 								border-radius: 0 2px 2px 0;
-								width: 317px;
+								width: 305px;
+								
 								.border {
 									padding-top: 20px;
 									border-top: 1px solid #dde0e0;

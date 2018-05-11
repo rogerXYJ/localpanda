@@ -95,7 +95,7 @@
 				</div>
 				<div class="provide" v-if="picInfo.details.length>0" id="picDetails">
 					<h3>Price Details</h3>
-					<p style="font-size: 16px;margin-top: 10px;" v-if="picInfo.childDiscount">Children's price is   $  {{picInfo.childDiscount}} USD  less than adults’ price.</p>
+					<p style="font-size: 16px;margin-top: 10px;" v-if="picInfo.childDiscount">Children's price is   $  {{picInfo.childDiscount}} USD  less than adults' price.</p>
 					<el-table :data="sixArr" stripe style="width: 100%">
 						<el-table-column prop="capacity" label="Number of people" width="244.6" align="center">
 							<template slot-scope="scope">
@@ -467,8 +467,8 @@
 
 				window.ga && ga("gtag_UA_107010673_1.send", {
 					hitType: "event",
-					eventCategory: "Button",
-					eventAction: "Click",
+					eventCategory: "activity_detail",
+					eventAction: "click",
 					eventLabel: "activity_inquiry"
 				});
 				that.ContactStatus=true
@@ -490,12 +490,12 @@
 			},
 			showVeiwMore() {
 				this.isShowView = true;
-				window.ga && ga("gtag_UA_107010673_1.send", {
-					hitType: "event",
-					eventCategory: "Button",
-					eventAction: "Click",
-					eventLabel: "activity_view_more"
-				});
+//				window.ga && ga("gtag_UA_107010673_1.send", {
+//					hitType: "event",
+//					eventCategory: "Button",
+//					eventAction: "Click",
+//					eventLabel: "activity_view_more"
+//				});
 			},
 			showNode() {
 				this.isShowPicNode = true;
@@ -581,9 +581,15 @@
 			showAdults() {
 				window.ga && ga("gtag_UA_107010673_1.send", {
 					hitType: "event",
-					eventCategory: "Selection",
-					eventAction: "Click",
-					eventLabel: "activity_guests_select"
+					eventCategory: "activity_detail",
+					eventAction: "select",
+					eventLabel: "guests"
+				});
+				window.ga && ga("gtag_UA_107010673_1.send", {
+					hitType: "event",
+					eventCategory: "activity_detail",
+					eventAction: "select",
+					eventLabel: "detail_select"
 				});
 				if(this.people == "Please Select") {
 					this.adults = this.adults + 1;
@@ -596,8 +602,8 @@
 
 				window.ga && ga("gtag_UA_107010673_1.send", {
 					hitType: "event",
-					eventCategory: "Button",
-					eventAction: "Click",
+					eventCategory: "activity_detail",
+					eventAction: "click",
 					eventLabel: "activity_book"
 				});
 				let that = this;
@@ -711,9 +717,15 @@
 			dateTime(val, oldVal) {
 				window.ga && ga("gtag_UA_107010673_1.send", {
 					hitType: "event",
-					eventCategory: "Selection",
-					eventAction: "Click",
-					eventLabel: "activity_date_select"
+					eventCategory: "activity_detail",
+					eventAction: "select",
+					eventLabel: "detail_select"
+				});
+				window.ga && ga("gtag_UA_107010673_1.send", {
+					hitType: "event",
+					eventCategory: "activity_detail",
+					eventAction: "select",
+					eventLabel: "date"
 				});
 				if(val == "") {
 					this.isSelectDate = true;

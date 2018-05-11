@@ -132,6 +132,10 @@
 				<h3>Notes</h3>
 				<p v-if="remark" :key="index" v-for="(item,index) in remark">{{item}}</p>
 			</div>
+			<div class="inqury" @click="goInqury">
+				Send us any questions you have here
+				<i class="iconfont">&#xe620;</i>
+			</div>
 			<div class="recommend" id="recommend" v-if="recommed.length>0">
 				<h3>Similar Experiences</h3>
 				<div v-swiper:swiper="swiperOption">
@@ -299,7 +303,9 @@
 					}
 				}
 			},
-
+			goInqury(){
+				location.href="/inquiry"
+			},
 			showMore(id) {
 				if(id == 0) {
 					this.showbtn = 0
@@ -699,6 +705,21 @@
 					}
 				}
 			}
+			.inqury{
+				border-bottom: 1px solid #dde0e0;
+				height: 1.706666rem;
+				line-height: 1.706666rem;
+				font-size:0.346666rem;
+				font-weight: bold;
+				color: #1bbc9d;
+				position: relative;
+				i{
+					position: absolute;	
+					right: 0;
+					font-size: 0.346666rem;
+					color: #dde0e0;
+				}
+			}
 			.notes {
 				padding: 0.64rem 0;
 				border-bottom: 1px solid #dde0e0;
@@ -881,10 +902,10 @@
 					float:left;
 					margin-top:0.626666rem;
 					p{
-						font-size: 0.266666rem;
+						font-size:0.373333rem;
 						color: #878e95;
 						b{
-							font-size: 0.346666rem;
+							font-size:0.426666rem;
 							color: #353a3f;
 						}
 						&.oldpic{
@@ -937,6 +958,7 @@
 					background-image: linear-gradient(270deg, #009efd 0%, #1bbc9d 100%);
 					border-radius: 0.6rem;
 					margin-top: 0.373333rem;
+					font-size: 0.48rem;
 				}
 			}
 			.view{

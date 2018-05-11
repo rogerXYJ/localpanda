@@ -53,9 +53,9 @@ import Loading from "~/components/Loading/Loading";
 import api from "~/assets/js/plugin/api.js";
 import Vue from 'vue';
 import { throws } from 'assert';
-if (process.browser) {
-	  require('~/assets/js/pages/talk.js')
-	}
+//if (process.browser) {
+//	  //require('~/assets/js/pages/talk.js')
+//	}
 export default {
   name: "payNow",
 

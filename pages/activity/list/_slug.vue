@@ -6,7 +6,7 @@
 			<div class="selectInfo">
 				<div class="position">
 					<h3>Destination</h3>
-					<el-select v-model="value" @focus="stop">
+					<el-select v-model="value" @change="changeVal(value)" @focus="stop">
 						<a :href="item.url" v-for="item in options">
 							<el-option :key="item.value" :label="item.label" :value="item.value">
 
@@ -32,7 +32,7 @@
 										</div>
 									</el-checkbox-group>
 
-									<div class="subimtbtn" @click.stop="apply()">Apply</div>
+									<div class="subimtbtn" @click.stop="apply(1)">Apply</div>
 								</div>
 							</li>
 							<li>
@@ -53,7 +53,7 @@
 										</div>
 									</el-checkbox-group>
 
-									<div class="subimtbtn" @click.stop="apply()">Apply</div>
+									<div class="subimtbtn" @click.stop="apply(2)">Apply</div>
 								</div>
 							</li>
 							<li>
@@ -71,7 +71,7 @@
 										</div>
 									</el-checkbox-group>
 
-									<div class="subimtbtn" @click.stop="apply()">Apply</div>
+									<div class="subimtbtn" @click.stop="apply(3)">Apply</div>
 								</div>
 							</li>
 
@@ -385,6 +385,15 @@
 			Alert
 		},
 		methods: {
+			changeVal(value){
+			ga('gtag_UA_107010673_1.send', {
+					hitType: 'event',
+					eventCategory: 'activity_list',
+					eventAction: 'switch',
+					eventLabel: 'destination_'+value,
+
+				});
+			},
 			stop(){
 				this.isshowcategory = false
 				this.isshowdurations = false
@@ -483,16 +492,37 @@
 					sort = {
 						type: "SCORE"
 					}
+					ga('gtag_UA_107010673_1.send', {
+						hitType: 'event',
+						eventCategory: 'activity_list',
+						eventAction: 'sort',
+						eventLabel: 'score',
+	
+					});
 				} else if(val == "Price :Low to High") {
 					sort = {
 						type: "PRICE",
 						reverse: false
 					}
+					ga('gtag_UA_107010673_1.send', {
+						hitType: 'event',
+						eventCategory: 'activity_list',
+						eventAction: 'sort',
+						eventLabel: 'price_up',
+	
+					});
 				} else if(val == "Price :High to Low") {
 					sort = {
 						type: "PRICE",
 						reverse: true
 					}
+					ga('gtag_UA_107010673_1.send', {
+						hitType: 'event',
+						eventCategory: 'activity_list',
+						eventAction: 'sort',
+						eventLabel: 'price_down',
+	
+					});
 				}
 				var opctions = this.delNull({
 					category: this.checkedCategory,
@@ -664,7 +694,32 @@
 					}
 				}, function(response) {})
 			},
-			apply() {
+			apply(id) {
+				if(id==1){
+					ga('gtag_UA_107010673_1.send', {
+						hitType: 'event',
+						eventCategory: 'activity_list',
+						eventAction: 'filter',
+						eventLabel: 'category',
+	
+					});
+				}else if(id==2){
+					ga('gtag_UA_107010673_1.send', {
+						hitType: 'event',
+						eventCategory: 'activity_list',
+						eventAction: 'filter',
+						eventLabel: 'theme',
+	
+					});
+				}else{
+					ga('gtag_UA_107010673_1.send', {
+						hitType: 'event',
+						eventCategory: 'activity_list',
+						eventAction: 'filter',
+						eventLabel: 'duration',
+	
+					});
+				}
 				let sort = {}
 				//转url带&符号
 				for(let i = 0; i < this.checkedTourtype.length; i++) {

@@ -13,14 +13,14 @@
 						</div>
 					</div>
 				
-					<div v-swiper:swiperThumbs="swiperOptionThumbs" class="gallery-thumbs" ref="swiperThumbs">
+					<!--<div v-swiper:swiperThumbs="swiperOptionThumbs" class="gallery-thumbs" ref="swiperThumbs">
 						<div class="swiper-wrapper">
 							<div class="swiper-slide" v-for="(i,index) in photoList" :class="index==0?'imgActive':''">
 								<img :src="i.url" />
 							</div>
 							
 						</div>
-					</div>
+					</div>-->
 			</div>
 		</div>
 	</div>
@@ -42,47 +42,47 @@ export default {
 					 lazy: {
 					    loadPrevNext: true,
 					  },
-					on: {
-						slideChangeTransitionStart: function(){
-							var activeIndex = this.activeIndex;
-							self.swiperThumbs.slideTo(activeIndex);
-							
-							var list = self.swiperThumbs.$el[0].getElementsByClassName('swiper-slide');
-							for(var i=0;i<list.length;i++){
-								if(i==this.activeIndex){
-									list[i].className = 'swiper-slide swiper-slide-visible imgActive';
-								}else{
-									list[i].className = list[i].className.replace(/imgActive/,'');
-								}
-							}
-						}
-					}
+//					on: {
+//						slideChangeTransitionStart: function(){
+//							var activeIndex = this.activeIndex;
+//							self.swiperThumbs.slideTo(activeIndex);
+//							
+//							var list = self.swiperThumbs.$el[0].getElementsByClassName('swiper-slide');
+//							for(var i=0;i<list.length;i++){
+//								if(i==this.activeIndex){
+//									list[i].className = 'swiper-slide swiper-slide-visible imgActive';
+//								}else{
+//									list[i].className = list[i].className.replace(/imgActive/,'');
+//								}
+//							}
+//						}
+//					}
 							
 				},
-				swiperOptionThumbs: {
-					lazy: {
-					    loadPrevNext: true,
-					  },
-					watchSlidesProgress : true,
-					watchSlidesVisibility : true,
-					slidesPerView:"auto",
-					on:{
-						tap: function(e){
-							self.swiperTop.slideTo(this.clickedIndex);
-							console.log(this.clickedIndex)
-							var list = this.$el[0].getElementsByClassName('swiper-slide');
-							for(var i=0;i<list.length;i++){
-								if(i==this.clickedIndex){
-									list[i].className = 'swiper-slide swiper-slide-visible imgActive';
-								}else{
-									list[i].className = list[i].className.replace(/imgActive/,'');
-								}
-								
-							}
-						}
-					}
-						
-				}
+//				swiperOptionThumbs: {
+//					lazy: {
+//					    loadPrevNext: true,
+//					  },
+//					watchSlidesProgress : true,
+//					watchSlidesVisibility : true,
+//					slidesPerView:"auto",
+//					on:{
+//						tap: function(e){
+//							self.swiperTop.slideTo(this.clickedIndex);
+//							console.log(this.clickedIndex)
+//							var list = this.$el[0].getElementsByClassName('swiper-slide');
+//							for(var i=0;i<list.length;i++){
+//								if(i==this.clickedIndex){
+//									list[i].className = 'swiper-slide swiper-slide-visible imgActive';
+//								}else{
+//									list[i].className = list[i].className.replace(/imgActive/,'');
+//								}
+//								
+//							}
+//						}
+//					}
+//						
+//				}
 			      
 			}
 		},
@@ -104,12 +104,12 @@ export default {
 			}
 		},
 		created:function(){
-			if(process.browser){
-				let u = navigator.userAgent
-				console.log(navigator.userAgent)
-				u.indexOf('Android') > -1||u.indexOf('iPhone') > -1?this.swiperOptionThumbs.slidesPerView=2.3:this.swiperOptionThumbs.slidesPerView=3
-				console.log(this.swiperOptionThumbs.slidesPerView)
-			}
+//			if(process.browser){
+//				let u = navigator.userAgent
+//				console.log(navigator.userAgent)
+//				u.indexOf('Android') > -1||u.indexOf('iPhone') > -1?this.swiperOptionThumbs.slidesPerView=2:this.swiperOptionThumbs.slidesPerView=3
+//				console.log(this.swiperOptionThumbs.slidesPerView)
+//			}
 			 
 			 //
 			
@@ -142,15 +142,19 @@ export default {
 		.boxshow {
 			width: 100%;
 			left: 0;
-			top: 3.16rem;
-			position: relative;
+			top: 50%;
+			position: absolute;
+			transform: translateY(-50%);
 			    .gallery-top {
 			    	.swiper-slide{
 			    		text-align: center;
-			    		height: 6.666666rem;
-					    overflow: hidden;
+			    		overflow: hidden;
+			    		height: 100vh;
 			    		img{
-			    			height: 100%;
+			    			max-width: 100%;
+			    			position: relative;
+			    			top: 50%;
+			    			transform: translateY(-50%);
 			    		}
 			    	}
 			    }
@@ -199,6 +203,7 @@ export default {
 			position: absolute;
 			right: 0.4rem;
 			top: 0.4rem;
+			z-index: 999;
 		}
 	}
 </style>

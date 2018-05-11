@@ -11,7 +11,7 @@
 					<label>Date</label>
 					<div class="dateTime">
 						<!-- <flatPickr placeholder="Please Select" v-model="dateTime" :config="options"></flatPickr> -->
-						<input id="js_changetime" placeholder="Please Select" v-model="dateTime" readonly type="text">
+						<input id="js_changetime" placeholder="Please Select" onfocus="blur()" v-model="dateTime" readonly type="text">
 					</div>
 				</li>
 				<li class="clearfix" @touchend="show()" :class="{err:peopleErr}">
@@ -254,9 +254,6 @@
 					setTimeout(function(){
 						calendarContainer.top = parseInt(calendarContainer.top)-100+'px';
 						calendarContainer.left = (winW-parseInt(calendarContainer.width)-38)/2+'px';
-						console.log(calendarContainer.left)
-						console.log(winW)
-						console.log(parseInt(calendarContainer.top))
 						// calendarContainer.transform = 'translateX(-50%)';
 						// calendarContainer.right = 'auto';
 					},0);
@@ -269,13 +266,21 @@
 			
 			that.flatPickr = new Flatpickr('#js_changetime',this.options);
 			
-			
+			document.getElementsByTagName("body")[0].addEventListener('touchstart', function() {
+				that.showWinBg=false
+					
+			})
 			
 		},
 		watch: {
 			"flatPickr.isOpen":function(val,oldVal){
-				console.log(val)
-			},
+	    		if(val){
+	    			this.isshowchoose = false
+	    			document.getElementsByTagName("html")[0].style.overflow="hidden"
+	    		}else{
+	    			document.getElementsByTagName("html")[0].style.overflow="inherit"
+	    		}
+    		},
 			dateTime:function(val,oldVal){
 				if(val){
 					this.dateErr=false
@@ -321,7 +326,22 @@
 	#launcher {
 		bottom: 0.266666rem!important;
 	}
-	
+	input::-webkit-input-placeholder, textarea::-webkit-input-placeholder {   
+	 /* WebKit browsers */   
+	color: #878e95;   
+	}   
+	input:-moz-placeholder, textarea:-moz-placeholder {   
+	/* Mozilla Firefox 4 to 18 */   
+	color: #878e95   
+	}   
+	input::-moz-placeholder, textarea::-moz-placeholder {   
+	 /* Mozilla Firefox 19+ */   
+	color: #878e95
+	}   
+	input:-ms-input-placeholder, textarea:-ms-input-placeholder {   
+	 /* Internet Explorer 10+ */   
+	color: #878e95  
+	}
 	.dateTime {
 		
 		.flatpickr-input {
@@ -330,7 +350,7 @@
 			height: 1.706666rem!important;
 			text-align: right;
 			color: #1bbc9d;
-			font-size: 0.48rem;
+			font-size: 0.48rem!important;
 		}
 	}
 </style>

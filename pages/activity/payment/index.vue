@@ -12,7 +12,7 @@
 				<div class="payfor">
 					<img style="width: 200px;" src="https://resource.localpanda.cn/static/icon/stripe.png" />
 				</div>
-				<div style="font-size: 16px;line-height: 20px;display: block; margin-top: 20px;"><b>Secure Payment:</b></br>We use Stripe’s online payment system, which sends your payment info directly to Stripe’s secure servers, so your data is never sent to Local Panda’s servers and cannot be stolen.</div>
+				<div style="font-size: 16px;line-height: 20px;display: block; margin-top: 20px;"><b>Secure Payment:</b></br>We use Stripe's online payment system, which sends your payment info directly to Stripe's secure servers, so your data is never sent to Local Panda's servers and cannot be stolen.</div>
 			</div>
 			<div class="payfordetail">
 				<div class="head clearfix">
@@ -57,7 +57,7 @@
 
 <script>
 	if (process.browser) {
-	  require('~/assets/js/pages/talk.js')
+	  //require('~/assets/js/pages/talk.js')
 	  require('~/assets/js/pages/ga.js')
 	}
 	import { GetQueryString } from '~/assets/js/plugin/utils.js'
@@ -170,7 +170,7 @@
 						that.loadingStatus = true
 						let obj = {
 							amount: that.opctions.amount * 100,
-							currency: "USD",
+							currency: that.opctions.currency,
 							objectId: that.orderId,
 							token: token.id,
 							email: token.email,
@@ -223,16 +223,16 @@
 				
 				ga('gtag_UA_107010673_1.send', {
 						hitType: 'event',
-						eventCategory: 'Button',
-						eventAction: 'Click',
+						eventCategory: 'activity_payment',
+						eventAction: 'click',
 						eventLabel: 'activity_pay',
 	
 					});
 				that.stripeHandler.open({
 					name: 'Local panda', // 收款方或商家名称，比如 Beansmile
 					description: "", // 待支付商品的描述
+					currency:that.opctions.currency,
 					amount: that.opctions.amount* 100, // 支付金额，单位是“分”
-					locale: 'en_US',
 					closed: function() {
 
 					}

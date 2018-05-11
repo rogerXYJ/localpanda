@@ -1,6 +1,7 @@
 <template>
 	<div id="Mmenu">
 		<div class="menu_list">
+			
 			<ul class="clearfix">
 
 				<li>
@@ -33,6 +34,10 @@
 					<a href="#recommend">Similar Experiences</a>
 				</li>
 			</ul>
+			<div class="inquiryTab">
+				<a href="/inquiry">Send us any questions you have here</a>
+				<i class="iconfont">&#xe620;</i>
+			</div>
 		</div>
 	</div>
 </template>
@@ -98,7 +103,7 @@
 			background: #fff;
 			left: 0;
 			ul {
-				margin-bottom: 0.693333rem;
+				
 				li {
 					text-align: center;
 					margin-top: 0.693333rem;
@@ -107,6 +112,25 @@
 						color: #878e95;
 					}
 				}
+			}
+		}
+		.inquiryTab{
+			text-align: center;
+			margin-top: 0.693333rem;
+			margin-bottom: 0.693333rem;
+			position: relative;
+			a{
+				font-size: 0.4rem;
+				color: #1bbc9d;
+				font-weight: bold;	
+			}
+			i{
+				position: absolute;
+				right:0.8rem;
+				color: #1bbc9d;
+				vertical-align: middle;
+				font-size: 0.4rem;
+				top: 0.093333rem;
 			}
 		}
 		.active {

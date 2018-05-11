@@ -8,7 +8,7 @@
 			//检测手机页面
 			var viewport = document.getElementById('viewport');
 			var winW = window.screen.width;
-			if(/\/mobile/.test(window.location.href)){
+			if(/\/mobile|inquiry/.test(window.location.href)){
 				viewport.setAttribute('content', "width=device-width, initial-scale=1.0, maximum-scale=1.0");
 			}else{
 				var ua = navigator.userAgent;

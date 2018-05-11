@@ -73,7 +73,10 @@
 				<svg class="icon1" aria-hidden="true">
 						<use xlink:href="#icon-logo_"></use>
 				</svg>
-				<span class="cooperation-text">© 2017–2018 Local Panda. Made in Shanghai,China</span>
+				<span class="cooperation-text">
+					<em>© 2017–2018 Local Panda. Made in Shanghai,China</em>
+					<em>沪ICP备18014541号</em> 
+				</span>
 				
 				
 				
@@ -152,7 +155,6 @@ import { fail } from 'assert';
     .icon1{
     	width: 140px; 
        height: 50px;
-    	vertical-align: middle;
        fill: currentColor;
        overflow: hidden;
 			 border-radius: 5px;
@@ -265,9 +267,13 @@ import { fail } from 'assert';
 						}
 				}
 				.cooperation{
-					padding-top: 54px;
+					padding-top:44px;
 					.cooperation-text{
-						font-size: 18px;
+						em{
+							display: block;
+						}
+						font-size: 16px;
+						display: inline-block;
 					}
 					.cooperationIcon{
 						float: right;

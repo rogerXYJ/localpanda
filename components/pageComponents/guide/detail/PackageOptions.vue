@@ -306,8 +306,8 @@
 				
 				window.ga && ga('gtag_UA_107010673_1.send', {
 				  hitType: 'event',
-				  eventCategory: 'Button',
-				  eventAction: 'Click',
+				  eventCategory: 'guide_detail',
+				  eventAction: 'click',
 				  eventLabel: 'guide_book',
 				  eventValue: that.guideId
 				});
@@ -396,9 +396,9 @@
 				let that=this
 				window.ga && ga('gtag_UA_107010673_1.send', {
 				  hitType: 'event',
-				  eventCategory: 'Button',
-				  eventAction: 'Click',
-				  eventLabel: 'guide_select_hiking',
+				  eventCategory: 'guide_detail',
+				  eventAction: 'select',
+				  eventLabel: 'hiking',
 				  eventValue: that.guideId
 				});
 			},
@@ -406,9 +406,9 @@
 				let that=this
 				window.ga && ga('gtag_UA_107010673_1.send', {
 				  hitType: 'event',
-				  eventCategory: 'Button',
-				  eventAction: 'Click',
-				  eventLabel: 'guide_select_vehicle',
+				  eventCategory: 'guide_detail',
+				  eventAction: 'select',
+				  eventLabel: 'vehicle',
 				  eventValue: that.guideId
 				});
 			},

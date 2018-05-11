@@ -116,13 +116,6 @@
 				this.isShowAlert=val
 			},
 			showContact(){
-				let that=this
-				ga('gtag_UA_107010673_1.send', {
-				  hitType: 'event',
-				  eventCategory: 'Button',
-				  eventAction: 'Click',
-				  eventLabel: 'trip_customizing'
-				});
 				location.href="/travel/customize/step1"
 			},
 			contactCallBack(val){
@@ -143,7 +136,8 @@
 				that.alertTitleStatus = false;
 			},
 			getscoll(){
-				window.scrollTo(100,document.body.scrollHeight)
+				//window.scrollTo(100,document.body.scrollHeight)
+				window.location.href="/info/contact-us"
 			},
 			loadScript(url, callback) {
 				var that=this

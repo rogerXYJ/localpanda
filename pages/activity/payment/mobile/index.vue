@@ -321,7 +321,7 @@
 					self.payData = {
 						tradeType: 'JSAPI',
 						objectId: self.orderId,//1105955013
-						amount: 1,//self.opctions.amount * 100
+						amount: self.opctions.amount * 100,//self.opctions.amount * 100
 						openId: openData.openid,
 						objectType:'ACTIVITY'
 					};
@@ -363,6 +363,7 @@
 							}else{
 								msg = 'fail';
 							}
+							this.loadingStatus = false;
 							//跳转
 							window.location.href = "https://www.localpanda.com/payment/mobile/success?email="+that.email+"&orderId=" + that.orderId + '&amount=' + that.opctions.amount+'&succeed='+thisData.succeed+'&msg='+msg+'&payType=CNY';
 						}
@@ -371,7 +372,7 @@
 			
 			wxPay(postData){
 				var self = this;
-
+				this.loadingStatus = true;
 				self.axios.post("https://www.localpanda.cn/api/payment/pay/wechat",JSON.stringify(postData), {
 					headers: {
 						'Content-Type': 'application/json; charset=UTF-8'

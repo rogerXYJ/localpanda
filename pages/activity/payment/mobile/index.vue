@@ -299,7 +299,7 @@
 				
 				//code用过或者没有code则从新获取
 				var localWxCode = localStorage.getItem('localWxCode');
-				if(this.wxcode==localWxCode && that.opctions.currency == 'CNY' || !this.wxcode && that.opctions.currency == 'CNY'){
+				if(this.wxcode==localWxCode && this.opctions.currency == 'CNY' || !this.wxcode && this.opctions.currency == 'CNY'){
 					location.href = 'http://www.localpanda.cn/wx/getcode?link='+encodeURIComponent(location.href.replace('code','nostr'));
 					return;
 				}else{

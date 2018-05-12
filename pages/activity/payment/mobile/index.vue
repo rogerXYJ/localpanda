@@ -294,7 +294,7 @@
 				})
 			},
 			wxInit(){
-				
+				console.log(localWxCode)
 				//code用过或者没有code则从新获取
 				var localWxCode = localStorage.getItem('localWxCode');
 				if(this.wxcode==localWxCode || !this.wxcode){

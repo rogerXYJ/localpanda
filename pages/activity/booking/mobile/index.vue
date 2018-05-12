@@ -317,7 +317,7 @@
 									'Content-Type': 'application/json; charset=UTF-8'
 								}
 							}).then(function(response) {
-
+									
 								window.location.href = "https://www.localpanda.cn/activity/payment/mobile/?objectId=" + response.data.response + '&payType=' + obj.currency + '&login='+(that.logIn?that.logIn:0) +'&aaa='+obj.currency;
 							}, function(response) {})
 						}

@@ -323,6 +323,7 @@
 									'Content-Type': 'application/json; charset=UTF-8'
 								}
 							}).then(function(response) {
+
 								var thisUrl = "https://www.localpanda.cn/activity/payment/mobile/?objectId=" + response.data.response + '&payType=' + obj.currency + '&login='+(that.logIn?that.logIn:0);
 								
 								if(obj.currency=='CNY'){

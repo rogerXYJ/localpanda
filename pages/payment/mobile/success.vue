@@ -23,7 +23,7 @@
 
     <a class="btn_href" :href="getJumpUrl(logIn)" v-if="success && email">View My Order</a>
     <a class="btn_href" href="/" v-else-if="!email">Back to home</a>
-    <a class="btn_href" :href="'/activity/payment/mobile?objectId='+orderId" v-else>Try again</a>
+    <a class="btn_href" :href="'https://www.localpanda.'+(payTypeStr=='CNY'?'cn':'com')+'/activity/payment/mobile/?objectId='+orderId+'&login='+(logIn?logIn:0)+'&payType=' + payTypeStr" v-else>Try again</a>
   </div>
 </template>
 
@@ -47,6 +47,7 @@ export default {
         success: query.succeed=='true'?true:false,
         msg: query.msg,
         showTipTxt: false,
+        payTypeStr: query.payType,
         payType: query.payType=='CNY'?'¥':'$'
 			}
 		},

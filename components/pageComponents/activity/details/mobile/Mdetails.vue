@@ -72,7 +72,7 @@
 				</div>
 			<div class="provide" v-if="picInfo.details.length>0" id="picDetails">
 					<h3>Price Details</h3>
-					<p class="childDiscount" v-if="picInfo.childDiscount">Children's price is   $  {{picInfo.childDiscount}} USD  less than adults' price.</p>
+					<p class="childDiscount" v-if="picInfo.childDiscount">Children's price is  {{getPriceMark(picInfo.currency)}}  {{picInfo.childDiscount}}  {{getPriceMark(picInfo.currency,1)}}  less than adults' price.</p>
 					<el-table :data="sixArr" stripe style="width: 100%">
 						<el-table-column prop="capacity" label="Number of people"  align="center">
 							<template slot-scope="scope">
@@ -173,7 +173,7 @@
 			
 			<button class="bookBtn" @click="goBooking">Book Now</button>
 			<div class="picRate" v-show="isWx">
-				<select class="currency_type" @change="changeCurrency">
+				<select class="currency_type" @change="changeCurrency" v-model="picInfo.currency">
 					<option value="USD">USD</option>
 					<option value="CNY">CNY</option>
 				</select>
@@ -247,18 +247,17 @@
 				var value = e.target.value;
 				var picInfo = this.picInfo;
 
-				console.log(picInfo);
 				if(value == 'USD'){
 					picInfo.currency = 'USD';
 					picInfo.bottomPrice = picInfo.priceAll.bottomPrice.usd;
 					picInfo.originalPrice = picInfo.priceAll.originalPrice.usd;
+					picInfo.childDiscount=picInfo.priceAll.childDiscount.usd;
 				}else{
 					picInfo.currency = 'CNY';
 					picInfo.bottomPrice = picInfo.priceAll.bottomPrice.cny;
 					picInfo.originalPrice = picInfo.priceAll.originalPrice.cny;
+					picInfo.childDiscount=picInfo.priceAll.childDiscount.cny;
 				}
-				console.log(this.picInfo);
-				console.log(this.adultsPic);
 
 				
 
@@ -269,6 +268,15 @@
 						thisDetail[i].price = thisDetail[i].priceAll.usd
 					}else{
 						thisDetail[i].price = thisDetail[i].priceAll.cny
+					}
+				}
+
+				var sixArr = this.sixArr;
+				for(var i=0;i<sixArr.length;i++){
+					if(value == 'USD'){
+						sixArr[i].price = sixArr[i].priceAll.usd
+					}else{
+						sixArr[i].price = sixArr[i].priceAll.cny
 					}
 				}
 				
@@ -283,6 +291,7 @@
 			setPriceData(){
 				var picInfo = this.picInfo;
 				var thisDetail = picInfo.details;
+				//console.log(thisDetail);
 
 				picInfo.priceAll = {
 					bottomPrice:{
@@ -292,7 +301,12 @@
 					originalPrice:{
 						cny: (picInfo.originalPrice*this.rate).toFixed(2),
 						usd: picInfo.originalPrice
+					},
+					childDiscount:{
+						cny: (picInfo.childDiscount*this.rate).toFixed(2),
+						usd: picInfo.childDiscount
 					}
+
 					
 				};
 				for(var i=0; i<thisDetail.length; i++){
@@ -382,7 +396,7 @@
 				this.alertPicStatus = val
 			},
 			tableData(details) {
-				//console.log(details);
+				
 				var newObj = function(obj) {
 					var o = {};
 					for(var key in obj) {
@@ -397,8 +411,6 @@
 
 
 				if(details.length==1){
-					console.log(1)
-					console.log(details[0].capacity)
 					for(let i=0;i<details[0].capacity;i++){
 						var s=newObj(details[0]);
 						newArr.push(s)
@@ -427,6 +439,7 @@
 					newArr[k].capacity = k + 1;
 
 				}
+				
 				return newArr;
 			}
 		},
@@ -438,11 +451,15 @@
 		},
 		mounted: function() {
 			
+			
+
+			
 			//调整不同币种价格数据
 			this.setPriceData();
 
-			
 
+
+			
 			let that=this
 			if(that.tableData(that.picInfo.details).length>5){
 				this.isShowTable=true
@@ -450,6 +467,10 @@
 			}else{
 				that.sixArr=that.tableData(that.picInfo.details)
 			}
+
+
+
+			
 
 			var ua = window.navigator.userAgent.toLowerCase();
 			that.isWx = (ua.match(/MicroMessenger/i) == 'micromessenger') ? true : false;

@@ -335,7 +335,7 @@
 			line-height: 1.173333rem;
 			text-align: center;
 			border-radius: 50%;
-			box-shadow: 0px 0px 0.04rem 0px rgba(0, 0, 0, 0.1);
+			box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
 			background: #fff;
 			z-index: 200;
 			color: #1bbc9d;

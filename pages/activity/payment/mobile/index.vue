@@ -36,13 +36,13 @@
 					<div class="totle-title">Total ({{getPriceMark(opctions.currency,1)}})</div>
 					
 					<div class="totalPic">{{getPriceMark(opctions.currency)}}{{returnFloat(opctions.amount)}}</div>
-					<div class="picRate" v-if="isWx">
+					<!-- <div class="picRate" v-if="isWx">
 						<select class="currency_type" id="currency_type" @change="changeCurrency" v-model="opctions.currency">
 							<option value="USD">USD</option>
 							<option value="CNY">CNY</option>
 						</select>
 						<span class="iconfont">&#xe666;</span>
-					</div>
+					</div> -->
 				</div>
 				<div class="hint">
 					<p v-if="logInHide">You ordered as a guest. To view your order details, go to the homepage, click "My Bookings" at the top of the page, and type in the name and email address for your reservation.</p>
@@ -52,7 +52,7 @@
 				</div>
 			</div>
 			<div class="btn">
-				<button @click="pay">Pay</button>
+				<button @click="pay" v-if="payData!='' && opctions.currency!='USD'">Pay</button>
 			</div>
 		</div>
 
@@ -117,7 +117,8 @@
 				logInHide:false,
 				loadingStatus: false,
 				rate: 6.3710,
-				isWx : false
+				isWx : false,
+				payData : ''
 			}
 		},
 		components: {
@@ -297,7 +298,7 @@
 				
 				//code用过或者没有code则从新获取
 				var localWxCode = localStorage.getItem('localWxCode');
-				if(this.wxcode==localWxCode || !this.wxcode){
+				if(this.wxcode==localWxCode && that.opctions.currency == 'CNY' || !this.wxcode && that.opctions.currency == 'CNY'){
 					location.href = 'http://www.localpanda.cn/wx/getcode?link='+encodeURIComponent(location.href.replace('code','nostr'));
 					return;
 				}else{
@@ -373,6 +374,7 @@
 			wxPay(postData){
 				var self = this;
 				this.loadingStatus = true;
+				
 				self.axios.post("https://www.localpanda.cn/api/payment/pay/wechat",JSON.stringify(postData), {
 					headers: {
 						'Content-Type': 'application/json; charset=UTF-8'

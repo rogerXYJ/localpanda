@@ -52,7 +52,7 @@
 				</div>
 			</div>
 			<div class="btn">
-				<button @click="pay" v-if="payData!='' && opctions.currency!='USD'">Pay</button>
+				<button @click="pay" v-if="payData">Pay</button>
 			</div>
 		</div>
 
@@ -262,6 +262,7 @@
 						that.changePrice('USD');
 					}
 
+					that.payData = 1;
 					
 
 				}, function(res) {})

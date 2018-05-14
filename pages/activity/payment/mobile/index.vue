@@ -296,16 +296,15 @@
 				})
 			},
 			wxInit(){
-				console.log(localWxCode)
+				
 				//code用过或者没有code则从新获取
 				var localWxCode = localStorage.getItem('localWxCode');
-				if(this.wxcode==localWxCode && that.opctions.currency == 'CNY' || !this.wxcode && that.opctions.currency == 'CNY'){
-					location.href = 'http://www.localpanda.cn/wx/getcode?link='+encodeURIComponent(location.href.replace('code','nostr'));
+				if(this.wxcode==localWxCode && this.urlQuery.payType == 'CNY' || !this.wxcode && this.urlQuery.payType == 'CNY'){
+					location.href = 'https://www.localpanda.cn/wx/getcode?link='+encodeURIComponent(location.href.replace('code','nostr'));
 					return;
-				}else{
-					//本地存储code
-					localStorage.setItem('localWxCode',this.wxcode);
 				}
+				//本地存储code
+				localStorage.setItem('localWxCode',this.wxcode);
 
 
 				var self = this;
@@ -382,8 +381,11 @@
 					}
 				}).then(function(response) {
 
-					//测试用
-					self.dataInfo2 = JSON.stringify(response.data);
+					//检测超时
+					if(response.return_msg == 'Read timed out'){
+						alert('Pay overtime,please try again!');
+						return;
+					}
 
 					if (typeof WeixinJSBridge == "undefined"){
 						if( document.addEventListener ){

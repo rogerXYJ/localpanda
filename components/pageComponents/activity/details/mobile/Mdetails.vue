@@ -251,12 +251,18 @@
 					picInfo.currency = 'USD';
 					picInfo.bottomPrice = picInfo.priceAll.bottomPrice.usd;
 					picInfo.originalPrice = picInfo.priceAll.originalPrice.usd;
-					picInfo.childDiscount=picInfo.priceAll.childDiscount.usd;
+					if(picInfo.priceAll.childDiscount){
+						picInfo.childDiscount=picInfo.priceAll.childDiscount.usd;
+					}
+					
 				}else{
 					picInfo.currency = 'CNY';
 					picInfo.bottomPrice = picInfo.priceAll.bottomPrice.cny;
 					picInfo.originalPrice = picInfo.priceAll.originalPrice.cny;
-					picInfo.childDiscount=picInfo.priceAll.childDiscount.cny;
+					if(picInfo.priceAll.childDiscount){
+						picInfo.childDiscount=picInfo.priceAll.childDiscount.cny;
+					}
+					
 				}
 
 				
@@ -301,14 +307,16 @@
 					originalPrice:{
 						cny: (picInfo.originalPrice*this.rate).toFixed(2),
 						usd: picInfo.originalPrice
-					},
-					childDiscount:{
+					}
+				};
+
+				if(picInfo.childDiscount){
+					picInfo.priceAll.childDiscount = {
 						cny: (picInfo.childDiscount*this.rate).toFixed(2),
 						usd: picInfo.childDiscount
 					}
+				}
 
-					
-				};
 				for(var i=0; i<thisDetail.length; i++){
 					var thisPrice = thisDetail[i].price;
 					thisDetail[i].priceAll = {

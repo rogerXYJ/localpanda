@@ -363,7 +363,11 @@ function getNowFormatDate(date) {
 var getPriceMark = function(cur,str){
 	var currencyAll = [
 		{'sign':'$','str':'USD'},
-		{'sign':'¥','str':'CNY'}
+		{'sign':'¥','str':'CNY'},
+		{'sign':'￡','str':'GBP'},
+		{'sign':'€','str':'EUR'},
+		{'sign':'A$','str':'AUD'},
+		{'sign':'CA$','str':'CAD'}
 	];
 	var thisCur = {};
 	for(var i=0;i<currencyAll.length;i++){

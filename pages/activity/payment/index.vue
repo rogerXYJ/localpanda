@@ -28,21 +28,21 @@
 				</div>
 				<div class="pic">
 					<div class="adult clearfix">
-						<div class="formula" v-if="opctions.childrenNum==0&&opctions.adultNum==1">${{returnFloat(opctions.averagePrice)}} x 1 Person</div>
-						<div class="formula" v-else>$ {{returnFloat(opctions.averagePrice)}} x {{opctions.adultNum+opctions.childrenNum}} People </div>
-						<div class="adultPic" >$ {{returnFloat(cutXiaoNum(opctions.averagePrice*(opctions.adultNum+opctions.childrenNum),1))}}</div>
+						<div class="formula" v-if="opctions.childrenNum==0&&opctions.adultNum==1">{{getPriceMark(opctions.currency)}}{{returnFloat(opctions.averagePrice)}} x 1 Person</div>
+						<div class="formula" v-else>{{getPriceMark(opctions.currency)}} {{returnFloat(opctions.averagePrice)}} x {{opctions.adultNum+opctions.childrenNum}} People </div>
+						<div class="adultPic">{{getPriceMark(opctions.currency)}} {{returnFloat(cutXiaoNum(opctions.averagePrice*(opctions.adultNum+opctions.childrenNum),1))}}</div>
 					</div>
 					<div class="child" v-if="opctions.childDiscount">
-						<b>- ${{returnFloat(opctions.childDiscount)}}</b> for child(ren)
+						<b>- {{getPriceMark(opctions.currency)}}{{returnFloat(opctions.childDiscount)}}</b> for child(ren)
 					</div>
 					<div class="child" v-if="opctions.couponDiscount">
-						<b>- ${{returnFloat(opctions.couponDiscount)}}</b> for discount
+						<b>-{{getPriceMark(opctions.currency)}}{{returnFloat(opctions.couponDiscount)}}</b> for discount
 					</div>
 					
 				</div>
 				<div class="total clearfix">
-					<div class="totle-title">Total (USD)</div>
-					<div class="totalPic">${{returnFloat(opctions.amount)}}</div>
+					<div class="totle-title">Total ({{getPriceMark(opctions.currency,1)}})</div>
+					<div class="totalPic">{{getPriceMark(opctions.currency)}}{{returnFloat(opctions.amount)}}</div>
 				</div>
 			</div>
 			<p class="refundPolicy" style="margin-top: 30px; color: red;">You can get a 100% refund up to {{refundTimeLimit}} hours before your trip.</p>
@@ -60,7 +60,7 @@
 	  //require('~/assets/js/pages/talk.js')
 	  require('~/assets/js/pages/ga.js')
 	}
-	import { GetQueryString } from '~/assets/js/plugin/utils.js'
+	import { GetQueryString,getPriceMark } from '~/assets/js/plugin/utils.js'
 	import HeaderCommon from '~/components/HeaderCommon/HeaderCommon'
 	import FooterCommon from '~/components/FooterCommon/FooterCommon';
 	import Loading from '~/components/Loading/Loading'
@@ -121,6 +121,7 @@
 			Loading
 		},
 		methods: {
+			getPriceMark:getPriceMark,
 			cutXiaoNum(num, len) {
 				var numStr = num.toString();
 				if(len == null || len == undefined) {

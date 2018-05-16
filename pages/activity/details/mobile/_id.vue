@@ -20,7 +20,7 @@
 			:photoList="photoList"
 			></Mdetails>
 		<transition name="slideleft">
-            <Mmeau v-show="isShowMeau" class="Mmeau" :notice="notice" :exclusions="exclusions" :picInfo="picInfo" :photoList="photoList"></Mmeau>
+            <Mmeau v-show="isShowMeau" class="Mmeau" :notice="notice" :exclusions="exclusions" :picInfo="picInfo" :photoList="photoList" :id="id"></Mmeau>
         </transition>
       	<div class="marsk" v-if="isscroll" @click.stop="showMeau">
         	<i class="iconfont">&#xe665;</i>

@@ -35,7 +35,7 @@
 				</li>
 			</ul>
 			<div class="inquiryTab">
-				<a href="/inquiry">Send us any questions you have here</a>
+				<a :href="'/inquiry?objectId='+id">Send us any questions you have here</a>
 				<i class="iconfont">&#xe620;</i>
 			</div>
 		</div>
@@ -48,7 +48,8 @@
 			'notice',
 			'exclusions',
 			'picInfo',
-			"photoList"
+			"photoList",
+			"id"
 
 		],
 		name: "Mmenu",
@@ -84,6 +85,7 @@
 				m.addEventListener('touchmove',function(e){
 					e.preventDefault();
 				},false);
+				
 			}
 	}
 </script>

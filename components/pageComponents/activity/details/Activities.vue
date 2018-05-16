@@ -67,11 +67,12 @@
 							<div class="item_v clearfix" v-if="i.photoUrl">
 								<div class="contTitle">
 									<h3>{{i.title}}</h3>
-									<p>{{i.description}}</p>
+									<p><img v-lazy="i.photoUrl" /><span v-html="i.description.replace(/\r|\n/g,'<br/>')"></span></p>
+									
 								</div>
-								<div class="cont">
-									<img v-lazy="i.photoUrl" />
-								</div>
+								<!--<div class="cont">
+									
+								</div>-->
 
 							</div>
 							<div class="item clearfix" v-else>
@@ -357,7 +358,7 @@
 			</div>
 		</div>
 		<Pic :photoList="photoList" :alertPicStatus="alertPicStatus" @alert-call-back="setCallBack"></Pic>
-		<Contact :ContactStatus="ContactStatus" v-on:isshowfn="isShowFn" v-on:contact-call-back="contactCallBack"  :objectType="objectType"></Contact>
+		<Contact :ContactStatus="ContactStatus" v-on:isshowfn="isShowFn" v-on:contact-call-back="contactCallBack"  :objectType="objectType" :objectId="id"></Contact>
 		<Alert   :isShowAlert="isShowAlert" :alertTitle="alertTitle" :alertMessage="alertMessage" v-on:setIsShowAlert="getIsShowAlert"></Alert>
 	</div>
 
@@ -774,6 +775,11 @@
 			firstUpperCase(val) {
 				if(val)
 					return val.toLowerCase().replace(/( |^)[a-z]/g, L => L.toUpperCase());
+			},
+			replaceVal(val){
+				if(val){
+					//return val.replace(/\r\n/g,'<br/>');
+				}
 			}
 		},
 		mounted: function() {
@@ -1378,7 +1384,6 @@
 							}
 							.item_v {
 								.contTitle {
-									width: calc(50% - 50px);
 									float: left;
 									padding: 24px 30px 0 20px;
 									h3 {
@@ -1389,16 +1394,23 @@
 										font-size: 18px;
 										line-height: 26px;
 										margin-top: 15px;
+										text-align: justify;
 									}
+									img{
+											width: 50%;
+											margin-left:20px;
+											/*height: 255px;*/
+											float: right;
+										}
 								}
-								.cont {
+								/*.cont {
 									width: 50%;
 									float: right;
 									img {
 										width: 100%;
 										height: 255px;
 									}
-								}
+								}*/
 							}
 						}
 					}

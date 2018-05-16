@@ -29,7 +29,7 @@ on a 1-1 basis.</p>
 						<i class="iconfont icon-down" v-if="!isshowchoose">&#xe60f;</i>
 						<i class="iconfont icon-down" v-else>&#xe63f;</i>
 					</div>
-					<div class="choosePeople" v-if="isshowchoose" @click.stop="peopleNubfocus">
+					<div class="choosePeople" v-if="isshowchoose">
 						<b>People</b>
 						<div class="operation">
 							<em class="iconfont" @click.stop="del(0)">&#xe64d;</em>
@@ -68,8 +68,11 @@ on a 1-1 basis.</p>
 	import { regExp, GetDateStr, addmulMonth } from '~/assets/js/plugin/utils'
 	import Flatpickr from 'flatpickr';
 	export default {
+	
     name: 'inquiry',
     data () {
+    	let id=this.$route.query.objectId
+    	console.log(id)
         return {
           	name:'',
           	nameError:false,
@@ -90,7 +93,8 @@ on a 1-1 basis.</p>
           	
           	isShowAlert:false,
           	alertTitle:"",
-          	alertMessage:""
+          	alertMessage:"",
+          	objectId:id
         }
     },
     components: {
@@ -134,9 +138,10 @@ on a 1-1 basis.</p>
 					travelDate: that.dateTime ? that.dateTime : null,
 					participants: that.peopleNub,
 					objectId: that.objectId ? that.objectId : null,
-					destinations: that.destination ? that.destination : null,
+//					destinations: that.destination ? that.destination : null,
 					"utcOffset": new Date().getTimezoneOffset() / 60 * -1,
 				}
+				
 				if(that.isclick==false){
 					that.isclick=true
 					that.axios.post("https://api.localpanda.com/api/user/feedback/commit", JSON.stringify(obj), {

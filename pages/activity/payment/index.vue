@@ -179,7 +179,6 @@
 							objectType: "ACTIVITY"
 							
 						}
-						console.log(obj)
 						Vue.axios.post(that.apiBasePath+"payment/pay/stripe", JSON.stringify(obj), {
 							headers: {
 								'Content-Type': 'application/json; charset=UTF-8'
@@ -188,7 +187,7 @@
 							that.errMsg=response.data.errorMessage
 							let reg=/Exception/g
 							if(response.data.errorMessage&&reg.test(response.data.errorMessage)){
-								window.location.href = "/payment/failed?orderId=" + that.orderId + '&amount=' + that.opctions.amount+"&type=1"+"&succeed=false"
+								window.location.href = "/payment/failed?orderId=" + that.orderId + '&amount=' + that.opctions.amount+"&type=1"+"&succeed=false"+"&currency="+that.opctions.currency
 							}else{
 								if(response.data.succeed&&!response.data.errorMessage){
 							 		that.loadingStatus = true
@@ -197,14 +196,14 @@
 									pageTracker._addItem(that.orderId, that.opctions.activityId,"","", that.opctions.amount,"1" );
 									pageTracker._trackTrans();
 									
-									window.location.href = "/payment/success?email="+that.email+"&orderId=" + that.orderId + '&amount=' + that.opctions.amount+"&succeed=true"
+									window.location.href = "/payment/success?email="+that.email+"&orderId=" + that.orderId + '&amount=' + that.opctions.amount+"&succeed=true"+"&currency="+that.opctions.currency
 								}else{
 									that.loadingStatus = true
-							 		window.location.href = "/payment/failed?email="+that.email+"&orderId=" + that.orderId + '&amount=' + that.opctions.amount+"&type=1"+"&errMsg="+that.errMsg+"&succeed=false"
+							 		window.location.href = "/payment/failed?email="+that.email+"&orderId=" + that.orderId + '&amount=' + that.opctions.amount+"&type=1"+"&errMsg="+that.errMsg+"&succeed=false"+"&currency="+that.opctions.currency
 								}	
 							}
 						}, function(response) {
-							window.location.href = "/payment/failed?email="+that.email+"&orderId=" + that.orderId + '&amount=' + that.opctions.amount+"&type=1"+"&succeed=false"
+							window.location.href = "/payment/failed?email="+that.email+"&orderId=" + that.orderId + '&amount=' + that.opctions.amount+"&type=1"+"&succeed=false"+"&currency="+that.opctions.currency
 						})
 					}
 				})

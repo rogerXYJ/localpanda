@@ -326,7 +326,7 @@
 				}
 			},
 			goInqury(){
-				location.href="/inquiry"
+				location.href="/inquiry?objectId="+this.id
 			},
 			showMore(id) {
 				if(id == 0) {

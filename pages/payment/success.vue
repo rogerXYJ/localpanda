@@ -17,7 +17,6 @@
 					</div>
 					<div class="detail">
 						<span>Order ID: {{orderId}}</span><em>|</em><span>Payment amount: <b>{{symbol}}{{amount}}</b></span>
-						
 					</div>
 					<p style="margin-top: 10px;"> Our staff will confirm with you as soon as possible. We will reply you within one business day. You can know the details furthur by look at your 
 order details.You can also email service@localpanda.com or call us at +86 (21) 8018-2090/ +1 (888) 930-8849 (US toll free).</p>				
@@ -34,7 +33,7 @@ order details.You can also email service@localpanda.com or call us at +86 (21) 8
 	if (process.browser) {
 	  require('~/assets/js/pages/talk.js')
 	}
-	import { GetQueryString } from '~/assets/js/plugin/utils.js'
+	import {getPriceMark} from '~/assets/js/plugin/utils.js'
 	import HeaderCommon from '~/components/HeaderCommon/HeaderCommon'
 	import FooterCommon from '~/components/FooterCommon/FooterCommon';
 	export default {
@@ -43,16 +42,20 @@ order details.You can also email service@localpanda.com or call us at +86 (21) 8
 		data() {
 			var query = this.$route.query;
 			var payType = query.payType;
+			let orderId=query.orderId;
+			let amount=query.amount;
+			let currency=query.currency;
 			return {
-				orderId:'',
-				amount:'',
+				orderId:orderId,
+				amount:amount,
 				logIn:'',
 				date:"",
 				userId:'',
 				email: this.$route.query.email,
 				showTipTxt: false,
 				payType: payType?payType.toLowerCase():false,
-				symbol: query.symbol?query.symbol:'$'
+				symbol: query.symbol?query.symbol:'$',
+				currency:currency
 				
 			}
 		},
@@ -61,11 +64,11 @@ order details.You can also email service@localpanda.com or call us at +86 (21) 8
 			FooterCommon
 		},
 		methods: {
-			
+			getPriceMark:getPriceMark
 		},
 		mounted: function() {
-			this.orderId=GetQueryString("orderId")
-			this.amount=GetQueryString("amount")
+//			this.orderId=GetQueryString("orderId")
+//			this.amount=GetQueryString("amount")
 			
 			this.logIn=window.localStorage.getItem("logstate")
 			this.userId=window.localStorage.getItem("userid")

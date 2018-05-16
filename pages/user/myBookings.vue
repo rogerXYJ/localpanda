@@ -52,7 +52,7 @@
 								<b class="font-color" v-if="item.status=='REFUNDING'">Refund in progress</b>
 								<b class="font-color1" v-if="item.status=='REFUNDED'">Refund completed</b>
 								<b class="font-color1" v-if="item.status=='CANCELED'">Canceled</b>
-								<p>{{item.currency=='CNY'?'¥':'$'}}{{item.amount}}</p>
+								<p>{{getPriceMark(item.currency)}}{{item.amount}}</p>
 								<!--<button class="btnlinner margin">VIEW DETAILS</button>-->
 
 							</div>
@@ -90,7 +90,7 @@
 								<b class="font-color" v-if="item.status=='REFUNDING'">Refund in progress</b>
 								<b class="font-color1" v-if="item.status=='REFUNDED'">Refund completed</b>
 								<b class="font-color1" v-if="item.status=='CANCELED'">Canceled</b>
-								<p>{{item.currency=='CNY'?'¥':'$'}}{{item.amount}}</p>
+								<p>{{getPriceMark(item.currency)}}{{item.amount}}</p>
 								<!--<button class="btnlinner margin">VIEW DETAILS</button>-->
 
 							</div>
@@ -116,7 +116,7 @@
 </template>
 
 <script>
-	import{GetQueryString} from '~/assets/js/plugin/utils';
+	import{GetQueryString,getPriceMark} from '~/assets/js/plugin/utils';
 	import HeaderCommon from '~/components/HeaderCommon/HeaderCommon';
     import FooterCommon from '~/components/FooterCommon/FooterCommon';
     
@@ -154,6 +154,7 @@
 			Refund
 		},
 		methods: {
+			getPriceMark:getPriceMark,
 			getShowConfirmFn(val) {
 				this.isShowAlertTitle = val;
 			},

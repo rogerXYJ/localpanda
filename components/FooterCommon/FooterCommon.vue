@@ -76,7 +76,7 @@
 				</svg>
 				<span class="cooperation-text">
 					<em>© 2017–2018 Local Panda. Made in Shanghai,China</em>
-					<em>沪ICP备18014541号</em> 
+					<em><a href="http://www.miibeian.gov.cn">沪ICP备18014541号</a></em> 
 				</span>
 				
 				

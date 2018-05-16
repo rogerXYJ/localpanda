@@ -16,7 +16,7 @@
 						<b>Your booking is Complete! You made a great choice :)</b>
 					</div>
 					<div class="detail">
-						<span>Order ID: {{orderId}}</span><em>|</em><span>Payment amount: <b>${{amount}}</b></span>
+						<span>Order ID: {{orderId}}</span><em>|</em><span>Payment amount: <b>{{symbol}}{{amount}}</b></span>
 						
 					</div>
 					<p style="margin-top: 10px;"> Our staff will confirm with you as soon as possible. We will reply you within one business day. You can know the details furthur by look at your 
@@ -41,7 +41,8 @@ order details.You can also email service@localpanda.com or call us at +86 (21) 8
 
 		name: 'payNow',
 		data() {
-			var payType = this.$route.query.payType;
+			var query = this.$route.query;
+			var payType = query.payType;
 			return {
 				orderId:'',
 				amount:'',
@@ -50,7 +51,8 @@ order details.You can also email service@localpanda.com or call us at +86 (21) 8
 				userId:'',
 				email: this.$route.query.email,
 				showTipTxt: false,
-				payType: payType?payType.toLowerCase():false
+				payType: payType?payType.toLowerCase():false,
+				symbol: query.symbol?query.symbol:'$'
 				
 			}
 		},

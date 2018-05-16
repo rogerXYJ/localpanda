@@ -56,6 +56,7 @@
 										<use xlink:href="#icon-visa"></use>
 								</svg>
 							</span>
+							<br>
 							<span class="footer_weixin">
 								<svg class="icon" aria-hidden="true">
 										<use xlink:href="#icon-weixin"></use>
@@ -244,10 +245,9 @@ import { fail } from 'assert';
 								}
 								.payments{
 									span{
-										margin-left: 6px;
-										&:first-child{
-											margin-left: 0;
-										}
+										margin-right: 6px;
+										margin-bottom: 5px;
+										display: inline-block;
 									}
 									.footer_weixin{
 										background-color: #0eb20a;

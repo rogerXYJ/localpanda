@@ -95,7 +95,7 @@
 				</div>
 				<div class="provide" v-if="picInfo.details.length>0" id="picDetails">
 					<h3>Price Details</h3>
-					<p style="font-size: 16px;margin-top: 10px;" v-if="picInfo.childDiscount">Children's price is   $  {{picInfo.childDiscount}} USD  less than adults' price.</p>
+					<p style="font-size: 16px;margin-top: 10px;" v-if="picInfo.childDiscount">Children's price is   $  {{returnFloat(picInfo.childDiscount)}} USD  less than adults’ price.</p>
 					<el-table :data="sixArr" stripe style="width: 100%">
 						<el-table-column prop="capacity" label="Number of people" width="244.6" align="center">
 							<template slot-scope="scope">
@@ -105,7 +105,7 @@
 						</el-table-column>
 						<el-table-column prop="price" label="Total cost" width="244.6" align="center">
 							<template slot-scope="scope">
-								<span>$ {{returnFloat(scope.row.price)}} USD</span>
+								<span>{{nowExchange.symbol}} {{returnFloat(scope.row.price)}} {{nowExchange.currency}}</span>
 							</template>
 						</el-table-column>
 						<!-- <el-table-column prop="chlidenNumb" label="Number of people" width="183">
@@ -118,7 +118,7 @@
 						<el-table-column prop="childenTotal" label="Price per person" width="245" align="center">
 							<template slot-scope="scope">
 								<div v-show="scope.row.capacity">
-									<span>$ {{returnFloat(round(scope.row.price/scope.row.capacity))}} USD</span>
+									<span>{{nowExchange.symbol}} {{returnFloat(scope.row.price/scope.row.capacity)}} {{nowExchange.currency}}</span>
 								</div>
 							</template>
 						</el-table-column>
@@ -199,17 +199,19 @@
 						<div class="bookbox">
 							<div class="picPp clearfix">
 								<div class="picLeft">
-									From <span>${{returnFloat(picInfo.originalPrice)}}</span>
-									<b>${{returnFloat(picInfo.bottomPrice)}}</b> pp
+									From <span>{{nowExchange.symbol}}{{returnFloat(picInfo.originalPrice)}}</span>
+									<b>{{nowExchange.symbol}}{{returnFloat(picInfo.bottomPrice)}}</b> pp
 								</div>
 								<div class="picRight" @mouseover="showNode" @mouseleave="hidden">
-									Price Note
-									<span class="iconfont">&#xe659;</span>
+									<select class="currency_type" @change="changeCurrency">
+										<option :value="item.currency" v-for="item in exchange" :key="item.currency">{{item.currency}}</option>
+									</select>
+									<span class="iconfont">&#xe666;</span>
 								</div>
-								<div class="priceNote" v-if="isShowPicNode">
+								<!-- <div class="priceNote" v-if="isShowPicNode">
 									<h4>Price Note</h4>
 									<p>Price is in USD and calculated based on the number of people in your tour group and the vehicle required.</p>
-								</div>
+								</div> -->
 
 							</div>
 							<div class="selectBox">
@@ -291,19 +293,19 @@
 									<b class='headTitle'>Price Breakdown<span @click.stop="picDetailposition('picDetails')">Price Details</span></b>
 									<ul>
 										<li class="clearfix">
-											<div class="formula" v-if="children==0&&adults==1">${{returnFloat(round(adultsPic/(adults+children)))}} x {{adults+children}} Person</div>
-											<div class="formula" v-else>${{returnFloat(round(adultsPic/(adults+children)))}} x {{adults+children}} People </div>
+											<div class="formula" v-if="children==0&&adults==1">{{nowExchange.symbol}}{{returnFloat(adultsPic/(adults+children))}} x {{adults+children}} Person</div>
+											<div class="formula" v-else>{{nowExchange.symbol}}{{returnFloat(adultsPic/(adults+children))}} x {{adults+children}} People </div>
 
-											<div class="pic">${{returnFloat(adultsPic)}}</div>
+											<div class="pic">{{nowExchange.symbol}}{{returnFloat(adultsPic)}}</div>
 										</li>
 										<li class="clearfix" v-if="children>0&&picInfo.childDiscount">
-											<div class="formula"><b style="display: inline-block;">- ${{returnFloat(children*picInfo.childDiscount)}}</b> for child(ren)</div>
+											<div class="formula"><b style="display: inline-block;">- {{nowExchange.symbol}}{{returnFloat(children*picInfo.childDiscount)}}</b> for child(ren)</div>
 										</li>
 									</ul>
 									<div class="total clearfix">
 										<div class="totalText">Total</div>
-										<div class="totalPic" v-if="children>0&&picInfo.childDiscount">${{returnFloat(cutXiaoNum(adultsPic-children*picInfo.childDiscount,1))}}</div>
-										<div class="totalPic" v-else>${{returnFloat(adultsPic)}}</div>
+										<div class="totalPic" v-if="children>0&&picInfo.childDiscount">{{nowExchange.symbol}}{{returnFloat(returnFloat(adultsPic)-returnFloat(children*picInfo.childDiscount))}}</div>
+										<div class="totalPic" v-else>{{nowExchange.symbol}}{{returnFloat(adultsPic)}}</div>
 									</div>
 								</div>
 								<div class="inquiry">
@@ -396,6 +398,7 @@
 		],
 		name: "Activities",
 		data() {
+
 			return {
 				PriceDetail: [], //价格明细
 				open: null,
@@ -432,7 +435,15 @@
 				alertTitle:'',
 				alertMessage:"",
 				istrue:false,
-				objectType:'ACTIVITY'
+				objectType:'ACTIVITY',
+				//汇率换算
+				nowExchange:{},//{'rate':1,'currency':'USD','symbol':'$'}
+				exchange:[]
+				// [
+				// 	{'rate':1,'currency':'USD','symbol':'$'},
+				// 	{'rate':6.3710,'currency':'CNY','symbol':'¥'},
+				// 	{'rate':0.8348,'currency':'EUR','symbol':'€'}
+				// ]
 			};
 			
 		},
@@ -443,6 +454,72 @@
 			Alert
 		},
 		methods: {
+			changeCurrency(e){
+				var self = this;
+				var value = e.target.value;
+				var picInfo = this.picInfo;
+				var thisDetail = picInfo.details;
+
+				console.log(picInfo);
+				//换算折扣价
+				var exchange = this.exchange;
+				for(var i=0;i<exchange.length;i++){
+					var thisEx = exchange[i];
+					//检测当前货币类型
+					if(thisEx.currency==value){
+						//设置当前币种
+						this.nowExchange = thisEx;
+						//切换折扣价币种
+						picInfo.currency = value;
+						picInfo.bottomPrice = picInfo.defaultPrice.bottomPrice * thisEx.rate;
+						picInfo.originalPrice = picInfo.defaultPrice.originalPrice * thisEx.rate;
+						if(picInfo.defaultPrice.childDiscount){
+							//之所以在这里加returnFloat，是为了让儿童优惠后的总价格，不会超过总价-儿童优惠价
+							picInfo.childDiscount = picInfo.defaultPrice.childDiscount * thisEx.rate;
+						}
+						//切换价格详情币种
+						for(var i=0;i<thisDetail.length;i++){
+							thisDetail[i].price = thisDetail[i].defaultPrice * thisEx.rate;
+						}
+
+						//切换详情币种
+						var sixArr = this.sixArr;
+						for(var i=0;i<sixArr.length;i++){
+							//之所以在这里加returnFloat，是为了让儿童优惠后的总价格，不会超过总价-儿童优惠价
+							sixArr[i].price = sixArr[i].defaultPrice * thisEx.rate;
+						}
+						
+						break;
+					}
+				}
+				
+				if(this.people>0){
+					this.adultsPic = thisDetail[this.people-1].price;
+					// self.amount = that.children > 0 && picInfo.childDiscount ?
+					// 		self.returnFloat(self.returnFloat(self.adultsPic) - self.returnFloat(self.children * self.picInfo.childDiscount)) :
+					// 		self.returnFloat(self.adultsPic);
+				}
+				
+			},
+			//设置默认价格
+			setPriceData(){
+				var picInfo = this.picInfo;
+				var thisDetail = picInfo.details;
+				//设置默认价格和折扣价
+				picInfo.defaultPrice = {
+					bottomPrice: picInfo.bottomPrice,
+					originalPrice: picInfo.originalPrice
+				};
+				//儿童折扣
+				if(picInfo.childDiscount){
+					picInfo.defaultPrice.childDiscount = picInfo.childDiscount;
+				}
+				//设置人数列表价格
+				for(var i=0; i<thisDetail.length; i++){
+					var thisPrice = thisDetail[i].price;
+					thisDetail[i].defaultPrice = thisPrice;
+				}
+			},
 			//inquery
 			isShowFn(val){
 				this.istrue=val
@@ -467,8 +544,8 @@
 
 				window.ga && ga("gtag_UA_107010673_1.send", {
 					hitType: "event",
-					eventCategory: "activity_detail",
-					eventAction: "click",
+					eventCategory: "Button",
+					eventAction: "Click",
 					eventLabel: "activity_inquiry"
 				});
 				that.ContactStatus=true
@@ -490,12 +567,12 @@
 			},
 			showVeiwMore() {
 				this.isShowView = true;
-//				window.ga && ga("gtag_UA_107010673_1.send", {
-//					hitType: "event",
-//					eventCategory: "Button",
-//					eventAction: "Click",
-//					eventLabel: "activity_view_more"
-//				});
+				window.ga && ga("gtag_UA_107010673_1.send", {
+					hitType: "event",
+					eventCategory: "Button",
+					eventAction: "Click",
+					eventLabel: "activity_view_more"
+				});
 			},
 			showNode() {
 				this.isShowPicNode = true;
@@ -527,22 +604,34 @@
 					return(parseFloat(this.cutXiaoNum(val, 1)) + 0.1).toFixed(1);
 				}
 			},
-			returnFloat(value) {
-				if(value) {
-					var value = Math.round(parseFloat(value) * 100) / 100;
-					var xsd = value.toString().split(".");
-					if(xsd.length == 1) {
-						value = value.toString() + ".00";
-						return value;
-					}
-					if(xsd.length > 1) {
-						if(xsd[1].length < 2) {
-							value = value.toString() + "0";
-						}
-						return value;
-					}
-				}
+			// returnFloat(value) {
+			// 	if(value) {
+			// 		var value = Math.round(parseFloat(value) * 100) / 100;
+			// 		var xsd = value.toString().split(".");
+			// 		if(xsd.length == 1) {
+			// 			value = value.toString() + ".00";
+			// 			return value;
+			// 		}
+			// 		if(xsd.length > 1) {
+			// 			if(xsd[1].length < 2) {
+			// 				value = value.toString() + "0";
+			// 			}
+			// 			return value;
+			// 		}
+			// 	}
 
+			// },
+			returnFloat(value) {
+				value*=1;
+				if(value) {
+					var numberArr = (''+value).split('.');
+					if(numberArr.length>1 && numberArr[1].length>2){
+						return (value+0.005).toFixed(2);
+					}
+					return value.toFixed(2);
+				}else{
+					return 0;
+				}
 			},
 			showTable() {
 				this.isShowTable = false
@@ -581,15 +670,9 @@
 			showAdults() {
 				window.ga && ga("gtag_UA_107010673_1.send", {
 					hitType: "event",
-					eventCategory: "activity_detail",
-					eventAction: "select",
-					eventLabel: "guests"
-				});
-				window.ga && ga("gtag_UA_107010673_1.send", {
-					hitType: "event",
-					eventCategory: "activity_detail",
-					eventAction: "select",
-					eventLabel: "detail_select"
+					eventCategory: "Selection",
+					eventAction: "Click",
+					eventLabel: "activity_guests_select"
 				});
 				if(this.people == "Please Select") {
 					this.adults = this.adults + 1;
@@ -602,8 +685,8 @@
 
 				window.ga && ga("gtag_UA_107010673_1.send", {
 					hitType: "event",
-					eventCategory: "activity_detail",
-					eventAction: "click",
+					eventCategory: "Button",
+					eventAction: "Click",
 					eventLabel: "activity_book"
 				});
 				let that = this;
@@ -632,33 +715,34 @@
 						activityId: that.detail.activityId,
 						refundTimeLimit: that.detail.refundTimeLimit * 24,
 						amount: that.children > 0 && that.picInfo.childDiscount ?
-							that.cutXiaoNum(
-								that.adultsPic - that.children * that.picInfo.childDiscount,
-								1
-							) :
-							that.adultsPic,
-						currency: "USD",
+							that.returnFloat(that.returnFloat(that.adultsPic) - that.returnFloat(that.children * that.picInfo.childDiscount)) :
+							that.returnFloat(that.adultsPic),
+						details: that.detailAll,
+						currency: that.picInfo.currency,
+						symbol: that.nowExchange.symbol,
 						adultNum: that.adults,
 						childrenNum: that.children,
 						infantNum: that.infant,
 						startDate: that.dateTime,
 						startTime: that.time ? that.time : null,
-						adultsPic: that.adultsPic,
+						adultsPic: that.returnFloat(that.adultsPic),
 						coverPhotoUrl: that.detail.coverPhotoUrl,
 						title: that.detail.title,
-						childDiscountP: that.picInfo.childDiscount,
+						childDiscountP: that.returnFloat(that.picInfo.childDiscount),
+						childDiscountPP: that.picInfo.childDiscountDefault?that.returnFloat(that.picInfo.childDiscountDefault):0,
 						category: that.detail.category,
-						averagePrice: that.round(
+						averagePrice: that.returnFloat(
 							that.adultsPic / (that.adults + that.children)
 						),
 						childDiscount: that.picInfo.childDiscount ?
-							that.children * that.picInfo.childDiscount :
+							that.returnFloat(that.children * that.picInfo.childDiscount) :
 							null
 					};
 					//console.log(orderInfo)
 					orderInfo = JSON.stringify(orderInfo);
 
 					localStorage.setItem("orderInfo", orderInfo);
+
 					location.href = "/activity/booking"
 
 					//routes.push('/fillYourInfo')
@@ -680,8 +764,6 @@
 
 
 				if(details.length==1){
-					console.log(1)
-					console.log(details[0].capacity)
 					for(let i=0;i<details[0].capacity;i++){
 						var s=newObj(details[0]);
 						newArr.push(s)
@@ -717,15 +799,9 @@
 			dateTime(val, oldVal) {
 				window.ga && ga("gtag_UA_107010673_1.send", {
 					hitType: "event",
-					eventCategory: "activity_detail",
-					eventAction: "select",
-					eventLabel: "detail_select"
-				});
-				window.ga && ga("gtag_UA_107010673_1.send", {
-					hitType: "event",
-					eventCategory: "activity_detail",
-					eventAction: "select",
-					eventLabel: "date"
+					eventCategory: "Selection",
+					eventAction: "Click",
+					eventLabel: "activity_date_select"
 				});
 				if(val == "") {
 					this.isSelectDate = true;
@@ -779,13 +855,34 @@
 		mounted: function() {
 			let that = this;
 
+			//调整数据，设置默认价格
+			that.setPriceData();
+			if(that.picInfo.childDiscount){
+				that.picInfo.childDiscountDefault = that.picInfo.childDiscount;
+			}
+			
+			
+			var self = this;
+			//加载币种
+			self.axios.get("https://www.fedrobots.com/api/exchange/").then(function(response) {
+				// console.log(response);
+				if(response.status==200){
+					self.exchange = response.data.data;
+					self.nowExchange = self.exchange[0];
+				}
+			}, function(response) {});
+
+			this.sixArr=this.tableData(this.picInfo.details)
+
 			//初始化清空日期
 			that.dateTime = ""
+
+			that.detailAll = that.tableData(that.picInfo.details);
 			if(that.tableData(that.picInfo.details).length>5){
 				this.isShowTable=true
-				that.sixArr=that.tableData(that.picInfo.details).splice(0,6)
+				that.sixArr=that.detailAll.concat().splice(0,6);
 			}else{
-				that.sixArr=that.tableData(that.picInfo.details)
+				that.sixArr=that.detailAll;
 			}
 			//that.sixArr=that.tableData(that.picInfo.details)
 			//初始化日历
@@ -922,6 +1019,15 @@
 								span {
 									font-size: 10px;
 								}
+								.iconfont{
+									position: absolute;
+									right: 0;
+									top:0;
+									height: 51px;
+									line-height: 51px;
+									text-align:center;
+									font-size:18px;
+								}
 							}
 							.priceNote {
 								width: 200px;
@@ -940,6 +1046,23 @@
 									margin-top: 14px;
 									line-height: 20px;
 								}
+							}
+							.currency_type{
+								border:none;
+								padding-right: 20px;
+								font-size: 16px;
+								background:none;
+								height: 36px;
+								color: rgba(255, 255, 255, 0.9);
+								option{
+									color:#666;
+								}
+								position: relative;
+								z-index: 2;
+								-webkit-appearance: none;
+								-moz-appearance: none;
+								appearance: none;
+								
 							}
 						}
 						.selectBox {

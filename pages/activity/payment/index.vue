@@ -169,6 +169,7 @@ import { clearInterval, setTimeout } from 'timers';
 
 			},
 			returnFloat(value) {
+				value*=1;
 				if(value) {
 					var numberArr = (''+value).split('.');
 					if(numberArr.length>1 && numberArr[1].length>2){

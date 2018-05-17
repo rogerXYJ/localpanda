@@ -495,8 +495,11 @@
 										'Content-Type': 'application/json; charset=UTF-8'
 									}
 								}).then(function(response) {
-									console.log(response)
-									window.location.href = "/activity/payment?objectId=" + response.data.response
+									
+									var loginState = (that.logIn?that.logIn:0);
+									var hostUrl = obj.currency=='CNY' ? 'https://www.localpanda.cn' : 'https://www.localpanda.com';
+									window.location.href = hostUrl + "/activity/payment?objectId=" + response.data.response + '&login='+loginState;
+
 								}, function(response) {})
 							}
 						}
@@ -530,8 +533,11 @@
 									'Content-Type': 'application/json; charset=UTF-8'
 								}
 							}).then(function(response) {
-								console.log(response)
-								window.location.href = "/activity/payment?objectId=" + response.data.response
+								
+								var hostUrl = obj.currency=='CNY' ? 'https://www.localpanda.cn' : 'https://www.localpanda.com';
+								var loginState = (that.logIn?that.logIn:0);
+								window.location.href = hostUrl + "/activity/payment?objectId=" + response.data.response + '&login='+loginState;
+								
 							}, function(response) {})
 						}
 					}
@@ -555,6 +561,7 @@
 				// console.log(response);
 				if(response.status==200){
 					self.exchange = response.data.data;
+					self.nowExchange = self.exchange[0]
 				}
 			}, function(response) {});
 

@@ -878,7 +878,7 @@
 				}
 			}, function(response) {});
 
-			this.sixArr=this.tableData(this.picInfo.details)
+			//this.sixArr=this.tableData(this.picInfo.details)
 
 			//初始化清空日期
 			that.dateTime = ""

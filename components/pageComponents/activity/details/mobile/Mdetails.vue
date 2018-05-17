@@ -72,7 +72,7 @@
 				</div>
 			<div class="provide" v-if="picInfo.details.length>0" id="picDetails">
 					<h3>Price Details</h3>
-					<p class="childDiscount" v-if="picInfo.childDiscount">Children's price is  {{getPriceMark(picInfo.currency)}}  {{picInfo.childDiscount}}  {{getPriceMark(picInfo.currency,1)}}  less than adults' price.</p>
+					<p class="childDiscount" v-if="picInfo.childDiscount">Children's price is  {{nowExchange.symbol}}  {{returnFloat(picInfo.childDiscount)}}  {{nowExchange.currency}}  less than adults' price.</p>
 					<el-table :data="sixArr" stripe style="width: 100%">
 						<el-table-column prop="capacity" label="Number of people"  align="center">
 							<template slot-scope="scope">
@@ -82,13 +82,13 @@
 						</el-table-column>
 						<el-table-column prop="price" label="Total cost" align="center">
 							<template slot-scope="scope">
-								<span>{{getPriceMark(picInfo.currency)}} {{returnFloat(scope.row.price)}} {{getPriceMark(picInfo.currency,1)}}</span>
+								<span>{{nowExchange.symbol}} {{returnFloat(scope.row.price)}} {{nowExchange.currency}}</span>
 							</template>
 						</el-table-column>
 						<el-table-column prop="childenTotal" label="Price per person"  align="center">
 							<template slot-scope="scope">
 								<div v-show="scope.row.capacity">
-									<span>{{getPriceMark(picInfo.currency)}} {{returnFloat(round(scope.row.price/scope.row.capacity))}} {{getPriceMark(picInfo.currency,1)}}</span>
+									<span>{{nowExchange.symbol}} {{returnFloat(scope.row.price/scope.row.capacity)}} {{nowExchange.currency}}</span>
 								</div>
 							</template>
 						</el-table-column>
@@ -167,15 +167,14 @@
 		</div>
 		<div class="book clearfix">
 			<div class="picinfo">
-				<p v-if="picInfo.originalPrice" class="oldpic">{{getPriceMark(picInfo.currency)}} {{returnFloat(picInfo.originalPrice)}}</p>
-				<p>From <b>{{getPriceMark(picInfo.currency)}} {{returnFloat(picInfo.bottomPrice)}}</b> pp</p>
+				<p v-if="picInfo.originalPrice" class="oldpic">{{nowExchange.symbol}} {{returnFloat(picInfo.originalPrice)}}</p>
+				<p>From <b>{{nowExchange.symbol}} {{returnFloat(picInfo.bottomPrice)}}</b> pp</p>
 			</div>
 			
 			<button class="bookBtn" @click="goBooking">Book Now</button>
-			<div class="picRate" v-show="isWx">
-				<select class="currency_type" @change="changeCurrency" v-model="picInfo.currency">
-					<option value="USD">USD</option>
-					<option value="CNY">CNY</option>
+			<div class="picRate">
+				<select class="currency_type" @change="changeCurrency">
+					<option :value="item.currency" v-for="item in exchange" :key="item.currency">{{item.currency}}</option>
 				</select>
 				<span class="iconfont">&#xe666;</span>
 			</div>
@@ -186,10 +185,6 @@
 </template>
 
 <script>
-
-	import {
-		getPriceMark
-	} from "~/assets/js/plugin/utils";
 
 	import bus from '~/assets/js/pages/bus.js'
 	import photo from '~/components/pageComponents/activity/details/mobile/photo'
@@ -232,8 +227,9 @@
 				sixArr: [],
 				isShowTable: false, //价格明细
 				alertPicStatus: false,
-				rate: 6.3710,
-				isWx : false
+				
+				nowExchange:{},//{'rate':1,'currency':'USD','symbol':'$'}
+				exchange:[]
 				
 		}
 	},
@@ -241,88 +237,66 @@
 		photo
 	},
 		methods: {
-			getPriceMark:getPriceMark,
 			changeCurrency(e){
 				var self = this;
 				var value = e.target.value;
 				var picInfo = this.picInfo;
-
-				if(value == 'USD'){
-					picInfo.currency = 'USD';
-					picInfo.bottomPrice = picInfo.priceAll.bottomPrice.usd;
-					picInfo.originalPrice = picInfo.priceAll.originalPrice.usd;
-					if(picInfo.priceAll.childDiscount){
-						picInfo.childDiscount=picInfo.priceAll.childDiscount.usd;
-					}
-					
-				}else{
-					picInfo.currency = 'CNY';
-					picInfo.bottomPrice = picInfo.priceAll.bottomPrice.cny;
-					picInfo.originalPrice = picInfo.priceAll.originalPrice.cny;
-					if(picInfo.priceAll.childDiscount){
-						picInfo.childDiscount=picInfo.priceAll.childDiscount.cny;
-					}
-					
-				}
-
-				
-
-				//价格详情币种切换
 				var thisDetail = picInfo.details;
-				for(var i=0;i<thisDetail.length;i++){
-					if(value == 'USD'){
-						thisDetail[i].price = thisDetail[i].priceAll.usd
-					}else{
-						thisDetail[i].price = thisDetail[i].priceAll.cny
-					}
-				}
 
-				var sixArr = this.sixArr;
-				for(var i=0;i<sixArr.length;i++){
-					if(value == 'USD'){
-						sixArr[i].price = sixArr[i].priceAll.usd
-					}else{
-						sixArr[i].price = sixArr[i].priceAll.cny
+				console.log(picInfo);
+				//换算折扣价
+				var exchange = this.exchange;
+				for(var i=0;i<exchange.length;i++){
+					var thisEx = exchange[i];
+					//检测当前货币类型
+					if(thisEx.currency==value){
+						//设置当前币种
+						this.nowExchange = thisEx;
+						//切换折扣价币种
+						picInfo.currency = value;
+						picInfo.symbol = thisEx.symbol;
+						picInfo.bottomPrice = picInfo.defaultPrice.bottomPrice * thisEx.rate;
+						picInfo.originalPrice = picInfo.defaultPrice.originalPrice * thisEx.rate;
+						if(picInfo.defaultPrice.childDiscount){
+							//之所以在这里加returnFloat，是为了让儿童优惠后的总价格，不会超过总价-儿童优惠价
+							picInfo.childDiscount = picInfo.defaultPrice.childDiscount * thisEx.rate;
+						}
+						//切换价格详情币种
+						for(var i=0;i<thisDetail.length;i++){
+							thisDetail[i].price = thisDetail[i].defaultPrice * thisEx.rate;
+						}
+
+						//切换详情币种
+						var sixArr = this.sixArr;
+						for(var i=0;i<sixArr.length;i++){
+							//之所以在这里加returnFloat，是为了让儿童优惠后的总价格，不会超过总价-儿童优惠价
+							sixArr[i].price = sixArr[i].defaultPrice * thisEx.rate;
+						}
+						
+						break;
 					}
 				}
 				
 				if(this.people>0){
-					if(value == 'USD'){
-						this.adultsPic = thisDetail[this.people-1].priceAll.usd;
-					}else{
-						this.adultsPic = thisDetail[this.people-1].priceAll.cny;
-					}
+					this.adultsPic = thisDetail[this.people-1].price;
 				}
 			},
 			setPriceData(){
 				var picInfo = this.picInfo;
 				var thisDetail = picInfo.details;
-				//console.log(thisDetail);
-
-				picInfo.priceAll = {
-					bottomPrice:{
-						cny: (picInfo.bottomPrice*this.rate).toFixed(2),
-						usd: picInfo.bottomPrice
-					},
-					originalPrice:{
-						cny: (picInfo.originalPrice*this.rate).toFixed(2),
-						usd: picInfo.originalPrice
-					}
+				//设置默认价格和折扣价
+				picInfo.defaultPrice = {
+					bottomPrice: picInfo.bottomPrice,
+					originalPrice: picInfo.originalPrice
 				};
-
+				//儿童折扣
 				if(picInfo.childDiscount){
-					picInfo.priceAll.childDiscount = {
-						cny: (picInfo.childDiscount*this.rate).toFixed(2),
-						usd: picInfo.childDiscount
-					}
+					picInfo.defaultPrice.childDiscount = picInfo.childDiscount;
 				}
-
+				//设置人数列表价格
 				for(var i=0; i<thisDetail.length; i++){
 					var thisPrice = thisDetail[i].price;
-					thisDetail[i].priceAll = {
-						cny: (thisPrice*this.rate).toFixed(2),
-						usd: thisPrice
-					}
+					thisDetail[i].defaultPrice = thisPrice;
 				}
 			},
 			goInqury(){
@@ -380,19 +354,15 @@
 				location.href="/activity/details/mobile/bookDetail"
 			},
 			 returnFloat(value) {
-				if(value){
-					var value = Math.round(parseFloat(value) * 100) / 100;
-					var xsd = value.toString().split(".");
-					if(xsd.length == 1) {
-						value = value.toString() + ".00";
-						return value;
+				value*=1;
+				if(value) {
+					var numberArr = (''+value).split('.');
+					if(numberArr.length>1 && numberArr[1].length>2){
+						return (value+0.005).toFixed(2);
 					}
-					if(xsd.length > 1) {
-						if(xsd[1].length < 2) {
-							value = value.toString() + "0";
-						}
-						return value;
-					}
+					return value.toFixed(2);
+				}else{
+					return 0;
 				}
 			},
 			//唤起图片轮播
@@ -459,29 +429,38 @@
 		},
 		mounted: function() {
 			
+			let that = this;
 			
-
+			//加载币种
+			that.axios.get("https://www.fedrobots.com/api/exchange/").then(function(response) {
+				// console.log(response);
+				if(response.status==200){
+					that.exchange = response.data.data;
+					that.nowExchange = that.exchange[0];
+				}
+			}, function(response) {});
 			
 			//调整不同币种价格数据
-			this.setPriceData();
+			that.setPriceData();
+			if(that.picInfo.childDiscount){
+				that.picInfo.childDiscountDefault = that.picInfo.childDiscount;
+			}
 
-
-
-			
-			let that=this
+			//设置价格详情页，渲染数据
+			that.detailAll = that.tableData(that.picInfo.details);
 			if(that.tableData(that.picInfo.details).length>5){
-				this.isShowTable=true
-				that.sixArr=that.tableData(that.picInfo.details).splice(0,6)
+				that.isShowTable=true
+				that.sixArr=that.detailAll.concat().splice(0,6);
 			}else{
-				that.sixArr=that.tableData(that.picInfo.details)
+				that.sixArr=that.detailAll;
 			}
 
 
 
 			
 
-			var ua = window.navigator.userAgent.toLowerCase();
-			that.isWx = (ua.match(/MicroMessenger/i) == 'micromessenger') ? true : false;
+			//var ua = window.navigator.userAgent.toLowerCase();
+			//that.isWx = (ua.match(/MicroMessenger/i) == 'micromessenger') ? true : false;
 		},
 		watch:{
 			

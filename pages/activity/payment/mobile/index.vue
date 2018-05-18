@@ -57,14 +57,7 @@
 		</div>
 
 
-		<div class="confirm_all" v-show="showWxOpenBox" @touchstart="hideWxOpenBox"></div>
-		<div class="confirm_box" v-show="showWxOpenBox">
-				<h3>Please confirm whether the payment has been completed ?</h3>
-				<div class="btn_list">
-						<a class="btn_ok" @touchstart="confirmation">Completion</a>
-						<a :href="tryAgainHref">Try again</a>
-				</div>
-		</div>
+		
 
 		<Loading :loadingStatus="loadingStatus"></Loading>
 	</div>
@@ -131,8 +124,7 @@ import { setTimeout } from 'timers';
 				rate: 6.3710,
 				isWx : false,
 				payData : '',
-				showWxOpenBox: false,
-				tryAgainHref : ''
+				showWxOpenBox: false
 			}
 		},
 		components: {
@@ -446,13 +438,13 @@ import { setTimeout } from 'timers';
 					var data = response.data;
 					if(data.return_code == 'SUCCESS'){
 
-						self.showWxOpenBox = true;
+						//self.showWxOpenBox = true;
 						self.loadingStatus = false;
 						
 						var callUrl = 'https://www.localpanda.cn/payment/mobile/wxMobilePay?email='+self.email+'&orderId=' + self.orderId + '&amount=' + self.opctions.amount+'&symbol='+self.opctions.symbol+'&login='+(self.logIn?self.logIn:0);
 						var openWxUrl = data.mweb_url + '&redirect_url=' + encodeURIComponent(callUrl);
 
-						self.tryAgainHref = openWxUrl;
+						//self.tryAgainHref = openWxUrl;
 
 						window.location.href = openWxUrl;
 						
@@ -469,42 +461,7 @@ import { setTimeout } from 'timers';
 					
 				}, function(response) {})
 			},
-			confirmation(e){
-					//var query = this.query;
-				var self = this;
-				self.loadingStatus = true;
-					//查询订单
-					this.axios.get("/api/payment/wechat/status?orderId="+self.orderId+'&flag=1',{
-							headers: {
-									'Content-Type': 'application/json;'
-							}
-					}).then(function(response) {
-							if(response.status==200){
-									var succeed = false,
-											msg = '';
-									if(response.data.succeed){
-											succeed = true;
-									}else{
-											msg = 'fail';
-									}
-									window.location.href = "https://www.localpanda.com/payment/mobile/success?email="+self.email+"&orderId=" + self.orderId + '&amount=' + self.opctions.amount+"&succeed="+succeed+'&symbol='+self.opctions.symbol+'&msg='+msg;
-							}else{
-									alert('Please try again!');
-							}
-							self.loadingStatus = false;
-					}, function(response) {
-							alert('Please try again!');
-					})
-
-            
-        },
-        tryAgain(){
-					//var self = this;
-					//window.location.href = 'https://www.localpanda.cn/activity/payment/mobile/?objectId='+self.orderId+'&login='+(self.logIn?self.logIn:0);
-				},
-				hideWxOpenBox(){
-					this.showWxOpenBox = false;
-				}
+			
 		},
 		created: function() {
 

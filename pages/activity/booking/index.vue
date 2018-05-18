@@ -114,7 +114,7 @@
 						<div class="totalPic">{{nowExchange.symbol}}{{opctions.amount}}</div>
 						<div class="picRate">
 							<select class="currency_type" @change="changeCurrency" v-model="opctions.currency">
-								<option :value="item.currency" v-for="item in exchange" :key="item.currency">{{item.currency}}</option>
+								<option :value="item.code" v-for="item in exchange" :key="item.currency">{{item.code}}</option>
 							</select>
 							<span class="iconfont">&#xe666;</span>
 						</div>
@@ -232,15 +232,15 @@
 				for(var i=0;i<exchange.length;i++){
 					var thisEx = exchange[i];
 					//检测当前货币类型
-					if(thisEx.currency==value){
+					if(thisEx.code==value){
 						//设置当前币种
 						this.nowExchange = thisEx;
 	
 						//切换价格详情币种
-						opctions.adultsPic = this.returnFloat(price * thisEx.rate);
+						opctions.adultsPic = this.returnFloat(price * thisEx.exchangeRate);
 						opctions.averagePrice = this.returnFloat(opctions.adultsPic/people);
-						opctions.amount = this.returnFloat(opctions.adultsPic - this.returnFloat(opctions.childrenNum * thisEx.rate * opctions.childDiscountPP));
-						opctions.childDiscount = this.returnFloat(opctions.childDiscountPP * opctions.childrenNum * thisEx.rate);
+						opctions.amount = this.returnFloat(opctions.adultsPic - this.returnFloat(opctions.childrenNum * thisEx.exchangeRate * opctions.childDiscountPP));
+						opctions.childDiscount = this.returnFloat(opctions.childDiscountPP * opctions.childrenNum * thisEx.exchangeRate);
 						opctions.symbol = thisEx.symbol;
 						break;
 					}
@@ -557,10 +557,10 @@
 
 			var self = this;
 			//加载币种
-			self.axios.get("https://www.fedrobots.com/api/exchange/").then(function(response) {
+			self.axios.get("https://api.localpanda.com/api/public/currency/all/USD").then(function(response) {
 				// console.log(response);
 				if(response.status==200){
-					self.exchange = response.data.data;
+					self.exchange = response.data;
 					self.nowExchange = self.exchange[0]
 				}
 			}, function(response) {});

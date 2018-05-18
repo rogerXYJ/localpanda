@@ -134,7 +134,7 @@ import { clearInterval, setTimeout } from 'timers';
 				//微信支付
 				showWxPay : false,
 				ewmTip: '',
-				wxpayTime : 5*2 //5分钟
+				wxpayTime : 5*60 //5分钟
 
 			}
 		},

@@ -58,7 +58,6 @@ export default {
 		bottom: 0;
 		left: 0;
 		right: 0;
-		background: rgba(0,0,0,0.4);
 		width: 100%;
 		max-height: 100%;
 		z-index: 30;

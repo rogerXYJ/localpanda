@@ -10,7 +10,7 @@
 			<div class="nav" :class="{meauFix:showMeau}" id="nav">
 				<ul class="clearfix">
 					<li @click="goAnchor('top_destinations')">Top Destinations</li>
-					<li @click="goAnchor('customize')">First Timer Trips</li>
+					<li @click="goAnchor('customize')">First-timer Trips</li>
 					<li @click="goAnchor('activity')">Landmarks Tours</li>
 					<li @click="goAnchor('visitor')">Family Vacations</li>
 				</ul>
@@ -19,7 +19,7 @@
 				<h3>China Top Destinations</h3>
 				<div class="map_cont clearfix">
 					<div class="description">
-						<h4>Hot Destination</h4>
+						<h4>Hot Destinations</h4>
 						<ul>
 							<li v-for="(item,index) in mapList" @click="getInfo(index)"  v-lazy:background-image="item.imgUrl" @mouseover="showMap(index)" @mouseleave="hiddenMap(index)">
 								<div class="mask"></div>
@@ -60,7 +60,7 @@
 					</li>
 				</ul>
 				<div class="customizeBtn">
-					<a href="/travel/customize/step1">Customize My Tirp</a>
+					<a href="/travel/customize/step1">Customize My Trip</a>
 				</div>
 			</div>
 
@@ -84,7 +84,7 @@
 						<li v-for="(c,index) in item.activites">
 							<div class="topActivity" v-if="index==0">
 								<div class="top">
-									<h5>Summer Sales</h5>
+									<h5>{{item.dd}}</h5>
 									<div class="cont">
 										<a :href="c.linkUrl" target="_blank">
 										<div class="activityInfo clearfix">
@@ -103,7 +103,7 @@
 												</div>
 												<div class="price">
 													<b>{{c.nowPrice}} <span>{{c.oldPrice}}</span></b>
-													<p>Per Person on twin sharing</p>
+													<p>Per Person</p>
 												</div>
 												<div class="cities">
 													<b>Cities:</b> {{c.Cities}}
@@ -146,7 +146,7 @@
 										</div>
 										<div class="price">
 											<b>{{c.nowPrice}} <span>{{c.oldPrice}}</span></b>
-											<p>Per Person on twin sharing</p>
+											<p>Per Person</p>
 										</div>
 										<div class="cities">
 											<b>Cities:</b> {{c.Cities}}
@@ -228,7 +228,7 @@
 						<li v-for="(c,index) in item.activites">
 							<div class="topActivity" v-if="index==0">
 								<div class="top">
-									<h5>Summer Sales</h5>
+									<h5>{{item.dd}}</h5>
 									<div class="cont">
 										<a :href="c.linkUrl" target="_blank">
 										<div class="activityInfo clearfix">
@@ -246,7 +246,7 @@
 												</div>
 												<div class="price">
 													<b>{{c.nowPrice}} <span>{{c.oldPrice}}</span></b>
-													<p>Per Person on twin sharing</p>
+													<p>Per Person</p>
 												</div>
 												<div class="cities">
 													<b>Cities:</b> {{c.Cities}}
@@ -289,7 +289,7 @@
 										</div>
 										<div class="price">
 											<b>{{c.nowPrice}} <span>{{c.oldPrice}}</span></b>
-											<p>Per Person on twin sharing</p>
+											<p>Per Person</p>
 										</div>
 										<div class="cities">
 											<b>Cities:</b> {{c.Cities}}
@@ -317,9 +317,7 @@
 				</div>
 			</div>
 		</div>
-		<transition name="slideleft">
-			<ChinaTour v-if="showInfo" :info="info" @back="setBack" class="view"></ChinaTour>
-		</transition>
+		<ChinaTour v-show="showInfo" :info="info" @back="setBack" :showInfo="showInfo"></ChinaTour>
 		<FooterCommon></FooterCommon>
 	</div>
 </template>
@@ -373,80 +371,57 @@
 						cont:'Panda',
 						imgUrl:'https://resource.localpanda.cn/content/landingpage/chinatour/Location.png',
 						isMap:false,
-						position:{
-							top:"432px",
-							right:"366px"
-						},
+						position:{top:"470px",right:"373px"},
 						word:"giant_pandas"
 					},
 					{
 						cont:'Leshan Giant Buddha',
 						imgUrl:'https://resource.localpanda.cn/content/landingpage/chinatour/Location.png',
 						isMap:false,
-						position:{
-							top:"470px",
-							right:"373px"
-						},
+						position:{top:"490px",right:"375px"},
 						word:"leshan_giant_buddha"
 					},
 					{
 						cont:'Jiuzhaigou',
 						imgUrl:'https://resource.localpanda.cn/content/landingpage/chinatour/Location.png',
 						isMap:false,
-						position:{
-							top:"490px",
-							right:"375px"
-						},
+						position:{top:"432px",right:"366px"},
 						word:"jiuzhaigou"
 					},
 					{
 						cont:'Guilin and Yangshuo',
 						imgUrl:'https://resource.localpanda.cn/content/landingpage/chinatour/Location.png',
 						isMap:false,
-						position:{
-							top:"501px",
-							right:"265px"
-						},
+						position:{bottom:"167px",right:"269px"},
 						word:"guilin_and_yangshuo"
 					},
 					{
 						cont:'Bund',
 						imgUrl:'https://resource.localpanda.cn/content/landingpage/chinatour/Location.png',
 						isMap:false,
-						position:{
-							bottom:"167px",
-							right:"269px"
-						},
+						position:{bottom:"299px",right:"105px"},
 						word:"bund"
 					},
 					{
-						cont:'Water Town',
+						cont:'Water Towns',
 						imgUrl:'https://resource.localpanda.cn/content/landingpage/chinatour/Location.png',
 						isMap:false,
-						position:{
-							bottom:"214px",
-							right:"144px"
-						},word:"water_town"
+						position:{bottom:"300px",right:"125px"},
+						word:"water_town"
 						
 					},
 					{
 						cont:'Hangzhou West Lake',
 						imgUrl:'https://resource.localpanda.cn/content/landingpage/chinatour/Location.png',
 						isMap:false,
-						position:{
-							bottom:"219px",
-							right:"177px"
-						},
+						position:{bottom:"219px",right:"177px"},
 						word:"west_lake"
 					},
 					{
 						cont:"Yellow Mountain",
 						imgUrl:'https://resource.localpanda.cn/content/landingpage/chinatour/Location.png',
 						isMap:false,
-						position:{
-							bottom:"300px",
-							right:"125px"
-						},
+						position:{bottom:"214px",right:"144px"},
 						word:"yellow_mountain"
 						
 					},
@@ -454,10 +429,7 @@
 						cont:"Zhangjiajie",
 						imgUrl:'https://resource.localpanda.cn/content/landingpage/chinatour/Location.png',
 						isMap:false,
-						position:{
-							bottom:"299px",
-							right:"105px"
-						},
+						position:{top:"501px",right:"265px"},
 						word:"zhangjiajie"
 						
 					},
@@ -518,7 +490,7 @@
 						word:"bund"
 					},
 					{
-						cont:'Water Town',
+						cont:'Water Towns',
 						imgUrl:'https://resource.localpanda.cn/content/landingpage/chinatour/WaterTown.jpg',
 						word:"water_town"
 					},
@@ -554,16 +526,16 @@
 				{
 						icon: "&#xe60d;",
 						title: "When to Go",
-						des: "Generally the comfortable seasons in major tourist areas are fall(September and October) and spring(April and May). It is recommended to avoid major Chinese public holidays, unless you want to join in some celebrations."
+						des: "Generally the comfortable seasons in major tourist areas are fall (September and October) and spring (April and May). It is recommended to avoid major Chinese public holidays, unless you want to join in some celebrations."
 					},
 					{
 						icon: "&#xe650;",
-						title: "Where to go",
+						title: "Where to Go",
 						des: "We have different itineraries to meet your various needs. Dive into Jiangnan water towns to absorb the ancient town atmosphere; visit Beijing and Xi’an to be a history fan; and hold pandas in Chengdu."
 					},
 					{
 						icon: "&#xe674;",
-						title: "How long to stay",
+						title: "How Long to Stay",
 						des: "Knowing what you expect to see or do in China will help determine how long you should stay. We recommend at least 4 days. If you want to experience more or visit minority areas, you will need more time."
 					},
 					{
@@ -574,9 +546,9 @@
 
 				],
 				twoActivity: [{
+						dd:'Summer Sales',
 						title: "Immerse in China’s Most Symbolic Sites",
-						des: ["Beijing, Shanghai, Xi’an, Chengdu and Guilin are the most popular cities among those who come visit China.",
-							"The gorgeous Temple of Heaven, the Great Wall, Terra Cotta Worriers and Pandas made those cities top 5 must-visit stops in China!"
+						des: ["Beijing, Shanghai, Xi’an, Chengdu and Guilin are the most popular cities among those who come visit China.The gorgeous Temple of Heaven, the Great Wall, Terra Cotta Worriers and Pandas made those cities top 5 must-visit stops in China!"
 						],
 						highLights: [
 							"Most symbolic China highlights e.g. Pandas, the bund; perfect for first-timers",
@@ -588,12 +560,12 @@
 						activites: [{
 								linkUrl:"/activity/details/11237",
 								activityPhoto: "https://resource.localpanda.cn/activity/banners/11237_1106630623_U5366072.jpg",
-								title: '"China Essence and Panda" 13-Day Private Tour',
+								title: '"China Essentials: Wonders, Scenery, and Pandas" 13-Day Private Tour',
 								duration: '13 Days & 12 Nights',
 								nowPrice: "$1348.90",
 								oldPrice: "$1551.09",
 								startingFrom: "18% Off",
-								Cities: "Beijing & Xi'an & Chengdu & Guilin & Shanghai",
+								Cities: "Beijing, Xi'an, Chengdu, Guilin and Shanghai",
 								tags: [
 									"Ancient Water Town", "Terracotta Warriors", "Leshan Giant Buddha", "Panda", "Bund", "Immersive Experience",
 									"Guilin and Yangshuo", "Forbidden City"
@@ -630,7 +602,7 @@
 										isShow: true,
 									},
 									{
-										des: "Upto 4",
+										des: "Hotel",
 										icon: "&#xe66f;",
 										isShow: false,
 									},
@@ -645,7 +617,7 @@
 								nowPrice: "$1047.90",
 								oldPrice: "$1173.65",
 								startingFrom: "12% Off",
-								Cities: "Beijing & Xi’an & Guilin/Yangshuo & Shanghai",
+								Cities: "Beijing, Xi’an, Guilin/Yangshuo and Shanghai",
 								tags: [
 									"Bund", "Great Wall", "Guilin and Yangshuo", "Classic Tours", "Water town", "Terracotta Warriors", "Forbidden City"
 								],
@@ -681,7 +653,7 @@
 										isShow: true,
 									},
 									{
-										des: "Upto 4",
+										des: "Hotel",
 										icon: "&#xe66f;",
 										isShow: false,
 									},
@@ -691,12 +663,12 @@
 							{
 								linkUrl:'/activity/details/11239',
 								activityPhoto: "https://resource.localpanda.cn/activity/banners/11239_1106630708.jpg",
-								title: '"Old and New China" 8-Day Private Tour',
+								title: '"Ancient and Modern China" 8-Day Private Tour',
 								duration: '8 Days & 7 Nights',
 								nowPrice: "$757.00",
 								oldPrice: "$847.84",
 								startingFrom: "12% Off",
-								Cities: "Beijing & Xi’an & Shanghai",
+								Cities: "Beijing, Xi’an and Shanghai",
 								tags: [
 									"Bund", "Terracotta Warriors", "Most Symbolic Sites", "Great Wall", "Water town", "Forbidden City"
 								],
@@ -732,7 +704,7 @@
 										isShow: false,
 									},
 									{
-										des: "Upto 4",
+										des: "Hotel",
 										icon: "&#xe66f;",
 										isShow: false,
 									},
@@ -747,7 +719,7 @@
 								nowPrice: "$508.48",
 								oldPrice: "$847.84",
 								startingFrom: "12% Off",
-								Cities: "Beijing & Shanghai",
+								Cities: "Beijing and Shanghai",
 								tags: [
 									"Bund", "First Timer’s Choice", "Packaged Pricing", "Great Wall", "Water town", "Forbidden City"
 								],
@@ -783,7 +755,7 @@
 										isShow: false,
 									},
 									{
-										des: "Upto 4",
+										des: "Hotel",
 										icon: "&#xe66f;",
 										isShow: false,
 									},
@@ -794,9 +766,9 @@
 						],
 					},
 					{
-
+						dd:'Best Seller',
 						title: "See China’s Majestic Beauty",
-						des: ["If you want to explore China in depth, there many things that you cannot miss e.g. the Avatar Hallelujah Mountain. Come to Zhangjiajie, Tibet, Yellow ", "Mountain, Jiangnan Watertowns, see the best and the hidden gems of China and leave with a head full of knowledge and a heart full of unique memories."],
+						des: ["If you really want to get the most out of your trip to China, there many amazing places beyond the major cities that you shouldn't miss, such as Zhangjiajie (avatar mountains), Yangtze River Delta, Tibet, Yellow Mountain. Come to see the best of what China has to offer and leave with a head full of knowledge and a heart full of unique memories."],
 						highLights: [
 							"Amazing natural scenes and cultural wonders ",
 							"Breathtakingly beautiful sites - a shocking and unforgettable experience guaranteed ",
@@ -808,12 +780,12 @@
 						activites: [{
 								linkUrl:'/activity/details/11241',
 								activityPhoto:"https://resource.localpanda.cn/activity/banners/11241_1106630829.jpg",
-								title: '"China Essence and Floating Mountains" 11-Day Private Tour',
+								title: '"China Scenery and Floating Mountains" 11-Day Private Tour',
 								duration: '11 Days & 10 Nights',
 								nowPrice: "$1348.90",
 								oldPrice: "$1551.09",
 								startingFrom: "12% Off",
-								Cities: "Beijing & Xi'an & Zhangjiajie & Shanghai",
+								Cities: "Beijing, Xi'an, Zhangjiajie and Shanghai",
 								tags: [
 									"Floating Mountains", "Great Wall", "Grand Canyon Glass Bridge", "Watertowns", "Avatar Movie Scene", "Terracotta Warriors",
 									"Guilin and Yangshuo", "Forbidden City"
@@ -840,7 +812,7 @@
 										isShow: true,
 									},
 									{
-										des: "Flights",
+										des: "Flight",
 										icon: "&#xe670;",
 										isShow: true,
 									},
@@ -850,7 +822,7 @@
 										isShow: true,
 									},
 									{
-										des: "Upto 4",
+										des: "Hotel",
 										icon: "&#xe66f;",
 										isShow: false,
 									},
@@ -865,7 +837,7 @@
 								nowPrice: "$1895.90",
 								oldPrice: "$2124.41",
 								startingFrom: "12% Off",
-								Cities: "Beijing & Xi'an & Tibet & Chengdu & Shanghai",
+								Cities: "Beijing, Xi'an, Tibet, Chengdu and Shanghai",
 								tags: [
 									"Water town", "Great Wall", "Natural Beaty", "Moderately Challenging", "Tibet", "Leshan Giant Buddha", "Panda", "Terracotta Warriors"
 								],
@@ -891,7 +863,7 @@
 										isShow: true,
 									},
 									{
-										des: "Flights",
+										des: "Flight",
 										icon: "&#xe670;",
 										isShow: true,
 									},
@@ -901,7 +873,7 @@
 										isShow: true,
 									},
 									{
-										des: "Upto 4",
+										des: "Hotel",
 										icon: "&#xe66f;",
 										isShow: true,
 									},
@@ -911,12 +883,12 @@
 							{
 								linkUrl:'/activity/details/11245',
 								activityPhoto: "https://resource.localpanda.cn/activity/banners/11245_1106630831.jpg",
-								title: '"Riches of China and Jiangnan" 13 Day Private Tour',
+								title: '"Riches of China and Yangtze River Delta" 13-Day Private Tour',
 								duration: '13 Days & 12 Nights',
 								nowPrice: "$1394.00",
 								oldPrice: "$1561.28",
 								startingFrom: "12% Off",
-								Cities: "Beijing & Xi'an & Tibet & Chengdu & Shanghai",
+								Cities: "Beijing, Xi'an, Tibet, Chengdu and Shanghai",
 								tags: [
 									"Natural Beauty", "Bund", "Terracotta Warriors", "West Lake", "Culture Wonders", "Guilin/Yangshuo", "Great Wall"
 								],
@@ -942,7 +914,7 @@
 										isShow: true,
 									},
 									{
-										des: "Flights",
+										des: "Flight",
 										icon: "&#xe670;",
 										isShow: true,
 									},
@@ -952,7 +924,7 @@
 										isShow: true,
 									},
 									{
-										des: "Upto 4",
+										des: "Hotel",
 										icon: "&#xe66f;",
 										isShow: false,
 									},
@@ -962,12 +934,12 @@
 							{
 								linkUrl:'/activity/details/11246',
 								activityPhoto: "https://resource.localpanda.cn/activity/banners/11246_1106630921.jpg",
-								title: '"Beautiful Jiangnan and Yellow Mountain" 8-Day Private Tour',
+								title: '"Yangtze River Delta and Yellow Mountain" 8-Day Private Tour',
 								duration: '8 Days & 7 Nights',
 								nowPrice: "$696.90",
 								oldPrice: "$780.53",
 								startingFrom: "12% Off",
-								Cities: "Shanghai & Suzhou & Hangzhou & Yellow Mountain",
+								Cities: "Shanghai, Suzhou, Hangzhou and Yellow Mountain",
 								tags: [
 									"Water town", "Yellow Mountain", "Hangzhou and West Lake", "Amazing Natural Scene", "Bund", "Venice of the East"
 								],
@@ -993,7 +965,7 @@
 										isShow: true,
 									},
 									{
-										des: "Flights",
+										des: "Flight",
 										icon: "&#xe670;",
 										isShow: true,
 									},
@@ -1003,7 +975,7 @@
 										isShow: true,
 									},
 									{
-										des: "Upto 4",
+										des: "Hotel",
 										icon: "&#xe66f;",
 										isShow: false,
 									},
@@ -1017,7 +989,7 @@
 
 				],
 				oneActivity: [{
-
+					dd:"Traveler's Choice",
 					title: "Harvest Happiness in Ancient China",
 					des: ["If there are more chances to immerse with the local culture throughout the journey of visiting landmarks, such as learning to make different shapes of", "dumplings, painting a Peking opera mask, craft Terra-cotta Warriors figurines, you will load your trip with more local knowledge and amazing experiences."],
 					highLights: [
@@ -1036,7 +1008,7 @@
 							nowPrice: "$1147.90",
 							oldPrice: "$1285.65",
 							startingFrom: "12% Off",
-							Cities: "Beijing & Xi'an & Guilin & Shanghai",
+							Cities: "Beijing, Xi'an, Guilin and Shanghai",
 							tags: [
 								"DIY Dumplings", "Guilin/Yangshuo", "Paint Opera Mask", "Roast Duck", "Terracotta Warriors", "Relaxing"
 							],
@@ -1062,7 +1034,7 @@
 									isShow: true,
 								},
 								{
-									des: "Flights",
+									des: "Flight",
 									icon: "&#xe670;",
 									isShow: true,
 								},
@@ -1072,7 +1044,7 @@
 									isShow: true,
 								},
 								{
-									des: "Upto 4",
+									des: "Hotel",
 									icon: "&#xe66f;",
 									isShow: false,
 								},
@@ -1082,12 +1054,12 @@
 						{	
 							linkUrl:'/activity/details/11251',
 							activityPhoto: "https://resource.localpanda.cn/activity/banners/11251_1106283418_U2936148.jpg",
-							title: '"Happy Vacation" 13-Day Private Tour',
+							title: '"China Full Immersion" 13-Day Private Tour',
 							duration: '13 Days & 12 Nights',
 							nowPrice: "$1448.90",
 							oldPrice: "$1622.77",
 							startingFrom: "12% Off",
-							Cities: "Beijing & Xi'an & Chengdu & Guilin/Yangshuo & Shanghai",
+							Cities: "Beijing, Xi'an, Chengdu, Guilin/Yangshuo and Shanghai",
 							tags: [
 								"Bund", "Great Wall", "DIY Dumplings", "Make Warriors Figurines", "Deep Experience", "Guilin/Yangshuo","Panda","Roast Duck"
 							],
@@ -1113,7 +1085,7 @@
 									isShow: true,
 								},
 								{
-									des: "Flights",
+									des: "Flight",
 									icon: "&#xe670;",
 									isShow: true,
 								},
@@ -1123,7 +1095,7 @@
 									isShow: true,
 								},
 								{
-									des: "Upto 4",
+									des: "Hotel",
 									icon: "&#xe66f;",
 									isShow: false,
 								},
@@ -1190,9 +1162,11 @@
 			},
 			goAnchor(selector) {
 				var anchor = document.getElementById(selector)
+				console.log(anchor.offsetTop)
 				var t=document.getElementById("nav").offsetHeight;
-				document.body.scrollTop = anchor.offsetTop+t
-				document.documentElement.scrollTop =anchor.offsetTop+t
+				console.log(t)
+				document.body.scrollTop = anchor.offsetTop-t-53
+				document.documentElement.scrollTop =anchor.offsetTop-t-53
 			},
 			
 		},
@@ -1218,30 +1192,13 @@
 <style lang="scss">
 	@import '~assets/scss/_main.scss';
 	@import '~/assets/font/iconfont.css';
+	div::-webkit-scrollbar { width: 8px; }
+	div::-webkit-scrollbar-track { background-color: #eeeeee;  border-radius: 4px; }
+	div::-webkit-scrollbar-thumb { border-radius: 4px;  background-color: #f4b33f; }
 </style>
 <style lang="scss" scoped>
 	@import "~assets/scss/base/_setting.scss";
-	.view {
-			position: fixed;
-			top: 0;
-			left: 0;
-			width: 100%;
-			height: 100%;
-			background: rgba(0,0,0,0.4);
-			transition: all 0.3s cubic-bezier(.55, 0, .1, 1);
-		}
-		.slideleft-enter-active,
-		.slideleft-leave-active {
-			opacity: 0;
-			-webkit-transform: translate(-100%, 0);
-			transform: translate(-100%, 0);
-		}
-		.slideleft-enter,
-		.slideleft-leave-to {
-			opacity: 0;
-			-webkit-transform: translate(-100%, 0);
-			transform: translate(-100%, 0);
-		}
+	
 	.animated {
 		-webkit-animation-duration: 1s;
 		animation-duration: 1s;
@@ -1285,7 +1242,7 @@
 		transform: translateY(-100%);
 		top: 0;
 		padding-top: 18px;
-		z-index: 20;
+		z-index: 40;
 	}
 	@keyframes fadein{
 		0%{
@@ -1312,9 +1269,7 @@
 			position: relative;
 			z-index: 20;
 		}
-	.description::-webkit-scrollbar { width: 8px; }
-	.description::-webkit-scrollbar-track { background-color: #eeeeee;  border-radius: 4px; }
-	.description::-webkit-scrollbar-thumb { border-radius: 4px;  background-color: #f4b33f; }
+	
 	.chinaTour {
 		.banner {
 			height: 500px;
@@ -1428,6 +1383,7 @@
 									left:50%;
 									transform:translateX(-50%);
 									font-size: 20px;
+									white-space:nowrap;
 									
 								}
 							}
@@ -1598,6 +1554,7 @@
 			/** 公共list **/
 			.activityInfo {
 				padding-bottom: 16px;
+				position: relative;
 				.activityPhoto {
 					float: left;
 					width: 274px;
@@ -1675,9 +1632,12 @@
 					}
 				}
 				.megRight {
+					position: absolute;
+					width: 550px;
+					top:24px;
+					right: 0;
 					.tags {
 						text-align: right;
-						margin-top: 24px;
 						span {
 							padding: 5px 10px;
 							border-radius: 10px;

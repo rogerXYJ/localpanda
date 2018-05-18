@@ -1,38 +1,41 @@
 <template>
+	
 	<div class="message">
-		<div class="messageCont">
-			<div class="nav">
-				<span class="iconfont" @click.stop="cancle">&#xe615;</span>
-				{{info.title}}
-			</div>
-			<div class="box">
-				<div class="messImg">
-					<img :src="info.photoUrl"/>
+		<transition name="slideleft" >
+			<div class="messageCont" :class="{viewRun:showInfo}">
+				<div class="nav">
+					<span class="iconfont" @click.stop="cancle">&#xe615;</span>
+					{{info.title}}
 				</div>
-				<div class="mes_info">
-					<h3>{{info.photoContent}}</h3>	
-					<p class="location">Location: {{info.location}}</p>
-					<div class="trafficInfo">
-						<p v-if="info.shanghaiTraffic">{{info.shanghaiTraffic.replace(/,/," |")}}</p>
-						<p v-if="info.chengduTraffic">{{info.chengduTraffic.replace(/,/," |")}}</p>
-						<p v-if="info.beijingTraffic">{{info.beijingTraffic.replace(/,/," |")}}</p>
+				<div class="box">
+					<div class="messImg">
+						<img :src="info.photoUrl"/>
+					</div>
+					<div class="mes_info">
+						<h3>{{info.photoContent}}</h3>	
+						<p class="location">Location: {{info.location}}</p>
+						<div class="trafficInfo">
+							<p v-if="info.shanghaiTraffic">{{info.shanghaiTraffic.replace(/,/," |")}}</p>
+							<p v-if="info.chengduTraffic">{{info.chengduTraffic.replace(/,/," |")}}</p>
+							<p v-if="info.beijingTraffic">{{info.beijingTraffic.replace(/,/," |")}}</p>
+						</div>
+					</div>
+					<div class="message_des">
+						<p v-html="info.introduction"></p>
+					</div>
+					<div class="btn">
+						<a :href="info.link" target="_blank"><button>Explore Futher</button></a>
 					</div>
 				</div>
-				<div class="message_des">
-					<p v-html="info.introduction"></p>
-				</div>
-				<div class="btn">
-					<a :href="info.link"><button>Explore Futher</button></a>
-				</div>
+				
 			</div>
-			
-		</div>
+		</transition>
 	</div>
 </template>
 
 <script>
 export default {
- props:["info"],
+ props:["info","showInfo"],
   name: "message",
   data() {
     return {
@@ -52,21 +55,33 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.view {
+			
+	transition: all 0.3s cubic-bezier(.55, 0, .1, 1);
+	-webkit-transform: translateX(-100%);
+	transform: translateX(-100%);
+	}
+
+	
 	.message{
 		position: fixed;
 		top: 0;
 		bottom: 0;
 		left: 0;
 		right: 0;
+		background: rgba(0,0,0,0.4);
 		width: 100%;
 		max-height: 100%;
-		z-index: 30;
+		z-index: 40;
 		.messageCont{
 			position: fixed;
 			height: 100%;
 			background: #fff;
 			width: 610px;
 			overflow:auto;
+			transition: all 0.3s cubic-bezier(.55, 0, .1, 1);
+	-webkit-transform: translateX(-100%);
+	transform: translateX(-100%);
 			.nav{
 				height: 76px;
 				text-align: center;
@@ -150,6 +165,10 @@ export default {
 				
 				
 			}
+		}
+		.viewRun{
+			-webkit-transform: translateX(0);
+			transform: translateX(0);
 		}
 	}
 

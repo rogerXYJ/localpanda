@@ -7,7 +7,7 @@
 			<div class="china_description">China is an amazing country, one that should be on every traveler’s must visit list. Few countries possess the wide variety of experiences you will find in the Middle Kingdom. As China travel experts, we provide destination tours and activities in China by streamlining booking and delivering real, memorable experiences, led by local guides.</div>
 		</div>
 		<div class="chinaTour_details page__container">
-			<div class="nav">
+			<div class="nav" :class="{meauFix:showMeau}">
 				<ul class="clearfix">
 					<li>Top Destinations</li>
 					<li>First Timer Trips</li>
@@ -15,13 +15,13 @@
 					<li>Family Vacations</li>
 				</ul>
 			</div>
-			<div class="top_destinations">
+			<div class="top_destinations" id="top_destinations">
 				<h3>China Top Destinations</h3>
 				<div class="map_cont clearfix">
 					<div class="description">
 						<h4>Hot Destination</h4>
 						<ul>
-							<li v-for="(item,index) in mapList" :style="{backgroundImage:'url(' + item.imgUrl + ')'}">
+							<li v-for="(item,index) in mapList" @click="getInfo(index)" :style="{backgroundImage:'url(' + item.imgUrl + ')'}" @mouseover="showMap(index)" @mouseleave="hiddenMap(index)">
 								<div class="mask"></div>
 								<div class="description_cont">{{item.cont}}</div>
 							</li>
@@ -29,14 +29,20 @@
 						</ul>
 					</div>
 					<div class="map">
-						<div class="position" :style="{ top: mapStyle.top }"></div>
-						<div class="position_img"><img src="https://resource.localpanda.cn/content/landingpage/chinatour/Location.jpg" /></div>
-						<div class="mapCont">{{mapCont}}</div>
+						<div class="mapitem" v-for="(item,index) in mapPosition" @mouseover="showMap(index)" @mouseleave="hiddenMap(index)">
+							
+							<div class="position" :style="item.position">
+								<div class="position_img" v-if="item.isMap" :class="{animated:item.isMap}"><img :src="item.imgUrl" /></div>
+								<div class="mapCont" v-if="item.isMap">{{item.cont}}</div>
+							</div>
+							
+						</div>
+						
 					</div>
 				</div>
 			</div>
 		</div>
-		<div class="customize">
+		<div class="customize" id="customize">
 			<div class="customizeTrip page__container">
 				<h3>First Time to China? Have No Ideas?</h3>
 				<ul>
@@ -59,7 +65,7 @@
 			</div>
 
 		</div>
-		<div class="activity page__container">
+		<div class="activity page__container" id="activity">
 			<div class="activityItem" v-for="(item,index) in twoActivity">
 				<h3>{{item.title}}</h3>
 				<div class="introduced">
@@ -80,7 +86,9 @@
 								<div class="top">
 									<h5>Summer Sales</h5>
 									<div class="cont">
+										<a :href="c.linkUrl" target="_blank">
 										<div class="activityInfo clearfix">
+											
 											<div class="activityPhoto"><img :src="c.activityPhoto"></div>
 											<div class="activityMeg">
 												<h4 class="activityTitle">{{c.title}}</h4>
@@ -116,11 +124,13 @@
 											</div>
 											<div class="btn bag">View Details</div>
 										</div>
+										</a>
 									</div>
 
 								</div>
 							</div>
 							<div class="cont" v-else>
+								<a :href="c.linkUrl" target="_blank">
 								<div class="activityInfo clearfix">
 									<div class="activityPhoto"><img :src="c.activityPhoto"></div>
 									<div class="activityMeg">
@@ -157,39 +167,40 @@
 									</div>
 									<div class="btn">View Details</div>
 								</div>
+								</a>
 							</div>
 						</li>
 					</ul>
 				</div>
 			</div>
 		</div>
-		<div class="visitor">
+		<div class="visitor" id="visitor">
 			<div class="visitor-cont page__container">
 				<h3>This is what guests are saying about our service</h3>
 				<ul class="clearfix">
 					<li>
 						<div class="visitor-headPic">
-							<img v-lazy="'https://resource.localpanda.cn/static/content/reviews/Claudia.jpg'" />
+							<img v-lazy="'https://resource.localpanda.cn/static/content/reviews/Claudia.jpg'"/>
 						</div>
 						<div class="visitor-message">
 							<b>Claudia Flores </b>
 							<em>Mexico City, Mexico</em>
-							<p>Local Panda had an incredible amount of attention and patience throughout my trip. I had a great tour that went way beyond my expectations. The sites and smells of everywhere we visited around Shanghai were fantastic as well. My guide, Jamie, was nice, intelligent, great English, everything you want in a tour guide. Thanks again!!!</p>
+							<p>Local Panda had an incredible amount of attention and patience throughout my trip. I had a great tour that went way beyond my expectations.  The sites and smells of everywhere we visited around Shanghai were fantastic as well. My guide, Jamie, was nice, intelligent, great English, everything you want in a tour guide. Thanks again!!!</p>
 						</div>
 					</li>
 					<li>
 						<div class="visitor-headPic">
-							<img v-lazy="'https://resource.localpanda.cn/static/content/reviews/Selvarani.jpg'" />
+							<img v-lazy="'https://resource.localpanda.cn/static/content/reviews/Selvarani.jpg'"/>
 						</div>
 						<div class="visitor-message">
 							<b>Selvarani Saravanamuthu</b>
 							<em> Seattle, Washington</em>
-							<p>I have to say a huge thank you to Local Panda for putting together this memorable trip. The tours have been par excellence, and I can't be happy enough about it. Local Panda have provided us with a wonderful and memorable experience we will cherish forever. I will not hesitate to recommend Local Panda to my friends when they plan their trip to China. </p>
+							<p>I have to say a huge thank you to Local Panda for putting together this memorable trip. The tours have been par excellence, and I can't be happy enough about it. Local Panda have provided us with a wonderful and memorable experience we will cherish forever. I will not hesitate to recommend Local Panda to my friends when they plan their trip to China.   </p>
 						</div>
 					</li>
 					<li>
 						<div class="visitor-headPic">
-							<img v-lazy="'https://resource.localpanda.cn/static/content/reviews/Cynthia.jpg'" />
+							<img v-lazy="'https://resource.localpanda.cn/static/content/reviews/Cynthia.jpg'"/>
 						</div>
 						<div class="visitor-message">
 							<b>Cynthia Huang</b>
@@ -219,6 +230,7 @@
 								<div class="top">
 									<h5>Summer Sales</h5>
 									<div class="cont">
+										<a :href="c.linkUrl" target="_blank">
 										<div class="activityInfo clearfix">
 											<div class="activityPhoto"><img :src="c.activityPhoto"></div>
 											<div class="activityMeg">
@@ -255,11 +267,13 @@
 											</div>
 											<div class="btn bag">View Details</div>
 										</div>
+										</a>
 									</div>
 
 								</div>
 							</div>
 							<div class="cont" v-else>
+								<a :href="c.linkUrl" target="_blank">
 								<div class="activityInfo clearfix">
 									<div class="activityPhoto"><img :src="c.activityPhoto"></div>
 									<div class="activityMeg">
@@ -296,12 +310,16 @@
 									</div>
 									<div class="btn">View Details</div>
 								</div>
+								</a>
 							</div>
 						</li>
 					</ul>
 				</div>
 			</div>
 		</div>
+		<transition name="slideleft">
+			<ChinaTour v-if="showInfo" :info="info" @back="setBack" class="view"></ChinaTour>
+		</transition>
 		<FooterCommon></FooterCommon>
 	</div>
 </template>
@@ -310,76 +328,221 @@
 	import Vue from 'vue'
 	import HeaderCommon from '~/components/HeaderCommon/HeaderCommon';
 	import FooterCommon from '~/components/FooterCommon/FooterCommon';
+	import ChinaTour from '~/components/pageComponents/travel/chinaTour';
 	//import Foot from '~/components/FooterCommon/Foot';
 	
 	export default {
 		name: 'chinaTour',
 		data() {
 			return {
-				mapCont:'',
-				mapStyle:{
-					top:'',
-					left:'',
-				},
-				mapList:[
-					{
+				info:'',
+				showInfo:false,
+				showMeau:false,
+				mapPosition:[
+						{
 						cont:"Great Wall",
-						imgUrl:"https://resource.localpanda.cn/content/landingpage/chinatour/TheGreatWall.jpg",
-						style:{
-							top:'288px',
-							right:'184px',
-						}
-						
+						imgUrl:"https://resource.localpanda.cn/content/landingpage/chinatour/Location.png",
+						isMap:false,
+						position:{
+							top:"288px",
+							right:"184px"
+						},
+						word:"great_wall"
 					},
 					{
 						cont:'Forbidden City',
-						imgUrl:'https://resource.localpanda.cn/content/landingpage/chinatour/TheForbiddenCity.jpg'
+						imgUrl:'https://resource.localpanda.cn/content/landingpage/chinatour/Location.png',
+						isMap:false,
+						position:{
+							top:"298px",
+							right:"200px"
+						},
+						word:"forbidden_city"
 					},
 					{
 						cont:'Terracotta Warriors',
-						imgUrl:'https://resource.localpanda.cn/content/landingpage/chinatour/TerracottaWarriors.jpg'
+						imgUrl:'https://resource.localpanda.cn/content/landingpage/chinatour/Location.png',
+						isMap:false,
+						position:{
+							top:"409px",
+							right:"296px"
+						},
+						word:"terracotta_warriors"
 					},
 					{
 						cont:'Panda',
-						imgUrl:'https://resource.localpanda.cn/content/landingpage/chinatour/Panda.jpg'
+						imgUrl:'https://resource.localpanda.cn/content/landingpage/chinatour/Location.png',
+						isMap:false,
+						position:{
+							top:"432px",
+							right:"366px"
+						},
+						word:"giant_pandas"
 					},
 					{
 						cont:'Leshan Giant Buddha',
-						imgUrl:'https://resource.localpanda.cn/content/landingpage/chinatour/LeshanGiantBuddha.jpg'
+						imgUrl:'https://resource.localpanda.cn/content/landingpage/chinatour/Location.png',
+						isMap:false,
+						position:{
+							top:"470px",
+							right:"373px"
+						},
+						word:"leshan_giant_buddha"
 					},
 					{
 						cont:'Jiuzhaigou',
-						imgUrl:'https://resource.localpanda.cn/content/landingpage/chinatour/Jiuzhaigou.jpg'
+						imgUrl:'https://resource.localpanda.cn/content/landingpage/chinatour/Location.png',
+						isMap:false,
+						position:{
+							top:"490px",
+							right:"375px"
+						},
+						word:"jiuzhaigou"
 					},
 					{
 						cont:'Guilin and Yangshuo',
-						imgUrl:'https://resource.localpanda.cn/content/landingpage/chinatour/Guilin_Yangshuo.jpg'
+						imgUrl:'https://resource.localpanda.cn/content/landingpage/chinatour/Location.png',
+						isMap:false,
+						position:{
+							top:"501px",
+							right:"265px"
+						},
+						word:"guilin_and_yangshuo"
 					},
 					{
 						cont:'Bund',
-						imgUrl:'https://resource.localpanda.cn/content/landingpage/chinatour/TheBund.jpg'
+						imgUrl:'https://resource.localpanda.cn/content/landingpage/chinatour/Location.png',
+						isMap:false,
+						position:{
+							bottom:"167px",
+							right:"269px"
+						},
+						word:"bund"
 					},
 					{
 						cont:'Water Town',
-						imgUrl:'https://resource.localpanda.cn/content/landingpage/chinatour/WaterTown.jpg'
+						imgUrl:'https://resource.localpanda.cn/content/landingpage/chinatour/Location.png',
+						isMap:false,
+						position:{
+							bottom:"214px",
+							right:"144px"
+						},word:"water_town"
+						
 					},
 					{
 						cont:'Hangzhou West Lake',
-						imgUrl:'https://resource.localpanda.cn/content/landingpage/chinatour/Hangzhou_WestLake.jpg'
+						imgUrl:'https://resource.localpanda.cn/content/landingpage/chinatour/Location.png',
+						isMap:false,
+						position:{
+							bottom:"219px",
+							right:"177px"
+						},
+						word:"west_lake"
 					},
 					{
 						cont:"Yellow Mountain",
-						imgUrl:'https://resource.localpanda.cn/content/landingpage/chinatour/MountHuangshan.jpg'
+						imgUrl:'https://resource.localpanda.cn/content/landingpage/chinatour/Location.png',
+						isMap:false,
+						position:{
+							bottom:"300px",
+							right:"125px"
+						},
+						word:"yellow_mountain"
 						
 					},
 					{
 						cont:"Zhangjiajie",
-						imgUrl:'https://resource.localpanda.cn/content/landingpage/chinatour/Zhangjiajie.jpg'
+						imgUrl:'https://resource.localpanda.cn/content/landingpage/chinatour/Location.png',
+						isMap:false,
+						position:{
+							bottom:"299px",
+							right:"105px"
+						},
+						word:"zhangjiajie"
 						
 					},
 					{
 						cont:"Tibet",
-						imgUrl:'https://resource.localpanda.cn/content/landingpage/chinatour/Tibet.jpg'
+						imgUrl:'https://resource.localpanda.cn/content/landingpage/chinatour/Location.png',
+						isMap:false,
+						position:{
+							bottom:"268px",
+							left:"202px"
+						},
+						word:"tibet"
+						
+					}
+				
+				
+				],
+				mapList:[
+					{
+						cont:"Great Wall",
+						imgUrl:"https://resource.localpanda.cn/content/landingpage/chinatour/GreatWall.jpg",
+						word:"great_wall"
+						
+					},
+					{
+						cont:'Forbidden City',
+						imgUrl:'https://resource.localpanda.cn/content/landingpage/chinatour/ForbiddenCity.jpg',
+						word:"forbidden_city"
+					},
+					{
+						cont:'Terracotta Warriors',
+						imgUrl:'https://resource.localpanda.cn/content/landingpage/chinatour/TerracottaWarriors.jpg',
+						word:"terracotta_warriors"
+					},
+					{
+						cont:'Panda',
+						imgUrl:'https://resource.localpanda.cn/content/landingpage/chinatour/GiantPandas.jpg',
+						word:"giant_pandas"
+					},
+					{
+						cont:'Leshan Giant Buddha',
+						imgUrl:'https://resource.localpanda.cn/content/landingpage/chinatour/LeshanGiantBuddha.jpg',
+						word:"leshan_giant_buddha"
+					},
+					{
+						cont:'Jiuzhaigou',
+						imgUrl:'https://resource.localpanda.cn/content/landingpage/chinatour/Jiuzhaigou.jpg',
+						word:"jiuzhaigou"
+					},
+					{
+						cont:'Guilin and Yangshuo',
+						imgUrl:'https://resource.localpanda.cn/content/landingpage/chinatour/Yangshuo.jpg',
+						word:"guilin_and_yangshuo"
+					},
+					{
+						cont:'Bund',
+						imgUrl:'https://resource.localpanda.cn/content/landingpage/chinatour/TheBund.jpg',
+						word:"bund"
+					},
+					{
+						cont:'Water Town',
+						imgUrl:'https://resource.localpanda.cn/content/landingpage/chinatour/WaterTown.jpg',
+						word:"water_town"
+					},
+					{
+						cont:'Hangzhou West Lake',
+						imgUrl:'https://resource.localpanda.cn/content/landingpage/chinatour/WestLake.jpg',
+						word:"west_lake"
+					},
+					{
+						cont:"Yellow Mountain",
+						imgUrl:'https://resource.localpanda.cn/content/landingpage/chinatour/MountHuangshan.jpg',
+						word:"yellow_mountain"
+						
+					},
+					{
+						cont:"Zhangjiajie",
+						imgUrl:'https://resource.localpanda.cn/content/landingpage/chinatour/Zhangjiajie.jpg',
+						word:"terracotta_warriors"
+						
+					},
+					{
+						cont:"Tibet",
+						imgUrl:'https://resource.localpanda.cn/content/landingpage/chinatour/Tibet.jpg',
+						word:"tibet"
 						
 					}
 				
@@ -387,7 +550,8 @@
 				
 				],
 				logIn: '',
-				customizeData: [{
+				customizeData: [
+				{
 						icon: "&#xe60d;",
 						title: "When to Go",
 						des: "Generally the comfortable seasons in major tourist areas are fall(September and October) and spring(April and May). It is recommended to avoid major Chinese public holidays, unless you want to join in some celebrations."
@@ -422,7 +586,8 @@
 							"Private tours (tailored to your need; arrival/departure cities can be adjusted)"
 						],
 						activites: [{
-								activityPhoto: "",
+								linkUrl:"/activity/details/11237",
+								activityPhoto: "https://resource.localpanda.cn/activity/banners/11237_1105934628.jpg",
 								title: '"China Essence and Panda" 13-Day Private Tour',
 								duration: '13 Days & 12 Nights',
 								nowPrice: "$1348.90",
@@ -473,6 +638,7 @@
 								]
 							},
 							{
+								linkUrl:"/activity/details/11238",
 								activityPhoto: "",
 								title: '"Classic Wonders" 11-Day Private Tour',
 								duration: '11 Days & 10 Nights',
@@ -523,7 +689,8 @@
 								]
 							},
 							{
-								activityPhoto: "",
+								linkUrl:'/activity/details/11239',
+								activityPhoto: "https://resource.localpanda.cn/activity/banners/11239_1105936521.jpg",
 								title: '"Old and New China" 8-Day Private Tour',
 								duration: '8 Days & 7 Nights',
 								nowPrice: "$757.00",
@@ -573,7 +740,8 @@
 								]
 							},
 							{
-								activityPhoto: "",
+								linkUrl:'/activity/details/11240',
+								activityPhoto: "https://resource.localpanda.cn/activity/banners/11240_1105937105.jpg",
 								title: '"Highlights Explosion" 6-Day Private Tour',
 								duration: '6 Days & 5 Nights',
 								nowPrice: "$508.48",
@@ -638,7 +806,8 @@
 							"Private tours (tailored to your need; arrival/departure cities can be adjusted)"
 						],
 						activites: [{
-								activityPhoto: "",
+								linkUrl:'/activity/details/11241',
+								activityPhoto: "https://resource.localpanda.cn/activity/banners/11241_1106248820.jpg",
 								title: '"China Essence and Floating Mountains" 11-Day Private Tour',
 								duration: '11 Days & 10 Nights',
 								nowPrice: "$1348.90",
@@ -689,6 +858,7 @@
 								]
 							},
 							{
+								linkUrl:'/activity/details/11251',
 								activityPhoto: "",
 								title: '"Beautiful China and Holy Tibet" 13-Day Private Tour',
 								duration: '13-Day Private Tour',
@@ -739,6 +909,7 @@
 								]
 							},
 							{
+								linkUrl:'/activity/details/11242',
 								activityPhoto: "",
 								title: '"Riches of China and Jiangnan" 13 Day Private Tour',
 								duration: '13 Days & 12 Nights',
@@ -789,6 +960,7 @@
 								]
 							},
 							{
+								linkUrl:'/activity/details/11245',
 								activityPhoto: "",
 								title: '"Beautiful Jiangnan and Yellow Mountain" 8-Day Private Tour',
 								duration: '8 Days & 7 Nights',
@@ -957,18 +1129,79 @@
 							]
 						},
 					]
-				}, ]
+				}, 
+				]
 			}
 		},
 		components: {
 			HeaderCommon,
 			FooterCommon,
 			//Foot
+			ChinaTour
+		},
+		head(){
+			let title="Our Private China Trips | Local Panda";
+			let keywords="china tours, china trips, china travel, china package tours, china vacation, china holiday packages, China travel agencies";
+			let description="Local Panda has expertly designed the best private, packaged trips and personalized vacations, including all of China's top locations like Beijing, shanghai, Xi'an, Hangzhou, Chengdu, Tibet, guilin, yellow mountain, and more!";
+			return {
+				title: title,
+				meta: [{
+						hid: "keywords",
+						name: "keywords",
+						content: keywords
+					},
+					{
+						hid: "description",
+						name: "description",
+						content: description
+					}
+				]
+			}
+			
 		},
 		methods: {
-
+			showMap(index){
+				this.mapPosition[index].isMap=true
+			},
+			hiddenMap(index){
+				this.mapPosition[index].isMap=false
+			},
+			scorllBar(){
+				var top_destinations=document.getElementById("top_destinations");
+				var top=top_destinations.offsetTop;
+				if(window.scrollY >top){
+					this.showMeau=true
+				}else{
+					this.showMeau=false
+				}
+			},
+			setBack(val){
+				this.showInfo=val
+			},
+			getInfo(index){
+				let that=this
+				that.showInfo=true
+				that.axios.get("https://api.localpanda.com/api/content/landingpage/chinatour/"+that.mapList[index].word).then(function(res){
+					console.log(res)
+					that.info=res.data
+				},function(res){})
+			}
+			
+		},
+		watch:{
+			showInfo:function(val,oldVal){
+				if(val){
+				 document.getElementsByTagName("body")[0].style.overflowY="hidden"	
+				}else{
+					document.getElementsByTagName("body")[0].style.overflowY="inherit"	
+				}
+			}
 		},
 		mounted: function() {
+			window.addEventListener("scroll", this.scorllBar);
+			
+			
+			
 			this.logIn = window.localStorage.getItem("logstate");
 
 		}
@@ -980,6 +1213,76 @@
 </style>
 <style lang="scss" scoped>
 	@import "~assets/scss/base/_setting.scss";
+	.view {
+			
+			transition: all 0.3s cubic-bezier(.55, 0, .1, 1);
+		}
+		.slideleft-enter-active,
+		.slideleft-leave-active {
+			opacity: 0;
+			-webkit-transform: translate(-100%, 0);
+			transform: translate(-100%, 0);
+		}
+		.slideleft-enter,
+		.slideleft-leave-to {
+			opacity: 0;
+			-webkit-transform: translate(-100%, 0);
+			transform: translate(-100%, 0);
+		}
+	.animated {
+		-webkit-animation-duration: 1s;
+		animation-duration: 1s;
+		-webkit-animation-fill-mode: both;
+		animation-fill-mode: both;
+		-webkit-animation-name: signIn;
+		animation-name: signIn;
+	}
+	
+	@-webkit-keyframes signIn {
+		from {
+			-webkit-transform: scale3d(2, 2, 2);
+			transform: scale3d(2, 2, 2);
+			opacity: 0.2;
+		}
+		50% {
+			opacity: 1;
+			-webkit-transform: scale3d(1, 1, 1);
+			transform: scale3d(1, 1, 1);
+		}
+	}
+	
+	@keyframes signIn {
+		from {
+			-webkit-transform: scale3d(2, 2, 2);
+			transform: scale3d(2, 2, 2);
+			opacity: 0.2;
+		}
+		50% {
+			opacity: 1;
+			-webkit-transform: scale3d(1, 1, 1);
+			transform: scale3d(1, 1, 1);
+		}
+	}
+	
+	.meauFix{
+		position: fixed;
+		background: #fff!important;
+		width: 1170px!important;
+		animation: fadein 0.3s ease-in-out forwards;
+		transform: translateY(-100%);
+		top: 0;
+		padding-top: 18px;
+		z-index: 20;
+	}
+	@keyframes fadein{
+		0%{
+			transform: translateY(-100%);
+		}
+		100%{
+			transform: translateY(0);
+		}
+	}	
+	
 	.page__container {
 		width: 1170px;
 		margin: 0 auto;
@@ -1091,6 +1394,33 @@
 						float: right;
 						width: 788px;
 						height: 753px;
+						position: relative;
+						.mapitem{
+							
+							
+							.position{
+								position: absolute;
+								width: 8px;
+								height: 8px;
+								border-radius: 50%;
+								background:#fe483e;
+								.position_img{
+									position: absolute;
+									top: -66px;
+									left: -26px;
+								}
+								.mapCont{
+									position: absolute;
+									bottom: -35px;
+									left:50%;
+									transform:translateX(-50%);
+									font-size: 20px;
+									
+								}
+							}
+						}
+						
+						
 					}
 				}
 			}
@@ -1420,11 +1750,11 @@
 			padding: 80px 0;
 			.visitor-cont {
 				h3 {
-					font-size: 18px;
-					text-align: center;
+					font-size: 26px;
+					font-weight: bold;
 				}
 				ul {
-					margin-top: 34px;
+					margin-top: 54px;
 					li {
 						width: 30%;
 						float: left;

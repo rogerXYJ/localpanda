@@ -331,7 +331,7 @@
 								}
 							}).then(function(response) {
 								var loginState = (that.logIn?that.logIn:0);
-								var thisUrl = "https://www.localpanda.cn/activity/payment/mobile/?objectId=" + response.data.response + '&payType=' + obj.currency + '&login='+loginState;
+								var thisUrl = "https://www.localpanda.cn/activity/payment/mobile/?objectId=" + response.data.response + '&login='+loginState;
 								
 								if(obj.currency=='CNY'){
 									var ua = window.navigator.userAgent.toLowerCase();
@@ -343,7 +343,7 @@
 									}
 									
 								}else{
-									window.location.href = "https://www.localpanda.com/activity/payment/mobile/?objectId=" + response.data.response + '&payType=' + obj.currency + '&login='+loginState;
+									window.location.href = "https://www.localpanda.com/activity/payment/mobile/?objectId=" + response.data.response + '&login='+loginState;
 								}
 
 							}, function(response) {})

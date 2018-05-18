@@ -429,8 +429,10 @@
 				}).then(function(response) {
 					var data = response.data;
 					if(data.return_code == 'SUCCESS'){
-						var payurl = data.mweb_url + '&redirect_url=' + encodeURIComponent('https://www.localpanda.cn/payment/mobile/wxMobilePay?email='+self.email+'&orderId=' + self.orderId + '&amount=' + self.opctions.amount+'&symbol='+self.opctions.symbol);
-						location.href = payurl;
+
+						var callUrl = 'https://www.localpanda.cn/payment/mobile/wxMobilePay?email='+self.email+'&orderId=' + self.orderId + '&amount=' + self.opctions.amount+'&symbol='+self.opctions.symbol;
+						
+						location.href = data.mweb_url + '&redirect_url=' + encodeURI(callUrl);
 					}else{
 						alert(data.return_msg+', Try again!')
 					}

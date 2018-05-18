@@ -7,12 +7,12 @@
 			<div class="china_description">China is an amazing country, one that should be on every traveler’s must visit list. Few countries possess the wide variety of experiences you will find in the Middle Kingdom. As China travel experts, we provide destination tours and activities in China by streamlining booking and delivering real, memorable experiences, led by local guides.</div>
 		</div>
 		<div class="chinaTour_details page__container">
-			<div class="nav" :class="{meauFix:showMeau}">
+			<div class="nav" :class="{meauFix:showMeau}" id="nav">
 				<ul class="clearfix">
-					<li>Top Destinations</li>
-					<li>First Timer Trips</li>
-					<li>Landmarks Tours</li>
-					<li>Family Vacations</li>
+					<li @click="goAnchor('top_destinations')">Top Destinations</li>
+					<li @click="goAnchor('customize')">First Timer Trips</li>
+					<li @click="goAnchor('activity')">Landmarks Tours</li>
+					<li @click="goAnchor('visitor')">Family Vacations</li>
 				</ul>
 			</div>
 			<div class="top_destinations" id="top_destinations">
@@ -21,7 +21,7 @@
 					<div class="description">
 						<h4>Hot Destination</h4>
 						<ul>
-							<li v-for="(item,index) in mapList" @click="getInfo(index)" :style="{backgroundImage:'url(' + item.imgUrl + ')'}" @mouseover="showMap(index)" @mouseleave="hiddenMap(index)">
+							<li v-for="(item,index) in mapList" @click="getInfo(index)"  v-lazy:background-image="item.imgUrl" @mouseover="showMap(index)" @mouseleave="hiddenMap(index)">
 								<div class="mask"></div>
 								<div class="description_cont">{{item.cont}}</div>
 							</li>
@@ -29,10 +29,10 @@
 						</ul>
 					</div>
 					<div class="map">
-						<div class="mapitem" v-for="(item,index) in mapPosition" @mouseover="showMap(index)" @mouseleave="hiddenMap(index)">
+						<div class="mapitem" v-for="(item,index) in mapPosition" @click="getInfo(index)" @mouseover="showMap(index)" @mouseleave="hiddenMap(index)">
 							
 							<div class="position" :style="item.position">
-								<div class="position_img" v-if="item.isMap" :class="{animated:item.isMap}"><img :src="item.imgUrl" /></div>
+								<div class="position_img" v-if="item.isMap" :class="{animated:item.isMap}"><img  v-lazy="item.imgUrl" /></div>
 								<div class="mapCont" v-if="item.isMap">{{item.cont}}</div>
 							</div>
 							
@@ -89,7 +89,7 @@
 										<a :href="c.linkUrl" target="_blank">
 										<div class="activityInfo clearfix">
 											
-											<div class="activityPhoto"><img :src="c.activityPhoto"></div>
+											<div class="activityPhoto"><img  v-lazy="c.activityPhoto"></div>
 											<div class="activityMeg">
 												<h4 class="activityTitle">{{c.title}}</h4>
 												<div class="activityDuration">
@@ -132,7 +132,7 @@
 							<div class="cont" v-else>
 								<a :href="c.linkUrl" target="_blank">
 								<div class="activityInfo clearfix">
-									<div class="activityPhoto"><img :src="c.activityPhoto"></div>
+									<div class="activityPhoto"><img  v-lazy="c.activityPhoto"></div>
 									<div class="activityMeg">
 										<h4 class="activityTitle">{{c.title}}</h4>
 										<div class="activityDuration">
@@ -232,7 +232,7 @@
 									<div class="cont">
 										<a :href="c.linkUrl" target="_blank">
 										<div class="activityInfo clearfix">
-											<div class="activityPhoto"><img :src="c.activityPhoto"></div>
+											<div class="activityPhoto"><img  v-lazy="c.activityPhoto"></div>
 											<div class="activityMeg">
 												<h4 class="activityTitle">{{c.title}}</h4>
 												<div class="activityDuration">
@@ -275,7 +275,7 @@
 							<div class="cont" v-else>
 								<a :href="c.linkUrl" target="_blank">
 								<div class="activityInfo clearfix">
-									<div class="activityPhoto"><img :src="c.activityPhoto"></div>
+									<div class="activityPhoto"><img  v-lazy="c.activityPhoto"></div>
 									<div class="activityMeg">
 										<h4 class="activityTitle">{{c.title}}</h4>
 										<div class="activityDuration">
@@ -587,7 +587,7 @@
 						],
 						activites: [{
 								linkUrl:"/activity/details/11237",
-								activityPhoto: "https://resource.localpanda.cn/activity/banners/11237_1105934628.jpg",
+								activityPhoto: "https://resource.localpanda.cn/activity/banners/11237_1106630623_U5366072.jpg",
 								title: '"China Essence and Panda" 13-Day Private Tour',
 								duration: '13 Days & 12 Nights',
 								nowPrice: "$1348.90",
@@ -639,7 +639,7 @@
 							},
 							{
 								linkUrl:"/activity/details/11238",
-								activityPhoto: "",
+								activityPhoto: "https://resource.localpanda.cn/activity/banners/11238_1106630706.jpg",
 								title: '"Classic Wonders" 11-Day Private Tour',
 								duration: '11 Days & 10 Nights',
 								nowPrice: "$1047.90",
@@ -690,7 +690,7 @@
 							},
 							{
 								linkUrl:'/activity/details/11239',
-								activityPhoto: "https://resource.localpanda.cn/activity/banners/11239_1105936521.jpg",
+								activityPhoto: "https://resource.localpanda.cn/activity/banners/11239_1106630708.jpg",
 								title: '"Old and New China" 8-Day Private Tour',
 								duration: '8 Days & 7 Nights',
 								nowPrice: "$757.00",
@@ -741,7 +741,7 @@
 							},
 							{
 								linkUrl:'/activity/details/11240',
-								activityPhoto: "https://resource.localpanda.cn/activity/banners/11240_1105937105.jpg",
+								activityPhoto: "https://resource.localpanda.cn/activity/banners/11240_1106630710.jpg",
 								title: '"Highlights Explosion" 6-Day Private Tour',
 								duration: '6 Days & 5 Nights',
 								nowPrice: "$508.48",
@@ -807,7 +807,7 @@
 						],
 						activites: [{
 								linkUrl:'/activity/details/11241',
-								activityPhoto: "https://resource.localpanda.cn/activity/banners/11241_1106248820.jpg",
+								activityPhoto:"https://resource.localpanda.cn/activity/banners/11241_1106630829.jpg",
 								title: '"China Essence and Floating Mountains" 11-Day Private Tour',
 								duration: '11 Days & 10 Nights',
 								nowPrice: "$1348.90",
@@ -858,8 +858,8 @@
 								]
 							},
 							{
-								linkUrl:'/activity/details/11251',
-								activityPhoto: "",
+								linkUrl:'/activity/details/11242',
+								activityPhoto: "https://resource.localpanda.cn/activity/banners/11242_1106630830.jpg",
 								title: '"Beautiful China and Holy Tibet" 13-Day Private Tour',
 								duration: '13-Day Private Tour',
 								nowPrice: "$1895.90",
@@ -909,8 +909,8 @@
 								]
 							},
 							{
-								linkUrl:'/activity/details/11242',
-								activityPhoto: "",
+								linkUrl:'/activity/details/11245',
+								activityPhoto: "https://resource.localpanda.cn/activity/banners/11245_1106630831.jpg",
 								title: '"Riches of China and Jiangnan" 13 Day Private Tour',
 								duration: '13 Days & 12 Nights',
 								nowPrice: "$1394.00",
@@ -960,8 +960,8 @@
 								]
 							},
 							{
-								linkUrl:'/activity/details/11245',
-								activityPhoto: "",
+								linkUrl:'/activity/details/11246',
+								activityPhoto: "https://resource.localpanda.cn/activity/banners/11246_1106630921.jpg",
 								title: '"Beautiful Jiangnan and Yellow Mountain" 8-Day Private Tour',
 								duration: '8 Days & 7 Nights',
 								nowPrice: "$696.90",
@@ -1029,7 +1029,8 @@
 						"Private tours (tailored to your need; arrival/departure cities can be adjusted)"
 					],
 					activites: [{
-							activityPhoto: "",
+							linkUrl:'/activity/details/11247',
+							activityPhoto: "https://resource.localpanda.cn/activity/banners/11247_1106630922.jpg",
 							title: '"The Pursuit of Happiness" 11-Day Private Tour',
 							duration: '11 Days & 10 Nights',
 							nowPrice: "$1147.90",
@@ -1078,8 +1079,9 @@
 
 							]
 						},
-						{
-							activityPhoto: "",
+						{	
+							linkUrl:'/activity/details/11251',
+							activityPhoto: "https://resource.localpanda.cn/activity/banners/11251_1106283418_U2936148.jpg",
 							title: '"Happy Vacation" 13-Day Private Tour',
 							duration: '13 Days & 12 Nights',
 							nowPrice: "$1448.90",
@@ -1185,7 +1187,13 @@
 					console.log(res)
 					that.info=res.data
 				},function(res){})
-			}
+			},
+			goAnchor(selector) {
+				var anchor = document.getElementById(selector)
+				var t=document.getElementById("nav").offsetHeight;
+				document.body.scrollTop = anchor.offsetTop+t
+				document.documentElement.scrollTop =anchor.offsetTop+t
+			},
 			
 		},
 		watch:{
@@ -1214,7 +1222,12 @@
 <style lang="scss" scoped>
 	@import "~assets/scss/base/_setting.scss";
 	.view {
-			
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			background: rgba(0,0,0,0.4);
 			transition: all 0.3s cubic-bezier(.55, 0, .1, 1);
 		}
 		.slideleft-enter-active,

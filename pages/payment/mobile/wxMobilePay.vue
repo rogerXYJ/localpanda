@@ -28,10 +28,9 @@ export default {
     methods: {
         confirmation(e){
             var query = this.query;
-            //var jumpUrl = 'https://www.localpanda.cn/payment/mobile/success?email='+query.email+'&orderId=' + query.orderId + '&amount=' + query.amount+'&succeed=true&payType=CNY';
 
             //查询订单
-            this.axios.get("/api/payment/wechat/status?orderId="+query.orderId+'&flag=1',{
+            this.axios.get("https://www.localpanda.com/api/payment/wechat/status?orderId="+query.orderId+'&flag=1',{
                 headers: {
                     'Content-Type': 'application/json;'
                 }

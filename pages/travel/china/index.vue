@@ -531,7 +531,7 @@
 					{
 						icon: "&#xe650;",
 						title: "Where to Go",
-						des: "We have different itineraries to meet your various needs. Dive into Jiangnan water towns to absorb the ancient town atmosphere; visit Beijing and Xi’an to be a history fan; and hold pandas in Chengdu."
+						des: "We have different itineraries to meet your various needs. Dive into Jiangnan water towns to absorb the ancient town atmosphere; visit Beijing and Xi'an to be a history fan; and hold pandas in Chengdu."
 					},
 					{
 						icon: "&#xe674;",
@@ -547,7 +547,7 @@
 				],
 				twoActivity: [{
 						dd:'Summer Sales',
-						title: "Immerse in China’s Most Symbolic Sites",
+						title: "Immerse in China's Most Symbolic Sites",
 						des: ["Beijing, Shanghai, Xi’an, Chengdu and Guilin are the most popular cities among those who come visit China.The gorgeous Temple of Heaven, the Great Wall, Terra Cotta Worriers and Pandas made those cities top 5 must-visit stops in China!"
 						],
 						highLights: [
@@ -617,7 +617,7 @@
 								nowPrice: "$1047.90",
 								oldPrice: "$1173.65",
 								startingFrom: "12% Off",
-								Cities: "Beijing, Xi’an, Guilin/Yangshuo and Shanghai",
+								Cities: "Beijing, Xi'an, Guilin/Yangshuo and Shanghai",
 								tags: [
 									"Bund", "Great Wall", "Guilin and Yangshuo", "Classic Tours", "Water town", "Terracotta Warriors", "Forbidden City"
 								],

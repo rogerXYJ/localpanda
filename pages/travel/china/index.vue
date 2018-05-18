@@ -12,7 +12,7 @@
 					<li @click="goAnchor('top_destinations')">Top Destinations</li>
 					<li @click="goAnchor('customize')">First-timer Trips</li>
 					<li @click="goAnchor('activity')">Landmarks Tours</li>
-					<li @click="goAnchor('visitor')">Family Vacations</li>
+					<li @click="goAnchor('oneActivity')">Family Vacations</li>
 				</ul>
 			</div>
 			<div class="top_destinations" id="top_destinations">
@@ -21,7 +21,7 @@
 					<div class="description">
 						<h4>Hot Destinations</h4>
 						<ul>
-							<li v-for="(item,index) in mapList" @click="getInfo(index)"  v-lazy:background-image="item.imgUrl" @mouseover="showMap(index)" @mouseleave="hiddenMap(index)">
+							<li v-for="(item,index) in mapList"  v-lazy:background-image="item.imgUrl" @mouseover="showMap(index),getInfo(index)" @mouseleave="hiddenMap(index)">
 								<div class="mask"></div>
 								<div class="description_cont">{{item.cont}}</div>
 							</li>
@@ -34,10 +34,12 @@
 							<div class="position" :style="item.position">
 								<div class="position_img" v-if="item.isMap" :class="{animated:item.isMap}"><img  v-lazy="item.imgUrl" /></div>
 								<div class="mapCont" v-if="item.isMap">{{item.cont}}</div>
+								<div class="hover"></div>
+								
 							</div>
 							
 						</div>
-						
+						<ChinaTour v-show="showInfo" :info="info" @back="setBack"></ChinaTour>
 					</div>
 				</div>
 			</div>
@@ -212,7 +214,7 @@
 
 			</div>
 		</div>
-		<div class="activity page__container">
+		<div class="activity page__container" id="oneActivity">
 			<div class="activityItem" v-for="(item,index) in oneActivity">
 				<h3>{{item.title}}</h3>
 				<div class="introduced">
@@ -317,7 +319,7 @@
 				</div>
 			</div>
 		</div>
-		<ChinaTour v-show="showInfo" :info="info" @back="setBack" :showInfo="showInfo"></ChinaTour>
+		
 		<FooterCommon></FooterCommon>
 	</div>
 </template>
@@ -337,7 +339,7 @@
 				showInfo:false,
 				showMeau:false,
 				mapPosition:[
-						{
+					{
 						cont:"Great Wall",
 						imgUrl:"https://resource.localpanda.cn/content/landingpage/chinatour/Location.png",
 						isMap:false,
@@ -508,7 +510,7 @@
 					{
 						cont:"Zhangjiajie",
 						imgUrl:'https://resource.localpanda.cn/content/landingpage/chinatour/Zhangjiajie.jpg',
-						word:"terracotta_warriors"
+						word:"zhangjiajie"
 						
 					},
 					{
@@ -1136,6 +1138,7 @@
 		methods: {
 			showMap(index){
 				this.mapPosition[index].isMap=true
+				
 			},
 			hiddenMap(index){
 				this.mapPosition[index].isMap=false
@@ -1150,11 +1153,14 @@
 				}
 			},
 			setBack(val){
-				this.showInfo=val
+				this.info=val.info
+				this.showInfo=val.show
 			},
 			getInfo(index){
+				this.mapPosition[index].isMap=true
 				let that=this
 				that.showInfo=true
+				console.log(that.mapList[index].word)
 				that.axios.get("https://api.localpanda.com/api/content/landingpage/chinatour/"+that.mapList[index].word).then(function(res){
 					console.log(res)
 					that.info=res.data
@@ -1162,22 +1168,20 @@
 			},
 			goAnchor(selector) {
 				var anchor = document.getElementById(selector)
-				console.log(anchor.offsetTop)
 				var t=document.getElementById("nav").offsetHeight;
 				console.log(t)
-				document.body.scrollTop = anchor.offsetTop-t-53
-				document.documentElement.scrollTop =anchor.offsetTop-t-53
+				document.documentElement.scrollTop =anchor.offsetTop-t-80
 			},
 			
 		},
 		watch:{
-			showInfo:function(val,oldVal){
-				if(val){
-				 document.getElementsByTagName("body")[0].style.overflowY="hidden"	
-				}else{
-					document.getElementsByTagName("body")[0].style.overflowY="inherit"	
-				}
-			}
+//			showInfo:function(val,oldVal){
+//				if(val){
+//				 document.getElementsByTagName("body")[0].style.overflowY="hidden"	
+//				}else{
+//					document.getElementsByTagName("body")[0].style.overflowY="inherit"	
+//				}
+//			}
 		},
 		mounted: function() {
 			window.addEventListener("scroll", this.scorllBar);
@@ -1299,7 +1303,7 @@
 			}
 		}
 		.chinaTour_details {
-			padding: 50px 0 80px;
+			padding: 50px 0 40px;
 			.nav {
 				border-bottom: 1px solid #dde0e0;
 				width: 100%;
@@ -1317,7 +1321,7 @@
 				}
 			}
 			.top_destinations {
-				margin-top: 80px;
+				margin-top: 40px;
 				h3 {
 					font-size: 26px;
 					font-weight: bold;
@@ -1367,6 +1371,16 @@
 							
 							
 							.position{
+								.hover{
+									width:20px;
+									height: 20px;
+									position: absolute;
+									left: 50%;
+									top: 50%;
+									transform: translate(-10px,-10px);
+									cursor: pointer;
+								}
+								
 								position: absolute;
 								width: 8px;
 								height: 8px;
@@ -1397,7 +1411,7 @@
 		.customize {
 			background: #faf9f8;
 			.customizeTrip {
-				padding: 53px 0;
+				padding: 40px 0;
 				h3 {
 					font-size: 26px;
 					font-weight: bold;
@@ -1505,9 +1519,9 @@
 			}
 		}
 		.activity {
-			padding-bottom: 80px;
+			padding-bottom: 40px;
 			.activityItem {
-				margin-top: 79px;
+				margin-top: 40px;
 			}
 			h3 {
 				font-size: 26px;
@@ -1720,7 +1734,7 @@
 		}
 		.visitor {
 			background: #faf9f8;
-			padding: 80px 0;
+			padding: 40px 0;
 			.visitor-cont {
 				h3 {
 					font-size: 26px;

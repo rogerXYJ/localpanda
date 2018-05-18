@@ -173,7 +173,7 @@
 			
 			<button class="bookBtn" @click="goBooking">Book Now</button>
 			<div class="picRate">
-				<select class="currency_type" @change="changeCurrency">
+				<select class="currency_type" id="changeCurrency" @change="changeCurrency" v-model="defaultCurrency">
 					<option :value="item.currency" v-for="item in exchange" :key="item.currency">{{item.currency}}</option>
 				</select>
 				<span class="iconfont">&#xe666;</span>
@@ -188,6 +188,7 @@
 
 	import bus from '~/assets/js/pages/bus.js'
 	import photo from '~/components/pageComponents/activity/details/mobile/photo'
+import { setTimeout } from 'timers';
 	if(process.browser) {
 		const VueAwesomeSwiper = require('vue-awesome-swiper/dist/ssr')
 		bus.use(VueAwesomeSwiper)
@@ -228,6 +229,7 @@
 				isShowTable: false, //价格明细
 				alertPicStatus: false,
 				
+				defaultCurrency : 'USD',
 				nowExchange:{},//{'rate':1,'currency':'USD','symbol':'$'}
 				exchange:[]
 				
@@ -239,11 +241,11 @@
 		methods: {
 			changeCurrency(e){
 				var self = this;
-				var value = e.target.value;
+				var value = e.target ? e.target.value : e;
 				var picInfo = this.picInfo;
 				var thisDetail = picInfo.details;
 
-				console.log(picInfo);
+				
 				//换算折扣价
 				var exchange = this.exchange;
 				for(var i=0;i<exchange.length;i++){
@@ -437,6 +439,15 @@
 				if(response.status==200){
 					that.exchange = response.data.data;
 					that.nowExchange = that.exchange[0];
+
+					//设置币种
+					var ua = window.navigator.userAgent.toLowerCase();
+					var isWx = (ua.match(/MicroMessenger/i) == 'micromessenger') ? true : false;
+					if(isWx){
+						that.defaultCurrency = 'CNY';
+						that.changeCurrency('CNY');
+					}
+					
 				}
 			}, function(response) {});
 			

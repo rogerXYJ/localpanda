@@ -52,7 +52,7 @@
 				</div>
 			</div>
 			<div class="btn">
-				<button @click="pay" v-if="payData">Pay</button>
+				<button @touchstart="pay" v-if="payData">Pay</button>
 			</div>
 		</div>
 
@@ -66,7 +66,7 @@
 		require('~/assets/js/plugin/flexible.js')
 		require('~/assets/js/pages/ga.js')
 	}
-	import { GetQueryString , getPriceMark } from '~/assets/js/plugin/utils.js'
+	import { GetQueryString } from '~/assets/js/plugin/utils.js'
 	import api from '~/assets/js/plugin/api.js'
 	import Vue from 'vue'
 	import Loading from '~/components/Loading/Loading'
@@ -125,7 +125,6 @@
 			Loading
 		},
 		methods: {
-			getPriceMark:getPriceMark,
 			changeCurrency(e){
 				var value = e.target.value;
 				this.opctions.currency = value;
@@ -430,7 +429,7 @@
 				}).then(function(response) {
 					var data = response.data;
 					if(data.return_code == 'SUCCESS'){
-						var payurl = data.mweb_url + '&redirect_url=' + encodeURIComponent('https://www.localpanda.cn/payment/mobile/wxMobilePay?email='+self.email+'&orderId=' + self.orderId + '&amount=' + self.opctions.amount+'&symbol=CNY');
+						var payurl = data.mweb_url + '&redirect_url=' + encodeURIComponent('https://www.localpanda.cn/payment/mobile/wxMobilePay?email='+self.email+'&orderId=' + self.orderId + '&amount=' + self.opctions.amount+'&symbol='+self.opctions.symbol);
 						location.href = payurl;
 					}else{
 						alert(data.return_msg+', Try again!')

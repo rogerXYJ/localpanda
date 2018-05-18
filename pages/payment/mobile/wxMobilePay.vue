@@ -6,7 +6,7 @@
         <div class="confirm_box">
             <h3>Please confirm whether the payment has been completed ?</h3>
             <div class="btn_list">
-                <a class="btn_ok" @touchstart="confirmation">Confirmation</a>
+                <a class="btn_ok" @touchstart="confirmation">Completion</a>
                 <a @touchstart="tryAgain">Try again</a>
             </div>
         </div>

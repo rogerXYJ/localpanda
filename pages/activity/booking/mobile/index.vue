@@ -73,7 +73,7 @@
 			</div>
 		</div>
 		<div class="nextBtn">
-			<div class="next" @click="next">NEXT</div>
+			<div class="next" @touchend="next">NEXT</div>
 		</div>
 	</div>
 </template>

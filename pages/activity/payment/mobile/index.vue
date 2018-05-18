@@ -56,6 +56,16 @@
 			</div>
 		</div>
 
+
+		<div class="confirm_all" v-show="showWxOpenBox" @touchstart="hideWxOpenBox"></div>
+		<div class="confirm_box" v-show="showWxOpenBox">
+				<h3>Please confirm whether the payment has been completed ?</h3>
+				<div class="btn_list">
+						<a class="btn_ok" @touchstart="confirmation">Completion</a>
+						<a :href="tryAgainHref">Try again</a>
+				</div>
+		</div>
+
 		<Loading :loadingStatus="loadingStatus"></Loading>
 	</div>
 
@@ -117,9 +127,12 @@ import { setTimeout } from 'timers';
 				refundTimeLimit:"",
 				logInHide:false,
 				loadingStatus: false,
+
 				rate: 6.3710,
 				isWx : false,
-				payData : ''
+				payData : '',
+				showWxOpenBox: false,
+				tryAgainHref : ''
 			}
 		},
 		components: {
@@ -423,6 +436,8 @@ import { setTimeout } from 'timers';
 			//H5唤起微信支付
 			openWxPay(postData){
 				var self = this;
+				this.loadingStatus = true;
+
 				self.axios.post("https://www.localpanda.cn/api/payment/pay/wechat",JSON.stringify(postData), {
 					headers: {
 						'Content-Type': 'application/json; charset=UTF-8'
@@ -431,22 +446,65 @@ import { setTimeout } from 'timers';
 					var data = response.data;
 					if(data.return_code == 'SUCCESS'){
 
+						self.showWxOpenBox = true;
+						self.loadingStatus = false;
+						
 						var callUrl = 'https://www.localpanda.cn/payment/mobile/wxMobilePay?email='+self.email+'&orderId=' + self.orderId + '&amount=' + self.opctions.amount+'&symbol='+self.opctions.symbol+'&login='+(self.logIn?self.logIn:0);
 						var openWxUrl = data.mweb_url + '&redirect_url=' + encodeURIComponent(callUrl);
-						window.location.href = openWxUrl;
 
-						setTimeout(function(){
-							if(/\/activity\/payment\/mobile\//.test(location.href)){
-								window.location.href = openWxUrl;
-							}
-						},8000);
+						self.tryAgainHref = openWxUrl;
+
+						window.location.href = openWxUrl;
+						
+						// setTimeout(function(){
+						// 	if(/\/activity\/payment\/mobile\//.test(location.href)){
+						// 		window.location.href = openWxUrl;
+						// 	}
+						// },8000);
 
 					}else{
 						alert(data.return_msg+', Try again!')
 					}
+					self.loadingStatus = false;
 					
 				}, function(response) {})
-			}
+			},
+			confirmation(e){
+					//var query = this.query;
+				var self = this;
+				self.loadingStatus = true;
+					//查询订单
+					this.axios.get("/api/payment/wechat/status?orderId="+self.orderId+'&flag=1',{
+							headers: {
+									'Content-Type': 'application/json;'
+							}
+					}).then(function(response) {
+							if(response.status==200){
+									var succeed = false,
+											msg = '';
+									if(response.data.succeed){
+											succeed = true;
+									}else{
+											msg = 'fail';
+									}
+									window.location.href = "https://www.localpanda.com/payment/mobile/success?email="+self.email+"&orderId=" + self.orderId + '&amount=' + self.opctions.amount+"&succeed="+succeed+'&symbol='+self.opctions.symbol+'&msg='+msg;
+							}else{
+									alert('Please try again!');
+							}
+							self.loadingStatus = false;
+					}, function(response) {
+							alert('Please try again!');
+					})
+
+            
+        },
+        tryAgain(){
+					//var self = this;
+					//window.location.href = 'https://www.localpanda.cn/activity/payment/mobile/?objectId='+self.orderId+'&login='+(self.logIn?self.logIn:0);
+				},
+				hideWxOpenBox(){
+					this.showWxOpenBox = false;
+				}
 		},
 		created: function() {
 
@@ -613,4 +671,48 @@ import { setTimeout } from 'timers';
 				appearance: none;
 			}
 		}
+	
+	.confirm_all{ background-color: rgba(0,0,0,0.5); height: 100vh; color: #fff;
+		width: 100%;
+		position: absolute;
+		left: 0;
+		top:0;
+		z-index: 9;
+	}
+	.confirm_box{
+		z-index: 9;
+    position: absolute;
+    left: 10%;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 80%;
+    background-color: #fff;
+    h3{
+        color: #333;
+        margin-top: 0.6rem;
+        text-align: center;
+        font-size: 0.34rem;
+        line-height: 0.48rem;
+    }
+    .btn_list{
+			padding: 0 0.4rem 1rem;
+			a{
+					display: block;
+					height: 1rem;
+					line-height: 1rem;
+					color: #888;
+					text-align: center;
+					background-color: #eee;
+					border-radius: 0.5rem;
+					margin-top: 0.5rem;
+					font-size: 0.3rem;
+			}
+			.btn_ok{
+					color: #fff;
+					background: -webkit-gradient(linear, left top, right top, from(#1bbc9d), to(#009efc));
+					background: linear-gradient(to right, #1bbc9d, #009efc);
+			}
+    }
+}
+
 </style>

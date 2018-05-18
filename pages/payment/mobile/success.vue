@@ -12,7 +12,7 @@
 
     <p class="order_info">Order ID: {{orderId}}</p>
     <!-- <p class="order_info" v-show="success">Time of transaction: 2017-12-20 09:32:51</p> -->
-    <p class="order_info">Payment amount: <span>{{payType}}{{amount}}</span></p>
+    <p class="order_info">Payment amount: <span>{{symbol}}{{amount}}</span></p>
 
     <p class="order_contact" v-show="success">Our staff will confirm with you as soon as possible. We will reply you within one business day. You can know the details furthur by look at your order details.You can also email service@localpanda.com or call us at +86 (21) 8018-2090/ +1 (888) 930-8849 (US toll free).</p>
     <p class="order_contact" v-show="!success"><span v-show="msg">Your payment did not go through. Here is the error that you can reference:{{msg}}</span><br><br>
@@ -23,7 +23,7 @@
 
     <a class="btn_href" :href="getJumpUrl(logIn)" v-if="success && email">View My Order</a>
     <a class="btn_href" href="/" v-else-if="!email">Back to home</a>
-    <a class="btn_href" :href="'https://www.localpanda.'+(payTypeStr=='CNY'?'cn':'com')+'/activity/payment/mobile/?objectId='+orderId+'&login='+(logIn?logIn:0)+'&payType=' + payTypeStr" v-else>Try again</a>
+    <a class="btn_href" :href="'https://www.localpanda.'+(symbol=='¥'?'cn':'com')+'/activity/payment/mobile/?objectId='+orderId+'&login='+(logIn?logIn:0)" v-else>Try again</a>
   </div>
 </template>
 
@@ -47,8 +47,7 @@ export default {
         success: query.succeed=='true'?true:false,
         msg: query.msg,
         showTipTxt: false,
-        payTypeStr: query.payType,
-        payType: query.payType=='CNY'?'¥':'$'
+        symbol: query.symbol ? query.symbol : '$'
 			}
 		},
 		components: {

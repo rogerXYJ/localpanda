@@ -6,7 +6,7 @@
 				<h3>Price details</h3>
 			</div>
 			<div class="details">
-				<p class="childDiscount" v-if="picInfo.childDiscount">Children's price is   {{getPriceMark(picInfo.currency)}}  {{picInfo.childDiscount}} {{getPriceMark(picInfo.currency,1)}}  less than adults' price.</p>
+				<p class="childDiscount" v-if="picInfo.childDiscount">Children's price is   {{picInfo.symbol}}  {{returnFloat(picInfo.childDiscount)}} {{picInfo.currency}}  less than adults' price.</p>
 				<el-table :data="sixArr" stripe style="width: 100%">
 					<el-table-column prop="capacity" label="Number of people"  align="center">
 						<template slot-scope="scope">
@@ -16,13 +16,13 @@
 					</el-table-column>
 					<el-table-column prop="price" label="Total cost" align="center">
 						<template slot-scope="scope">
-							<span>{{getPriceMark(picInfo.currency)}} {{returnFloat(scope.row.price)}} {{getPriceMark(picInfo.currency,1)}}</span>
+							<span>{{picInfo.symbol}} {{returnFloat(scope.row.price)}} {{picInfo.currency}}</span>
 						</template>
 					</el-table-column>
 					<el-table-column prop="childenTotal" label="Price per person"  align="center">
 						<template slot-scope="scope">
 							<div v-show="scope.row.capacity">
-								<span>{{getPriceMark(picInfo.currency)}} {{returnFloat(round(scope.row.price/scope.row.capacity))}} {{getPriceMark(picInfo.currency,1)}}</span>
+								<span>{{picInfo.symbol}} {{returnFloat(scope.row.price/scope.row.capacity)}} {{picInfo.currency}}</span>
 							</div>
 						</template>
 					</el-table-column>
@@ -79,19 +79,15 @@
 				}
 			},
 			returnFloat(value) {
-				if(value){
-					var value = Math.round(parseFloat(value) * 100) / 100;
-					var xsd = value.toString().split(".");
-					if(xsd.length == 1) {
-						value = value.toString() + ".00";
-						return value;
+				value*=1;
+				if(value) {
+					var numberArr = (''+value).split('.');
+					if(numberArr.length>1 && numberArr[1].length>2){
+						return (value+0.005).toFixed(2);
 					}
-					if(xsd.length > 1) {
-						if(xsd[1].length < 2) {
-							value = value.toString() + "0";
-						}
-						return value;
-					}
+					return value.toFixed(2);
+				}else{
+					return 0;
 				}
 			},
 			tableData(details) {
@@ -110,8 +106,6 @@
 
 
 				if(details.length==1){
-					console.log(1)
-					console.log(details[0].capacity)
 					for(let i=0;i<details[0].capacity;i++){
 						var s=newObj(details[0]);
 						newArr.push(s)
@@ -134,7 +128,6 @@
 						//console.log(newArr)
 					}
 				}
-				console.log(newArr)
 					
 				for(var k = 0; k < newArr.length; k++) {
 					newArr[k].capacity = k + 1;

@@ -21,17 +21,24 @@
 					<div v-if="adults+children>1" class="guests">{{adults+children}} People</div>
 				</li>
 				<li class="clearfix" v-if="adults+children>=1">
-					<label v-if="children==0&&adults==1">{{getPriceMark(picInfo.currency)}}{{round(adultsPic/(adults+children))}} x {{adults+children}} Person</label>
+					<label v-if="children==0&&adults==1">{{picInfo.symbol}}{{returnFloat(adultsPic/(adults+children))}} x {{adults+children}} Person</label>
 					
-					<label v-else>{{getPriceMark(picInfo.currency)}}{{returnFloat(round(adultsPic/(adults+children)))}} x {{adults+children}} People 
-					<br/><em v-if="children>0&&picInfo.childDiscount">- {{getPriceMark(picInfo.currency)}}{{returnFloat(children*picInfo.childDiscount)}}</b> for child(ren)</em>
+					<label v-else>{{picInfo.symbol}}{{returnFloat(adultsPic/(adults+children))}} x {{adults+children}} People 
+					<br/><em v-if="children>0&&picInfo.childDiscount"><b style="display: inline-block;">- {{picInfo.symbol}}{{returnFloat(children*picInfo.childDiscount)}}</b> for child(ren)</em>
 					</label>
 					<span @click.stop="showPriceDetail"><i class="iconfont">&#xe659;</i>{{returnFloat(adultsPic)}}</span>
 				</li>
 				<li class="clearfix" v-if="adults+children>=1">
-					<label>Total</label>
-					<span class="weight" v-if="children>0&&picInfo.childDiscount">{{getPriceMark(picInfo.currency)}}{{returnFloat(cutXiaoNum(adultsPic-children*picInfo.childDiscount,1))}}</span>
-					<span class="weight" v-else>{{getPriceMark(picInfo.currency)}}{{returnFloat(adultsPic)}}</span>
+					<label>Total ({{picInfo.currency}})</label>
+					<span class="weight" v-if="children>0&&picInfo.childDiscount">{{picInfo.symbol}}{{returnFloat(returnFloat(adultsPic)-returnFloat(children*picInfo.childDiscount))}}</span>
+					<span class="weight" v-else>{{picInfo.symbol}}{{returnFloat(adultsPic)}}</span>
+
+					<div class="picRate">
+						<select class="currency_type" @change="changeCurrency" v-model="picInfo.currency">
+							<option :value="item.currency" v-for="item in exchange" :key="item.currency">{{item.currency}}</option>
+						</select>
+						<span class="iconfont">&#xe666;</span>
+					</div>
 				</li>
 			</ul>
 			<p>{{dateErrText}}</p>
@@ -93,7 +100,10 @@
 				peopleErr:false,
 				dateErrText:"",
 				showWinBg : false,
-				isshowDetail:false //priceDetail
+				isshowDetail:false, //priceDetail
+
+				nowExchange:{},//{'rate':1,'currency':'USD','symbol':'$'}
+				exchange:[]
 				
 			}
 		},
@@ -104,7 +114,108 @@
 			PriceDetail
 		},
 		methods: {
-			getPriceMark:getPriceMark,
+			changeCurrency(e){
+				var self = this;
+				var value = e.target.value;
+				var picInfo = this.picInfo;
+				var thisDetail = picInfo.details;
+
+				console.log(picInfo);
+				//换算折扣价
+				var exchange = this.exchange;
+				for(var i=0;i<exchange.length;i++){
+					var thisEx = exchange[i];
+					//检测当前货币类型
+					if(thisEx.currency==value){
+						//设置当前币种
+						this.nowExchange = thisEx;
+						//切换折扣价币种
+						picInfo.currency = value;
+						picInfo.symbol = thisEx.symbol;
+						picInfo.bottomPrice = picInfo.defaultPrice.bottomPrice * thisEx.rate;
+						picInfo.originalPrice = picInfo.defaultPrice.originalPrice * thisEx.rate;
+						if(picInfo.defaultPrice.childDiscount){
+							//之所以在这里加returnFloat，是为了让儿童优惠后的总价格，不会超过总价-儿童优惠价
+							picInfo.childDiscount = picInfo.defaultPrice.childDiscount * thisEx.rate;
+						}
+						//切换价格详情币种
+						for(var i=0;i<thisDetail.length;i++){
+							thisDetail[i].price = thisDetail[i].defaultPrice * thisEx.rate;
+						}
+
+						break;
+					}
+				}
+				
+				if(this.people>0){
+					this.adultsPic = thisDetail[this.people-1].price;
+				}
+			},
+			setPriceData(){
+				var picInfo = this.picInfo;
+				var thisDetail = picInfo.details;
+				//设置默认价格和折扣价
+				picInfo.defaultPrice = {
+					bottomPrice: picInfo.bottomPrice,
+					originalPrice: picInfo.originalPrice
+				};
+				//儿童折扣
+				if(picInfo.childDiscount){
+					picInfo.defaultPrice.childDiscount = picInfo.childDiscount;
+				}
+				//设置人数列表价格
+				// for(var i=0; i<thisDetail.length; i++){
+				// 	var thisPrice = thisDetail[i].defaultPrice;
+				// 	thisDetail[i].defaultPrice = thisPrice;
+				// }
+			},
+			tableData(details) {
+				
+				var newObj = function(obj) {
+					var o = {};
+					for(var key in obj) {
+						o[key] = obj[key];
+					}
+					return o;
+				}
+
+				let newArr = [],
+					tableD = [];
+
+
+
+				if(details.length==1){
+					for(let i=0;i<details[0].capacity;i++){
+						var s=newObj(details[0]);
+						newArr.push(s)
+					}
+					
+				}else{
+					for(let i = 0; i < details.length; i++) {
+						let thisD = details[i];
+						newArr.push(thisD);
+						if(i + 1 > details.length - 1) break;
+
+						var thisC = thisD.capacity;
+						var nextC = details[i + 1].capacity;
+						var forLen = nextC - thisC - 1;
+						for(let j = 0; j < forLen; j++) {
+							var midArr = newObj(details[i+1]);
+							//console.log(midArr)
+							newArr.push(midArr);
+						}
+						//console.log(newArr)
+					}
+				}
+				
+
+				for(var k = 0; k < newArr.length; k++) {
+					newArr[k].capacity = k + 1;
+
+				}
+				
+				return newArr;
+			},
 			back() {
 				history.back()
 			},
@@ -154,20 +265,16 @@
 					return(parseFloat(this.cutXiaoNum(val, 1)) + 0.1).toFixed(1);
 				}
 			},
-			   returnFloat(value) {
-				if(value){
-					var value = Math.round(parseFloat(value) * 100) / 100;
-					var xsd = value.toString().split(".");
-					if(xsd.length == 1) {
-						value = value.toString() + ".00";
-						return value;
+			returnFloat(value) {
+				value*=1;
+				if(value) {
+					var numberArr = (''+value).split('.');
+					if(numberArr.length>1 && numberArr[1].length>2){
+						return (value+0.005).toFixed(2);
 					}
-					if(xsd.length > 1) {
-						if(xsd[1].length < 2) {
-							value = value.toString() + "0";
-						}
-						return value;
-					}
+					return value.toFixed(2);
+				}else{
+					return 0;
 				}
 				
 			},
@@ -201,11 +308,8 @@
 		          activityId: that.id,
 		          amount:
 		            that.children > 0 && that.picInfo.childDiscount
-		              ? that.cutXiaoNum(
-		                  that.adultsPic - that.children * that.picInfo.childDiscount,
-		                  1
-		                )
-		              : that.adultsPic,
+		              ? that.returnFloat(that.returnFloat(that.adultsPic) - that.returnFloat(that.children * that.picInfo.childDiscount))
+		              : that.returnFloat(that.adultsPic),
 		          currency: that.picInfo.currency,
 		          adultNum: that.adults,
 		          refundTimeLimit:that.refundTimeLimit,
@@ -213,15 +317,15 @@
 		          infantNum: that.infant,
 		          startDate: that.dateTime,
 		          startTime: that.time ? that.time : null,
-		          adultsPic: that.adultsPic,
+		          adultsPic: that.returnFloat(that.adultsPic),
 		          title: that.title,
 		          childDiscountP: that.picInfo.childDiscount,
 		          category: that.category,
-		          averagePrice: that.round(
+		          averagePrice: that.returnFloat(
 		            that.adultsPic / (that.adults + that.children)
 		          ),
 		          childDiscount: that.picInfo.childDiscount
-		            ? that.children * that.picInfo.childDiscount
+		            ? that.returnFloat(that.children * that.picInfo.childDiscount)
 		            : null
 		        };
 		        orderInfo = JSON.stringify(orderInfo);
@@ -238,11 +342,28 @@
 			
 			let that=this
 			this.logIn = window.localStorage.getItem("logstate");
-			this.picInfo = JSON.parse(window.localStorage.getItem("objDetail")).picInfo
-			this.id=JSON.parse(window.localStorage.getItem("objDetail")).id
-			this.title=JSON.parse(window.localStorage.getItem("objDetail")).title
-			this.category=JSON.parse(window.localStorage.getItem("objDetail")).category
-			this.refundTimeLimit=JSON.parse(window.localStorage.getItem("objDetail")).refundTimeLimit*24
+
+			var objDetail = JSON.parse(window.localStorage.getItem("objDetail"));
+			this.picInfo = objDetail.picInfo
+			this.id= objDetail.id
+			this.title= objDetail.title
+			this.category= objDetail.category
+			this.refundTimeLimit= objDetail.refundTimeLimit*24
+
+
+			//加载币种
+			that.axios.get("https://www.fedrobots.com/api/exchange/").then(function(response) {
+				// console.log(response);
+				if(response.status==200){
+					that.exchange = response.data.data;
+					that.nowExchange = that.exchange[0];
+				}
+			}, function(response) {});
+
+			this.picInfo.details = this.tableData(this.picInfo.details);
+
+
+
 			this.options = {
 				minDate: this.picInfo.earliestBookDate,
 				maxDate: addmulMonth(this.picInfo.earliestBookDate, 12),
@@ -401,7 +522,6 @@
 							margin-right: 0.173333rem;
 						}
 						float: right;
-						width: 40%;
 						text-align: right;
 						font-size: 0.48rem;
 						&.weight{
@@ -410,6 +530,41 @@
 					}
 					&:last-child {
 						border-bottom: 1px solid #ebebeb;
+					}
+
+					.picRate {
+						color: #666;
+						float: right;
+						width: auto;
+						position: relative;
+						margin:0 20px 0 0;
+						span {
+							font-size: 10px;
+						}
+						.iconfont{
+							position: absolute;
+							right: 0;
+							top:0;
+							
+							text-align:center;
+							font-size:18px;
+						}
+						.currency_type{
+							border:none;
+							padding-right: 20px;
+							font-size: 16px;
+							background:none;
+							
+							color: #666;
+							option{
+								color:#666;
+							}
+							position: relative;
+							z-index: 2;
+							-webkit-appearance: none;
+							-moz-appearance: none;
+							appearance: none;
+						}
 					}
 				}
 			}

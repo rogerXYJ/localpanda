@@ -281,11 +281,18 @@
 										'Content-Type': 'application/json; charset=UTF-8'
 									}
 								}).then(function(response) {
-									var thisUrl = "https://www.localpanda.cn/activity/payment/mobile/?objectId=" + response.data.response + '&payType=' + obj.currency + '&login='+(that.logIn?that.logIn:0);
+									var loginState = (that.logIn?that.logIn:0);
+									var thisUrl = "https://www.localpanda.cn/activity/payment/mobile/?objectId=" + response.data.response + '&login='+loginState;
 									if(obj.currency=='CNY'){
-										window.location.href = 'http://www.localpanda.cn/wx/getcode?link='+encodeURIComponent(thisUrl.replace('code','oldcode'));
+										var ua = window.navigator.userAgent.toLowerCase();
+										var isWx = (ua.match(/MicroMessenger/i) == 'micromessenger') ? true : false;
+										if(isWx){
+											window.location.href = 'http://www.localpanda.cn/wx/getcode?link='+encodeURIComponent(thisUrl.replace('code','oldcode'));
+										}else{
+											window.location.href = thisUrl;
+										}
 									}else{
-										window.location.href = "https://www.localpanda.com/activity/payment/mobile/?objectId=" + response.data.response + '&payType=' + obj.currency + '&login='+(that.logIn?that.logIn:0);
+										window.location.href = "https://www.localpanda.com/activity/payment/mobile/?objectId=" + response.data.response + obj.currency + '&login='+loginState;
 									}
 									
 								}, function(response) {})
@@ -315,7 +322,7 @@
 							"utcOffset": new Date().getTimezoneOffset() / 60 * -1,
 							"deviceType":deviceType
 						}
-						console.log(obj)
+						
 						if(that.addOder == false) {
 							that.addOder = true
 							Vue.axios.put(that.apiBasePath+"activity/order/create", JSON.stringify(obj), {
@@ -323,13 +330,20 @@
 									'Content-Type': 'application/json; charset=UTF-8'
 								}
 							}).then(function(response) {
-
-								var thisUrl = "https://www.localpanda.cn/activity/payment/mobile/?objectId=" + response.data.response + '&payType=' + obj.currency + '&login='+(that.logIn?that.logIn:0);
+								var loginState = (that.logIn?that.logIn:0);
+								var thisUrl = "https://www.localpanda.cn/activity/payment/mobile/?objectId=" + response.data.response + '&payType=' + obj.currency + '&login='+loginState;
 								
 								if(obj.currency=='CNY'){
-									window.location.href = 'http://www.localpanda.cn/wx/getcode?link='+encodeURIComponent(thisUrl.replace('code','oldcode'));
+									var ua = window.navigator.userAgent.toLowerCase();
+									var isWx = (ua.match(/MicroMessenger/i) == 'micromessenger') ? true : false;
+									if(isWx){
+										window.location.href = 'http://www.localpanda.cn/wx/getcode?link='+encodeURIComponent(thisUrl.replace('code','oldcode'));
+									}else{
+										window.location.href = thisUrl;
+									}
+									
 								}else{
-									window.location.href = "https://www.localpanda.com/activity/payment/mobile/?objectId=" + response.data.response + '&payType=' + obj.currency + '&login='+(that.logIn?that.logIn:0);
+									window.location.href = "https://www.localpanda.com/activity/payment/mobile/?objectId=" + response.data.response + '&payType=' + obj.currency + '&login='+loginState;
 								}
 
 							}, function(response) {})

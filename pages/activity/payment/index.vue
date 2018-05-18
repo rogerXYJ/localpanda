@@ -28,21 +28,21 @@
 				</div>
 				<div class="pic">
 					<div class="adult clearfix">
-						<div class="formula" v-if="opctions.childrenNum==0&&opctions.adultNum==1">{{getPriceMark(opctions.currency)}}{{returnFloat(opctions.averagePrice)}} x 1 Person</div>
-						<div class="formula" v-else>{{getPriceMark(opctions.currency)}} {{returnFloat(opctions.averagePrice)}} x {{opctions.adultNum+opctions.childrenNum}} People </div>
-						<div class="adultPic">{{getPriceMark(opctions.currency)}} {{returnFloat(cutXiaoNum(opctions.averagePrice*(opctions.adultNum+opctions.childrenNum),1))}}</div>
+						<div class="formula" v-if="opctions.childrenNum==0&&opctions.adultNum==1">{{opctions.symbol}}{{returnFloat(opctions.averagePrice)}} x 1 Person</div>
+						<div class="formula" v-else>{{opctions.symbol}} {{returnFloat(opctions.averagePrice)}} x {{opctions.adultNum+opctions.childrenNum}} People </div>
+						<div class="adultPic">{{opctions.symbol}} {{returnFloat(opctions.amount+opctions.childDiscount)}}</div>
 					</div>
 					<div class="child" v-if="opctions.childDiscount">
-						<b>- {{getPriceMark(opctions.currency)}}{{returnFloat(opctions.childDiscount)}}</b> for child(ren)
+						<b>- {{opctions.symbol}}{{returnFloat(opctions.childDiscount)}}</b> for child(ren)
 					</div>
 					<div class="child" v-if="opctions.couponDiscount">
-						<b>-{{getPriceMark(opctions.currency)}}{{returnFloat(opctions.couponDiscount)}}</b> for discount
+						<b>-{{opctions.symbol}}{{returnFloat(opctions.couponDiscount)}}</b> for discount
 					</div>
 					
 				</div>
 				<div class="total clearfix">
-					<div class="totle-title">Total ({{getPriceMark(opctions.currency,1)}})</div>
-					<div class="totalPic">{{getPriceMark(opctions.currency)}}{{returnFloat(opctions.amount)}}</div>
+					<div class="totle-title">Total ({{opctions.currency}})</div>
+					<div class="totalPic">{{opctions.symbol}}{{returnFloat(opctions.amount)}}</div>
 				</div>
 			</div>
 			<p class="refundPolicy" style="margin-top: 30px; color: red;">You can get a 100% refund up to {{refundTimeLimit}} hours before your trip.</p>
@@ -51,6 +51,20 @@
 		</div>
 		<Loading :loadingStatus="loadingStatus"></Loading>
 		<FooterCommon></FooterCommon>
+
+
+		<div class="win_bg" v-show="showWxPay"></div>
+		<div class="wx_pay" v-show="showWxPay">
+			<h3>Wechat Pay verification</h3>
+			<p>Please open your Wechat App, scan the QR code to enter the verification page. Please don't close this window during the process, and the page will auto continue once you are done.</p>
+			<div class="wx_ewmtip" v-show="ewmTip" v-html="ewmTip" @click="refreshCode"></div>
+			<div class="wx_pay_ewm" v-show="!ewmTip">
+				<div id="wxPayEwm"></div>
+			</div>
+			<span class="iconfont pay_close" @click="closePay">&#xe629;</span>
+		</div>
+
+
 	</div>
 
 </template>
@@ -60,12 +74,16 @@
 	  //require('~/assets/js/pages/talk.js')
 	  require('~/assets/js/pages/ga.js')
 	}
-	import { GetQueryString,getPriceMark } from '~/assets/js/plugin/utils.js'
+	import { GetQueryString } from '~/assets/js/plugin/utils.js'
 	import HeaderCommon from '~/components/HeaderCommon/HeaderCommon'
 	import FooterCommon from '~/components/FooterCommon/FooterCommon';
 	import Loading from '~/components/Loading/Loading'
 	import api from '~/assets/js/plugin/api.js'
+	//import QRCode from '~/assets/js/plugin/wx/qrcode.min.js'
 	import Vue from 'vue'
+import { create } from 'domain';
+import { clearInterval, setTimeout } from 'timers';
+  //import { triggerAsyncId } from 'async_hooks';
 	
 	export default {
 	name: 'payNow',
@@ -76,10 +94,10 @@
 	          src: 'https://checkout.stripe.com/checkout.js', 
 	          type: 'text/javascript'
 	        },
-	        /*{
-	        	src:'https://google-analytics.com/ga.js?id=UA-107010673-1',
+	        {
+	        	src:'https://resource.localpanda.cn/static/js/qrcode.min.js',
 	        	type: 'text/javascript'
-	        }*/
+	        }
 	      ]
 	    }
 	  },
@@ -111,7 +129,12 @@
 				isPay: false,
 				refundTimeLimit:'',
 				errMsg:'',
-				logInHide : false
+				logInHide : false,
+
+				//微信支付
+				showWxPay : false,
+				ewmTip: '',
+				wxpayTime : 5*2 //5分钟
 
 			}
 		},
@@ -121,7 +144,6 @@
 			Loading
 		},
 		methods: {
-			getPriceMark:getPriceMark,
 			cutXiaoNum(num, len) {
 				var numStr = num.toString();
 				if(len == null || len == undefined) {
@@ -147,17 +169,15 @@
 
 			},
 			returnFloat(value) {
-				var value = Math.round(parseFloat(value) * 100) / 100;
-				var xsd = value.toString().split(".");
-				if(xsd.length == 1) {
-					value = value.toString() + ".00";
-					return value;
-				}
-				if(xsd.length > 1) {
-					if(xsd[1].length < 2) {
-						value = value.toString() + "0";
+				value*=1;
+				if(value) {
+					var numberArr = (''+value).split('.');
+					if(numberArr.length>1 && numberArr[1].length>2){
+						return (value+0.005).toFixed(2);
 					}
-					return value;
+					return value.toFixed(2);
+				}else{
+					return 0;
 				}
 			},
 			getToken() {
@@ -211,7 +231,7 @@
 			getInfo(){
 				let that=this
 				Vue.axios.get(this.apiBasePath+"activity/order/detail/"+that.orderId).then(function(res){
-					
+					console.log(res.data);
 					that.opctions=res.data
 					that.email = res.data.contactInfo.emailAddress;
 					that.refundTimeLimit=that.opctions.activityInfo.refundTimeLimit*24
@@ -222,12 +242,19 @@
 				let that = this;
 				
 				ga('gtag_UA_107010673_1.send', {
-						hitType: 'event',
-						eventCategory: 'activity_payment',
-						eventAction: 'click',
-						eventLabel: 'activity_pay',
-	
-					});
+					hitType: 'event',
+					eventCategory: 'activity_payment',
+					eventAction: 'click',
+					eventLabel: 'activity_pay',
+
+				});
+				
+				if(this.opctions.currency=='CNY'){
+					this.wxPay();
+					return;
+				}
+				
+
 				that.stripeHandler.open({
 					name: 'Local panda', // 收款方或商家名称，比如 Beansmile
 					description: "", // 待支付商品的描述
@@ -237,6 +264,111 @@
 
 					}
 				})
+			},
+			wxPay(){
+				//人民币支付，弹出微信二维码
+				var self = this;
+				this.showWxPay = true;
+
+				//设置提示文字
+				this.ewmTip = 'Loading ...';
+
+				var wxPayEwm = document.getElementById("wxPayEwm");
+				wxPayEwm.innerHTML = '';
+
+
+				var obj = {
+					tradeType: 'NATIVE',
+					objectId: this.opctions.orderId,
+					amount: this.opctions.amount * 100,
+					objectType: 'ACTIVITY'
+				};
+				this.axios.post("/api/payment/pay/wechat", JSON.stringify(obj), {
+					headers: {
+						'Content-Type': 'application/json; charset=UTF-8'
+					}
+				}).then(function(response) {
+					if(response.status==200){
+						//var imgSrc = 'data:image/png;base64,'+response.data.code_url;
+						//self.wxPayEwm = imgSrc;
+						var payLogo = new Image();
+						payLogo.src = 'https://resource.localpanda.cn/static/icon/wechat.png';
+						payLogo.className = 'ewmLogo';
+						wxPayEwm.appendChild(payLogo);
+
+						var qrcode = new QRCode(wxPayEwm, {
+							text: response.data.code_url,
+							width: 150, //生成的二维码的宽度
+							height: 150, //生成的二维码的高度
+							colorDark : "#000000", // 生成的二维码的深色部分
+							colorLight : "#ffffff", //生成二维码的浅色部分
+							correctLevel : QRCode.CorrectLevel.H
+						});
+						
+						//隐藏提示文字
+						self.ewmTip = '';
+
+						//开启查询监听，3秒钟请求一次到达设计时间后停止，并请求一次最终查询接口flag=1
+						var allTime = 0;
+						self.payTimer = setInterval(function(){
+							allTime+=3;
+							//开启计时
+							if(allTime>self.wxpayTime){
+								this.clearInterval(self.payTimer);
+								self.payEnd(1);
+							}else{
+								self.payEnd();
+							}
+						},3000);
+						
+						
+
+
+					}
+				}, function(response) {})
+
+			},
+			closePay(){
+				this.showWxPay = false;
+				var self = this;
+				setTimeout(function(){
+					this.clearInterval(self.payTimer);
+					self.payEnd(1);
+				});
+				
+				
+			},
+			payEnd(flagNum){
+				var that = this;
+				//https://www.localpanda.cn/api/payment/wechat/status?orderId=1106357805
+				this.axios.get("/api/payment/wechat/status?orderId="+this.orderId+'&flag='+(flagNum?1:0),{
+					headers: {
+						'Content-Type': 'application/json; charset=UTF-8'
+					}
+				}).then(function(response) {
+					if(response.status==200 && response.data.succeed){
+
+						var pageTracker =_gat._getTracker("UA-107010673-1");
+							pageTracker._addTrans(that.orderId,"",that.opctions.amount,"", "", "", "", "");
+							pageTracker._addItem(that.orderId, that.opctions.activityId,"","", that.opctions.amount,"1" );
+							pageTracker._trackTrans();
+						
+						window.location.href = "/payment/success?email="+that.email+"&orderId=" + that.orderId + '&amount=' + that.opctions.amount+"&succeed=true"+'&symbol='+that.opctions.symbol;
+							
+					}else{
+						//window.location.href = "/payment/failed?email="+that.email+"&orderId=" + that.orderId + '&amount=' + that.opctions.amount+"&errMsg="+that.errMsg+"&succeed=false"
+						if(flagNum){
+							that.ewmTip = 'The code has expired! <a class="refresh_code">刷新</a>'
+						}
+					}
+				}, function(response) {})
+
+			},
+			refreshCode(e){
+				var thisTag = e.target.tagName;
+				if(thisTag=='a'||thisTag=='A'){
+					this.wxPay();
+				}
 			}
 		},
 		created: function() {
@@ -252,6 +384,10 @@
 			if(!this.logIn){
 				this.logInHide = true;
 			}
+
+			
+
+			
 			
 		}
 	}
@@ -264,6 +400,23 @@
 	}
 	body{
 		min-width:1200px;
+	}
+	.ewmLogo{
+		position:absolute;
+		width:30px;
+		height:30px;
+		left:50%;
+		top:50%;
+		-webkit-transform:translate(-50%,-50%);
+		transform:translate(-50%,-50%);
+		border-radius:5px;
+	}
+	.refresh_code{
+		color:#00B886;
+		cursor:pointer;
+		&:hover{
+			color:#00B886;
+		}
 	}
 </style>
 <style lang="scss" scoped>
@@ -383,5 +536,71 @@
 			font-size: 16px;
 			font-weight: bold;
 		}
+
+
+		.win_bg{
+			width: 100%;
+			height: 100%;
+			position: fixed;
+			left: 0;
+			top:0;
+			background-color: rgba(0,0,0,0.8);
+			z-index: 9;
+		}
+		.wx_pay{
+			width: 600px;
+			height:420px;
+			position: fixed;
+			left: 50%;
+			top: 50%;
+			transform: translate(-50%,-50%);
+			background-color: #fff;
+			z-index: 10;
+			padding:32px 32px 50px;
+			box-sizing:border-box;
+			h3{
+				color: #353a3f;
+				font-size:28px;
+				font-weight: bold;
+				margin-top: 40px;
+			}
+			p{
+				font-size:18px;
+				line-height: 24px;
+				color: #353a3f;
+				margin-top: 20px;
+			}
+			.wx_ewmtip{
+				margin-top:80px;
+				font-size:14px;
+				text-align: center;
+				color:#888;
+				
+			}
+			.wx_pay_ewm{
+				text-align: center;
+				margin: 20px auto 0;
+				width:150px;
+				height:150px;
+				color:#888;
+				position:relative;
+				span{
+					display:inline-block;
+					margin-top:20px;
+					font-size:18px;
+				}
+				
+			}
+			.pay_close{
+				font-size:26px;
+				position: absolute;
+				right: 20px;
+				top: 20px;
+				cursor: pointer;
+			}
+		}
+		
 	}
+	
+	
 </style>

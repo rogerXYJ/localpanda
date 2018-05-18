@@ -20,22 +20,22 @@
 				</div>
 				<div class="pic">
 					<div class="adult clearfix">
-						<div class="formula" v-if="opctions.childrenNum==0&&opctions.adultNum==1">{{getPriceMark(opctions.currency)}}{{returnFloat(opctions.averagePrice)}} x 1 Person</div>
-						<div class="formula" v-else>{{getPriceMark(opctions.currency)}} {{returnFloat(opctions.averagePrice)}} x {{opctions.adultNum+opctions.childrenNum}} People </div>
-						<div class="adultPic">{{getPriceMark(opctions.currency)}} {{returnFloat(cutXiaoNum(opctions.averagePrice*(opctions.adultNum+opctions.childrenNum),1))}}</div>
+						<div class="formula" v-if="opctions.childrenNum==0&&opctions.adultNum==1">{{opctions.symbol}}{{returnFloat(opctions.averagePrice)}} x 1 Person</div>
+						<div class="formula" v-else>{{opctions.symbol}} {{returnFloat(opctions.averagePrice)}} x {{opctions.adultNum+opctions.childrenNum}} People </div>
+						<div class="adultPic">{{opctions.symbol}} {{returnFloat(opctions.averagePrice*(opctions.adultNum+opctions.childrenNum))}}</div>
 					</div>
 					<div class="child" v-if="opctions.childDiscount">
-						<b>- {{getPriceMark(opctions.currency)}}{{returnFloat(opctions.childDiscount)}}</b> for child(ren)
+						<b>- {{opctions.symbol}}{{returnFloat(opctions.childDiscount)}}</b> for child(ren)
 					</div>
 					<div class="child" v-if="opctions.couponDiscount">
-						<b>- {{getPriceMark(opctions.currency)}}{{returnFloat(opctions.couponDiscount)}}</b> for discount
+						<b>- {{opctions.symbol}}{{returnFloat(opctions.couponDiscount)}}</b> for discount
 					</div>
 
 				</div>
 				<div class="total clearfix">
-					<div class="totle-title">Total ({{getPriceMark(opctions.currency,1)}})</div>
+					<div class="totle-title">Total ({{opctions.currency}})</div>
 					
-					<div class="totalPic">{{getPriceMark(opctions.currency)}}{{returnFloat(opctions.amount)}}</div>
+					<div class="totalPic">{{opctions.symbol}}{{returnFloat(opctions.amount)}}</div>
 					<!-- <div class="picRate" v-if="isWx">
 						<select class="currency_type" id="currency_type" @change="changeCurrency" v-model="opctions.currency">
 							<option value="USD">USD</option>
@@ -172,17 +172,15 @@
 
 			},
 			returnFloat(value) {
-				var value = Math.round(parseFloat(value) * 100) / 100;
-				var xsd = value.toString().split(".");
-				if(xsd.length == 1) {
-					value = value.toString() + ".00";
-					return value;
-				}
-				if(xsd.length > 1) {
-					if(xsd[1].length < 2) {
-						value = value.toString() + "0";
+				value*=1;
+				if(value) {
+					var numberArr = (''+value).split('.');
+					if(numberArr.length>1 && numberArr[1].length>2){
+						return (value+0.005).toFixed(2);
 					}
-					return value;
+					return value.toFixed(2);
+				}else{
+					return 0;
 				}
 			},
 			getToken() {
@@ -196,13 +194,15 @@
 						that.loadingStatus = true;
 						let obj = {
 							amount: that.opctions.amount * 100,
-							currency: "USD",
+							currency: that.opctions.currency,
 							objectId: that.orderId,
 							token: token.id,
 							email: token.email,
 							tokenType: token.type,
 							objectType: "ACTIVITY"
 						}
+
+						//console.log(that.opctions.currency);
 
 						
 
@@ -226,11 +226,11 @@
 
 							}
 							//跳转
-							window.location.href = "/payment/mobile/success?email="+that.email+"&orderId=" + that.orderId + '&amount=' + that.opctions.amount+'&succeed='+thisData.succeed+'&msg='+msg
+							window.location.href = "/payment/mobile/success?email="+that.email+"&orderId=" + that.orderId + '&amount=' + that.opctions.amount+'&succeed='+thisData.succeed+'&symbol='+that.opctions.symbol+'&msg='+msg;
 							//
 						}, function(response) {
 							//请求失败跳转
-							window.location.href = "/payment/mobile/success?email="+that.email+"&orderId=" + that.orderId + '&amount=' + that.opctions.amount+'&succeed=false'
+							window.location.href = "/payment/mobile/success?email="+that.email+"&orderId=" + that.orderId + '&amount=' + that.opctions.amount+'&succeed=false&symbol='+that.opctions.symbol
 						})
 					}
 				})
@@ -243,25 +243,28 @@
 					that.refundTimeLimit=res.data.activityInfo.refundTimeLimit*24
 					// var orderInfo = localStorage.getItem('orderInfo') || {currency:"USD"};
 					// that.opctions.currency = JSON.parse(orderInfo).currency;
-					if(that.opctions.currency=='CNY'){
-						that.opctions.currency = 'USD';
-						that.opctions.amount /= that.rate;
-						that.opctions.averagePrice /= that.rate;
-					}
-					that.opctions.priceAll = {
-						amount:that.opctions.amount,
-						averagePrice:that.opctions.averagePrice
-					};
+
+					// console.log(that.opctions);
+					// if(that.opctions.currency=='CNY'){
+					// 	that.opctions.currency = 'USD';
+					// 	that.opctions.amount /= that.rate;
+					// 	that.opctions.averagePrice /= that.rate;
+					// }
+					// that.opctions.priceAll = {
+					// 	amount:that.opctions.amount,
+					// 	averagePrice:that.opctions.averagePrice
+					// };
 					
 
-					if(that.urlQuery.payType=='CNY'){
-						that.opctions.currency = 'CNY';
-						that.changePrice('CNY');
-					}else{
-						that.opctions.currency = 'USD';
-						that.changePrice('USD');
-					}
+					// if(that.urlQuery.payType=='CNY'){
+					// 	that.opctions.currency = 'CNY';
+					// 	that.changePrice('CNY');
+					// }else{
+					// 	that.opctions.currency = 'USD';
+					// 	that.changePrice('USD');
+					// }
 
+					//默认用来显示支付按钮，微信里面用来公众号支付数据
 					that.payData = 1;
 					
 
@@ -280,7 +283,22 @@
 
 
 				if(this.opctions.currency=='CNY'){
-					this.wxPay(this.payData);
+					var ua = window.navigator.userAgent.toLowerCase();
+					var isWx = (ua.match(/MicroMessenger/i) == 'micromessenger') ? true : false;
+					//微信内部
+					if(isWx){
+						this.wxPay(this.payData);
+					}else{
+						//微信外部
+						this.openWxPay({
+							tradeType: 'MWEB',
+							objectId: that.orderId,
+							amount : that.opctions.amount * 100, // 支付金额，单位是“分”
+							objectType : 'ACTIVITY'
+						});
+					}
+
+					
 					
 					return;
 				}
@@ -288,6 +306,7 @@
 				that.stripeHandler.open({
 					name: 'Local panda', // 收款方或商家名称，比如 Beansmile
 					description: "", // 待支付商品的描述
+					currency:that.opctions.currency,
 					amount: that.opctions.amount * 100, // 支付金额，单位是“分”
 					locale: 'en_US',
 					closed: function() {
@@ -299,7 +318,7 @@
 				
 				//code用过或者没有code则从新获取
 				var localWxCode = localStorage.getItem('localWxCode');
-				if(this.wxcode==localWxCode && this.urlQuery.payType == 'CNY' || !this.wxcode && this.urlQuery.payType == 'CNY'){
+				if(this.wxcode==localWxCode && this.opctions.currency == 'CNY' || !this.wxcode && this.opctions.currency == 'CNY'){
 					location.href = 'https://www.localpanda.cn/wx/getcode?link='+encodeURIComponent(location.href.replace('code','nostr'));
 					return;
 				}
@@ -364,9 +383,9 @@
 							}else{
 								msg = 'fail';
 							}
-							this.loadingStatus = false;
+							that.loadingStatus = false;
 							//跳转
-							window.location.href = "https://www.localpanda.com/payment/mobile/success?email="+that.email+"&orderId=" + that.orderId + '&amount=' + that.opctions.amount+'&succeed='+thisData.succeed+'&msg='+msg+'&payType=CNY';
+							window.location.href = "https://www.localpanda.com/payment/mobile/success?email="+that.email+"&orderId=" + that.orderId + '&amount=' + that.opctions.amount+'&succeed='+thisData.succeed+'&msg='+msg+'&symbol='+that.opctions.symbol;
 						}
 				); 
 			},
@@ -398,6 +417,25 @@
 						self.onBridgeReady(response.data);
 					}
 
+				}, function(response) {})
+			},
+
+			//H5唤起微信支付
+			openWxPay(postData){
+				var self = this;
+				self.axios.post("https://www.localpanda.cn/api/payment/pay/wechat",JSON.stringify(postData), {
+					headers: {
+						'Content-Type': 'application/json; charset=UTF-8'
+					}
+				}).then(function(response) {
+					var data = response.data;
+					if(data.return_code == 'SUCCESS'){
+						var payurl = data.mweb_url + '&redirect_url=' + encodeURIComponent('https://www.localpanda.cn/payment/mobile/wxMobilePay?email='+self.email+'&orderId=' + self.orderId + '&amount=' + self.opctions.amount+'&symbol=CNY');
+						location.href = payurl;
+					}else{
+						alert(data.return_msg+', Try again!')
+					}
+					
 				}, function(response) {})
 			}
 		},

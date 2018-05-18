@@ -101,17 +101,23 @@
 					</div>
 					<div class="pic">
 						<div class="adult clearfix">
-							<div class="formula" v-if="opctions.childrenNum==0 && opctions.adultNum==1">${{returnFloat(opctions.adultsPic)}} x 1 Person</div>
-							<div class="formula" v-else>$ {{returnFloat(round(opctions.adultsPic/(opctions.adultNum+opctions.childrenNum)))}} x {{opctions.adultNum+opctions.childrenNum}} People </div>
-							<div class="adultPic">$ {{returnFloat(opctions.adultsPic)}}</div>
+							<div class="formula" v-if="opctions.childrenNum==0 && opctions.adultNum==1">{{nowExchange.symbol}}{{opctions.adultsPic}} x 1 Person</div>
+							<div class="formula" v-else>{{nowExchange.symbol}} {{opctions.averagePrice}} x {{opctions.adultNum+opctions.childrenNum}} People </div>
+							<div class="adultPic">{{nowExchange.symbol}} {{opctions.adultsPic}}</div>
 						</div>
 						<div class="child" v-if="opctions.childrenNum>0&&opctions.childDiscount">
-							<b>- ${{returnFloat(opctions.childrenNum*opctions.childDiscountP)}}</b> for child(ren)
+							<b>- {{nowExchange.symbol}}{{opctions.childDiscount}}</b> for child(ren)
 						</div>
 					</div>
 					<div class="total clearfix">
-						<div class="totle-title">Total (USD)</div>
-						<div class="totalPic">${{returnFloat(opctions.amount)}}</div>
+						<div class="totle-title">Total ({{opctions.currency}})</div>
+						<div class="totalPic">{{nowExchange.symbol}}{{opctions.amount}}</div>
+						<div class="picRate">
+							<select class="currency_type" @change="changeCurrency" v-model="opctions.currency">
+								<option :value="item.currency" v-for="item in exchange" :key="item.currency">{{item.currency}}</option>
+							</select>
+							<span class="iconfont">&#xe666;</span>
+						</div>
 					</div>
 					
 				</div>
@@ -161,7 +167,11 @@
 					adultNum:0,
 					amount:0,
 					childDiscountP:0,
-					couponDiscount:0
+					childDiscountPP:0,//默认儿童优惠价
+					couponDiscount:0,
+					currency: '',
+					symbol: ''
+					
 				},
 				//订单联系人
 				oderFirstName: '',
@@ -191,7 +201,11 @@
 				logIn: '', //是否登陆
 				isShowAlert: false, //错误弹框
 				check: 0, //checked
-				addOder: false
+				addOder: false,
+
+				//汇率换算
+				nowExchange:{},//{'rate':1,'currency':'USD','symbol':'$'}
+				exchange:[]
 			}
 
 		},
@@ -203,6 +217,36 @@
 
 		},
 		methods: {
+			changeCurrency(e){
+				var self = this;
+				var value = e.target.value,
+					opctions = self.opctions,
+					details = opctions.details;
+				var people = opctions.adultNum + opctions.childrenNum;
+				//当前人数的默认价格
+				var price = details[people-1].defaultPrice;
+
+				
+				//换算折扣价
+				var exchange = this.exchange;
+				for(var i=0;i<exchange.length;i++){
+					var thisEx = exchange[i];
+					//检测当前货币类型
+					if(thisEx.currency==value){
+						//设置当前币种
+						this.nowExchange = thisEx;
+	
+						//切换价格详情币种
+						opctions.adultsPic = this.returnFloat(price * thisEx.rate);
+						opctions.averagePrice = this.returnFloat(opctions.adultsPic/people);
+						opctions.amount = this.returnFloat(opctions.adultsPic - this.returnFloat(opctions.childrenNum * thisEx.rate * opctions.childDiscountPP));
+						opctions.childDiscount = this.returnFloat(opctions.childDiscountPP * opctions.childrenNum * thisEx.rate);
+						opctions.symbol = thisEx.symbol;
+						break;
+					}
+				}
+				
+			},
 			cutXiaoNum(num, len) {
 				var numStr = num.toString();
 				if(len == null || len == undefined) {
@@ -361,21 +405,16 @@
 				this.TravellerphoneErr = false
 			},
 			returnFloat(value) {
+				value*=1;
 				if(value) {
-					var value = Math.round(parseFloat(value) * 100) / 100;
-					var xsd = value.toString().split(".");
-					if(xsd.length == 1) {
-						value = value.toString() + ".00";
-						return value;
+					var numberArr = (''+value).split('.');
+					if(numberArr.length>1 && numberArr[1].length>2){
+						return (value+0.005).toFixed(2);
 					}
-					if(xsd.length > 1) {
-						if(xsd[1].length < 2) {
-							value = value.toString() + "0";
-						}
-						return value;
-					}
+					return value.toFixed(2);
+				}else{
+					return 0;
 				}
-
 			},
 			next() {
 				ga('gtag_UA_107010673_1.send', {
@@ -425,7 +464,7 @@
 								"userId": that.opctions.userId,
 								"activityId": that.opctions.activityId,
 								"amount": that.opctions.amount,
-								"currency": "USD",
+								"currency": that.opctions.currency,
 								"adultNum": that.opctions.adultNum,
 								"childrenNum": that.opctions.childrenNum,
 								"infantNum": that.opctions.infantNum,
@@ -456,8 +495,11 @@
 										'Content-Type': 'application/json; charset=UTF-8'
 									}
 								}).then(function(response) {
-									console.log(response)
-									window.location.href = "/activity/payment?objectId=" + response.data.response
+									
+									var loginState = (that.logIn?that.logIn:0);
+									var hostUrl = obj.currency=='CNY' ? 'https://www.localpanda.cn' : 'https://www.localpanda.com';
+									window.location.href = hostUrl + "/activity/payment?objectId=" + response.data.response + '&login='+loginState;
+
 								}, function(response) {})
 							}
 						}
@@ -466,7 +508,7 @@
 							"userId": that.opctions.userId,
 							"activityId": that.opctions.activityId,
 							"amount": that.opctions.amount,
-							"currency": "USD",
+							"currency": that.opctions.currency,
 							"adultNum": that.opctions.adultNum,
 							"childrenNum": that.opctions.childrenNum,
 							"infantNum": that.opctions.infantNum,
@@ -491,8 +533,11 @@
 									'Content-Type': 'application/json; charset=UTF-8'
 								}
 							}).then(function(response) {
-								console.log(response)
-								window.location.href = "/activity/payment?objectId=" + response.data.response
+								
+								var hostUrl = obj.currency=='CNY' ? 'https://www.localpanda.cn' : 'https://www.localpanda.com';
+								var loginState = (that.logIn?that.logIn:0);
+								window.location.href = hostUrl + "/activity/payment?objectId=" + response.data.response + '&login='+loginState;
+								
 							}, function(response) {})
 						}
 					}
@@ -509,6 +554,17 @@
 			this.opctions = localStorage.getItem("orderInfo") ? JSON.parse(localStorage.getItem("orderInfo")) : ''
 			this.logIn = window.localStorage.getItem("logstate")
 			this.goBackFn()
+
+			var self = this;
+			//加载币种
+			self.axios.get("https://www.fedrobots.com/api/exchange/").then(function(response) {
+				// console.log(response);
+				if(response.status==200){
+					self.exchange = response.data.data;
+					self.nowExchange = self.exchange[0]
+				}
+			}, function(response) {});
+
 			
 		},
 		watch: {
@@ -594,6 +650,40 @@
 							font-size: 18px;
 							font-weight: bold;
 						}
+					}
+				}
+				.picRate {
+					color: #666;
+					float: right;
+					position: relative;
+					margin:-4px 20px 0 0;
+					span {
+						font-size: 10px;
+					}
+					.iconfont{
+						position: absolute;
+						right: 0;
+						top:0;
+						height: 30px;
+						line-height: 30px;
+						text-align:center;
+						font-size:18px;
+					}
+					.currency_type{
+						border:none;
+						padding-right: 20px;
+						font-size: 16px;
+						background:none;
+						height: 30px;
+						color: #666;
+						option{
+							color:#666;
+						}
+						position: relative;
+						z-index: 2;
+						-webkit-appearance: none;
+						-moz-appearance: none;
+						appearance: none;
 					}
 				}
 				.bookbtn {

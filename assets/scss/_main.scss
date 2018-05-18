@@ -26,15 +26,32 @@ html {
     font-family: "Ubuntu";
 }
 // 字体上传到cdn再引用 不要引用无效地址
-@font-face{
-    font-family: "Ubuntu";
-    src:url('https://d2q486kjf9cwwu.cloudfront.net/static/font/ubuntu-r-s.woff');
-}
+//@font-face{
+//  font-family: "Ubuntu";
+//  src:url('https://d2q486kjf9cwwu.cloudfront.net/static/font/ubuntu-r-s.woff');
+//}
+//@font-face {
+//  font-family:"coopbl";
+//  src: url('https://resource.localpanda.cn/static/font/COOPBL.TTF');
+//}
+//@font-face {
+//  font-family:"pacifico";
+//  src: url('https://resource.localpanda.cn/static/font/pacifico.ttf');
+//  
+//}
 @font-face {
-    font-family:"coopbl";
-    src: url('https://resource.localpanda.cn/static/font/COOPBL.TTF');
+    font-family:"pacifico";
+    src: url('~/static/font/pacifico.ttf');
+    
 }
-
+@font-face{
+  font-family: "Ubuntu";
+  src:url('~/static/font/Ubuntu-R.ttf');
+}
+//@font-face {
+//font-family:"coopbl";
+//src: url("~/static/font/COOPBL.TTF");
+//}
 * {
     margin: 0;
     padding: 0;

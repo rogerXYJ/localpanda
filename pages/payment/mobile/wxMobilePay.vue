@@ -44,7 +44,7 @@ export default {
                     }else{
                         msg = 'fail';
                     }
-                    location.href = "https://www.localpanda.com/payment/mobile/success?email="+query.email+"&orderId=" + query.orderId + '&amount=' + query.amount+"&succeed="+succeed+'&symbol='+query.symbol+'&msg='+msg;
+                    window.location.href = "https://www.localpanda.com/payment/mobile/success?email="+query.email+"&orderId=" + query.orderId + '&amount=' + query.amount+"&succeed="+succeed+'&symbol='+query.symbol+'&msg='+msg;
                 }else{
                     alert('Please try again!');
                 }
@@ -56,7 +56,7 @@ export default {
         },
         tryAgain(){
             var query = this.query;
-            location.href = 'https://www.localpanda.'+(query.symbol=='¥'?'cn':'com')+'/activity/payment/mobile/?objectId='+query.orderId+'&login='+(query.logIn?query.logIn:0);
+            window.location.href = 'https://www.localpanda.'+(query.symbol=='¥'?'cn':'com')+'/activity/payment/mobile/?objectId='+query.orderId+'&login='+(query.logIn?query.logIn:0);
         }
     },
     mounted: function() {

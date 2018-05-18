@@ -70,6 +70,7 @@
 	import api from '~/assets/js/plugin/api.js'
 	import Vue from 'vue'
 	import Loading from '~/components/Loading/Loading'
+import { setTimeout } from 'timers';
 
 	export default {
 		name: 'payNow',
@@ -430,9 +431,16 @@
 					var data = response.data;
 					if(data.return_code == 'SUCCESS'){
 
-						var callUrl = 'https://www.localpanda.cn/payment/mobile/wxMobilePay?email='+self.email+'&orderId=' + self.orderId + '&amount=' + self.opctions.amount+'&symbol='+self.opctions.symbol;
-						
-						location.href = data.mweb_url + '&redirect_url=' + encodeURI(callUrl);
+						var callUrl = 'https://www.localpanda.cn/payment/mobile/wxMobilePay?email='+self.email+'&orderId=' + self.orderId + '&amount=' + self.opctions.amount+'&symbol='+self.opctions.symbol+'&login='+(self.logIn?self.logIn:0);
+						var openWxUrl = data.mweb_url + '&redirect_url=' + encodeURIComponent(callUrl);
+						window.location.href = openWxUrl;
+
+						setTimeout(function(){
+							if(/\/activity\/payment\/mobile\//.test(location.href)){
+								window.location.href = openWxUrl;
+							}
+						},8000);
+
 					}else{
 						alert(data.return_msg+', Try again!')
 					}

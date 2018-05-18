@@ -8,7 +8,7 @@
 							<img :src="info.photoUrl"/>
 						</div>
 						<div class="mes_info">
-							<h3>{{info.photoContent}}</h3>	
+							<h3>{{info.title}}</h3>	
 							<p class="location">Location: {{info.location}}</p>
 							<div class="trafficInfo">
 								<p v-if="info.shanghaiTraffic">{{info.shanghaiTraffic.replace(/,/," |")}}</p>

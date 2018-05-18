@@ -360,6 +360,13 @@
 						word:"forbidden_city"
 					},
 					{
+						cont:'Bund',
+						imgUrl:'https://resource.localpanda.cn/content/landingpage/chinatour/Location.png',
+						isMap:false,
+						position:{bottom:"299px",right:"105px"},
+						word:"bund"
+					},
+					{
 						cont:'Terracotta Warriors',
 						imgUrl:'https://resource.localpanda.cn/content/landingpage/chinatour/Location.png',
 						isMap:false,
@@ -397,13 +404,7 @@
 						position:{bottom:"167px",right:"269px"},
 						word:"guilin_and_yangshuo"
 					},
-					{
-						cont:'Bund',
-						imgUrl:'https://resource.localpanda.cn/content/landingpage/chinatour/Location.png',
-						isMap:false,
-						position:{bottom:"299px",right:"105px"},
-						word:"bund"
-					},
+					
 					{
 						cont:'Water Towns',
 						imgUrl:'https://resource.localpanda.cn/content/landingpage/chinatour/Location.png',
@@ -462,10 +463,16 @@
 						word:"forbidden_city"
 					},
 					{
+						cont:'Bund',
+						imgUrl:'https://resource.localpanda.cn/content/landingpage/chinatour/TheBund.jpg',
+						word:"bund"
+					},
+					{
 						cont:'Terracotta Warriors',
 						imgUrl:'https://resource.localpanda.cn/content/landingpage/chinatour/TerracottaWarriors.jpg',
 						word:"terracotta_warriors"
 					},
+					
 					{
 						cont:'Panda',
 						imgUrl:'https://resource.localpanda.cn/content/landingpage/chinatour/GiantPandas.jpg',
@@ -486,11 +493,7 @@
 						imgUrl:'https://resource.localpanda.cn/content/landingpage/chinatour/Yangshuo.jpg',
 						word:"guilin_and_yangshuo"
 					},
-					{
-						cont:'Bund',
-						imgUrl:'https://resource.localpanda.cn/content/landingpage/chinatour/TheBund.jpg',
-						word:"bund"
-					},
+					
 					{
 						cont:'Water Towns',
 						imgUrl:'https://resource.localpanda.cn/content/landingpage/chinatour/WaterTown.jpg',

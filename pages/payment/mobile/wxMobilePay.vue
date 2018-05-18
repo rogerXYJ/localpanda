@@ -1,7 +1,14 @@
  <template>
     <div class="wxMobilePay">
-        <div class="loading_box">
+        <!-- <div class="loading_box">
             <span class="loading"></span>The transaction is being confirmed …
+        </div> -->
+        <div class="confirm_box">
+            <h3>Please confirm whether the payment has been completed ?</h3>
+            <div class="btn_list">
+                <a class="btn_ok" @touchstart="confirmation">Confirmation</a>
+                <a @touchstart="tryAgain">Try again</a>
+            </div>
         </div>
     </div>
 </template>
@@ -19,35 +26,41 @@ export default {
         
     },
     methods: {
-        change_select(e){
+        confirmation(e){
+            var query = this.query;
+            //var jumpUrl = 'https://www.localpanda.cn/payment/mobile/success?email='+query.email+'&orderId=' + query.orderId + '&amount=' + query.amount+'&succeed=true&payType=CNY';
+
+            //查询订单
+            this.axios.get("/api/payment/wechat/status?orderId="+query.orderId+'&flag=1',{
+                headers: {
+                    'Content-Type': 'application/json;'
+                }
+            }).then(function(response) {
+                if(response.status==200){
+                    var succeed = false,
+                        msg = '';
+                    if(response.data.succeed){
+                        succeed = true;
+                    }else{
+                        msg = 'fail';
+                    }
+                    location.href = "https://www.localpanda.com/payment/mobile/success?email="+query.email+"&orderId=" + query.orderId + '&amount=' + query.amount+"&succeed="+succeed+'&symbol='+query.symbol+'&msg='+msg;
+                }else{
+                    alert('Please try again!');
+                }
+            }, function(response) {
+                alert('Please try again!');
+            })
+
             
+        },
+        tryAgain(){
+            var query = this.query;
+            location.href = 'https://www.localpanda.'+(query.symbol=='¥'?'cn':'com')+'/activity/payment/mobile/?objectId='+query.orderId+'&login='+(query.logIn?query.logIn:0);
         }
     },
     mounted: function() {
-        var query = this.query;
-        //var jumpUrl = 'https://www.localpanda.cn/payment/mobile/success?email='+query.email+'&orderId=' + query.orderId + '&amount=' + query.amount+'&succeed=true&payType=CNY';
-
-        //查询订单
-        this.axios.get("/api/payment/wechat/status?orderId="+query.orderId+'&flag=1',{
-            headers: {
-                'Content-Type': 'application/json;'
-            }
-        }).then(function(response) {
-            if(response.status==200){
-                var succeed = false,
-                    msg = '';
-                if(response.data.succeed){
-                    succeed = true;
-                }else{
-                    msg = 'fail';
-                }
-                location.href = "https://www.localpanda.com/payment/mobile/success?email="+query.email+"&orderId=" + query.orderId + '&amount=' + query.amount+"&succeed="+succeed+'&symbol='+query.symbol+'&msg='+msg;
-            }else{
-                alert('Please try to refresh the page!');
-            }
-        }, function(response) {
-            alert('Please try to refresh the page!');
-        })
+        
                 
 
     }
@@ -56,8 +69,43 @@ export default {
 <style lang="scss">
 @import "~assets/scss/_main.scss";
 html{ font-size:50px;}
-.loading_box{ text-align: center; margin-top: 30px; font-size: 15px; line-height: 20px;
+.wxMobilePay{ background-color: rgba(0,0,0,0.5); height: 100vh; color: #fff;}
+.loading_box{ text-align: center; padding-top: 30px; font-size: 15px; line-height: 20px;
     .loading{ display: inline-block; width: 20px; height:20px; background: url('https://resource.localpanda.cn/static/icon/loading.gif') center center no-repeat; background-size: 100%; vertical-align: top; margin-right: 6px;}
+}
+.confirm_box{
+    position: absolute;
+    left: 10%;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 80%;
+    background-color: #fff;
+    h3{
+        color: #333;
+        margin-top: 0.6rem;
+        text-align: center;
+        font-size: 0.3rem;
+        line-height: 0.4rem;
+    }
+    .btn_list{
+        padding: 0 0.4rem 1rem;
+        a{
+            display: block;
+            height: 0.8rem;
+            line-height: 0.8rem;
+            color: #888;
+            text-align: center;
+            background-color: #eee;
+            border-radius: 0.4rem;
+            margin-top: 0.4rem;
+            font-size: 0.26rem;
+        }
+        .btn_ok{
+            color: #fff;
+            background: -webkit-gradient(linear, left top, right top, from(#1bbc9d), to(#009efc));
+            background: linear-gradient(to right, #1bbc9d, #009efc);
+        }
+    }
 }
 
 </style>

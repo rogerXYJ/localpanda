@@ -787,7 +787,7 @@
 								activityPhoto:"https://resource.localpanda.cn/activity/banners/11241_1106630829.jpg",
 								title: '"China Scenery and Floating Mountains" 11-Day Private Tour',
 								duration: '11 Days & 10 Nights',
-								nowPrice: "$1348.90",
+								nowPrice: "$1384.90",
 								oldPrice: "$1551.09",
 								startingFrom: "12% Off",
 								Cities: "Beijing, Xi'an, Zhangjiajie and Shanghai",
@@ -840,7 +840,7 @@
 								title: '"Beautiful China and Holy Tibet" 13-Day Private Tour',
 								duration: '13-Day Private Tour',
 								nowPrice: "$1895.90",
-								oldPrice: "$2124.41",
+								oldPrice: "$2123.41",
 								startingFrom: "12% Off",
 								Cities: "Beijing, Xi'an, Tibet, Chengdu and Shanghai",
 								tags: [

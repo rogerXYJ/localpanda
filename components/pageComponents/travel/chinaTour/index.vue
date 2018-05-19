@@ -21,7 +21,7 @@
 						<p v-html="info.introduction"></p>
 					</div>
 					<div class="btn">
-						<a :href="info.link" target="_blank"><button>Explore Futher</button></a>
+						<a :href="info.link" target="_blank"><button>Explore Further</button></a>
 					</div>
 				</div>
 				

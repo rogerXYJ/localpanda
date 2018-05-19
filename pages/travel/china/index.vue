@@ -562,8 +562,8 @@
 								activityPhoto: "https://resource.localpanda.cn/activity/banners/11237_1106630623_U5366072.jpg",
 								title: '"China Essentials: Wonders, Scenery, and Pandas" 13-Day Private Tour',
 								duration: '13 Days & 12 Nights',
-								nowPrice: "$1348.90",
-								oldPrice: "$1551.09",
+								nowPrice: "$1298.90",
+								oldPrice: "$1532.70",
 								startingFrom: "18% Off",
 								Cities: "Beijing, Xi'an, Chengdu, Guilin and Shanghai",
 								tags: [
@@ -716,8 +716,8 @@
 								activityPhoto: "https://resource.localpanda.cn/activity/banners/11240_1106630710.jpg",
 								title: '"Highlights Explosion" 6-Day Private Tour',
 								duration: '6 Days & 5 Nights',
-								nowPrice: "$508.48",
-								oldPrice: "$847.84",
+								nowPrice: "$454.00",
+								oldPrice: "$508.48",
 								startingFrom: "12% Off",
 								Cities: "Beijing and Shanghai",
 								tags: [
@@ -830,8 +830,8 @@
 								]
 							},
 							{
-								linkUrl:'/activity/details/11242',
-								activityPhoto: "https://resource.localpanda.cn/activity/banners/11242_1106630830.jpg",
+								linkUrl:'/activity/details/11251',
+								activityPhoto: "https://resource.localpanda.cn/activity/banners/11251_1106283418_U2936148.jpg",
 								title: '"Beautiful China and Holy Tibet" 13-Day Private Tour',
 								duration: '13-Day Private Tour',
 								nowPrice: "$1895.90",
@@ -881,8 +881,8 @@
 								]
 							},
 							{
-								linkUrl:'/activity/details/11245',
-								activityPhoto: "https://resource.localpanda.cn/activity/banners/11245_1106630831.jpg",
+								linkUrl:'/activity/details/11242',
+								activityPhoto: "https://resource.localpanda.cn/activity/banners/11242_1106630830.jpg",
 								title: '"Riches of China and Yangtze River Delta" 13-Day Private Tour',
 								duration: '13 Days & 12 Nights',
 								nowPrice: "$1394.00",
@@ -932,8 +932,8 @@
 								]
 							},
 							{
-								linkUrl:'/activity/details/11246',
-								activityPhoto: "https://resource.localpanda.cn/activity/banners/11246_1106630921.jpg",
+								linkUrl:'/activity/details/11245',
+								activityPhoto: "https://resource.localpanda.cn/activity/banners/11245_1106630831.jpg",
 								title: '"Yangtze River Delta and Yellow Mountain" 8-Day Private Tour',
 								duration: '8 Days & 7 Nights',
 								nowPrice: "$696.90",
@@ -1001,8 +1001,8 @@
 						"Private tours (tailored to your need; arrival/departure cities can be adjusted)"
 					],
 					activites: [{
-							linkUrl:'/activity/details/11247',
-							activityPhoto: "https://resource.localpanda.cn/activity/banners/11247_1106630922.jpg",
+							linkUrl:'/activity/details/11246',
+							activityPhoto: "https://resource.localpanda.cn/activity/banners/11246_1106630921.jpg",
 							title: '"The Pursuit of Happiness" 11-Day Private Tour',
 							duration: '11 Days & 10 Nights',
 							nowPrice: "$1147.90",
@@ -1052,8 +1052,8 @@
 							]
 						},
 						{	
-							linkUrl:'/activity/details/11251',
-							activityPhoto: "https://resource.localpanda.cn/activity/banners/11251_1106283418_U2936148.jpg",
+							linkUrl:'/activity/details/11247',
+							activityPhoto: "https://resource.localpanda.cn/activity/banners/11247_1106630922.jpg",
 							title: '"China Full Immersion" 13-Day Private Tour',
 							duration: '13 Days & 12 Nights',
 							nowPrice: "$1448.90",

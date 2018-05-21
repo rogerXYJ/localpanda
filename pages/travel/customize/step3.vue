@@ -184,8 +184,11 @@ export default {
     },
     mounted: function() {
         //定位banner位置
-        var htmlBody = document.documentElement;
-        htmlBody.scrollTop = document.getElementById('banner-bar').offsetTop+60;
+            var htmlBody = document.documentElement;
+            var pageBody = document.body;
+            var goTop = document.getElementById('banner-bar').offsetTop+60;
+            htmlBody.scrollTop = goTop;
+            pageBody.scrollTop = goTop;
 
 
     	 this.logIn = window.localStorage.getItem("logstate");

@@ -16,7 +16,7 @@
 						<b>Your booking is Complete! You made a great choice :)</b>
 					</div>
 					<div class="detail">
-						<span>Order ID: {{orderId}}</span><em>|</em><span>Payment amount: <b>{{symbol}}{{amount}}</b></span>
+						<span>Order ID: {{orderId}}</span><em>|</em><span>Payment amount: <b>{{symbol=='$'?currency+symbol:symbol}}{{amount}}</b></span>
 					</div>
 					<p style="margin-top: 10px;"> Our staff will confirm with you as soon as possible. We will reply you within one business day. You can know the details furthur by look at your 
 order details.You can also email service@localpanda.com or call us at +86 (21) 8018-2090/ +1 (888) 930-8849 (US toll free).</p>				
@@ -55,7 +55,7 @@ order details.You can also email service@localpanda.com or call us at +86 (21) 8
 				showTipTxt: false,
 				payType: payType?payType.toLowerCase():false,
 				symbol: query.symbol?query.symbol:'$',
-				currency:currency
+				currency:currency ? currency : ''
 				
 			}
 		},

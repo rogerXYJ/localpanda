@@ -241,11 +241,11 @@ import { setTimeout } from 'timers';
 
 							}
 							//跳转
-							window.location.href = "/payment/mobile/success?email="+that.email+"&orderId=" + that.orderId + '&amount=' + that.opctions.amount+'&succeed='+thisData.succeed+'&symbol='+that.opctions.symbol+'&msg='+msg;
+							window.location.href = "/payment/mobile/success?email="+that.email+"&orderId=" + that.orderId + '&amount=' + that.opctions.amount+'&succeed='+thisData.succeed+'&symbol='+that.opctions.symbol+'&currency='+that.opctions.currency+'&msg='+msg;
 							//
 						}, function(response) {
 							//请求失败跳转
-							window.location.href = "/payment/mobile/success?email="+that.email+"&orderId=" + that.orderId + '&amount=' + that.opctions.amount+'&succeed=false&symbol='+that.opctions.symbol
+							window.location.href = "/payment/mobile/success?email="+that.email+"&orderId=" + that.orderId + '&amount=' + that.opctions.amount+'&succeed=false&symbol='+that.opctions.symbol+'&currency='+that.opctions.currency;
 						})
 					}
 				})
@@ -380,7 +380,7 @@ import { setTimeout } from 'timers';
 							}
 							that.loadingStatus = false;
 							//跳转
-							window.location.href = "https://www.localpanda.com/payment/mobile/success?email="+that.email+"&orderId=" + that.orderId + '&amount=' + that.opctions.amount+'&succeed='+thisData.succeed+'&msg='+msg+'&symbol='+that.opctions.symbol;
+							window.location.href = "https://www.localpanda.com/payment/mobile/success?email="+that.email+"&orderId=" + that.orderId + '&amount=' + that.opctions.amount+'&succeed='+thisData.succeed+'&msg='+msg+'&symbol='+that.opctions.symbol+'&currency='+that.opctions.currency;
 						}
 				); 
 			},
@@ -432,7 +432,7 @@ import { setTimeout } from 'timers';
 						//self.showWxOpenBox = true;
 						//self.loadingStatus = false;
 						
-						var callUrl = 'https://www.localpanda.cn/payment/mobile/wxMobilePay?email='+self.email+'&orderId=' + self.orderId + '&amount=' + self.opctions.amount+'&symbol='+self.opctions.symbol+'&login='+(self.logIn?self.logIn:0);
+						var callUrl = 'https://www.localpanda.cn/payment/mobile/wxMobilePay?email='+self.email+'&orderId=' + self.orderId + '&amount=' + self.opctions.amount+'&symbol='+self.opctions.symbol+'&currency='+self.opctions.currency+'&login='+(self.logIn?self.logIn:0);
 						var openWxUrl = data.mweb_url + '&redirect_url=' + encodeURIComponent(callUrl);
 
 						//唤起微信a标签的href
@@ -449,7 +449,8 @@ import { setTimeout } from 'timers';
 			},
 			wxOpenClick(){
 				if(/(Android)/i.test(this.ua)){
-					this.showWxOpenBox = true;
+					localStorage.setItem('AndroidOpenWx','true');
+					//this.showWxOpenBox = true;
 				}
 				
 			},
@@ -471,7 +472,7 @@ import { setTimeout } from 'timers';
 								}else{
 										msg = 'fail';
 								}
-								window.location.href = "https://www.localpanda.com/payment/mobile/success?email="+self.email+"&orderId=" + self.orderId + '&amount=' + self.opctions.amount+"&succeed="+succeed+'&symbol='+self.opctions.symbol+'&msg='+msg;
+								window.location.href = "https://www.localpanda.com/payment/mobile/success?email="+self.email+"&orderId=" + self.orderId + '&amount=' + self.opctions.amount+"&succeed="+succeed+'&symbol='+self.opctions.symbol+'&currency='+self.opctions.currency+'&msg='+msg;
 						}else{
 								alert('Please try again!');
 						}
@@ -510,7 +511,11 @@ import { setTimeout } from 'timers';
 				this.logInHide = true;
 			}
 
-
+			//检测是否是安卓唤起微信，针对安卓无法跳转回调页面
+			if(localStorage.getItem('AndroidOpenWx')=='true'){
+				this.showWxOpenBox = true;
+				localStorage.removeItem('AndroidOpenWx');
+			}
 			
 
 		}

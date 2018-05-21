@@ -16,7 +16,7 @@
 						<b>Oops! Something went wrong.</b>
 					</div>
 					<div class="detail">
-						<span>Order ID: {{orderId}}</span><em>|</em><span>Payment amount: <b>{{getPriceMark(currency)}}{{amount}}</b></span>
+						<span>Order ID: {{orderId}}</span><em>|</em><span>Payment amount: <b>{{symbol=='$'?currency+symbol:symbol}}{{amount}}</b></span>
 						
 					</div>
                     <P v-if="errMsg" style="margin-top: 47px;">Your payment did not go through. Here is the error that you can reference: {{errMsg}}</P>
@@ -31,7 +31,7 @@
 	if (process.browser) {
 	  require('~/assets/js/pages/talk.js')
 	}
-	import { GetQueryString,getPriceMark } from '~/assets/js/plugin/utils.js'
+	import { GetQueryString } from '~/assets/js/plugin/utils.js'
 	import HeaderCommon from '~/components/HeaderCommon/HeaderCommon'
 	import FooterCommon from '~/components/FooterCommon/FooterCommon';
 	export default {
@@ -39,17 +39,18 @@
 		name: 'failed',
 		data() {
 //			let orderId=this.$route.query.orderId;
-//			let amount=this.$route.query.amount;
-//			let currency=this.$route.query.currency;
+			var query = this.$route.query;
+			let currency= query.currency;
 			return {
-				orderId:'',
-				amount:'',
+				orderId:query.orderId,
+				amount:query.amount,
 				logIn:'',
 				date:"",
-                userId:'',
-                type:'',
-                errMsg:"",
-                currency:''
+				userId:'',
+				type: query.type,
+				errMsg:"",
+				symbol: query.symbol ? query.symbol : '$',
+				currency:currency?currency:''
 				
 				
 			}
@@ -59,7 +60,6 @@
 			FooterCommon
 		},
 		methods: {
-			getPriceMark:getPriceMark,
 			tryAgain(type){
                 if(type==1){
                     window.location.href="/activity/payment?objectId="+this.orderId
@@ -70,12 +70,8 @@
             }
 		},
 		mounted: function() {
-			this.orderId=GetQueryString("orderId")
-			this.amount=GetQueryString("amount")
-            this.type=GetQueryString("type")
-            this.currency=GetQueryString("currency")
-			this.errMsg=GetQueryString("errMsg")?decodeURI(GetQueryString("errMsg")):'';
 			
+			this.errMsg=GetQueryString("errMsg")?decodeURI(GetQueryString("errMsg")):'';
 			
 			this.logIn=window.localStorage.getItem("logstate")
 			this.userId=window.localStorage.getItem("userid")

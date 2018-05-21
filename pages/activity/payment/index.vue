@@ -207,7 +207,7 @@ import { clearInterval, setTimeout } from 'timers';
 							that.errMsg=response.data.errorMessage
 							let reg=/Exception/g
 							if(response.data.errorMessage&&reg.test(response.data.errorMessage)){
-								window.location.href = "/payment/failed?orderId=" + that.orderId + '&amount=' + that.opctions.amount+"&type=1"+"&succeed=false"+"&currency="+that.opctions.currency
+								window.location.href = "/payment/failed?orderId=" + that.orderId + '&amount=' + that.opctions.amount+"&type=1"+"&succeed=false"+"&currency="+that.opctions.currency+"&symbol="+that.opctions.symbol
 							}else{
 								if(response.data.succeed&&!response.data.errorMessage){
 							 		that.loadingStatus = true
@@ -216,14 +216,14 @@ import { clearInterval, setTimeout } from 'timers';
 									pageTracker._addItem(that.orderId, that.opctions.activityId,"","", that.opctions.amount,"1" );
 									pageTracker._trackTrans();
 									
-									window.location.href = "/payment/success?email="+that.email+"&orderId=" + that.orderId + '&amount=' + that.opctions.amount+"&succeed=true"+"&currency="+that.opctions.currency
+									window.location.href = "/payment/success?email="+that.email+"&orderId=" + that.orderId + '&amount=' + that.opctions.amount+"&succeed=true"+"&currency="+that.opctions.currency+"&symbol="+that.opctions.symbol
 								}else{
 									that.loadingStatus = true
-							 		window.location.href = "/payment/failed?email="+that.email+"&orderId=" + that.orderId + '&amount=' + that.opctions.amount+"&type=1"+"&errMsg="+that.errMsg+"&succeed=false"+"&currency="+that.opctions.currency
+							 		window.location.href = "/payment/failed?email="+that.email+"&orderId=" + that.orderId + '&amount=' + that.opctions.amount+"&type=1"+"&errMsg="+that.errMsg+"&succeed=false"+"&currency="+that.opctions.currency+"&symbol="+that.opctions.symbol
 								}	
 							}
 						}, function(response) {
-							window.location.href = "/payment/failed?email="+that.email+"&orderId=" + that.orderId + '&amount=' + that.opctions.amount+"&type=1"+"&succeed=false"+"&currency="+that.opctions.currency
+							window.location.href = "/payment/failed?email="+that.email+"&orderId=" + that.orderId + '&amount=' + that.opctions.amount+"&type=1"+"&succeed=false"+"&currency="+that.opctions.currency+"&symbol="+that.opctions.symbol
 						})
 					}
 				})
@@ -353,7 +353,7 @@ import { clearInterval, setTimeout } from 'timers';
 							pageTracker._addItem(that.orderId, that.opctions.activityId,"","", that.opctions.amount,"1" );
 							pageTracker._trackTrans();
 						
-						window.location.href = "/payment/success?email="+that.email+"&orderId=" + that.orderId + '&amount=' + that.opctions.amount+"&succeed=true"+'&symbol='+that.opctions.symbol;
+						window.location.href = "/payment/success?email="+that.email+"&orderId=" + that.orderId + '&amount=' + that.opctions.amount+"&succeed=true"+'&symbol='+that.opctions.symbol+"&currency="+that.opctions.currency;
 							
 					}else{
 						//window.location.href = "/payment/failed?email="+that.email+"&orderId=" + that.orderId + '&amount=' + that.opctions.amount+"&errMsg="+that.errMsg+"&succeed=false"

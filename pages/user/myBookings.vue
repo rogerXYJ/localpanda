@@ -130,6 +130,8 @@
 			let flag = route.query.flag || 1;
 			let urlOrderId = route.query.orderid || '';
 			let urlEmail = route.query.email || '';
+			let urlCode = route.query.code || '';
+
 			let data = {
 				activityList:'',
 				logIn: '',
@@ -143,7 +145,8 @@
 				url: '',
 				businessType:'',
 				apiBasePath,
-				nobooking : false
+				nobooking : false,
+				urlCode: urlCode
 			}
 			return data;
 		},
@@ -200,23 +203,73 @@
 				//oderId:110134390
 				that.isShowAlertTitle = true
 				that.alertMessage = " You are currently requesting a refund. Please select confirm to proceed with your order refund request, otherwise press cancel to return."
+			},
+			getActivityOrders(obj){
+				var that = this;
+				that.axios.post(this.apiBasePath + "activity/order/list", JSON.stringify(obj), {
+					headers: {
+						'Content-Type': 'application/json; charset=UTF-8'
+					}
+				}).then(function(response) {
+					if(response.status==200 || response.status == 304){
+						that.activityList = response.data
+						that.nobooking = false;
+						if(response.data.length<=0){
+							that.nobooking = true
+						}
+					}else{
+						that.nobooking = true;
+					}
+				}, function(response) {
+					that.nobooking = true;
+				})
+			},
+			wxOrders(){
+				//code用过或者没有code则从新获取
+				var localWxCode = localStorage.getItem('localWxCode');
+				if(this.urlCode==localWxCode){
+					location.href = 'https://www.localpanda.cn/wx/getcode?link='+encodeURIComponent(location.href.replace('code','nostr'));
+					return;
+				}
+				//本地存储code
+				localStorage.setItem('localWxCode',this.urlCode);
+
+
+				var self = this;
+				self.axios.get("https://www.localpanda.cn/api/payment/wxinfo/get?code=" + this.urlCode, {
+					headers: {
+						'Content-Type': 'application/json'
+					}
+				}).then(function(response) {
+
+					var openData = response.data;
+
+					var obj ={
+						openId: openData.openid
+					};
+					self.getActivityOrders(obj);
+
+				}, function(response) {});
 			}
 		},
 		mounted: function() {
 			let that = this
 			that.logIn = window.localStorage.getItem("logstate")
 			var obj;
-			if(this.urlOrderId && this.urlEmail){
+			
+			if(this.urlOrderId && this.urlEmail){ //url匿名查询
 				obj={
 					orderId:this.urlOrderId,
 					emailAddress:this.urlEmail
 				}
-			}else if(localStorage.getItem("userid")!=null){
+			}else if(this.urlCode){  //微信openId查询
+				this.wxOrders();
+			}else if(localStorage.getItem("userid")!=null){ //用户登录查询
 				 obj = {
 					"userId": localStorage.getItem("userid")
 					//userId:10024
 				}
-			}else if(GetQueryString("orderId")){
+			}else if(GetQueryString("orderId")){  //orderid查询
 				 obj={
 					orderId:GetQueryString("orderId"),
 					emailAddress:GetQueryString("emailAddress")
@@ -225,13 +278,25 @@
 				 obj=JSON.parse(localStorage.getItem("obj"))
 			}
 			
-			that.axios.post(this.apiBasePath + "activity/order/list", JSON.stringify(obj), {
+			//微信code和openId查询，不走这个查询
+			if(!this.urlCode){
+				this.getActivityOrders(obj);
+			}
+			
+			
+			//非匿名查询、非微信openid查询的才去查导游订单
+			if(this.urlOrderId && this.urlEmail || this.urlCode){
+				return;
+			}
+
+			//查导游订单
+			that.axios.post(this.apiBasePath + "order/list", JSON.stringify(obj), {
 				headers: {
 					'Content-Type': 'application/json; charset=UTF-8'
 				}
 			}).then(function(response) {
 				if(response.status==200 || response.status == 304){
-					that.activityList = response.data
+					that.bookList = response.data
 					that.nobooking = false;
 					if(response.data.length<=0){
 						that.nobooking = true
@@ -239,33 +304,12 @@
 				}else{
 					that.nobooking = true;
 				}
+				
 			}, function(response) {
 				that.nobooking = true;
 			})
 
-			if(!this.urlOrderId && !this.urlEmail){
 
-			
-				that.axios.post(this.apiBasePath + "order/list", JSON.stringify(obj), {
-					headers: {
-						'Content-Type': 'application/json; charset=UTF-8'
-					}
-				}).then(function(response) {
-					if(response.status==200 || response.status == 304){
-						that.bookList = response.data
-						that.nobooking = false;
-						if(response.data.length<=0){
-							that.nobooking = true
-						}
-					}else{
-						that.nobooking = true;
-					}
-					
-				}, function(response) {
-					that.nobooking = true;
-				})
-
-			}
 		}
 	}
 </script>

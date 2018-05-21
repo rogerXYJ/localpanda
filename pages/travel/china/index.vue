@@ -12,7 +12,7 @@
 					<li @click="goAnchor('top_destinations')">Top Destinations</li>
 					<li @click="goAnchor('customize')">First-timer Trips</li>
 					<li @click="goAnchor('activity')">Landmarks Tours</li>
-					<li @click="goAnchor('visitor')">Family Vacations</li>
+					<li @click="goAnchor('oneActivity')">Family Vacations</li>
 				</ul>
 			</div>
 			<div class="top_destinations" id="top_destinations">
@@ -21,7 +21,7 @@
 					<div class="description">
 						<h4>Hot Destinations</h4>
 						<ul>
-							<li v-for="(item,index) in mapList" @click="getInfo(index)"  v-lazy:background-image="item.imgUrl" @mouseover="showMap(index)" @mouseleave="hiddenMap(index)">
+							<li v-for="(item,index) in mapList"  v-lazy:background-image="item.imgUrl" @mouseover="showMap(index),getInfo(index)" @mouseleave="hiddenMap(index)">
 								<div class="mask"></div>
 								<div class="description_cont">{{item.cont}}</div>
 							</li>
@@ -34,10 +34,12 @@
 							<div class="position" :style="item.position">
 								<div class="position_img" v-if="item.isMap" :class="{animated:item.isMap}"><img  v-lazy="item.imgUrl" /></div>
 								<div class="mapCont" v-if="item.isMap">{{item.cont}}</div>
+								<div class="hover"></div>
+								
 							</div>
 							
 						</div>
-						
+						<ChinaTour v-show="showInfo" :info="info" @back="setBack"></ChinaTour>
 					</div>
 				</div>
 			</div>
@@ -212,7 +214,7 @@
 
 			</div>
 		</div>
-		<div class="activity page__container">
+		<div class="activity page__container" id="oneActivity">
 			<div class="activityItem" v-for="(item,index) in oneActivity">
 				<h3>{{item.title}}</h3>
 				<div class="introduced">
@@ -317,7 +319,7 @@
 				</div>
 			</div>
 		</div>
-		<ChinaTour v-show="showInfo" :info="info" @back="setBack" :showInfo="showInfo"></ChinaTour>
+		
 		<FooterCommon></FooterCommon>
 	</div>
 </template>
@@ -337,7 +339,7 @@
 				showInfo:false,
 				showMeau:false,
 				mapPosition:[
-						{
+					{
 						cont:"Great Wall",
 						imgUrl:"https://resource.localpanda.cn/content/landingpage/chinatour/Location.png",
 						isMap:false,
@@ -356,6 +358,13 @@
 							right:"200px"
 						},
 						word:"forbidden_city"
+					},
+					{
+						cont:'Bund',
+						imgUrl:'https://resource.localpanda.cn/content/landingpage/chinatour/Location.png',
+						isMap:false,
+						position:{bottom:"299px",right:"105px"},
+						word:"bund"
 					},
 					{
 						cont:'Terracotta Warriors',
@@ -395,13 +404,7 @@
 						position:{bottom:"167px",right:"269px"},
 						word:"guilin_and_yangshuo"
 					},
-					{
-						cont:'Bund',
-						imgUrl:'https://resource.localpanda.cn/content/landingpage/chinatour/Location.png',
-						isMap:false,
-						position:{bottom:"299px",right:"105px"},
-						word:"bund"
-					},
+					
 					{
 						cont:'Water Towns',
 						imgUrl:'https://resource.localpanda.cn/content/landingpage/chinatour/Location.png',
@@ -460,10 +463,16 @@
 						word:"forbidden_city"
 					},
 					{
+						cont:'Bund',
+						imgUrl:'https://resource.localpanda.cn/content/landingpage/chinatour/TheBund.jpg',
+						word:"bund"
+					},
+					{
 						cont:'Terracotta Warriors',
 						imgUrl:'https://resource.localpanda.cn/content/landingpage/chinatour/TerracottaWarriors.jpg',
 						word:"terracotta_warriors"
 					},
+					
 					{
 						cont:'Panda',
 						imgUrl:'https://resource.localpanda.cn/content/landingpage/chinatour/GiantPandas.jpg',
@@ -484,11 +493,7 @@
 						imgUrl:'https://resource.localpanda.cn/content/landingpage/chinatour/Yangshuo.jpg',
 						word:"guilin_and_yangshuo"
 					},
-					{
-						cont:'Bund',
-						imgUrl:'https://resource.localpanda.cn/content/landingpage/chinatour/TheBund.jpg',
-						word:"bund"
-					},
+					
 					{
 						cont:'Water Towns',
 						imgUrl:'https://resource.localpanda.cn/content/landingpage/chinatour/WaterTown.jpg',
@@ -508,7 +513,7 @@
 					{
 						cont:"Zhangjiajie",
 						imgUrl:'https://resource.localpanda.cn/content/landingpage/chinatour/Zhangjiajie.jpg',
-						word:"terracotta_warriors"
+						word:"zhangjiajie"
 						
 					},
 					{
@@ -562,8 +567,8 @@
 								activityPhoto: "https://resource.localpanda.cn/activity/banners/11237_1106630623_U5366072.jpg",
 								title: '"China Essentials: Wonders, Scenery, and Pandas" 13-Day Private Tour',
 								duration: '13 Days & 12 Nights',
-								nowPrice: "$1348.90",
-								oldPrice: "$1551.09",
+								nowPrice: "$1298.90",
+								oldPrice: "$1532.70",
 								startingFrom: "18% Off",
 								Cities: "Beijing, Xi'an, Chengdu, Guilin and Shanghai",
 								tags: [
@@ -716,8 +721,8 @@
 								activityPhoto: "https://resource.localpanda.cn/activity/banners/11240_1106630710.jpg",
 								title: '"Highlights Explosion" 6-Day Private Tour',
 								duration: '6 Days & 5 Nights',
-								nowPrice: "$508.48",
-								oldPrice: "$847.84",
+								nowPrice: "$454.00",
+								oldPrice: "$508.48",
 								startingFrom: "12% Off",
 								Cities: "Beijing and Shanghai",
 								tags: [
@@ -782,7 +787,7 @@
 								activityPhoto:"https://resource.localpanda.cn/activity/banners/11241_1106630829.jpg",
 								title: '"China Scenery and Floating Mountains" 11-Day Private Tour',
 								duration: '11 Days & 10 Nights',
-								nowPrice: "$1348.90",
+								nowPrice: "$1384.90",
 								oldPrice: "$1551.09",
 								startingFrom: "12% Off",
 								Cities: "Beijing, Xi'an, Zhangjiajie and Shanghai",
@@ -830,12 +835,12 @@
 								]
 							},
 							{
-								linkUrl:'/activity/details/11242',
-								activityPhoto: "https://resource.localpanda.cn/activity/banners/11242_1106630830.jpg",
+								linkUrl:'/activity/details/11251',
+								activityPhoto: "https://resource.localpanda.cn/activity/banners/11251_1106283418_U2936148.jpg",
 								title: '"Beautiful China and Holy Tibet" 13-Day Private Tour',
 								duration: '13-Day Private Tour',
 								nowPrice: "$1895.90",
-								oldPrice: "$2124.41",
+								oldPrice: "$2123.41",
 								startingFrom: "12% Off",
 								Cities: "Beijing, Xi'an, Tibet, Chengdu and Shanghai",
 								tags: [
@@ -881,8 +886,8 @@
 								]
 							},
 							{
-								linkUrl:'/activity/details/11245',
-								activityPhoto: "https://resource.localpanda.cn/activity/banners/11245_1106630831.jpg",
+								linkUrl:'/activity/details/11242',
+								activityPhoto: "https://resource.localpanda.cn/activity/banners/11242_1106630830.jpg",
 								title: '"Riches of China and Yangtze River Delta" 13-Day Private Tour',
 								duration: '13 Days & 12 Nights',
 								nowPrice: "$1394.00",
@@ -932,8 +937,8 @@
 								]
 							},
 							{
-								linkUrl:'/activity/details/11246',
-								activityPhoto: "https://resource.localpanda.cn/activity/banners/11246_1106630921.jpg",
+								linkUrl:'/activity/details/11245',
+								activityPhoto: "https://resource.localpanda.cn/activity/banners/11245_1106630831.jpg",
 								title: '"Yangtze River Delta and Yellow Mountain" 8-Day Private Tour',
 								duration: '8 Days & 7 Nights',
 								nowPrice: "$696.90",
@@ -1001,8 +1006,8 @@
 						"Private tours (tailored to your need; arrival/departure cities can be adjusted)"
 					],
 					activites: [{
-							linkUrl:'/activity/details/11247',
-							activityPhoto: "https://resource.localpanda.cn/activity/banners/11247_1106630922.jpg",
+							linkUrl:'/activity/details/11246',
+							activityPhoto: "https://resource.localpanda.cn/activity/banners/11246_1106630921.jpg",
 							title: '"The Pursuit of Happiness" 11-Day Private Tour',
 							duration: '11 Days & 10 Nights',
 							nowPrice: "$1147.90",
@@ -1052,8 +1057,8 @@
 							]
 						},
 						{	
-							linkUrl:'/activity/details/11251',
-							activityPhoto: "https://resource.localpanda.cn/activity/banners/11251_1106283418_U2936148.jpg",
+							linkUrl:'/activity/details/11247',
+							activityPhoto: "https://resource.localpanda.cn/activity/banners/11247_1106630922.jpg",
 							title: '"China Full Immersion" 13-Day Private Tour',
 							duration: '13 Days & 12 Nights',
 							nowPrice: "$1448.90",
@@ -1136,6 +1141,7 @@
 		methods: {
 			showMap(index){
 				this.mapPosition[index].isMap=true
+				
 			},
 			hiddenMap(index){
 				this.mapPosition[index].isMap=false
@@ -1150,11 +1156,14 @@
 				}
 			},
 			setBack(val){
-				this.showInfo=val
+				this.info=val.info
+				this.showInfo=val.show
 			},
 			getInfo(index){
+				this.mapPosition[index].isMap=true
 				let that=this
 				that.showInfo=true
+				console.log(that.mapList[index].word)
 				that.axios.get("https://api.localpanda.com/api/content/landingpage/chinatour/"+that.mapList[index].word).then(function(res){
 					console.log(res)
 					that.info=res.data
@@ -1162,22 +1171,20 @@
 			},
 			goAnchor(selector) {
 				var anchor = document.getElementById(selector)
-				console.log(anchor.offsetTop)
 				var t=document.getElementById("nav").offsetHeight;
 				console.log(t)
-				document.body.scrollTop = anchor.offsetTop-t-53
-				document.documentElement.scrollTop =anchor.offsetTop-t-53
+				document.documentElement.scrollTop =anchor.offsetTop-t-80
 			},
 			
 		},
 		watch:{
-			showInfo:function(val,oldVal){
-				if(val){
-				 document.getElementsByTagName("body")[0].style.overflowY="hidden"	
-				}else{
-					document.getElementsByTagName("body")[0].style.overflowY="inherit"	
-				}
-			}
+//			showInfo:function(val,oldVal){
+//				if(val){
+//				 document.getElementsByTagName("body")[0].style.overflowY="hidden"	
+//				}else{
+//					document.getElementsByTagName("body")[0].style.overflowY="inherit"	
+//				}
+//			}
 		},
 		mounted: function() {
 			window.addEventListener("scroll", this.scorllBar);
@@ -1299,7 +1306,7 @@
 			}
 		}
 		.chinaTour_details {
-			padding: 50px 0 80px;
+			padding: 50px 0 40px;
 			.nav {
 				border-bottom: 1px solid #dde0e0;
 				width: 100%;
@@ -1317,7 +1324,7 @@
 				}
 			}
 			.top_destinations {
-				margin-top: 80px;
+				margin-top: 40px;
 				h3 {
 					font-size: 26px;
 					font-weight: bold;
@@ -1367,6 +1374,16 @@
 							
 							
 							.position{
+								.hover{
+									width:20px;
+									height: 20px;
+									position: absolute;
+									left: 50%;
+									top: 50%;
+									transform: translate(-10px,-10px);
+									cursor: pointer;
+								}
+								
 								position: absolute;
 								width: 8px;
 								height: 8px;
@@ -1397,7 +1414,7 @@
 		.customize {
 			background: #faf9f8;
 			.customizeTrip {
-				padding: 53px 0;
+				padding: 40px 0;
 				h3 {
 					font-size: 26px;
 					font-weight: bold;
@@ -1505,9 +1522,9 @@
 			}
 		}
 		.activity {
-			padding-bottom: 80px;
+			padding-bottom: 40px;
 			.activityItem {
-				margin-top: 79px;
+				margin-top: 40px;
 			}
 			h3 {
 				font-size: 26px;
@@ -1720,7 +1737,7 @@
 		}
 		.visitor {
 			background: #faf9f8;
-			padding: 80px 0;
+			padding: 40px 0;
 			.visitor-cont {
 				h3 {
 					font-size: 26px;

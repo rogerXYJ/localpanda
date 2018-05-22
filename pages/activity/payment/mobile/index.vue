@@ -322,7 +322,7 @@ import { setTimeout } from 'timers';
 
 
 				var self = this;
-				self.axios.get("https://www.localpanda.cn/api/payment/wxinfo/get?code=" + this.wxcode, {
+				self.axios.get("https://www.localpanda.cn/api/payment/wxinfo/get?code=" + this.wxcode+'&orderId='+self.orderId, {
 					headers: {
 						'Content-Type': 'application/json'
 					}

@@ -72,7 +72,7 @@
 				</div>
 			<div class="provide" v-if="picInfo.details.length>0" id="picDetails">
 					<h3>Price Details</h3>
-					<p class="childDiscount" v-if="picInfo.childDiscount">Children's price is  {{nowExchange.symbol}}  {{returnFloat(picInfo.childDiscount)}}  {{nowExchange.currency}}  less than adults' price.</p>
+					<p class="childDiscount" v-if="picInfo.childDiscount">Children's price is  {{nowExchange.symbol}}  {{returnFloat(picInfo.childDiscount)}}  {{nowExchange.code}}  less than adults' price.</p>
 					<el-table :data="sixArr" stripe style="width: 100%">
 						<el-table-column prop="capacity" label="Number of people"  align="center">
 							<template slot-scope="scope">
@@ -82,13 +82,13 @@
 						</el-table-column>
 						<el-table-column prop="price" label="Total cost" align="center">
 							<template slot-scope="scope">
-								<span>{{nowExchange.symbol}} {{returnFloat(scope.row.price)}} {{nowExchange.currency}}</span>
+								<span>{{nowExchange.symbol}} {{returnFloat(scope.row.price)}} {{nowExchange.code}}</span>
 							</template>
 						</el-table-column>
 						<el-table-column prop="childenTotal" label="Price per person"  align="center">
 							<template slot-scope="scope">
 								<div v-show="scope.row.capacity">
-									<span>{{nowExchange.symbol}} {{returnFloat(scope.row.price/scope.row.capacity)}} {{nowExchange.currency}}</span>
+									<span>{{nowExchange.symbol}} {{returnFloat(scope.row.price/scope.row.capacity)}} {{nowExchange.code}}</span>
 								</div>
 							</template>
 						</el-table-column>
@@ -174,7 +174,7 @@
 			<button class="bookBtn" @click="goBooking">Book Now</button>
 			<div class="picRate">
 				<select class="currency_type" id="changeCurrency" @change="changeCurrency" v-model="defaultCurrency">
-					<option :value="item.currency" v-for="item in exchange" :key="item.currency">{{item.currency}}</option>
+					<option :value="item.code" v-for="item in exchange" :key="item.code">{{item.code}}</option>
 				</select>
 				<span class="iconfont">&#xe666;</span>
 			</div>
@@ -251,28 +251,28 @@ import { setTimeout } from 'timers';
 				for(var i=0;i<exchange.length;i++){
 					var thisEx = exchange[i];
 					//检测当前货币类型
-					if(thisEx.currency==value){
+					if(thisEx.code==value){
 						//设置当前币种
 						this.nowExchange = thisEx;
 						//切换折扣价币种
 						picInfo.currency = value;
 						picInfo.symbol = thisEx.symbol;
-						picInfo.bottomPrice = picInfo.defaultPrice.bottomPrice * thisEx.rate;
-						picInfo.originalPrice = picInfo.defaultPrice.originalPrice * thisEx.rate;
+						picInfo.bottomPrice = picInfo.defaultPrice.bottomPrice * thisEx.exchangeRate;
+						picInfo.originalPrice = picInfo.defaultPrice.originalPrice * thisEx.exchangeRate;
 						if(picInfo.defaultPrice.childDiscount){
 							//之所以在这里加returnFloat，是为了让儿童优惠后的总价格，不会超过总价-儿童优惠价
-							picInfo.childDiscount = picInfo.defaultPrice.childDiscount * thisEx.rate;
+							picInfo.childDiscount = picInfo.defaultPrice.childDiscount * thisEx.exchangeRate;
 						}
 						//切换价格详情币种
 						for(var i=0;i<thisDetail.length;i++){
-							thisDetail[i].price = thisDetail[i].defaultPrice * thisEx.rate;
+							thisDetail[i].price = thisDetail[i].defaultPrice * thisEx.exchangeRate;
 						}
 
 						//切换详情币种
 						var sixArr = this.sixArr;
 						for(var i=0;i<sixArr.length;i++){
 							//之所以在这里加returnFloat，是为了让儿童优惠后的总价格，不会超过总价-儿童优惠价
-							sixArr[i].price = sixArr[i].defaultPrice * thisEx.rate;
+							sixArr[i].price = sixArr[i].defaultPrice * thisEx.exchangeRate;
 						}
 						
 						break;
@@ -434,10 +434,10 @@ import { setTimeout } from 'timers';
 			let that = this;
 			
 			//加载币种
-			that.axios.get("https://www.fedrobots.com/api/exchange/").then(function(response) {
+			that.axios.get("https://api.localpanda.com/api/public/currency/all/"+that.picInfo.currency).then(function(response) {
 				// console.log(response);
 				if(response.status==200){
-					that.exchange = response.data.data;
+					that.exchange = response.data;
 					that.nowExchange = that.exchange[0];
 
 					//设置币种

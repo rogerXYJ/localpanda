@@ -35,7 +35,7 @@
 
 					<div class="picRate">
 						<select class="currency_type" @change="changeCurrency" v-model="picInfo.currency">
-							<option :value="item.currency" v-for="item in exchange" :key="item.currency">{{item.currency}}</option>
+							<option :value="item.code" v-for="item in exchange" :key="item.code">{{item.code}}</option>
 						</select>
 						<span class="iconfont">&#xe666;</span>
 					</div>
@@ -126,21 +126,21 @@
 				for(var i=0;i<exchange.length;i++){
 					var thisEx = exchange[i];
 					//检测当前货币类型
-					if(thisEx.currency==value){
+					if(thisEx.code==value){
 						//设置当前币种
 						this.nowExchange = thisEx;
 						//切换折扣价币种
 						picInfo.currency = value;
 						picInfo.symbol = thisEx.symbol;
-						picInfo.bottomPrice = picInfo.defaultPrice.bottomPrice * thisEx.rate;
-						picInfo.originalPrice = picInfo.defaultPrice.originalPrice * thisEx.rate;
+						picInfo.bottomPrice = picInfo.defaultPrice.bottomPrice * thisEx.exchangeRate;
+						picInfo.originalPrice = picInfo.defaultPrice.originalPrice * thisEx.exchangeRate;
 						if(picInfo.defaultPrice.childDiscount){
 							//之所以在这里加returnFloat，是为了让儿童优惠后的总价格，不会超过总价-儿童优惠价
-							picInfo.childDiscount = picInfo.defaultPrice.childDiscount * thisEx.rate;
+							picInfo.childDiscount = picInfo.defaultPrice.childDiscount * thisEx.exchangeRate;
 						}
 						//切换价格详情币种
 						for(var i=0;i<thisDetail.length;i++){
-							thisDetail[i].price = thisDetail[i].defaultPrice * thisEx.rate;
+							thisDetail[i].price = thisDetail[i].defaultPrice * thisEx.exchangeRate;
 						}
 
 						break;
@@ -352,10 +352,10 @@
 
 
 			//加载币种
-			that.axios.get("https://www.fedrobots.com/api/exchange/").then(function(response) {
+			that.axios.get("https://api.localpanda.com/api/public/currency/all/USD").then(function(response) {
 				// console.log(response);
 				if(response.status==200){
-					that.exchange = response.data.data;
+					that.exchange = response.data;
 					that.nowExchange = that.exchange[0];
 				}
 			}, function(response) {});

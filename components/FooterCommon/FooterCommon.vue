@@ -189,7 +189,7 @@ import { fail } from 'assert';
 								padding-right: 20px;
 								
 								&:nth-child(1),&:nth-child(4){
-									width: 24%;
+									width: 22%;
 								}
 								&:first-child{
 									margin-left: 0;

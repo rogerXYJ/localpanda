@@ -106,7 +106,7 @@
 						</el-table-column>
 						<el-table-column prop="price" label="Total cost" width="244.6" align="center">
 							<template slot-scope="scope">
-								<span>{{nowExchange.symbol}} {{returnFloat(scope.row.price)}} {{nowExchange.currency}}</span>
+								<span>{{nowExchange.symbol}} {{returnFloat(scope.row.price)}} {{nowExchange.code}}</span>
 							</template>
 						</el-table-column>
 						<!-- <el-table-column prop="chlidenNumb" label="Number of people" width="183">
@@ -119,7 +119,7 @@
 						<el-table-column prop="childenTotal" label="Price per person" width="245" align="center">
 							<template slot-scope="scope">
 								<div v-show="scope.row.capacity">
-									<span>{{nowExchange.symbol}} {{returnFloat(scope.row.price/scope.row.capacity)}} {{nowExchange.currency}}</span>
+									<span>{{nowExchange.symbol}} {{returnFloat(scope.row.price/scope.row.capacity)}} {{nowExchange.code}}</span>
 								</div>
 							</template>
 						</el-table-column>
@@ -205,7 +205,7 @@
 								</div>
 								<div class="picRight" @mouseover="showNode" @mouseleave="hidden">
 									<select class="currency_type" @change="changeCurrency">
-										<option :value="item.currency" v-for="item in exchange" :key="item.currency">{{item.currency}}</option>
+										<option :value="item.code" v-for="item in exchange" :key="item.code">{{item.code}}</option>
 									</select>
 									<span class="iconfont">&#xe666;</span>
 								</div>
@@ -461,33 +461,32 @@
 				var picInfo = this.picInfo;
 				var thisDetail = picInfo.details;
 
-				console.log(picInfo);
 				//换算折扣价
 				var exchange = this.exchange;
 				for(var i=0;i<exchange.length;i++){
 					var thisEx = exchange[i];
 					//检测当前货币类型
-					if(thisEx.currency==value){
+					if(thisEx.code==value){
 						//设置当前币种
 						this.nowExchange = thisEx;
 						//切换折扣价币种
 						picInfo.currency = value;
-						picInfo.bottomPrice = picInfo.defaultPrice.bottomPrice * thisEx.rate;
-						picInfo.originalPrice = picInfo.defaultPrice.originalPrice * thisEx.rate;
+						picInfo.bottomPrice = picInfo.defaultPrice.bottomPrice * thisEx.exchangeRate;
+						picInfo.originalPrice = picInfo.defaultPrice.originalPrice * thisEx.exchangeRate;
 						if(picInfo.defaultPrice.childDiscount){
 							//之所以在这里加returnFloat，是为了让儿童优惠后的总价格，不会超过总价-儿童优惠价
-							picInfo.childDiscount = picInfo.defaultPrice.childDiscount * thisEx.rate;
+							picInfo.childDiscount = picInfo.defaultPrice.childDiscount * thisEx.exchangeRate;
 						}
 						//切换价格详情币种
 						for(var i=0;i<thisDetail.length;i++){
-							thisDetail[i].price = thisDetail[i].defaultPrice * thisEx.rate;
+							thisDetail[i].price = thisDetail[i].defaultPrice * thisEx.exchangeRate;
 						}
 
 						//切换详情币种
 						var sixArr = this.sixArr;
 						for(var i=0;i<sixArr.length;i++){
 							//之所以在这里加returnFloat，是为了让儿童优惠后的总价格，不会超过总价-儿童优惠价
-							sixArr[i].price = sixArr[i].defaultPrice * thisEx.rate;
+							sixArr[i].price = sixArr[i].defaultPrice * thisEx.exchangeRate;
 						}
 						
 						break;
@@ -868,13 +867,12 @@
 			}
 			
 			
-			var self = this;
 			//加载币种
-			self.axios.get("https://www.fedrobots.com/api/exchange/").then(function(response) {
+			that.axios.get("https://api.localpanda.com/api/public/currency/all/"+that.picInfo.currency).then(function(response) {
 				// console.log(response);
 				if(response.status==200){
-					self.exchange = response.data.data;
-					self.nowExchange = self.exchange[0];
+					that.exchange = response.data;
+					that.nowExchange = that.exchange[0];
 				}
 			}, function(response) {});
 

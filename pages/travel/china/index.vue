@@ -10,8 +10,9 @@
 			<div class="nav" :class="{meauFix:showMeau}" id="nav">
 				<ul class="clearfix">
 					<li @click="goAnchor('top_destinations')">Top Destinations</li>
-					<li @click="goAnchor('customize')">First-timer Trips</li>
-					<li @click="goAnchor('activity')">Landmarks Tours</li>
+					<li @click="goAnchor('customize')">Customize My Trip</li>
+					<li @click="goAnchor('firstTimer')">First-timer Trips</li>
+					<li @click="goAnchor('activity')">Signature Trips</li>
 					<li @click="goAnchor('oneActivity')">Family Vacations</li>
 				</ul>
 			</div>
@@ -67,8 +68,8 @@
 			</div>
 
 		</div>
-		<div class="activity page__container" id="activity">
-			<div class="activityItem" v-for="(item,index) in twoActivity">
+		<div class="activity page__container">
+			<div class="activityItem" :id="index==0?'firstTimer':'activity'" v-for="(item,index) in twoActivity">
 				<h3>{{item.title}}</h3>
 				<div class="introduced">
 					<p v-for="a in item.des">{{a}}</p>
@@ -344,8 +345,8 @@
 						imgUrl:"https://resource.localpanda.cn/content/landingpage/chinatour/Location.png",
 						isMap:false,
 						position:{
-							top:"288px",
-							right:"184px"
+							top:"286px",
+							right:"194px"
 						},
 						word:"great_wall"
 					},
@@ -354,7 +355,7 @@
 						imgUrl:'https://resource.localpanda.cn/content/landingpage/chinatour/Location.png',
 						isMap:false,
 						position:{
-							top:"298px",
+							top:"300px",
 							right:"200px"
 						},
 						word:"forbidden_city"
@@ -417,14 +418,14 @@
 						cont:'Hangzhou West Lake',
 						imgUrl:'https://resource.localpanda.cn/content/landingpage/chinatour/Location.png',
 						isMap:false,
-						position:{bottom:"219px",right:"177px"},
+						position:{bottom:"279px",right:"127px"},
 						word:"west_lake"
 					},
 					{
 						cont:"Yellow Mountain",
 						imgUrl:'https://resource.localpanda.cn/content/landingpage/chinatour/Location.png',
 						isMap:false,
-						position:{bottom:"214px",right:"144px"},
+						position:{bottom:"275px",right:"155px"},
 						word:"yellow_mountain"
 						
 					},
@@ -552,15 +553,15 @@
 				],
 				twoActivity: [{
 						dd:'Summer Sales',
-						title: "Immerse in China's Most Symbolic Sites",
-						des: ["Beijing, Shanghai, Xi’an, Chengdu and Guilin are the most popular cities among those who come visit China.The gorgeous Temple of Heaven, the Great Wall, Terra Cotta Worriers and Pandas made those cities top 5 must-visit stops in China!"
+						title: "Immerse Yourself in China's Symbolic Sites",
+						des: ["Beijing, Shanghai, Xi'an, Chengdu and Guilin are the top 5 destinations for those who have limited time and budget. Each of these cities has wonders and sights that will leave you in awe, such as the Temple of Heaven, Great Wall, Bund, Terra Cotta Warriors and Giant Pandas."
 						],
 						highLights: [
-							"Most symbolic China highlights e.g. Pandas, the bund; perfect for first-timers",
-							"Tours with light-intensity activities",
-							"Packaged pricing (all domestic transportation, entrance tickets, 5-star hotels, private guide service, pick-ups included)",
-							"Flexible lengths (5 days, 6-8 days, 11-13 days)",
-							"Private tours (tailored to your need; arrival/departure cities can be adjusted)"
+							"China's most iconic highlights e.g. Pandas, the bund; perfect for first-timers",
+							"Experience the adventure without the stress of traveling in a foreign country",
+							"Packaged deals (see product details for what's included)",
+							"Flexible lengths (6, 8, 11 and 13 days)",
+							"100% private and customizable (tailored to your needs; arrival/departure cities)"
 						],
 						activites: [{
 								linkUrl:"/activity/details/11237",
@@ -772,15 +773,15 @@
 					},
 					{
 						dd:'Best Seller',
-						title: "See China’s Majestic Beauty",
-						des: ["If you really want to get the most out of your trip to China, there many amazing places beyond the major cities that you shouldn't miss, such as Zhangjiajie (avatar mountains), Yangtze River Delta, Tibet, Yellow Mountain. Come to see the best of what China has to offer and leave with a head full of knowledge and a heart full of unique memories."],
+						title: "See China's Stunning Landscapes",
+						des: ["If you want to get off the beaten track and really immerse yourself in everything that China has to offer, then these trips are for you. To really appreciate China, you often have to look past it's biggest cities, and experience some of the most breathtaking landscapes in the world, such as Zhangjiajie “Avatar Mountains,” Tibet, Yellow Mountain, and Yangtze River Delta Water Towns. With the best of China's cities and nature to experience, you'll fly home with a head full of knowledge, a heart full of unique experiences, and a memory full of unforgettable moments."],
 						highLights: [
-							"Amazing natural scenes and cultural wonders ",
-							"Breathtakingly beautiful sites - a shocking and unforgettable experience guaranteed ",
-							"Journey with moderately challenging activities",
-							"Packaged pricing (see product details for inclusions)",
-							"Flexible lengths ( 8, 11, 13 days)",
-							"Private tours (tailored to your need; arrival/departure cities can be adjusted)"
+							"Amazing natural landscapes and cultural wonders",
+							"Breathtakingly beautiful sites - a stunning, unforgettable experience guaranteed",
+							"Go beyond the touristy destinations to really immerse yourself in China (moderately challenging)",
+							"Packaged deals (see product details for inclusions)",
+							"Flexible lengths ( 8, 11 and 13 days)",
+							"100% private and customizable (tailored to your needs; arrival/departure cities)"
 						],
 						activites: [{
 								linkUrl:'/activity/details/11241',
@@ -836,7 +837,7 @@
 							},
 							{
 								linkUrl:'/activity/details/11251',
-								activityPhoto: "https://resource.localpanda.cn/activity/banners/11251_1106283418_U2936148.jpg",
+								activityPhoto: "https://resource.localpanda.cn/activity/banners/11251_1106699508_U5848932.jpg",
 								title: '"Beautiful China and Holy Tibet" 13-Day Private Tour',
 								duration: '13-Day Private Tour',
 								nowPrice: "$1895.90",
@@ -995,15 +996,15 @@
 				],
 				oneActivity: [{
 					dd:"Traveler's Choice",
-					title: "Harvest Happiness in Ancient China",
-					des: ["If there are more chances to immerse with the local culture throughout the journey of visiting landmarks, such as learning to make different shapes of", "dumplings, painting a Peking opera mask, craft Terra-cotta Warriors figurines, you will load your trip with more local knowledge and amazing experiences."],
+					title: "Build Lasting Memories with Your Family",
+					des: ["A great family trip is about more than visiting the famous sites. At local panda we believe that the unforgettable family bonding moments happen when you get hands-on and experience the culture directly as a family. That's why we've filled our family-friendly tours with unique cultural experiences that create genuine interactions with Chinese culture as well as one another. Whether it's learning how to make dumplings, painting a Peking opera mask, crafting Terra-cotta Warriors figurines, your trip will be loaded with local cultural activities and amazing experiences that are guaranteed to make your trip fun and special."],
 					highLights: [
-						"Tours suit both old and young generation, relaxing yet full of new experiences",
-						"Couple/ family friendly",
-						"Journey with light-intensity activities",
-						"Packaged pricing (see product details for inclusions)",
-						"Flexible lengths ( 11 or 13 days)",
-						"Private tours (tailored to your need; arrival/departure cities can be adjusted)"
+						"Trips suitable for all ages, both relaxing and full of new experiences",
+						"Couple / family friendly",
+						"Experience the adventure without the stress of traveling in a foreign country",
+						"Packaged deals (see product details for inclusions)",
+						"Flexible lengths (11 and 13 days)",
+						"100% private and customizable (tailored to your needs; arrival/departure cities)"
 					],
 					activites: [{
 							linkUrl:'/activity/details/11246',
@@ -1172,8 +1173,9 @@
 			goAnchor(selector) {
 				var anchor = document.getElementById(selector)
 				var t=document.getElementById("nav").offsetHeight;
-				console.log(t)
-				document.documentElement.scrollTop =anchor.offsetTop-t-80
+				
+				document.documentElement.scrollTop =anchor.offsetTop-t-50
+				document.body.scrollTop =anchor.offsetTop-t-50
 			},
 			
 		},
@@ -1614,9 +1616,9 @@
 							font-size: 14px;
 						}
 						span {
-							padding: 5px;
+							padding: 5px 10px;
 							background: #1bbc9d;
-							border-radius: 9px;
+							border-radius: 13px;
 							font-size: 12px;
 							color: #fff;
 							display: inline-block;
@@ -1657,7 +1659,7 @@
 						text-align: right;
 						span {
 							padding: 5px 10px;
-							border-radius: 10px;
+							border-radius: 13px;
 							border: solid 1px #99a1a8;
 							display: inline-block;
 							margin-left: 8px;

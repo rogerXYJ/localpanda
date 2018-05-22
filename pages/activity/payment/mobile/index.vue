@@ -53,11 +53,19 @@
 				</div>
 			</div>
 			<div class="btn">
-				<button @touchstart="pay" v-if="payData">Pay</button>
+				<button @touchstart="pay" v-if="payData && !openWxUrl">Pay</button>
+				<a v-if="openWxUrl" :href="openWxUrl" @click="wxOpenClick">Pay</a>
 			</div>
 		</div>
 
-
+		<div class="confirm_all" v-show="showWxOpenBox" @touchstart="hideWxOpenBox"></div>
+		<div class="confirm_box" v-show="showWxOpenBox">
+				<h3>Please confirm whether the payment has been completed ?</h3>
+				<div class="btn_list">
+						<a class="btn_ok" @touchstart="confirmation">Completion</a>
+						<a :href="tryAgainHref">Try again</a>
+				</div>
+		</div>
 		
 
 		<Loading :loadingStatus="loadingStatus"></Loading>
@@ -125,7 +133,9 @@ import { setTimeout } from 'timers';
 				rate: 6.3710,
 				isWx : false,
 				payData : '',
-				showWxOpenBox: false
+				showWxOpenBox: false,
+				openWxUrl: '',
+				tryAgainHref : ''
 			}
 		},
 		components: {
@@ -232,11 +242,11 @@ import { setTimeout } from 'timers';
 
 							}
 							//跳转
-							window.location.href = "/payment/mobile/success?email="+that.email+"&orderId=" + that.orderId + '&amount=' + that.opctions.amount+'&succeed='+thisData.succeed+'&symbol='+that.opctions.symbol+'&msg='+msg;
+							window.location.href = "/payment/mobile/success?email="+that.email+"&orderId=" + that.orderId + '&amount=' + that.opctions.amount+'&succeed='+thisData.succeed+'&symbol='+that.opctions.symbol+'&currency='+that.opctions.currency+'&msg='+msg;
 							//
 						}, function(response) {
 							//请求失败跳转
-							window.location.href = "/payment/mobile/success?email="+that.email+"&orderId=" + that.orderId + '&amount=' + that.opctions.amount+'&succeed=false&symbol='+that.opctions.symbol
+							window.location.href = "/payment/mobile/success?email="+that.email+"&orderId=" + that.orderId + '&amount=' + that.opctions.amount+'&succeed=false&symbol='+that.opctions.symbol+'&currency='+that.opctions.currency;
 						})
 					}
 				})
@@ -246,32 +256,25 @@ import { setTimeout } from 'timers';
 				Vue.axios.get(this.apiBasePath + "activity/order/detail/" + that.orderId).then(function(res) {
 					that.opctions = res.data;
 					that.email = res.data.contactInfo.emailAddress;
-					that.refundTimeLimit=res.data.activityInfo.refundTimeLimit*24
-					// var orderInfo = localStorage.getItem('orderInfo') || {currency:"USD"};
-					// that.opctions.currency = JSON.parse(orderInfo).currency;
+					that.refundTimeLimit=res.data.activityInfo.refundTimeLimit*24;
 
-					// console.log(that.opctions);
-					// if(that.opctions.currency=='CNY'){
-					// 	that.opctions.currency = 'USD';
-					// 	that.opctions.amount /= that.rate;
-					// 	that.opctions.averagePrice /= that.rate;
-					// }
-					// that.opctions.priceAll = {
-					// 	amount:that.opctions.amount,
-					// 	averagePrice:that.opctions.averagePrice
-					// };
+					//人民币支付
+					if(that.opctions.currency=='CNY'){
+						//微信外部H5
+						if(!that.isWx){
+							that.openWxPay({
+								tradeType: 'MWEB',
+								objectId: that.orderId,
+								amount : that.opctions.amount * 100, // 支付金额，单位是“分”
+								objectType : 'ACTIVITY'
+							});
+						}
+					}else{
+						//默认用来显示支付按钮，微信里面用来公众号支付数据
+						that.payData = 1;
+					}
+
 					
-
-					// if(that.urlQuery.payType=='CNY'){
-					// 	that.opctions.currency = 'CNY';
-					// 	that.changePrice('CNY');
-					// }else{
-					// 	that.opctions.currency = 'USD';
-					// 	that.changePrice('USD');
-					// }
-
-					//默认用来显示支付按钮，微信里面用来公众号支付数据
-					that.payData = 1;
 					
 
 				}, function(res) {})
@@ -287,25 +290,12 @@ import { setTimeout } from 'timers';
 
 				});
 
-
+				//人民币支付
 				if(this.opctions.currency=='CNY'){
-					var ua = window.navigator.userAgent.toLowerCase();
-					var isWx = (ua.match(/MicroMessenger/i) == 'micromessenger') ? true : false;
 					//微信内部
-					if(isWx){
+					if(this.isWx){
 						this.wxPay(this.payData);
-					}else{
-						//微信外部
-						this.openWxPay({
-							tradeType: 'MWEB',
-							objectId: that.orderId,
-							amount : that.opctions.amount * 100, // 支付金额，单位是“分”
-							objectType : 'ACTIVITY'
-						});
 					}
-
-					
-					
 					return;
 				}
 
@@ -391,11 +381,12 @@ import { setTimeout } from 'timers';
 							}
 							that.loadingStatus = false;
 							//跳转
-							window.location.href = "https://www.localpanda.com/payment/mobile/success?email="+that.email+"&orderId=" + that.orderId + '&amount=' + that.opctions.amount+'&succeed='+thisData.succeed+'&msg='+msg+'&symbol='+that.opctions.symbol;
+							window.location.href = "https://www.localpanda.com/payment/mobile/success?email="+that.email+"&orderId=" + that.orderId + '&amount=' + that.opctions.amount+'&succeed='+thisData.succeed+'&msg='+msg+'&symbol='+that.opctions.symbol+'&currency='+that.opctions.currency;
 						}
 				); 
 			},
 			
+			//微信内部支付
 			wxPay(postData){
 				var self = this;
 				this.loadingStatus = true;
@@ -429,7 +420,7 @@ import { setTimeout } from 'timers';
 			//H5唤起微信支付
 			openWxPay(postData){
 				var self = this;
-				this.loadingStatus = true;
+				//this.loadingStatus = true;
 
 				self.axios.post("https://www.localpanda.cn/api/payment/pay/wechat",JSON.stringify(postData), {
 					headers: {
@@ -440,20 +431,15 @@ import { setTimeout } from 'timers';
 					if(data.return_code == 'SUCCESS'){
 
 						//self.showWxOpenBox = true;
-						self.loadingStatus = false;
+						//self.loadingStatus = false;
 						
-						var callUrl = 'https://www.localpanda.cn/payment/mobile/wxMobilePay?email='+self.email+'&orderId=' + self.orderId + '&amount=' + self.opctions.amount+'&symbol='+self.opctions.symbol+'&login='+(self.logIn?self.logIn:0);
+						var callUrl = 'https://www.localpanda.cn/payment/mobile/wxMobilePay?email='+self.email+'&orderId=' + self.orderId + '&amount=' + self.opctions.amount+'&symbol='+self.opctions.symbol+'&currency='+self.opctions.currency+'&login='+(self.logIn?self.logIn:0);
 						var openWxUrl = data.mweb_url + '&redirect_url=' + encodeURIComponent(callUrl);
 
-						//self.tryAgainHref = openWxUrl;
-
-						window.location.href = openWxUrl;
-						
-						// setTimeout(function(){
-						// 	if(/\/activity\/payment\/mobile\//.test(location.href)){
-						// 		window.location.href = openWxUrl;
-						// 	}
-						// },8000);
+						//唤起微信a标签的href
+						self.openWxUrl = openWxUrl;
+						self.tryAgainHref = openWxUrl;
+						//window.location.href = openWxUrl;
 
 					}else{
 						alert(data.return_msg+', Try again!')
@@ -462,7 +448,49 @@ import { setTimeout } from 'timers';
 					
 				}, function(response) {})
 			},
-			
+			wxOpenClick(){
+				if(/(Android)/i.test(this.ua)){
+					localStorage.setItem('AndroidOpenWx','true');
+					//this.showWxOpenBox = true;
+				}
+				
+			},
+			confirmation(e){
+					//var query = this.query;
+				var self = this;
+				self.loadingStatus = true;
+				//查询订单
+				this.axios.get("/api/payment/wechat/status?orderId="+self.orderId+'&flag=1',{
+						headers: {
+								'Content-Type': 'application/json;'
+						}
+				}).then(function(response) {
+						if(response.status==200){
+								var succeed = false,
+										msg = '';
+								if(response.data.succeed){
+										succeed = true;
+								}else{
+										msg = 'fail';
+								}
+								window.location.href = "https://www.localpanda.com/payment/mobile/success?email="+self.email+"&orderId=" + self.orderId + '&amount=' + self.opctions.amount+"&succeed="+succeed+'&symbol='+self.opctions.symbol+'&currency='+self.opctions.currency+'&msg='+msg;
+						}else{
+								alert('Please try again!');
+						}
+						self.loadingStatus = false;
+				}, function(response) {
+						alert('Please try again!');
+				})
+
+					
+			},
+			tryAgain(){
+				//var self = this;
+				//window.location.href = 'https://www.localpanda.cn/activity/payment/mobile/?objectId='+self.orderId+'&login='+(self.logIn?self.logIn:0);
+			},
+			hideWxOpenBox(){
+				this.showWxOpenBox = false;
+			}
 		},
 		created: function() {
 
@@ -472,8 +500,8 @@ import { setTimeout } from 'timers';
 			this.getInfo()
 			this.getToken()
 
-			var ua = window.navigator.userAgent.toLowerCase();
-			this.isWx = (ua.match(/MicroMessenger/i) == 'micromessenger') ? true : false;
+			this.ua = window.navigator.userAgent.toLowerCase();
+			this.isWx = (this.ua.match(/MicroMessenger/i) == 'micromessenger') ? true : false;
 			if (this.isWx){
 				this.wxInit();
 			}
@@ -484,7 +512,11 @@ import { setTimeout } from 'timers';
 				this.logInHide = true;
 			}
 
-
+			//检测是否是安卓唤起微信，针对安卓无法跳转回调页面
+			if(localStorage.getItem('AndroidOpenWx')=='true'){
+				this.showWxOpenBox = true;
+				localStorage.removeItem('AndroidOpenWx');
+			}
 			
 
 		}
@@ -582,7 +614,8 @@ import { setTimeout } from 'timers';
 				left: 0;
 				width: 100%;
 				padding: 0.373333rem 0.586666rem;
-				button {
+				button,a {
+					display:block;
 					width: calc(100% - 1.173333rem);
 					height: 1.2rem;
 					line-height: 1.2rem;

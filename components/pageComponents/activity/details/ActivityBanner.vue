@@ -2,7 +2,7 @@
 	<div id="banner">
 		
 		<div v-swiper:swiper="swiperOptionBannerPc">
-			<div class="swiper-wrapper">
+			<div class="swiper-wrapper" :class="{showbanner:showbanner}">
 				<div class="swiper-slide" :key="index" v-for="(slide, index) in bannerPhotos">
 					<img :src="slide"  />
 				</div>
@@ -40,8 +40,9 @@ export default {
           prevEl: '.swiper-button-prev',
         },
         setWrapperSize: true,
-		initialSlide: 0,
+		    initialSlide: 0,
       },
+      showbanner:false
     };
   },
   components: {},
@@ -49,7 +50,7 @@ export default {
     
   },
   mounted: function() {
-  
+    this.showbanner = true;
   }
 };
 </script>
@@ -59,6 +60,9 @@ export default {
   img {
     width: 100%;
     height: 100%;
+  }
+  .swiper-slide{
+    max-width:33vw;
   }
   
 }

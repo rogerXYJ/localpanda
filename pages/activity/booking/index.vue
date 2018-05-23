@@ -559,7 +559,6 @@
 			//设置默认币种
 			self.nowExchange = {symbol:self.opctions.symbol,currency:self.opctions.currency};
 			//加载币种
-			console.log(this.opctions);
 			self.axios.get("https://api.localpanda.com/api/public/currency/all/USD").then(function(response) {
 				// console.log(response);
 				if(response.status==200){

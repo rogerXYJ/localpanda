@@ -67,7 +67,7 @@ export default {
 
         var tryHref = 'https://www.localpanda.'+(this.symbol=='¥'?'cn':'com')+'/activity/payment/mobile/?objectId='+this.orderId+'&login='+(this.logIn?this.logIn:0);
         if(this.isWx && this.symbol=='¥'){
-          tryHref = 'http://www.localpanda.cn/wx/getcode?link='+encodeURIComponent(tryHref);
+          tryHref = 'https://www.localpanda.cn/wx/getcode?link='+encodeURIComponent(tryHref);
         }
       
         return tryHref;

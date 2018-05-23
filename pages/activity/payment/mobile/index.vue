@@ -344,37 +344,26 @@
 //					}
 //				})
 //			},
-			wxInit() {
-
-				//code用过或者没有code则从新获取
-				var localWxCode = localStorage.getItem('localWxCode');
-				if(this.wxcode == localWxCode && this.opctions.currency == 'CNY' || !this.wxcode && this.opctions.currency == 'CNY') {
-					location.href = 'https://www.localpanda.cn/wx/getcode?link=' + encodeURIComponent(location.href.replace('code', 'nostr'));
-					return;
-				}
-				//本地存储code
-				localStorage.setItem('localWxCode', this.wxcode);
-
+			wxInit(){
 				var self = this;
-				self.axios.get("https://www.localpanda.cn/api/payment/wxinfo/get?code=" + this.wxcode, {
+				self.axios.get("https://www.localpanda.cn/api/payment/wxinfo/get?code=" + this.wxcode+'&orderId='+self.orderId, {
 					headers: {
 						'Content-Type': 'application/json'
 					}
 				}).then(function(response) {
 					// console.log(response);
-
+					
 					var openData = response.data;
-
+					
 					self.payData = {
 						tradeType: 'JSAPI',
-						objectId: self.orderId, //1105955013
-						amount: self.opctions.amount * 100, //self.opctions.amount * 100
+						objectId: self.orderId,//1105955013
+						amount: self.opctions.amount * 100,//self.opctions.amount * 100
 						openId: openData.openid,
-						objectType: 'ACTIVITY'
+						objectType:'ACTIVITY'
 					};
-
 				}, function(response) {});
-
+				
 			},
 			onBridgeReady(data) {
 				var that = this;

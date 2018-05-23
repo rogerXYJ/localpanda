@@ -23,7 +23,7 @@
 
     <a class="btn_href" :href="getJumpUrl(logIn)" v-if="success && email">View My Order</a>
     <a class="btn_href" href="/" v-else-if="!email">Back to home</a>
-    <a class="btn_href" :href="'https://www.localpanda.'+(symbol=='¥'?'cn':'com')+'/activity/payment/mobile/?objectId='+orderId+'&login='+(logIn?logIn:0)" v-else>Try again</a>
+    <a class="btn_href" :href="tryUrl" v-else>Try again</a>
   </div>
 </template>
 
@@ -48,7 +48,8 @@ export default {
         msg: query.msg,
         showTipTxt: false,
         symbol: query.symbol ? query.symbol : '$',
-        currency: query.currency ? query.currency : ''
+        currency: query.currency ? query.currency : '',
+        tryUrl:''
 			}
 		},
 		components: {
@@ -60,6 +61,18 @@ export default {
           return '/user/myBookings';
         }
         return '/user/myBookings?email='+this.email+'&orderid='+this.orderId;
+      },
+      getTryUrl(){
+        var ua = window.navigator.userAgent.toLowerCase();
+        this.isWx = (ua.match(/MicroMessenger/i) == 'micromessenger') ? true : false;
+
+        var tryHref = 'https://www.localpanda.'+(this.symbol=='¥'?'cn':'com')+'/activity/payment/mobile/?objectId='+this.orderId+'&login='+(this.logIn?this.logIn:0);
+
+        if(this.isWx && this.symbol=='¥'){
+          tryHref = 'https://www.localpanda.cn/wx/getcode?link='+encodeURIComponent(tryHref);
+        }
+      
+        return tryHref;
       }
 		},
 		mounted: function() {
@@ -67,7 +80,10 @@ export default {
       this.userId=window.localStorage.getItem("userid")
       if(!this.logIn){
 				this.showTipTxt = true;
-			}
+      }
+      
+      //设置try again的url
+      this.tryUrl = this.getTryUrl();
 		}
 	}
 

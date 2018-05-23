@@ -287,7 +287,7 @@
 										var ua = window.navigator.userAgent.toLowerCase();
 										var isWx = (ua.match(/MicroMessenger/i) == 'micromessenger') ? true : false;
 										if(isWx){
-											window.location.href = 'http://www.localpanda.cn/wx/getcode?link='+encodeURIComponent(thisUrl.replace('code','oldcode'));
+											window.location.href = 'https://www.localpanda.cn/wx/getcode?link='+encodeURIComponent(thisUrl.replace('code','oldcode'));
 										}else{
 											window.location.href = thisUrl;
 										}
@@ -337,7 +337,7 @@
 									var ua = window.navigator.userAgent.toLowerCase();
 									var isWx = (ua.match(/MicroMessenger/i) == 'micromessenger') ? true : false;
 									if(isWx){
-										window.location.href = 'http://www.localpanda.cn/wx/getcode?link='+encodeURIComponent(thisUrl.replace('code','oldcode'));
+										window.location.href = 'https://www.localpanda.cn/wx/getcode?link='+encodeURIComponent(thisUrl.replace('code','oldcode'));
 									}else{
 										window.location.href = thisUrl;
 									}

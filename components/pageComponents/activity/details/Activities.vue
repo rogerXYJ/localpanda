@@ -77,7 +77,7 @@
 							</div>
 							<div class="item clearfix" v-else>
 								<div class="cont_title" id="aa">{{i.title}}</div>
-								<div class="cont">{{i.description}}</div>
+								<div class="cont"  v-html="i.description.replace(/\r|\n/g,'<br/>')"></div>
 							</div>
 						</li>
 					</ul>
@@ -248,9 +248,9 @@
 
 										<i class="iconfont" v-if="!isShowAdults">&#xe60f;</i>
 										<i class="iconfont" v-else>&#xe63f;</i>
-										<p v-if="isSelectDate" style="margin-top: 10px; font-size: 12px; color:red;">{{dateErrText}}</p>
+										<!--<p v-if="isSelectDate" style="margin-top: 10px; font-size: 12px; color:red;">{{dateErrText}}</p>-->
 										<p style="margin-top: 10px; font-size:12px;color:red;" v-if="error">{{dateErrText}}</p>
-										<p style="margin-top: 10px;color:#353a3f;font-size:12px;opacity: .5;" v-if="!error&&!isSelectDate">{{dateErrText}}</p>
+										<!--<p style="margin-top: 10px;color:#353a3f;font-size:12px;opacity: .5;" v-if="!error&&!isSelectDate">{{dateErrText}}</p>-->
 
 										<div class="choose" v-if="isShowAdults">
 											<div class="adults clearfix">
@@ -264,7 +264,11 @@
 												</div>
 											</div>
 											<div class="children clearfix">
-												<b>Children<span v-if="picInfo.childStandard">{{picInfo.infantStandard}} - {{picInfo.childStandard}} years</span></b>
+												<div class="years">
+													<b>Children</b>
+													<span v-if="picInfo.childStandard">{{picInfo.infantStandard}} - {{picInfo.childStandard}} years</span>
+												</div>
+												
 												<div class="selectAdults">
 													<em class="iconfont color" v-if="children>0" @click.stop="del(1)">&#xe64d;</em>
 													<em class="iconfont" v-else>&#xe64d;</em>
@@ -274,7 +278,11 @@
 												</div>
 											</div>
 											<div class="children clearfix">
-												<b>Babies</b>
+												<div class="years">
+													<b>Babies</b>
+													<span>Final headcount does not include babies</span>
+												</div>
+												
 												<div class="selectAdults">
 													<em class="iconfont color" v-if="infant>0" @click.stop="del(3)">&#xe64d;</em>
 													<em class="iconfont" v-else>&#xe64d;</em>
@@ -311,12 +319,7 @@
 								</div>
 								<div class="inquiry">
 									<button class="bookNow" @click.stop="order">Book Now</button>
-									<p style="color: red;margin-top: 20px;font-size: 14px;">You can get a 100% refund up to {{detail.refundTimeLimit*24}} hours before your trip.</p>
-									<div class="cancat" @click="showContact">
-
-										<p>Not sure if this is the tour for you? We can </br>help you design your dream tour!<span> Inquire</span> </p>
-										<i class="iconfont">&#xe64a;</i>
-									</div>
+									<button class="inquiryBtn" @click="showContact">Inquire</button>
 								</div>
 
 							</div>
@@ -420,7 +423,7 @@
 				objectType: "ACTIVITY",
 				error: false,
 				isSelectDate: false,
-				dateErrText: "*Final headcount does not include babies.",
+				dateErrText: "",
 				isShow: false, //价格说明
 				margin: 0,
 				isShowView: false,
@@ -692,7 +695,7 @@
 				let that = this;
 				if(that.dateTime == "") {
 					that.isSelectDate = true;
-					that.dateErrText = "*Please select a date first.";
+					//that.dateErrText = "*Please select a date first.";
 					//弹出日历
 					that.flatPickr.open();
 
@@ -708,7 +711,7 @@
 				} else {
 					that.error = false;
 					that.isSelectDate = false;
-					that.dateErrText = "*Final headcount does not include babies.";
+					//that.dateErrText = "*Final headcount does not include babies.";
 					var orderInfo = {
 						userId: localStorage.getItem("userid") ?
 							localStorage.getItem("userid") : null,
@@ -1177,18 +1180,30 @@
 										box-shadow: 0px 2px 10px 0px rgba(53, 58, 63, 0.2);
 										background: #fff;
 										padding: 20px;
-										b {
+										b{
 											font-size: 18px;
-											line-height: 40px;
+											line-height: 40px;	
 											display: inline-block;
-											margin: 0;
+											margin: 0;	
+										}
+										.years{
+											display: inline-block;
+											b {
+												font-size: 18px;
+												line-height: inherit;
+												display: inline-block;
+												margin: 0;
+												
+											}
 											span {
+												display: block;
 												font-weight: normal;
 												color: #878e95;
-												font-size: 14px;
-												margin-left: 10px;
+												font-size: 12px;
+												
 											}
 										}
+										
 										.children {
 											margin-top: 10px;
 										}
@@ -1282,17 +1297,26 @@
 								}
 							}
 							.inquiry {
-								.bookNow {
+								button {
 									width: 100%;
 									height: 42px;
 									text-align: center;
-									background-image: linear-gradient( 270deg, #009efd 0%, #1bbc9d 100%);
-									color: #f5f5f5;
+									
+									
 									line-height: 42px;
 									font-size: 16px;
 									font-weight: bold;
 									border-radius: 30px;
 									margin-top: 20px;
+									&.bookNow{
+										background-image: linear-gradient( 270deg, #009efd 0%, #1bbc9d 100%);
+										color: #fff;
+									}
+									&.inquiryBtn{
+										background:#fff;
+										border:1px solid #1bbc9d;
+										color: #1bbc9d;
+									}
 								}
 								.cancat {
 									margin-top: 20px;

@@ -8,6 +8,18 @@
 					<span v-for="i in detail.tourTypes">{{i}}</span>
 				</div>
 			</div>
+			<div class="price">
+				<div class="picRate">
+					<select class="currency_type" id="changeCurrency" @change="changeCurrency" v-model="defaultCurrency">
+						<option :value="item.code" v-for="item in exchange" :key="item.code">{{item.code}}</option>
+					</select>
+					<span class="iconfont">&#xe666;</span>
+				</div>
+				<div class="picinfo">
+					<p v-if="picInfo.originalPrice">From <span class="oldpic">{{nowExchange.symbol}} {{returnFloat(picInfo.originalPrice)}}</span></p>
+					<p> <b>{{nowExchange.symbol}} {{returnFloat(picInfo.bottomPrice)}}</b> pp</p>
+				</div>
+			</div>
 			<div class="toursMessage">
 				<ul>
 					<li class="clearfix">
@@ -56,45 +68,45 @@
 							</li>
 						</ul>
 					</div>
-					
-				</div>
-			</div>
-			 <div class="notes" v-if="photoList.length>0" @click="showPhoto" id="photoList">
-					<h3>Pictures of our travelers</h3>
-					<div class="photoCover" v-lazy:background-image="photoList.length>0?photoList[0].url:''">
-						<div class="mask"></div>
-						<div class="cover">
-							<h4>Check out our customers' travel experiences with us!</h4>
-							<button>Have a look</button>
-						</div>
-					</div>
 
 				</div>
-			<div class="provide" v-if="picInfo.details.length>0" id="picDetails">
-					<h3>Price Details</h3>
-					<p class="childDiscount" v-if="picInfo.childDiscount">Children's price is  {{nowExchange.symbol}}  {{returnFloat(picInfo.childDiscount)}}  {{nowExchange.code}}  less than adults' price.</p>
-					<el-table :data="sixArr" stripe style="width: 100%">
-						<el-table-column prop="capacity" label="Number of people"  align="center">
-							<template slot-scope="scope">
-								<span v-if="scope.row.capacity==1">1 person</span>
-								<span v-else>{{scope.row.capacity}} people</span>
-							</template>
-						</el-table-column>
-						<el-table-column prop="price" label="Total cost" align="center">
-							<template slot-scope="scope">
-								<span>{{nowExchange.symbol}} {{returnFloat(scope.row.price)}} {{nowExchange.code}}</span>
-							</template>
-						</el-table-column>
-						<el-table-column prop="childenTotal" label="Price per person"  align="center">
-							<template slot-scope="scope">
-								<div v-show="scope.row.capacity">
-									<span>{{nowExchange.symbol}} {{returnFloat(scope.row.price/scope.row.capacity)}} {{nowExchange.code}}</span>
-								</div>
-							</template>
-						</el-table-column>
-					</el-table>
-					<div class="view" v-if="isShowTable" @click="showTable">View More</div>
+			</div>
+			<div class="notes" v-if="photoList.length>0" @click="showPhoto" id="photoList">
+				<h3>Pictures of our travelers</h3>
+				<div class="photoCover" v-lazy:background-image="photoList.length>0?photoList[0].url:''">
+					<div class="mask"></div>
+					<div class="cover">
+						<h4>Check out our customers' travel experiences with us!</h4>
+						<button>Have a look</button>
+					</div>
 				</div>
+
+			</div>
+			<div class="provide" v-if="picInfo.details.length>0" id="picDetails">
+				<h3>Price Details</h3>
+				<p class="childDiscount" v-if="picInfo.childDiscount">Children's price is {{nowExchange.symbol}} {{returnFloat(picInfo.childDiscount)}} {{nowExchange.code}} less than adults' price.</p>
+				<el-table :data="sixArr" stripe style="width: 100%">
+					<el-table-column prop="capacity" label="Number of people" align="center">
+						<template slot-scope="scope">
+							<span v-if="scope.row.capacity==1">1 person</span>
+							<span v-else>{{scope.row.capacity}} people</span>
+						</template>
+					</el-table-column>
+					<el-table-column prop="price" label="Total cost" align="center">
+						<template slot-scope="scope">
+							<span>{{nowExchange.symbol}} {{returnFloat(scope.row.price)}} {{nowExchange.code}}</span>
+						</template>
+					</el-table-column>
+					<el-table-column prop="childenTotal" label="Price per person" align="center">
+						<template slot-scope="scope">
+							<div v-show="scope.row.capacity">
+								<span>{{nowExchange.symbol}} {{returnFloat(scope.row.price/scope.row.capacity)}} {{nowExchange.code}}</span>
+							</div>
+						</template>
+					</el-table-column>
+				</el-table>
+				<div class="view" v-if="isShowTable" @click="showTable">View More</div>
+			</div>
 			<div class="provide" id="provide">
 				<h3>What's Included?</h3>
 				<ul v-if="itemsIncluded">
@@ -125,7 +137,7 @@
 				<p>{{picInfo.priceInstructions}}</p>
 			</div>
 			<div class="notes" v-if="picInfo.refundInstructions" id="CancellationPolicy">
-				<h3>Cancellation Policy</h3>
+				<h3>Rescheduling and Cancellation Policy</h3>
 				<p>{{picInfo.refundInstructions}}</p>
 			</div>
 			<div class="notes" id="notes">
@@ -165,37 +177,27 @@
 				</div>
 			</div>
 		</div>
-		<div class="book clearfix">
-			<div class="picinfo">
-				<p v-if="picInfo.originalPrice" class="oldpic">{{nowExchange.symbol}} {{returnFloat(picInfo.originalPrice)}}</p>
-				<p>From <b>{{nowExchange.symbol}} {{returnFloat(picInfo.bottomPrice)}}</b> pp</p>
-			</div>
-			
-			<button class="bookBtn" @click="goBooking">Book Now</button>
-			<div class="picRate">
-				<select class="currency_type" id="changeCurrency" @change="changeCurrency" v-model="defaultCurrency">
-					<option :value="item.code" v-for="item in exchange" :key="item.code">{{item.code}}</option>
-				</select>
-				<span class="iconfont">&#xe666;</span>
-			</div>
+		<div class="book">
+			<button><a href="/inquiry">Inquire</a></button>
+			<button class="bookBtn" @click="goBooking">Check Price</button>
+
 		</div>
 		<photo :photoList="photoList" :alertPicStatus="alertPicStatus" @alert-call-back="setCallBack"></photo>
 	</div>
-	
+
 </template>
 
 <script>
-
 	import bus from '~/assets/js/pages/bus.js'
 	import photo from '~/components/pageComponents/activity/details/mobile/photo'
-import { setTimeout } from 'timers';
+	import { setTimeout } from 'timers';
 	if(process.browser) {
 		const VueAwesomeSwiper = require('vue-awesome-swiper/dist/ssr')
 		bus.use(VueAwesomeSwiper)
 		require('swiper/dist/css/swiper.css')
 		require('~/assets/js/plugin/flexible.js')
 	}
-	
+
 	export default {
 		props: [
 			"remark",
@@ -221,37 +223,36 @@ import { setTimeout } from 'timers';
 				showbtn: 0,
 				swiperOption: {
 					lazy: true,
-					slidesPerView :"auto",
+					slidesPerView: "auto",
 					initialSlide: 0,
-					spaceBetween:17,
+					spaceBetween: 17,
 				},
 				sixArr: [],
 				isShowTable: false, //价格明细
 				alertPicStatus: false,
-				
-				defaultCurrency : 'USD',
-				nowExchange:{},//{'rate':1,'currency':'USD','symbol':'$'}
-				exchange:[]
-				
-		}
-	},
-	components: {
-		photo
-	},
+
+				defaultCurrency: 'USD',
+				nowExchange: {}, //{'rate':1,'currency':'USD','symbol':'$'}
+				exchange: []
+
+			}
+		},
+		components: {
+			photo
+		},
 		methods: {
-			changeCurrency(e){
+			changeCurrency(e) {
 				var self = this;
 				var value = e.target ? e.target.value : e;
 				var picInfo = this.picInfo;
 				var thisDetail = picInfo.details;
 
-				
 				//换算折扣价
 				var exchange = this.exchange;
-				for(var i=0;i<exchange.length;i++){
+				for(var i = 0; i < exchange.length; i++) {
 					var thisEx = exchange[i];
 					//检测当前货币类型
-					if(thisEx.code==value){
+					if(thisEx.code == value) {
 						//设置当前币种
 						this.nowExchange = thisEx;
 						//切换折扣价币种
@@ -259,31 +260,31 @@ import { setTimeout } from 'timers';
 						picInfo.symbol = thisEx.symbol;
 						picInfo.bottomPrice = picInfo.defaultPrice.bottomPrice * thisEx.exchangeRate;
 						picInfo.originalPrice = picInfo.defaultPrice.originalPrice * thisEx.exchangeRate;
-						if(picInfo.defaultPrice.childDiscount){
+						if(picInfo.defaultPrice.childDiscount) {
 							//之所以在这里加returnFloat，是为了让儿童优惠后的总价格，不会超过总价-儿童优惠价
 							picInfo.childDiscount = picInfo.defaultPrice.childDiscount * thisEx.exchangeRate;
 						}
 						//切换价格详情币种
-						for(var i=0;i<thisDetail.length;i++){
+						for(var i = 0; i < thisDetail.length; i++) {
 							thisDetail[i].price = thisDetail[i].defaultPrice * thisEx.exchangeRate;
 						}
 
 						//切换详情币种
 						var sixArr = this.sixArr;
-						for(var i=0;i<sixArr.length;i++){
+						for(var i = 0; i < sixArr.length; i++) {
 							//之所以在这里加returnFloat，是为了让儿童优惠后的总价格，不会超过总价-儿童优惠价
 							sixArr[i].price = sixArr[i].defaultPrice * thisEx.exchangeRate;
 						}
-						
+
 						break;
 					}
 				}
-				
-				if(this.people>0){
-					this.adultsPic = thisDetail[this.people-1].price;
+
+				if(this.people > 0) {
+					this.adultsPic = thisDetail[this.people - 1].price;
 				}
 			},
-			setPriceData(){
+			setPriceData() {
 				var picInfo = this.picInfo;
 				var thisDetail = picInfo.details;
 				//设置默认价格和折扣价
@@ -292,17 +293,17 @@ import { setTimeout } from 'timers';
 					originalPrice: picInfo.originalPrice
 				};
 				//儿童折扣
-				if(picInfo.childDiscount){
+				if(picInfo.childDiscount) {
 					picInfo.defaultPrice.childDiscount = picInfo.childDiscount;
 				}
 				//设置人数列表价格
-				for(var i=0; i<thisDetail.length; i++){
+				for(var i = 0; i < thisDetail.length; i++) {
 					var thisPrice = thisDetail[i].price;
 					thisDetail[i].defaultPrice = thisPrice;
 				}
 			},
-			goInqury(){
-				location.href="/inquiry?objectId="+this.id
+			goInqury() {
+				location.href = "/inquiry?objectId=" + this.id
 			},
 			showMore(id) {
 				if(id == 0) {
@@ -340,30 +341,30 @@ import { setTimeout } from 'timers';
 			},
 			showTable() {
 				this.isShowTable = false
-				this.sixArr=this.tableData(this.picInfo.details)
+				this.sixArr = this.tableData(this.picInfo.details)
 			},
-			goBooking(){
-				let objDetail={
-					id:this.id,
-					picInfo:this.picInfo,
-					title:this.detail.title,
-					category:this.detail.category,
-					refundTimeLimit:this.detail.refundTimeLimit
-					
+			goBooking() {
+				let objDetail = {
+					id: this.id,
+					picInfo: this.picInfo,
+					title: this.detail.title,
+					category: this.detail.category,
+					refundTimeLimit: this.detail.refundTimeLimit
+
 				}
-				objDetail=JSON.stringify(objDetail)
-				localStorage.setItem("objDetail",objDetail)
-				location.href="/activity/details/mobile/bookDetail"
+				objDetail = JSON.stringify(objDetail)
+				localStorage.setItem("objDetail", objDetail)
+				location.href = "/activity/details/mobile/bookDetail"
 			},
-			 returnFloat(value) {
-				value*=1;
+			returnFloat(value) {
+				value *= 1;
 				if(value) {
-					var numberArr = (''+value).split('.');
-					if(numberArr.length>1 && numberArr[1].length>2){
-						return (value+0.005).toFixed(2);
+					var numberArr = ('' + value).split('.');
+					if(numberArr.length > 1 && numberArr[1].length > 2) {
+						return(value + 0.005).toFixed(2);
 					}
 					return value.toFixed(2);
-				}else{
+				} else {
 					return 0;
 				}
 			},
@@ -376,7 +377,7 @@ import { setTimeout } from 'timers';
 				this.alertPicStatus = val
 			},
 			tableData(details) {
-				
+
 				var newObj = function(obj) {
 					var o = {};
 					for(var key in obj) {
@@ -388,15 +389,13 @@ import { setTimeout } from 'timers';
 				let newArr = [],
 					tableD = [];
 
-
-
-				if(details.length==1){
-					for(let i=0;i<details[0].capacity;i++){
-						var s=newObj(details[0]);
+				if(details.length == 1) {
+					for(let i = 0; i < details[0].capacity; i++) {
+						var s = newObj(details[0]);
 						newArr.push(s)
 					}
-					
-				}else{
+
+				} else {
 					for(let i = 0; i < details.length; i++) {
 						let thisD = details[i];
 						newArr.push(thisD);
@@ -406,20 +405,19 @@ import { setTimeout } from 'timers';
 						var nextC = details[i + 1].capacity;
 						var forLen = nextC - thisC - 1;
 						for(let j = 0; j < forLen; j++) {
-							var midArr = newObj(details[i+1]);
+							var midArr = newObj(details[i + 1]);
 							//console.log(midArr)
 							newArr.push(midArr);
 						}
 						//console.log(newArr)
 					}
 				}
-				
 
 				for(var k = 0; k < newArr.length; k++) {
 					newArr[k].capacity = k + 1;
 
 				}
-				
+
 				return newArr;
 			}
 		},
@@ -430,83 +428,80 @@ import { setTimeout } from 'timers';
 			}
 		},
 		mounted: function() {
-			
+
 			let that = this;
-			
+
 			//加载币种
-			that.axios.get("https://api.localpanda.com/api/public/currency/all/"+that.picInfo.currency).then(function(response) {
+			that.axios.get("https://api.localpanda.com/api/public/currency/all/" + that.picInfo.currency).then(function(response) {
 				// console.log(response);
-				if(response.status==200){
+				if(response.status == 200) {
 					that.exchange = response.data;
 					that.nowExchange = that.exchange[0];
 
 					//设置币种
 					var ua = window.navigator.userAgent.toLowerCase();
 					var isWx = (ua.match(/MicroMessenger/i) == 'micromessenger') ? true : false;
-					if(isWx){
+					if(isWx) {
 						that.defaultCurrency = 'CNY';
 						that.changeCurrency('CNY');
 					}
-					
+
 				}
 			}, function(response) {});
-			
+
 			//调整不同币种价格数据
 			that.setPriceData();
-			if(that.picInfo.childDiscount){
+			if(that.picInfo.childDiscount) {
 				that.picInfo.childDiscountDefault = that.picInfo.childDiscount;
 			}
 
 			//设置价格详情页，渲染数据
 			that.detailAll = that.tableData(that.picInfo.details);
-			if(that.tableData(that.picInfo.details).length>5){
-				that.isShowTable=true
-				that.sixArr=that.detailAll.concat().splice(0,6);
-			}else{
-				that.sixArr=that.detailAll;
+			if(that.tableData(that.picInfo.details).length > 5) {
+				that.isShowTable = true
+				that.sixArr = that.detailAll.concat().splice(0, 6);
+			} else {
+				that.sixArr = that.detailAll;
 			}
-
-
-
-			
 
 			//var ua = window.navigator.userAgent.toLowerCase();
 			//that.isWx = (ua.match(/MicroMessenger/i) == 'micromessenger') ? true : false;
 		},
-		watch:{
-			
+		watch: {
+
 		}
 	}
 </script>
 <style lang="scss">
-.el-table__row .cell {
+	.el-table__row .cell {
 		line-height: 0.56rem!important;
-		word-wrap:break-word!important;
-		
+		word-wrap: break-word!important;
 		span {
 			font-size: 0.32rem;
 			color: #353a3f;
-			
 		}
 	}
-	.el-table th{
-		word-wrap:break-word!important;
+	
+	.el-table th {
+		word-wrap: break-word!important;
 	}
-	.el-table thead tr th{
-		word-wrap:break-word!important;
-		
+	
+	.el-table thead tr th {
+		word-wrap: break-word!important;
 	}
-	.el-table__header tr th .cell{
+	
+	.el-table__header tr th .cell {
 		padding: 0 10px;
 	}
+	
 	.el-table th>.cell {
 		font-size: 0.32rem;
 		font-weight: bold;
 		color: #353a3f;
-		word-wrap:break-word!important;
+		word-wrap: break-word!important;
 		padding: 0!important;
-		
 	}
+	
 	.el-table {
 		margin-top: 0.4rem;
 	}
@@ -522,9 +517,9 @@ import { setTimeout } from 'timers';
 	}
 	
 	.el-table th,
-	 .el-table td {
-	 	padding:0.146666rem 0;
-	 }
+	.el-table td {
+		padding: 0.146666rem 0;
+	}
 	
 	.el-table tr:hover {
 		background: #fff;
@@ -543,6 +538,56 @@ import { setTimeout } from 'timers';
 
 <style lang="scss" scoped>
 	@import "~/assets/font/iconfont.css";
+	.price {
+		text-align: right;
+	.picinfo {
+			display: inline-block;
+			
+			p {
+				font-size: 0.373333rem;
+				color: #878e95;
+				b {
+					font-size: 0.613333rem;
+					color: #353a3f;
+				}
+				span.oldpic {
+					text-decoration: line-through;
+				}
+			}
+		}
+		.picRate {
+			display: inline-block;
+			color: #fff;
+			position: relative;
+			opacity: 0.5;
+			margin-right: 0.2rem;
+			span {
+				font-size: 10px;
+			}
+			.iconfont {
+				float: right;
+				margin-top: 0.6rem;
+				height: 0.8rem;
+				line-height: 0.8rem;
+				text-align: center;
+				font-size: 22px;
+				color: #666;
+			}
+			.currency_type {
+				background: none;
+				color: #666;
+				border: none;
+				height: 0.8rem;
+				padding: 0 0 0 0.2rem;
+				font-size: 0.34rem;
+				margin-top: 0.6rem;
+				-webkit-appearance: none;
+				-moz-appearance: none;
+				appearance: none;
+			}
+		}
+	}
+	
 	.m-details {
 		padding: 0 0.573333rem 2rem;
 		.m-details-cont {
@@ -558,7 +603,7 @@ import { setTimeout } from 'timers';
 					font-weight: bold;
 				}
 				.types {
-					margin: 0.266666rem 0 0.36rem;
+					margin-top: 0.266666rem;
 					font-size: 0.346666rem;
 					span {
 						font-size: 0.346666rem;
@@ -586,20 +631,17 @@ import { setTimeout } from 'timers';
 				ul {
 					li {
 						margin-top: 0.48rem;
-						
 						label {
 							margin-top: 0.04rem;
 							float: left;
 							font-size: 0.373333rem;
-							
 						}
 						span {
 							display: inline-block;
 							margin-left: 0.24rem;
 							font-size: 0.346666rem;
-							float:left;
+							float: left;
 							width: 90%;
-						
 						}
 					}
 				}
@@ -641,8 +683,6 @@ import { setTimeout } from 'timers';
 						font-weight: bold;
 					}
 					.introduction {
-						
-					
 						margin-top: 0.64rem;
 						p {
 							font-size: 0.346666rem;
@@ -690,7 +730,7 @@ import { setTimeout } from 'timers';
 					font-size: 0.4rem;
 					font-weight: bold;
 				}
-				.childDiscount{
+				.childDiscount {
 					margin-top: 0.266666rem;
 					font-size: 0.32rem;
 				}
@@ -724,16 +764,16 @@ import { setTimeout } from 'timers';
 					}
 				}
 			}
-			.inqury{
+			.inqury {
 				border-bottom: 1px solid #dde0e0;
 				height: 1.706666rem;
 				line-height: 1.706666rem;
-				font-size:0.346666rem;
+				font-size: 0.346666rem;
 				font-weight: bold;
 				color: #1bbc9d;
 				position: relative;
-				i{
-					position: absolute;	
+				i {
+					position: absolute;
 					right: 0;
 					font-size: 0.346666rem;
 					color: #dde0e0;
@@ -752,42 +792,42 @@ import { setTimeout } from 'timers';
 					line-height: 0.48rem;
 				}
 				.photoCover {
-						margin-top: 0.4rem;
-						cursor: pointer;
-						height: 3.6rem;
-						background-repeat: no-repeat!important;
-						background-size: cover!important;
-						background-position: center;
+					margin-top: 0.4rem;
+					cursor: pointer;
+					height: 3.6rem;
+					background-repeat: no-repeat!important;
+					background-size: cover!important;
+					background-position: center;
+					position: relative;
+					.mask {
+						position: absolute;
+						left: 0;
+						top: 0;
+						width: 8.24rem;
+						height: 100%;
+						background: linear-gradient( to right, rgba(255, 249, 248, 1) 40%, rgba(255, 249, 248, 0));
+					}
+					.cover {
+						padding: 0.613333rem 0 0 0.4rem;
 						position: relative;
-						.mask {
-							position: absolute;
-							left: 0;
-							top: 0;
-							width: 8.24rem;
-							height: 100%;
-							background: linear-gradient( to right, rgba(255, 249, 248,1) 40%, rgba(255, 249, 248, 0) );
+						h4 {
+							font-size: 0.346666rem;
+							width: 4.866666rem;
 						}
-						.cover {
-							padding: 0.613333rem 0 0 0.4rem;
-							position: relative;
-							h4 {
-								font-size: 0.346666rem;
-								width: 4.866666rem;
-							}
-							button {
-								height: 1.12rem;
-								width: 4.266666rem;
-								line-height: 1.12rem;
-								text-align: center;
-								border-radius: 0.56rem;
-								background: #fff;
-								box-shadow: 0px 0.026666rem 0.266666rem 0px rgba(0, 0, 0, 0.1);
-								margin-top: 0.426666rem;
-								font-size: 0.346666rem;
-								font-weight: bold;
-							}
+						button {
+							height: 1.12rem;
+							width: 4.266666rem;
+							line-height: 1.12rem;
+							text-align: center;
+							border-radius: 0.56rem;
+							background: #fff;
+							box-shadow: 0px 0.026666rem 0.266666rem 0px rgba(0, 0, 0, 0.1);
+							margin-top: 0.426666rem;
+							font-size: 0.346666rem;
+							font-weight: bold;
 						}
 					}
+				}
 			}
 			.recommend {
 				margin-top: 0.626666rem;
@@ -840,10 +880,10 @@ import { setTimeout } from 'timers';
 								}
 								.activity-cont-type {
 									float: left;
-									font-size:  0.293333rem;
+									font-size: 0.293333rem;
 									color: #d87b65;
 									i {
-										font-size:  0.24rem;
+										font-size: 0.24rem;
 										color: #d87b65;
 										margin-right: 0.173333rem;
 									}
@@ -903,88 +943,52 @@ import { setTimeout } from 'timers';
 					}
 				}
 			}
-			
 		}
-		.book{
-				width:100%;
-				box-sizing:border-box;
-				position: fixed;
-				height: 1.946666rem;
-				padding:0 0.4rem;
-				bottom: 0;
-				left: 0;
-				z-index: 9999;
-				background: #fff;
-				border-top:1px solid #dde0e0; 
-				
-				.picinfo{
-					float:left;
-					margin-top:0.626666rem;
-					p{
-						font-size:0.373333rem;
-						color: #878e95;
-						b{
-							font-size:0.426666rem;
-							color: #353a3f;
-						}
-						&.oldpic{
-							text-decoration: line-through;
-						}
-					}
-					
-					
-				}
-				.picRate {
-					float: right;
-					color: #fff;
-					position: relative;
-					opacity: 0.5;
-					margin-right: 0.2rem;
-					span {
-						font-size: 10px;
-					}
-					.iconfont{
-						float: right;
-						margin-top: 0.6rem;
-						height: 0.8rem;
-						line-height: 0.8rem;
-						text-align:center;
-						font-size:22px;
-						color:#666;
-					}
-					.currency_type{
-						background: none;
-						color:#666;
-						border:none;
-						height: 0.8rem;
-						padding: 0 0 0 0.2rem;
-						font-size:0.34rem;
-						margin-top: 0.6rem;
-						
-						-webkit-appearance: none;
-						-moz-appearance: none;
-						appearance: none;
-					}
-				}
-				.bookBtn{
-					float: right;
-					width: 3.6rem;
-					height: 1.2rem;
-					line-height:1.2rem;
-					text-align: center;
-					color: #FFF;
-					font-weight: bold;
+		.book {
+			width: 100%;
+			box-sizing: border-box;
+			position: fixed;
+			height: 1.946666rem;
+			padding: 0 0.4rem;
+			bottom: 0;
+			left: 0;
+			z-index: 9999;
+			background: #fff;
+			border-top: 1px solid #dde0e0;
+			display: flex;
+			button{
+				flex: 1;
+				margin-right: 0.373333rem;
+				width: 3.6rem;
+				height: 1.2rem;
+				line-height: 1.2rem;
+				text-align: center;
+				color: #FFF;
+				font-weight: bold;
+				border-radius: 0.6rem;
+				margin-top: 0.373333rem;
+				font-size: 0.48rem;
+				&:last-child{
+					margin-right: 0;
 					background-image: linear-gradient(270deg, #009efd 0%, #1bbc9d 100%);
-					border-radius: 0.6rem;
-					margin-top: 0.373333rem;
-					font-size: 0.48rem;
 				}
+				&:first-child{
+					border: solid 0.026666rem #1bbc9d;
+					background: #fff;
+					a{
+						display: block;
+						color: #1bbc9d;
+						font-size:0.48rem;
+					}
+				}
+				
 			}
-			.view{
-				margin-top: 0.266666rem;
-				color:#1bbc9d;
-				font-size: 0.346666rem;
-			}
+		}
+		.view {
+			margin-top: 0.266666rem;
+			color: #1bbc9d;
+			font-size: 0.346666rem;
+		}
 		.show {
 			overflow: inherit!important;
 			height: auto!important;

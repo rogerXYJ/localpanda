@@ -25,7 +25,7 @@
 					<a href="#PriceNote">Price Note</a>
 				</li>
 				<li v-if="picInfo.refundInstructions">
-					<a href="#CancellationPolicy">Cancellation Policy</a>
+					<a href="#CancellationPolicy">Rescheduling / Cancellation</a>
 				</li>
 				<li>
 					<a href="#notes">Notes</a>

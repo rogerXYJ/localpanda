@@ -556,12 +556,14 @@
 			this.goBackFn()
 
 			var self = this;
+			//设置默认币种
+			self.nowExchange = {symbol:self.opctions.symbol,currency:self.opctions.currency};
 			//加载币种
+			console.log(this.opctions);
 			self.axios.get("https://api.localpanda.com/api/public/currency/all/USD").then(function(response) {
 				// console.log(response);
 				if(response.status==200){
 					self.exchange = response.data;
-					self.nowExchange = self.exchange[0]
 				}
 			}, function(response) {});
 

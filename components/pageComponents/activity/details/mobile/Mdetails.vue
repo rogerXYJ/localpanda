@@ -106,6 +106,7 @@
 					</el-table-column>
 				</el-table>
 				<div class="view" v-if="isShowTable" @click="showTable">View More</div>
+				<p v-if="picInfo.priceInstructions" class="picNote">{{picInfo.priceInstructions}}</p>
 			</div>
 			<div class="provide" id="provide">
 				<h3>What's Included?</h3>
@@ -132,10 +133,10 @@
 				<h3>Additional Info</h3>
 				<p v-for="(item,index) in notice" :key="index">{{item}}</p>
 			</div>
-			<div class="notes" v-if="picInfo.priceInstructions" id="PriceNote">
+			<!--<div class="notes" v-if="picInfo.priceInstructions" id="PriceNote">
 				<h3>Price Note</h3>
-				<p>{{picInfo.priceInstructions}}</p>
-			</div>
+				
+			</div>-->
 			<div class="notes" v-if="picInfo.refundInstructions" id="CancellationPolicy">
 				<h3>Rescheduling and Cancellation Policy</h3>
 				<p>{{picInfo.refundInstructions}}</p>
@@ -178,7 +179,7 @@
 			</div>
 		</div>
 		<div class="book">
-			<button><a href="/inquiry">Inquire</a></button>
+			<button><a :href="'/inquiry?objectId='+id">Inquire</a></button>
 			<button class="bookBtn" @click="goBooking">Check Price</button>
 
 		</div>
@@ -733,6 +734,11 @@
 				.childDiscount {
 					margin-top: 0.266666rem;
 					font-size: 0.32rem;
+				}
+				.picNote{
+					margin-top:0.266666rem;
+					font-size:0.346666rem;
+					line-height: 0.48rem;
 				}
 				ul {
 					li {

@@ -125,6 +125,7 @@
 						</el-table-column>
 					</el-table>
 					<div class="view" v-if="isShowTable" @click="showTable">View More</div>
+					<p class="picNote" v-if="picInfo.priceInstructions">{{picInfo.priceInstructions}}</p>
 				</div>
 				<div class="provide" id="provide">
 					<h3>What's Included?</h3>
@@ -151,12 +152,12 @@
 					<h3>Additional Info</h3>
 					<p v-for="(item,index) in notice" :key="index">{{item}}</p>
 				</div>
-				<div class="notes" v-if="picInfo.priceInstructions" id="PriceNote">
+				<!--<div class="notes"  id="PriceNote">
 					<h3>Price Note</h3>
-					<p>{{picInfo.priceInstructions}}</p>
-				</div>
+					
+				</div>-->
 				<div class="notes" v-if="picInfo.refundInstructions" id="CancellationPolicy">
-					<h3>Cancellation Policy</h3>
+					<h3>Rescheduling and Cancellation Policy</h3>
 					<p>{{picInfo.refundInstructions}}</p>
 				</div>
 				<div class="notes" id="notes">
@@ -1564,6 +1565,10 @@
 					margin-top: 34px;
 					padding-bottom: 34px;
 					border-bottom: 1px solid #dde0e0;
+					.picNote{
+						font-size: 18px;
+						margin-top: 20px;
+					}
 					h3 {
 						font-size: 24px;
 						font-weight: bold;

@@ -371,10 +371,13 @@
 				onOpen : function(e){
 					let calendarContainer = this.calendarContainer.style;
 					let winW = document.documentElement.clientWidth;
+					let calendarContainerW=this.calendarContainer.clientWidth;
+					
+					
 					console.log(winW)
 					setTimeout(function(){
 						calendarContainer.top = parseInt(calendarContainer.top)-100+'px';
-						calendarContainer.left = (winW-parseInt(calendarContainer.width)-38)/2+'px';
+						calendarContainer.left = parseInt(winW-calendarContainerW)/2+'px';
 						// calendarContainer.transform = 'translateX(-50%)';
 						// calendarContainer.right = 'auto';
 					},0);
@@ -464,7 +467,6 @@
 	color: #878e95  
 	}
 	.dateTime {
-		
 		.flatpickr-input {
 			border: none!important;
 			padding-left: 0!important;

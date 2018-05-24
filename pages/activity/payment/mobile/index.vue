@@ -39,11 +39,21 @@
 					</div>
 				</div>
 				<div class="payment">
-					<div class="striptcard">
+					<div class="striptcard" v-if="opctions.currency == 'CNY'">
+						<i>
+							<svg class="icon" aria-hidden="true">
+							    <use xlink:href="#icon-wechat"></use>
+							</svg>
+						</i>
+						<span>Wechat</span>
+						<div class="selectCarType"></div>
+					</div>
+					<div class="striptcard" v-else>
 						<i class="iconfont">&#xe675;</i>
 						<span>Credit/Debit Card </span>
+						<div class="selectCarType"></div>
 					</div>
-					<div class="paymentCard">
+					<div class="paymentCard" v-if="opctions.currency != 'CNY'">
 						<div class="cardNub">
 							<label>CARD NUMBER</label>
 							<div class="cardNub_ clearfix">
@@ -54,7 +64,7 @@
 						</div>
 						<div class="row">
 							<div class="row-item">
-								<label>VALID TIL</label>
+								<label>VALID TILL</label>
 								<div id="card-expiry" class="field empty"></div>
 							</div>
 							<div class="row-item">
@@ -113,6 +123,7 @@
 		require('~/assets/js/plugin/flexible.js')
 		require('~/assets/js/pages/ga.js')
 		require('~/assets/js/plugin/l10n.js')
+		require('~/assets/font/iconfont.js')
 	}
 	import { GetQueryString } from '~/assets/js/plugin/utils.js'
 	import api from '~/assets/js/plugin/api.js'
@@ -677,6 +688,12 @@
 </style>
 <style lang="scss" scoped>
 	@import "~assets/scss/base/_setting.scss";
+	 .icon {
+       width: 1em; height: 1em;
+       vertical-align: -0.15em;
+       fill: currentColor;
+       overflow: hidden;
+    }
 	.payNow {
 		.oderdetial {
 			padding: 0 0 1.946666rem;
@@ -740,16 +757,28 @@
 						height: 1.733333rem;
 						line-height: 1.733333rem;
 						border-bottom: 0.026666rem solid #ebebeb;
+						position: relative;
 						i {
 							font-size: 0.973333rem;
 							color: #dde0e0;
 							vertical-align: middle;
+							
 						}
 						span {
 							font-size: 0.48rem;
 							display: inline-block;
 							margin-left: 0.4rem;
 							vertical-align: middle;
+						}
+						.selectCarType{
+							width: 0.186666rem;
+							height: 0.186666rem;
+							border-radius: 50%;
+							border: 0.16rem solid #1bbc9d;
+							position: absolute;
+							right: 0;
+							top: 50%;
+							transform: translateY(-50%);
 						}
 					}
 					.paymentCard {

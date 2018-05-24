@@ -191,17 +191,7 @@ on a 1-1 basis.</p>
 				maxDate: addmulMonth(GetDateStr(1), 12),
 				disableMobile: true,
 				onOpen : function(selectedDates, dateStr, instance){
-					let calendarContainer = this.calendarContainer.style;
-					let winW = document.documentElement.clientWidth;
-					let winH=document.documentElement.clientHeight;
-					let calendarContainerClientHeight=this.calendarContainer.clientHeight
 					
-					setTimeout(function(){
-				
-						calendarContainer.top = parseInt(winH-calendarContainerClientHeight)/2 +'px';
-						
-						calendarContainer.left = (winW-parseInt(calendarContainer.width)-38)/2+'px';
-					},0);
 					that.showWinBg = true;
 				},
 				onChange(){
@@ -251,6 +241,7 @@ on a 1-1 basis.</p>
     			this.isshowchoose = false
     			document.getElementsByTagName("html")[0].style.overflow="hidden"
     		}else{
+    			
     			document.getElementsByTagName("html")[0].style.overflow="inherit"
     		}
     	}
@@ -277,7 +268,19 @@ on a 1-1 basis.</p>
 	 /* Internet Explorer 10+ */   
 	color: #878e95  
 	}
+	.flatpickr-calendar{
+			position: fixed!important;
+			min-width: 346px;
+			min-height: 316px;
+			left: 50%!important;
+			top: 50%!important;
+			transform: translate(-50%,-50%);
+		}
+		.flatpickr-calendar.animate.open{
+			animation:all 0ms cubic-bezier(.23,1,.32,1)!important
+		}
 	.inputItem {
+		
 		.flatpickr-input {
 			width:calc(100% - 0.24rem)!important;
 			height: 1.146666rem;

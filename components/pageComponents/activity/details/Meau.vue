@@ -5,11 +5,11 @@
 					<li @click="goAnchor('journey')">What to Expect</li>
 					<li v-if="photoList.length>0" @click="goAnchor('photoList')">Moments in Travel</li>
 					<li v-if="picInfo.details.length>0" @click="goAnchor('picDetails')">Price Details</li>
-					<li @click="goAnchor('provide')">What's Included</li>
-					<li v-if="exclusions" @click="goAnchor('exclusions')">Exclusions</li>
+					<li @click="goAnchor('provide')">Inclusions & Exclusions</li>
+					<!--<li v-if="exclusions" @click="goAnchor('exclusions')">Exclusions</li>-->
 					<li v-if="notice.length>0" @click="goAnchor('notice')">Additional Info</li>
-					<li v-if="picInfo.priceInstructions" @click="goAnchor('PriceNote')">Price Note</li>
-					<li v-if="picInfo.refundInstructions" @click="goAnchor('CancellationPolicy')">Cancellation Policy</li>
+					<!--<li v-if="picInfo.priceInstructions" @click="goAnchor('PriceNote')">Price Note</li>-->
+					<li v-if="picInfo.refundInstructions" @click="goAnchor('CancellationPolicy')">Rescheduling / Cancellation</li>
 					<li @click="goAnchor('notes')">Notes</li>
 					<li v-if="recommed.length>0"@click="goAnchor('recommend')">Similar Experiences</li>
 				</ul>

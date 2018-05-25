@@ -26,7 +26,7 @@
 					<li>
 						<h3>NEED HELP</h3>
 						<div class="need-help">
-							<!-- <a href="javascript:;" @click="showInquiry">Inquiry</a> -->
+							<a href="/info/service-terms">service-terms</a>
 							<a class="run_stop">Legal</a>
 							<a class="run_stop">Terms of Use</a>
 							<a class="run_stop">Privacy Policy</a>

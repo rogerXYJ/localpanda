@@ -35,7 +35,8 @@
 
 <script>
 	if (process.browser) {
-	  require('~/assets/js/pages/talk.js')
+	  require('~/assets/js/pages/talk.js');
+	 require('~/assets/js/plugin/flexible.js')
 	}
 	import footMobile from "~/components/footMobile"
 export default {
@@ -99,33 +100,26 @@ export default {
 <style lang="scss">
 	@import '~assets/scss/_main.scss';
 	@import '~/assets/font/iconfont.css';
-
-  html{
-    font-size: 50px;
-  }
-  body{ 
-    font-size: 0.24rem;
-  }
   .pay_result{
-    padding: 0.4rem 0.44rem;
+    padding: 0.533333rem 0.586666rem;
     h4{ 
-      font-size: 0.6rem;
+      font-size:0.8rem;
       font-weight: bold;
-      margin-bottom: 0.9rem;
+      margin-bottom: 1.2rem;
     }
     .pay_tip{
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.666666rem;
       .iconfont{
-        font-size: 0.2rem;
+        font-size: 0.266666rem;
         color: #fff;
         display: inline-block;
-        width: 0.44rem;
-        height: 0.44rem;
-        line-height: 0.44rem;
+        width:0.586666rem;
+        height: 0.586666rem;
+        line-height: 0.586666rem;
         text-align: center;
         border-radius: 50%;
         vertical-align: top;
-        margin-right: 0.2rem;
+        margin-right:0.266666rem;
       }
       .icon_success{
         background-color: #1bbc9d;
@@ -135,25 +129,25 @@ export default {
       }
       .tip_text{ 
         color: #353a3f;
-        font-size: 0.34rem;
-        line-height: 0.44rem;
+        font-size: 0.453333rem;
+        line-height: 0.586666rem;
         font-weight: bold;
       }
     }
 
     .order_info{
-      font-size: 0.28rem;
+      font-size: 0.373333rem;
       color: #353a3f;
-      line-height: 0.46rem;
+      line-height: 0.613333rem;
       span{
         color: #1bbc9d;
       }
     }
     .order_contact{
       color: #878e95;
-      font-size: 0.22rem;
-      margin-top: 0.5rem;
-      line-height: 0.36rem;
+      font-size:0.293333rem;
+      margin-top: 0.666666rem;
+      line-height:0.48rem;
     }
     .c_666{
       color: #666;
@@ -162,23 +156,23 @@ export default {
 		
 		position: fixed; 
 		left: 0;
-		padding:0.3rem 6%;
+		padding:0.4rem 6%;
 		width: calc(100% - 12%);
 		background: #FFF;
 		bottom: 0;
-		line-height: 2rem;
+		line-height: 2.666666rem;
 		z-index: 2;
 	}
     .btn_href{
     	
       width: 100%;
       display: block;
-      height: 0.9rem;
-      line-height: 0.9rem;
+      height: 1.2rem;
+      line-height: 1.2rem;
       text-align: center;
       color: #fff;
-      font-size: 0.28rem;
-      border-radius:0.45rem;
+      font-size: 0.373333rem;
+      border-radius:0.6rem;
       background: -webkit-linear-gradient(left, #1bbc9d , #009efc); /* Safari 5.1 - 6.0 */
       background: linear-gradient(to right, #1bbc9d , #009efc); /* 标准的语法 */
     }

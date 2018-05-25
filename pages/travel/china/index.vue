@@ -320,7 +320,7 @@
 				</div>
 			</div>
 		</div>
-		
+		<Foot></Foot>
 		<FooterCommon></FooterCommon>
 	</div>
 </template>
@@ -329,6 +329,7 @@
 	import Vue from 'vue'
 	import HeaderCommon from '~/components/HeaderCommon/HeaderCommon';
 	import FooterCommon from '~/components/FooterCommon/FooterCommon';
+	import Foot from '~/components/FooterCommon/Foot';
 	import ChinaTour from '~/components/pageComponents/travel/chinaTour';
 	//import Foot from '~/components/FooterCommon/Foot';
 	
@@ -1116,7 +1117,7 @@
 		components: {
 			HeaderCommon,
 			FooterCommon,
-			//Foot
+			Foot,
 			ChinaTour
 		},
 		head(){

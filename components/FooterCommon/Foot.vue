@@ -2,7 +2,7 @@
 	<div id="footercommon">
 		<div class="footInfo">
 			<div class="footLeft">
-				<h3>Message</h3>
+				<h3>Get in touch with us</h3>
 				<p>If you have any questions, suggestions, or just want to chat, feel free to contact us using the boxes below. We'll get back to you within 1 business day.</p>
 				<div class="inpt">
 					<input type="" name="" class="name"  :class="{borderflase:nameError}" @focus="nameF" value="" placeholder="Name" v-model="name" />
@@ -14,9 +14,8 @@
 				<button class="btnlinner" @click="submit">SUBMIT</button>
 			</div>
 			<div class="footRight">
-				<h3>More Info</h3>
-				<p>We provide private tours specifically for you! </p>
-				<p class="no-margin">Contact our guides today with your questions.</p>
+				<h3>Reach out</h3>
+				<p>We provide private tours specifically for you! Contact our guides today with your questions.</p>
 				<div class="emaillog">
 					<div>
 						<i class="iconfont" style="font-size: 17px;">&#xe649;</i>Contact
@@ -33,60 +32,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="footCooperation">
-			<div class="footCooperationInfo">
-				<div class="footCooperationL">
-					<span class="iconfont">&#xe621;</span>
-					<div class="logtext">
-						<p>© Local Panda 2017</p>
-						<p>All Rights Reserved</p>
-					</div>
-				</div>
-				<div class="footCooperationR">
-					 <a href="https://www.facebook.com/LocalPandaGuides/?fref=ts">
-					 	<svg class="icon" aria-hidden="true">
-						    <use xlink:href="#icon-facebook"></use>
-						</svg>
-					 </a>
-					 <a href="https://twitter.com/LocalPandaGuide">
-					 	<svg class="icon" aria-hidden="true">
-						    <use xlink:href="#icon-twitter1"></use>
-						</svg>
-					 </a>
-					 <a href="https://www.instagram.com/localpandaguides/">
-					 	<svg class="icon" aria-hidden="true">
-						    <use xlink:href="#icon-instagram"></use>
-						</svg>
-					 </a>
-					 
-					 <span style="margin-left: 20px;">
-					 	<svg class="icon1" aria-hidden="true">
-						    <use xlink:href="#icon-mastercard"></use>
-						</svg>
-					 </span>
-					 <span>
-					 	<svg class="icon1" aria-hidden="true">
-						    <use xlink:href="#icon-americanexpress"></use>
-						</svg>
-					 </span>
-					 <span>
-					 	<svg class="icon1" aria-hidden="true">
-						    <use xlink:href="#icon-paypal"></use>
-						</svg>
-					 </span>
-					 <span>
-					 	<svg class="icon1" aria-hidden="true">
-						    <use xlink:href="#icon-visa"></use>
-						</svg>
-					 </span>
-					<!-- <span class="footlog log1"></span>
-					<span class="footlog log4"></span>
-					<span class="footlog log3"></span>
-					<span class="footlog log2"></span>-->
-				</div>
-			</div>
-
-		</div>
+		
 		<Alert :isShowAlert="isShowAlert" :alertTitle="alertTitle" :alertMessage="alertMessage" v-on:setIsShowAlert="getIsShowAlert"></Alert>
 	</div>
 	
@@ -212,26 +158,12 @@
 </style>
 <style lang="scss" scoped>
 	#footercommon {
-		.icon {
-	       width: 26px; height: 26px;
-	       vertical-align:middle;
-	       fill: currentColor;
-	       margin:0px 14px 0 0;
-	       overflow: hidden;
-	    }
-	    .icon1{
-	    	width: 58px; height: 36px;
-	    	vertical-align: middle;
-	       fill: currentColor;
-	       overflow: hidden;
-	       border-radius: 5px;
-	       
-	    }
-		background: #faf9f8;
+		padding: 80px 0;
+		border-top: 1px solid #ebebeb;
+		background: #fff;
 		.footInfo {
 			margin: 0 auto;
 			width: 1170px;
-			padding: 60px 0;
 			overflow: auto;
 			.footLeft {
 				float: left;
@@ -240,9 +172,9 @@
 					font-size: 18px;
 					color: #353a3f;
 					font-weight: bold;
-					line-height: 30px;
-					padding-bottom: 12px;
-					border-bottom: 2px solid #e8e8e8;
+					
+					
+					
 				}
 				p {
 					margin: 30px 0;
@@ -259,12 +191,13 @@
 					-ms-flex-direction: row;
 					align-items: center;
 					input {
+						border:1px solid #ebebeb;
 						flex: 1;
 						-webkit-flex: 1;
 						-moz-box-flex: 1;
 						-ms-flex: 1;
 						margin-right: 17px;
-						border: none;
+						
 						height: 34px;
 						color: #353a3f;
 						font-size: 14px;
@@ -279,11 +212,12 @@
 					height: 141px;
 					width: 671px;
 					textarea {
+						border:1px solid #ebebeb;
 						width: calc(100% - 10px);
 						height: 131px;
 						padding-top: 10px;
 						padding-left: 10px;
-						border: none;
+						
 						resize:none;
 						font-size: 14px;
 					}
@@ -296,9 +230,8 @@
 					font-size: 18px;
 					color: #353a3f;
 					font-weight: bold;
-					line-height: 30px;
-					border-bottom: 2px solid #e8e8e8;
-					padding-bottom: 12px;
+					
+				
 				}
 				p {
 					width: 340px;
@@ -324,7 +257,7 @@
 				}
 			}
 		}
-		.footCooperation {
+		/*.footCooperation {
 			background: #353a3f;
 			height: 140px;
 			.footCooperationInfo {
@@ -363,7 +296,7 @@
 					
 					}
 				}
-			}
+			}*/
 		
 	}
 	.borderflase {

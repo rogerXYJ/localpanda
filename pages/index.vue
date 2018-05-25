@@ -7,6 +7,7 @@
         <Activities :activeList="initialState.activeList" ></Activities>
          <Guide :guidelist="initialState.guidelist" ></Guide> 
         <OurServices ></OurServices>
+      <Foot></Foot>
       <FooterCommon></FooterCommon>
         
     </div>
@@ -20,6 +21,7 @@ import MustGo from '~/components/pageComponents/index/MustGo';
 import Activities from '~/components/pageComponents/index/Activities';
 import Guide from "~/components/pageComponents/index/Guide";
 import OurServices from '~/components/pageComponents/index/OurServices';
+import Foot from '~/components/FooterCommon/Foot';
 import axios from 'axios';
 export default {
     async asyncData ({ route, store, error, env, apiBasePath}) {
@@ -57,7 +59,8 @@ export default {
         MustGo,
         Activities,
         Guide,
-        OurServices
+        OurServices,
+        Foot
     },
     head(){
     	let title="Local Panda | The China Travel Experts. "

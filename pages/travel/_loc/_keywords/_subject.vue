@@ -190,6 +190,7 @@
 			</div>
 		</div>
 		<services></services>
+		<Foot></Foot>
 		<FooterCommon></FooterCommon>
 		<themeMenu v-if="isMenu" :tags="tags" :loc="loc" :subject="subject" :keywords="keywords"></themeMenu>
 		
@@ -201,6 +202,7 @@
 	import Vue from "vue";
 	import HeaderCommon from '~/components/HeaderCommon/HeaderCommon'
 	import FooterCommon from '~/components/FooterCommon/FooterCommon';
+	import Foot from '~/components/FooterCommon/Foot';
 	import services from '~/components/pageComponents/landingPage/services'
 	import themeMenu from '~/components/pageComponents/landingPage/themeMenu'
 	import { delNullArr } from "~/assets/js/plugin/utils";
@@ -292,7 +294,8 @@
 			HeaderCommon,
 			FooterCommon,
 			services,
-			themeMenu
+			themeMenu,
+			Foot
 		},
 		methods: {
 			delNullArr(array) {

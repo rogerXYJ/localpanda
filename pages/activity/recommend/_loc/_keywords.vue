@@ -107,7 +107,7 @@
 				</div>
 			</div>
 		</div>
-		<!--<Bottom :scrollTop="300"></Bottom>-->
+		<Foot></Foot>
 		<FooterCommon></FooterCommon>
 	</div>
 
@@ -117,6 +117,7 @@
 	import Vue from "vue";
 	import HeaderCommon from '~/components/HeaderCommon/HeaderCommon'
 	import FooterCommon from '~/components/FooterCommon/FooterCommon';
+	import Foot from '~/components/FooterCommon/Foot';
 	/*import Bottom from '~/components/bottom/Bottom'*/
 	import bus from '~/assets/js/pages/bus.js'
 	if (process.browser) {
@@ -299,6 +300,7 @@
 		components: {
 			HeaderCommon,
 			FooterCommon,
+			Foot
 			//Bottom
 		},
 		methods: {

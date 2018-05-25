@@ -74,7 +74,7 @@
 <script>
 	if (process.BROWSER_BUILD) {
 	  require('~/assets/font/iconfont.js')
-	  //require('~/assets/js/plugin/flexble.js')
+	  
 	}
 	export default{
 		name:'footMobile',
@@ -135,8 +135,12 @@
 							},
 							{
 								text:"Privacy Policy",
-								url:"/info/service-terms"
 								
+								
+							},
+							{
+								text:'Service Terms',
+								url:"/info/service-terms"
 							}
 						],
 						show:false

@@ -171,6 +171,7 @@ import { fail } from 'assert';
     }
 		.footerAll{
 			border-top:#ebebeb solid 1px;
+			background: #fff;
 			#footer{
 				width: 1170px;
 				margin: 0 auto;

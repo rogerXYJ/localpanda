@@ -139,7 +139,7 @@
 			</div>-->
 			<div class="notes" v-if="picInfo.refundInstructions" id="CancellationPolicy">
 				<h3>Rescheduling and Cancellation Policy</h3>
-				<p>{{picInfo.refundInstructions}}</p>
+				<p v-html="picInfo.refundInstructions.replace(/\r\n/g,'<br/>')"></p>
 			</div>
 			<div class="notes" id="notes">
 				<h3>Notes</h3>
@@ -469,7 +469,7 @@
 			//that.isWx = (ua.match(/MicroMessenger/i) == 'micromessenger') ? true : false;
 		},
 		watch: {
-
+			
 		}
 	}
 </script>
@@ -590,7 +590,7 @@
 	}
 	
 	.m-details {
-		padding: 0 0.573333rem 2rem;
+		padding: 0 0.573333rem 0;
 		.m-details-cont {
 			margin-top: 0.64rem;
 			.toursType {

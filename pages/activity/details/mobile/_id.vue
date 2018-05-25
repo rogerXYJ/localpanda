@@ -19,6 +19,7 @@
 			:recommed="recommed"
 			:photoList="photoList"
 			></Mdetails>
+		<footMobile></footMobile>
 		<transition name="slideleft">
             <Mmeau v-show="isShowMeau" class="Mmeau" :notice="notice" :exclusions="exclusions" :picInfo="picInfo" :photoList="photoList" :id="id"></Mmeau>
         </transition>
@@ -42,7 +43,7 @@
 	import { delNullArr,getUrlParams } from "~/assets/js/plugin/utils";
 
 	import Vue from 'vue';
-
+	import footMobile from "~/components/footMobile"
 	export default {
 		name: "activitiesDetail",
 		async asyncData({
@@ -190,7 +191,8 @@
 			Mbanner,
 			Mdetails,
 			Mmeau,
-			Head
+			Head,
+			footMobile
 		},
 		methods: {
 			showMeau(){

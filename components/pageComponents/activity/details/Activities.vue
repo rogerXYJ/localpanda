@@ -158,7 +158,7 @@
 				</div>-->
 				<div class="notes" v-if="picInfo.refundInstructions" id="CancellationPolicy">
 					<h3>Rescheduling and Cancellation Policy</h3>
-					<p>{{picInfo.refundInstructions}}</p>
+					<p v-html="picInfo.refundInstructions.replace(/\r\n/g,'<br/>')"></p>
 				</div>
 				<div class="notes" id="notes">
 					<h3>Notes</h3>

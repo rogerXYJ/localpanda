@@ -57,6 +57,7 @@
 			<p>No activities or tours that match your interests are found.</p>
 			<p>You can try to modify your screening conditions.</p>
 		</div>
+		
 		<transition name="slideleft">
 			<Mfilter 
 				v-show="isshow" 
@@ -77,6 +78,8 @@
 			<span slot="no-more">You've reached the bottom of the page.</span>
 			<span slot="no-results" class="no-results"></span>
 		</infinite-loading>
+		<div class="inquireBtn"><a href="/feedback">Inquire</a></div>
+		<footMobile></footMobile>
 	</div>
 </template>
 <script>
@@ -88,6 +91,7 @@
 	import InfiniteLoading from 'vue-infinite-loading/src/components/Infiniteloading.vue'
 	import Mfilter from '~/components/pageComponents/activity/list/M-filter'
 	import Vue from 'vue'
+	import footMobile from "~/components/footMobile"
 	export default {
 		name: 'M-activityList',
 		async asyncData({
@@ -285,7 +289,8 @@
 		components: {
 			Mfilter,
 			Head,
-			InfiniteLoading
+			InfiniteLoading,
+			footMobile
 		},
 		methods: {
 			locationFn(loc){
@@ -599,6 +604,26 @@
 			padding: 0 0.586666rem;
 			word-wrap:break-word; 
 			
+		}
+		.inquireBtn{
+			width: 2.426666rem;
+			height: 1.146666rem;
+			background-image: linear-gradient(270deg, 
+			#009efd 0%, 
+			#1bbc9d 100%),;
+			position: fixed;
+			bottom: 0.533333rem;
+			right:0.533333rem;
+			line-height:1.146666rem;
+			text-align: center;
+			border-radius:0.573333rem;
+			a{
+				display: block;
+				font-size: 0.373333rem;
+				color: #fff;
+				font-weight: bold;
+				
+			}
 		}
 	}
 </style>

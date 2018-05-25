@@ -292,7 +292,7 @@
 											window.location.href = thisUrl;
 										}
 									}else{
-										window.location.href = "https://www.localpanda.com/activity/payment/mobile/?objectId=" + response.data.response + obj.currency + '&login='+loginState;
+										window.location.href = "https://www.localpanda.com/activity/payment/mobile/?objectId=" + response.data.response +"&currency="+ obj.currency + '&login='+loginState;
 									}
 									
 								}, function(response) {})
@@ -343,7 +343,7 @@
 									}
 									
 								}else{
-									window.location.href = "https://www.localpanda.com/activity/payment/mobile/?objectId=" + response.data.response + '&login='+loginState;
+									window.location.href = "https://www.localpanda.com/activity/payment/mobile/?objectId=" + response.data.response +"&currency="+obj.currency+'&login='+loginState;
 								}
 
 							}, function(response) {})

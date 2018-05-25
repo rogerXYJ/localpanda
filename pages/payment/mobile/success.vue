@@ -24,6 +24,8 @@
     <a class="btn_href" :href="getJumpUrl(logIn)" v-if="success && email">View My Order</a>
     <a class="btn_href" href="/" v-else-if="!email">Back to home</a>
     <a class="btn_href" :href="tryUrl" v-else>Try again</a>
+    <footMobile></footMobile>
+    
   </div>
 </template>
 
@@ -31,6 +33,7 @@
 	if (process.browser) {
 	  require('~/assets/js/pages/talk.js')
 	}
+	import footMobile from "~/components/footMobile"
 export default {
 
 		name: 'payResult',
@@ -53,7 +56,7 @@ export default {
 			}
 		},
 		components: {
-			
+			footMobile
 		},
 		methods: {
 			getJumpUrl(isLogin){

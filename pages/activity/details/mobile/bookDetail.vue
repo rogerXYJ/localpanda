@@ -369,15 +369,15 @@
 				maxDate: addmulMonth(this.picInfo.earliestBookDate, 12),
 				disableMobile: true,
 				onOpen : function(e){
-					let calendarContainer = this.calendarContainer.style;
-					let winW = document.documentElement.clientWidth;
-					console.log(winW)
-					setTimeout(function(){
-						calendarContainer.top = parseInt(calendarContainer.top)-100+'px';
-						calendarContainer.left = (winW-parseInt(calendarContainer.width)-38)/2+'px';
-						// calendarContainer.transform = 'translateX(-50%)';
-						// calendarContainer.right = 'auto';
-					},0);
+//					let calendarContainer = this.calendarContainer.style;
+//					let winW = document.documentElement.clientWidth;
+//					console.log(winW)
+//					setTimeout(function(){
+//						calendarContainer.top = parseInt(calendarContainer.top)-100+'px';
+//						calendarContainer.left = (winW-parseInt(calendarContainer.width)-38)/2+'px';
+//						// calendarContainer.transform = 'translateX(-50%)';
+//						// calendarContainer.right = 'auto';
+//					},0);
 					that.showWinBg = true;
 				},
 				onChange(){
@@ -439,6 +439,17 @@
 	@import "~/assets/scss/G-ui/flatpickr.min.css";
 	@import "~assets/scss/_main.scss";
 	@import "~/assets/font/iconfont.css";
+	.flatpickr-calendar{
+			position: fixed!important;
+			min-width: 346px;
+			min-height: 316px;
+			left: 50%!important;
+			top: 50%!important;
+			transform: translate(-50%,-50%);
+		}
+		.flatpickr-calendar.animate.open{
+			animation:all 0ms cubic-bezier(.23,1,.32,1)!important
+		}
 	.flatpickr-months .flatpickr-prev-month svg,
 	.flatpickr-months .flatpickr-next-month svg {
 		width: 20px!important;
@@ -588,7 +599,6 @@
 			}
 		}
 		.view {
-			
 			width: 100%;
 			transition: all .3s cubic-bezier(.55, 0, .1, 1);
 		}

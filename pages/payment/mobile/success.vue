@@ -1,4 +1,5 @@
 <template>
+	<div class="result">
   <div class="pay_result">
     <h4>Confirmation</h4>
     <div class="pay_tip" v-show="success">
@@ -20,12 +21,15 @@
 
     <p class="order_contact c_666" v-if="showTipTxt && success">You ordered as a guest. You can click this button to view your order details.</p>
     <p class="order_contact c_666" v-else-if="success">Click this button and view your order details.</p>
-
-    <a class="btn_href" :href="getJumpUrl(logIn)" v-if="success && email">View My Order</a>
-    <a class="btn_href" href="/" v-else-if="!email">Back to home</a>
-    <a class="btn_href" :href="tryUrl" v-else>Try again</a>
-    <footMobile></footMobile>
+	<div class="btn">
+		 <a class="btn_href" :href="getJumpUrl(logIn)" v-if="success && email">View My Order</a>
+	    <a class="btn_href" href="/" v-else-if="!email">Back to home</a>
+	    <a class="btn_href" :href="tryUrl" v-else>Try again</a>
+	</div>
+   
     
+    </div>
+    <footMobile></footMobile>
   </div>
 </template>
 
@@ -154,12 +158,20 @@ export default {
     .c_666{
       color: #666;
     }
-
+	.btn{
+		
+		position: fixed; 
+		left: 0;
+		padding:0.3rem 6%;
+		width: calc(100% - 12%);
+		background: #FFF;
+		bottom: 0;
+		line-height: 2rem;
+		z-index: 2;
+	}
     .btn_href{
-      width: 88%;
-      position: absolute; 
-      left: 6%;
-      bottom: 0.3rem;
+    	
+      width: 100%;
       display: block;
       height: 0.9rem;
       line-height: 0.9rem;

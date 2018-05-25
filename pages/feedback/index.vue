@@ -4,7 +4,7 @@
 		<div class="head">
 			<h3>Get in touch with us</h3>
 			<p>If you have any questions, suggestions, or just want to chat, feel free to contact us using the boxes below. We’ll 
-get back to you 12 hours. </p>
+get back to you within 1 day. </p>
 		</div>
 		<div class="fillin ">
 			<div class="inputItem">

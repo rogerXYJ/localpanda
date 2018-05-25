@@ -32,7 +32,7 @@
 								</svg>
 							</span>
 						</div>
-						<div class="item" v-for="(j,index) in i.cont"><a :href="j.url?j.url:''">{{j.text}}</a></div>
+						<div class="item" v-for="(j,index) in i.cont" v-else><a :class="j.url?'':'font-color'" :href="j.url?j.url:'javascript:;'" >{{j.text}}</a></div>
 					</div>
 				</li>
 			</ul>
@@ -135,6 +135,7 @@
 							},
 							{
 								text:"Privacy Policy",
+								url:"/info/service-terms"
 								
 							}
 						],
@@ -188,6 +189,9 @@
        fill: currentColor;
        
        overflow: hidden;
+    }
+    .font-color{
+    	color: #878E95;
     }
 	.footMobile{
 		margin-top: 1.066666rem;

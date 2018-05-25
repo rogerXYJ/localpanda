@@ -1171,7 +1171,7 @@
 										right: 10px;
 										font-size: 8px;
 										top: 50%;
-										margin-top: -15px;
+										transform: translateY(-50%);
 									}
 									.choose {
 										position: absolute;

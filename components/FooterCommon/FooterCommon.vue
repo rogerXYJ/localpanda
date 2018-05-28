@@ -269,6 +269,7 @@ import { fail } from 'assert';
 				}
 				.cooperation{
 					padding-top:44px;
+					overflow: hidden;
 					.cooperation-text{
 						.icon1{ float: left;}
 						em{

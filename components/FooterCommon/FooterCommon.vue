@@ -279,7 +279,7 @@ import { fail } from 'assert';
 						margin-top: 15px;
 						font-size: 16px;
 						display: inline-block;
-						a{ margin-left: 20px;}
+						a{ margin-left: 20px; font-size: 14px;}
 					}
 					.cooperationIcon{
 						float: right;

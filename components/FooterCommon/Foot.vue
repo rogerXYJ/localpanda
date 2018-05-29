@@ -15,7 +15,7 @@
 			</div>
 			<div class="footRight">
 				<h3>Reach out</h3>
-				<p>We provide private tours specifically for you! Contact our guides today with your questions.</p>
+				<p>We provide activities led by private guides, group tours and customized trips with authentic China expeirence for you! Contact our customer service with any questions you have.</p>
 				<div class="emaillog">
 					<div>
 						<i class="iconfont" style="font-size: 17px;">&#xe649;</i>Contact

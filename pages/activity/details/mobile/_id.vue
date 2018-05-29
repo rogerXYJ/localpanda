@@ -15,6 +15,7 @@
 			:detail="detail" 
 			:highlights="highlights" 
 			:destinations="destinations" 
+			:destination="destination"
 			:itemsIncluded="itemsIncluded" 
 			:recommed="recommed"
 			:photoList="photoList"

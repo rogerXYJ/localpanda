@@ -305,6 +305,9 @@
 		
 			sortFn(val){
 				let opctions=this.getUrlParam("opctions")?JSON.parse(this.getUrlParam("opctions")):JSON.parse(this.getUrlParam("options"))
+				if(opctions==null){
+					opctions={}
+				}
 				if(val == "Recommended") {
 					this.sort = {
 						type: "SCORE"
@@ -324,7 +327,7 @@
 				}
 					this.sort=JSON.stringify(this.sort)
 					
-					location.href = "/activity/list/mobile/" + this.loc + "?options=" + opctions  + (/SCORE/.test(this.sort)?"":"&sort=" + this.sort);
+					location.href = "/activity/list/mobile/" + this.loc + "?options=" + JSON.stringify(opctions)  + (/SCORE/.test(this.sort)?"":"&sort=" + this.sort);
 				
 				
 				

@@ -5,7 +5,7 @@
 			<div class="activitiyTitle">
 				<h3>{{detail.title}}</h3>
 				<div class="types">
-					<span v-for="i in detail.tourTypes">{{i}}</span>
+					<a :href="returnUrl(i)" v-for="i in detail.tourTypes">{{i}}</a>
 				</div>
 			</div>
 			<div class="price">
@@ -215,7 +215,9 @@
 			"inclusions",
 			"exclusions",
 			"notice",
-			"photoList"
+			"photoList",
+			"destination"
+			
 		],
 		name: 'm-details',
 		data() {
@@ -305,6 +307,16 @@
 			},
 			goInqury() {
 				location.href = "/inquiry?objectId=" + this.id
+			},
+			//内链
+			returnUrl(val){
+				val=val.replace(/&/g, 'And')
+				let options={
+					tourtype:[val]
+				}
+				
+				let url="/activity/list/mobile/"+this.destination+"?options="+JSON.stringify(options)
+				return url
 			},
 			showMore(id) {
 				if(id == 0) {
@@ -606,10 +618,13 @@
 				.types {
 					margin-top: 0.266666rem;
 					font-size: 0.346666rem;
-					span {
+					a {
 						font-size: 0.346666rem;
 						position: relative;
 						padding: 0 0.16rem;
+						display:inline-block;
+						color: #1bbc9d;
+						text-decoration:underline;
 						&:first-child {
 							padding-left: 0;
 						}
@@ -619,7 +634,7 @@
 								width: 0.053333rem;
 								height: 0.053333rem;
 								border-radius: 50%;
-								background: #353a3f;
+								background:#878e95;
 								position: absolute;
 								left: 0px;
 								top: 0.266666rem;

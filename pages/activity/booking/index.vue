@@ -31,6 +31,38 @@
 							<input :class="{err:phoneErr}" @focus="fousPhone" v-model="phone" />
 						</div>
 					</div>
+					<!--<div class="cont">
+						<div class="cont-item">
+							<p>First name<b>*</b></p>
+							<input :class="{err:oderFirstNameErr}" @focus="fousOderfisrtname" @blur="gabulr(0)" v-model="oderFirstName" />
+						</div>
+						<div class="cont-item">
+							<p>Last name<b>*</b></p>
+							<input :class="{err:oderlastNameErr}" @focus="fousoderlastName" @blur="gabulr(1)" v-model="oderlastName" />
+						</div>
+					</div>
+					<div class="emalAddress">
+						<p>Email Address<b>*</b></p>
+						<input :class="{err:emailAddressErr}" @focus="fousEmal" @blur="gabulr(2)" v-model="emailAddress" />
+					</div>
+					<div class="cont">
+						<div class="cont-item">
+							<p>Country Code</p>
+							<div class="code-box">
+								<input :class="{err:codeErr}" @focus="fousPhone" v-model="code" />
+								<div class="countryCode">
+									<ul>
+										<li v-for="item in 5">{{item}}</li>
+									</ul>
+								</div>
+							</div>
+							
+						</div>
+						<div class="cont-item">
+							<p>Mobile phone(optional)</p>
+							<input :class="{err:phoneErr}" @focus="fousPhone" v-model="phone" />
+						</div>
+					</div>-->
 					<span>Your voucher will be sent here, make sure it is correct</span>
 
 				</div>
@@ -170,7 +202,8 @@
 					childDiscountPP:0,//默认儿童优惠价
 					couponDiscount:0,
 					currency: '',
-					symbol: ''
+					symbol: '',
+					
 					
 				},
 				//订单联系人
@@ -182,6 +215,8 @@
 				emailAddressErr: false,
 				phone: '',
 				phoneErr: false,
+				code:'',
+				codeErr:'',
 
 				//出游联系人
 				TravellerFirstName: '',
@@ -585,6 +620,9 @@
 </style>
 <style lang="scss" scoped>
 	@import "~assets/scss/base/_setting.scss";
+	.code-box{
+		position: relative;
+	}
 	.fillYourInfo {
 		.fill {
 			width: 1170px;
@@ -739,11 +777,30 @@
 						font-size: 18px;
 						font-weight: bold;
 					}
+					/*.emalAddress{
+						margin-top: 25px;
+						width: 100%;
+						p {
+								font-size: 18px;
+								margin-bottom: 10px;
+								font-weight: bold;
+							}
+							input {
+								width: calc(100% - 22px);
+								height: 44px;
+								font-size: 18px;
+								border: 1px solid #dde0e0;
+								border-radius: 3px;
+								&:hover {
+									border-color: #1bbc9d;
+								}
+							}
+					}*/
 					.cont {
 						margin-top: 25px;
 						display: flex;
 						.emalAddress,
-						.phone {
+						.phone{
 							flex: 1;
 							p {
 								font-size: 18px;
@@ -758,6 +815,28 @@
 								border-radius: 3px;
 								&:hover {
 									border-color: #1bbc9d;
+								}
+							}
+							.countryCode{
+								position: absolute;
+								top: 52px;
+								left: 0;
+								width: calc(100% - 10px);
+								box-shadow: 0px 2px 10px 0px rgba(53, 58, 63, 0.2);
+								background: #fff;
+								z-index: 2;
+								ul{
+									li{
+										padding: 0 30px;
+										height: 50px;
+										line-height: 50px;
+										&:hover{
+											color: #fff;
+											height: 50px;
+											background-image: linear-gradient(-90deg,#009efd 0%,#1bbc9d 100%);
+										
+										}
+									}
 								}
 							}
 						}

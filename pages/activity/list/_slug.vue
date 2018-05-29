@@ -147,6 +147,7 @@
 				<a href="javascript:;" @click="showContact">Click here to start!</a>
 			</p>
 		</div>
+		<Foot></Foot>
 		<FooterCommon></FooterCommon>
 		<Loading :loadingStatus="loadingStatus"></Loading>
 		<!--<Bottom :scrollTop="600" :isListPage="isListPage"></Bottom>-->
@@ -165,6 +166,7 @@
 	//import Bottom from '~/components/bottom/Bottom'
 	import Contact from '~/components/Contact/Contact';
 	import Alert from '~/components/Prompt/Alert';
+	import Foot from '~/components/FooterCommon/Foot';
 	export default {
 		name: 'activityList',
 		async asyncData({
@@ -338,7 +340,7 @@
 						data.tourtype = listdata.data.aggregations[i].items
 					}
 				}
-				console.log(obj)
+				//console.log(obj)
 			} catch(err) {
 				//return error(JSON.stringify(err));
 			}
@@ -382,7 +384,8 @@
 			//Bottom,
 			Pagination,
 			Contact,
-			Alert
+			Alert,
+			Foot
 		},
 		methods: {
 			changeVal(value){

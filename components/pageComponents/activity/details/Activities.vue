@@ -20,7 +20,7 @@
 				<div class="activitiyTitle">
 					<h3>{{detail.title}}</h3>
 					<div class="types">
-						<span v-for="i in detail.tourTypes">{{i}}</span>
+						<a v-for="i in detail.tourTypes" :href="returnUrl(i)"><span >{{i}}</span></a>
 					</div>
 				</div>
 				<ul class="description clearfix">
@@ -625,6 +625,14 @@
 			// 	}
 
 			// },
+			returnUrl(val){
+				val=val.replace(/&/g, 'And')
+				let options={
+					tourtype:[val]
+				}
+				let url="/activity/list/"+this.destination+"?options="+JSON.stringify(options)
+				return url
+			},
 			returnFloat(value) {
 				value*=1;
 				if(value) {
@@ -1388,24 +1396,36 @@
 					}
 					.types {
 						margin: 29px 0 24px;
-						span {
-							font-size: 18px;
-							position: relative;
-							padding: 0 16px;
+						a {
+								
+								color: #1bbc9d;
+								text-decoration: underline;
+								font-size: 18px;
+								position: relative;
+								padding: 0 16px;
+								display:inline-block;
+							
 							&:first-child {
-								padding-left: 0;
+								
+									padding-left: 0;	
+								
+								
 							}
 							&:not(:first-child) {
-								&:after {
-									content: "";
-									width: 4px;
-									height: 4px;
-									border-radius: 50%;
-									background: #353a3f;
-									position: absolute;
-									left: 0px;
-									top: 9px;
-								}
+								
+									&:after {
+										content: "";
+										width: 4px;
+										height: 4px;
+										border-radius: 50%;
+										background:  #878e95;
+										position: absolute;
+										left: 0px;
+										top: 50%;
+										transform: translateY(-50%);
+									}
+								
+								
 							}
 						}
 					}

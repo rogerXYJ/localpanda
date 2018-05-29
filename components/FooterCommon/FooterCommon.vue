@@ -70,13 +70,13 @@
 					</li>
 				</ul>
 			</div>
-			<div class="cooperation ">
+			<div class="cooperation">
 				<svg class="icon1" aria-hidden="true">
 						<use xlink:href="#icon-logo_"></use>
 				</svg>
 				<span class="cooperation-text">
-					<em>© 2017–2018 Local Panda. Made in Shanghai,China</em>
-					<em><a href="http://www.miibeian.gov.cn">沪ICP备18014541号</a></em> 
+					<em>© 2017–2018 Local Panda. Made in Shanghai,China <a href="http://www.miibeian.gov.cn">沪ICP备18014541号</a></em>
+					<em></em> 
 				</span>
 				
 				
@@ -269,12 +269,17 @@ import { fail } from 'assert';
 				}
 				.cooperation{
 					padding-top:44px;
+					overflow: hidden;
 					.cooperation-text{
+						.icon1{ float: left;}
 						em{
 							display: block;
 						}
+						float: left;
+						margin-top: 15px;
 						font-size: 16px;
 						display: inline-block;
+						a{ margin-left: 20px; font-size: 14px;}
 					}
 					.cooperationIcon{
 						float: right;

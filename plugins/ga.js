@@ -10,6 +10,7 @@ export default ({ app }) => {
 
   //测试和线上key
   window.payCode = buildData.payCode ? buildData.payCode : 'pk_test_ymxnY3KoqRcjCEElfvFxPy1G';
+  console.log(payCode)
   //判断是否禁用ga
   if(!buildData.testGa){
     //防止ga报错，默认添加ga方法

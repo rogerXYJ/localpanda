@@ -1,50 +1,132 @@
 <template>
 	<div class="payNow">
 		<HeaderCommon :logIn="logIn"></HeaderCommon>
-		<div class="oderdetial">
-			<div class="link">
-				<a href="javascript:">1. Fill in your information</a>
-				<i class="iconfont">&#xe620;</i>
-				<a href="javascript:">2. confirmation</a>
+			
+		<div class="oderdetial clearfix">
+			<div class="select">
+				<div class="link">
+					<a href="javascript:">1. Fill in your information</a>
+					<i class="iconfont">&#xe620;</i>
+					<a href="javascript:">2. Select payment method</a>
+					<i class="iconfont">&#xe620;</i>
+					<a href="javascript:">3. confirmation</a>
+				</div>
+				<h3 class="oderDetailTitle">Select payment method</h3>
+				<div  class="selectCard">
+					<div class="wxPay">
+						<div class="icon">
+							<i></i>
+							Wechat
+						</div>
+						<div class="chartIcon">
+							<svg class="icon1" aria-hidden="true">
+									<use xlink:href="#icon-weixin"></use>
+							</svg>
+						</div>
+					</div>
+					<div class="stripePay">
+						<div class="icon">
+							<i></i>
+							Wechat
+						</div>
+						<div class="chartIcon">
+						<span>
+							<svg class="icon1" aria-hidden="true">
+									<use xlink:href="#icon-mastercard"></use>
+							</svg>
+						</span>
+						<span>
+							<svg class="icon" aria-hidden="true">
+									<use xlink:href="#icon-americanexpress"></use>
+							</svg>
+						</span>
+						<span>
+							<svg class="icon1" aria-hidden="true">
+									<use xlink:href="#icon-paypal"></use>
+							</svg>
+						</span>
+						<span>
+							<svg class="icon1" aria-hidden="true">
+									<use xlink:href="#icon-visa"></use>
+							</svg>
+						</span>
+						</div>
+					</div>
+				</div>
 			</div>
-		<div class="bookbtn">
+			
+			<!--<div class="bookbtn">
 				<p>Pay with:</p>
 				<div class="payfor">
 					<img style="width: 200px;" src="https://resource.localpanda.cn/static/icon/stripe.png" />
 				</div>
 				<div style="font-size: 16px;line-height: 20px;display: block; margin-top: 20px;"><b>Secure Payment:</b></br>We use Stripe's online payment system, which sends your payment info directly to Stripe's secure servers, so your data is never sent to Local Panda's servers and cannot be stolen.</div>
+			</div>-->
+			<div class="detailsbox">
+				<div class="payfordetail">
+					<div class="head clearfix">
+						<div class="serviceform">
+						<h3>{{opctions.activityInfo?opctions.activityInfo.title:''}}</h3>
+							<p v-if="opctions.adultNum==1&&opctions.childrenNum==0">1 Person</p>
+							<p v-else>{{opctions.adultNum+opctions.childrenNum}} People</p>
+						</div>
+					</div>
+					<div class="date">
+						<p>{{opctions.startDate}}</p>
+						<p v-if="opctions.startTime">{{opctions.startTime}}</p>
+					</div>
+					<div class="pic">
+						<div class="adult clearfix">
+							<div class="formula" v-if="opctions.childrenNum==0&&opctions.adultNum==1">{{opctions.symbol}}{{returnFloat(opctions.averagePrice)}} x 1 Person</div>
+							<div class="formula" v-else>{{opctions.symbol}} {{returnFloat(opctions.averagePrice)}} x {{opctions.adultNum+opctions.childrenNum}} People </div>
+							<div class="adultPic">{{opctions.symbol}} {{returnFloat(opctions.amount + (opctions.childDiscount?opctions.childDiscount:0) + (opctions.couponDiscount?opctions.couponDiscount:0))}}</div>
+						</div>
+						<div class="child" v-if="opctions.childDiscount">
+							<b>- {{opctions.symbol}}{{returnFloat(opctions.childDiscount)}}</b> for child(ren)
+						</div>
+						<div class="child" v-if="opctions.couponDiscount">
+							<b>-{{opctions.symbol}}{{returnFloat(opctions.couponDiscount)}}</b> for discount
+						</div>
+						
+					</div>
+					<div class="total clearfix">
+						<div class="totle-title">Total ({{opctions.currency}})</div>
+						<div class="totalPic">{{opctions.symbol}}{{returnFloat(opctions.amount)}}</div>
+					</div>
+				</div>
+				<div class="payWidth">
+					<h4>You can pay with:</h4>
+					<div class="payments">
+						<span>
+							<svg class="icon" aria-hidden="true">
+									<use xlink:href="#icon-mastercard"></use>
+							</svg>
+						</span>
+						<span>
+							<svg class="icon" aria-hidden="true">
+									<use xlink:href="#icon-americanexpress"></use>
+							</svg>
+						</span>
+						<span>
+							<svg class="icon" aria-hidden="true">
+									<use xlink:href="#icon-paypal"></use>
+							</svg>
+						</span>
+						<span>
+							<svg class="icon" aria-hidden="true">
+									<use xlink:href="#icon-visa"></use>
+							</svg>
+						</span>
+						<br>
+						<span class="footer_weixin">
+							<svg class="icon" aria-hidden="true">
+									<use xlink:href="#icon-weixin"></use>
+							</svg>
+						</span>
+					</div>
+				</div>
 			</div>
-			<div class="payfordetail">
-				<div class="head clearfix">
-					<div class="serviceform">
-					<h3>{{opctions.activityInfo?opctions.activityInfo.title:''}}</h3>
-						<p v-if="opctions.adultNum==1&&opctions.childrenNum==0">1 Person</p>
-						<p v-else>{{opctions.adultNum+opctions.childrenNum}} People</p>
-					</div>
-				</div>
-				<div class="date">
-					<p>{{opctions.startDate}}</p>
-					<p v-if="opctions.startTime">{{opctions.startTime}}</p>
-				</div>
-				<div class="pic">
-					<div class="adult clearfix">
-						<div class="formula" v-if="opctions.childrenNum==0&&opctions.adultNum==1">{{opctions.symbol}}{{returnFloat(opctions.averagePrice)}} x 1 Person</div>
-						<div class="formula" v-else>{{opctions.symbol}} {{returnFloat(opctions.averagePrice)}} x {{opctions.adultNum+opctions.childrenNum}} People </div>
-						<div class="adultPic">{{opctions.symbol}} {{returnFloat(opctions.amount + (opctions.childDiscount?opctions.childDiscount:0) + (opctions.couponDiscount?opctions.couponDiscount:0))}}</div>
-					</div>
-					<div class="child" v-if="opctions.childDiscount">
-						<b>- {{opctions.symbol}}{{returnFloat(opctions.childDiscount)}}</b> for child(ren)
-					</div>
-					<div class="child" v-if="opctions.couponDiscount">
-						<b>-{{opctions.symbol}}{{returnFloat(opctions.couponDiscount)}}</b> for discount
-					</div>
-					
-				</div>
-				<div class="total clearfix">
-					<div class="totle-title">Total ({{opctions.currency}})</div>
-					<div class="totalPic">{{opctions.symbol}}{{returnFloat(opctions.amount)}}</div>
-				</div>
-			</div>
+			
 			<p class="refundPolicy" style="margin-top: 30px; color: red;">You can get a 100% refund up to {{refundTimeLimit}} hours before your trip.</p>
 			<p style="width: 600px;margin-top: 20px; color: red;" v-if="logInHide">You ordered as a guest. To view your order details, you can click "My Bookings" on the top bar then type in the reservee's email address and name you entered before to access that information.</p>
 			<button class="btnlinner paybtn" @click="pay">Pay Now</button>
@@ -78,7 +160,7 @@
 	import HeaderCommon from '~/components/HeaderCommon/HeaderCommon'
 	import FooterCommon from '~/components/FooterCommon/FooterCommon';
 	import Loading from '~/components/Loading/Loading'
-	import api from '~/assets/js/plugin/api.js'
+//	import api from '~/assets/js/plugin/api.js'
 	//import QRCode from '~/assets/js/plugin/wx/qrcode.min.js'
 	import Vue from 'vue'
 import { create } from 'domain';
@@ -283,7 +365,7 @@ import { clearInterval, setTimeout } from 'timers';
 					amount: this.opctions.amount * 100,
 					objectType: 'ACTIVITY'
 				};
-				this.axios.post("/api/payment/pay/wechat", JSON.stringify(obj), {
+				this.axios.post("https://api.localpanda.com/api/payment/pay/wechat", JSON.stringify(obj), {
 					headers: {
 						'Content-Type': 'application/json; charset=UTF-8'
 					}
@@ -421,6 +503,21 @@ import { clearInterval, setTimeout } from 'timers';
 </style>
 <style lang="scss" scoped>
 	@import "~assets/scss/base/_setting.scss";
+	.icon {
+      width: 58px; height: 36px;
+		vertical-align: middle;
+	   fill: currentColor;
+	   overflow: hidden;
+	   border-radius: 5px;
+    }
+    .icon1 {
+      width: 38px; height: 23px;
+		vertical-align: middle;
+	   fill: currentColor;
+	   overflow: hidden;
+	   border-radius: 5px;
+    }
+
 	.payNow {
 		.oderdetial {
 			width: 1170px;
@@ -447,12 +544,16 @@ import { clearInterval, setTimeout } from 'timers';
 				font-size: 36px;
 				margin: 64px 0 44px;
 			}
+			.detailsbox{
+				float: right;
+				width: 376px;
+			}
 			.payfordetail {
 				margin-top: 10px;
 				box-shadow: 0px 2px 6px 0px rgba(53, 58, 63, 0.1);
 				background: #fff;
 				padding: 30px 30px 40px;
-				width: 316px;
+				
 				.head {
 					padding-bottom: 30px;
 					border-bottom: 1px solid #dde0e0;
@@ -511,7 +612,7 @@ import { clearInterval, setTimeout } from 'timers';
 					color: red;
 				}
 			}
-			.bookbtn {
+			/*.bookbtn {
 				width: 242px;
 				position: absolute;
 				top: 60px;
@@ -528,6 +629,35 @@ import { clearInterval, setTimeout } from 'timers';
 						width: 58px;
 						height: 36px;
 						margin-right: 10px;
+					}
+				}
+			}*/
+			.payWidth{
+				padding: 30px 0 30px 30px;
+				background-color: #faf9f8;
+				margin-top: 30px;
+				h4{
+					font-size: 18px;
+					font-weight: bold;
+				}
+				.payments{
+					margin-top: 20px;
+					span{
+						margin-right: 6px;
+						margin-bottom: 5px;
+						display: inline-block;
+					}
+					.footer_weixin{
+						background-color: #0eb20a;
+						width: 58px;
+						height: 36px;
+						display: inline-block;
+						border-radius: 5px;
+						text-align: center;
+						svg{
+							color: #fff;
+							width: 32px;
+						}
 					}
 				}
 			}

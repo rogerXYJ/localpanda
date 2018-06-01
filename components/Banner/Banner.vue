@@ -5,7 +5,7 @@
 	    <div class="swiper-wrapper">
 
 				<div class="swiper-slide">
-	        <a href="https://www.localpanda.com/travel/customize/step1">
+	        <a href="/travel/customize/step1">
 						<div class="imgBanner" :style="{background:'url(https://resource.localpanda.cn/static/homePage/banner3.jpg)'}">
 							<p class="banner_tit_s">With Local Panda</p>
 							<h3>BY YOU. / FOR YOU.</h3>
@@ -15,7 +15,7 @@
 					</a>
 	      </div>
 				<div class="swiper-slide">
-	        <a href="https://www.localpanda.com/activity/details/11201">
+	        <a href="/activity/details/11201">
 						<div class="imgBanner" :style="{background:'url(https://resource.localpanda.cn/static/homePage/banner4.jpg)'}">
 							<p class="banner_tit_s">Looking for adventure on a budget?</p>
 							<h3 class="txtUppercase">Small group cultural experiences</h3>

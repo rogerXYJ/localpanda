@@ -27,7 +27,7 @@
                                 </el-form-item>
                             </div>
                         </div>
-                        <el-form-item class="GUI-form-item" label="Email Address" prop="emailAddress">
+                        <el-form-item class="GUI-form-item width100" label="Email Address" prop="emailAddress">
                             <el-input v-model="form.emailAddress" placeholder="Email…"></el-input>
                         </el-form-item>
                         <div class="GUI-form__grid">
@@ -236,8 +236,10 @@ export default {
                 }
             }
         }
+        
     }
-
-    
+    .width100{
+      width: calc(100% - 22px);  	
+     }  
 } 
 </style>

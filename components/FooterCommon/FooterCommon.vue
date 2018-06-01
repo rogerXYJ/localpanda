@@ -158,8 +158,9 @@ import { fail } from 'assert';
        height: 50px;
        fill: currentColor;
        overflow: hidden;
-			 border-radius: 5px;
-			 margin-right: 20px;
+		 border-radius: 5px;
+		 margin-right: 20px;
+		 float: left;
        
     }
     .icon2{
@@ -271,7 +272,7 @@ import { fail } from 'assert';
 					padding-top:44px;
 					overflow: hidden;
 					.cooperation-text{
-						.icon1{ float: left;}
+						.icon1{ }
 						em{
 							display: block;
 						}

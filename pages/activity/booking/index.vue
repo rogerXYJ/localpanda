@@ -12,26 +12,6 @@
 				<div class="orderContact">
 					<h4>Reservation Information</h4>
 					<div class="cont">
-						<div class="emalAddress">
-							<p>First name<b>*</b></p>
-							<input :class="{err:oderFirstNameErr}" @focus="fousOderfisrtname" @blur="gabulr(0)" v-model="oderFirstName" />
-						</div>
-						<div class="phone">
-							<p>Last name<b>*</b></p>
-							<input :class="{err:oderlastNameErr}" @focus="fousoderlastName" @blur="gabulr(1)" v-model="oderlastName" />
-						</div>
-					</div>
-					<div class="cont">
-						<div class="emalAddress">
-							<p>Email Address<b>*</b></p>
-							<input :class="{err:emailAddressErr}" @focus="fousEmal" @blur="gabulr(2)" v-model="emailAddress" />
-						</div>
-						<div class="phone">
-							<p>Mobile phone(optional)</p>
-							<input :class="{err:phoneErr}" @focus="fousPhone" v-model="phone" />
-						</div>
-					</div>
-					<!--<div class="cont">
 						<div class="cont-item">
 							<p>First name<b>*</b></p>
 							<input :class="{err:oderFirstNameErr}" @focus="fousOderfisrtname" @blur="gabulr(0)" v-model="oderFirstName" />
@@ -47,22 +27,23 @@
 					</div>
 					<div class="cont">
 						<div class="cont-item">
-							<p>Country Code</p>
+							<p>Country Code<b>*</b></p>
 							<div class="code-box">
-								<input :class="{err:codeErr}" @focus="fousPhone" v-model="code" />
-								<div class="countryCode">
-									<ul>
-										<li v-for="item in 5">{{item}}</li>
+								<input :class="{err:codeErr}" @click.stop="focusCode(0)" @focus="focusCode(0)" @blur="gabulr(3)" v-model="mobileCode" />
+								<div class="countryCode" v-if="showCode" :class="codeList.length>0?'width100':''">
+									<ul v-if="codeList.length>0">
+										<li v-for="item in codeList" @click.stop="selectCode(item.country_name,item.prefix,0)">{{item.country_name}} (+{{item.prefix}})</li>
 									</ul>
+									<div class="empty" v-else>There are no results that match your search.</div>
 								</div>
 							</div>
-							
+
 						</div>
 						<div class="cont-item">
-							<p>Mobile phone(optional)</p>
+							<p>Mobile phone<b>*</b></p>
 							<input :class="{err:phoneErr}" @focus="fousPhone" v-model="phone" />
 						</div>
-					</div>-->
+					</div>
 					<span>Your voucher will be sent here, make sure it is correct</span>
 
 				</div>
@@ -87,10 +68,23 @@
 									<input :class="{err:TravellerlastNameErr}" @focus="fousLastName()" v-model="TravellerlastName" />
 								</div>
 							</div>
+							<div class="emalAddress">
+								<p>Email Address<b>*</b></p>
+								<input :class="{err:TravelleremailAddressErr}" @focus="fousidcard" v-model="TravelleremailAddress" />
+							</div>
 							<div class="nuber">
 								<div class="paddnumber">
-									<p>Email Address<b>*</b></p>
-									<input :class="{err:TravelleremailAddressErr}" @focus="fousidcard" v-model="TravelleremailAddress" />
+									<p>Country Code</p>
+									<div class="code-box">
+										<input :class="{err:TravelleremailAddressErr}" @click.stop="focusCode(1)" @focus="focusCode(1)" @blur="gabulr(3)" v-model="mobileTravellCode" />
+										<div class="countryCode" v-if="showTravellCode">
+											<ul v-if="travelCodeList.length>0">
+												<li v-for="item in travelCodeList" @click.stop="selectCode(item.country_name,item.prefix,1)">{{item.country_name}} (+{{item.prefix}})</li>
+											</ul>
+											<div class="empty" v-else>There are no results that match your search.</div>
+										</div>
+									</div>
+
 								</div>
 								<div class="Mobilephone">
 									<p>Mobile phone(optional)</p>
@@ -151,7 +145,7 @@
 							<span class="iconfont">&#xe666;</span>
 						</div>
 					</div>
-					
+
 				</div>
 				<div class="bookbtn">
 					<p>Pay with:</p>
@@ -170,9 +164,9 @@
 </template>
 
 <script>
-	if (process.browser) {
-	   require('~/assets/js/pages/talk.js')
-	   //require('~/assets/js/pages/ga.js')
+	if(process.browser) {
+		require('~/assets/js/pages/talk.js')
+		//require('~/assets/js/pages/ga.js')
 	}
 	import Vue from 'vue'
 	import { regExp } from '~/assets/js/plugin/utils'
@@ -180,6 +174,7 @@
 	import FooterCommon from '~/components/FooterCommon/FooterCommon';
 	import AlertGoBack from '~/components/Prompt/AlertGoBack';
 	import Alert from '~/components/Prompt/Alert'
+	import countryCode from '~/assets/js/countryCode.js'
 
 	export default {
 		async asyncData({
@@ -193,18 +188,16 @@
 		data() {
 			return {
 				opctions: {
-					averagePrice:0,
-					adultsPic:10,
-					childrenNum:0,
-					adultNum:0,
-					amount:0,
-					childDiscountP:0,
-					childDiscountPP:0,//默认儿童优惠价
-					couponDiscount:0,
+					averagePrice: 0,
+					adultsPic: 10,
+					childrenNum: 0,
+					adultNum: 0,
+					amount: 0,
+					childDiscountP: 0,
+					childDiscountPP: 0, //默认儿童优惠价
+					couponDiscount: 0,
 					currency: '',
 					symbol: '',
-					
-					
 				},
 				//订单联系人
 				oderFirstName: '',
@@ -215,8 +208,8 @@
 				emailAddressErr: false,
 				phone: '',
 				phoneErr: false,
-				code:'',
-				codeErr:'',
+				mobileCode: '',
+				codeErr: '',
 
 				//出游联系人
 				TravellerFirstName: '',
@@ -227,6 +220,11 @@
 				TravelleremailAddressErr: false,
 				Travellerphone: '',
 				TravellerphoneErr: false,
+
+				TravellerCodeErr: false,
+				mobileTravellCode: "", //选中国家区号
+				TravellerCode: '', //区号
+				showTravellCode: false,
 
 				comments: '', //提交意见咨询
 
@@ -239,8 +237,15 @@
 				addOder: false,
 
 				//汇率换算
-				nowExchange:{},//{'rate':1,'currency':'USD','symbol':'$'}
-				exchange:[]
+				nowExchange: {}, //{'rate':1,'currency':'USD','symbol':'$'}
+				exchange: [],
+				//国家
+				countryCode: countryCode.phone_countries,
+				codeList: [],//联系人国家选择列表
+				travelCodeList:[],//游万人国家选择列表
+				//显示code列表
+				showCode: false,
+				code: '',//区号
 			}
 
 		},
@@ -252,35 +257,34 @@
 
 		},
 		methods: {
-			changeCurrency(e){
+			changeCurrency(e) {
 				var self = this;
 				var value = e.target.value,
 					opctions = self.opctions,
 					details = opctions.details;
 				var people = opctions.adultNum + opctions.childrenNum;
 				//当前人数的默认价格
-				var price = details[people-1].defaultPrice;
+				var price = details[people - 1].defaultPrice;
 
-				
 				//换算折扣价
 				var exchange = this.exchange;
-				for(var i=0;i<exchange.length;i++){
+				for(var i = 0; i < exchange.length; i++) {
 					var thisEx = exchange[i];
 					//检测当前货币类型
-					if(thisEx.code==value){
+					if(thisEx.code == value) {
 						//设置当前币种
 						this.nowExchange = thisEx;
-	
+
 						//切换价格详情币种
 						opctions.adultsPic = this.returnFloat(price * thisEx.exchangeRate);
-						opctions.averagePrice = this.returnFloat(opctions.adultsPic/people);
+						opctions.averagePrice = this.returnFloat(opctions.adultsPic / people);
 						opctions.amount = this.returnFloat(opctions.adultsPic - this.returnFloat(opctions.childrenNum * thisEx.exchangeRate * opctions.childDiscountPP));
 						opctions.childDiscount = this.returnFloat(opctions.childDiscountPP * opctions.childrenNum * thisEx.exchangeRate);
 						opctions.symbol = thisEx.symbol;
 						break;
 					}
 				}
-				
+
 			},
 			cutXiaoNum(num, len) {
 				var numStr = num.toString();
@@ -347,14 +351,14 @@
 				}
 			},
 			gabulr(id) {
-				if(id==0){
-					if(this.oderFirstName){
+				if(id == 0) {
+					if(this.oderFirstName) {
 						ga('gtag_UA_107010673_1.send', {
 							hitType: 'event',
 							eventCategory: 'activity_booking',
 							eventAction: 'input',
 							eventLabel: 'first_name',
-						});	
+						});
 						ga('gtag_UA_107010673_1.send', {
 							hitType: 'event',
 							eventCategory: 'activity_booking',
@@ -362,9 +366,9 @@
 							eventLabel: 'booking_input',
 						});
 					}
-					
-				}else if(id==1){
-					if(this.oderlastName){
+
+				} else if(id == 1) {
+					if(this.oderlastName) {
 						ga('gtag_UA_107010673_1.send', {
 							hitType: 'event',
 							eventCategory: 'activity_booking',
@@ -378,15 +382,15 @@
 							eventLabel: 'booking_input',
 						});
 					}
-					
-				}else if(id==2){
-					if(this.emailAddress){
+
+				} else if(id == 2) {
+					if(this.emailAddress) {
 						ga('gtag_UA_107010673_1.send', {
 							hitType: 'event',
 							eventCategory: 'activity_booking',
 							eventAction: 'input',
 							eventLabel: 'email_address',
-						});	
+						});
 						ga('gtag_UA_107010673_1.send', {
 							hitType: 'event',
 							eventCategory: 'activity_booking',
@@ -394,9 +398,11 @@
 							eventLabel: 'booking_input',
 						});
 					}
-					
-				}else{
-					if(this.comments){
+
+				} else if(id == 3) {
+
+				} else {
+					if(this.comments) {
 						ga('gtag_UA_107010673_1.send', {
 							hitType: 'event',
 							eventCategory: 'activity_booking',
@@ -410,7 +416,19 @@
 							eventLabel: 'booking_input',
 						});
 					}
-					
+
+				}
+
+			},
+			selectCode(country,code,index) {
+				if(index==0){
+					this.mobileCode = country + "(+" + code + ")"
+					this.code = "(+" + code + ")"
+					this.showCode = false
+				}else{
+					this.mobileTravellCode = country + "(+" + code + ")"
+					this.TravellerCode="(+" + code + ")"
+					this.showTravellCode=false
 				}
 				
 			},
@@ -439,15 +457,27 @@
 			fousphonenumb(i) {
 				this.TravellerphoneErr = false
 			},
+			focusCode(index) {
+				if(index == 0) {
+					this.codeErr = false
+					this.showCode = true
+					
+				} else {
+					this.showTravellCode=true
+					this.TravellerCodeErr=false
+					
+				}
+
+			},
 			returnFloat(value) {
-				value*=1;
+				value *= 1;
 				if(value) {
-					var numberArr = (''+value).split('.');
-					if(numberArr.length>1 && numberArr[1].length>2){
-						return (value+0.005).toFixed(2);
+					var numberArr = ('' + value).split('.');
+					if(numberArr.length > 1 && numberArr[1].length > 2) {
+						return(value + 0.005).toFixed(2);
 					}
 					return value.toFixed(2);
-				}else{
+				} else {
 					return 0;
 				}
 			},
@@ -472,7 +502,11 @@
 					that.emailAddressErr = true
 					that.isShowAlert = true
 					that.alertMessage = "There are required fields without values or with incorrect values. Please check the info you've provided and make sure all the required fields have been filled."
-				} else if(!regExp.isMobil(that.phone)) {
+				} else if(!that.mobileCode) {
+					that.codeErr = true
+					that.isShowAlert = true
+					that.alertMessage = "There are required fields without values or with incorrect values. Please check the info you've provided and make sure all the required fields have been filled."
+				} else if(that.phone == "" || !regExp.isMobil(that.phone)) {
 					that.phoneErr = true
 					that.isShowAlert = true
 					that.alertMessage = "There are required fields without values or with incorrect values. Please check the info you've provided and make sure all the required fields have been filled."
@@ -511,17 +545,17 @@
 								"contactInfo": {
 									"firstName": that.oderFirstName,
 									"lastName": that.oderlastName,
-									"phoneNumber": that.phone ? that.phone : null,
+									"phoneNumber": that.code + that.phone,
 									"emailAddress": that.emailAddress
 								},
 								"travelerInfo": {
 									"firstName": that.TravellerFirstName,
 									"lastName": that.TravellerlastName,
-									"phoneNumber": that.Travellerphone,
+									"phoneNumber": that.travellCode+that.Travellerphone,
 									"emailAddress": that.TravelleremailAddress
 								},
 								"utcOffset": new Date().getTimezoneOffset() / 60 * -1,
-								"deviceType":"PC"
+								"deviceType": "PC"
 							}
 							if(that.addOder == false) {
 								that.addOder = true
@@ -530,10 +564,10 @@
 										'Content-Type': 'application/json; charset=UTF-8'
 									}
 								}).then(function(response) {
-									
-									var loginState = (that.logIn?that.logIn:0);
-									var hostUrl = obj.currency=='CNY' ? 'https://www.localpanda.cn' : 'https://www.localpanda.com';
-									window.location.href = hostUrl + "/activity/payment?objectId=" + response.data.response + '&login='+loginState;
+
+									var loginState = (that.logIn ? that.logIn : 0);
+									var hostUrl = obj.currency == 'CNY' ? 'https://www.localpanda.cn' : 'https://www.localpanda.com';
+									window.location.href = hostUrl + "/activity/payment?objectId=" + response.data.response + '&login=' + loginState;
 
 								}, function(response) {})
 							}
@@ -555,12 +589,13 @@
 							"contactInfo": {
 								"firstName": that.oderFirstName,
 								"lastName": that.oderlastName,
-								"phoneNumber": that.phone ? that.phone : null,
+								"phoneNumber": that.code + that.phone,
 								"emailAddress": that.emailAddress
 							},
 							"utcOffset": new Date().getTimezoneOffset() / 60 * -1,
-							"deviceType":"PC"
+							"deviceType": "PC"
 						}
+						console.log(that.code)
 						if(that.addOder == false) {
 							that.addOder = true
 							that.axios.put(this.apiBasePath + "activity/order/create", JSON.stringify(obj), {
@@ -568,15 +603,15 @@
 									'Content-Type': 'application/json; charset=UTF-8'
 								}
 							}).then(function(response) {
-								
-								var hostUrl = obj.currency=='CNY' ? 'https://www.localpanda.cn' : 'https://www.localpanda.com';
-								var loginState = (that.logIn?that.logIn:0);
-								window.location.href = hostUrl + "/activity/payment?objectId=" + response.data.response + '&login='+loginState;
-								
+
+								console.log(response)
+								//var hostUrl = obj.currency=='CNY' ? 'https://www.localpanda.cn' : 'https://www.localpanda.com';
+								var loginState = (that.logIn ? that.logIn : 0);
+								window.location.href =  "/activity/payment?objectId=" + response.data.response + '&login='+loginState;
+
 							}, function(response) {})
 						}
 					}
-					
 
 				}
 			}
@@ -592,19 +627,85 @@
 
 			var self = this;
 			//设置默认币种
-			self.nowExchange = {symbol:self.opctions.symbol,currency:self.opctions.currency};
+			self.nowExchange = {
+				symbol: self.opctions.symbol,
+				currency: self.opctions.currency
+			};
 			//加载币种
 			self.axios.get("https://api.localpanda.com/api/public/currency/all/USD").then(function(response) {
 				// console.log(response);
-				if(response.status==200){
+				if(response.status == 200) {
 					self.exchange = response.data;
 				}
 			}, function(response) {});
+			self.codeList = self.countryCode
+			self.travelCodeList=self.countryCode
+			document.getElementsByTagName('body')[0].addEventListener("click", () => {
+				self.showCode = false
+				self.showTravellCode=false
+			})
 
-			
 		},
 		watch: {
+			mobileCode: function(val, oldVal) {
+				let self = this
+				if(val) {
+					self.codeList = [];
+					var other = [];
+					var str = val.replace(/\(/, "\\\(").replace(/\)/, "\\\)").replace(/\+/, '\\\+')
+					console.log(str)
+					for(let i = 0; i < this.countryCode.length; i++) {
 
+						if(new RegExp(("^" + str), "i").test(self.countryCode[i].country_name + "(" + "+" + self.countryCode[i].prefix + ")")) {
+							var json = {
+								country_name: self.countryCode[i].country_name,
+								prefix: self.countryCode[i].prefix
+							}
+							other.push(json)
+
+						} else {
+
+						}
+					}
+
+					self.codeList = other
+					//this.countryCode=arr
+
+					//console.log(self.codeList)
+				} else {
+					self.codeList = self.countryCode
+
+				}
+			},
+			mobileTravellCode: function(val, oldVal) {
+				let self = this
+				if(val) {
+					self.travelCodeList = [];
+					var other = [];
+					var str = val.replace(/\(/, "\\\(").replace(/\)/, "\\\)").replace(/\+/, '\\\+')
+					for(let i = 0; i < this.countryCode.length; i++) {
+
+						if(new RegExp(("^" + str), "i").test(self.countryCode[i].country_name + "(" + "+" + self.countryCode[i].prefix + ")")) {
+							var json = {
+								country_name: self.countryCode[i].country_name,
+								prefix: self.countryCode[i].prefix
+							}
+							other.push(json)
+
+						} else {
+
+						}
+					}
+
+					self.travelCodeList = other
+					//this.countryCode=arr
+
+					//console.log(self.codeList)
+				} else {
+					self.travelCodeList = self.countryCode
+
+				}
+			}
 		}
 	}
 </script>
@@ -614,15 +715,64 @@
 	#header {
 		box-shadow: 0px 2px 6px 0px rgba(53, 58, 63, 0.1);
 	}
-	body{
-		min-width:1200px;
+	
+	body {
+		min-width: 1200px;
 	}
 </style>
 <style lang="scss" scoped>
 	@import "~assets/scss/base/_setting.scss";
-	.code-box{
+	.code-box {
 		position: relative;
 	}
+	
+	.countryCode {
+		position: absolute;
+		top: 52px;
+		left: 0;
+		width: calc(100% - 10px);
+		box-shadow: 0px 2px 10px 0px rgba(53, 58, 63, 0.2);
+		background: #fff;
+		z-index: 2;
+		ul {
+			max-height: 240px;
+			overflow: auto;
+			li {
+				padding: 0 10px 0 30px;
+				height: 40px;
+				line-height: 40px;
+				font-size: 14px;
+				&:hover {
+					color: #fff;
+					height: 40px;
+					background-image: linear-gradient(-90deg, #009efd 0%, #1bbc9d 100%);
+				}
+			}
+		}
+	}
+	.width100{
+		width: 110%!important;
+	}
+	.emalAddress {
+		margin-top: 25px;
+		width: 100%;
+		p {
+			font-size: 18px;
+			margin-bottom: 10px;
+			font-weight: bold;
+		}
+		input {
+			width: calc(100% - 22px);
+			height: 44px;
+			font-size: 18px;
+			border: 1px solid #dde0e0;
+			border-radius: 3px;
+			&:hover {
+				border-color: #1bbc9d;
+			}
+		}
+	}
+	
 	.fillYourInfo {
 		.fill {
 			width: 1170px;
@@ -695,28 +845,28 @@
 					color: #666;
 					float: right;
 					position: relative;
-					margin:-4px 20px 0 0;
+					margin: -4px 20px 0 0;
 					span {
 						font-size: 10px;
 					}
-					.iconfont{
+					.iconfont {
 						position: absolute;
 						right: 0;
-						top:0;
+						top: 0;
 						height: 30px;
 						line-height: 30px;
-						text-align:center;
-						font-size:18px;
+						text-align: center;
+						font-size: 18px;
 					}
-					.currency_type{
-						border:none;
+					.currency_type {
+						border: none;
 						padding-right: 20px;
 						font-size: 16px;
-						background:none;
+						background: none;
 						height: 30px;
 						color: #666;
-						option{
-							color:#666;
+						option {
+							color: #666;
 						}
 						position: relative;
 						z-index: 2;
@@ -777,30 +927,10 @@
 						font-size: 18px;
 						font-weight: bold;
 					}
-					/*.emalAddress{
-						margin-top: 25px;
-						width: 100%;
-						p {
-								font-size: 18px;
-								margin-bottom: 10px;
-								font-weight: bold;
-							}
-							input {
-								width: calc(100% - 22px);
-								height: 44px;
-								font-size: 18px;
-								border: 1px solid #dde0e0;
-								border-radius: 3px;
-								&:hover {
-									border-color: #1bbc9d;
-								}
-							}
-					}*/
 					.cont {
 						margin-top: 25px;
 						display: flex;
-						.emalAddress,
-						.phone{
+						.cont-item {
 							flex: 1;
 							p {
 								font-size: 18px;
@@ -815,28 +945,6 @@
 								border-radius: 3px;
 								&:hover {
 									border-color: #1bbc9d;
-								}
-							}
-							.countryCode{
-								position: absolute;
-								top: 52px;
-								left: 0;
-								width: calc(100% - 10px);
-								box-shadow: 0px 2px 10px 0px rgba(53, 58, 63, 0.2);
-								background: #fff;
-								z-index: 2;
-								ul{
-									li{
-										padding: 0 30px;
-										height: 50px;
-										line-height: 50px;
-										&:hover{
-											color: #fff;
-											height: 50px;
-											background-image: linear-gradient(-90deg,#009efd 0%,#1bbc9d 100%);
-										
-										}
-									}
 								}
 							}
 						}
@@ -886,7 +994,7 @@
 					ul {
 						li {
 							position: relative;
-							border-bottom: 1px solid #dde0e0;
+							/*border-bottom: 1px solid #dde0e0;*/
 							&:last-child {
 								border: none;
 							}
@@ -989,6 +1097,11 @@
 					}
 				}
 			}
+		}
+		.empty{
+			padding: 30px 50px;
+			text-align: center;
+			font-size: 16px;
 		}
 		.err {
 			border-color: red!important;

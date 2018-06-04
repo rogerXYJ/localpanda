@@ -34,7 +34,7 @@
 						<li @click.stop="goBook"><a>My Bookings</a></li>
 						<li @click.stop="goPrefie"><a>My Profile</a></li>
 						<!--<li><a>Account Settings</a></li>-->
-						<li @click.top="fb_logout"><a>Log Out</a></li>
+						<li @click.stop="fb_logout"><a>Log Out</a></li>
 					</ol>
 				</div>
 			</ul>

@@ -399,8 +399,6 @@
 						});
 					}
 
-				} else if(id == 3) {
-
 				} else {
 					if(this.comments) {
 						ga('gtag_UA_107010673_1.send', {
@@ -481,46 +479,57 @@
 					return 0;
 				}
 			},
-			next() {
+			gaFail(){
 				ga('gtag_UA_107010673_1.send', {
 					hitType: 'event',
 					eventCategory: 'activity_booking',
-					eventAction: 'click',
-					eventLabel: 'order',
+					eventAction: 'submit',
+					eventLabel: 'activity_order_fail',
 				});
+			},
+			next() {
+				
 				const that = this
 				var obj; //that.addOder = true
 				if(that.oderFirstName == "" || regExp.isNub(that.oderFirstName) || regExp.isCode(that.oderFirstName)) {
+					that.gaFail()
 					that.oderFirstNameErr = true
 					that.isShowAlert = true
 					that.alertMessage = "There are required fields without values or with incorrect values. Please check the info you've provided and make sure all the required fields have been filled."
 				} else if(that.oderlastName == "" || regExp.isNub(that.oderlastName) || regExp.isCode(that.oderlastName)) {
+					that.gaFail()
 					that.oderlastNameErr = true
 					that.isShowAlert = true
 					that.alertMessage = "There are required fields without values or with incorrect values. Please check the info you've provided and make sure all the required fields have been filled."
 				} else if(!regExp.isEmail(that.emailAddress)) {
+					that.gaFail()
 					that.emailAddressErr = true
 					that.isShowAlert = true
 					that.alertMessage = "There are required fields without values or with incorrect values. Please check the info you've provided and make sure all the required fields have been filled."
 				} else if(!that.mobileCode) {
+					that.gaFail()
 					that.codeErr = true
 					that.isShowAlert = true
 					that.alertMessage = "There are required fields without values or with incorrect values. Please check the info you've provided and make sure all the required fields have been filled."
 				} else if(that.phone == "" || !regExp.isMobil(that.phone)) {
+					that.gaFail()
 					that.phoneErr = true
 					that.isShowAlert = true
 					that.alertMessage = "There are required fields without values or with incorrect values. Please check the info you've provided and make sure all the required fields have been filled."
 				} else {
 					if(that.check == 1) {
 						if(that.TravellerFirstName == "" || regExp.isNub(that.TravellerFirstName) || regExp.isCode(that.TravellerFirstName)) {
+							that.gaFail()
 							that.TravellerFirstNameErr = true
 							that.isShowAlert = true
 							that.alertMessage = "There are required fields without values or with incorrect values. Please check the info you've provided and make sure all the required fields have been filled."
 						} else if(that.TravellerlastName == "" || regExp.isNub(that.TravellerlastName) || regExp.isCode(that.TravellerlastName)) {
+							that.gaFail()
 							that.TravellerlastNameErr = true
 							that.isShowAlert = true
 							that.alertMessage = "There are required fields without values or with incorrect values. Please check the info you've provided and make sure all the required fields have been filled."
 						} else if(!regExp.isEmail(that.TravelleremailAddress)) {
+							that.gaFail()
 							that.TravelleremailAddressErr = true
 							that.isShowAlert = true
 							that.alertMessage = "There are required fields without values or with incorrect values. Please check the info you've provided and make sure all the required fields have been filled."
@@ -529,6 +538,12 @@
 							that.isShowAlert = true
 							that.alertMessage = "There are required fields without values or with incorrect values. Please check the info you've provided and make sure all the required fields have been filled."
 						} else {
+							ga('gtag_UA_107010673_1.send', {
+								hitType: 'event',
+								eventCategory: 'activity_booking',
+								eventAction: 'submit',
+								eventLabel: 'activity_order_succ',
+							});
 							obj = {
 								"userId": that.opctions.userId,
 								"activityId": that.opctions.activityId,
@@ -573,6 +588,12 @@
 							}
 						}
 					} else {
+						ga('gtag_UA_107010673_1.send', {
+								hitType: 'event',
+								eventCategory: 'activity_booking',
+								eventAction: 'submit',
+								eventLabel: 'activity_order_succ',
+							});
 						obj = {
 							"userId": that.opctions.userId,
 							"activityId": that.opctions.activityId,

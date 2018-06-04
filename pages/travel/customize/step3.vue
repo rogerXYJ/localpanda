@@ -89,7 +89,15 @@ export default {
     },
     data() {
         let nameCheck = (rule, value, callback) => {
+        	
             if(!/^[a-zA-Z]+$/g.test(value)){
+            	ga('gtag_UA_107010673_1.send', {
+					hitType: 'event',
+					eventCategory: 'customization',
+					eventAction: 'submit',
+					eventLabel: 'customize_fail',
+
+				});
                 callback(new Error('Please make sure you enter the correct information'));
             }else{
                 callback();
@@ -97,6 +105,13 @@ export default {
         }
         let mailCheck = (rule, value, callback) => {
             if(!/^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/.test(value)){
+            	ga('gtag_UA_107010673_1.send', {
+					hitType: 'event',
+					eventCategory: 'customization',
+					eventAction: 'submit',
+					eventLabel: 'customize_fail',
+
+				});
                 callback(new Error('Please make sure you enter the correct information'));
             }else{
                 callback();
@@ -136,6 +151,13 @@ export default {
                 console.log(this.$refs[formName].model);
                 // console.log(this.form);
                 if (valid) {
+                	ga('gtag_UA_107010673_1.send', {
+						hitType: 'event',
+						eventCategory: 'customization',
+						eventAction: 'submit',
+						eventLabel: 'customize_succ',
+	
+					});
                     this.isSubmiting = true;
                     console.log('step3 submit success');
                     let formData = this.form;

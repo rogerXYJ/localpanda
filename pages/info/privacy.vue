@@ -5,8 +5,8 @@
         </div>
         <div class="privacy-content page-section">
             <div class="privacy-tab">
-                <span class="privacy-tab__cell privacy-tab__cell--current">Legal</span>
-                <span class="privacy-tab__cell">Privacy Policy</span>
+                <span class="privacy-tab__cell">Legal</span>
+                <span class="privacy-tab__cell privacy-tab__cell--current">Privacy Policy</span>
                 <span class="privacy-tab__cell">Terms of Use</span>
             </div>
             <div class="privacy-detail">

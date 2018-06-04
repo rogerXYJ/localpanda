@@ -682,9 +682,15 @@
 			showAdults() {
 				window.ga && ga("gtag_UA_107010673_1.send", {
 					hitType: "event",
-					eventCategory: "Selection",
-					eventAction: "Click",
-					eventLabel: "activity_guests_select"
+					eventCategory: "activity_detail",
+					eventAction: "select",
+					eventLabel: "guests"
+				});
+				window.ga && ga("gtag_UA_107010673_1.send", {
+					hitType: "event",
+					eventCategory: "activity_detail",
+					eventAction: "select",
+					eventLabel: "detail_select"
 				});
 				if(this.people == "Please Select") {
 					this.adults = this.adults + 1;
@@ -697,8 +703,8 @@
 
 				window.ga && ga("gtag_UA_107010673_1.send", {
 					hitType: "event",
-					eventCategory: "Button",
-					eventAction: "Click",
+					eventCategory: "activity_detail",
+					eventAction: "click",
 					eventLabel: "activity_book"
 				});
 				let that = this;
@@ -811,9 +817,15 @@
 			dateTime(val, oldVal) {
 				window.ga && ga("gtag_UA_107010673_1.send", {
 					hitType: "event",
-					eventCategory: "Selection",
-					eventAction: "Click",
-					eventLabel: "activity_date_select"
+					eventCategory: "activity_detail",
+					eventAction: "select",
+					eventLabel:"date"
+				});
+				window.ga && ga("gtag_UA_107010673_1.send", {
+					hitType: "event",
+					eventCategory: "activity_detail",
+					eventAction: "select",
+					eventLabel:"detail_select"
 				});
 				if(val == "") {
 					this.isSelectDate = true;

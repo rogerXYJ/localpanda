@@ -27,9 +27,10 @@
 						<h3>NEED HELP</h3>
 						<div class="need-help">
 							<a href="/info/service-terms">service-terms</a>
+							<a href="/info/privacy-policy">Privacy Policy</a>
 							<a class="run_stop">Legal</a>
 							<a class="run_stop">Terms of Use</a>
-							<a class="run_stop">Privacy Policy</a>
+							
 						</div>
 						
 					</li>

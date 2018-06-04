@@ -87,20 +87,37 @@
 				this.$emit('contact-call-back', true);
 				this.contactActive = false;
 			},
+			gaFail(){
+				window.ga && ga("gtag_UA_107010673_1.send", {
+						hitType: "event",
+						eventCategory: "activity_detail",
+						eventAction: "submit",
+						eventLabel: "activity_inquiry_fail"
+					});
+			},
 			ok() {
 				let that = this
 
 				if(that.name == '' || regExp.isNub(that.name) || regExp.isCode(that.name)) {
 					that.nameErr = true
+					that.gaFail()
 				} else if(!regExp.isEmail(that.email)) {
 					that.emailErr = true
+					that.gaFail()
 				}else if(that.peopleNub==0){
 					
 					that.isshowchoose=true
-					
+					that.gaFail()
 				}else if(that.textInfo == '') {
 					that.textInfoErr = true
+					that.gaFail()
 				}else{
+					window.ga && ga("gtag_UA_107010673_1.send", {
+						hitType: "event",
+						eventCategory: "activity_detail",
+						eventAction: "submit",
+						eventLabel: "activity_inquiry_succ"
+					});
 					if(window.localStorage.getItem("userid")) {
 						var obj = {
 							userId: window.localStorage.getItem("userid"),

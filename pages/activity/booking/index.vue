@@ -581,8 +581,8 @@
 								}).then(function(response) {
 
 									var loginState = (that.logIn ? that.logIn : 0);
-									var hostUrl = obj.currency == 'CNY' ? 'https://www.localpanda.cn' : 'https://www.localpanda.com';
-									window.location.href = hostUrl + "/activity/payment?objectId=" + response.data.response + '&login=' + loginState;
+									//var hostUrl = obj.currency == 'CNY' ? 'https://www.localpanda.cn' : 'https://www.localpanda.com';
+									window.location.href = "/activity/payment?objectId=" + response.data.response + '&login=' + loginState;
 
 								}, function(response) {})
 							}

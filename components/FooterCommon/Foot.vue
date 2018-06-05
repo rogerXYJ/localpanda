@@ -79,18 +79,19 @@
 					});
 			},
 			submit() {
-				
+				let status=false
 				const that = this
 				if(that.name==''|| regExp.isNub(that.name)||regExp.isCode(that.name)) {
 					that.nameError = true
-					that.gaFail()
+					status=false
 				} else if(!regExp.isEmail(that.email)) {
 					that.emailError = true
-					that.gaFail()
+					status=false
 				} else if(that.textarea == "") {
 					that.textareaError = true
-					that.gaFail()
+					status=false
 				} else {
+					status=true
 					ga('gtag_UA_107010673_1.send', {
 						hitType: 'event',
 						eventCategory: 'public',
@@ -147,6 +148,9 @@
 					}
 						
 					
+				}
+				if(status==false){
+					that.gaFail();
 				}
 			},
 			nameF() {

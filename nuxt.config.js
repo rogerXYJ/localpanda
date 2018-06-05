@@ -7,7 +7,7 @@ module.exports = {
   },
   build: {
 //   publicPath: 'https://resource.localpanda.cn/static/js/',
-//    testGa: true,
+    testGa: true,
 //   payCode: 'pk_live_mRSdUvgwE4pZo2IVofL4cVch',
     vendor: [
         'axios',

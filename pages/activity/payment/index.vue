@@ -446,13 +446,7 @@
 			//			},
 			getToken() {
 				let that = this
-				ga('gtag_UA_107010673_1.send', {
-					hitType: 'event',
-					eventCategory: 'activity_payment',
-					eventAction: 'click',
-					eventLabel: 'activity_pay',
-
-				});
+				
 				if(this.opctions.currency == 'CNY') {
 					if(that.id==1){
 						this.wxPay();
@@ -471,6 +465,13 @@
 				that.loadingStatus = true;
 					that.stripe.createToken(that.cardNumber).then(function(result) {
 						if(result.error) {
+							ga('gtag_UA_107010673_1.send', {
+								hitType: 'event',
+								eventCategory: 'activity_payment',
+								eventAction: 'click',
+								eventLabel: 'activity_pay_fail',
+			
+							});
 							// Inform the user if there was an error.
 							//console.log(that.loadingStatus)
 							that.loadingStatus = false
@@ -478,11 +479,16 @@
 							that.payStatus = true
 							that.payErrMsg = result.error.message
 						} else {
+							ga('gtag_UA_107010673_1.send', {
+								hitType: 'event',
+								eventCategory: 'activity_payment',
+								eventAction: 'click',
+								eventLabel: 'activity_pay_succ',
+			
+							});
 							// Send the token to your server.
 							//stripeTokenHandler(result.token);
 							that.payStatus = false
-
-							console.log(result.token)
 							if(!that.isPay) {
 								that.stripeTokenHandler(result.token, that.isPay)
 							}

@@ -97,21 +97,23 @@
 			},
 			ok() {
 				let that = this
-
+				let ok=false
 				if(that.name == '' || regExp.isNub(that.name) || regExp.isCode(that.name)) {
 					that.nameErr = true
-					that.gaFail()
+					ok=false
+					//that.gaFail()
 				} else if(!regExp.isEmail(that.email)) {
 					that.emailErr = true
-					that.gaFail()
+					ok=false
 				}else if(that.peopleNub==0){
 					
 					that.isshowchoose=true
-					that.gaFail()
+					ok=false
 				}else if(that.textInfo == '') {
 					that.textInfoErr = true
-					that.gaFail()
+					ok=false
 				}else{
+					ok=true
 					window.ga && ga("gtag_UA_107010673_1.send", {
 						hitType: "event",
 						eventCategory: "activity_detail",
@@ -194,6 +196,9 @@
 					})
 					}
 					
+				}
+				if(ok==false){
+					that.gaFail()
 				}
 
 			},

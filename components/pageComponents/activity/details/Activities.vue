@@ -160,7 +160,7 @@
 					<h3>Rescheduling and Cancellation Policy</h3>
 					<p v-html="picInfo.refundInstructions.replace(/\r\n/g,'<br/>')"></p>
 				</div>
-				<div class="notes" id="notes" v-if="remark">
+				<div class="notes" id="notes" v-if="remark.length>0">
 					<h3>Notes</h3>
 					<p v-if="remark" :key="index" v-for="(item,index) in remark">{{item}}</p>
 					<!--<p v-if="detail.venues" :key="index" v-for="(i,index) in detail.venues">{{i}}</p>-->

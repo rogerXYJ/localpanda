@@ -72,7 +72,7 @@
 								<div id="card-cvc" class="field empty"></div>
 							</div>
 						</div>
-
+						<p style="margin-top: 0.266666rem; font-size: 0.32rem;color:red" v-if="payStatus">{{payErrMsg}}</p>
 					</div>
 
 				</div>
@@ -186,6 +186,8 @@
 				tryAgainHref: '',
 				cardNumber:'',
 				stripe:"",
+				payErrMsg:'',
+				payStatus:false
 				
 			}
 		},
@@ -496,11 +498,13 @@
 				that.stripe.createToken(that.cardNumber).then(function(result) {
 			       if (result.error) {
 			      // Inform the user if there was an error.
-				     
+				     console.log(result.error)
+				     that.payStatus=true
+				     that.payErrMsg=result.error.message
 				    } else {
 				      // Send the token to your server.
 				      //stripeTokenHandler(result.token);
-				      
+				       that.payStatus=false
 				      
 				      console.log(result.token)
 				      that.stripeTokenHandler(result.token)

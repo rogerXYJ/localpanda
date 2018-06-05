@@ -27,9 +27,10 @@
 						<h3>NEED HELP</h3>
 						<div class="need-help">
 							<a href="/info/service-terms">service-terms</a>
+							<a href="/info/privacy-policy">Privacy Policy</a>
 							<a class="run_stop">Legal</a>
 							<a class="run_stop">Terms of Use</a>
-							<a class="run_stop">Privacy Policy</a>
+							
 						</div>
 						
 					</li>
@@ -158,8 +159,9 @@ import { fail } from 'assert';
        height: 50px;
        fill: currentColor;
        overflow: hidden;
-			 border-radius: 5px;
-			 margin-right: 20px;
+		 border-radius: 5px;
+		 margin-right: 20px;
+		 float: left;
        
     }
     .icon2{
@@ -271,7 +273,7 @@ import { fail } from 'assert';
 					padding-top:44px;
 					overflow: hidden;
 					.cooperation-text{
-						.icon1{ float: left;}
+						.icon1{ }
 						em{
 							display: block;
 						}

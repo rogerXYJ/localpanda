@@ -69,16 +69,35 @@
 			getIsShowAlert(val) {
 				this.isShowAlert = val;
 			},
+			gaFail(){
+				ga('gtag_UA_107010673_1.send', {
+						hitType: 'event',
+						eventCategory: 'public',
+						eventAction: 'submit',
+						eventLabel: 'feedback_fail',
+	
+					});
+			},
 			submit() {
 				
 				const that = this
 				if(that.name==''|| regExp.isNub(that.name)||regExp.isCode(that.name)) {
 					that.nameError = true
+					that.gaFail()
 				} else if(!regExp.isEmail(that.email)) {
 					that.emailError = true
+					that.gaFail()
 				} else if(that.textarea == "") {
 					that.textareaError = true
+					that.gaFail()
 				} else {
+					ga('gtag_UA_107010673_1.send', {
+						hitType: 'event',
+						eventCategory: 'public',
+						eventAction: 'submit',
+						eventLabel: 'feedback_succ',
+	
+					});
 					if(window.localStorage.getItem("userid")){
 						var obj = {
 							userId:window.localStorage.getItem("userid"),
@@ -257,185 +276,13 @@
 				}
 			}
 		}
-		/*.footCooperation {
-			background: #353a3f;
-			height: 140px;
-			.footCooperationInfo {
-				margin: 0 auto;
-				width: 1170px;
-				height: 140px;
-				overflow: hidden;
-				.footCooperationL {
-					float: left;
-					
-					span {
-						float: left;
-						font-size: 42px;
-						color: #fff;
-						display: inline-block;
-						line-height: 150px;
-					}
-					.logtext {
-						float: left;
-						margin: 52px 0 0 20px;
-						color: #fff;
-						font-size: 16px;
-					}
-				}
-				.footCooperationR {
-					a{
-						cursor: pointer;
-					}
-					span{
-						display: inline-block;
-						margin-right: 20px;
-					}
-					float: right;
-					line-height: 159px;
-					
-					
-					}
-				}
-			}*/
+	
 		
 	}
 	.borderflase {
 		border: 1px solid red!important;
 	}
-	/* phone */
-	/*#footerMob{
-		padding: 0 0.4rem;
-		
-		.footTitle{
-			font-size:0.613333rem;
-			padding-top: 1.066666rem ;
-			border-top: 1px solid #ebebeb;
-			color: #353a3f;
-			font-weight: bold;
-			text-align: center;
-		}
-		.subhead{
-			font-size: 0.373333rem;
-			text-align: center;
-			margin-top: 0.12rem;
-		}
-		.input{
-			height: 1.146666rem;
-			margin-top: 0.48rem;
-			input{
-				height: 100%;
-				width:calc(100% - 0.4rem);
-				border:1px solid #dde0e0;
-				font-size: 0.32rem;
-			}
-			
-		}
-		.textinput{
-			margin-top: 0.48rem;
-			textarea{
-				width:calc(100% - 0.4rem);
-				height: 2.56rem;
-				padding-top: 10px;
-				padding-left: 10px;
-				border: 1px solid #dde0e0;
-				resize:none;
-				font-size:0.32rem ;
-				
-			}
-		}
-		.submitBtn{
-			height: 1.146666rem;
-			background-image: linear-gradient(270deg,#009efd 0%,#1bbc9d 100%), linear-gradient(#878e95,#878e95);
-			width: 100%;
-			border-radius:  0.573333rem;
-			text-align: center;
-			color: #fff;
-			font-size: 0.346666rem;
-			margin-top: 0.48rem;
-			margin-bottom: 1.066666rem;
-		}
-		.contactInfo{
-			overflow: hidden;
-			background-image: linear-gradient(135deg,#1bbc9d 0%,#009efd 100%),linear-gradient(#878e95, #878e95);
-			padding: 1.066666rem 0 1.2rem 0.4rem;
-			margin:0 -0.4rem;
-			.emailinfo{
-				h3{
-					font-size: 0.266666rem;
-					color: rgba(255,255,255,.5);
-				}
-				b{
-					display: block;
-					font-size: 0.373333rem;
-					color: #fff;
-					margin-top: 0.32rem;
-				}
-			}
-			.address{
-				margin-top: 0.72rem;
-				h3{
-					font-size: 0.266666rem;
-					color: rgba(255,255,255,.5);
-				}
-				b{
-					display: block;
-					font-size: 0.373333rem;
-					color: #fff;
-					margin-top: 0.32rem;
-				}
-			}
-			.footLog{
-				margin-top: 2.146666rem;
-				text-align: center;
-				.loaclpandaLog{
-					i{
-						font-size: 1.066666rem;
-						color: #fff;
-					}
-				}
-				.cooperation{
-					margin-top: 0.746666rem;
-					 span{
-					 	display: inline-block;
-					 	width:0.746666rem;
-					 	height: 0.746666rem;
-					 	text-align: center;
-					 	line-height: 0.746666rem;
-					 	border-radius: 50%;
-					 	background: #fff;
-					 	margin-left: 0.373333rem;
-					 	&:first-child{
-					 		margin-left: 0;
-					 	}
-					 	i{
-					 		font-size: 0.373333rem;
-					 		background-image: -webkit-linear-gradient(135deg,#009efd,#1bbc9d);
-								-webkit-text-fill-color: transparent;
-								-webkit-background-clip: text;
-								
-								
-								background-image: -moz-linear-gradient(135deg,#009efd,#1bbc9d);
-								-moz-text-fill-color: transparent;
-								-moz-background-clip: text;
-								
-								background-image: -moz-linear-gradient(135deg,#009efd,#1bbc9d);
-								-ms-text-fill-color: transparent;
-								-ms-background-clip: text;
-								
-								background-image: -o-linear-gradient(135deg,#009efd,#1bbc9d);
-								-o-text-fill-color: transparent;
-								-o-background-clip: text;
-					 	}
-					 }
-				}
-				.localPanda_text{
-					margin-top: 0.746666rem;
-					font-size: 0.373333rem;
-					color: #fff;
-				}
-			}
-		}
-	}*/
+	
 	
 	
 </style>

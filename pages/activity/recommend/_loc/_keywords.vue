@@ -316,7 +316,7 @@
 				return array;
 			},
 			GaAll(){
-				ga('gtag_UA_107010673_1.send', {
+				ga(gaSend, {
 					hitType: 'event',
 					eventCategory: 'Link',
 					eventAction: 'Click',

@@ -58,7 +58,7 @@ based on your needs!</p>
 			showContact(){
 				let that=this
 				if(this.isListPage){
-					ga('gtag_UA_107010673_1.send', {
+					ga(gaSend, {
 						hitType: 'event',
 						eventCategory: 'Button',
 						eventAction: 'Click',
@@ -66,7 +66,7 @@ based on your needs!</p>
 	
 					});
 				}else{
-					ga('gtag_UA_107010673_1.send', {
+					ga(gaSend, {
 					hitType: 'event',
 					eventCategory: 'Button',
 					eventAction: 'Click',

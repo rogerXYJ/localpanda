@@ -13,11 +13,11 @@
 					<h4>Reservation Information</h4>
 					<div class="cont">
 						<div class="cont-item">
-							<p>First name<b>*</b></p>
+							<p>First Name<b>*</b></p>
 							<input :class="{err:oderFirstNameErr}" @focus="fousOderfisrtname" @blur="gabulr(0)" v-model="oderFirstName" />
 						</div>
 						<div class="cont-item">
-							<p>Last name<b>*</b></p>
+							<p>Last Name<b>*</b></p>
 							<input :class="{err:oderlastNameErr}" @focus="fousoderlastName" @blur="gabulr(1)" v-model="oderlastName" />
 						</div>
 					</div>
@@ -40,7 +40,7 @@
 
 						</div>
 						<div class="cont-item">
-							<p>Mobile phone<b>*</b></p>
+							<p>Mobile Phone<b>*</b></p>
 							<input :class="{err:phoneErr}" @focus="fousPhone" @blur="gabulr(4)" v-model="phone" />
 						</div>
 					</div>
@@ -59,12 +59,12 @@
 
 							<div class="name">
 								<div class="firstName">
-									<p>First name<b>*</b></p>
+									<p>First Name<b>*</b></p>
 									<input :class="{err:TravellerFirstNameErr}" @focus="fousFirst()" v-model="TravellerFirstName" />
 
 								</div>
 								<div class="lastname">
-									<p>Last name<b>*</b></p>
+									<p>Last Name<b>*</b></p>
 									<input :class="{err:TravellerlastNameErr}" @focus="fousLastName()" v-model="TravellerlastName" />
 								</div>
 							</div>
@@ -87,7 +87,7 @@
 
 								</div>
 								<div class="Mobilephone">
-									<p>Mobile phone(optional)</p>
+									<p>Mobile Phone(optional)</p>
 									<input :class="{err:TravellerphoneErr}" @focus="fousphonenumb()" @blur="gabulr(4)" v-model="Travellerphone" />
 								</div>
 							</div>
@@ -99,7 +99,7 @@
 
 				<div class="Comments">
 					<div class="information">
-						<h4>Other required information</h4>
+						<h4>Other Required Information</h4>
 						<textarea v-if="opctions.category=='Private Tour'" @blur="gabulr(5)" placeholder="please provide your hotel address so the guide can pick you up." v-model="comments"></textarea>
 						<textarea v-else v-model="comments" @blur="gabulr(5)"></textarea>
 						<p class="refundPolicy" style="color: red;font-size: 14px;">You can get a 100% refund up to {{opctions.refundTimeLimit}} hours before your trip.</p>
@@ -148,7 +148,7 @@
 
 				</div>
 				<div class="bookbtn">
-					<p>Pay with:</p>
+					<p>Pay With:</p>
 					<div class="payfor">
 						<img style="width:200px" src="https://resource.localpanda.cn/static/icon/stripe.png" />
 					</div>
@@ -353,13 +353,13 @@
 			gabulr(id) {
 				if(id == 0) {
 					if(this.oderFirstName) {
-						ga('gtag_UA_107010673_1.send', {
+						ga(gaSend, {
 							hitType: 'event',
 							eventCategory: 'activity_booking',
 							eventAction: 'input',
 							eventLabel: 'first_name',
 						});
-						ga('gtag_UA_107010673_1.send', {
+						ga(gaSend, {
 							hitType: 'event',
 							eventCategory: 'activity_booking',
 							eventAction: 'input',
@@ -369,13 +369,13 @@
 
 				} else if(id == 1) {
 					if(this.oderlastName) {
-						ga('gtag_UA_107010673_1.send', {
+						ga(gaSend, {
 							hitType: 'event',
 							eventCategory: 'activity_booking',
 							eventAction: 'input',
 							eventLabel: 'last_name',
 						});
-						ga('gtag_UA_107010673_1.send', {
+						ga(gaSend, {
 							hitType: 'event',
 							eventCategory: 'activity_booking',
 							eventAction: 'input',
@@ -385,13 +385,13 @@
 
 				} else if(id == 2) {
 					if(this.emailAddress) {
-						ga('gtag_UA_107010673_1.send', {
+						ga(gaSend, {
 							hitType: 'event',
 							eventCategory: 'activity_booking',
 							eventAction: 'input',
 							eventLabel: 'email_address',
 						});
-						ga('gtag_UA_107010673_1.send', {
+						ga(gaSend, {
 							hitType: 'event',
 							eventCategory: 'activity_booking',
 							eventAction: 'input',
@@ -405,13 +405,13 @@
 					}
 				}else if(id==4){
 					if(this.phone){
-						ga('gtag_UA_107010673_1.send', {
+						ga(gaSend, {
 							hitType: 'event',
 							eventCategory: 'activity_booking',
 							eventAction: 'input',
 							eventLabel: 'phone_number',
 						});
-						ga('gtag_UA_107010673_1.send', {
+						ga(gaSend, {
 							hitType: 'event',
 							eventCategory: 'activity_booking',
 							eventAction: 'input',
@@ -420,13 +420,13 @@
 					}
 				} else {
 					if(this.comments) {
-						ga('gtag_UA_107010673_1.send', {
+						ga(gaSend, {
 							hitType: 'event',
 							eventCategory: 'activity_booking',
 							eventAction: 'input',
 							eventLabel: 'comment',
 						});
-						ga('gtag_UA_107010673_1.send', {
+						ga(gaSend, {
 							hitType: 'event',
 							eventCategory: 'activity_booking',
 							eventAction: 'input',
@@ -438,13 +438,13 @@
 
 			},
 			selectCode(country,code,index) {
-				ga('gtag_UA_107010673_1.send', {
+				ga(gaSend, {
 					hitType: 'event',
 					eventCategory: 'activity_booking',
 					eventAction: 'input',
 					eventLabel: 'country_code',
 				});
-				ga('gtag_UA_107010673_1.send', {
+				ga(gaSend, {
 					hitType: 'event',
 					eventCategory: 'activity_booking',
 					eventAction: 'input',
@@ -514,7 +514,7 @@
 				}
 			},
 			gaFail(){
-				ga('gtag_UA_107010673_1.send', {
+				ga(gaSend, {
 					hitType: 'event',
 					eventCategory: 'activity_booking',
 					eventAction: 'submit',
@@ -581,7 +581,7 @@
 							that.alertMessage = "There are required fields without values or with incorrect values. Please check the info you've provided and make sure all the required fields have been filled."
 						} else {
 							next=true
-							ga('gtag_UA_107010673_1.send', {
+							ga(gaSend, {
 								hitType: 'event',
 								eventCategory: 'activity_booking',
 								eventAction: 'submit',
@@ -636,7 +636,7 @@
 						}
 					} else {
 						next=true
-						ga('gtag_UA_107010673_1.send', {
+						ga(gaSend, {
 								hitType: 'event',
 								eventCategory: 'activity_booking',
 								eventAction: 'submit',

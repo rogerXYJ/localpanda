@@ -465,7 +465,7 @@
 				that.loadingStatus = true;
 					that.stripe.createToken(that.cardNumber).then(function(result) {
 						if(result.error) {
-							ga('gtag_UA_107010673_1.send', {
+							ga(gaSend, {
 								hitType: 'event',
 								eventCategory: 'activity_payment',
 								eventAction: 'click',
@@ -479,7 +479,7 @@
 							that.payStatus = true
 							that.payErrMsg = result.error.message
 						} else {
-							ga('gtag_UA_107010673_1.send', {
+							ga(gaSend, {
 								hitType: 'event',
 								eventCategory: 'activity_payment',
 								eventAction: 'click',

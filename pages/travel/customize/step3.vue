@@ -139,7 +139,7 @@ export default {
                 console.log(this.$refs[formName].model);
                 // console.log(this.form);
                 if (valid) {
-                	ga('gtag_UA_107010673_1.send', {
+                	ga(gaSend, {
 						hitType: 'event',
 						eventCategory: 'customization',
 						eventAction: 'submit',
@@ -166,7 +166,7 @@ export default {
                         this.isSubmiting = false;
                     })
                 } else {
-                	ga('gtag_UA_107010673_1.send', {
+                	ga(gaSend, {
 						hitType: 'event',
 						eventCategory: 'customization',
 						eventAction: 'submit',

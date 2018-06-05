@@ -70,7 +70,7 @@
 				this.isShowAlert = val;
 			},
 			gaFail(){
-				ga('gtag_UA_107010673_1.send', {
+				ga(gaSend, {
 						hitType: 'event',
 						eventCategory: 'public',
 						eventAction: 'submit',
@@ -92,7 +92,7 @@
 					status=false
 				} else {
 					status=true
-					ga('gtag_UA_107010673_1.send', {
+					ga(gaSend, {
 						hitType: 'event',
 						eventCategory: 'public',
 						eventAction: 'submit',

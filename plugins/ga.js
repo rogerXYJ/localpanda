@@ -10,7 +10,7 @@ export default ({ app }) => {
 
   //测试和线上key
   window.payCode = buildData.payCode ? buildData.payCode : 'pk_test_ymxnY3KoqRcjCEElfvFxPy1G';
-  console.log(payCode)
+  
   //判断是否禁用ga
   if(!buildData.testGa){
     //防止ga报错，默认添加ga方法
@@ -25,19 +25,16 @@ export default ({ app }) => {
     }
   }else{
     //添加google统计代码
-
-    
+    var uaNumber = 1;
+    if(location.host == 'm.localpanda.com'){
+      uaNumber = 2;
+    }
 
     var scriptArr = [
-      'https://www.googletagmanager.com/gtag/js?id=UA-107010673-1',
-      'https://www.google-analytics.com/ga.js?id=UA-107010673-1'
+      'https://www.googletagmanager.com/gtag/js?id=UA-107010673-'+uaNumber,
+      'https://www.google-analytics.com/ga.js?id=UA-107010673-'+uaNumber
     ]
-    if(location.host == 'm.localpanda.com'){
-      scriptArr = [
-        'https://www.googletagmanager.com/gtag/js?id=UA-107010673-2',
-        'https://www.google-analytics.com/ga.js?id=UA-107010673-2'
-      ]
-    }
+    
 
     for(var i=0;i<scriptArr.length;i++){
       var gaScript = document.createElement('script');
@@ -50,37 +47,9 @@ export default ({ app }) => {
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments)};
     gtag('js', new Date());
-    gtag('config', 'UA-107010673-1');
+    gtag('config', 'UA-107010673-'+uaNumber);
+    window.gaSend = 'gtag_UA_107010673_'+uaNumber+'.send';
+
   }
 
-  //检测线上环境，或者 检测测试环境使用ga（在nuxt.config里配置在测试环境是否显示ga）
-  // if (NODE_ENV !== 'production' && !buildData.publicPath || NODE_ENV == 'production' && !buildData.testGa && !buildData.publicPath) {
-  //   //测试环境支付key
-  //   window.payCode = "pk_test_ymxnY3KoqRcjCEElfvFxPy1G"
-    
-  //   //防止ga报错，默认添加ga方法
-  //   window.ga = function(){
-  //     console.log('this is test! no ga code!');
-  //   };
-  //   window._gat = {
-  //     _getTracker(){
-  //       return {_addTrans(){},_addItem(){},_trackTrans(){}};
-  //     }
-  //   }
-  //   //跳出，不走ga
-  //   return;
-  // }else{
-  //   //线上环境支付key
-  //   window.payCode = "pk_live_mRSdUvgwE4pZo2IVofL4cVch"
-  // }
-
-  
-
-
-  // ga('create', 'UA-XXXXXXXX-X', 'auto');
-
-  // app.router.afterEach((to, from) => {
-  //   ga('set', 'page', to.fullPath)
-  //   ga('send', 'pageview')
-  // })
 }

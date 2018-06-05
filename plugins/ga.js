@@ -25,10 +25,20 @@ export default ({ app }) => {
     }
   }else{
     //添加google统计代码
+
+    
+
     var scriptArr = [
       'https://www.googletagmanager.com/gtag/js?id=UA-107010673-1',
       'https://www.google-analytics.com/ga.js?id=UA-107010673-1'
     ]
+    if(location.host == 'm.localpanda.com'){
+      scriptArr = [
+        'https://www.googletagmanager.com/gtag/js?id=UA-107010673-2',
+        'https://www.google-analytics.com/ga.js?id=UA-107010673-2'
+      ]
+    }
+
     for(var i=0;i<scriptArr.length;i++){
       var gaScript = document.createElement('script');
       gaScript.async=1;

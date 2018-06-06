@@ -97,7 +97,7 @@
 						</div>
 					</li>
 				</ul>
-				 <div class="empty" v-show="!bookList && !activityList && nobooking">
+				 <div class="empty" v-show="!bookList.length && !activityList.length && nobooking">
 					<span>
 						<svg class="icon" aria-hidden="true">
 						    <use xlink:href="#icon-lvyou"></use>
@@ -336,7 +336,9 @@
 			width: 1170px;
 			margin: 0 auto;
 			position: relative;
+			min-height: 500px;
 			.bookingsCont {
+				min-height: 200px;
 				margin-left: 250px;
 				padding: 60px 0 100px 60px;
 				box-shadow: -1px 0px 0px 0px rgba(53, 58, 63, 0.1);

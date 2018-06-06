@@ -389,7 +389,7 @@
 		},
 		methods: {
 			changeVal(value){
-			ga('gtag_UA_107010673_1.send', {
+			ga(gaSend, {
 					hitType: 'event',
 					eventCategory: 'activity_list',
 					eventAction: 'switch',
@@ -495,7 +495,7 @@
 					sort = {
 						type: "SCORE"
 					}
-					ga('gtag_UA_107010673_1.send', {
+					ga(gaSend, {
 						hitType: 'event',
 						eventCategory: 'activity_list',
 						eventAction: 'sort',
@@ -507,7 +507,7 @@
 						type: "PRICE",
 						reverse: false
 					}
-					ga('gtag_UA_107010673_1.send', {
+					ga(gaSend, {
 						hitType: 'event',
 						eventCategory: 'activity_list',
 						eventAction: 'sort',
@@ -519,7 +519,7 @@
 						type: "PRICE",
 						reverse: true
 					}
-					ga('gtag_UA_107010673_1.send', {
+					ga(gaSend, {
 						hitType: 'event',
 						eventCategory: 'activity_list',
 						eventAction: 'sort',
@@ -699,7 +699,7 @@
 			},
 			apply(id) {
 				if(id==1){
-					ga('gtag_UA_107010673_1.send', {
+					ga(gaSend, {
 						hitType: 'event',
 						eventCategory: 'activity_list',
 						eventAction: 'filter',
@@ -707,7 +707,7 @@
 	
 					});
 				}else if(id==2){
-					ga('gtag_UA_107010673_1.send', {
+					ga(gaSend, {
 						hitType: 'event',
 						eventCategory: 'activity_list',
 						eventAction: 'filter',
@@ -715,7 +715,7 @@
 	
 					});
 				}else{
-					ga('gtag_UA_107010673_1.send', {
+					ga(gaSend, {
 						hitType: 'event',
 						eventCategory: 'activity_list',
 						eventAction: 'filter',

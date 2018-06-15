@@ -114,7 +114,7 @@
 						<div class="activitDe">
 							<div class="info">
 								<div class="activeType">
-									<div class="tourType"><i class="iconfont">&#xe653;</i>{{item.category}}</div>
+									<div class="tourType"><i class="iconfont">&#xe653;</i>{{item.category}}{{item.groupType?' · '+item.groupType:''}}</div>
 
 								</div>
 								<div class="titleText" style="-moz-box-orient: vertical;

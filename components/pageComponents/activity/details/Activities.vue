@@ -178,13 +178,13 @@
 							</div>
 							<div class="activity-cont">
 								<div class="activity-info clearfix">
-									<div class="activity-cont-type"><i class="iconfont">&#xe653;</i>{{i.category}}</div>
-									<div class="duration"><i class="iconfont">&#xe624;</i>Duration: {{i.duration}} {{i.durationUnit|firstUpperCase}}</div>
+									<div class="activity-cont-type"><i class="iconfont">&#xe653;</i>{{i.category}}{{i.groupType?' · '+i.groupType:''}}</div>
+									
 								</div>
 
 								<h4 style="-moz-box-orient: vertical;
 							    -webkit-box-orient:vertical;">{{i.title}}</h4>
-
+								<div class="duration"><i class="iconfont">&#xe624;</i>Duration: {{i.duration}} {{i.durationUnit|firstUpperCase}}</div>
 								<div class="pic">
 									<div class="old-pic" v-if="i.originalPrice">${{returnFloat(i.originalPrice)}}</div>
 									<div class="current-price">From<b>${{returnFloat(i.bottomPrice)}}</b><span>  pp</span></div>
@@ -1729,21 +1729,12 @@
 							}
 						}
 						.activity-cont {
-							height: 146px;
+							height: 190px;
 							position: relative;
 							padding: 20px;
 							box-shadow: 0px 2px 3px 0px rgba(53, 58, 63, 0.1);
 							.activity-info {
-								.duration {
-									float: right;
-									font-size: 14px;
-									color: #878e95;
-									i {
-										font-size: 12px;
-										color: #878e95;
-										margin-right: 6px;
-									}
-								}
+								
 								.activity-cont-type {
 									float: left;
 									font-size: 14px;
@@ -1771,6 +1762,16 @@
 								font-size: 20px;
 								font-weight: bold;
 							}
+							.duration {
+									font-size: 14px;
+									margin-top: 6px;
+									color: #878e95;
+									i {
+										font-size: 12px;
+										color: #878e95;
+										margin-right: 6px;
+									}
+								}
 							.activity-cont-duration {
 								margin-top: 17px;
 								i {

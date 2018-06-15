@@ -82,13 +82,14 @@
 							<div class="activitDe">
 								<div class="info">
 									<div class="activeType clearfix">
-										<div class="tourType"><i class="iconfont">&#xe653;</i>{{item.category}}</div>
-										<div class="duration"><i class="iconfont">&#xe624;</i>Duration: {{item.duration}} {{item.durationUnit|firstUpperCase}}</div>
+										<div class="tourType"><i class="iconfont">&#xe653;</i>{{item.category}}{{item.groupType?' · '+item.groupType:''}}</div>
+										
 									</div>
 									<div class="titleText" style="-moz-box-orient: vertical;
 							    -webkit-box-orient:vertical;">
 										{{item.title}}
 									</div>
+									<div class="duration"><i class="iconfont">&#xe624;</i>Duration: {{item.duration}} {{item.durationUnit|firstUpperCase}}</div>
 									<div class="totalPic">
 										<div class="oldpic" v-if="item.originalPrice">${{returnFloat(item.originalPrice)}}</div>
 										<div class="nowPic">From <b>${{returnFloat(item.bottomPrice)}}</b><span>  pp</span></div>
@@ -550,15 +551,7 @@
 										margin-right: 8px;
 									}
 								}
-								.duration {
-									float: right;
-									font-size: 14px;
-									color: #878e95;
-									i {
-										font-size: 12px;
-										margin-right: 8px;
-									}
-								}
+								
 							}
 							.titleText {
 								width: 100%;
@@ -577,6 +570,15 @@
 								text-align: left;
 								overflow: hidden;
 							}
+							.duration {
+								margin-top: 10px;
+									font-size: 14px;
+									color: #878e95;
+									i {
+										font-size: 12px;
+										margin-right: 8px;
+									}
+								}
 							.totalPic {
 								height: 40px;
 								padding: 20px 0 0;

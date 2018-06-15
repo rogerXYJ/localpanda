@@ -67,7 +67,7 @@
 							<div class="item_v clearfix" v-if="i.photoUrl">
 								<div class="contTitle">
 									<h3>{{i.title}}</h3>
-									<p><img v-lazy="i.photoUrl" /><span v-html="i.description.replace(/\r|\n/g,'<br/>')"></span></p>
+									<p><img v-lazy="i.photoUrl" /><span v-if="i.description" v-html="i.description.replace(/\r|\n/g,'<br/>')"></span></p>
 									
 								</div>
 								<!--<div class="cont">

@@ -66,6 +66,7 @@
 		},
 		watch: {
 			text: function (newText, oldText) {
+				
 				this.oldText = oldText;
 				this.onChange(newText);
 			},

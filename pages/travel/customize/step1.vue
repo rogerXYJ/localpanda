@@ -136,8 +136,8 @@
                         <el-form-item class="GUI-form-block__content GUI-form__radio-group" prop="firstTime">
                             <el-radio-group class="GUI-form-item">
                                 <el-radio-group v-model="form.firstTime">
-                                    <el-radio :label="true">Yes</el-radio>
-                                    <el-radio :label="false">No</el-radio>
+                                    <el-radio :label="false">Yes</el-radio>
+                                    <el-radio :label="true">No</el-radio>
                                 </el-radio-group>
                             </el-radio-group>
                         </el-form-item>

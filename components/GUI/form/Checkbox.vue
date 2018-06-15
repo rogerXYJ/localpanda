@@ -51,7 +51,9 @@
                 })
                 if(hasOther){
                     otherValue = val
+                    console.log(otherValue)
                 }
+               
             })
             return {
                 valueArr: value || [],
@@ -78,6 +80,7 @@
             onChange(value, isOther){
                 let arr = this.valueArr.slice();
                 this.$emit('input', arr);
+                //console.log(arr)
             },
             onChangeOther(value){
                 this.onChange(value, true);

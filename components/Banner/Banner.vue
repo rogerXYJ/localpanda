@@ -70,7 +70,9 @@
 		data() {
 			return {
 				swiperOptionBannerPc: {
-					lazy: true,
+					lazy: {
+					    loadPrevNext: true,
+					  },
 					autoplay: {
 						 disableOnInteraction: false,
 					},

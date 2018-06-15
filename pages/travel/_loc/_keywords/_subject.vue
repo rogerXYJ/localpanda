@@ -10,7 +10,7 @@
 				<h4>Explore</h4>
 				<ul class="clearfix">
 					<li v-for="i in tags">
-						<a :href="i.keywords=='Customize Your Trip'?'/travel/customize/step1':'/travel/'+loc+'/'+keywords+'/'+i.urlField">
+						<a :href="i.keywords=='Customize Your Trip'?'/travel/customize/step1':'/travel/'+loc+'/'+keywords+'/'+i.urlField+'?a'">
 							<img v-lazy="i.photo.url" />
 							<span>{{i.keywords}}</span>	
 							<div class="mask"></div>
@@ -193,6 +193,15 @@
 		<Foot></Foot>
 		<FooterCommon></FooterCommon>
 		<themeMenu v-if="isMenu" :tags="tags" :loc="loc" :subject="subject" :keywords="keywords"></themeMenu>
+		<transition name="slideleftTop">
+			<email class="view" v-if="showEmail" @hidden="setHidden" @ishowFn="showFn"></email>
+		</transition>
+		<dailog 
+			:isShowAlert="isShowAlert" 
+			:alertTitle="alertTitle" 
+			:alertMessage="alertMessage"
+			@setIsShowAlert="getdailog"
+			></dailog>
 		
 	</div>
 
@@ -200,6 +209,8 @@
 
 <script>
 	import Vue from "vue";
+	import email from '~/components/email'
+	import dailog from "~/components/email/dailog"
 	import HeaderCommon from '~/components/HeaderCommon/HeaderCommon'
 	import FooterCommon from '~/components/FooterCommon/FooterCommon';
 	import Foot from '~/components/FooterCommon/Foot';
@@ -229,7 +240,13 @@
 			 	tdk:{},
 				tags:[],
 				items:"",
+				showEmail:false,
+				checked:false,
 				isMenu:false,
+				isShowAlert:false,
+				alertTitle:'Successful! Thank you for subscribing us',
+				alertMessage:'You will receive our hand-picked travel inspiration, tips and offerings for you.',
+				isTrue:false
 			}
 			let listdata={}
 			let obj={
@@ -266,8 +283,6 @@
 		      } catch (err) {
 		      	
 		    }
-	 		
-			 
 			return data
 		},
 		head(){
@@ -295,9 +310,24 @@
 			FooterCommon,
 			services,
 			themeMenu,
-			Foot
+			Foot,
+			email,
+			dailog
 		},
 		methods: {
+			showFn(val){
+				this.isTrue=val
+//				this.showEmail=val
+				window.removeEventListener("scroll", this.scorllBar1);
+			},
+			setHidden(val){
+				
+				this.showEmail=val.ishidden
+				this.checked=val.checked
+			},
+			getdailog(val){
+				this.isShowAlert=val
+			},
 			delNullArr(array) {
 				for(var i = 0; i < array.length; i++) {
 					if(array[i] == "" || typeof(array[i]) == "undefined") {
@@ -328,11 +358,21 @@
 				let height=document.querySelector(".tags").offsetTop
 				if(window.scrollY>height){
 					this.isMenu=true
+					
 				}else{
 					this.isMenu=false
 				}
 				
+			},
+			scorllBar1(){
+				
+				let height=document.querySelector(".tags").offsetTop
+				if(window.scrollY>height){
+					this.showEmail=true
+					
+				}
 			}
+			
 
 		},
 		filters: {
@@ -344,13 +384,24 @@
 		},
 		mounted: function() {
 			let that = this
+			//this.isShowAlert=true
+			//this.showEmail=true
 			that.logIn = localStorage.getItem("logstate");
 			window.addEventListener("scroll", this.scorllBar);
+			window.addEventListener("scroll", this.scorllBar1);
 			if(location.href.indexOf("#")!=-1){
 				document.documentElement.scrollTop=document.querySelector("#tags").offsetTop-100
 			}
 			
 			
+		},
+		watch:{
+			checked:function(val,oldVal){
+				if(val){
+					this.showEmail=false
+					window.removeEventListener("scroll", this.scorllBar1);
+				}
+			}
 		}
 	}
 </script>
@@ -659,6 +710,20 @@
 				min-width: 100%;
 				min-height: 100%;
 				background: rgba(0,0,0,0.4);
+			}
+		.view{
+			animation: fa 1s ease-in-out forwards;
+			transform: translateY(100%);
+		}
+		@keyframes fa {
+				0% {
+					transform: translateY(100%);
+				}
+				
+				100% {
+					transform: translateY(0);
+					
+				}
 			}
 	}
 </style>

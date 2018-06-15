@@ -97,7 +97,7 @@
 						</div>
 					</li>
 				</ul>
-				 <div class="empty" v-show="!activityList && !bookList && nobooking">
+				 <div class="empty" v-show="nobooking">
 					<span>
 						<svg class="icon" aria-hidden="true">
 						    <use xlink:href="#icon-lvyou"></use>

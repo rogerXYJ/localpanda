@@ -19,8 +19,25 @@
 		<div class="seach">
 					<div class="seach-table clearfix">
 						<ul class="seach-type">
-							<li>
-								<div class="citys" @click.stop="showSelect(1)">Categories
+							<li v-if="group_type">
+								<div class="citys" @click.stop="showSelect(0)">Service Type
+									<i class="iconfont" v-if="!isshowGroupType">&#xe666;</i>
+									<i class="iconfont" v-else>&#xe667;</i>
+								</div>
+								<div class="citysList" v-if="isshowGroupType" @click.stop="selectShow(0)">
+									<em class="cancel iconfont" @click.stop="cancel(0)">&#xe606;</em>
+									<el-checkbox-group  v-model="checkedGroupType">
+										<div class="checkboxlist" v-for="(item,key,index) in group_type">
+											<el-checkbox :label="key" :key="key">{{key}} ({{item}})</el-checkbox>
+										</div>
+										
+									</el-checkbox-group>
+
+									<div class="subimtbtn" @click.stop="apply(0)">Apply</div>
+								</div>
+							</li>
+							<li v-if="category">
+								<div class="citys" @click.stop="showSelect(1)">Products
 									<i class="iconfont" v-if="!isshowcategory">&#xe666;</i>
 									<i class="iconfont" v-else>&#xe667;</i>
 								</div>
@@ -35,7 +52,36 @@
 									<div class="subimtbtn" @click.stop="apply(1)">Apply</div>
 								</div>
 							</li>
-							<li>
+							<li v-if="attraction">
+								<div class="citys" @click.stop="showSelect(4)">Interests
+									<i class="iconfont" v-if="!isshowAttraction">&#xe666;</i>
+									<i class="iconfont" v-else>&#xe667;</i>
+								</div>
+								<div class="citysList1 clearfix" :class="Object.keys(attraction).length>10?'left':''"  v-if="isshowAttraction" @click.stop="selectShow(4)">
+									<div class="citysbox" :class="Object.keys(attraction).length>10?'widthlong':''">
+										<em class="cancel position iconfont" @click.stop="cancel(4)">&#xe606;</em>
+										<el-checkbox-group class="clearfix" v-model="checkedAttraction" v-if="Object.keys(attraction).length<=10">
+											<div class="checkboxlist " v-for="(item,key,index) in attraction">
+												<el-checkbox :label="key" :key="key">{{key}} ({{item}})</el-checkbox>
+											</div>
+											<div class="subimtbtn" @click.stop="apply(4)">Apply</div>
+										</el-checkbox-group>
+										<el-checkbox-group v-model="checkedAttraction" v-else>
+											<div class="box clearfix">
+												<div class="checkboxlist floatbox longer" v-for="(item,key,index) in attraction">
+													<el-checkbox :label="key" :key="key">{{key}} ({{item}})</el-checkbox>
+												</div>
+												
+											</div>
+											
+										</el-checkbox-group>
+										
+									</div>
+									<div class="subimtbtn" @click.stop="apply(4)">Apply</div>
+								</div>
+							</li>
+							
+							<li v-if="tourtype">
 								<div class="citys" @click.stop="showSelect(3)">Themes
 									<i class="iconfont" v-if="!isshowtourtype">&#xe666;</i>
 									<i class="iconfont" v-else>&#xe667;</i>
@@ -46,17 +92,22 @@
 										<div class="checkboxlist" v-for="(i,key,index) in tourtype">
 											<el-checkbox :label="key" :key="key">{{key}} ({{i}})</el-checkbox>
 										</div>
+										<div class="subimtbtn" @click.stop="apply(2)">Apply</div>
 									</el-checkbox-group>
 									<el-checkbox-group v-model="checkedTourtype" v-else>
-										<div class="checkboxlist floatbox" v-for="(i,key,index) in tourtype">
-											<el-checkbox :label="key" :key="key">{{key}} ({{i}})</el-checkbox>
+										<div class="box clearfix">
+											<div class="checkboxlist floatbox" v-for="(i,key,index) in tourtype">
+												<el-checkbox :label="key" :key="key">{{key}} ({{i}})</el-checkbox>
+											</div>
+											
 										</div>
+										<div class="subimtbtn" @click.stop="apply(2)">Apply</div>
 									</el-checkbox-group>
-
-									<div class="subimtbtn" @click.stop="apply(2)">Apply</div>
+									
+									
 								</div>
 							</li>
-							<li>
+							<li v-if="durations">
 								<div class="citys" @click.stop="showSelect(2)">Duration
 									<i class="iconfont" v-if="!isshowdurations">&#xe666;</i>
 									<i class="iconfont" v-else>&#xe667;</i>
@@ -86,13 +137,14 @@
 					</div>
 					<div class="delSeach clearfix">
 						<div class="del">
-							<span v-if="removeCity.length>0" v-for="(item,index) in removeCity" @click="del(0,removeCity,index)">{{item}}<i class="iconfont">&#xe629;</i></span>
+							<span v-if="removeGroupType.length>0" v-for="(item,index) in removeGroupType" @click="del(0,removeGroupType,index)">{{item}}<i class="iconfont">&#xe629;</i></span> 
 							<span v-if="removeCategory.length>0" v-for="(item,index) in removeCategory" @click="del(1,removeCategory,index)">{{item}}<i class="iconfont">&#xe629;</i></span>
 							<span v-if="removeDurations.length>0 && item==0" v-for="(item,index) in removeDurations" @click="del(2,removeDurations,index)">Half Day<i class="iconfont">&#xe629;</i></span>
 							<span v-if="removeDurations.length>0 && item==1" v-for="(item,index) in removeDurations" @click="del(2,removeDurations,index)">1 Day<i class="iconfont">&#xe629;</i></span>
 							<span v-if="removeDurations.length>0 && item>1" v-for="(item,index) in removeDurations" @click="del(2,removeDurations,index)">{{item}} Days<i class="iconfont">&#xe629;</i></span>
 							<span v-if="removeTourtype.length>0" v-for="(item,index) in removeTourtype" @click="del(3,removeTourtype,index)">{{item.replace(/And/g,'&')}}<i class="iconfont">&#xe629;</i></span>
-							<em class="clearAll" @click="clearAll" v-if="removeCity.length>0||removeCategory.length>0||removeDurations.length>0||removeTourtype.length>0">Clear All</em>
+							<span v-if="removeAttraction.length>0" v-for="(item,index) in removeAttraction" @click="del(4,removeAttraction,index)">{{item}}<i class="iconfont">&#xe629;</i></span> 
+							<em class="clearAll" @click="clearAll" v-if="removeGroupType.length>0||removeAttraction.length>0||removeCategory.length>0||removeDurations.length>0||removeTourtype.length>0">Clear All</em>
 						</div>
 						<div class="pageSizeInfo" v-if="records==1">1 activity in total</div>
 						<div class="pageSizeInfo" v-if="records==0">0 activity in total</div>
@@ -247,20 +299,37 @@
 						isSelect: false
 					}
 				],
+				
+				
+				//筛选
+				group_type:'',
+				checkedGroupType:[],
+				isshowGroupType:false,
+				
+				attraction:'',
+				checkedAttraction:[],
+				isshowAttraction:false,
+				
 				isshowcategory: false,
-				category: [],
+				category: '',
 				checkedCategory: [],
+				
 				isshowdurations: false,
-				durations: [],
+				durations: '',
 				checkedDurations: [],
+				
 				isshowtourtype: false,
-				tourtype: [],
+				tourtype: '',
 				checkedTourtype: [],
+				
+				aggregations:'',
 				records: '',
-				removeCity: [],
+				//删除筛选项
+				removeAttraction: [],
 				removeCategory: [],
 				removeDurations: [],
 				removeTourtype: [],
+				removeGroupType:[]
 			}
 			let listdata = {}
 			let filters = []
@@ -278,7 +347,7 @@
 			}
 			if(opctions) {
 				if(opctions.category) {
-					data.checkedCategory = data.checkedCategory.concat(opctions.category)
+					data.checkedCategory =opctions.category
 					let jsonCategory = {
 						type: 'CATEGORY',
 						filterValues: data.checkedCategory
@@ -286,7 +355,7 @@
 					filters.push(jsonCategory)
 				}
 				if(opctions.durations) {
-					data.checkedDurations = data.checkedDurations.concat(opctions.durations)
+					data.checkedDurations = opctions.durations
 					let jsonDurations = {
 						type: 'DURATION',
 						filterValues: data.checkedDurations
@@ -297,12 +366,29 @@
 					for(let i = 0; i < opctions.tourtype.length; i++) {
 						opctions.tourtype[i] = opctions.tourtype[i].replace(/And/g, '&')
 					}
-					data.checkedTourtype = data.checkedTourtype.concat(opctions.tourtype)
+					data.checkedTourtype =opctions.tourtype
 					let jsonTourtype = {
 						type: 'TOUR_TYPE',
 						filterValues: data.checkedTourtype
 					}
 					filters.push(jsonTourtype)
+				}
+				if(opctions.attraction) {
+					console.log(opctions.attraction)
+					data.checkedAttraction = opctions.attraction
+					let jsonAttraction = {
+						type: 'ATTRACTION',
+						filterValues: data.checkedAttraction
+					}
+					filters.push(jsonAttraction)
+				}
+				if(opctions.group_type) {
+					data.checkedGroupType =opctions.group_type
+					let jsonGroupType = {
+						type: 'GROUP_TYPE',
+						filterValues: data.checkedGroupType
+					}
+					filters.push(jsonGroupType)
 				}
 				obj = {
 					location: data.loc == "Xian" ? "Xi\'an" : data.loc,
@@ -319,6 +405,7 @@
 					sort: sort
 				}
 			}
+			console.log(obj)
 			try {
 				listdata = await Vue.axios.post(apiBasePath + "search/activity", JSON.stringify(obj), {
 					headers: {
@@ -326,6 +413,7 @@
 					}
 				})
 				data.records = listdata.data.records
+				data.aggregations = listdata.data.aggregations
 				data.activityList = listdata.data.entities
 				if(listdata.data.records > data.pageSize) {
 					data.isdisabled = true
@@ -333,11 +421,29 @@
 				//转化显示选择项
 				for(let i = 0; i < listdata.data.aggregations.length; i++) {
 					if(listdata.data.aggregations[i].type == "CATEGORY") {
-						data.category = listdata.data.aggregations[i].items
+						if(listdata.data.aggregations[i].items){
+							data.category = listdata.data.aggregations[i].items
+						}
 					} else if(listdata.data.aggregations[i].type == "DURATION") {
-						data.durations = listdata.data.aggregations[i].items
+						if(listdata.data.aggregations[i].items){
+							data.durations = listdata.data.aggregations[i].items
+						}
+						
 					} else if(listdata.data.aggregations[i].type == "TOUR_TYPE") {
-						data.tourtype = listdata.data.aggregations[i].items
+						if(listdata.data.aggregations[i].items){
+							data.tourtype = listdata.data.aggregations[i].items
+						}
+						
+					}else if(listdata.data.aggregations[i].type=="GROUP_TYPE"){
+						if(listdata.data.aggregations[i].items){
+							data.group_type=listdata.data.aggregations[i].items
+						}
+						
+					}else if(listdata.data.aggregations[i].type=="ATTRACTION"){
+						if(listdata.data.aggregations[i].items){
+							data.attraction=listdata.data.aggregations[i].items
+						}
+						
 					}
 				}
 				//console.log(obj)
@@ -401,6 +507,8 @@
 				this.isshowcategory = false
 				this.isshowdurations = false
 				this.isshowtourtype = false
+				this.isshowAttraction=false
+				this.isshowGroupType=false
 			},
 			isShowFn(val) {
 				this.istrue = val
@@ -439,37 +547,60 @@
 			},
 			showSelect(id) {
 				let opctions = JSON.parse(this.getUrlParam("opctions")) ? JSON.parse(this.getUrlParam("opctions")) : JSON.parse(this.getUrlParam("options"));
-				if(id == 1) {
-					this.isshowcategory = !this.isshowcategory
-					this.isshowcity = false
+				if(id==0){
+					this.isshowGroupType = !this.isshowGroupType
+					this.isshowAttraction = false
 					this.isshowdurations = false
 					this.isshowtourtype = false
-					if(opctions && opctions.category.length > 0) {
+					this.isshowcategory=false
+					if(opctions && opctions.group_type) {
+						this.checkedGroupType = opctions.group_type
+					} else {
+						this.checkedGroupType=[]
+						this.checkedCategory = opctions && opctions.category ? opctions.category : []
+						this.checkedDurations = opctions && opctions.durations ? opctions.durations : []
+						this.checkedTourtype = opctions && opctions.tourtype ? opctions.tourtype : []
+						this.checkedAttraction=opctions&&opctions.attraction?opctions.attraction:[]
+					}
+				}
+				else if(id == 1) {
+					this.isshowcategory = !this.isshowcategory
+					this.isshowAttraction = false
+					this.isshowdurations = false
+					this.isshowtourtype = false
+					this.isshowGroupType=false
+					if(opctions && opctions.category) {
 						this.checkedCategory = opctions.category
 					} else {
 						
 						this.checkedCategory = []
 						this.checkedDurations = opctions && opctions.durations ? opctions.durations : []
 						this.checkedTourtype = opctions && opctions.tourtype ? opctions.tourtype : []
+						this.checkedAttraction=opctions&&opctions.attraction?opctions.attraction:[]
+						this.checkedGroupType=opctions&&opctions.group_type?opctions.group_type:[]
 					}
 				} else if(id == 2) {
 					this.isshowdurations = !this.isshowdurations
 					this.isshowcategory = false
-					this.isshowcity = false
+					this.isshowAttraction = false
 					this.isshowtourtype = false
-					if(opctions && opctions.durations.length > 0) {
+					this.isshowGroupType=false
+					if(opctions && opctions.durations) {
 						this.checkedDurations = opctions.durations
 					} else {
 						
 						this.checkedCategory = opctions && opctions.category ? opctions.category : []
 						this.checkedDurations = []
 						this.checkedTourtype = opctions && opctions.tourtype ? opctions.tourtype : []
+						this.checkedAttraction=opctions&&opctions.attraction?opctions.attraction:[]
+						this.checkedGroupType=opctions&&opctions.group_type?opctions.group_type:[]
 					}
-				} else {
+				} else if(id == 3) {
 					this.isshowtourtype = !this.isshowtourtype
 					this.isshowdurations = false
 					this.isshowcategory = false
-					this.isshowcity = false
+					this.isshowAttraction = false
+					this.isshowGroupType=false
 					if(opctions && opctions.tourtype) {
 						for(let i = 0; i < opctions.tourtype.length; i++) {
 							opctions.tourtype[i] = opctions.tourtype[i].replace(/And/g, "&")
@@ -480,6 +611,24 @@
 						this.checkedCategory = opctions && opctions.category ? opctions.category : []
 						this.checkedDurations = opctions && opctions.durations ? opctions.durations : []
 						this.checkedTourtype = []
+						this.checkedAttraction=opctions&&opctions.attraction?opctions.attraction:[]
+						this.checkedGroupType=opctions&&opctions.group_type?opctions.group_type:[]
+					}
+				}else{
+					this.isshowAttraction = !this.isshowAttraction
+					this.isshowdurations = false
+					this.isshowcategory = false
+					this.isshowtourtype=false
+					this.isshowGroupType=false
+					if(opctions && opctions.attraction) {
+						this.checkedAttraction = opctions.attraction
+					} else {
+						
+						this.checkedCategory = opctions && opctions.category ? opctions.category : []
+						this.checkedDurations = opctions && opctions.durations ? opctions.durations : []
+						this.checkedTourtype = opctions && opctions.tourtype ? opctions.tourtype : []
+						this.checkedAttraction=[]
+						this.checkedGroupType=opctions&&opctions.group_type?opctions.group_type:[]
 					}
 				}
 			},
@@ -528,28 +677,41 @@
 					});
 				}
 				var opctions = this.delNull({
+					group_type:this.checkedGroupType,
 					category: this.checkedCategory,
 					durations: this.checkedDurations,
 					tourtype: this.checkedTourtype,
+					attraction:this.checkedAttraction
 				})
 				sort = JSON.stringify(sort)
-				opctions = JSON.stringify(opctions)
+				opctions = encodeURIComponent(JSON.stringify(opctions))
 				location.href = "/activity/list/" + this.loc + "?options=" + opctions + (/SCORE/.test(sort)?"":"&sort=" + sort);
 			},
 			//选项内容点击不收起
 			selectShow(id) {
-				if(id == 1) {
+				if(id==0){
+					this.isshowGroupType=true
+				}else if(id == 1) {
 					this.isshowcategory = true
 				} else if(id == 2) {
 					this.isshowdurations = true
-				} else {
+				} else if(id == 3) {
 					this.isshowtourtype = true
+				}else{
+					this.isshowAttraction=true
 				}
 			},
 			cancel(id) {
 				let that = this
 				let opctions = JSON.parse(that.getUrlParam("opctions")) ? JSON.parse(that.getUrlParam("opctions")) : JSON.parse(that.getUrlParam("options"));
-				if(id == 1) {
+				if(id==0){
+					this.isshowGroupType = false
+					if(!opctions) {
+						this.checkedGroupType = []
+					} else if(opctions.group_type) {
+						this.checkedGroupType = opctions.group_type
+					}
+				}else if(id == 1) {
 					this.isshowcategory = false
 					if(!opctions) {
 						this.checkedCategory = []
@@ -563,15 +725,22 @@
 					} else if(opctions.durations) {
 						this.checkedDurations =opctions.durations
 					}
-				} else {
+				} else if(id==3) {
 					this.isshowtourtype = false
 					if(!opctions) {
 						this.checkedTourtype = []
-					} else if(opctions) {
+					} else if(opctions.tourtype) {
 						for(let i = 0; i < opctions.tourtype.length; i++) {
 							opctions.tourtype[i] = opctions.tourtype[i].replace(/And/g, "&")
 						}
 						opctions.tourtype = this.checkedTourtype
+					}
+				}else{
+					this.isshowAttraction = false
+					if(!opctions) {
+						this.checkedAttraction = []
+					} else if(opctions.attraction) {
+						opctions.attraction = this.checkedAttraction
 					}
 				}
 			},
@@ -596,33 +765,72 @@
 					}
 				}
 				sort = JSON.stringify(sort)
-				if(id == 1) {
+				if(id==0){
 					arr.splice(index, 1)
+					console.log(arr)
+					var opctions = this.delNull({
+						group_type:arr,
+						category: this.removeCategory,
+						durations: this.removeDurations,
+						tourtype: this.removeTourtype,
+						attraction:this.removeAttraction
+						
+					})
+					opctions = encodeURIComponent(JSON.stringify(opctions))
+					console.log(opctions)
+					location.href = "/activity/list/" + this.loc + "?options=" + opctions  + (/SCORE/.test(sort)?"":"&sort=" + sort);
+				}else if(id == 1) {
+					arr.splice(index, 1)
+					console.log(arr)
 					var opctions = this.delNull({
 						category: arr,
 						durations: this.removeDurations,
 						tourtype: this.removeTourtype,
+						attraction:this.removeAttraction,
+						group_type:this.removeGroupType,
 					})
-					opctions = JSON.stringify(opctions)
+					opctions = encodeURIComponent(JSON.stringify(opctions))
+					console.log(opctions)
 					location.href = "/activity/list/" + this.loc + "?options=" + opctions  + (/SCORE/.test(sort)?"":"&sort=" + sort);
 				} else if(id == 2) {
 					arr.splice(index, 1)
+					console.log(arr)
 					var opctions = this.delNull({
 						//cities:this.removeCity,
 						category: this.removeCategory,
 						durations: arr,
 						tourtype: this.removeTourtype,
+						attraction:this.removeAttraction,
+						group_type:this.removeGroupType,
 					})
-					opctions = JSON.stringify(opctions)
+					opctions = encodeURIComponent(JSON.stringify(opctions))
+					console.log(opctions)
 					location.href = "/activity/list/" + this.loc + "?options=" + opctions  + (/SCORE/.test(sort)?"":"&sort=" + sort);
-				} else {
+				} else if(id==3) {
 					arr.splice(index, 1)
+					console.log(arr)
 					var opctions = this.delNull({
 						category: this.removeCategory,
 						durations: this.removeDurations,
 						tourtype: arr,
+						attraction:this.removeAttraction,
+						group_type:this.removeGroupType,
 					})
-					opctions = JSON.stringify(opctions)
+					opctions = encodeURIComponent(JSON.stringify(opctions))
+					console.log(opctions)
+					location.href = "/activity/list/" + this.loc + "?options=" + opctions + (/SCORE/.test(sort)?"":"&sort=" + sort);
+				}else{
+					arr.splice(index, 1)
+					console.log(arr)
+					var opctions = this.delNull({
+						category: this.removeCategory,
+						durations: this.removeDurations,
+						tourtype: this.removeTourtype,
+						attraction:arr,
+						group_type:this.removeGroupType,
+					})
+					opctions = encodeURIComponent(JSON.stringify(opctions))
+					console.log(opctions)
 					location.href = "/activity/list/" + this.loc + "?options=" + opctions + (/SCORE/.test(sort)?"":"&sort=" + sort);
 				}
 			},
@@ -653,6 +861,14 @@
 					}
 					filters.push(jsonTourtype)
 				}
+				if(that.checkedGroupType.length > 0) {
+					let jsonGroupType = {
+						type: 'GROUP_TYPE',
+						filterValues: that.checkedGroupType
+					}
+					filters.push(jsonGroupType)
+				}
+				
 				if(this.selected == "Recommended") {
 					sort = {
 						type: "SCORE"
@@ -714,7 +930,7 @@
 						eventLabel: 'theme',
 	
 					});
-				}else{
+				}else if(id==3){
 					ga(gaSend, {
 						hitType: 'event',
 						eventCategory: 'activity_list',
@@ -747,11 +963,10 @@
 					category: this.checkedCategory,
 					durations: this.checkedDurations,
 					tourtype: this.checkedTourtype,
+					attraction:this.checkedAttraction,
+					group_type:this.checkedGroupType
 				});
-				
-				
-
-				opctions = JSON.stringify(opctions)
+				opctions = encodeURIComponent(JSON.stringify(opctions))
 				sort = JSON.stringify(sort)
 				location.href = "/activity/list/" + this.loc + "?options=" + opctions  + (/SCORE/.test(sort)?"":"&sort=" + sort);
 			},
@@ -806,16 +1021,17 @@
 			that.removeCategory = opctions && opctions.category ? opctions.category : []
 			that.removeDurations = opctions && opctions.durations ? opctions.durations : []
 			that.removeTourtype = opctions && opctions.tourtype ? opctions.tourtype : []
-			console.log(opctions)
-			console.log(that.removeCategory)
-			console.log(that.removeDurations)
-			console.log(that.removeTourtype)
+			that.removeAttraction=opctions && opctions.attraction ? opctions.attraction : []
+			that.removeGroupType=opctions && opctions.group_type ? opctions.group_type : []
 			
+			console.log(this.attraction)
 
 			document.getElementsByTagName("body")[0].addEventListener("click", function() {
 				that.isshowcategory = false
 				that.isshowdurations = false
 				that.isshowtourtype = false
+				that.isshowAttraction=false
+				that.isshowGroupType=false
 			})
 			that.logIn = localStorage.getItem("logstate") ? localStorage.getItem("logstate") : null
 			
@@ -1014,9 +1230,10 @@
 								background: #fff;
 								box-shadow: 0px 12px 20px 0px rgba(0, 0, 0, 0.2);
 								border-radius: 3px;
-								padding: 30px 0px 40px 27px;
-								width: 311px;
+								width: 350px;
+								padding: 30px 27px;
 								left: 50%;
+								
 								margin-left: -50%;
 								.checkboxlist {
 									margin-bottom: 20px;
@@ -1038,9 +1255,10 @@
 									font-weight: bold;
 								}
 								.subimtbtn {
-									position: absolute;
+									position:absolute;
 									bottom: 25px;
 									right: 25px;
+									text-align: right;
 									color: #1bbc9d;
 									font-size: 18px;
 									cursor: pointer;
@@ -1210,10 +1428,71 @@
 		.floatbox {
 			float: left;
 			width: 30%;
-			margin-left: 5%;
+			margin-right: 5%;
+			
 		}
 		.long {
 			width: 671px!important;
+			left: -100%!important;
+		}
+		.widthlong{
+			width: 850px!important;
+			max-height: 431px;
+			
+			overflow: auto;
+		}
+		.left{
+			left: -100%!important;
+		}
+		.longer{
+			width: 40%!important;
+			
+		}
+		.citysbox{
+			width: 350px;
+			padding: 30px 27px;
+		}
+		.position{
+			top: 20px!important;
+			right: 30px!important;
+		}
+		.citysList1{
+			position: absolute;
+			z-index: 999999999;
+			background: #fff;
+			box-shadow: 0px 12px 20px 0px rgba(0, 0, 0, 0.2);
+			border-radius: 3px;
+			left: 50%;
+			margin-left: -50%;
+			.checkboxlist {
+									margin-bottom: 20px;
+								}
+								.cancel {
+									position: absolute;
+									top: 10px;
+									right: 10px;
+									font-size: 12px;
+									cursor: pointer;
+								}
+								.clear {
+									position: absolute;
+									bottom: 23px;
+									left: 25px;
+									color: #1bbc9d;
+									font-size: 18px;
+									cursor: pointer;
+									font-weight: bold;
+								}
+								.subimtbtn {
+									position:absolute;
+									bottom: 25px;
+									right: 25px;
+									text-align: right;
+									color: #1bbc9d;
+									font-size: 18px;
+									cursor: pointer;
+									font-weight: bold;
+								}
 		}
 	}
 </style>

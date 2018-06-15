@@ -59,13 +59,14 @@
 							<div class="activitDe">
 								<div class="info">
 									<div class="activeType clearfix">
-										<div class="tourType"><i class="iconfont">&#xe653;</i>{{item.category}}</div>
-										<div class="duration"><i class="iconfont">&#xe624;</i>Duration: {{item.duration}} {{item.durationUnit|firstUpperCase}}</div>
+										<div class="tourType"><i class="iconfont">&#xe653;</i>{{item.category}}{{item.groupType?' · '+item.groupType:''}}</div>
+										
 									</div>
 									<div class="titleText" style="-moz-box-orient: vertical;
 							    -webkit-box-orient:vertical;">
 										{{item.title}}
 									</div>
+									<div class="duration"><i class="iconfont">&#xe624;</i>Duration: {{item.duration}} {{item.durationUnit|firstUpperCase}}</div>
 									<div class="totalPic">
 										
 										<div class="nowPic">From <b>${{item.bottomPrice}}</b><span>  pp</span></div>
@@ -203,15 +204,7 @@
 										margin-right: 8px;
 									}
 								}
-								.duration{
-									float: right;
-									font-size:14px;
-									color: #878e95;
-									i{
-										font-size: 12px;
-										margin-right: 8px;
-									}
-								}
+								
 								
 							}
 							.titleText{
@@ -235,8 +228,17 @@
 								
 								
 							}
+							.duration{
+								padding-top: 10px;
+									font-size:14px;
+									color: #878e95;
+									i{
+										font-size: 12px;
+										margin-right: 8px;
+									}
+								}
 							.totalPic{
-								padding-top: 20px;
+								padding-top: 10px;
 								.oldpic{
 									text-align: right;
 									font-size: 14px;

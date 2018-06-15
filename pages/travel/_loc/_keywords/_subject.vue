@@ -44,8 +44,9 @@
 									<img v-lazy="i.coverPhotoUrl"/>
 								</div>
 								<div class="activityInfo">
-									<div class="tourType">{{i.category}} · {{i.duration}} {{i.durationUnit|firstUpperCase}}</div>
+									<div class="tourType">{{i.category}}{{i.groupType?' · '+i.groupType:''}}</div>
 									<p>{{i.title}}</p>
+									<div class="duration"><i class="iconfont">&#xe624;</i>Duration: {{i.duration}} {{i.durationUnit|firstUpperCase}}</div>
 									<div class="price">From<b>${{returnFloat(i.bottomPrice)}}</b>PP</div>
 								</div>
 							</a>
@@ -589,6 +590,15 @@
 						              overflow: hidden;
 						     
 						              font-weight: bold;
+								}
+								.duration {
+									margin-top: 10px;
+									font-size: 14px;
+									color: #878e95;
+									i {
+										font-size: 12px;
+										margin-right: 8px;
+									}
 								}
 								.price{
 									margin-top: 10px;

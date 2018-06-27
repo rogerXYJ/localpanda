@@ -16,7 +16,7 @@
 									<span>Booking ID: {{item.orderId}}</span>
 									<span>Booking Time: {{item.createTime}} (EST)</span>
 								</div>
-								<p><b>Service Type:</b>{{item.activityInfo.category}} </p>
+								<p><b>Category:</b>{{item.activityInfo.category}} </p>
 								<p>
 									<b>Participants:</b> 
 									<span v-if="item.adultNum==1">1 Adult</span>
@@ -26,11 +26,11 @@
 										<span v-if="item.childrenNum==1">1 Child</span>
 										<span v-else>{{item.childrenNum}} Children</span>
 									</span>
-									<span v-if="item.infantNum!=0">,</span>
+									<!--<span v-if="item.infantNum!=0">,</span>
 									<span v-if="item.infantNum!=0">
 										<span v-if="item.infantNum==1">1 Baby</span>
 										<span v-else>{{item.infantNum}} Babies</span>
-									</span>
+									</span>-->
 									
 									
 								</p>

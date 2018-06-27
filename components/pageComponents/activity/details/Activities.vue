@@ -200,23 +200,95 @@
 					<div class="boxshowdow">
 						<div class="bookbox">
 							<div class="picPp clearfix">
-								<div class="picLeft">
-									From <span>{{nowExchange.symbol}}{{returnFloat(picInfo.originalPrice)}}</span>
-									<b>{{nowExchange.symbol}}{{returnFloat(picInfo.bottomPrice)}}</b> pp
-								</div>
-								<div class="picRight" @mouseover="showNode" @mouseleave="hidden">
-									<select class="currency_type" @change="changeCurrency">
-										<option :value="item.code" v-for="item in exchange" :key="item.code">{{item.code}}</option>
-									</select>
-									<span class="iconfont">&#xe666;</span>
-								</div>
-								<!-- <div class="priceNote" v-if="isShowPicNode">
-									<h4>Price Note</h4>
-									<p>Price is in USD and calculated based on the number of people in your tour group and the vehicle required.</p>
-								</div> -->
+								
+									<div class="picLeft">
+										<select class="currency_type" @change="changeCurrency">
+											<option :value="item.code" v-for="item in exchange" :key="item.code">{{item.code}}</option>
+										</select>
+										<span class="iconfont">&#xe666;</span>
+									</div>
+									<div class="picRight" >
+										<div style="color: #FFF;">
+											<b style="font-size: 22px">{{nowExchange.symbol}}{{returnFloat(pp)}}</b> 
+											pp for party of {{people}}
+											<span class="question" @mouseover="showNode" @mouseleave="hidden">?</span>
+										</div>
+									</div>
+								
+								 <div class="priceNote" v-if="isShowPicNode" @mouseover="showNodeCont" @mouseleave="hiddenCont">
+									
+									<p>This is the price per person for a group of 2 (see "What's Included" for details).</br>
+
+										<a @click="picDetailposition('picDetails')">Click here</a> if you want to see price for group of different size.
+									</p>
+								</div> 
 
 							</div>
 							<div class="selectBox">
+								<div class="selectPepole">
+									<b>Guests</b>
+									<div class="Guests" @click.stop="showAdults">
+										<!--<input class="people" readonly="readonly" v-model="people" />-->
+										<!--<div class="people" v-if="children==0&&adults==0">{{people}}</div>
+										<div class="people" v-if="children==0&&adults==1">{{people}} Person</div>
+										<div class="people" v-if="children>0||adults>1">{{people}} People</div>-->
+										<div class="people" v-if="children==0&&people==1">Adult x 1</div>
+										<div class="people" v-if="children==0&&people>1">Adults x {{people}}</div>
+										<div class="people" v-if="children>0">
+											<span v-if="people==1">Adult x 1</span>
+											<span v-else>Adults x {{people}}</span> 
+											<span v-if="children==1"> , child x 1</span>
+											<span v-if="children>1"> , children x  {{children}}</span>
+										</div> 
+										<i class="iconfont" v-if="!isShowAdults">&#xe60f;</i>
+										<i class="iconfont" v-else>&#xe63f;</i>
+										<!--<p v-if="isSelectDate" style="margin-top: 10px; font-size: 12px; color:red;">{{dateErrText}}</p>-->
+										<p style="margin-top: 10px; font-size:12px;color:red;" v-if="error">{{dateErrText}}</p>
+										<!--<p style="margin-top: 10px;color:#353a3f;font-size:12px;opacity: .5;" v-if="!error&&!isSelectDate">{{dateErrText}}</p>-->
+
+										<div class="choose" v-if="isShowAdults">
+											<div class="adults clearfix">
+												<b>Adults</b>
+												<div class="selectAdults">
+													<em class="iconfont color" v-if="children+adults>picInfo.minParticipants" @click.stop="del(0)">&#xe64d;</em>
+													<em class="iconfont" v-else>&#xe64d;</em>
+													<input readonly v-model="adults" />
+													<em class="iconfont" v-if="(children+adults)>=picInfo.maxParticipants">&#xe64b;</em>
+													<em class="iconfont color" v-else @click.stop="add(0)">&#xe64b;</em>
+												</div>
+											</div>
+											<div class="children clearfix">
+												<div class="years">
+													<b>Children</b>
+													<span v-if="picInfo.childStandard">{{picInfo.infantStandard}} - {{picInfo.childStandard}} years</span>
+												</div>
+												
+												<div class="selectAdults">
+													<em class="iconfont color" v-if="children>0" @click.stop="del(1)">&#xe64d;</em>
+													<em class="iconfont" v-else>&#xe64d;</em>
+													<input readonly v-model="children" />
+													<em class="iconfont" v-if="(children+adults)>=picInfo.maxParticipants">&#xe64b;</em>
+													<em class="iconfont color" v-else @click.stop="add(1)">&#xe64b;</em>
+												</div>
+											</div>
+											<!--<div class="children clearfix">
+												<div class="years">
+													<b>Babies</b>
+													<span>Final headcount does not include babies</span>
+												</div>
+												
+												<div class="selectAdults">
+													<em class="iconfont color" v-if="infant>0" @click.stop="del(3)">&#xe64d;</em>
+													<em class="iconfont" v-else>&#xe64d;</em>
+													<input readonly v-model="infant" />
+													<em class="iconfont color" v-if="infant<picInfo.maxParticipants-1" @click.stop="add(3)">&#xe64b;</em>
+													<em class="iconfont" v-else>&#xe64b;</em>
+												</div>
+											</div>-->
+										</div>
+
+									</div>
+								</div>
 								<div class="select clearfix">
 									<div class="selectDate" :class="picInfo.departureTime?'':'long'">
 										<b>Date</b>
@@ -239,72 +311,13 @@
 
 									</div>
 								</div>
-								<div class="selectPepole">
-									<b>Guests</b>
-									<div class="Guests" @click.stop="showAdults">
-										<!--<input class="people" readonly="readonly" v-model="people" />-->
-										<div class="people" v-if="children==0&&adults==0">{{people}}</div>
-										<div class="people" v-if="children==0&&adults==1">{{people}} Person</div>
-										<div class="people" v-if="children>0||adults>1">{{people}} People</div>
-
-										<i class="iconfont" v-if="!isShowAdults">&#xe60f;</i>
-										<i class="iconfont" v-else>&#xe63f;</i>
-										<!--<p v-if="isSelectDate" style="margin-top: 10px; font-size: 12px; color:red;">{{dateErrText}}</p>-->
-										<p style="margin-top: 10px; font-size:12px;color:red;" v-if="error">{{dateErrText}}</p>
-										<!--<p style="margin-top: 10px;color:#353a3f;font-size:12px;opacity: .5;" v-if="!error&&!isSelectDate">{{dateErrText}}</p>-->
-
-										<div class="choose" v-if="isShowAdults">
-											<div class="adults clearfix">
-												<b>Adults</b>
-												<div class="selectAdults">
-													<em class="iconfont color" v-if="adults>1" @click.stop="del(0)">&#xe64d;</em>
-													<em class="iconfont" v-else>&#xe64d;</em>
-													<input readonly v-model="adults" />
-													<em class="iconfont" v-if="(children+adults)>=picInfo.maxParticipants">&#xe64b;</em>
-													<em class="iconfont color" v-else @click.stop="add(0)">&#xe64b;</em>
-												</div>
-											</div>
-											<div class="children clearfix">
-												<div class="years">
-													<b>Children</b>
-													<span v-if="picInfo.childStandard">{{picInfo.infantStandard}} - {{picInfo.childStandard}} years</span>
-												</div>
-												
-												<div class="selectAdults">
-													<em class="iconfont color" v-if="children>0" @click.stop="del(1)">&#xe64d;</em>
-													<em class="iconfont" v-else>&#xe64d;</em>
-													<input readonly v-model="children" />
-													<em class="iconfont" v-if="(children+adults)>=picInfo.maxParticipants">&#xe64b;</em>
-													<em class="iconfont color" v-else @click.stop="add(1)">&#xe64b;</em>
-												</div>
-											</div>
-											<div class="children clearfix">
-												<div class="years">
-													<b>Babies</b>
-													<span>Final headcount does not include babies</span>
-												</div>
-												
-												<div class="selectAdults">
-													<em class="iconfont color" v-if="infant>0" @click.stop="del(3)">&#xe64d;</em>
-													<em class="iconfont" v-else>&#xe64d;</em>
-													<input readonly v-model="infant" />
-													<em class="iconfont color" v-if="infant<picInfo.maxParticipants-1" @click.stop="add(3)">&#xe64b;</em>
-													<em class="iconfont" v-else>&#xe64b;</em>
-												</div>
-											</div>
-											<!--<p style="margin-top: 10px; font-size:12px;color:red;" v-if="error">*Mimimum number of travelers:{{picInfo.minParticipants}}.</p>
-											<p style="margin-top: 10px;font-size:12px;" v-else>*Final headcount does not include babies.</p>-->
-
-										</div>
-
-									</div>
-								</div>
+								
 								<div class="picDetail" v-if="isShowBook">
 									<b class='headTitle'>Price Breakdown<span @click.stop="picDetailposition('picDetails')">Price Details</span></b>
 									<ul>
 										<li class="clearfix">
-											<div class="formula" v-if="children==0&&adults==1">{{nowExchange.symbol}}{{returnFloat(adultsPic/(adults+children))}} x {{adults+children}} Person</div>
-											<div class="formula" v-else>{{nowExchange.symbol}}{{returnFloat(adultsPic/(adults+children))}} x {{adults+children}} People </div>
+											<div class="formula" v-if="children==0&&adults==1">{{nowExchange.symbol}}{{returnFloat(adultsPic)}} x 1 Person</div>
+											<div class="formula" v-else>{{nowExchange.symbol}}{{returnFloat(adultsPic/people)}} x {{people}} People </div>
 
 											<div class="pic">{{nowExchange.symbol}}{{returnFloat(adultsPic)}}</div>
 										</li>
@@ -403,15 +416,18 @@
 		],
 		name: "Activities",
 		data() {
-
+			
+			
 			return {
+				
+				number:2,//起价
 				PriceDetail: [], //价格明细
 				open: null,
-				infant: 0, //婴儿
+				//infant: 0, //婴儿
 				dateTime: "", //riqi
 				adults: 0, //成人  默认1人
 				children: 0, //儿童
-				people: "Please Select",
+				people:2,
 				time: "",
 				isShowBook: false,
 				isShowAdults: false,
@@ -443,12 +459,15 @@
 				objectType:'ACTIVITY',
 				//汇率换算
 				nowExchange:{},//{'rate':1,'currency':'USD','symbol':'$'}
-				exchange:[]
+				exchange:[],
 				// [
 				// 	{'rate':1,'currency':'USD','symbol':'$'},
 				// 	{'rate':6.3710,'currency':'CNY','symbol':'¥'},
 				// 	{'rate':0.8348,'currency':'EUR','symbol':'€'}
 				// ]
+				mouseTime:null,
+				detailAll:[],
+				pp:''
 			};
 			
 		},
@@ -545,8 +564,7 @@
 			},
 			showContact() {
 				let that = this;
-
-				window.ga && ga("gtag_UA_107010673_1.send", {
+				window.ga && ga(gaSend, {
 					hitType: "event",
 					eventCategory: "Button",
 					eventAction: "Click",
@@ -571,7 +589,7 @@
 			},
 			showVeiwMore() {
 				this.isShowView = true;
-				window.ga && ga("gtag_UA_107010673_1.send", {
+				window.ga && ga(gaSend, {
 					hitType: "event",
 					eventCategory: "Button",
 					eventAction: "Click",
@@ -582,7 +600,19 @@
 				this.isShowPicNode = true;
 			},
 			hidden() {
-				this.isShowPicNode = false;
+				let that=this
+				that.mouseTime=setTimeout(function(){
+					that.isShowPicNode = false;
+				},300)	
+			
+				
+			},
+			showNodeCont(){
+				clearTimeout(this.mouseTime)
+				this.isShowPicNode = true;
+			},
+			hiddenCont() {
+					this.isShowPicNode = false;
 			},
 			cutXiaoNum(num, len) {
 				var numStr = num.toString();
@@ -608,29 +638,9 @@
 					return(parseFloat(this.cutXiaoNum(val, 1)) + 0.1).toFixed(1);
 				}
 			},
-			// returnFloat(value) {
-			// 	if(value) {
-			// 		var value = Math.round(parseFloat(value) * 100) / 100;
-			// 		var xsd = value.toString().split(".");
-			// 		if(xsd.length == 1) {
-			// 			value = value.toString() + ".00";
-			// 			return value;
-			// 		}
-			// 		if(xsd.length > 1) {
-			// 			if(xsd[1].length < 2) {
-			// 				value = value.toString() + "0";
-			// 			}
-			// 			return value;
-			// 		}
-			// 	}
-
-			// },
 			returnUrl(val){
-				val=val.replace(/&/g, 'And')
-				let options={
-					tourtype:[val]
-				}
-				let url="/activity/list/"+this.destination+"?options="+JSON.stringify(options)
+				let enVal=encodeURIComponent(val)
+				let url="/activity/list/China?keyword="+enVal
 				return url
 			},
 			returnFloat(value) {
@@ -656,18 +666,20 @@
 					this.adults++;
 				} else if(id == 1) {
 					this.children++;
-				} else {
-					this.infant++;
-				}
+				} 
+//				else {
+//					this.infant++;
+//				}
 			},
 			del(id) {
 				if(id == 0) {
 					this.adults--;
 				} else if(id == 1) {
 					this.children--;
-				} else {
-					this.infant--;
 				}
+//				else {
+//					this.infant--;
+//				}
 			},
 			showTime() {
 				this.isShowTime = true;
@@ -680,6 +692,7 @@
 				this.isShowTime = false;
 			},
 			showAdults() {
+				let that=this
 				window.ga && ga(gaSend, {
 					hitType: "event",
 					eventCategory: "activity_detail",
@@ -692,40 +705,50 @@
 					eventAction: "select",
 					eventLabel: "detail_select"
 				});
-				if(this.people == "Please Select") {
-					this.adults = this.adults + 1;
-					this.people = this.adults + this.children;
-				}
+				
 				if(this.isShowTime == true) this.isShowTime = false;
 				this.isShowAdults = true;
+				this.isShowBook = true;
+				
 			},
-			order() {
-
+			gaFail(){
 				window.ga && ga(gaSend, {
 					hitType: "event",
 					eventCategory: "activity_detail",
 					eventAction: "click",
-					eventLabel: "activity_book"
+					eventLabel: "activity_book_fail"
 				});
+			},
+			order() {
 				let that = this;
-				if(that.dateTime == "") {
-					that.isSelectDate = true;
-					//that.dateErrText = "*Please select a date first.";
-					//弹出日历
-					that.flatPickr.open();
-
-				} else if(that.children + that.adults < that.picInfo.minParticipants) {
+				let isFail=true
+				if(that.people < that.picInfo.minParticipants) {
+					isFail=true
 					that.error = true;
 					that.isShowAdults = true;
 					that.dateErrText = "*Mimimum number of travelers:" + that.picInfo.minParticipants + ".";
 					//默认帮用户选一个游玩人
-					if(that.people == "Please Select") {
-						that.adults = this.adults + 1;
-						that.people = this.adults + this.children;
-					}
-				} else {
+//					if(that.people == "Please Select") {
+//						that.adults = this.adults + 1;
+//						that.people = this.adults + this.children;
+//					}
+				}else if(that.dateTime == "") {
+					that.isSelectDate = true;
+					//that.dateErrText = "*Please select a date first.";
+					//弹出日历
+					that.flatPickr.open();
+					isFail=true
+				}  else {
+					isFail=false
+					window.ga && ga(gaSend, {
+						hitType: "event",
+						eventCategory: "activity_detail",
+						eventAction: "click",
+						eventLabel: "activity_book_succ"
+					});
 					that.error = false;
 					that.isSelectDate = false;
+					
 					//that.dateErrText = "*Final headcount does not include babies.";
 					var orderInfo = {
 						userId: localStorage.getItem("userid") ?
@@ -737,10 +760,11 @@
 							that.returnFloat(that.adultsPic),
 						details: that.detailAll,
 						currency: that.picInfo.currency,
+						peopleNum:that.people,
 						symbol: that.nowExchange.symbol,
-						adultNum: that.adults,
+						adultNum: that.adults?that.adults:that.people,
 						childrenNum: that.children,
-						infantNum: that.infant,
+						//infantNum: that.infant,
 						startDate: that.dateTime,
 						startTime: that.time ? that.time : null,
 						adultsPic: that.returnFloat(that.adultsPic),
@@ -750,13 +774,13 @@
 						childDiscountPP: that.picInfo.childDiscountDefault?that.returnFloat(that.picInfo.childDiscountDefault):0,
 						category: that.detail.category,
 						averagePrice: that.returnFloat(
-							that.adultsPic / (that.adults + that.children)
+							that.adultsPic / (that.adults + that.children!=0?that.adults + that.children:that.people)
 						),
 						childDiscount: that.picInfo.childDiscount ?
 							that.returnFloat(that.children * that.picInfo.childDiscount) :
 							null
 					};
-					//console.log(orderInfo)
+					console.log(orderInfo)
 					orderInfo = JSON.stringify(orderInfo);
 
 					localStorage.setItem("orderInfo", orderInfo);
@@ -765,8 +789,12 @@
 
 					//routes.push('/fillYourInfo')
 				}
+				if(isFail){
+					this.gaFail()
+				}
 			},
 			tableData(details) {
+				
 				//console.log(details);
 				var newObj = function(obj) {
 					var o = {};
@@ -804,12 +832,13 @@
 						//console.log(newArr)
 					}
 				}
-				
-
-				for(var k = 0; k < newArr.length; k++) {
-					newArr[k].capacity = k + 1;
-
-				}
+					
+					
+						for(var k = 0; k < newArr.length; k++) {
+							newArr[k].capacity = k + newArr[0].capacity;
+							
+						}
+					
 				return newArr;
 			}
 		},
@@ -835,10 +864,29 @@
 				}
 			},
 			adults(val, odlVal) {
-				this.people = val + this.children;
+				let that=this
+				if(val){
+					this.people =val +this.children;
+					
+				}
+				
+				
+//				for(var i = 0; i < that.picInfo.details.length; i++) {
+//					if(that.adults + that.children == that.picInfo.details[i].capacity) {
+//						that.adultsPic = that.picInfo.details[i].price;
+//			
+//						break;
+//						} else {
+//							if(that.adults + that.children < that.picInfo.details[i].capacity) {
+//								that.adultsPic = that.picInfo.details[i].price;
+//				
+//								break;
+//							}
+//						}
+//				}
 			},
 			children(val, oldVal) {
-				this.people = val + this.adults;
+				this.people =val + this.adults;
 			},
 			people(val, odlVal) {
 				let that = this;
@@ -847,19 +895,20 @@
 					that.error = false;
 					that.dateErrText = "*Final headcount does not include babies.";
 				}
-				for(var i = 0; i < that.picInfo.details.length; i++) {
-					if(that.adults + that.children == that.picInfo.details[i].capacity) {
-						that.adultsPic = that.picInfo.details[i].price;
-
-						break;
-					} else {
-						if(that.adults + that.children < that.picInfo.details[i].capacity) {
-							that.adultsPic = that.picInfo.details[i].price;
-
-							break;
-						}
-					}
-				}
+//				for(var i = 0; i < that.picInfo.details.length; i++) {
+//					if(that.adults + that.children == that.picInfo.details[i].capacity) {
+//						that.adultsPic = that.picInfo.details[i].price;
+//			
+//						break;
+//						} else {
+//							if(that.adults + that.children < that.picInfo.details[i].capacity) {
+//								that.adultsPic = that.picInfo.details[i].price;
+//				
+//								break;
+//							}
+//						}
+//				}
+				
 			},
 			isShowBook(val, oldVal) {
 				if(val) {
@@ -868,7 +917,20 @@
 					this.isShow = false;
 				}
 			},
-			
+			'flatPickr.isOpen':function(val,oldVal){
+				if(val){
+					this.isSelectDate = false;
+				}
+			},
+			isShowAdults(val,oldVal){
+				let that=this
+				if(val){
+					that.adults=that.people
+					
+				}
+				
+				
+			}
 		},
 		filters: {
 			firstUpperCase(val) {
@@ -881,15 +943,43 @@
 				}
 			}
 		},
+		created:function(){
+			let that=this
+			
+		},
 		mounted: function() {
 			let that = this;
+			let participants=this.$route.query.participants;
+			that.people=participants?parseInt(participants):(that.picInfo.minParticipants<3?2:that.picInfo.minParticipants)
+			
 
-			//调整数据，设置默认价格
+			that.detailAll = that.tableData(that.picInfo.details);
+			//显示起价
+			that.pp=this.detailAll.length>0 ? this.returnFloat(this.detailAll[this.people-this.detailAll[0].capacity].price/this.people) : ''
+			
+			
+			//url参数有人数
+			
+			for(var i = 0; i < that.picInfo.details.length; i++) {
+					if(that.people  == that.picInfo.details[i].capacity) {
+						that.adultsPic = that.picInfo.details[i].price;
+			
+						break;
+						} else {
+							if(that.people < that.picInfo.details[i].capacity) {
+								that.adultsPic = that.picInfo.details[i].price;
+				
+								break;
+							}
+						}
+				}
+			 
+			 
+			//调整数据，设置默认价格 
 			that.setPriceData();
 			if(that.picInfo.childDiscount){
 				that.picInfo.childDiscountDefault = that.picInfo.childDiscount;
 			}
-			
 			
 			//加载币种
 			that.axios.get("https://api.localpanda.com/api/public/currency/all/"+that.picInfo.currency).then(function(response) {
@@ -905,7 +995,8 @@
 			//初始化清空日期
 			that.dateTime = ""
 
-			that.detailAll = that.tableData(that.picInfo.details);
+			
+//			console.log(that.detailAll)
 			if(that.tableData(that.picInfo.details).length>5){
 				this.isShowTable=true
 				that.sixArr=that.detailAll.concat().splice(0,6);
@@ -975,6 +1066,19 @@
 </style>
 <style lang="scss" scoped>
 	@import "~/assets/font/iconfont.css";
+	.question{
+		display: inline-block;
+		text-align: center;
+		width: 20px;
+		height: 20px;
+		line-height: 20px;
+		background: #878e95;
+		color: #fff;
+		border-radius: 50%;
+		margin-left:20px;
+		position: relative;
+		cursor: pointer;
+	}
 	#activities {
 		.activitiesDel {
 			.view {
@@ -1020,8 +1124,8 @@
 					box-shadow: 0px 2px 6px 0px rgba(53, 58, 63, 0.1);
 					.bookbox {
 						.picPp {
-							cursor: pointer;
-							padding: 0 20px;
+							
+							padding-left: 20px;
 							height: 50px;
 							line-height: 50px;
 							background: #353a3f;
@@ -1029,50 +1133,47 @@
 							.picLeft {
 								color: #fff;
 								float: left;
+								position: relative;
+								margin-right:15px;
 								b {
 									font-size: 24px !important;
 									vertical-align: middle;
 									margin: 0 6px;
 								}
-								span {
-									text-decoration: line-through;
-									margin-left: 5px;
-								}
-							}
-							.picRight {
-								color: #fff;
-								float: right;
-								position: relative;
-								opacity: 0.5;
-								span {
-									font-size: 10px;
-								}
 								.iconfont{
 									position: absolute;
 									right: 0;
 									top:0;
-									height: 51px;
-									line-height: 51px;
 									text-align:center;
 									font-size:18px;
 								}
+								
+							}
+							.picRight {
+								color: #fff;
+								span {
+									font-size: 10px;
+								}
+								
 							}
 							.priceNote {
-								width: 200px;
 								background: #fff;
 								padding: 16px;
 								position: absolute;
 								z-index: 200;
-								top: -10px;
+								top: 40px;
 								font-size: 14px;
 								box-shadow: 0px 2px 6px 0px rgba(53, 58, 63, 0.1);
-								h4 {
-									font-weight: bold;
+								z-index: 20;
+								width: 354px;
+								left: 0px;
+								p {
+									
 									line-height: 20px;
 								}
-								p {
-									margin-top: 14px;
-									line-height: 20px;
+								a{
+									color: #1bbc9d;
+									text-decoration: underline;
 								}
 							}
 							.currency_type{
@@ -1080,7 +1181,7 @@
 								padding-right: 20px;
 								font-size: 16px;
 								background:none;
-								height: 36px;
+								cursor: pointer;
 								color: rgba(255, 255, 255, 0.9);
 								option{
 									color:#666;
@@ -1096,6 +1197,7 @@
 						.selectBox {
 							padding: 20px;
 							.select {
+								margin-top: 10px;
 								.selectDate {
 									b {
 										font-size: 14px;
@@ -1170,7 +1272,7 @@
 							}
 							.selectPepole {
 								width: 100%;
-								margin-top: 10px;
+								
 								b {
 									font-size: 14px;
 									margin-bottom: 10px;
@@ -1195,7 +1297,7 @@
 									}
 									.choose {
 										position: absolute;
-										top: -132px;
+										top: 42px;
 										left: -20px;
 										width: 346px;
 										box-shadow: 0px 2px 10px 0px rgba(53, 58, 63, 0.2);

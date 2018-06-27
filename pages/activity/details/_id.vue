@@ -59,6 +59,7 @@
 			redirect
 		}) {
 			let id = route.params.id;
+//			let participants=route.query.participants
 			// 服务端渲染部分 这部分操作还没有页面实例，只是初始化页面数据
 			let data = {
 				detail: {}, //详情数据
@@ -78,7 +79,8 @@
 				inclusions:[],
 				exclusions:[],
 				notice:[],
-				photoList:""
+				photoList:"",
+//				participants:participants
 			};
 			let response = {};
 			let apiActivityPriceRes = {};
@@ -231,7 +233,7 @@
 			data.id!='undefined'?data.id:getUrlParams()
 			this.logIn = window.localStorage.getItem("logstate");
 			window.addEventListener("scroll", this.scorllBar);
-			
+			console.log(data.picInfo)
 		},
 		watch: {
 			"detail.latestBooking": function(val, oldVal) {

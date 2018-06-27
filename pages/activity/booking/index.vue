@@ -117,7 +117,7 @@
 						<div class="serviceform">
 							<h3>{{opctions.title}}</h3>
 							<p v-if="opctions.adultNum==1&&opctions.childrenNum==0">1 Person</p>
-							<p v-else>{{opctions.adultNum+opctions.childrenNum}} People</p>
+							<p v-else>{{opctions.peopleNum}} People</p>
 						</div>
 
 					</div>
@@ -128,7 +128,7 @@
 					<div class="pic">
 						<div class="adult clearfix">
 							<div class="formula" v-if="opctions.childrenNum==0 && opctions.adultNum==1">{{nowExchange.symbol}}{{opctions.adultsPic}} x 1 Person</div>
-							<div class="formula" v-else>{{nowExchange.symbol}} {{opctions.averagePrice}} x {{opctions.adultNum+opctions.childrenNum}} People </div>
+							<div class="formula" v-else>{{nowExchange.symbol}} {{opctions.averagePrice}} x {{opctions.peopleNum}} People </div>
 							<div class="adultPic">{{nowExchange.symbol}} {{opctions.adultsPic}}</div>
 						</div>
 						<div class="child" v-if="opctions.childrenNum>0&&opctions.childDiscount">
@@ -441,16 +441,9 @@
 				ga(gaSend, {
 					hitType: 'event',
 					eventCategory: 'activity_booking',
-					eventAction: 'input',
-					eventLabel: 'country_code',
+					eventAction: 'select',
+					eventLabel: 'country_code_select',
 				});
-				ga(gaSend, {
-					hitType: 'event',
-					eventCategory: 'activity_booking',
-					eventAction: 'input',
-					eventLabel: 'booking_input',
-				});
-				
 				if(index==0){
 					
 					this.mobileCode = country + "(+" + code + ")"
@@ -594,7 +587,7 @@
 								"currency": that.opctions.currency,
 								"adultNum": that.opctions.adultNum,
 								"childrenNum": that.opctions.childrenNum,
-								"infantNum": that.opctions.infantNum,
+								//"infantNum": that.opctions.infantNum,
 								"startDate": that.opctions.startDate,
 								"startTime": that.opctions.startTime,
 								"averagePrice": that.opctions.averagePrice,
@@ -649,7 +642,7 @@
 							"currency": that.opctions.currency,
 							"adultNum": that.opctions.adultNum,
 							"childrenNum": that.opctions.childrenNum,
-							"infantNum": that.opctions.infantNum,
+							"infantNum": 0,
 							"startDate": that.opctions.startDate,
 							"startTime": that.opctions.startTime,
 							"averagePrice": that.opctions.averagePrice,
@@ -721,6 +714,14 @@
 			mobileCode: function(val, oldVal) {
 				let self = this
 				if(val) {
+					if(val.length==1){
+						ga(gaSend, {
+						hitType: 'event',
+						eventCategory: 'activity_booking',
+						eventAction: 'input',
+						eventLabel: 'country_code_input',
+					});
+					}
 					self.codeList = [];
 					var other = [];
 					var str = val.replace(/\(/, "\\\(").replace(/\)/, "\\\)").replace(/\+/, '\\\+')
@@ -736,7 +737,6 @@
 
 						}
 					}
-					console.log(other)
 					self.codeList = other
 					//this.countryCode=arr
 
@@ -745,6 +745,17 @@
 					self.codeList = self.countryCode
 
 				}
+			},
+			showCode:function(val,oldVal){
+				if(val){
+					ga(gaSend, {
+						hitType: 'event',
+						eventCategory: 'activity_booking',
+						eventAction: 'click',
+						eventLabel: 'country_code_open',
+					});	
+				}
+				
 			},
 			mobileTravellCode: function(val, oldVal) {
 				let self = this

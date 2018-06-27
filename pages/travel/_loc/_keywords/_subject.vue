@@ -10,7 +10,7 @@
 				<h4>Explore</h4>
 				<ul class="clearfix">
 					<li v-for="i in tags">
-						<a :href="i.keywords=='Customize Your Trip'?'/travel/customize/step1':'/travel/'+loc+'/'+keywords+'/'+i.urlField+'?a'">
+						<a :href="i.keywords=='Customize Your Trip'?'/travel/customize/step1':'/travel/'+loc+'/'+keywords+'/'+i.urlField">
 							<img v-lazy="i.photo.url" />
 							<span>{{i.keywords}}</span>	
 							<div class="mask"></div>
@@ -194,9 +194,8 @@
 		<Foot></Foot>
 		<FooterCommon></FooterCommon>
 		<themeMenu v-if="isMenu" :tags="tags" :loc="loc" :subject="subject" :keywords="keywords"></themeMenu>
-		<transition name="slideleftTop">
-			<email class="view" v-if="showEmail" @hidden="setHidden" @ishowFn="showFn"></email>
-		</transition>
+		<email class="view" v-if="showEmail" @hidden="setHidden" @ishowFn="showFn"></email>
+		
 		<dailog 
 			:isShowAlert="isShowAlert" 
 			:alertTitle="alertTitle" 
@@ -247,7 +246,9 @@
 				isShowAlert:false,
 				alertTitle:'Successful! Thank you for subscribing us',
 				alertMessage:'You will receive our hand-picked travel inspiration, tips and offerings for you.',
-				isTrue:false
+				isTrue:false,
+				
+				time:null,
 			}
 			let listdata={}
 			let obj={
@@ -317,12 +318,13 @@
 		},
 		methods: {
 			showFn(val){
-				this.isTrue=val
-//				this.showEmail=val
-				window.removeEventListener("scroll", this.scorllBar1);
+				this.isTrue=val.isShowAlert
+				if(this.isTrue){
+					this.isShowAlert=true
+				}
+				clearTimeout(this.time);
 			},
 			setHidden(val){
-				
 				this.showEmail=val.ishidden
 				this.checked=val.checked
 			},
@@ -365,13 +367,15 @@
 				}
 				
 			},
-			scorllBar1(){
-				
-				let height=document.querySelector(".tags").offsetTop
-				if(window.scrollY>height){
-					this.showEmail=true
-					
-				}
+			showEmailFn(){
+				ga(gaSend, {
+					hitType: 'event',
+					eventCategory: 'content_lp',
+					eventAction: 'popup',
+					eventLabel: 'email_subscribe',
+
+				});
+				this.showEmail=true
 			}
 			
 
@@ -389,18 +393,23 @@
 			//this.showEmail=true
 			that.logIn = localStorage.getItem("logstate");
 			window.addEventListener("scroll", this.scorllBar);
-			window.addEventListener("scroll", this.scorllBar1);
+//			window.addEventListener("scroll", this.scorllBar1);
+			
 			if(location.href.indexOf("#")!=-1){
 				document.documentElement.scrollTop=document.querySelector("#tags").offsetTop-100
 			}
-			
+			if(localStorage.getItem("key")){
+				clearTimeout(that.time)
+			}else{
+				that.time=setTimeout(this.showEmailFn,5000);
+			}
 			
 		},
 		watch:{
 			checked:function(val,oldVal){
 				if(val){
 					this.showEmail=false
-					window.removeEventListener("scroll", this.scorllBar1);
+					clearTimeout(this.time)
 				}
 			}
 		}
@@ -723,17 +732,11 @@
 			}
 		.view{
 			animation: fa 1s ease-in-out forwards;
-			transform: translateY(100%);
+			opacity: 0;
 		}
-		@keyframes fa {
-				0% {
-					transform: translateY(100%);
-				}
-				
-				100% {
-					transform: translateY(0);
-					
-				}
-			}
+		@keyframes fa{
+			from{opacity: 0}
+			to{opacity: 1}
+		}
 	}
 </style>

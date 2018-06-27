@@ -5,7 +5,7 @@
       <input type="checkbox" @change="inputChange" :checked="getChecked" :disabled="isDisabled" :value="label">
       <i class="iconfont">&#xe654;</i>
     </span>
-    <span class="checkbox_content">
+    <span :title="label" class="checkbox_content">
       <slot>{{label}}</slot>
     </span>
     
@@ -29,8 +29,10 @@
     },
     computed:{
       isGroup(){
-      	console.log(this.$parent.$options._componentTag)
-        return this.$parent.$options.name=='checkboxGroup'?true:false;
+//    	console.log(this.$parent.$options)
+// 		console.log(this.$parent.$options._componentTag)
+       return this.$parent.$options.name=='checkboxGroup'?true:false;
+        //console.log()
       },
       getChecked(){
         //单个复选框操作
@@ -38,7 +40,9 @@
           return this.thisValue?true:false;
         }
         //复选组
+       // console.log(this.$parent.value)
         var changeAll = this.$parent.value;
+        
         for(var i=0;i<changeAll.length;i++){
           if(changeAll[i] == this.label){
             return true;

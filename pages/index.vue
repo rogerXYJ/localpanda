@@ -5,7 +5,7 @@
         <MustGo ></MustGo>
        
         <Activities :activeList="initialState.activeList" ></Activities>
-         <Guide :guidelist="initialState.guidelist" ></Guide> 
+        <!-- <Guide :guidelist="initialState.guidelist" ></Guide> -->
         <OurServices ></OurServices>
       <Foot></Foot>
       <FooterCommon></FooterCommon>
@@ -28,7 +28,7 @@ export default {
       // 服务端渲染部分 这部分操作还没有页面实例，只是初始化页面数据
       let data = {
         id:["10023","10033","10045","10030"],
-        activityId:["11015","11032","11031","11037","11043","11036"],
+        activityId:["11015","11032","11031","11037","11043","11036","11093","11157","11096"],
         guidelist:'',
         activeList:'',
         logIn:'',

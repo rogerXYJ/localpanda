@@ -24,7 +24,7 @@
 		},
 		methods: {
 			conmmitFn() {
-				 this.isShowAlertTitle = !this.isShowAlertTitle;
+				this.$emit("setIsShowAlert",!this.isShowAlert)	
 				document.documentElement.scrollTop=document.querySelector("#footercommon").offsetTop-100
 			},
 			Cancel(){

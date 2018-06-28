@@ -16,21 +16,21 @@
 						<div class="city">
 							<h3>Popular Destinations</h3>
 							<ul>
-								<li v-for="item in options"><a @click.stop="gaRecommendation" :href="getUrl(item.value)">{{item.value}}</a></li>
+								<li v-for="item in options"><a @click.stop="gaRecommendation" :href="getUrl(item.value,'recommend')">{{item.value}}</a></li>
 								
 							</ul>
 						</div>
 						<div class="theme">
 							<h3>Popular Choices</h3>
 							<ul>
-								<li v-for="item in thems"><a @click.stop="gaRecommendation" :href="getUrl(item)">{{item}}</a></li>
+								<li v-for="item in thems"><a @click.stop="gaRecommendation" :href="getUrl(item,'recommend')">{{item}}</a></li>
 							</ul>
 						</div>
 					</div>
 					<div class="seachList" v-if="showSeachList">
 						<ul>
 							<li v-for="item in seachList">
-								<a :href="getUrl(item.value)" @click="gaSuggestion">
+								<a :href="getUrl(item.value,'suggest')" @click="gaSuggestion">
 								<i class="iconfont" v-if="item.type=='DESTINATION'">&#xe610;</i>
 								<i class="iconfont" v-else>&#xe609;</i>
 								<span v-html="textHighlight(item.value)"></span>
@@ -199,6 +199,7 @@
 			let slug = route.params.slug?route.params.slug:'china';
 			let sort = route.query.sort ? JSON.parse(route.query.sort) : '';
 			let keyword =route.query.keyword ?route.query.keyword : '';
+			let type=route.query.type?route.query.type:'link'
 			let participants=route.query.participants?route.query.participants:2;
 			
 			let loc = (slug.toLowerCase() =='china' && !options && !keyword) ? 'Beijing' : slug;
@@ -212,11 +213,11 @@
 				pageNum: 1,
 				pageSize: 16,
 				participants:participants,
+				type:type,
 				sort: {
 					type:'SCORE'
 				}
 			}
-			console.log(postData)
 			//兼容老的key，老key转为新key
 			var oldType = function(text) {
 				if(text == 'TOURTYPE') {
@@ -280,9 +281,9 @@
 					var thisType = item.type.toLowerCase();
 					filterAll[thisType] = thisFilter; ////添加filter每种类型数据
 					if(item.type=="MIN_PARTICIPANTS"){
-						selectNumber.minValue=item.minValue
+						selectNumber.minValue=item.value
 					}else if(item.type=="MAX_PARTICIPANTS"){
-						selectNumber.maxValue=item.maxValue
+						selectNumber.maxValue=item.value
 					}
 					//检测url是否有老的筛选类型
 					if(options[oldTypeKey(thisType)]) {
@@ -317,7 +318,6 @@
 					thisNumLength++;
 				}
 			};
-
 			return {
 				listdata: data,
 				options: [
@@ -431,8 +431,6 @@
 					keywords: 'See top things to do in {{keyword}}, including {{keyword}} city tours, {{keyword}} walking tours, {{keyword}}history & culture tours, and {{keyword}} food tours. Visit the bund {{keyword}} with our local China tour guides.'
 				};
 			}
-			
-
 			return {
 				title: pageTdk.title.replace(/{{keyword}}/g,keyword),
 				meta: [{
@@ -706,12 +704,15 @@
 			seachFn(){
 				if(this.seachContent){
 					this.Ga("search","search")
-					location.href = this.getUrl(this.seachContent);
+					location.href = this.getUrl(this.seachContent,'direct');
+					console.log(this.seachContent)
 				}
 				
 			},
-			getUrl(value){
-				return '/activity/list/China?keyword=' + value+'&participants='+this.postData.participants;	
+			getUrl(value,type){
+				console.log(type)
+				
+				return '/activity/list/China?keyword=' + value+'&participants='+this.postData.participants+'&type='+type;	
 			},
 			//删除选中的一个类型选项
 
@@ -773,7 +774,9 @@
 					options:{},
 					sort:{},
 					keyword:this.seachContent,
-					participants:this.postData.participants
+					participants:this.postData.participants,
+					//type:this.postData.type
+					
 				}
 				
 				
@@ -837,11 +840,15 @@
 						"reverse": true
 					}
 				}else if(this.selected == "Popularity"){
-						this.postData.sort = {
-							"type": "SALES",
-							
-						}
+					this.postData.sort = {
+						"type": "SALES",
+						
 					}
+				}else{
+					this.postData.sort = {
+						"type": "SCORE",
+					}
+				}
 				this.loadingStatus = true
 				Vue.axios.post(this.apiBasePath + "search/activity", JSON.stringify(this.postData), {
 					headers: {
@@ -903,7 +910,8 @@
 						options:{},
 						sort:{},
 						keyword:this.seachContent,
-						participants:this.postData.participants
+						participants:this.postData.participants,
+						//type:this.postData.type
 					}
 					for(var key in val) {
 						var thisVal = val[key].concat()
@@ -1019,11 +1027,13 @@
 	@import '~assets/scss/_main.scss';
 	@import '~/assets/font/iconfont.css';
 	.checkbox_label{
+		padding: 0;
 		padding-left: 20px;
 	}
 	.checkbox_content {
 		font-size: 16px;
 		padding-right: 0!important;
+		padding-left: 0!important;
 		line-height: 22px;
 	
 	}
@@ -1234,9 +1244,12 @@
 					width: 278px;
 					float: left;
 					.filterSeach{
+						background: #faf9f8;;
 						margin-bottom: 15px;
 						border-radius: 6px;
 						border: solid 1px #ebebeb;
+						box-shadow: 0px 2px 6px 0px 
+		rgba(0, 0, 0, 0.1);
 						.title{
 							height: 40px;
 							line-height: 40px;
@@ -1259,12 +1272,13 @@
 						}
 						.seachCont{
 							margin-bottom: 15px;
-							margin: 20px 10px 30px 20px;
+							margin: 20px 20px;
 							border-bottom: solid 1px #ebebeb;
 							&:last-child{
 								border-bottom: none;
 							}
 							.seachTitle {
+								margin-bottom: 10px;
 								h3 {
 									font-size: 16px;
 									font-weight: bold;
@@ -1281,19 +1295,23 @@
 							}
 							.checked{
 								cursor: pointer;
-								padding: 10px 0px 10px 20px;
+								padding-left: 20px;
+								padding-bottom: 8px;
+								&:last-child{
+									padding-bottom: 15px;
+								}
 								
 								
 								i{
 									font-size: 8px;
 									float:left;
 									margin-top: 5px;
-									margin-left: -15px;
+									margin-left: -20px;
 								}
 								span{
 									font-size: 16px;
 									display: inline-block;
-									padding-left: 10px;
+									
 									
 									
 								}
@@ -1394,10 +1412,15 @@
 						
 						.activity-item {
 							&:hover {
-								transform: translateY(-10px);
-								box-shadow: 0px 10px 20px 0px rgba(53, 58, 63, 0.1);
+								box-shadow: 0px 2px 10px 0px rgba(0,
+							0,
+							0,
+							0.24);
+								.titleText{
+									text-decoration: underline;
+								}
 							}
-							transition: .3s transform;
+							
 							a{
 								display: block;
 							}
@@ -1490,7 +1513,7 @@
 									word-wrap: break-word;
 									font-size: 14px;
 									color:#878e95;
-									margin-top: 16px;
+									margin-top: 14px;
 									text-align: left;
 									overflow: hidden;
 								}
@@ -1501,7 +1524,7 @@
 								}
 								.destinations{
 									font-size: 14px;
-									margin-top: 17px;
+									margin-top: 14px;
 								}
 								.totalPic {
 									position: absolute;

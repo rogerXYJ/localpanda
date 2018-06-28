@@ -209,7 +209,7 @@
 									</div>
 									<div class="picRight" >
 										<div style="color: #FFF;">
-											<b style="font-size: 22px">{{nowExchange.symbol}}{{returnFloat(pp)}}</b> 
+											<b style="font-size: 22px">{{nowExchange.symbol}}{{detailAll.length>1 ? returnFloat(detailAll[people-detailAll[0].capacity].price/people) : returnFloat(detailAll[people]/people)}}</b> 
 											pp for party of {{people}}
 											<span class="question" @mouseover="showNode" @mouseleave="hidden">?</span>
 										</div>
@@ -235,8 +235,8 @@
 										<div class="people" v-if="children==0&&people==1">Adult x 1</div>
 										<div class="people" v-if="children==0&&people>1">Adults x {{people}}</div>
 										<div class="people" v-if="children>0">
-											<span v-if="people==1">Adult x 1</span>
-											<span v-else>Adults x {{people}}</span> 
+											<span v-if="people==1||adults==1">Adult x 1</span>
+											<span v-else>Adults x {{adults}}</span> 
 											<span v-if="children==1"> , child x 1</span>
 											<span v-if="children>1"> , children x  {{children}}</span>
 										</div> 
@@ -250,7 +250,7 @@
 											<div class="adults clearfix">
 												<b>Adults</b>
 												<div class="selectAdults">
-													<em class="iconfont color" v-if="children+adults>picInfo.minParticipants" @click.stop="del(0)">&#xe64d;</em>
+													<em class="iconfont color" v-if="adults>1&&(children+adults)>picInfo.minParticipants" @click.stop="del(0)">&#xe64d;</em>
 													<em class="iconfont" v-else>&#xe64d;</em>
 													<input readonly v-model="adults" />
 													<em class="iconfont" v-if="(children+adults)>=picInfo.maxParticipants">&#xe64b;</em>
@@ -467,7 +467,6 @@
 				// ]
 				mouseTime:null,
 				detailAll:[],
-				pp:''
 			};
 			
 		},
@@ -480,7 +479,7 @@
 		methods: {
 			changeCurrency(e){
 				var self = this;
-				var value = e.target.value;
+				var value = e.target ? e.target.value : e;
 				var picInfo = this.picInfo;
 				var thisDetail = picInfo.details;
 
@@ -494,6 +493,7 @@
 						this.nowExchange = thisEx;
 						//切换折扣价币种
 						picInfo.currency = value;
+						picInfo.symbol = thisEx.symbol;
 						picInfo.bottomPrice = picInfo.defaultPrice.bottomPrice * thisEx.exchangeRate;
 						picInfo.originalPrice = picInfo.defaultPrice.originalPrice * thisEx.exchangeRate;
 						if(picInfo.defaultPrice.childDiscount){
@@ -515,7 +515,7 @@
 						break;
 					}
 				}
-				
+				this.detailAll = this.tableData(thisDetail);
 				if(this.people>0){
 					this.adultsPic = thisDetail[this.people-1].price;
 					// self.amount = that.children > 0 && picInfo.childDiscount ?
@@ -795,14 +795,13 @@
 			},
 			tableData(details) {
 				
-				//console.log(details);
 				var newObj = function(obj) {
-					var o = {};
-					for(var key in obj) {
-						o[key] = obj[key];
+						var o = {};
+						for(var key in obj) {
+							o[key] = obj[key];
+						}
+						return o;
 					}
-					return o;
-				}
 
 				let newArr = [],
 					tableD = [];
@@ -814,9 +813,12 @@
 						var s=newObj(details[0]);
 						newArr.push(s)
 					}
+					for(var k=0;k<newArr.length;k++){
+						newArr[k].capacity=k+1
+					}
 					
 				}else{
-					for(let i = 0; i < details.length; i++) {
+					for(let i = 0; i < details[details.length-1].capacity; i++) {
 						let thisD = details[i];
 						newArr.push(thisD);
 						if(i + 1 > details.length - 1) break;
@@ -831,16 +833,16 @@
 						}
 						//console.log(newArr)
 					}
+					for(var k = 0; k < newArr.length; k++) {
+						newArr[k].capacity = k + newArr[0].capacity;
+	
+					}
 				}
-					
-					
-						for(var k = 0; k < newArr.length; k++) {
-							newArr[k].capacity = k + newArr[0].capacity;
-							
-						}
-					
+				
+				
+				
 				return newArr;
-			}
+				}
 		},
 		watch: {
 			dateTime(val, oldVal) {
@@ -869,21 +871,6 @@
 					this.people =val +this.children;
 					
 				}
-				
-				
-//				for(var i = 0; i < that.picInfo.details.length; i++) {
-//					if(that.adults + that.children == that.picInfo.details[i].capacity) {
-//						that.adultsPic = that.picInfo.details[i].price;
-//			
-//						break;
-//						} else {
-//							if(that.adults + that.children < that.picInfo.details[i].capacity) {
-//								that.adultsPic = that.picInfo.details[i].price;
-//				
-//								break;
-//							}
-//						}
-//				}
 			},
 			children(val, oldVal) {
 				this.people =val + this.adults;
@@ -895,19 +882,19 @@
 					that.error = false;
 					that.dateErrText = "*Final headcount does not include babies.";
 				}
-//				for(var i = 0; i < that.picInfo.details.length; i++) {
-//					if(that.adults + that.children == that.picInfo.details[i].capacity) {
-//						that.adultsPic = that.picInfo.details[i].price;
-//			
-//						break;
-//						} else {
-//							if(that.adults + that.children < that.picInfo.details[i].capacity) {
-//								that.adultsPic = that.picInfo.details[i].price;
-//				
-//								break;
-//							}
-//						}
-//				}
+				for(var i = 0; i < that.picInfo.details.length; i++) {
+					if(val == that.picInfo.details[i].capacity) {
+						that.adultsPic = that.picInfo.details[i].price;
+			
+						break;
+						} else {
+							if(val< that.picInfo.details[i].capacity) {
+								that.adultsPic = that.picInfo.details[i].price;
+				
+								break;
+							}
+						}
+				}
 				
 			},
 			isShowBook(val, oldVal) {
@@ -922,15 +909,15 @@
 					this.isSelectDate = false;
 				}
 			},
-			isShowAdults(val,oldVal){
-				let that=this
-				if(val){
-					that.adults=that.people
-					
-				}
-				
-				
-			}
+//			isShowAdults(val,oldVal){
+//				let that=this
+//				if(val){
+//					that.adults=that.people
+//					
+//				}
+//				
+//				
+//			}
 		},
 		filters: {
 			firstUpperCase(val) {
@@ -952,11 +939,12 @@
 			let participants=this.$route.query.participants;
 			that.people=participants?parseInt(participants):(that.picInfo.minParticipants<3?2:that.picInfo.minParticipants)
 			
-
+			if(that.people){
+				that.isShowBook=true
+				that.adults=that.people
+			}
+			that.setPriceData();
 			that.detailAll = that.tableData(that.picInfo.details);
-			//显示起价
-			that.pp=this.detailAll.length>0 ? this.returnFloat(this.detailAll[this.people-this.detailAll[0].capacity].price/this.people) : ''
-			
 			
 			//url参数有人数
 			
@@ -976,7 +964,7 @@
 			 
 			 
 			//调整数据，设置默认价格 
-			that.setPriceData();
+			
 			if(that.picInfo.childDiscount){
 				that.picInfo.childDiscountDefault = that.picInfo.childDiscount;
 			}

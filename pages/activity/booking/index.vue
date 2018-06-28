@@ -265,7 +265,6 @@
 				var people = opctions.adultNum + opctions.childrenNum;
 				//当前人数的默认价格
 				var price = details[people - 1].defaultPrice;
-
 				//换算折扣价
 				var exchange = this.exchange;
 				for(var i = 0; i < exchange.length; i++) {

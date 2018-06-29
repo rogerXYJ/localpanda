@@ -67,9 +67,10 @@
 							
 						</div>
 					</div>
-					<div class="filterBox" v-for="(item,index) in aggregations" v-if="item.hasOwnProperty('items')">
+					<div class="filterBox" v-for="(item,index) in aggregations">
 						<div class="title clearfix">
 							<h3>{{getFilterType(item.type)}}</h3>
+							<p></p>
 							<!--<span @click="clearSelect(item)">Clear</span>-->
 						</div>
 						<div class="filterItem" v-if="item.type=='DURATION'">
@@ -468,21 +469,33 @@
 				 //设置自定义顺序     
 				var sortDefault = {          
 					  'CATEGORY': 1,
-			          'GROUP_TYPE': 2,
-			          'ATTRACTION': 3,
-			          'DURATION': 4,
-			          'TOUR_TYPE': 5        
+	          'GROUP_TYPE': 2,
+	          'ATTRACTION': 3,
+	          'DURATION': 4,
+	          'TOUR_TYPE': 5,
+						'CITY': 6,        
 				};
 				//给数据添加排序的序号
+				
+				var newAggregations = [];
 				for(var i = 0; i < aggregations.length; i++) {          
-					var thisNum = sortDefault[aggregations[i].type];          
-					aggregations[i].number = thisNum ? thisNum : 10; //没有的字段默认设置顺序为10        
+					var thisType = aggregations[i].type;
+					var thisNum = sortDefault[thisType];   
+					
+					
+					aggregations[i].number = thisNum ? thisNum : 10; //没有的字段默认设置顺序为10      
+					
+					if(typeof sortDefault[thisType] !== 'undefined'){
+						newAggregations.push(aggregations[i]);
+					}
+					  
 				};
 				//排序        
-				aggregations = aggregations.sort(function(a, b) {          
+				newAggregations = newAggregations.sort(function(a, b) {          
 					return a.number > b.number;        
-				});        
-				return aggregations;      
+				});      
+				
+				return newAggregations;      
 			},
 			
 			

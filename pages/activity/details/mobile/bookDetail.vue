@@ -369,15 +369,6 @@
 				maxDate: addmulMonth(this.picInfo.earliestBookDate, 12),
 				disableMobile: true,
 				onOpen : function(e){
-//					let calendarContainer = this.calendarContainer.style;
-//					let winW = document.documentElement.clientWidth;
-//					console.log(winW)
-//					setTimeout(function(){
-//						calendarContainer.top = parseInt(calendarContainer.top)-100+'px';
-//						calendarContainer.left = (winW-parseInt(calendarContainer.width)-38)/2+'px';
-//						// calendarContainer.transform = 'translateX(-50%)';
-//						// calendarContainer.right = 'auto';
-//					},0);
 					that.showWinBg = true;
 				},
 				onChange(){

@@ -53,12 +53,7 @@
 						<div class="seachCont" v-for="(i,key,index) in filterCheck" v-if="filterCheck[key].length>0">
 							<div class="seachTitle clearfix" >
 								<h3>{{getFilterType(key.toUpperCase())}}</h3>
-								<!--<span @click="clearItemCheck(key)">Clear</span>-->
 							</div>
-							<!--<div class="checked" v-if="key=='duration'" v-for="(item,index) in i" @click="clearCheck(key,index)">
-								<i class="iconfont">&#xe606;</i>
-								<span>{{returnD(item)}}</span>
-							</div>-->
 							<div class="checked clearfix" v-for="(item,index) in i" @click="clearCheck(key,index)"> 
 								<i class="iconfont">&#xe606;</i>
 								<span v-if="key=='duration'">{{returnD(item)}}</span>
@@ -67,10 +62,27 @@
 							
 						</div>
 					</div>
+					<div class="filterBox padding">
+						<div class="title">
+							<h3>Price Per Person</h3>
+						</div>
+						<div class="filterItem">
+							 <el-slider
+						      v-model="checkPrice"
+						      :step="1"
+						      range
+						      :format-tooltip="format"
+							 :min="filterPrice[0]"
+						     :max="filterPrice[1]"
+						      @change="filterPriceChange"
+						      >
+						    </el-slider>
+						    <span style="font-size: 16px;">${{filterPrice[0]}} - ${{filterPrice[1]}}+</span>
+						</div>
+					</div>
 					<div class="filterBox" v-for="(item,index) in aggregations" v-if="item.items">
 						<div class="title clearfix">
 							<h3>{{getFilterType(item.type)}}</h3>
-							<!--<span @click="clearSelect(item)">Clear</span>-->
 						</div>
 						<div class="filterItem" v-if="item.type=='DURATION'">
 							<checkbox-group  v-model="filterCheck.duration">
@@ -105,8 +117,6 @@
 							<span class="pageSizeInfo" v-if="records==1">1 activity in total</span>
 							<span class="pageSizeInfo" v-if="records==0">0 activity in total</span>
 							<span class="pageSizeInfo" v-if="records>1"><b>{{records}}</b> activities in total</span>
-							<!--<span class="iconfont listIcon margin active">&#xe677;</span>
-							<span class="iconfont listIcon">&#xe678;</span>-->
 						</div>
 					</div>
 					<div class="list-cont" v-if="records>0">
@@ -134,7 +144,7 @@
 												<span class="tag_group" v-if="item.groupType=='Group'">{{item.groupType}}</span>
 											</div>
 											<div class="totalPic">
-												<div class="nowPic">From<br/> <b>${{returnFloat(item.perPersonPrice)}}</b><span>  pp</span></div>
+												<div class="nowPic"><b>${{returnFloat(item.perPersonPrice)}}</b><span> pp for party of {{postData.participants}}</span></div>
 											</div>
 										</div>
 
@@ -267,10 +277,10 @@
 			}
 			var data = listdata.data
 			var listData = listdata.data.entities
-			
 			let filterAll = {},
 				filterCheck = {},
-				selectNumber={};
+				selectNumber={},
+				filterPrice=[];
 			if(data.aggregations) {
 				data.aggregations.forEach(item => {
 					var thisFilter = [];
@@ -284,6 +294,10 @@
 						selectNumber.minValue=item.value
 					}else if(item.type=="MAX_PARTICIPANTS"){
 						selectNumber.maxValue=item.value
+					}else if(item.type=="PRICE"){
+						filterPrice[0]=parseFloat(item.minValue);
+						filterPrice[1]=parseFloat(item.maxValue);
+						
 					}
 					//检测url是否有老的筛选类型
 					if(options[oldTypeKey(thisType)]) {
@@ -349,7 +363,11 @@
 				logIn: '',
 				loadingStatus: false,
 				isdisabled: data.records > postData.pageSize ? true : false, //是否显示翻页
-
+				
+				filterPrice:filterPrice,//价格筛选默认区间值
+				checkPrice:filterPrice,//选择价格区间值
+			
+				
 				apiBasePath: apiBasePath,
 				//唤起定制
 				ContactStatus: false,
@@ -488,23 +506,37 @@
 			
 	},
 	methods: {
+			format(value){
+				console.log(value)
+			},
+			//筛选价格
+			filterPriceChange(e){
+				
+				var priceCheck={
+					minValue:e[0],
+					maxValue:e[1]
+				}
+			},
 			//显示选择人数
 			showSelectPeople(){
 				this.selectPeople=true
+				
 			},
 			setSelectPeople(val){
 				this.selectPeople=val
+				
 			},
 			setPeople(val){
 				this.postData.participants=val
 				this.jumpUrl()
+				
 			},
 			//搜索显示推荐
 			showHot(){
 				let that=this
 				if(this.seachContent){
 					this.isShowHot=false
-					setTimeout(()=>that.showSeachList=true,200)
+					setTimeout(()=>that.showSeachList=true,300)
 					let postData={
 						keyword:this.seachContent,
 						size:10
@@ -543,27 +575,6 @@
 						this.showSelected=false
 					}
 				}
-//				var first={}
-//				for(var key in checked){
-//					first[key]=checked[key]
-//					if(checked[key].length>0){
-//						if(checked[key].length==1){
-//							first[key].firstClick=true
-//						}else{
-//							first[key].firstClick=false
-//						}
-//					}else{
-//						this.showSelected=false
-//					}
-//					
-//				}
-//				for(var key in first){
-//					if(first[key].firstClick){
-//						this.Ga('filter',key)
-//						//this.Ga('filter',"filter_apply")
-//					}
-//				}
-				
 			},
 			//搜索补全高亮
 			textHighlight(value){
@@ -705,41 +716,14 @@
 				if(this.seachContent){
 					this.Ga("search","search")
 					location.href = this.getUrl(this.seachContent,'direct');
-					console.log(this.seachContent)
+					
 				}
 				
 			},
 			getUrl(value,type){
-				console.log(type)
-				
 				return '/activity/list/China?keyword=' + value+'&participants='+this.postData.participants+'&type='+type;	
 			},
-			//删除选中的一个类型选项
 
-//			clearItemCheck(item){
-//				for(var key in this.filterCheck) {
-//					if(key==item) {
-//						this.filterCheck[item] = []
-//					}
-//					if(!this.filterCheck[key].length){
-//						this.showSelected=false
-//					}
-//					
-//				}
-//			},
-			//删除筛选项选中的选项
-//			clearSelect(item) {
-//				for(var key in this.filterCheck) {
-//					if(this.toLower(item.type) == key) {
-//						this.filterCheck[key] = []
-//					}
-//					if(!this.filterCheck[key].length){
-//						this.showSelected=false
-//					}
-//				}
-//				
-//				//console.log(postFilters)
-//			},
 			sortFn(val) {
 				this.selected=val
 				let  gaLabel = 'score';
@@ -873,13 +857,14 @@
 							this.filterAll[thisType] = thisFilter;
 							
 							if(item.type=="MIN_PARTICIPANTS"){
-								this.selectNumber.minValue=item.minValue
+								this.selectNumber.minValue=item.value
+								console.log(this.selectNumber.minValue)
 							}else if(item.type=="MAX_PARTICIPANTS"){
-								this.selectNumber.maxValue=item.maxValue
+								this.selectNumber.maxValue=item.value
 							}
 							
 						})
-						
+						console.log(this.selectNumber)
 						
 					}
 
@@ -1682,6 +1667,10 @@
 		}
 		.long {
 			width: 671px!important;
+		}
+		.padding{
+			padding-right: 20px!important;
+			padding-bottom: 22px!important;
 		}
 	}
 </style>

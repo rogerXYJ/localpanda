@@ -586,7 +586,7 @@
 								"currency": that.opctions.currency,
 								"adultNum": that.opctions.adultNum,
 								"childrenNum": that.opctions.childrenNum,
-								//"infantNum": that.opctions.infantNum,
+								"infantNum":0,
 								"startDate": that.opctions.startDate,
 								"startTime": that.opctions.startTime,
 								"averagePrice": that.opctions.averagePrice,

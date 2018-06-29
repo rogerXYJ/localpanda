@@ -219,7 +219,7 @@
 									
 									<p>This is the price per person for a group of 2 (see "What's Included" for details).</br>
 
-										<a @click="picDetailposition('picDetails')">Click here</a> if you want to see price for group of different size.
+										<a href="javascript:;" @click="picDetailposition('picDetails')">Click here</a> if you want to see price for group of different size.
 									</p>
 								</div> 
 
@@ -907,6 +907,9 @@
 			'flatPickr.isOpen':function(val,oldVal){
 				if(val){
 					this.isSelectDate = false;
+					document.body.style.overflowY="hidden"
+				}else{
+					document.body.style.overflowY="visible"
 				}
 			},
 //			isShowAdults(val,oldVal){

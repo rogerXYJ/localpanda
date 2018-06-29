@@ -203,28 +203,6 @@ on a 1-1 basis.</p>
   	},
     mounted: function() {
       	let that=this
-//    	this.options = {
-//				minDate: GetDateStr(1),
-//				maxDate: addmulMonth(GetDateStr(1), 12),
-//				disableMobile: true,
-//				onOpen : function(selectedDates, dateStr, instance){
-//					let calendarContainer = this.calendarContainer.style;
-//					let winW = document.documentElement.clientWidth;
-//					let winH=document.documentElement.clientHeight;
-//					let calendarContainerClientHeight=this.calendarContainer.clientHeight
-//					
-//					setTimeout(function(){
-//				
-//						calendarContainer.top = parseInt(winH-calendarContainerClientHeight)/2 +'px';
-//						
-//						calendarContainer.left = (winW-parseInt(calendarContainer.width)-38)/2+'px';
-//					},0);
-//					that.showWinBg = true;
-//				},
-//				onChange(){
-//					that.showWinBg = false;
-//				}
-//			}
       	that.flatPickr = new Flatpickr('#js_changetime',this.options);
       	document.getElementsByTagName("body")[0].addEventListener('click', function() {
 				that.isshowchoose = false

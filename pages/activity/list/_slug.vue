@@ -67,7 +67,7 @@
 							
 						</div>
 					</div>
-					<div class="filterBox" v-for="(item,index) in aggregations" v-if="item.items">
+					<div class="filterBox" v-for="(item,index) in aggregations" v-if="item.hasOwnProperty('items')">
 						<div class="title clearfix">
 							<h3>{{getFilterType(item.type)}}</h3>
 							<!--<span @click="clearSelect(item)">Clear</span>-->

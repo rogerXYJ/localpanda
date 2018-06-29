@@ -62,6 +62,7 @@
 							
 						</div>
 					</div>
+<<<<<<< HEAD
 					<div class="filterBox padding">
 						<div class="title">
 							<h3>Price Per Person</h3>
@@ -80,7 +81,8 @@
 						    <span style="font-size: 16px;">${{filterPrice[0]}} - ${{filterPrice[1]}}+</span>
 						</div>
 					</div>
-					<div class="filterBox" v-for="(item,index) in aggregations" v-if="item.items">
+	
+					<div class="filterBox" v-for="(item,index) in aggregations" v-if="item.hasOwnProperty('items')">
 						<div class="title clearfix">
 							<h3>{{getFilterType(item.type)}}</h3>
 						</div>

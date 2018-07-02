@@ -75,13 +75,18 @@
 						      @change="filterPriceChange"
 						      >
 						    </el-slider>
-						    <span style="font-size: 16px;">${{checkPrice[0]}} - ${{checkPrice[1]}}+</span>
+						    <span style="font-size: 16px;">
+						    	Price from $ {{checkPrice[0]}} to ${{checkPrice[1]}} {{(checkPrice[0]==0&&checkPrice[1]==500)||checkPrice[0]==500?'+':''}}
+						    	
+						    </span>
 						</div>
 					</div>
-	
-					<div class="filterBox" v-for="(item,index) in aggregations" v-if="item.hasOwnProperty('items')">
+
+					<div class="filterBox" v-for="(item,index) in aggregations">
 						<div class="title clearfix">
 							<h3>{{getFilterType(item.type)}}</h3>
+							<p></p>
+
 						</div>
 						<div class="filterItem" v-if="item.type=='DURATION'">
 							<checkbox-group  v-model="filterCheck.duration">
@@ -502,18 +507,32 @@
 			          'GROUP_TYPE': 2,
 			          'ATTRACTION': 3,
 			          'DURATION': 4,
-			          'TOUR_TYPE': 5        
+			          'TOUR_TYPE': 5,
+					  'CITY': 6,        
 				};
 				//给数据添加排序的序号
+				
+				var newAggregations = [];
 				for(var i = 0; i < aggregations.length; i++) {          
-					var thisNum = sortDefault[aggregations[i].type];          
-					aggregations[i].number = thisNum ? thisNum : 10; //没有的字段默认设置顺序为10        
+					var thisType = aggregations[i].type;
+					var thisNum = sortDefault[thisType];   
+					
+					
+					aggregations[i].number = thisNum ? thisNum : 10; //没有的字段默认设置顺序为10      
+					
+					console.log(aggregations[i])
+					
+					if(typeof sortDefault[thisType] !== 'undefined' && aggregations[i].items ){
+						newAggregations.push(aggregations[i]);
+					}
+					  
 				};
 				//排序        
-				aggregations = aggregations.sort(function(a, b) {          
+				newAggregations = newAggregations.sort(function(a, b) {          
 					return a.number > b.number;        
-				});        
-				return aggregations;      
+				});      
+				
+				return newAggregations;      
 			},
 			
 			

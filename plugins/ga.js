@@ -12,6 +12,7 @@ export default ({ app }) => {
   window.payCode = buildData.payCode ? buildData.payCode : 'pk_test_ymxnY3KoqRcjCEElfvFxPy1G';
   
   //判断是否禁用ga
+  window.gaSend = '';
   if(!buildData.testGa){
     //防止ga报错，默认添加ga方法
     window.ga = function(){

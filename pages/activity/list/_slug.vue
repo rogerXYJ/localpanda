@@ -298,8 +298,8 @@
 			var listData = listdata.data.entities
 			let filterAll = {},
 				filterCheck = {},
-				selectNumber={},
-				filterPrice=[];
+				selectNumber={};
+				
 			if(data.aggregations) {
 				data.aggregations.forEach(item => {
 					var thisFilter = [];
@@ -379,7 +379,7 @@
 				loadingStatus: false,
 				isdisabled: data.records > postData.pageSize ? true : false, //是否显示翻页
 				
-				checkPrice:[0,500],//选择价格区间值
+				checkPrice:options.price?[options.price.minValue,options.price.maxValue]:[0,500],//选择价格区间值
 				priceCheck:{
 					"type":"PRICE",
 					"minValue":0,

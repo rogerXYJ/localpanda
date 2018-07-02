@@ -62,23 +62,20 @@
 							
 						</div>
 					</div>
-<<<<<<< HEAD
 					<div class="filterBox padding">
 						<div class="title">
-							<h3>Price Per Person</h3>
+							<h3>Price/person for party of {{postData.participants}}</h3>
 						</div>
 						<div class="filterItem">
 							 <el-slider
 						      v-model="checkPrice"
-						      :step="1"
+						      :step="5"
 						      range
-						      :format-tooltip="format"
-							 :min="filterPrice[0]"
-						     :max="filterPrice[1]"
+						     :max="500"
 						      @change="filterPriceChange"
 						      >
 						    </el-slider>
-						    <span style="font-size: 16px;">${{filterPrice[0]}} - ${{filterPrice[1]}}+</span>
+						    <span style="font-size: 16px;">${{checkPrice[0]}} - ${{checkPrice[1]}}+</span>
 						</div>
 					</div>
 	
@@ -139,7 +136,8 @@
 											</div>
 											<div class="recommendedReason" v-if="item.recommendedReason">{{item.recommendedReason}}</div>
 											<div class="duration"><b>Duration</b>: {{item.duration}} {{item.durationUnit|firstUpperCase}}</div>
-											<div class="destinations"><b>Destinations</b>:{{item.destinations.join(' , ')}}</div>
+											<div class="destinations"><b>Destinations</b> :{{item.destinations.join(' , ')}}</div>
+											<div class="destinations" style="color: #1bbc9d;" v-if="item.attractions && item.attractions.length>0"><b>interests</b> :{{item.attractions.join(' · ')}}</div>
 											
 											<div class="activeType">
 												<span class="tag_private" v-if="item.groupType=='Private'">{{item.groupType}}</span>
@@ -253,18 +251,32 @@
 			var postFilters = [];
 			for(var key in options) {
 				var keyUpper = key.toUpperCase();
-				postFilters.push({
-					type: oldType(keyUpper), //兼容老的字段
-					filterValues: options[key]
-				});
+					if(key!="price"){
+						postFilters.push({
+							type: oldType(keyUpper), //兼容老的字段
+							filterValues: options[key]
+						});
+					}
+					
+				
+				
 			};
 			if(sort){
 				postData.sort=sort
 			}
 			if(options) {
 				postData.filters = postFilters;
+				if(options.price){
+					postData.filters.push({
+						type:"PRICE",
+						minValue:options.price.minValue,
+						maxVlaue:options.price.maxValue
+						
+					})
+				}
+				
 			};
-			
+			console.log(postData)
 			//服务端请求数据
 			let listdata = {}
 			try {
@@ -296,10 +308,6 @@
 						selectNumber.minValue=item.value
 					}else if(item.type=="MAX_PARTICIPANTS"){
 						selectNumber.maxValue=item.value
-					}else if(item.type=="PRICE"){
-						filterPrice[0]=parseFloat(item.minValue);
-						filterPrice[1]=parseFloat(item.maxValue);
-						
 					}
 					//检测url是否有老的筛选类型
 					if(options[oldTypeKey(thisType)]) {
@@ -366,9 +374,12 @@
 				loadingStatus: false,
 				isdisabled: data.records > postData.pageSize ? true : false, //是否显示翻页
 				
-				filterPrice:filterPrice,//价格筛选默认区间值
-				checkPrice:filterPrice,//选择价格区间值
-			
+				checkPrice:[0,500],//选择价格区间值
+				priceCheck:{
+					"type":"PRICE",
+					"minValue":0,
+					"maxValue":500
+				},
 				
 				apiBasePath: apiBasePath,
 				//唤起定制
@@ -508,16 +519,13 @@
 			
 	},
 	methods: {
-			format(value){
-				console.log(value)
-			},
 			//筛选价格
 			filterPriceChange(e){
+				let that=this
 				
-				var priceCheck={
-					minValue:e[0],
-					maxValue:e[1]
-				}
+				//that.postData.filters.push(priceCheck)
+				
+				that.jumpUrl()
 			},
 			//显示选择人数
 			showSelectPeople(){
@@ -738,12 +746,20 @@
 				};
 				this.Ga('sort',gaLabel);
 				this.Ga('sort','sort');
+				
 				this.jumpUrl()
 
 			},
 			handleCurrentChange(val) {
 				let that = this
 				that.postData.pageNum = val
+				that.postDate.filters.push(
+					{
+						type:"PRICE",
+						minValue:Math.round(this.checkPrice[0]),
+						maxValue:Math.round(this.checkPrice[1])	
+					}
+				)
 				that.getData()
 			},
 			jumpUrl(){
@@ -764,7 +780,7 @@
 					//type:this.postData.type
 					
 				}
-				
+				//console.log(filterCheck)
 				
 				//var sort = this.postData.sort;
 				if(rankCheck=='Price :Low to High'){
@@ -789,7 +805,15 @@
 						filterValues: filterCheck[key]
 					})
 				}
+				
 				this.postData.filters = postFilters
+				this.priceCheck.minValue=this.checkPrice[0]
+				this.priceCheck.maxValue=this.checkPrice[1]
+				this.postData.filters.push(this.priceCheck)
+				options.price={
+					minValue:this.priceCheck.minValue,
+					maxValue:this.priceCheck.maxValue
+				}
 				this.getData()
 				//跳转并对对象转码
 				jumpData.options = encodeURIComponent(JSON.stringify(options));
@@ -836,6 +860,8 @@
 					}
 				}
 				this.loadingStatus = true
+				console.log(this.postData);
+				//return
 				Vue.axios.post(this.apiBasePath + "search/activity", JSON.stringify(this.postData), {
 					headers: {
 						'Content-Type': 'application/json; charset=UTF-8'
@@ -860,14 +886,11 @@
 							
 							if(item.type=="MIN_PARTICIPANTS"){
 								this.selectNumber.minValue=item.value
-								console.log(this.selectNumber.minValue)
 							}else if(item.type=="MAX_PARTICIPANTS"){
 								this.selectNumber.maxValue=item.value
 							}
 							
 						})
-						console.log(this.selectNumber)
-						
 					}
 
 				}, (res) => {
@@ -902,6 +925,7 @@
 					}
 					for(var key in val) {
 						var thisVal = val[key].concat()
+						
 						if(thisVal.length) {
 							this.showSelected=true
 							options[key] = thisVal.sort();
@@ -926,10 +950,22 @@
 					}
 					//console.log(options)
 					//					//跳转并对对象转码
+					
+					
+					options.price={
+						minValue:this.checkPrice[0],
+						maxValue:this.checkPrice[1]
+					}
+					
 					jumpData.options = encodeURIComponent(JSON.stringify(options));
 					//检测是否有筛选项
 					
 					this.postData.filters = postFilters
+					
+					this.priceCheck.minValue=this.checkPrice[0]
+					this.priceCheck.maxValue=this.checkPrice[1]
+					this.postData.filters.push(this.priceCheck)
+					
 					this.getData()
 					
 					var urlQuery = '';
@@ -942,6 +978,7 @@
 					urlQuery = urlQuery.substring(1); //去掉第一个&
 					var url ='/activity/list/China' + (urlQuery ? ('?' + urlQuery) : '');
 					history.pushState(null, null, url)
+					console.log(url)
 				},
 				deep: true
 			},
@@ -950,7 +987,7 @@
 					this.isShowHot=false
 					this.showSeachList=true
 					let postData={
-						keyword:this.seachContent,
+						keyword:val,
 						size:10
 					}
 					Vue.axios.post('https://api.localpanda.com/api/suggest',JSON.stringify(postData),{
@@ -977,6 +1014,13 @@
 					this.hideBodyScroll()
 				}else{
 					this.showBodyScroll()
+				}
+			},
+			checkPrice(val,oldVal){
+				this.priceCheck={
+					type:"PRICE",
+					minValue:Math.round(val[0]),
+					maxValue:Math.round(val[1])
 				}
 			}
 
@@ -1510,8 +1554,14 @@
 									
 								}
 								.destinations{
+									b{
+										color: #353a3f!important;
+									}
 									font-size: 14px;
 									margin-top: 14px;
+									white-space:nowrap; text-overflow:ellipsis;
+									overflow:hidden;
+									
 								}
 								.totalPic {
 									position: absolute;

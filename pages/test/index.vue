@@ -1,6 +1,6 @@
 <template>
     <div class="block">
-    	<slider 
+    	<!--<slider 
     		ref="slider" 
     		v-model="value"
     		:tooltip="false"
@@ -9,11 +9,11 @@
     		:processStyle="processStyle"
     		:useKeyboard="true"
     		:formatter="formatter"
-    	></slider>
+    	></slider>-->
   </div>
 </template>
 <script>
-	import slider from '~/plugins/panda/slider'
+//	import slider from '~/plugins/panda/slider'
 export default {
     data() {
       return {
@@ -27,7 +27,7 @@ export default {
     	
     },
     components: {
-	    slider
+//	    slider
 	  },
   }
 

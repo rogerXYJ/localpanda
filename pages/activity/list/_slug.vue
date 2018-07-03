@@ -5,7 +5,7 @@
 			<div class="linerBackground">
 				<!--seach bar -->
 				<div class="selectInfo">
-					<input type="" v-model="seachContent" @click.stop="showHot" @keyup.enter="seachFn" placeholder="Attration, Activity, Destination" />
+					<input type="" v-model="seachContent" @click.stop="showHot" @keyup.enter="seachFn" placeholder="Attraction, Activity, Destination" />
 					<div class="selectPeople"@click.stop="showSelectPeople">
 						<span>For {{postData.participants}} People <i class="iconfont">&#xe60f;</i></span>
 						<input-number v-if="selectPeople" :participants="postData.participants" :selectNumber="selectNumber" @showSelectPeople="setSelectPeople" @getPeople="setPeople"></input-number>
@@ -66,27 +66,27 @@
 						<div class="title">
 							<h3>Price/person for party of {{postData.participants}}</h3>
 						</div>
-						<div class="filterItem">
+						<div class="filterItem1">
 							 <el-slider
 						      v-model="checkPrice"
 						      :step="5"
 						      range
-						     :max="500"
+						     :max="505"
+						     :format-tooltip="format"
 						      @change="filterPriceChange"
 						      >
 						    </el-slider>
-						    <span style="font-size: 16px;">
-						    	Price from $ {{checkPrice[0]}} to ${{checkPrice[1]}} {{(checkPrice[0]==0&&checkPrice[1]==500)||checkPrice[0]==500?'+':''}}
-						    	
-						    </span>
+						    <div class="clearfix">
+						    	<span style="font-size: 16px; position: relative;left: -4px;font-weight: bold;">${{checkPrice[0]}}</span>
+						    	<span style="font-size: 16px; position: relative;float:right;right:-13px;top:-2px;font-weight: bold;">${{checkPrice[1]>500?'500+':checkPrice[1]}}</span>
+						    </div>
+						    
 						</div>
 					</div>
 
-					<div class="filterBox" v-for="(item,index) in aggregations">
-						<div class="title clearfix">
+					<div class="filterBox" v-for="(item,index) in aggregations" v-if="getObjLength(item.items)>1">
+						<div class="title">
 							<h3>{{getFilterType(item.type)}}</h3>
-							<p></p>
-
 						</div>
 						<div class="filterItem" v-if="item.type=='DURATION'">
 							<checkbox-group  v-model="filterCheck.duration">
@@ -141,10 +141,10 @@
 											</div>
 											<div class="recommendedReason" v-if="item.recommendedReason">{{item.recommendedReason}}</div>
 											<div class="duration"><b>Duration</b>: {{item.duration}} {{item.durationUnit|firstUpperCase}}</div>
-											<div class="destinations"><b>Destinations</b> :{{item.destinations.join(' , ')}}</div>
-											<div class="destinations" style="color: #1bbc9d;" v-if="item.attractions && item.attractions.length>0"><b>interests</b> :{{item.attractions.join(' · ')}}</div>
+											<div class="destinations"><b>{{item.destinations.length>1?'Destinations':'Destination'}}</b>: {{item.destinations.join(' , ')}}</div>
+											<div class="destinations" style="color: #1bbc9d;" v-if="item.attractions && item.attractions.length>0"><b>{{item.attractions.length>1?'Interests:':'Interest:'}}</b> {{item.attractions.join(' · ')}}</div>
 											
-											<div class="activeType">
+											<div class="activeType" v-if="item.groupType">
 												<span class="tag_private" v-if="item.groupType=='Private'">{{item.groupType}}</span>
 												<span class="tag_group" v-if="item.groupType=='Group'">{{item.groupType}}</span>
 											</div>
@@ -233,6 +233,7 @@
 					type:'SCORE'
 				}
 			}
+			var price=[0,505]
 			//兼容老的key，老key转为新key
 			var oldType = function(text) {
 				if(text == 'TOURTYPE') {
@@ -260,7 +261,21 @@
 						postFilters.push({
 							type: oldType(keyUpper), //兼容老的字段
 							filterValues: options[key]
-						});
+						})
+					}else{
+						if(options[key].maxValue>500){
+							postFilters.push({
+								type: keyUpper,
+								minValue: options[key].minValue
+							})
+						}else{
+							postFilters.push({
+								type: keyUpper,
+								maxValue:options[key].maxValue,
+								minValue: options[key].minValue
+							})
+						}
+						price=[options.price.minValue,options.price.maxValue]	
 					}
 					
 				
@@ -271,17 +286,9 @@
 			}
 			if(options) {
 				postData.filters = postFilters;
-				if(options.price){
-					postData.filters.push({
-						type:"PRICE",
-						minValue:options.price.minValue,
-						maxVlaue:options.price.maxValue
-						
-					})
-				}
 				
 			};
-			console.log(postData)
+			console.log(price)
 			//服务端请求数据
 			let listdata = {}
 			try {
@@ -379,13 +386,7 @@
 				loadingStatus: false,
 				isdisabled: data.records > postData.pageSize ? true : false, //是否显示翻页
 				
-				checkPrice:options.price?[options.price.minValue,options.price.maxValue]:[0,500],//选择价格区间值
-				priceCheck:{
-					"type":"PRICE",
-					"minValue":0,
-					"maxValue":500
-				},
-				
+				checkPrice:price,//选择价格区间值
 				apiBasePath: apiBasePath,
 				//唤起定制
 				ContactStatus: false,
@@ -502,7 +503,7 @@
 				var aggregations = this.listdata.aggregations;
 
 				 //设置自定义顺序     
-				var sortDefault = {          
+				var sortDefault = {       
 					  'CATEGORY': 1,
 			          'GROUP_TYPE': 2,
 			          'ATTRACTION': 3,
@@ -519,14 +520,12 @@
 					
 					
 					aggregations[i].number = thisNum ? thisNum : 10; //没有的字段默认设置顺序为10      
-					
-					console.log(aggregations[i])
-					
-					if(typeof sortDefault[thisType] !== 'undefined' && aggregations[i].items ){
+					if(typeof sortDefault[thisType] !== 'undefined' && aggregations[i].items){
 						newAggregations.push(aggregations[i]);
 					}
-					  
+					
 				};
+				
 				//排序        
 				newAggregations = newAggregations.sort(function(a, b) {          
 					return a.number > b.number;        
@@ -538,6 +537,11 @@
 			
 	},
 	methods: {
+			format(e){
+				if(e>500){
+					return 500+'+'
+				}
+			},
 			//筛选价格
 			filterPriceChange(e){
 				let that=this
@@ -717,7 +721,7 @@
 				for(var key in filterCheck){
 					filterCheck[key]=[]
 				}
-				
+				this.checkPrice=[0,505]
 			},
 			showMore(filterCheck,item,type){
 				this.showModel=true
@@ -772,13 +776,6 @@
 			handleCurrentChange(val) {
 				let that = this
 				that.postData.pageNum = val
-				that.postDate.filters.push(
-					{
-						type:"PRICE",
-						minValue:Math.round(this.checkPrice[0]),
-						maxValue:Math.round(this.checkPrice[1])	
-					}
-				)
 				that.getData()
 			},
 			jumpUrl(){
@@ -814,34 +811,48 @@
 
 				//去掉空数据,并对跳转的数据排序，把需要的数据放在新的options里
 				var options = {};
-				
 				for(var key in filterCheck){
 					if(filterCheck[key].length){
 						options[key] = filterCheck[key].sort();
+							postFilters.push({
+							type: key.toUpperCase(),
+							filterValues: filterCheck[key]
+						})
+					}else if(key=='price' && !Array.isArray(filterCheck[key])){
+						if(filterCheck[key].maxValue<=500&&filterCheck[key].minValue>0){
+							options[key] = filterCheck[key];
+							
+						}
+						
+						if(filterCheck[key].maxValue>500){
+							postFilters.push({
+								type: key.toUpperCase(),
+								minValue:filterCheck[key].minValue
+							})
+						}else{
+							postFilters.push({
+								type: key.toUpperCase(),
+								maxValue:filterCheck[key].maxValue,
+								minValue:filterCheck[key].minValue
+							})
+						}
+						
 					}
-					postFilters.push({
-						type: key.toUpperCase(),
-						filterValues: filterCheck[key]
-					})
+					
 				}
-				
 				this.postData.filters = postFilters
-				this.priceCheck.minValue=this.checkPrice[0]
-				this.priceCheck.maxValue=this.checkPrice[1]
-				this.postData.filters.push(this.priceCheck)
-				options.price={
-					minValue:this.priceCheck.minValue,
-					maxValue:this.priceCheck.maxValue
-				}
 				this.getData()
+				
 				//跳转并对对象转码
 				jumpData.options = encodeURIComponent(JSON.stringify(options));
+				console.log(jumpData)
 				//检测是否有筛选项
 				var urlQuery = '';
 				for(var key in jumpData){
 					//检测有效数据
 					if(JSON.stringify(jumpData[key]) != '{}' && jumpData[key] != '%7B%7D' && jumpData[key] != ''){
 						urlQuery += '&' + key + '=' + jumpData[key];
+						
 					}
 				};
 				urlQuery = urlQuery.substring(1); //去掉第一个&
@@ -879,7 +890,7 @@
 					}
 				}
 				this.loadingStatus = true
-				console.log(this.postData);
+				
 				//return
 				Vue.axios.post(this.apiBasePath + "search/activity", JSON.stringify(this.postData), {
 					headers: {
@@ -910,6 +921,7 @@
 							}
 							
 						})
+						
 					}
 
 				}, (res) => {
@@ -929,7 +941,7 @@
 		watch: {
 			'filterCheck': {
 				handler: function(val, oldVal) {
-					//console.log(options)
+					console.log(222)
 					var path = this.$route.path
 					var rankCheck=this.selected
 					var postFilters = []
@@ -943,21 +955,43 @@
 						//type:this.postData.type
 					}
 					for(var key in val) {
-						var thisVal = val[key].concat()
-						
-						if(thisVal.length) {
-							this.showSelected=true
-							options[key] = thisVal.sort();
-							if(thisVal.length==1){
-								this.Ga('filter',key)
-								this.Ga('filter',"filter_apply")
+						if(Array.isArray(val[key])){
+							var thisVal = val[key].concat()
+							if(val[key].length){
+								this.showSelected=true
+								options[key] = thisVal.sort();
+								if(thisVal.length==1){
+									this.Ga('filter',key)
+									this.Ga('filter',"filter_apply")
+								}
 							}
+							postFilters.push({
+								type: key.toUpperCase(),
+								filterValues: val[key]
+							})
+							
+						}else if(key=='price' && !Array.isArray(val[key])){
+							if(val[key].maxValue<=500&&val[key].minValue>0){
+								options[key] = val[key];
+								
+							}
+							if(val[key].maxValue>500){
+								postFilters.push({
+									type: key.toUpperCase(),
+									minValue:val[key].minValue
+								})
+							}else{
+								postFilters.push({
+									type: key.toUpperCase(),
+									maxValue:val[key].maxValue,
+									minValue:val[key].minValue
+								})
+							}
+							
 						}
-						postFilters.push({
-							type: key.toUpperCase(),
-							filterValues: val[key]
-						})
+						
 					}
+					
 					if(rankCheck=='Price :Low to High'){
 						jumpData.sort = JSON.stringify({"type":"PRICE","reverse":false})
 					}else if(rankCheck=='Price :High to Low'){
@@ -967,23 +1001,17 @@
 					}else{
 						jumpData.sort = JSON.stringify({"type":"SCORE"})
 					}
-					//console.log(options)
+					
 					//					//跳转并对对象转码
 					
-					
-					options.price={
-						minValue:this.checkPrice[0],
-						maxValue:this.checkPrice[1]
-					}
+				
 					
 					jumpData.options = encodeURIComponent(JSON.stringify(options));
 					//检测是否有筛选项
 					
 					this.postData.filters = postFilters
 					
-					this.priceCheck.minValue=this.checkPrice[0]
-					this.priceCheck.maxValue=this.checkPrice[1]
-					this.postData.filters.push(this.priceCheck)
+					
 					
 					this.getData()
 					
@@ -992,12 +1020,13 @@
 						//检测有效数据
 						if(JSON.stringify(jumpData[key]) != '{}' && jumpData[key] != '%7B%7D' && jumpData[key] != ''){
 							urlQuery += '&' + key + '=' + jumpData[key];
+							
 						}
 					};
 					urlQuery = urlQuery.substring(1); //去掉第一个&
 					var url ='/activity/list/China' + (urlQuery ? ('?' + urlQuery) : '');
 					history.pushState(null, null, url)
-					console.log(url)
+					console.log(options)
 				},
 				deep: true
 			},
@@ -1035,11 +1064,11 @@
 					this.showBodyScroll()
 				}
 			},
-			checkPrice(val,oldVal){
-				this.priceCheck={
-					type:"PRICE",
-					minValue:Math.round(val[0]),
-					maxValue:Math.round(val[1])
+			checkPrice(val){
+				console.log(11)
+				this.filterCheck.price = {
+					minValue: val[0],
+					maxValue: val[1]
 				}
 			}
 
@@ -1055,13 +1084,13 @@
 			that.value = that.loc == "Xian" ? "Xi'an" : that.loc
 		},
 		mounted: function() {
+			console.log(this.checkPrice)
 			const that = this
 			for(var key in that.filterCheck){
 				if(that.filterCheck[key].length>0){
 					that.showSelected=true
 				}
-			}
-			
+			}	
 			document.body.addEventListener("click",()=>{
 				that.isShowHot=false
 				that.showSeachList=false
@@ -1092,7 +1121,9 @@
 		margin-left: -20px;
 		margin-top: 3px;
 	}
-	
+	.el-slider__button-wrapper{
+		z-index: 10!important;
+	}
 	.el-pagination.is-background .el-pager li:not(.disabled).active {
 		background-image: linear-gradient(-90deg, #009efd 0%, #1bbc9d 100%)
 	}
@@ -1375,6 +1406,10 @@
 						padding: 20px 10px 30px 20px;
 						border-radius: 6px;
 						border: solid 1px #ebebeb;
+						.filterItem1{
+							position: relative;
+							left: -5px;
+						}
 						.filterItem{
 							.viewMore{
 								margin-top: 25px;
@@ -1392,18 +1427,11 @@
 							}
 						}
 						.title {
-							margin-bottom: 27px;
+							margin-bottom: 20px;
 							h3 {
 								font-size: 16px;
 								font-weight: bold;
-								float: left;
-							}
-							span {
-								float: right;
-								color: #1bbc9d;
-								font-size: 16px;
-								display: block;
-								cursor: pointer;
+								
 							}
 							
 						}
@@ -1583,9 +1611,10 @@
 									
 								}
 								.totalPic {
-									position: absolute;
-									bottom: 20px;
+									position: relative;
+									margin-top: 14px;
 									right: 20px;
+									text-align:right;
 									.nowPic {
 										
 										font-size: 14px;

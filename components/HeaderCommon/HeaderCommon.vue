@@ -1,18 +1,19 @@
 <template>
 	<div id="header">
-		<div class="heder-cont">
-			<div class="log">
-				<a href="/">
-					<svg class="icon" aria-hidden="true">
-						<use xlink:href="#icon-logo1"></use>
-					</svg>
-				</a>
-
-			</div>
-			<div class="search" @click.stop="showSearch">
-				<i class="iconfont">&#xe67a;</i>
-				<span v-if="search" style="color:#353a3f;">{{search}}</span>
-				<span v-else>Attration, Activity, Destination</span>
+		<div class="heder-cont clearfix">
+			<div class="headleft">
+				<div class="log">
+					<a href="/">
+						<svg class="icon" aria-hidden="true">
+							<use xlink:href="#icon-logo1"></use>
+						</svg>
+					</a>
+	
+				</div>
+				<div class="search" @click.stop="showSearch">
+					<i class="iconfont">&#xe67a;</i>
+					<span>Attraction, Activity, Destination</span>
+				</div>
 			</div>
 			<ul class="init" v-if="isAnonymity">
 
@@ -67,7 +68,7 @@
 
 				<div class="searchBox_index clearfix">
 					<div class="searchInput">
-						<input id="searchInput" @keyup="searchkey" placeholder="Attration, Activity, Destination" @keyup.enter="seachFn" @focus="input_highlight=true" @blur="input_highlight=false" v-model="search" />
+						<input id="searchInput" @keyup="searchkey" placeholder="Attraction, Activity, Destination" @keyup.enter="seachFn" @focus="input_highlight=true" @blur="input_highlight=false" v-model="search" />
 						<span class="input_highlight" :class="{border:input_highlight}">{{search}}</span>
 					</div>
 					<div class="select_people">
@@ -87,7 +88,7 @@
 						<h3>Popular Destinations</h3>
 						<ul>
 							<li v-for="item in options">
-								<a @click.stop="gaRecommendation" :href="getUrl(item,'recommend')">{{item}}</a>
+								<a target="_blank" @click.stop="gaRecommendation" :href="getUrl(item,'recommend')">{{item}}</a>
 							</li>
 
 						</ul>
@@ -96,7 +97,7 @@
 						<h3>Popular Choices</h3>
 						<ul>
 							<li v-for="item in thems">
-								<a @click.stop="gaRecommendation" :href="getUrl(item,'recommend')">{{item}}</a>
+								<a target="_blank" @click.stop="gaRecommendation" :href="getUrl(item,'recommend')">{{item}}</a>
 							</li>
 						</ul>
 					</div>
@@ -104,7 +105,7 @@
 				<div class="seachList" v-if="seachContentList.length>0">
 					<ul>
 						<li v-for="item in seachContentList">
-							<a :href="getUrl(item.value,'suggest')" @click="gaSuggestion">
+							<a target="_blank" :href="getUrl(item.value,'suggest')" @click="gaSuggestion">
 								<i class="iconfont" v-if="item.type=='DESTINATION'">&#xe610;</i>
 								<i class="iconfont" v-else>&#xe609;</i>
 								<span v-html="textHighlight(item.value)"></span>
@@ -228,7 +229,7 @@
 			},
 			//搜索补全高亮
 			textHighlight(value) {
-				var reg = new RegExp(this.seachContent, 'gi');
+				var reg = new RegExp(this.search, 'gi');
 				var textReg = value.match(reg);
 				if(textReg) {
 					textReg = textReg[0];
@@ -440,9 +441,12 @@
 	}
 </script>
 <style lang="scss">
-
+body{
+		min-width: 1300px;
+	}
 </style>
 <style lang="scss" scoped>
+	
 	.border{
 		border-top: 2px solid #1bbc9d!important;
 		
@@ -493,6 +497,12 @@
 							margin-right: 64px;
 							margin-top: 28px;
 							font-size: 16px;
+							a{
+								&:hover{
+									color:#1bbc9d;
+								}	
+							}
+							
 						}
 					}
 				}
@@ -507,6 +517,11 @@
 							margin-right: 64px;
 							margin-top: 28px;
 							font-size: 16px;
+							a{
+								&:hover{
+									color:#1bbc9d;
+								}	
+							}
 						}
 					}
 				}
@@ -619,6 +634,9 @@
 			width: 100%;
 			min-width: 1170px;
 			height: 60px;
+			.headleft{
+				float: left;
+			}
 			.log {
 				margin-left: 38px;
 				width: 280px;

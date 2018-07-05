@@ -1,11 +1,11 @@
 <template>
 	<div class="activityList">
-		<HeaderCommon :logIn="logIn"></HeaderCommon>
+		<HeaderCommon :logIn="logIn" @closeSearchList="closeFn"></HeaderCommon>
 		<div class="banner">
 			<div class="linerBackground">
 				<!--seach bar -->
 				<div class="selectInfo">
-					<input type="" v-model="seachContent" @click.stop="showHot" @keyup.enter="seachFn" placeholder="Attraction, Activity, Destination" />
+					<input type="" v-model="seachContent" @click.stop="showHot" maxlength="60" @keyup.enter="seachFn" placeholder="Attraction, Activity, Destination" />
 					<div class="selectPeople"@click.stop="showSelectPeople">
 						<span>For {{postData.participants}} People <i class="iconfont">&#xe60f;</i></span>
 						<input-number v-if="selectPeople" :participants="postData.participants" :selectNumber="selectNumber" @showSelectPeople="setSelectPeople" @getPeople="setPeople"></input-number>
@@ -44,7 +44,7 @@
 		</div>
 		<div class="page-content">
 			<div class="page pageInfo clearfix">
-				<div class="pageLeft">
+				<div class="pageLeft" v-if="records>0">
 					<div class="filterSeach" v-if="showSelected">
 						<div class="title">
 							<h3>My Seach</h3>
@@ -135,14 +135,16 @@
 									</div>
 									<div class="activitDe">
 										<div class="info">
-											<div class="titleText" style="-moz-box-orient: vertical;
+											<div class="titleText" :title="item.title" style="-moz-box-orient: vertical;
 										    -webkit-box-orient:vertical;">
 												{{item.title}}
 											</div>
 											<div class="recommendedReason" v-if="item.recommendedReason">{{item.recommendedReason}}</div>
-											<div class="duration"><b>Duration</b>: {{item.duration}} {{item.durationUnit|firstUpperCase}}</div>
-											<div class="destinations"><b>{{item.destinations.length>1?'Destinations':'Destination'}}</b>: {{item.destinations.join(' , ')}}</div>
-											<div class="destinations" style="color: #1bbc9d;" v-if="item.attractions && item.attractions.length>0"><b>{{item.attractions.length>1?'Interests:':'Interest:'}}</b> {{item.attractions.join(' · ')}}</div>
+											<div class="destinations" :title="item.attractions.join(' · ')" style="color: #1bbc9d;" v-if="item.attractions && item.attractions.length>0"><b>{{item.attractions.length>1?'Interests:':'Interest:'}}</b> {{item.attractions.join(' · ')}}</div>
+											<div class="destinations"><b>{{item.destinations.length>1?'Destinations':'Destination'}}:</b> {{item.destinations.join(' , ')}}</div>
+											<div class="duration"><b>Duration:</b> {{item.duration}} {{item.durationUnit|firstUpperCase}}</div>
+											
+											
 											
 											<div class="activeType" v-if="item.groupType">
 												<span class="tag_private" v-if="item.groupType=='Private'">{{item.groupType}}</span>
@@ -537,6 +539,12 @@
 			
 	},
 	methods: {
+			//全局搜索，搜索不显示
+			closeFn(value){
+				this.showSeachList=value
+				this.isShowHot=value
+			},
+			//处理价格筛选显示500+
 			format(e){
 				if(e>500){
 					return 500+'+'
@@ -592,9 +600,11 @@
 			},
 			gaSuggestion(){
 				this.Ga('search','suggestion')
+				this.Ga('search','search')
 			},
 			gaRecommendation(){
 				this.Ga('search','recommendation')
+				this.Ga('search','search')
 			},
 			//筛选弹框
 			setBack(val){
@@ -748,6 +758,7 @@
 			seachFn(){
 				if(this.seachContent){
 					this.Ga("search","search")
+					this.Ga("search","direct")
 					location.href = this.getUrl(this.seachContent,'direct');
 					
 				}
@@ -819,9 +830,8 @@
 							filterValues: filterCheck[key]
 						})
 					}else if(key=='price' && !Array.isArray(filterCheck[key])){
-						if(filterCheck[key].maxValue<=500&&filterCheck[key].minValue>0){
+						if(filterCheck[key].maxValue!=505||filterCheck[key].minValue!=0){
 							options[key] = filterCheck[key];
-							
 						}
 						
 						if(filterCheck[key].maxValue>500){
@@ -941,7 +951,6 @@
 		watch: {
 			'filterCheck': {
 				handler: function(val, oldVal) {
-					console.log(222)
 					var path = this.$route.path
 					var rankCheck=this.selected
 					var postFilters = []
@@ -971,7 +980,7 @@
 							})
 							
 						}else if(key=='price' && !Array.isArray(val[key])){
-							if(val[key].maxValue<=500&&val[key].minValue>0){
+							if(val[key].maxValue<=500||val[key].minValue>0){
 								options[key] = val[key];
 								
 							}
@@ -1032,6 +1041,7 @@
 			},
 			seachContent:function(val,oldVal){
 				if(val){
+					val=val.replace(/^\s+|\s+$/g,'');
 					this.isShowHot=false
 					this.showSeachList=true
 					let postData={
@@ -1611,10 +1621,10 @@
 									
 								}
 								.totalPic {
-									position: relative;
-									margin-top: 14px;
+									position: absolute;
+									bottom: 20px;
 									right: 20px;
-									text-align:right;
+									
 									.nowPic {
 										
 										font-size: 14px;

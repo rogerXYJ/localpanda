@@ -68,7 +68,7 @@
 
 				<div class="searchBox_index clearfix">
 					<div class="searchInput">
-						<input id="searchInput" @keyup="searchkey" placeholder="Attraction, Activity, Destination" @keyup.enter="seachFn" @focus="input_highlight=true" @blur="input_highlight=false" v-model="search" />
+						<input id="searchInput" @keyup="searchkey" maxlength="60" placeholder="Attraction, Activity, Destination" @keyup.enter="seachFn" @focus="input_highlight=true" @blur="input_highlight=false" v-model="search" />
 						<span class="input_highlight" :class="{border:input_highlight}">{{search}}</span>
 					</div>
 					<div class="select_people">
@@ -102,7 +102,7 @@
 						</ul>
 					</div>
 				</div>
-				<div class="seachList" v-if="seachContentList.length>0">
+				<div class="seachList" v-show="aa">
 					<ul>
 						<li v-for="item in seachContentList">
 							<a target="_blank" :href="getUrl(item.value,'suggest')" @click="gaSuggestion">
@@ -129,7 +129,7 @@
 	import Alert from '~/components/Prompt/Alert'
 	//import Contact from '~/components/Contact/Contact'
 	export default {
-		props: ["logIn", "isAnonymity", "isIndex"],
+		props: ["logIn", "isAnonymity", "isIndex","showSeachList"],
 		name: 'headercommon',
 		data() {
 			return {
@@ -191,7 +191,7 @@
 				thems: ["Panda", "Watertown", "Great Wall", "Terra-Cotta Warriors", "Forbidden City", "Li River", "Layover Tour", "Day trips", "Local Food", "Dumplings", "Landmarks", "Short Excursions", "Family Friendly"],
 				showRecommend: true,
 				input_highlight:false,
-				
+				aa:false
 			}
 		},
 		components: {
@@ -206,6 +206,7 @@
 			seachFn(){
 				if(this.search){
 					this.Ga("search","search")
+					this.Ga("search","direct")
 					location.href = this.getUrl(this.search,'direct');
 					
 				}
@@ -213,9 +214,28 @@
 			},
 			searchkey(){
 				let search= this.search
-				if(!search){
-					this.seachContentList=[]
-					this.showRecommend=true
+				let that=this
+				if(search){
+					search=search.replace(/^\s+|\s+$/g,'');
+					that.showRecommend = false
+					that.aa=true
+					let postData = {
+							keyword: search,
+							size: 10
+						}
+						that.axios.post('https://api.localpanda.com/api/suggest', JSON.stringify(postData), {
+	
+							headers: {
+								'Content-Type': 'application/json; charset=UTF-8'
+							}
+	
+						}).then(res => {
+							that.seachContentList = res.data
+						}, res => {})
+
+				}else{
+					that.aa=false
+					that.showRecommend = true
 				}
 			},
 			getUrl(value,type){
@@ -223,9 +243,11 @@
 			},
 			gaSuggestion(){
 				this.Ga('search','suggestion')
+				this.Ga('search','search')
 			},
 			gaRecommendation(){
 				this.Ga('search','recommendation')
+				this.Ga('search','search')
 			},
 			//搜索补全高亮
 			textHighlight(value) {
@@ -242,11 +264,18 @@
 			//显示搜索
 			showSearch() {
 				this.showBgSearch = true
+				this.$emit('closeSearchList',false)
 				setTimeout(() => {
 					document.getElementById("searchInput").focus();
 				}, 200)
 
-				console.log(document.getElementById("searchInput").focus())
+				
+			},
+			hideBodyScroll(){
+				document.body.style.overflowY = 'hidden';
+			},
+			showBodyScroll(){
+				document.body.style.overflowY = 'inherit';
 			},
 			isShowAnonymityback() {
 				this.AnonymityStatus = true
@@ -406,34 +435,13 @@
 		},
 		watch: {
 			search(val, oldVal) {
-				let that = this
-				if(val) {
-					that.showRecommend = false
-						let postData = {
-							keyword: val,
-							size: 10
-						}
-						that.axios.post('https://api.localpanda.com/api/suggest', JSON.stringify(postData), {
-	
-							headers: {
-								'Content-Type': 'application/json; charset=UTF-8'
-							}
-	
-						}).then(res => {
-							that.seachContentList = res.data
-							
-							
-						}, res => {})
-
-					
+				
+			},
+			showBgSearch(val){
+				if(val){
+					this.hideBodyScroll()
 				}else{
-					
-					console.log(that.seachContentList)
-					setTimeout(function(){
-						that.seachContentList=[]
-						that.showRecommend=true
-					},200)
-					
+					this.showBodyScroll()
 				}
 			}
 		}

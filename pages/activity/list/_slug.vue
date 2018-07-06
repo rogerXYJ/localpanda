@@ -44,7 +44,7 @@
 		</div>
 		<div class="page-content">
 			<div class="page pageInfo clearfix">
-				<div class="pageLeft" v-if="records>0">
+				<div class="pageLeft">
 					<div class="filterSeach" v-if="showSelected">
 						<div class="title">
 							<h3>My Seach</h3>
@@ -139,9 +139,9 @@
 										    -webkit-box-orient:vertical;">
 												{{item.title}}
 											</div>
-											<div class="recommendedReason" v-if="item.recommendedReason">{{item.recommendedReason}}</div>
-											<div class="destinations" :title="item.attractions.join(' · ')" style="color: #1bbc9d;" v-if="item.attractions && item.attractions.length>0"><b>{{item.attractions.length>1?'Interests:':'Interest:'}}</b> {{item.attractions.join(' · ')}}</div>
-											<div class="destinations"><b>{{item.destinations.length>1?'Destinations':'Destination'}}:</b> {{item.destinations.join(' , ')}}</div>
+											<!--<div class="recommendedReason" v-if="item.recommendedReason">{{item.recommendedReason}}</div>-->
+											<div class="attractions clearfix" :title="item.attractions.join('  .  ')" style="color: #1bbc9d;" v-if="item.attractions && item.attractions.length>0"><b>{{item.attractions.length>1?'Interests: ':'Interest: '}}</b><span v-html="item.attractions.join('<b>  ·  </b>')"></span></div>
+											<div class="destinations "><b>{{item.destinations.length>1?'Destinations':'Destination'}}:</b> {{item.destinations.join(' , ')}}</div>
 											<div class="duration"><b>Duration:</b> {{item.duration}} {{item.durationUnit|firstUpperCase}}</div>
 											
 											
@@ -151,7 +151,10 @@
 												<span class="tag_group" v-if="item.groupType=='Group'">{{item.groupType}}</span>
 											</div>
 											<div class="totalPic">
-												<div class="nowPic"><b>${{returnFloat(item.perPersonPrice)}}</b><span> pp for party of {{postData.participants}}</span></div>
+												<div class="nowPic">
+													<b>${{returnFloat(item.perPersonPrice)}}</b><span> pp</span>
+												</div>
+												<p>Booked {{item.sales}} times (last 30 days)</p>
 											</div>
 										</div>
 
@@ -756,6 +759,7 @@
 			},
 			//点击搜索按钮
 			seachFn(){
+				this.seachContent=this.seachContent.replace(/^\s+|\s+$/g,'');
 				if(this.seachContent){
 					this.Ga("search","search")
 					this.Ga("search","direct")
@@ -1040,8 +1044,8 @@
 				deep: true
 			},
 			seachContent:function(val,oldVal){
+				val=val.replace(/^\s+|\s+$/g,'');
 				if(val){
-					val=val.replace(/^\s+|\s+$/g,'');
 					this.isShowHot=false
 					this.showSeachList=true
 					let postData={
@@ -1160,11 +1164,13 @@
 	}
 	.background{background-color: #faf9f8};
 	.empty {
-		padding:200px 0;
+		padding:30px 0 200px;
+		text-align: center;
+		width: 975px;
 		p {
 			font-size: 16px;
 			margin-top: 20px;
-			text-align: center;
+			
 			a {
 				color: #1bbc9d;
 			}
@@ -1527,11 +1533,11 @@
 								position: absolute;
 								width: 309px;
 								height: 100%;
-								min-height: 198px;
+								min-height: 160px;
 								.activity-photo {
 									width: 309px;
 									height: 100%;
-									min-height: 198px;
+									min-height: 160px;
 									background-repeat: no-repeat!important;
 									background-size: cover!important;
 									position: relative;
@@ -1611,13 +1617,34 @@
 									
 								}
 								.destinations{
-									b{
-										color: #353a3f!important;
-									}
 									font-size: 14px;
 									margin-top: 14px;
-									white-space:nowrap; text-overflow:ellipsis;
+								}
+								.attractions{
+									font-size: 14px;
+									margin-top: 14px;
+									b{
+										color: #353a3f!important;
+										width: 70px;
+										float: left;
+									}
+									span{
+										
+											
+										text-overflow: ellipsis;
+									display: -webkit-box;
+									display: -moz-box;
+									-moz-box-orient: vertical;
+									-webkit-box-orient: vertical;
+									-webkit-line-clamp: 2;
+									-moz-line-clamp: 2;
+									-o-text-overflow: ellipsis;
+									word-wrap: break-word;
 									overflow:hidden;
+									}
+									
+									
+									
 									
 								}
 								.totalPic {
@@ -1636,6 +1663,9 @@
 										span {
 											color: #353a3f;
 										}
+									}
+									p{
+										font-size: 14px;
 									}
 								}
 							}

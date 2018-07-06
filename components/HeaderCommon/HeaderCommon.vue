@@ -204,6 +204,7 @@
 		methods: {
 				//点击搜索按钮
 			seachFn(){
+				this.search=this.search.replace(/^\s+|\s+$/g,'');
 				if(this.search){
 					this.Ga("search","search")
 					this.Ga("search","direct")
@@ -215,8 +216,8 @@
 			searchkey(){
 				let search= this.search
 				let that=this
+				search=search.replace(/^\s+|\s+$/g,'');
 				if(search){
-					search=search.replace(/^\s+|\s+$/g,'');
 					that.showRecommend = false
 					that.aa=true
 					let postData = {
@@ -595,13 +596,15 @@ body{
 				.select_people {
 					display: inline-block;
 					position: relative;
-					line-height: 47px;
+					line-height: 46px;
+					height: 46px;
 					font-size: 16px;
+					border-bottom: 1px solid #dde0e0;
 					select {
 						width: 170px;
 						height: 46px;
 						border: 0;
-						border-bottom: 1px solid #dde0e0;
+						background-color: transparent;
 						appearance: none;
 					}
 					i {

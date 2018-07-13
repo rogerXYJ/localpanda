@@ -2,7 +2,7 @@
 	<div id="activities">
 		<div class="activitiesDel">
 			<div class="activitiesInfo">
-				<div class="linkseting">
+				<div class="linkseting clearfix">
 					<div class="linkinfo">
 						<a href="/">Home</a>
 						<em class="iconfont">&#xe64a;</em>
@@ -12,15 +12,17 @@
 						<em class="iconfont">&#xe64a;</em>
 						<span>Activity Details</span>
 					</div>
+					<em class="productId">Product ID: {{detail.activityId}}</em>
 				</div>
 				<div class="tags clearfix">
-					<span class="tag">{{detail.category}}</span>
-					<em class="productId">Product ID: {{detail.activityId}}</em>
+					<span class="tag">{{detail.category}}  <b>·</b>  {{detail.groupType}}</span>
+					
 				</div>
 				<div class="activitiyTitle">
 					<h3>{{detail.title}}</h3>
 					<div class="types">
 						<a v-for="i in detail.tourTypes" :href="returnUrl(i)"><span >{{i}}</span></a>
+						<p v-if="detail.sales&&detail.sales>0">Booked {{detail.sales}} {{detail.sales==1?'time':'times'}} (last 30 days)</p>
 					</div>
 				</div>
 				<ul class="description clearfix">
@@ -49,19 +51,19 @@
 				</div>
 				<p class="says">{{detail.recommendedReason}}</p>
 				<div class="heightLights" id="heightLights">
-					<p :key="index" class="clearfix" v-for="(item,index) in highlights"><i class="iconfont">&#xe654;</i><span>{{item}}</span></p>
-
-				</div>
-				<div class="journey" id="journey" ref="journey">
 					<div class="expect">
 						<h3>What You Can Expect</h3>
-						<p v-if="introduction.length==1">{{introduction[0]}}</p>
+						<p v-if="highlights&&highlights.length>0" :key="index" class="heightLightsList clearfix" v-for="(item,index) in highlights"><i class="iconfont">&#xe654;</i><span>{{item}}</span></p>
+						<p class="introductionCont" v-if="introduction.length==1">{{introduction[0]}}</p>
 						<div class="introduction" :class="{'overflow':isShowView}" v-if="introduction.length>1">
 							<p v-if="isShowView==false">{{introduction[0]}}</p>
 							<p :key="index" v-else v-for="(j,index) in introduction">{{j}}</p>
 						</div>
 						<div v-if="introduction.length>1&&isShowView==false" class="viewMore" @click="showVeiwMore()">View more</div>
 					</div>
+
+				</div>
+				<div class="journey" id="journey" ref="journey">
 					<ul>
 						<li :key="index" v-for="(i,index) in detail.itineraries">
 							<div class="item_v clearfix" v-if="i.photoUrl">
@@ -96,7 +98,7 @@
 				</div>
 				<div class="provide" v-if="picInfo.details.length>0" id="picDetails">
 					<h3>Price Details</h3>
-					<p style="font-size: 16px;margin-top: 10px;" v-if="picInfo.childDiscount">Children's price is   $  {{returnFloat(picInfo.childDiscount)}} USD  less than adults’ price.</p>
+					<p style="font-size: 16px;margin-top: 10px;" v-if="picInfo.childDiscount">Children's price is   $  {{returnFloat(picInfo.childDiscount)}} USD  less than adults' price.</p>
 					<el-table :data="sixArr" stripe style="width: 100%">
 						<el-table-column prop="capacity" label="Number of people" width="244.6" align="center">
 							<template slot-scope="scope">
@@ -152,10 +154,6 @@
 					<h3>Additional Info</h3>
 					<p v-for="(item,index) in notice" :key="index">{{item}}</p>
 				</div>
-				<!--<div class="notes"  id="PriceNote">
-					<h3>Price Note</h3>
-					
-				</div>-->
 				<div class="notes" v-if="picInfo.refundInstructions" id="CancellationPolicy">
 					<h3>Rescheduling and Cancellation Policy</h3>
 					<p v-html="picInfo.refundInstructions.replace(/\r\n/g,'<br/>')"></p>
@@ -163,9 +161,39 @@
 				<div class="notes" id="notes" v-if="remark.length>0">
 					<h3>Notes</h3>
 					<p v-if="remark" :key="index" v-for="(item,index) in remark">{{item}}</p>
-					<!--<p v-if="detail.venues" :key="index" v-for="(i,index) in detail.venues">{{i}}</p>-->
 				</div>
-				
+				<div class="review" v-if="travelersReviews.entities&&travelersReviews.entities.length>0" id="review">
+					<div class="reviewTitle clearfix">
+						<h3>{{travelersReviews.entities.length==1?"Review":"Reviews"}} ({{travelersReviews.records}})</h3>
+						<grade :score="travelersReviews.avgScore" :big="'true'"></grade>
+					</div>
+					
+					<div class="reviewItem" v-for="(item,index) in travelersReviews.entities">
+						<div class="reviewInfo clearfix">
+							<div class="headPhoto">
+								<img v-if="item.userPortraitPhoto" :src="item.userPortraitPhoto.url"/>
+								<span v-else>{{item.userName.substring(0,1).toUpperCase()}}</span>
+							</div>
+							<div class="visitor">
+								<div class="name clearfix">
+									<h4>{{item.userName}}</h4>
+									<grade :score="item.score"></grade>
+								</div>
+								<div class="time">{{(item.createTime).substring(0,10)}}</div>
+							</div>
+						</div>
+						<div class="reviewContent" v-if="!item.text280">{{item.content.substring(0,280)}}<span @click="showText(index)" v-if="item.content.length>280">...<em style="color: #1bbc9d; font-size: 16px;">Read more</em></span></div>
+						<div class="reviewContent" v-else>{{item.content}}</div>
+						<ul class="clearfix" v-if="item.userCommentPhoto&&item.userCommentPhoto.length>0">
+							<li v-lazy:background-image="i.url" @click="showTavelPhotoList(index,item.userCommentPhoto)" v-for="(i,index) in item.userCommentPhoto" ></li>
+						</ul>
+						
+					</div>
+					<div class="moreBtn" v-if="!showMoreBth && travelersReviews.records>pageSize">
+						<button @click="moreReviews">Browse More</button>
+					</div>
+				</div>
+				<!--<grade></grade>-->
 			</div>
 
 			<div class="recommend" id="recommend" v-if="recommed.length>0">
@@ -209,7 +237,7 @@
 									</div>
 									<div class="picRight" >
 										<div style="color: #FFF;">
-											<b style="font-size: 22px">{{nowExchange.symbol}}{{detailAll.length>1 ? returnFloat(detailAll[people-detailAll[0].capacity].price/people) : returnFloat(detailAll[people]/people)}}</b> 
+											<b style="font-size: 22px">{{nowExchange.symbol}}{{detailAll.length>0 ? returnFloat(detailAll[people-detailAll[0].capacity].price/people) : returnFloat(detailAll[people]/people)}}</b> 
 											pp for party of {{people}}
 											<span class="question" @mouseover="showNode" @mouseleave="hidden">?</span>
 										</div>
@@ -376,9 +404,9 @@
 				</div>
 			</div>
 		</div>
-		<Pic :photoList="photoList" :alertPicStatus="alertPicStatus" @alert-call-back="setCallBack"></Pic>
+		<Pic :photoList="picList" :alertPicStatus="alertPicStatus" @alert-call-back="setCallBack"></Pic>
 		<Contact :ContactStatus="ContactStatus" v-on:isshowfn="isShowFn" v-on:contact-call-back="contactCallBack"  :objectType="objectType" :objectId="id"></Contact>
-		<Alert   :isShowAlert="isShowAlert" :alertTitle="alertTitle" :alertMessage="alertMessage" v-on:setIsShowAlert="getIsShowAlert"></Alert>
+		<Alert   :isShowAlert="isShowAlert" :alertTitle="alertTitle" :alertMessage="alertMessage" v-on:setIsShowAlert="getIsShowAlert" :index="index"></Alert>
 	</div>
 
 </template>
@@ -394,6 +422,7 @@
 	import Flatpickr from 'flatpickr';
 	require('~/assets/scss/G-ui/flatpickr.min.css')
 	import Pic from "~/components/pageComponents/activity/details/Pic"
+	import grade from "~/components/pageComponents/activity/details/grade"
 	export default {
 		props: [
 			"remark",
@@ -411,15 +440,12 @@
 			"exclusions",
 			"notice",
 			"destination",
-			"photoList"
-
+			"photoList",
+			"travelersReviews",
 		],
 		name: "Activities",
 		data() {
-			
-			
 			return {
-				
 				number:2,//起价
 				PriceDetail: [], //价格明细
 				open: null,
@@ -460,23 +486,59 @@
 				//汇率换算
 				nowExchange:{},//{'rate':1,'currency':'USD','symbol':'$'}
 				exchange:[],
-				// [
-				// 	{'rate':1,'currency':'USD','symbol':'$'},
-				// 	{'rate':6.3710,'currency':'CNY','symbol':'¥'},
-				// 	{'rate':0.8348,'currency':'EUR','symbol':'€'}
-				// ]
+				picList:[],
 				mouseTime:null,
 				detailAll:[],
+				index:0,
+				pageNum:1,
+				pageSize:3,
+				showMoreBth:false
 			};
 			
 		},
 		components: {
-			//flatPickr,
+			grade,
 			Pic,
 			Contact,
 			Alert
 		},
 		methods: {
+			//点评翻页
+			moreReviews(){
+				let self=this
+					
+				this.pageNum++
+				let params={
+					activityId:this.id,
+					pageNum:this.pageNum,
+					pageSize:this.pageSize,
+					status:1
+				}
+				this.axios.post('https://api.localpanda.com/api/user/comment/detail/list',JSON.stringify(params),{
+					headers: {
+						'Content-Type': 'application/json; charset=UTF-8'
+					}
+				}).then(res=>{
+					let data=res.data
+					console.log(data)
+					if(data.entities&&data.entities.length>0){
+						if(data.entities.length<self.pageSize){
+							self.showMoreBth=true
+						}
+						for(var i = 0 ;i<data.entities.length;i++){
+							data.entities[i].text280=false
+							self.travelersReviews.entities.push(data.entities[i])
+						}
+						
+					}else{
+						self.showMoreBth=true
+					}
+				},res=>{})
+			},
+			//点评内容显示
+			showText(index){
+				this.travelersReviews.entities[index].text280=true	
+			},
 			changeCurrency(e){
 				var self = this;
 				var value = e.target ? e.target.value : e;
@@ -582,7 +644,15 @@
 			},
 			//唤起图片轮播
 			showPhoto() {
+				this.picList=this.photoList;
 				this.alertPicStatus = true
+				
+			},
+			showTavelPhotoList(index,userCommentPhoto){
+				this.picList=userCommentPhoto;
+				this.index=index
+				this.alertPicStatus = true
+				console.log(this.index)
 			},
 			setCallBack(val) {
 				this.alertPicStatus = val
@@ -940,8 +1010,9 @@
 		mounted: function() {
 			let that = this;
 			let participants=this.$route.query.participants;
-			that.people=participants?parseInt(participants):(that.picInfo.minParticipants<3?2:that.picInfo.minParticipants)
+			that.people=participants?(that.picInfo.maxParticipants==1?1:parseInt(participants)):(that.picInfo.minParticipants<3?(that.picInfo.maxParticipants==1?1:2):that.picInfo.minParticipants);
 			
+			//that.people=that.picInfo.minParticipants<3?that.picInfo.maxParticipants:(participants?parseInt(participants):that.picInfo.minParticipants)
 			if(that.people){
 				that.isShowBook=true
 				that.adults=that.people
@@ -1082,8 +1153,10 @@
 			max-width: 1170px;
 			margin: 0 auto;
 			.linkseting {
+				margin-top: 30px;
 				.linkinfo {
-					margin-top: 30px;
+					float: left;
+					width: 80%;
 					a {
 						color: #878e95;
 						font-size: 14px;
@@ -1101,6 +1174,11 @@
 						font-size: 14px;
 					}
 				}
+				.productId {
+						float: right;
+						font-size: 12px;
+						color: #878e95;
+					}
 			}
 			.book {
 				width: 386px;
@@ -1242,7 +1320,7 @@
 											overflow: auto;
 											background: #fff;
 											box-shadow: 0px 2px 10px 0px rgba(53, 58, 63, 0.2);
-											z-index: 300;
+											z-index: 20;
 											ul {
 												li {
 													height: 50px;
@@ -1288,6 +1366,7 @@
 									}
 									.choose {
 										position: absolute;
+										z-index: 100;
 										top: 42px;
 										left: -20px;
 										width: 346px;
@@ -1478,21 +1557,14 @@
 			.activitiesInfo {
 				width: 734px;
 				.tags {
-					margin: 33px 0;
+					margin: 30px 0 10px;
 					.tag {
-						float: left;
+						
 						color: #1bbc9d;
 						font-size: 14px;
-						border-top: 1px solid #1bbc9d;
-						border-bottom: 1px solid #1bbc9d;
-						padding: 3px 0;
+						
 					}
-					.productId {
-						float: right;
-						font-size: 12px;
-						color: #878e95;
-						padding: 5px 0;
-					}
+					
 				}
 				.activitiyTitle {
 					h3 {
@@ -1501,6 +1573,11 @@
 					}
 					.types {
 						margin: 29px 0 24px;
+						p{
+							font-size: 16px;
+							color: #878e95;
+							margin-top: 9px;
+						}
 						a {
 								
 								color: #1bbc9d;
@@ -1577,22 +1654,22 @@
 				}
 				.location {
 					padding-bottom: 33px;
-					border-bottom: 1px solid #dde0e0;
 				}
 				.says {
-					padding: 33px 0;
+					
 					font-style: oblique;
 					border-bottom: 1px solid #dde0e0;
 					font-size: 18px;
 					line-height: 26px;
 					color: #353a3f;
+					padding-bottom: 33px;
 				}
 				.heightLights {
-					padding: 33px 0;
-					border-bottom: 1px solid #dde0e0;
-					p {
+					padding: 33px 0 28px;
+					border-bottom:1px solid #dde0e0;
+					.heightLightsList{
 						font-size: 18px;
-						margin-top: 16px;
+						margin-top: 12px;
 						&:first-child {
 							margin-top: 0;
 						}
@@ -1608,30 +1685,41 @@
 							margin-left: 12px;
 						}
 					}
-				}
-				.journey {
-					margin-top: 34px;
 					.expect {
 						h3 {
 							font-size: 24px;
 							font-weight: bold;
 						}
-						p {
+						.introductionCont {
 							margin: 15px 0 20px;
 							font-size: 18px;
 							line-height: 26px;
 						}
 						.introduction {
 							overflow: hidden;
+							p{
+								font-size: 16px;
+								line-height: 26px;
+								margin: 15px 0 20px;
+							}
 						}
 						.viewMore {
 							color: #1bbc9d;
 							font-size: 18px;
 							cursor: pointer;
-							margin: 6px 0 30px;
 						}
 					}
+				}
+				.journey {
+					
+					h3{
+						margin: 28px 0 22px;
+						
+						font-size: 24px;
+						font-weight: bold;
+					}
 					ul {
+						margin-top: 28px;
 						padding-bottom: 34px;
 						border-bottom: 1px solid #dde0e0;
 						li {
@@ -1656,7 +1744,7 @@
 							.item_v {
 								.contTitle {
 									float: left;
-									padding: 24px 30px 0 20px;
+									padding: 24px 0 0 20px;
 									h3 {
 										font-size: 18px;
 										font-weight: bold;
@@ -1918,5 +2006,100 @@
 		.long {
 			width: 100% !important;
 		}
+		/** 点评 **/
+		.review{
+			margin-top: 30px;
+			h3{
+				margin-bottom: 5px;
+				font-size: 24px;
+				font-weight: bold;
+				float: left;
+				margin-right: 18px;
+			}
+			.reviewItem{
+				padding-bottom: 25px;
+				border-bottom: 1px solid  #dde0e0;
+				margin-top: 20px;
+			}
+			.headPhoto{
+				float: left;
+				width: 44px;
+				height: 44px;
+				background-image: linear-gradient(135deg,#1bbc9d 0%,#009efd 100%);
+				border-radius: 50%;
+				text-align: center;
+				line-height: 44px;
+				img{
+					width: 100%;
+					height: 100%;
+					border-radius: 50%;
+				}
+				span{
+					font-size: 22px;
+					color: #fff;
+				};
+			}
+			.visitor{
+				float: left;
+				margin-left: 18px;
+				h4{
+					font-size: 16px;
+					font-weight: bold;	
+					float: left;
+					margin-right: 16px;
+				}
+				.time{
+					margin-top:9px;
+					font-size: 14px;
+				}
+			}
+			.reviewContent{
+				margin-top: 20px;
+				font-size: 16px;
+				position: relative;
+				line-height: 24px;
+				word-wrap:break-word; 
+				white-space:pre-wrap;
+				span{
+					cursor: pointer;
+				}
+			}
+			ul{
+				margin-top: 15px;
+				li{
+					float: left;
+					margin-right: 16px;
+					width: 109px;
+					height: 109px;
+					background:url("https://resource.localpanda.cn/activity/banners/11027_1106614229_U5251601.jpg");
+					background-repeat:no-repeat;
+					background-size:cover;
+					background-position:center; 
+					cursor:pointer;  
+					&:last-child{
+						margin-right: 0;
+					}
+				}
+			}
+			
+		}
+		.moreBtn{
+			text-align: center;
+			margin-top: 42px;
+			button{
+				width: 154px;
+				height: 42px;
+				text-align: center;
+				cursor: pointer;
+				line-height: 42px;
+				color: #fff;
+				font-weight: bold;
+				border-radius: 20px;
+				background-image: linear-gradient(270deg,#009efd 0%,#1bbc9d 100%);
+				
+			};
+			
+		}
+		
 	}
 </style>

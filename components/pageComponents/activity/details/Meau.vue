@@ -2,7 +2,7 @@
 	<div id="menu">
 			<div class="menu_list">
 				<ul class="clearfix">
-					<li @click="goAnchor('journey')">What to Expect</li>
+					<li @click="goAnchor('heightLights')">What to Expect</li>
 					<li v-if="photoList.length>0" @click="goAnchor('photoList')">Moments in Travel</li>
 					<li v-if="picInfo.details.length>0" @click="goAnchor('picDetails')">Price Details</li>
 					<li @click="goAnchor('provide')">Inclusions & Exclusions</li>
@@ -11,6 +11,7 @@
 					<!--<li v-if="picInfo.priceInstructions" @click="goAnchor('PriceNote')">Price Note</li>-->
 					<li v-if="picInfo.refundInstructions" @click="goAnchor('CancellationPolicy')">Rescheduling / Cancellation</li>
 					<li @click="goAnchor('notes')">Notes</li>
+					<li v-if="travelersReviews.entities&&travelersReviews.entities.length>0" @click="goAnchor('review')">Reviews</li>
 					<li v-if="recommed.length>0"@click="goAnchor('recommend')">Similar Experiences</li>
 				</ul>
 			</div>
@@ -24,7 +25,8 @@
 		'exclusions',
 		'picInfo',
 		'photoList',
-		"recommed"
+		"recommed",
+		"travelersReviews"
 
 		
 		],

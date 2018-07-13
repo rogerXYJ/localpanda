@@ -47,7 +47,7 @@
 				<div class="pageLeft">
 					<div class="filterSeach" v-if="showSelected">
 						<div class="title">
-							<h3>My Seach</h3>
+							<h3>My Search</h3>
 							<span @click="clearAll">Clear All</span>
 						</div>
 						<div class="seachCont" v-for="(i,key,index) in filterCheck" v-if="filterCheck[key].length>0">
@@ -137,7 +137,7 @@
 										<div class="info">
 											<div class="titleText" :title="item.title" style="-moz-box-orient: vertical;
 										    -webkit-box-orient:vertical;">
-												{{item.title}}
+												<span>{{item.title}}</span>
 											</div>
 											<!--<div class="recommendedReason" v-if="item.recommendedReason">{{item.recommendedReason}}</div>-->
 											<div class="attractions clearfix" :title="item.attractions.join('  .  ')" style="color: #1bbc9d;" v-if="item.attractions && item.attractions.length>0"><b>{{item.attractions.length>1?'Interests: ':'Interest: '}}</b><span v-html="item.attractions.join('<b>  ·  </b>')"></span></div>
@@ -146,15 +146,16 @@
 											
 											
 											
-											<div class="activeType" v-if="item.groupType">
-												<span class="tag_private" v-if="item.groupType=='Private'">{{item.groupType}}</span>
-												<span class="tag_group" v-if="item.groupType=='Group'">{{item.groupType}}</span>
+											<div class="activeType">
+												<label class="tag_private" v-if="item.groupType=='Private'">{{item.groupType}}</label>
+												<label class="tag_group" v-if="item.groupType=='Group'">{{item.groupType}}</label>
+												
 											</div>
 											<div class="totalPic">
 												<div class="nowPic">
 													<b>${{returnFloat(item.perPersonPrice)}}</b><span> pp</span>
 												</div>
-												<p>Booked {{item.sales}} times (last 30 days)</p>
+												<p v-if="item.sales&&item.sales>0">Booked {{item.sales}} {{item.sales==1?'time':'times'}} (last 30 days)</p>
 											</div>
 										</div>
 
@@ -792,6 +793,7 @@
 				let that = this
 				that.postData.pageNum = val
 				that.getData()
+				
 			},
 			jumpUrl(){
 
@@ -937,7 +939,7 @@
 						})
 						
 					}
-
+					window.scrollTo(0,100);
 				}, (res) => {
 
 				})
@@ -1511,7 +1513,10 @@
 							0,
 							0.24);
 								.titleText{
-									text-decoration: underline;
+									span{
+										text-decoration: underline;
+									}
+									
 								}
 							}
 							
@@ -1533,11 +1538,11 @@
 								position: absolute;
 								width: 309px;
 								height: 100%;
-								min-height: 160px;
+								min-height: 135px;
 								.activity-photo {
 									width: 309px;
 									height: 100%;
-									min-height: 160px;
+									min-height: 135px;
 									background-repeat: no-repeat!important;
 									background-size: cover!important;
 									position: relative;
@@ -1562,12 +1567,13 @@
 								
 								.activeType {
 									margin-top: 14px;
-									span{
+									label{
 										padding: 6px 8px;
 										border-radius: 4px;
 										display: inline-block;
 										color: #fff;
 										font-size: 12px;
+										background-color: #f4b33f;
 										&.tag_group{
 											background-color: #efae99;
 										}
@@ -1591,9 +1597,24 @@
 									-o-text-overflow: ellipsis;
 									word-wrap: break-word;
 									font-size: 16px;
-									font-weight: bold;
+									
 									text-align: left;
 									overflow: hidden;
+									label{
+										font-weight: normal;
+										padding: 1px 8px;
+										border-radius: 10px;
+										display: inline-block;
+										color: #fff;
+										font-size: 12px;
+										margin-right: 5px;
+										vertical-align: baseline;
+										
+										
+									}
+									span{
+										font-weight: bold;
+									}
 								}
 								.recommendedReason{
 									text-overflow: ellipsis;
@@ -1651,7 +1672,7 @@
 									position: absolute;
 									bottom: 20px;
 									right: 20px;
-									
+									text-align: right;
 									.nowPic {
 										
 										font-size: 14px;

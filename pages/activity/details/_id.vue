@@ -1,7 +1,7 @@
 <template>
 	<div id="activitiesDetail">
 		<HeaderCommon :logIn="logIn"></HeaderCommon>
-		<Meau v-if="isShowMeau" :notice="notice" :exclusions="exclusions" :picInfo="picInfo" :photoList="photoList" :recommed="recommed"></Meau>
+		<Meau v-if="isShowMeau" :notice="notice" :exclusions="exclusions" :picInfo="picInfo" :photoList="photoList" :recommed="recommed" :travelersReviews="travelersReviews"></Meau>
 		<ActivityBanner :bannerPhotos="detail.bannerPhotos" ></ActivityBanner>
 
 		<Activities 
@@ -20,7 +20,11 @@
 			:itemsIncluded="itemsIncluded" 
 			:destination="destination"
 			:photoList="photoList"
-			:recommed="recommed"></Activities>
+			:recommed="recommed"
+			:travelersReviews="travelersReviews"
+			:pageSize="pageSize"
+			:pageNum="pageNum"
+			></Activities>
 		<FooterCommon></FooterCommon>
 		<div class="toast-container" v-if="toastShow">
 			<div class="toast-message clearfix">
@@ -80,12 +84,16 @@
 				exclusions:[],
 				notice:[],
 				photoList:"",
+				travelersReviews:{},
+				pageSize:3,
+				pageNum:1,
 //				participants:participants
 			};
 			let response = {};
 			let apiActivityPriceRes = {};
 			let apiActivityRecommendRes = {};
 			let photoList={};
+			let travelersReviews={}
 			try {
 				//活动详情
 				response = await Vue.axios.get(apiBasePath + "activity/basic/" + id);
@@ -137,6 +145,27 @@
 				);
 				
 				data.recommed = apiActivityRecommendRes.data;
+				
+				//游客点评
+				let travelersParam={
+					activityId:id,
+					pageNum:data.pageNum,
+					pageSize:data.pageSize,
+					status:1
+				}
+				travelersReviews=await Vue.axios.post(apiBasePath+'user/comment/detail/list',JSON.stringify(travelersParam),{
+					headers: {
+						'Content-Type': 'application/json; charset=UTF-8'
+					}
+				})
+				if(travelersReviews.data.entities){
+					for(let i=0;i<travelersReviews.data.entities.length;i++){
+						travelersReviews.data.entities[i].text280=false
+					}
+					data.travelersReviews=travelersReviews.data	
+				}
+				
+				
 				//游客图片
 				let photoParams={
 					"objectId": id,
@@ -233,7 +262,7 @@
 			data.id!='undefined'?data.id:getUrlParams()
 			this.logIn = window.localStorage.getItem("logstate");
 			window.addEventListener("scroll", this.scorllBar);
-			console.log(data.picInfo)
+			console.log(this.travelersReviews)
 		},
 		watch: {
 			"detail.latestBooking": function(val, oldVal) {

@@ -570,7 +570,7 @@
 						wxPayEwm.appendChild(payLogo);
 
 						var qrcode = new QRCode(wxPayEwm, {
-							text: response.data.code_url,
+							text: response.data.codeUrl,
 							width: 150, //生成的二维码的宽度
 							height: 150, //生成的二维码的高度
 							colorDark: "#000000", // 生成的二维码的深色部分

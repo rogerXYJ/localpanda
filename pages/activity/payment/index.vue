@@ -101,10 +101,10 @@
 							<div class="adultPic">{{opctions.symbol}} {{returnFloat(opctions.amount + (opctions.childDiscount?opctions.childDiscount:0) + (opctions.couponDiscount?opctions.couponDiscount:0))}}</div>
 						</div>
 						<div class="child" v-if="opctions.childDiscount">
-							<b>- {{opctions.symbol}}{{returnFloat(opctions.childDiscount)}}</b> for child(ren)
+							<b>- {{opctions.symbol}}{{returnFloat(opctions.childDiscount)}}</b>  (Children discount)
 						</div>
 						<div class="child" v-if="opctions.couponDiscount">
-							<b>-{{opctions.symbol}}{{returnFloat(opctions.couponDiscount)}}</b> for discount
+							<b>-{{opctions.symbol}}{{returnFloat(opctions.couponDiscount)}}</b> (Coupon discount)
 						</div>
 
 					</div>

@@ -188,7 +188,7 @@
 					},
 				],
 				options: ['Shanghai', 'Beijing', "Xi'an", "Guilin", 'Chengdu'],
-				thems: ["Panda", "Watertown", "Great Wall", "Terra-Cotta Warriors", "Forbidden City", "Li River", "Layover Tour", "Day trips", "Local Food", "Dumplings", "Landmarks", "Short Excursions", "Family Friendly"],
+				thems: ["Panda", "Watertown", "Great Wall", "Terra-Cotta Warriors", "Forbidden City", "Li River", "Layover Tour", "Day trips", "Local Food", "Dumplings", "Landmarks", "Short Excursions", "Family Friendly","Tibet"],
 				showRecommend: true,
 				input_highlight:false,
 				aa:false

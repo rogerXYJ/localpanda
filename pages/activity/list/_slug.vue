@@ -385,7 +385,7 @@
 					},
 					
 				],
-				thems:["Panda","Watertown","Great Wall","Terra-Cotta Warriors","Forbidden City","Li River","Layover Tour","Day trips","Local Food","Dumplings","Landmarks","Short Excursions","Family Friendly"],
+				thems:["Panda","Watertown","Great Wall","Terra-Cotta Warriors","Forbidden City","Li River","Layover Tour","Day trips","Local Food","Dumplings","Landmarks","Short Excursions","Family Friendly","Tibet"],
 				loc: slug,
 				activityList: listData,
 				logIn: '',

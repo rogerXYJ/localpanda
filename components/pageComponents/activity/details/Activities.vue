@@ -68,8 +68,8 @@
 						<li :key="index" v-for="(i,index) in detail.itineraries">
 							<div class="item_v clearfix" v-if="i.photoUrl">
 								<div class="contTitle">
-									<h3>{{i.title}}</h3>
-									<p><img v-lazy="i.photoUrl" /><span v-if="i.description" v-html="i.description.replace(/\r|\n/g,'<br/>')"></span></p>
+									
+									<div><img v-lazy="i.photoUrl" /><h3>{{i.title}}</h3><span v-if="i.description" v-html="i.description.replace(/\r|\n/g,'<br/>')"></span></div>
 									
 								</div>
 								<!--<div class="cont">
@@ -1729,7 +1729,7 @@
 							.item {
 								padding: 24px 0;
 								.cont_title {
-									width: calc(50% - 20px);
+									
 									font-size: 18px;
 									margin-left: 20px;
 									font-weight: bold;
@@ -1744,16 +1744,19 @@
 							.item_v {
 								.contTitle {
 									float: left;
-									padding: 24px 0 0 20px;
+									padding: 15px 0 15px 20px;
+									
 									h3 {
 										font-size: 18px;
 										font-weight: bold;
+										margin: 0 0 10px 0!important;
+										
 									}
-									p {
+									div {
 										font-size: 18px;
 										line-height: 26px;
-										margin-top: 15px;
 										text-align: justify;
+									
 									}
 									img{
 											width: 50%;

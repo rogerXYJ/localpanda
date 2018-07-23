@@ -20,7 +20,7 @@
 		data() {
 			return {
 				peopleNub:'',
-				
+				n:{}
 			}
 		},
 		components: {
@@ -31,19 +31,15 @@
 				this.$emit('showSelectPeople',true)
 			},
 			add(){
+				
+				
 				this.peopleNub++
-				if(this.peopleNub>=this.selectNumber.maxValue){
-					
-					this.peopleNub=this.selectNumber.maxValue
-				}
+	
 				this.$emit('getPeople',this.peopleNub)
 			},
 			del(){
 				this.peopleNub--
-				if(this.peopleNub<=this.selectNumber.minValue){
-					
-					this.peopleNub=this.selectNumber.minValue
-				}
+				
 				this.$emit('getPeople',this.peopleNub)
 			},
 		},
@@ -52,7 +48,6 @@
 		},
 		mounted() {
 			this.peopleNub=this.participants
-			console.log(this.participants)
 		},
 		props: ["selectNumber","participants"]
 	}

@@ -1,11 +1,11 @@
 <template>
 	<div class="activityList">
-		<HeaderCommon :logIn="logIn"></HeaderCommon>
+		<HeaderCommon :logIn="logIn" @closeSearchList="closeFn"></HeaderCommon>
 		<div class="banner">
 			<div class="linerBackground">
 				<!--seach bar -->
 				<div class="selectInfo">
-					<input type="" v-model="seachContent" @click.stop="showHot" @keyup.enter="seachFn" placeholder="Attration, Activity, Destination" />
+					<input type="" v-model="seachContent" @click.stop="showHot" maxlength="60" @keyup.enter="seachFn" placeholder="Attraction, Activity, Destination" />
 					<div class="selectPeople"@click.stop="showSelectPeople">
 						<span>For {{postData.participants}} People <i class="iconfont">&#xe60f;</i></span>
 						<input-number v-if="selectPeople" :participants="postData.participants" :selectNumber="selectNumber" @showSelectPeople="setSelectPeople" @getPeople="setPeople"></input-number>
@@ -47,18 +47,13 @@
 				<div class="pageLeft">
 					<div class="filterSeach" v-if="showSelected">
 						<div class="title">
-							<h3>My Seach</h3>
+							<h3>My Search</h3>
 							<span @click="clearAll">Clear All</span>
 						</div>
 						<div class="seachCont" v-for="(i,key,index) in filterCheck" v-if="filterCheck[key].length>0">
 							<div class="seachTitle clearfix" >
 								<h3>{{getFilterType(key.toUpperCase())}}</h3>
-								<!--<span @click="clearItemCheck(key)">Clear</span>-->
 							</div>
-							<!--<div class="checked" v-if="key=='duration'" v-for="(item,index) in i" @click="clearCheck(key,index)">
-								<i class="iconfont">&#xe606;</i>
-								<span>{{returnD(item)}}</span>
-							</div>-->
 							<div class="checked clearfix" v-for="(item,index) in i" @click="clearCheck(key,index)"> 
 								<i class="iconfont">&#xe606;</i>
 								<span v-if="key=='duration'">{{returnD(item)}}</span>
@@ -67,11 +62,31 @@
 							
 						</div>
 					</div>
-					<div class="filterBox" v-for="(item,index) in aggregations">
-						<div class="title clearfix">
+					<div class="filterBox padding">
+						<div class="title">
+							<h3>Price/person for party of {{postData.participants}}</h3>
+						</div>
+						<div class="filterItem1">
+							 <el-slider
+						      v-model="checkPrice"
+						      :step="5"
+						      range
+						     :max="505"
+						     :format-tooltip="format"
+						      @change="filterPriceChange"
+						      >
+						    </el-slider>
+						    <div class="clearfix">
+						    	<span style="font-size: 16px; position: relative;left: -4px;font-weight: bold;">${{checkPrice[0]}}</span>
+						    	<span style="font-size: 16px; position: relative;float:right;right:-13px;top:-2px;font-weight: bold;">${{checkPrice[1]>500?'500+':checkPrice[1]}}</span>
+						    </div>
+						    
+						</div>
+					</div>
+
+					<div class="filterBox" v-for="(item,index) in aggregations" v-if="getObjLength(item.items)>1">
+						<div class="title">
 							<h3>{{getFilterType(item.type)}}</h3>
-							<p></p>
-							<!--<span @click="clearSelect(item)">Clear</span>-->
 						</div>
 						<div class="filterItem" v-if="item.type=='DURATION'">
 							<checkbox-group  v-model="filterCheck.duration">
@@ -106,8 +121,6 @@
 							<span class="pageSizeInfo" v-if="records==1">1 activity in total</span>
 							<span class="pageSizeInfo" v-if="records==0">0 activity in total</span>
 							<span class="pageSizeInfo" v-if="records>1"><b>{{records}}</b> activities in total</span>
-							<!--<span class="iconfont listIcon margin active">&#xe677;</span>
-							<span class="iconfont listIcon">&#xe678;</span>-->
 						</div>
 					</div>
 					<div class="list-cont" v-if="records>0">
@@ -122,20 +135,27 @@
 									</div>
 									<div class="activitDe">
 										<div class="info">
-											<div class="titleText" style="-moz-box-orient: vertical;
+											<div class="titleText" :title="item.title" style="-moz-box-orient: vertical;
 										    -webkit-box-orient:vertical;">
-												{{item.title}}
+												<span>{{item.title}}</span>
 											</div>
-											<div class="recommendedReason" v-if="item.recommendedReason">{{item.recommendedReason}}</div>
-											<div class="duration"><b>Duration</b>: {{item.duration}} {{item.durationUnit|firstUpperCase}}</div>
-											<div class="destinations"><b>Destinations</b>:{{item.destinations.join(' , ')}}</div>
+											<!--<div class="recommendedReason" v-if="item.recommendedReason">{{item.recommendedReason}}</div>-->
+											<div class="attractions clearfix" :title="item.attractions.join('  .  ')" style="color: #1bbc9d;" v-if="item.attractions && item.attractions.length>0"><b>{{item.attractions.length>1?'Interests: ':'Interest: '}}</b><span v-html="item.attractions.join('<b>  ·  </b>')"></span></div>
+											<div class="destinations "><b>{{item.destinations.length>1?'Destinations':'Destination'}}:</b> {{item.destinations.join(' , ')}}</div>
+											<div class="duration"><b>Duration:</b> {{item.duration}} {{item.durationUnit|firstUpperCase}}</div>
+											
+											
 											
 											<div class="activeType">
-												<span class="tag_private" v-if="item.groupType=='Private'">{{item.groupType}}</span>
-												<span class="tag_group" v-if="item.groupType=='Group'">{{item.groupType}}</span>
+												<label class="tag_private" v-if="item.groupType=='Private'">{{item.groupType}}</label>
+												<label class="tag_group" v-if="item.groupType=='Group'">{{item.groupType}}</label>
+												
 											</div>
 											<div class="totalPic">
-												<div class="nowPic">From<br/> <b>${{returnFloat(item.perPersonPrice)}}</b><span>  pp</span></div>
+												<div class="nowPic">
+													<b>${{returnFloat(item.perPersonPrice)}}</b><span> pp</span>
+												</div>
+												<p v-if="item.sales&&item.sales>0">Booked {{item.sales}} {{item.sales==1?'time':'times'}} (last 30 days)</p>
 											</div>
 										</div>
 
@@ -219,6 +239,7 @@
 					type:'SCORE'
 				}
 			}
+			var price=[0,505]
 			//兼容老的key，老key转为新key
 			var oldType = function(text) {
 				if(text == 'TOURTYPE') {
@@ -242,18 +263,38 @@
 			var postFilters = [];
 			for(var key in options) {
 				var keyUpper = key.toUpperCase();
-				postFilters.push({
-					type: oldType(keyUpper), //兼容老的字段
-					filterValues: options[key]
-				});
+					if(key!="price"){
+						postFilters.push({
+							type: oldType(keyUpper), //兼容老的字段
+							filterValues: options[key]
+						})
+					}else{
+						if(options[key].maxValue>500){
+							postFilters.push({
+								type: keyUpper,
+								minValue: options[key].minValue
+							})
+						}else{
+							postFilters.push({
+								type: keyUpper,
+								maxValue:options[key].maxValue,
+								minValue: options[key].minValue
+							})
+						}
+						price=[options.price.minValue,options.price.maxValue]	
+					}
+					
+				
+				
 			};
 			if(sort){
 				postData.sort=sort
 			}
 			if(options) {
 				postData.filters = postFilters;
+				
 			};
-			
+			console.log(price)
 			//服务端请求数据
 			let listdata = {}
 			try {
@@ -268,10 +309,10 @@
 			}
 			var data = listdata.data
 			var listData = listdata.data.entities
-			
 			let filterAll = {},
 				filterCheck = {},
 				selectNumber={};
+				
 			if(data.aggregations) {
 				data.aggregations.forEach(item => {
 					var thisFilter = [];
@@ -344,13 +385,14 @@
 					},
 					
 				],
-				thems:["Panda","Watertown","Great Wall","Terra-Cotta Warriors","Forbidden City","Li River","Layover Tour","Day trips","Local Food","Dumplings","Landmarks","Short Excursions","Family Friendly"],
+				thems:["Panda","Watertown","Great Wall","Terra-Cotta Warriors","Forbidden City","Li River","Layover Tour","Day trips","Local Food","Dumplings","Landmarks","Short Excursions","Family Friendly","Tibet"],
 				loc: slug,
 				activityList: listData,
 				logIn: '',
 				loadingStatus: false,
 				isdisabled: data.records > postData.pageSize ? true : false, //是否显示翻页
-
+				
+				checkPrice:price,//选择价格区间值
 				apiBasePath: apiBasePath,
 				//唤起定制
 				ContactStatus: false,
@@ -467,13 +509,13 @@
 				var aggregations = this.listdata.aggregations;
 
 				 //设置自定义顺序     
-				var sortDefault = {          
+				var sortDefault = {       
 					  'CATEGORY': 1,
-	          'GROUP_TYPE': 2,
-	          'ATTRACTION': 3,
-	          'DURATION': 4,
-	          'TOUR_TYPE': 5,
-						'CITY': 6,        
+			          'GROUP_TYPE': 2,
+			          'ATTRACTION': 3,
+			          'DURATION': 4,
+			          'TOUR_TYPE': 5,
+					  'CITY': 6,        
 				};
 				//给数据添加排序的序号
 				
@@ -484,12 +526,12 @@
 					
 					
 					aggregations[i].number = thisNum ? thisNum : 10; //没有的字段默认设置顺序为10      
-					
-					if(typeof sortDefault[thisType] !== 'undefined'){
+					if(typeof sortDefault[thisType] !== 'undefined' && aggregations[i].items){
 						newAggregations.push(aggregations[i]);
 					}
-					  
+					
 				};
+				
 				//排序        
 				newAggregations = newAggregations.sort(function(a, b) {          
 					return a.number > b.number;        
@@ -501,23 +543,45 @@
 			
 	},
 	methods: {
+			//全局搜索，搜索不显示
+			closeFn(value){
+				this.showSeachList=value
+				this.isShowHot=value
+			},
+			//处理价格筛选显示500+
+			format(e){
+				if(e>500){
+					return 500+'+'
+				}
+			},
+			//筛选价格
+			filterPriceChange(e){
+				let that=this
+				
+				//that.postData.filters.push(priceCheck)
+				
+				that.jumpUrl()
+			},
 			//显示选择人数
 			showSelectPeople(){
 				this.selectPeople=true
+				
 			},
 			setSelectPeople(val){
 				this.selectPeople=val
+				
 			},
 			setPeople(val){
 				this.postData.participants=val
 				this.jumpUrl()
+				
 			},
 			//搜索显示推荐
 			showHot(){
 				let that=this
 				if(this.seachContent){
 					this.isShowHot=false
-					setTimeout(()=>that.showSeachList=true,200)
+					setTimeout(()=>that.showSeachList=true,300)
 					let postData={
 						keyword:this.seachContent,
 						size:10
@@ -540,9 +604,11 @@
 			},
 			gaSuggestion(){
 				this.Ga('search','suggestion')
+				this.Ga('search','search')
 			},
 			gaRecommendation(){
 				this.Ga('search','recommendation')
+				this.Ga('search','search')
 			},
 			//筛选弹框
 			setBack(val){
@@ -556,27 +622,6 @@
 						this.showSelected=false
 					}
 				}
-//				var first={}
-//				for(var key in checked){
-//					first[key]=checked[key]
-//					if(checked[key].length>0){
-//						if(checked[key].length==1){
-//							first[key].firstClick=true
-//						}else{
-//							first[key].firstClick=false
-//						}
-//					}else{
-//						this.showSelected=false
-//					}
-//					
-//				}
-//				for(var key in first){
-//					if(first[key].firstClick){
-//						this.Ga('filter',key)
-//						//this.Ga('filter',"filter_apply")
-//					}
-//				}
-				
 			},
 			//搜索补全高亮
 			textHighlight(value){
@@ -690,7 +735,7 @@
 				for(var key in filterCheck){
 					filterCheck[key]=[]
 				}
-				
+				this.checkPrice=[0,505]
 			},
 			showMore(filterCheck,item,type){
 				this.showModel=true
@@ -715,44 +760,19 @@
 			},
 			//点击搜索按钮
 			seachFn(){
+				this.seachContent=this.seachContent.replace(/^\s+|\s+$/g,'');
 				if(this.seachContent){
 					this.Ga("search","search")
+					this.Ga("search","direct")
 					location.href = this.getUrl(this.seachContent,'direct');
-					console.log(this.seachContent)
+					
 				}
 				
 			},
 			getUrl(value,type){
-				console.log(type)
-				
 				return '/activity/list/China?keyword=' + value+'&participants='+this.postData.participants+'&type='+type;	
 			},
-			//删除选中的一个类型选项
 
-//			clearItemCheck(item){
-//				for(var key in this.filterCheck) {
-//					if(key==item) {
-//						this.filterCheck[item] = []
-//					}
-//					if(!this.filterCheck[key].length){
-//						this.showSelected=false
-//					}
-//					
-//				}
-//			},
-			//删除筛选项选中的选项
-//			clearSelect(item) {
-//				for(var key in this.filterCheck) {
-//					if(this.toLower(item.type) == key) {
-//						this.filterCheck[key] = []
-//					}
-//					if(!this.filterCheck[key].length){
-//						this.showSelected=false
-//					}
-//				}
-//				
-//				//console.log(postFilters)
-//			},
 			sortFn(val) {
 				this.selected=val
 				let  gaLabel = 'score';
@@ -765,6 +785,7 @@
 				};
 				this.Ga('sort',gaLabel);
 				this.Ga('sort','sort');
+				
 				this.jumpUrl()
 
 			},
@@ -772,6 +793,7 @@
 				let that = this
 				that.postData.pageNum = val
 				that.getData()
+				
 			},
 			jumpUrl(){
 
@@ -791,7 +813,7 @@
 					//type:this.postData.type
 					
 				}
-				
+				//console.log(filterCheck)
 				
 				//var sort = this.postData.sort;
 				if(rankCheck=='Price :Low to High'){
@@ -806,26 +828,47 @@
 
 				//去掉空数据,并对跳转的数据排序，把需要的数据放在新的options里
 				var options = {};
-				
 				for(var key in filterCheck){
 					if(filterCheck[key].length){
 						options[key] = filterCheck[key].sort();
+							postFilters.push({
+							type: key.toUpperCase(),
+							filterValues: filterCheck[key]
+						})
+					}else if(key=='price' && !Array.isArray(filterCheck[key])){
+						if(filterCheck[key].maxValue!=505||filterCheck[key].minValue!=0){
+							options[key] = filterCheck[key];
+						}
+						
+						if(filterCheck[key].maxValue>500){
+							postFilters.push({
+								type: key.toUpperCase(),
+								minValue:filterCheck[key].minValue
+							})
+						}else{
+							postFilters.push({
+								type: key.toUpperCase(),
+								maxValue:filterCheck[key].maxValue,
+								minValue:filterCheck[key].minValue
+							})
+						}
+						
 					}
-					postFilters.push({
-						type: key.toUpperCase(),
-						filterValues: filterCheck[key]
-					})
+					
 				}
 				this.postData.filters = postFilters
 				this.getData()
+				
 				//跳转并对对象转码
 				jumpData.options = encodeURIComponent(JSON.stringify(options));
+				console.log(jumpData)
 				//检测是否有筛选项
 				var urlQuery = '';
 				for(var key in jumpData){
 					//检测有效数据
 					if(JSON.stringify(jumpData[key]) != '{}' && jumpData[key] != '%7B%7D' && jumpData[key] != ''){
 						urlQuery += '&' + key + '=' + jumpData[key];
+						
 					}
 				};
 				urlQuery = urlQuery.substring(1); //去掉第一个&
@@ -863,6 +906,8 @@
 					}
 				}
 				this.loadingStatus = true
+				
+				//return
 				Vue.axios.post(this.apiBasePath + "search/activity", JSON.stringify(this.postData), {
 					headers: {
 						'Content-Type': 'application/json; charset=UTF-8'
@@ -886,16 +931,15 @@
 							this.filterAll[thisType] = thisFilter;
 							
 							if(item.type=="MIN_PARTICIPANTS"){
-								this.selectNumber.minValue=item.minValue
+								this.selectNumber.minValue=item.value
 							}else if(item.type=="MAX_PARTICIPANTS"){
-								this.selectNumber.maxValue=item.maxValue
+								this.selectNumber.maxValue=item.value
 							}
 							
 						})
 						
-						
 					}
-
+					window.scrollTo(0,100);
 				}, (res) => {
 
 				})
@@ -913,7 +957,6 @@
 		watch: {
 			'filterCheck': {
 				handler: function(val, oldVal) {
-					//console.log(options)
 					var path = this.$route.path
 					var rankCheck=this.selected
 					var postFilters = []
@@ -927,20 +970,43 @@
 						//type:this.postData.type
 					}
 					for(var key in val) {
-						var thisVal = val[key].concat()
-						if(thisVal.length) {
-							this.showSelected=true
-							options[key] = thisVal.sort();
-							if(thisVal.length==1){
-								this.Ga('filter',key)
-								this.Ga('filter',"filter_apply")
+						if(Array.isArray(val[key])){
+							var thisVal = val[key].concat()
+							if(val[key].length){
+								this.showSelected=true
+								options[key] = thisVal.sort();
+								if(thisVal.length==1){
+									this.Ga('filter',key)
+									this.Ga('filter',"filter_apply")
+								}
 							}
+							postFilters.push({
+								type: key.toUpperCase(),
+								filterValues: val[key]
+							})
+							
+						}else if(key=='price' && !Array.isArray(val[key])){
+							if(val[key].maxValue<=500||val[key].minValue>0){
+								options[key] = val[key];
+								
+							}
+							if(val[key].maxValue>500){
+								postFilters.push({
+									type: key.toUpperCase(),
+									minValue:val[key].minValue
+								})
+							}else{
+								postFilters.push({
+									type: key.toUpperCase(),
+									maxValue:val[key].maxValue,
+									minValue:val[key].minValue
+								})
+							}
+							
 						}
-						postFilters.push({
-							type: key.toUpperCase(),
-							filterValues: val[key]
-						})
+						
 					}
+					
 					if(rankCheck=='Price :Low to High'){
 						jumpData.sort = JSON.stringify({"type":"PRICE","reverse":false})
 					}else if(rankCheck=='Price :High to Low'){
@@ -950,12 +1016,18 @@
 					}else{
 						jumpData.sort = JSON.stringify({"type":"SCORE"})
 					}
-					//console.log(options)
+					
 					//					//跳转并对对象转码
+					
+				
+					
 					jumpData.options = encodeURIComponent(JSON.stringify(options));
 					//检测是否有筛选项
 					
 					this.postData.filters = postFilters
+					
+					
+					
 					this.getData()
 					
 					var urlQuery = '';
@@ -963,20 +1035,23 @@
 						//检测有效数据
 						if(JSON.stringify(jumpData[key]) != '{}' && jumpData[key] != '%7B%7D' && jumpData[key] != ''){
 							urlQuery += '&' + key + '=' + jumpData[key];
+							
 						}
 					};
 					urlQuery = urlQuery.substring(1); //去掉第一个&
 					var url ='/activity/list/China' + (urlQuery ? ('?' + urlQuery) : '');
 					history.pushState(null, null, url)
+					console.log(options)
 				},
 				deep: true
 			},
 			seachContent:function(val,oldVal){
+				val=val.replace(/^\s+|\s+$/g,'');
 				if(val){
 					this.isShowHot=false
 					this.showSeachList=true
 					let postData={
-						keyword:this.seachContent,
+						keyword:val,
 						size:10
 					}
 					Vue.axios.post('https://api.localpanda.com/api/suggest',JSON.stringify(postData),{
@@ -1004,6 +1079,13 @@
 				}else{
 					this.showBodyScroll()
 				}
+			},
+			checkPrice(val){
+				console.log(11)
+				this.filterCheck.price = {
+					minValue: val[0],
+					maxValue: val[1]
+				}
 			}
 
 		},
@@ -1018,13 +1100,13 @@
 			that.value = that.loc == "Xian" ? "Xi'an" : that.loc
 		},
 		mounted: function() {
+			console.log(this.checkPrice)
 			const that = this
 			for(var key in that.filterCheck){
 				if(that.filterCheck[key].length>0){
 					that.showSelected=true
 				}
-			}
-			
+			}	
 			document.body.addEventListener("click",()=>{
 				that.isShowHot=false
 				that.showSeachList=false
@@ -1055,7 +1137,9 @@
 		margin-left: -20px;
 		margin-top: 3px;
 	}
-	
+	.el-slider__button-wrapper{
+		z-index: 10!important;
+	}
 	.el-pagination.is-background .el-pager li:not(.disabled).active {
 		background-image: linear-gradient(-90deg, #009efd 0%, #1bbc9d 100%)
 	}
@@ -1082,11 +1166,13 @@
 	}
 	.background{background-color: #faf9f8};
 	.empty {
-		padding:200px 0;
+		padding:30px 0 200px;
+		text-align: center;
+		width: 975px;
 		p {
 			font-size: 16px;
 			margin-top: 20px;
-			text-align: center;
+			
 			a {
 				color: #1bbc9d;
 			}
@@ -1338,6 +1424,10 @@
 						padding: 20px 10px 30px 20px;
 						border-radius: 6px;
 						border: solid 1px #ebebeb;
+						.filterItem1{
+							position: relative;
+							left: -5px;
+						}
 						.filterItem{
 							.viewMore{
 								margin-top: 25px;
@@ -1355,18 +1445,11 @@
 							}
 						}
 						.title {
-							margin-bottom: 27px;
+							margin-bottom: 20px;
 							h3 {
 								font-size: 16px;
 								font-weight: bold;
-								float: left;
-							}
-							span {
-								float: right;
-								color: #1bbc9d;
-								font-size: 16px;
-								display: block;
-								cursor: pointer;
+								
 							}
 							
 						}
@@ -1430,7 +1513,10 @@
 							0,
 							0.24);
 								.titleText{
-									text-decoration: underline;
+									span{
+										text-decoration: underline;
+									}
+									
 								}
 							}
 							
@@ -1452,11 +1538,11 @@
 								position: absolute;
 								width: 309px;
 								height: 100%;
-								min-height: 198px;
+								min-height: 135px;
 								.activity-photo {
 									width: 309px;
 									height: 100%;
-									min-height: 198px;
+									min-height: 135px;
 									background-repeat: no-repeat!important;
 									background-size: cover!important;
 									position: relative;
@@ -1481,12 +1567,13 @@
 								
 								.activeType {
 									margin-top: 14px;
-									span{
+									label{
 										padding: 6px 8px;
 										border-radius: 4px;
 										display: inline-block;
 										color: #fff;
 										font-size: 12px;
+										background-color: #f4b33f;
 										&.tag_group{
 											background-color: #efae99;
 										}
@@ -1510,9 +1597,24 @@
 									-o-text-overflow: ellipsis;
 									word-wrap: break-word;
 									font-size: 16px;
-									font-weight: bold;
+									
 									text-align: left;
 									overflow: hidden;
+									label{
+										font-weight: normal;
+										padding: 1px 8px;
+										border-radius: 10px;
+										display: inline-block;
+										color: #fff;
+										font-size: 12px;
+										margin-right: 5px;
+										vertical-align: baseline;
+										
+										
+									}
+									span{
+										font-weight: bold;
+									}
 								}
 								.recommendedReason{
 									text-overflow: ellipsis;
@@ -1539,10 +1641,38 @@
 									font-size: 14px;
 									margin-top: 14px;
 								}
+								.attractions{
+									font-size: 14px;
+									margin-top: 14px;
+									b{
+										color: #353a3f!important;
+										width: 70px;
+										float: left;
+									}
+									span{
+										
+											
+										text-overflow: ellipsis;
+									display: -webkit-box;
+									display: -moz-box;
+									-moz-box-orient: vertical;
+									-webkit-box-orient: vertical;
+									-webkit-line-clamp: 2;
+									-moz-line-clamp: 2;
+									-o-text-overflow: ellipsis;
+									word-wrap: break-word;
+									overflow:hidden;
+									}
+									
+									
+									
+									
+								}
 								.totalPic {
 									position: absolute;
 									bottom: 20px;
 									right: 20px;
+									text-align: right;
 									.nowPic {
 										
 										font-size: 14px;
@@ -1554,6 +1684,9 @@
 										span {
 											color: #353a3f;
 										}
+									}
+									p{
+										font-size: 14px;
 									}
 								}
 							}
@@ -1695,6 +1828,10 @@
 		}
 		.long {
 			width: 671px!important;
+		}
+		.padding{
+			padding-right: 20px!important;
+			padding-bottom: 22px!important;
 		}
 	}
 </style>

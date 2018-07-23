@@ -24,6 +24,7 @@
 					<div class="emalAddress">
 						<p>Email Address<b>*</b></p>
 						<input :class="{err:emailAddressErr}" @focus="fousEmal" @blur="gabulr(2)" v-model="emailAddress" />
+						<span>Your voucher will be sent here, make sure it is correct</span>
 					</div>
 					<div class="cont">
 						<div class="cont-item">
@@ -44,8 +45,11 @@
 							<input :class="{err:phoneErr}" @focus="fousPhone" @blur="gabulr(4)" v-model="phone" />
 						</div>
 					</div>
-					<span>Your voucher will be sent here, make sure it is correct</span>
-
+					<div class="comments">
+						<h4>Other Required Information</h4>
+						<textarea v-if="opctions.category=='Private Tour'" @blur="gabulr(5)" placeholder="please provide your hotel address so the guide can pick you up." v-model="comments"></textarea>
+						<textarea v-else v-model="comments" @blur="gabulr(5)"></textarea>
+					</div>
 				</div>
 				<div class="check">
 					<span>Check this box if the contact for the reservation does NOT match the Primary Traveler.</span>
@@ -91,23 +95,30 @@
 									<input :class="{err:TravellerphoneErr}" @focus="fousphonenumb()" @blur="gabulr(4)" v-model="Travellerphone" />
 								</div>
 							</div>
-
 						</li>
 					</ul>
-
 				</div>
-
+				<div class="coupon">
+					<checkbox v-model="checkedAll" :change="changeFn">
+						Have a Gift Card or Coupon Code? Proceed to checkout to redeem it.
+						<a>Enter Coupon Code <i class="iconfont" v-if="checkedAll">&#xe667;</i>
+							<i class="iconfont" v-else>&#xe666;</i>
+						</a>
+					</checkbox>
+					<div class="couponInput" v-if="checkedAll">
+						<input placeholder="Enter a gift card or promotional code" @input="couponCodeChange" id="coupon" @keyup.enter="validateCode" v-model="couponCode" />
+						<button @click="validateCode">Enter</button>
+						<p v-if="hasCode==0"><i class="iconfont">&#xe654;</i>- {{couponType=="RATE"?"":nowExchange.symbol}}{{couponType=="RATE"?couponRate*100:opctions.couponDiscount}}{{couponType=="RATE"?"%":""}} {{couponType=="RATE"?"off":""}} (Coupon discount)</p>
+						<p v-if="hasCode==1" style="color: red;">The promotional code you entered is invalid. Please try again.</p>
+					</div>
+				</div>
 				<div class="Comments">
 					<div class="information">
-						<h4>Other Required Information</h4>
-						<textarea v-if="opctions.category=='Private Tour'" @blur="gabulr(5)" placeholder="please provide your hotel address so the guide can pick you up." v-model="comments"></textarea>
-						<textarea v-else v-model="comments" @blur="gabulr(5)"></textarea>
 						<p class="refundPolicy" style="color: red;font-size: 14px;">You can get a 100% refund up to {{opctions.refundTimeLimit}} hours before your trip.</p>
 						<p class="text" style="font-size: 14px;margin-top: 20px;" v-if="logIn!=1">You ordered as a guest. To view your order details, you can click "My Bookings" on the top bar then type in the reservee's email address and name you entered before to access that information.</p>
 						<div class="nextBtn">
-							<div class="next" @click="next">NEXT</div>
+							<div class="next" @click="placeOrder">NEXT</div>
 						</div>
-
 					</div>
 				</div>
 			</div>
@@ -132,7 +143,12 @@
 							<div class="adultPic">{{nowExchange.symbol}} {{opctions.adultsPic}}</div>
 						</div>
 						<div class="child" v-if="opctions.childrenNum>0&&opctions.childDiscount">
-							<b>- {{nowExchange.symbol}}{{opctions.childDiscount}}</b> for child(ren)
+							<b>- {{nowExchange.symbol}}{{opctions.childDiscount}}</b>(Children discount)
+						</div>
+						<div class="child" v-if="couponType">
+							<div>
+								<b>- {{nowExchange.symbol}}{{opctions.couponDiscount}}</b>(Coupon discount)
+							</div>
 						</div>
 					</div>
 					<div class="total clearfix">
@@ -160,6 +176,16 @@
 		<AlertGoBack :isShowAlertTitle="isShowAlertTitle" :alertTitle="alertTitle" :alertMessage="alertMessage" v-on:setIsShowAlertFn="getIsShowAlertFn"></AlertGoBack>
 		<Alert :isShowAlert="isShowAlert" :alertTitle='alertTitle' :alertMessage="alertMessage" v-on:setIsShowAlert="getIsShowAlert"></Alert>
 		<FooterCommon></FooterCommon>
+		<div class="dialog" v-if="orderHasCouponRate">
+			<div class="dialogContent">
+				<p>The promotional code you entered is invalid. You can continue to pay at the original price or enter your code again.</p>
+				<div class="btn">
+					<button @click="continueFn">Continue</button>
+					<button @click="enterAgain">Enter Again</button>
+				</div>
+			</div>
+
+		</div>
 	</div>
 </template>
 
@@ -175,6 +201,7 @@
 	import AlertGoBack from '~/components/Prompt/AlertGoBack';
 	import Alert from '~/components/Prompt/Alert'
 	import countryCode from '~/assets/js/countryCode.js'
+	import { checkboxGroup, checkbox } from "~/plugins/panda/checkbox/";
 
 	export default {
 		async asyncData({
@@ -198,6 +225,8 @@
 					couponDiscount: 0,
 					currency: '',
 					symbol: '',
+					couponDiscount: 0 //优惠价格
+
 				},
 				//订单联系人
 				oderFirstName: '',
@@ -241,11 +270,19 @@
 				exchange: [],
 				//国家
 				countryCode: countryCode.phone_countries,
-				codeList: [],//联系人国家选择列表
-				travelCodeList:[],//游万人国家选择列表
+				codeList: [], //联系人国家选择列表
+				travelCodeList: [], //游玩人国家选择列表
 				//显示code列表
 				showCode: false,
-				code: '',//区号
+				code: '', //区号
+				checkedAll: false, //选择优惠券
+				couponCode: '', //优惠券
+				hasCode: 100, //0 查到优惠券显示提示   1 没有查到优惠券提示  100默认没有提示
+				couponRate: '', //优惠率
+				orderHasCouponRate: false, //下单 判断是否含有优惠券
+				couponType: '', //优惠券类型
+				standard: 0, //切换优惠价格的基准价格
+				total:0,
 			}
 
 		},
@@ -253,10 +290,70 @@
 			HeaderCommon,
 			FooterCommon,
 			AlertGoBack,
-			Alert
+			Alert,
+			checkboxGroup,
+			checkbox
 
 		},
 		methods: {
+			//选择优惠券
+			changeFn(e) {
+				let self = this
+				if(!e.target.checked) {
+					self.hasCode = 100
+					self.opctions.amount=this.returnFloat(this.opctions.adultsPic - this.opctions.childDiscount)
+					self.couponRate = ''
+					self.couponCode = '';
+					self.couponType = ""
+					console.log(self.opctions.childDiscount)
+				}
+			},
+			//验证couponCode
+			validateCode() {
+				let self = this
+				var opctions = self.opctions,
+					details = opctions.details;
+				var people = opctions.adultNum + opctions.childrenNum;
+				var price = details[people - 1].defaultPrice;
+				if(self.couponCode){
+					self.axios.get("https://api.localpanda.com/api/order/coupon/" + self.couponCode).then(res => {
+						if(res.status == 200 && res.data) {
+							self.hasCode = 0
+							if(res.data.type) {
+								self.couponType = res.data.type
+								if(res.data.type == "RATE") {
+									self.couponRate = res.data.discount
+									self.opctions.couponDiscount =
+										self.returnFloat(self.returnFloat(self.opctions.adultsPic - self.opctions.childDiscount) * self.couponRate)
+									console.log(self.opctions.adultsPic)
+									console.log(self.opctions.childDiscount)
+								} else if(res.data.type == "FIXED") {
+									self.standard = res.data.discount
+									self.opctions.couponDiscount = self.standard
+								}
+								
+//								for(var i=0;i<self.exchange.length;i++){
+//									if(self.opctions.currency==self.exchange[i].code){
+//										self.opctions.couponDiscount=self.returnFloat(self.opctions.couponDiscount*self.exchange[i].exchangeRate)
+//										console.log(self.exchange[i].exchangeRate)
+//										console.log(self.exchange[i].code)
+//										console.log(self.opctions.currency)
+//										break
+//									}
+//								}
+								self.opctions.amount=self.returnFloat(self.opctions.adultsPic - self.opctions.childDiscount -self.opctions.couponDiscount)
+								
+							}
+							
+						} else {
+							self.hasCode = 1
+
+						}
+					}, res => {})
+				}
+				
+			},
+			//价格换算
 			changeCurrency(e) {
 				var self = this;
 				var value = e.target.value,
@@ -265,6 +362,7 @@
 				var people = opctions.adultNum + opctions.childrenNum;
 				//当前人数的默认价格
 				var price = details[people - 1].defaultPrice;
+				var standard = self.standard
 				//换算折扣价
 				var exchange = this.exchange;
 				for(var i = 0; i < exchange.length; i++) {
@@ -273,39 +371,26 @@
 					if(thisEx.code == value) {
 						//设置当前币种
 						this.nowExchange = thisEx;
-
 						//切换价格详情币种
 						opctions.adultsPic = this.returnFloat(price * thisEx.exchangeRate);
-						opctions.averagePrice = this.returnFloat(opctions.adultsPic / people);
-						opctions.amount = this.returnFloat(opctions.adultsPic - this.returnFloat(opctions.childrenNum * thisEx.exchangeRate * opctions.childDiscountPP));
 						opctions.childDiscount = this.returnFloat(opctions.childDiscountPP * opctions.childrenNum * thisEx.exchangeRate);
+						if(self.couponType == "RATE") {
+							opctions.couponDiscount = this.returnFloat((opctions.adultsPic-opctions.childDiscount) * self.couponRate)
+						} else if(self.couponType == "FIXED") {
+							opctions.couponDiscount = this.returnFloat(standard * thisEx.exchangeRate)
+						}else{
+							opctions.couponDiscount=0
+						}
+						opctions.averagePrice = this.returnFloat(opctions.adultsPic / people);
+						opctions.amount = this.returnFloat(opctions.adultsPic - this.returnFloat(opctions.childrenNum * thisEx.exchangeRate * opctions.childDiscountPP) - opctions.couponDiscount);
+						
 						opctions.symbol = thisEx.symbol;
+						
+						self.total=opctions.amount
+						
+						
 						break;
 					}
-				}
-
-			},
-			cutXiaoNum(num, len) {
-				var numStr = num.toString();
-				if(len == null || len == undefined) {
-					len = numStr.length;
-				}
-				var index = numStr.indexOf('.');
-				if(index == -1) {
-					index = numStr.length;
-					numStr += ".0000000000000";
-				} else {
-					numStr += "0000000000000";
-				}
-				var newNum = numStr.substring(0, index + len + 1);
-				return newNum;
-			},
-			round(val) {
-				if(typeof val === 'number' && val % 1 === 0) {
-					return val
-				} else {
-					return(parseFloat(this.cutXiaoNum(val, 1)) + 0.1).toFixed(1)
-
 				}
 
 			},
@@ -398,12 +483,12 @@
 						});
 					}
 
-				}else if(id==3){
-					if(this.mobileCode){
-						
+				} else if(id == 3) {
+					if(this.mobileCode) {
+
 					}
-				}else if(id==4){
-					if(this.phone){
+				} else if(id == 4) {
+					if(this.phone) {
 						ga(gaSend, {
 							hitType: 'event',
 							eventCategory: 'activity_booking',
@@ -436,24 +521,24 @@
 				}
 
 			},
-			selectCode(country,code,index) {
+			selectCode(country, code, index) {
 				ga(gaSend, {
 					hitType: 'event',
 					eventCategory: 'activity_booking',
 					eventAction: 'select',
 					eventLabel: 'country_code_select',
 				});
-				if(index==0){
-					
+				if(index == 0) {
+
 					this.mobileCode = country + "(+" + code + ")"
 					this.code = "(+" + code + ")"
 					this.showCode = false
-				}else{
+				} else {
 					this.mobileTravellCode = country + "(+" + code + ")"
-					this.TravellerCode="(+" + code + ")"
-					this.showTravellCode=false
+					this.TravellerCode = "(+" + code + ")"
+					this.showTravellCode = false
 				}
-				
+
 			},
 			fousOderfisrtname() {
 				this.oderFirstNameErr = false
@@ -484,12 +569,11 @@
 				if(index == 0) {
 					this.codeErr = false
 					this.showCode = true
-					
-					
+
 				} else {
-					this.showTravellCode=true
-					this.TravellerCodeErr=false
-					
+					this.showTravellCode = true
+					this.TravellerCodeErr = false
+
 				}
 
 			},
@@ -505,7 +589,7 @@
 					return 0;
 				}
 			},
-			gaFail(){
+			gaFail() {
 				ga(gaSend, {
 					hitType: 'event',
 					eventCategory: 'activity_booking',
@@ -513,37 +597,72 @@
 					eventLabel: 'activity_order_fail',
 				});
 			},
+			//判断是否使用优惠券下单
+			placeOrder() {
+				let self = this;
+				if(self.checkedAll) {
+					if(self.couponType) {
+						self.next()
+					} else {
+						self.orderHasCouponRate = true
+					}
+				} else {
+					self.next()
+				}
+
+			},
+			continueFn() {
+				let self = this
+				self.orderHasCouponRate = false
+				self.next()
+			},
+			enterAgain() {
+				let self = this
+				self.orderHasCouponRate = false
+				document.querySelector("#coupon").focus();
+				self.hasCode = 100
+
+			},
+			couponCodeChange(){
+				
+				this.hasCode = 100
+				this.opctions.amount=this.returnFloat(this.opctions.adultsPic - this.opctions.childDiscount)
+				this.couponType = ""
+			},
+				
+			//下单
 			next() {
-				let next=false
+				let next = false
 				const that = this
 				var obj; //that.addOder = true
+				var couponDiscount;
 				if(that.oderFirstName == "" || regExp.isNub(that.oderFirstName) || regExp.isCode(that.oderFirstName)) {
 					//that.gaFail()
-					next=false
+					next = false
 					that.oderFirstNameErr = true
 					that.isShowAlert = true
 					that.alertMessage = "There are required fields without values or with incorrect values. Please check the info you've provided and make sure all the required fields have been filled."
 				} else if(that.oderlastName == "" || regExp.isNub(that.oderlastName) || regExp.isCode(that.oderlastName)) {
 					//that.gaFail()
-					next=false
+					next = false
 					that.oderlastNameErr = true
 					that.isShowAlert = true
 					that.alertMessage = "There are required fields without values or with incorrect values. Please check the info you've provided and make sure all the required fields have been filled."
 				} else if(!regExp.isEmail(that.emailAddress)) {
 					//that.gaFail()
-					next=false
+					next = false
 					that.emailAddressErr = true
 					that.isShowAlert = true
 					that.alertMessage = "There are required fields without values or with incorrect values. Please check the info you've provided and make sure all the required fields have been filled."
 				} else if(!that.mobileCode) {
 					//that.gaFail()
-					next=false
+					next = false
 					that.codeErr = true
 					that.isShowAlert = true
 					that.alertMessage = "There are required fields without values or with incorrect values. Please check the info you've provided and make sure all the required fields have been filled."
 				} else if(that.phone == "" || !regExp.isMobil(that.phone)) {
 					//that.gaFail()
-					next=false
+					next = false
 					that.phoneErr = true
 					that.isShowAlert = true
 					that.alertMessage = "There are required fields without values or with incorrect values. Please check the info you've provided and make sure all the required fields have been filled."
@@ -551,19 +670,19 @@
 					if(that.check == 1) {
 						if(that.TravellerFirstName == "" || regExp.isNub(that.TravellerFirstName) || regExp.isCode(that.TravellerFirstName)) {
 							//that.gaFail()
-							next=false
+							next = false
 							that.TravellerFirstNameErr = true
 							that.isShowAlert = true
 							that.alertMessage = "There are required fields without values or with incorrect values. Please check the info you've provided and make sure all the required fields have been filled."
 						} else if(that.TravellerlastName == "" || regExp.isNub(that.TravellerlastName) || regExp.isCode(that.TravellerlastName)) {
 							//that.gaFail()
-							next=false
+							next = false
 							that.TravellerlastNameErr = true
 							that.isShowAlert = true
 							that.alertMessage = "There are required fields without values or with incorrect values. Please check the info you've provided and make sure all the required fields have been filled."
 						} else if(!regExp.isEmail(that.TravelleremailAddress)) {
 							//that.gaFail()
-							next=false
+							next = false
 							that.TravelleremailAddressErr = true
 							that.isShowAlert = true
 							that.alertMessage = "There are required fields without values or with incorrect values. Please check the info you've provided and make sure all the required fields have been filled."
@@ -572,7 +691,7 @@
 							that.isShowAlert = true
 							that.alertMessage = "There are required fields without values or with incorrect values. Please check the info you've provided and make sure all the required fields have been filled."
 						} else {
-							next=true
+							next = true
 							ga(gaSend, {
 								hitType: 'event',
 								eventCategory: 'activity_booking',
@@ -586,12 +705,14 @@
 								"currency": that.opctions.currency,
 								"adultNum": that.opctions.adultNum,
 								"childrenNum": that.opctions.childrenNum,
-								//"infantNum": that.opctions.infantNum,
+								"infantNum": 0,
 								"startDate": that.opctions.startDate,
 								"startTime": that.opctions.startTime,
 								"averagePrice": that.opctions.averagePrice,
 								"childDiscount": that.opctions.childDiscount,
 								"comments": that.comments ? that.comments : null,
+								"couponDiscount": that.couponType ? that.opctions.couponDiscount : null,
+								"couponCode": that.couponType ? that.couponCode : null,
 								"contactInfo": {
 									"firstName": that.oderFirstName,
 									"lastName": that.oderlastName,
@@ -601,12 +722,13 @@
 								"travelerInfo": {
 									"firstName": that.TravellerFirstName,
 									"lastName": that.TravellerlastName,
-									"phoneNumber": that.travellCode+that.Travellerphone,
+									"phoneNumber": that.travellCode + that.Travellerphone,
 									"emailAddress": that.TravelleremailAddress
 								},
 								"utcOffset": new Date().getTimezoneOffset() / 60 * -1,
 								"deviceType": "PC"
 							}
+
 							if(that.addOder == false) {
 								that.addOder = true
 								that.axios.put("https://api.localpanda.com/api/activity/order/create", JSON.stringify(obj), {
@@ -621,19 +743,19 @@
 
 								}, function(response) {})
 							}
-							
+
 						}
-						if(next==false){
+						if(next == false) {
 							that.gaFail()
 						}
 					} else {
-						next=true
+						next = true
 						ga(gaSend, {
-								hitType: 'event',
-								eventCategory: 'activity_booking',
-								eventAction: 'submit',
-								eventLabel: 'activity_order_succ',
-							});
+							hitType: 'event',
+							eventCategory: 'activity_booking',
+							eventAction: 'submit',
+							eventLabel: 'activity_order_succ',
+						});
 						obj = {
 							"userId": that.opctions.userId,
 							"activityId": that.opctions.activityId,
@@ -653,10 +775,12 @@
 								"phoneNumber": that.code + that.phone,
 								"emailAddress": that.emailAddress
 							},
+							"couponDiscount": that.couponType ? that.opctions.couponDiscount : null,
+							"couponCode": that.couponType ? that.couponCode : null,
 							"utcOffset": new Date().getTimezoneOffset() / 60 * -1,
 							"deviceType": "PC"
 						}
-						console.log(that.code)
+						console.log(obj)
 						if(that.addOder == false) {
 							that.addOder = true
 							that.axios.put(this.apiBasePath + "activity/order/create", JSON.stringify(obj), {
@@ -668,12 +792,12 @@
 								console.log(response)
 								//var hostUrl = obj.currency=='CNY' ? 'https://www.localpanda.cn' : 'https://www.localpanda.com';
 								var loginState = (that.logIn ? that.logIn : 0);
-								window.location.href =  "/activity/payment?objectId=" + response.data.response + '&login='+loginState;
+								window.location.href = "/activity/payment?objectId=" + response.data.response + '&login=' + loginState;
 
 							}, function(response) {})
 						}
 					}
-					if(next==false){
+					if(next == false) {
 						that.gaFail()
 					}
 				}
@@ -699,32 +823,34 @@
 				// console.log(response);
 				if(response.status == 200) {
 					self.exchange = response.data;
+					console.log(self.exchange )
 				}
 			}, function(response) {});
 			self.codeList = self.countryCode
-			self.travelCodeList=self.countryCode
+			self.travelCodeList = self.countryCode
 			document.getElementsByTagName('body')[0].addEventListener("click", () => {
 				self.showCode = false
-				self.showTravellCode=false
+				self.showTravellCode = false
 			})
 
 		},
 		watch: {
+			
 			mobileCode: function(val, oldVal) {
 				let self = this
 				if(val) {
-					if(val.length==1){
+					if(val.length == 1) {
 						ga(gaSend, {
-						hitType: 'event',
-						eventCategory: 'activity_booking',
-						eventAction: 'input',
-						eventLabel: 'country_code_input',
-					});
+							hitType: 'event',
+							eventCategory: 'activity_booking',
+							eventAction: 'input',
+							eventLabel: 'country_code_input',
+						});
 					}
 					self.codeList = [];
 					var other = [];
 					var str = val.replace(/\(/, "\\\(").replace(/\)/, "\\\)").replace(/\+/, '\\\+')
-					
+
 					for(let i = 0; i < this.countryCode.length; i++) {
 
 						if(new RegExp(("^" + str), "i").test(self.countryCode[i].country_name + "(" + "+" + self.countryCode[i].prefix + ")")) {
@@ -745,16 +871,16 @@
 
 				}
 			},
-			showCode:function(val,oldVal){
-				if(val){
+			showCode: function(val, oldVal) {
+				if(val) {
 					ga(gaSend, {
 						hitType: 'event',
 						eventCategory: 'activity_booking',
 						eventAction: 'click',
 						eventLabel: 'country_code_open',
-					});	
+					});
 				}
-				
+
 			},
 			mobileTravellCode: function(val, oldVal) {
 				let self = this
@@ -798,9 +924,57 @@
 	body {
 		min-width: 1200px;
 	}
+	
+	.checkbox_label .checkbox_content {
+		white-space: normal!important;
+	}
 </style>
 <style lang="scss" scoped>
 	@import "~assets/scss/base/_setting.scss";
+	/** 下单 优惠券不存在提示**/
+	
+	.dialog {
+		position: fixed;
+		width: 100%;
+		height: 100%;
+		left: 0;
+		top: 0;
+		background: rgba(0, 0, 0, 0.6);
+		.dialogContent {
+			position: absolute;
+			width: 400px;
+			height: 200px;
+			left: 50%;
+			top: 50%;
+			transform: translate(-50%, -50%);
+			background: #fff;
+			padding: 50px 10px 30px;
+			p {
+				font-size: 18px;
+				font-weight: bold;
+				text-align: center;
+				margin-top: 30px;
+			}
+		}
+		.btn {
+			margin: 40px auto 0;
+			text-align: center;
+			button {
+				width: 150px;
+				height: 40px;
+				&:first-child {
+					margin-right: 20px;
+				}
+				color:#fff;
+				font-weight:bold;
+				font-size: 14px;
+				background-image: linear-gradient(-90deg, #009efd 0%, #1bbc9d 100%);
+				border-radius: 20px;
+				cursor: pointer;
+			}
+		}
+	}
+	
 	.code-box {
 		position: relative;
 	}
@@ -829,9 +1003,11 @@
 			}
 		}
 	}
-	.width100{
+	
+	.width100 {
 		width: 110%!important;
 	}
+	
 	.emalAddress {
 		margin-top: 25px;
 		width: 100%;
@@ -1028,11 +1204,28 @@
 							}
 						}
 					}
+					.comments {
+						margin-top: 25px;
+						h4 {
+							font-size: 18px;
+							font-weight: bold;
+							margin-bottom: 10px;
+						}
+						textarea {
+							width: 684px;
+							height: 40px;
+							border-radius: 3px;
+							border: solid 1px #dde0e0;
+							resize: none;
+							padding: 20px;
+							font-size: 18px;
+						}
+					}
 					span {
 						display: inline-block;
 						font-size: 16px;
 						color: #878e95;
-						margin-top: 16px;
+						margin-top: 5px;
 					}
 				}
 				.check {
@@ -1137,20 +1330,6 @@
 				.Comments {
 					margin-top: 30px;
 					.information {
-						h4 {
-							font-size: 18px;
-							font-weight: bold;
-							margin-bottom: 10px;
-						}
-						textarea {
-							width: 630px;
-							height: 25px;
-							border-radius: 3px;
-							border: solid 1px #dde0e0;
-							resize: none;
-							padding: 20px;
-							font-size: 18px;
-						}
 						p {
 							font-size: 18px;
 							margin-top: 30px;
@@ -1175,9 +1354,49 @@
 						}
 					}
 				}
+				.coupon {
+					background: #faf9f8;
+					margin-top: 25px;
+					font-size: 14px;
+					box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.1);
+					padding: 20px;
+					a {
+						color: #1bbc9d;
+					}
+					.couponInput {
+						margin-top: 10px;
+						padding-left: 25px;
+						input {
+							width: 60%;
+							height: 42px;
+							border-radius: 5px;
+							border: solid 1px #dde0e0;
+						}
+						button {
+							display: inline-block;
+							height: 42px;
+							line-height: 42px;
+							width: 20%;
+							margin-left: 5%;
+							border-radius: 20px;
+							color: #fff;
+							font-weight: bold;
+							background-image: linear-gradient(-90deg, #009efd 0%, #1bbc9d 100%);
+						}
+						p {
+							font-size: 14px;
+							margin-top: 10px;
+							font-weight: bold;
+							i {
+								font-size: 12px;
+								color: #1bbc9d;
+							}
+						}
+					}
+				}
 			}
 		}
-		.empty{
+		.empty {
 			padding: 30px 50px;
 			text-align: center;
 			font-size: 16px;

@@ -33,7 +33,7 @@
 					orderId:this.orderId,
 					businessType:this.businessType
 				}
-				this.axios.post("https://api.localpanda.com/api/payment/refund/stripe",JSON.stringify(obj),{
+				this.axios.post("https://api.localpanda.com/api/payment/refund",JSON.stringify(obj),{
 				headers: {
 						'Content-Type': 'application/json; charset=UTF-8'
 					}

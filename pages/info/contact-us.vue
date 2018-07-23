@@ -22,7 +22,7 @@
 					<textarea :class="{borderflase:textareaError}" @focus="textF" v-model="textarea" placeholder="Your Message" />
 				</div>
 				<div class="submit">
-					<span class="btn_send" @click="submit">Seed Us a Message</span>
+					<span class="btn_send" @click="submit">Send Us a Message</span>
 				</div>
 			</div>
 			<div class="reachout">

@@ -10,7 +10,7 @@
 					<div v-swiper:swiperTop="swiperOptionTop" class="gallery-top" ref="swiperTop">
 						<div class="swiper-wrapper">
 							<div class="swiper-slide" v-for="i in photoList">
-								<img :src="i.url" />
+								<img v-lazy="i.url" />
 							</div>					
 						</div>
 					</div>
@@ -36,20 +36,22 @@ export default {
 			return {
 				alertPicActive: false,
 				swiperOptionTop: {
-					// spaceBetween: 10,
-					// loop:this.photoList.length>=6?true:false,
-					// loopedSlides: this.photoList.length>=6?this.photoList.length:null,
+					//initialSlide:4,
 					navigation : {
 						nextEl: '.swiper-button-next',
 						prevEl: '.swiper-button-prev'
 					},
+					
 					 lazy: {
 						loadPrevNext: true,
 					},
 					on: {
 						slideChangeTransitionStart: function(){
 							var activeIndex = this.activeIndex;
+							console.log(this.activeIndex)
+							
 							self.swiperThumbs.slideTo(activeIndex);
+							//return
 							var list = self.swiperThumbs.$el[0].getElementsByClassName('swiper-slide');
 							for(var i=0;i<list.length;i++){
 								if(i==this.activeIndex){
@@ -66,6 +68,7 @@ export default {
 					lazy: {
 						loadPrevNext: true,
 					},
+					//initialSlide :"2",
 					watchSlidesProgress : true,
 					watchSlidesVisibility : true,
 					slidesPerView : 5,
@@ -115,9 +118,10 @@ export default {
 			// 	// swiperTop.controller.control = swiperThumbs
 			// 	// swiperThumbs.controller.control = swiperTop
 			// })
+			
 				
 		},
-		props: ['alertPicStatus','photoList']
+		props: ['alertPicStatus','photoList',"index"]
 	}
 </script>
 

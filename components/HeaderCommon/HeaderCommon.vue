@@ -187,8 +187,8 @@
 						text: "More than 8 people"
 					},
 				],
-				options: ['Shanghai', 'Beijing', "Xi'an", "Guilin", 'Chengdu'],
-				thems: ["Panda", "Watertown", "Great Wall", "Terra-Cotta Warriors", "Forbidden City", "Li River", "Layover Tour", "Day trips", "Local Food", "Dumplings", "Landmarks", "Short Excursions", "Family Friendly","Tibet"],
+				options: ['Shanghai', 'Beijing', "Xi'an", "Guilin", 'Chengdu',"Tibet"],
+				thems: ["Panda", "Watertown", "Great Wall", "Terra-Cotta Warriors", "Forbidden City", "Li River", "Layover Tour", "Day trips", "Local Food", "Dumplings", "Landmarks", "Short Excursions", "Family Friendly"],
 				showRecommend: true,
 				input_highlight:false,
 				aa:false

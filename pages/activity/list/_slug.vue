@@ -294,7 +294,7 @@
 				postData.filters = postFilters;
 				
 			};
-			console.log(price)
+			//console.log(price)
 			//服务端请求数据
 			let listdata = {}
 			try {
@@ -383,9 +383,12 @@
 						value: 'Chengdu',
 						
 					},
+					{
+						value: 'Tibet'
+					},
 					
 				],
-				thems:["Panda","Watertown","Great Wall","Terra-Cotta Warriors","Forbidden City","Li River","Layover Tour","Day trips","Local Food","Dumplings","Landmarks","Short Excursions","Family Friendly","Tibet"],
+				thems:["Panda","Watertown","Great Wall","Terra-Cotta Warriors","Forbidden City","Li River","Layover Tour","Day trips","Local Food","Dumplings","Landmarks","Short Excursions","Family Friendly","Tibet","Lama Monks","Mt.Kailash","Everest Base Camp"],
 				loc: slug,
 				activityList: listData,
 				logIn: '',
@@ -1646,8 +1649,8 @@
 									margin-top: 14px;
 									b{
 										color: #353a3f!important;
-										width: 70px;
 										float: left;
+										margin-right: 5px;
 									}
 									span{
 										

@@ -1008,7 +1008,6 @@
 			
 		},
 		mounted: function() {
-			console.log(this.detail)
 			let that = this;
 			let participants=this.$route.query.participants;
 			that.people=participants?(that.picInfo.maxParticipants==1?1:parseInt(participants)):(that.picInfo.minParticipants<3?(that.picInfo.maxParticipants==1?1:2):that.picInfo.minParticipants);

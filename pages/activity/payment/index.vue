@@ -427,6 +427,21 @@
 						}
 					})				
 			},
+			device() {
+					var ua = navigator.userAgent;
+					var ipad = ua.match(/(iPad).*OS\s([\d_]+)/),
+						isIphone = !ipad && ua.match(/(iPhone\sOS)\s([\d_]+)/),
+						isAndroid = ua.match(/(Android)\s+([\d.]+)/),
+						isMobile = isIphone || isAndroid;
+				
+					if(isMobile) {
+						return "MOBILE";
+					} else if(ipad) {
+						return "IPAD";
+					}else{
+						return"PC"
+					}
+				},
 			//发起支付
 			stripeTokenHandler(token, isPay) {
 				isPay = true
@@ -438,7 +453,7 @@
 					token: token.id,
 					tokenType: token.type,
 					objectType: "ACTIVITY",
-					deviceType:''
+					deviceType:that.device()
 				}
 
 				//console.log(that.opctions.currency);
@@ -487,7 +502,8 @@
 					tradeType: 'NATIVE',
 					objectId: this.opctions.orderId,
 					amount: this.opctions.amount * 100,
-					objectType: 'ACTIVITY'
+					objectType: 'ACTIVITY',
+					deviceType:that.device()
 				};
 				this.axios.post("https://api.localpanda.com/api/payment/pay/wechat", JSON.stringify(obj), {
 					headers: {

@@ -629,7 +629,7 @@
 				this.opctions.amount=this.returnFloat(this.opctions.adultsPic - this.opctions.childDiscount)
 				this.couponType = ""
 			},
-				
+	
 			//下单
 			next() {
 				let next = false
@@ -726,7 +726,7 @@
 									"emailAddress": that.TravelleremailAddress
 								},
 								"utcOffset": new Date().getTimezoneOffset() / 60 * -1,
-								"deviceType": "PC"
+								
 							}
 
 							if(that.addOder == false) {
@@ -778,7 +778,7 @@
 							"couponDiscount": that.couponType ? that.opctions.couponDiscount : null,
 							"couponCode": that.couponType ? that.couponCode : null,
 							"utcOffset": new Date().getTimezoneOffset() / 60 * -1,
-							"deviceType": "PC"
+						
 						}
 						console.log(obj)
 						if(that.addOder == false) {

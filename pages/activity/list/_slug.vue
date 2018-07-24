@@ -1646,13 +1646,14 @@
 									margin-top: 14px;
 									b{
 										color: #353a3f!important;
-										width: 70px;
+										//width: 70px;
 										float: left;
+										margin-right: 5px;	
 									}
 									span{
 										
-											
-										text-overflow: ellipsis;
+									
+									text-overflow: ellipsis;
 									display: -webkit-box;
 									display: -moz-box;
 									-moz-box-orient: vertical;

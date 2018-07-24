@@ -79,7 +79,7 @@
 							</div>
 							<div class="item clearfix" v-else>
 								<div class="cont_title" id="aa">{{i.title}}</div>
-								<div class="cont"  v-html="i.description.replace(/\r|\n/g,'<br/>')"></div>
+								<div class="cont" v-if="i.description" v-html="i.description.replace(/\r|\n/g,'<br/>')"></div>
 							</div>
 						</li>
 					</ul>
@@ -710,7 +710,7 @@
 			},
 			returnUrl(val){
 				let enVal=encodeURIComponent(val)
-				let url="/activity/list/China?keyword="+enVal
+				let url="/activity/list/"+enVal
 				return url
 			},
 			returnFloat(value) {

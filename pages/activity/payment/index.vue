@@ -295,54 +295,7 @@
 				}
 				console.log(id)
 			},
-			//			getToken() {
-			//				let that = this
-			//				that.stripeHandler = StripeCheckout.configure({
-			//					key: payCode,
-			//					image: 'https://resource.localpanda.cn/static/icon/logo.png', // 显示在支付对话框的图片，可自己指定
-			//					alipay: true, // 启用支付宝支付
-			//					token: function(token) { // 用户填写完资料并且 Stripe 校验成功后的回调函数
-			//						// 此时应该提交 token.id 到后台，比如 http://example.com/orders/1?stripeToken={token.id}
-			//						that.loadingStatus = true
-			//						let obj = {
-			//							amount: that.opctions.amount * 100,
-			//							currency: that.opctions.currency,
-			//							objectId: that.orderId,
-			//							token: token.id,
-			//							email: token.email,
-			//							tokenType: token.type,
-			//							objectType: "ACTIVITY"
-			//							
-			//						}
-			//						Vue.axios.post(that.apiBasePath+"payment/pay/stripe", JSON.stringify(obj), {
-			//							headers: {
-			//								'Content-Type': 'application/json; charset=UTF-8'
-			//							}
-			//						}).then(function(response) {
-			//							that.errMsg=response.data.errorMessage
-			//							let reg=/Exception/g
-			//							if(response.data.errorMessage&&reg.test(response.data.errorMessage)){
-			//								window.location.href = "/payment/failed?orderId=" + that.orderId + '&amount=' + that.opctions.amount+"&type=1"+"&succeed=false"+"&currency="+that.opctions.currency+"&symbol="+that.opctions.symbol
-			//							}else{
-			//								if(response.data.succeed&&!response.data.errorMessage){
-			//							 		that.loadingStatus = true
-			//									var pageTracker =_gat._getTracker("UA-107010673-1");
-			//									pageTracker._addTrans(that.orderId,"",that.opctions.amount,"", "", "", "", "");
-			//									pageTracker._addItem(that.orderId, that.opctions.activityId,"","", that.opctions.amount,"1" );
-			//									pageTracker._trackTrans();
-			//									
-			//									window.location.href = "/payment/success?email="+that.email+"&orderId=" + that.orderId + '&amount=' + that.opctions.amount+"&succeed=true"+"&currency="+that.opctions.currency+"&symbol="+that.opctions.symbol
-			//								}else{
-			//									that.loadingStatus = true
-			//							 		window.location.href = "/payment/failed?email="+that.email+"&orderId=" + that.orderId + '&amount=' + that.opctions.amount+"&type=1"+"&errMsg="+that.errMsg+"&succeed=false"+"&currency="+that.opctions.currency+"&symbol="+that.opctions.symbol
-			//								}	
-			//							}
-			//						}, function(response) {
-			//							window.location.href = "/payment/failed?email="+that.email+"&orderId=" + that.orderId + '&amount=' + that.opctions.amount+"&type=1"+"&succeed=false"+"&currency="+that.opctions.currency+"&symbol="+that.opctions.symbol
-			//						})
-			//					}
-			//				})
-			//			},
+			
 			//卡元素信息
 			stripeFn() {
 				this.stripe = Stripe(payCode)
@@ -423,27 +376,6 @@
 
 				}, function(res) {})
 			},
-			//			pay() {
-			//				let that = this;
-			//				
-			//				
-			//				
-			//				if(this.opctions.currency=='CNY'){
-			//					this.wxPay();
-			//					return;
-			//				}
-			//				
-			//
-			//				that.stripeHandler.open({
-			//					name: 'Local panda', // 收款方或商家名称，比如 Beansmile
-			//					description: "", // 待支付商品的描述
-			//					currency:that.opctions.currency,
-			//					amount: that.opctions.amount* 100, // 支付金额，单位是“分”
-			//					closed: function() {
-			//
-			//					}
-			//				})
-			//			},
 			getToken() {
 				let that = this
 				
@@ -505,7 +437,8 @@
 					objectId: that.orderId,
 					token: token.id,
 					tokenType: token.type,
-					objectType: "ACTIVITY"
+					objectType: "ACTIVITY",
+					deviceType:''
 				}
 
 				//console.log(that.opctions.currency);

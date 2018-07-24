@@ -34,7 +34,6 @@
     },
     computed:{
       isGroup(){
-
         return this.$parent.$options.name=='checkboxGroup'?true:false;
       },
       getChecked(){
@@ -43,9 +42,10 @@
           return this.thisValue?true:false;
         }
         //复选组
-       // console.log(this.$parent.value)
         var changeAll = this.$parent.value;
-        
+        if(!changeAll){
+          return false;
+        }
         for(var i=0;i<changeAll.length;i++){
           if(changeAll[i] == this.label){
             return true;

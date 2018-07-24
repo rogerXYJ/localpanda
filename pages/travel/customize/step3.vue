@@ -105,6 +105,13 @@ export default {
                 callback();
             }
         }
+        let phoneCheck=(rule, value, callback)=>{
+        	if(!/^((\d{2,8}-\d{4,13})|(\d{4,13})|(\d{1,5}\+\d{4,13}))$/.test(value)){
+        		 callback(new Error('Please make sure you enter the correct information'));
+        	}else{
+        		callback();
+        	}
+        }
         return {
         	logIn:"",
             formReady: false,
@@ -127,6 +134,9 @@ export default {
                 emailAddress: [
                     { validator: mailCheck, trigger: 'blur'},
                 ],
+                phoneNumber:[
+                	{validator: phoneCheck, trigger: 'blur'}
+                ]
             }
         };
     },

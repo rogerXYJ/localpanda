@@ -133,6 +133,7 @@
 							objectId: that.objectId ? that.objectId : null,
 							destinations: that.destination ? that.destination : null,
 							"utcOffset": new Date().getTimezoneOffset() / 60 * -1,
+							owner:that.owner
 						}
 					} else {
 						var obj = {
@@ -146,11 +147,9 @@
 							objectId: that.objectId ? that.objectId : null,
 							destinations: that.destination ? that.destination : null,
 							"utcOffset": new Date().getTimezoneOffset() / 60 * -1,
-							
-
+							owner:that.owner
 						}
 					}
-					
 					if(that.isclick==false){
 						that.isclick=true
 					that.axios.post("https://api.localpanda.com/api/user/feedback/commit", JSON.stringify(obj), {
@@ -228,7 +227,7 @@
 				
 			})
 		},
-		props: ['ContactStatus', "guideId", "enName", "objectType", "objectId"]
+		props: ['ContactStatus', "guideId", "enName", "objectType", "objectId","owner"]
 	}
 </script>
 <template>

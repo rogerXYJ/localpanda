@@ -323,10 +323,10 @@
 										<!--<flatPickr placeholder="Date" v-model="dateTime" :config="options"></flatPickr>-->
 										<input id="js_changetime" readonly v-model="dateTime" type="text" placeholder="Date">
 									</div>
-									<div class="selectTime" v-if="picInfo.departureTime">
+									<div class="selectTime" v-if="picInfo.departureTime" >
 										<b>Time</b>
 										<div class="time" @click.stop="showTime">
-											<input readonly="readonly" v-model="time" />
+											<input readonly="readonly" v-model="time" placeholder="Time"/>
 											<i class="iconfont" v-if="!isShowTime">&#xe60f;</i>
 											<i class="iconfont" v-else>&#xe63f;</i>
 											<div v-if="isShowTime" @click.stop="showTime" class="timeList">
@@ -405,7 +405,7 @@
 			</div>
 		</div>
 		<Pic :photoList="picList" :alertPicStatus="alertPicStatus" @alert-call-back="setCallBack"></Pic>
-		<Contact :ContactStatus="ContactStatus" v-on:isshowfn="isShowFn" v-on:contact-call-back="contactCallBack"  :objectType="objectType" :objectId="id"></Contact>
+		<Contact :ContactStatus="ContactStatus" v-on:isshowfn="isShowFn" v-on:contact-call-back="contactCallBack" :owner="detail.owner"  :objectType="objectType" :objectId="id"></Contact>
 		<Alert   :isShowAlert="isShowAlert" :alertTitle="alertTitle" :alertMessage="alertMessage" v-on:setIsShowAlert="getIsShowAlert" :index="index"></Alert>
 	</div>
 
@@ -1008,6 +1008,7 @@
 			
 		},
 		mounted: function() {
+			console.log(this.detail)
 			let that = this;
 			let participants=this.$route.query.participants;
 			that.people=participants?(that.picInfo.maxParticipants==1?1:parseInt(participants)):(that.picInfo.minParticipants<3?(that.picInfo.maxParticipants==1?1:2):that.picInfo.minParticipants);

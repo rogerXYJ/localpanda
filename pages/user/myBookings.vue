@@ -41,7 +41,7 @@
 									<!--<span @click="downLoad(index)" v-if="item.status!='PAYMENT_PENDING'&&item.status!='REFUNDING'&&item.status!='REFUNDED'&&item.status!='CANCELED'">Download Contract</span>-->
 
 									<span v-if="item.status=='PAYMENT_PENDING'" @click="goPay(0,index)">To Pay</span>
-									<span v-if="(item.status=='PAYMENT_SUCCESS'||item.status=='CONFIRM_WAITING'||item.status=='BOOKING_SUCCESS')&&item.allowRefund==1" @click="Refund(0,index)">Refund</span>
+									<!--<span v-if="(item.status=='PAYMENT_SUCCESS'||item.status=='CONFIRM_WAITING'||item.status=='BOOKING_SUCCESS')&&item.allowRefund==1" @click="Refund(0,index)">Refund</span>-->
 								</div>
 							</div>
 							<div class="bookagain">
@@ -79,7 +79,7 @@
 									<span @click="downLoad(index)" v-if="item.status!='PAYMENT_PENDING'&&item.status!='REFUNDING'&&item.status!='REFUNDED'&&item.status!='CANCELED'">Download Contract</span>
 
 									<span v-if="item.status=='PAYMENT_PENDING'" @click="goPay(1,index)">To Pay</span>
-									<span v-if="(item.status=='PAYMENT_SUCCESS'||item.status=='CONFIRM_WAITING'||item.status=='BOOKING_SUCCESS')&&item.allowRefund==1" @click="Refund(1,index)">Refund</span>
+									<!--<span v-if="(item.status=='PAYMENT_SUCCESS'||item.status=='CONFIRM_WAITING'||item.status=='BOOKING_SUCCESS')&&item.allowRefund==1" @click="Refund(1,index)">Refund</span>-->
 								</div>
 							</div>
 							<div class="bookagain">

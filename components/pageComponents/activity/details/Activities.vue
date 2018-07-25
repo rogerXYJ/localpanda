@@ -79,7 +79,7 @@
 							</div>
 							<div class="item clearfix" v-else>
 								<div class="cont_title" id="aa">{{i.title}}</div>
-								<div class="cont"  v-html="i.description.replace(/\r|\n/g,'<br/>')"></div>
+								<div class="cont" v-if="i.description" v-html="i.description.replace(/\r|\n/g,'<br/>')"></div>
 							</div>
 						</li>
 					</ul>
@@ -323,10 +323,10 @@
 										<!--<flatPickr placeholder="Date" v-model="dateTime" :config="options"></flatPickr>-->
 										<input id="js_changetime" readonly v-model="dateTime" type="text" placeholder="Date">
 									</div>
-									<div class="selectTime" v-if="picInfo.departureTime">
+									<div class="selectTime" v-if="picInfo.departureTime" >
 										<b>Time</b>
 										<div class="time" @click.stop="showTime">
-											<input readonly="readonly" v-model="time" />
+											<input readonly="readonly" v-model="time" placeholder="Time"/>
 											<i class="iconfont" v-if="!isShowTime">&#xe60f;</i>
 											<i class="iconfont" v-else>&#xe63f;</i>
 											<div v-if="isShowTime" @click.stop="showTime" class="timeList">
@@ -405,7 +405,7 @@
 			</div>
 		</div>
 		<Pic :photoList="picList" :alertPicStatus="alertPicStatus" @alert-call-back="setCallBack"></Pic>
-		<Contact :ContactStatus="ContactStatus" v-on:isshowfn="isShowFn" v-on:contact-call-back="contactCallBack"  :objectType="objectType" :objectId="id"></Contact>
+		<Contact :ContactStatus="ContactStatus" v-on:isshowfn="isShowFn" v-on:contact-call-back="contactCallBack" :owner="detail.owner"  :objectType="objectType" :objectId="id"></Contact>
 		<Alert   :isShowAlert="isShowAlert" :alertTitle="alertTitle" :alertMessage="alertMessage" v-on:setIsShowAlert="getIsShowAlert" :index="index"></Alert>
 	</div>
 
@@ -710,7 +710,7 @@
 			},
 			returnUrl(val){
 				let enVal=encodeURIComponent(val)
-				let url="/activity/list/China?keyword="+enVal
+				let url="/activity/list/"+enVal
 				return url
 			},
 			returnFloat(value) {

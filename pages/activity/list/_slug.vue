@@ -1650,12 +1650,13 @@
 									b{
 										color: #353a3f!important;
 										float: left;
-										margin-right: 5px;
+										margin-right: 5px;	
+
 									}
 									span{
 										
-											
-										text-overflow: ellipsis;
+									
+									text-overflow: ellipsis;
 									display: -webkit-box;
 									display: -moz-box;
 									-moz-box-orient: vertical;

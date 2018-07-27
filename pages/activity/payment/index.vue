@@ -453,7 +453,8 @@
 					token: token.id,
 					tokenType: token.type,
 					objectType: "ACTIVITY",
-					deviceType:that.device()
+					deviceType:that.device(),
+					email:that.email
 				}
 
 				//console.log(that.opctions.currency);
@@ -503,7 +504,7 @@
 					objectId: this.opctions.orderId,
 					amount: this.opctions.amount * 100,
 					objectType: 'ACTIVITY',
-					deviceType:that.device()
+					deviceType:self.device()
 				};
 				this.axios.post("https://api.localpanda.com/api/payment/pay/wechat", JSON.stringify(obj), {
 					headers: {

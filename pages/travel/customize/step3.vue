@@ -126,16 +126,16 @@ export default {
             },
                 formRules: {
                 firstName: [
-                    { validator: nameCheck},
+                    { validator: nameCheck,required:true},
                 ],
                 lastName: [
-                    { validator: nameCheck},
+                    { validator: nameCheck,required:true},
                 ],
                 emailAddress: [
-                    { validator: mailCheck, trigger: 'blur'},
+                    { validator: mailCheck, trigger: 'blur',required:true},
                 ],
                 phoneNumber:[
-                	{validator: phoneCheck, trigger: 'blur'}
+                	{validator: phoneCheck, trigger: 'blur',required:true}
                 ]
             }
         };

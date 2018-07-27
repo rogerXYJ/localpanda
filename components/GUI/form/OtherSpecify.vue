@@ -42,7 +42,7 @@
 					checked = !!this.label;
 					break;
 				case 'checkbox':
-					text = this.label || null;
+					text = this.label;
 					checked = !!this.label;
 					break;
 			}

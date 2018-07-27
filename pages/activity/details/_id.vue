@@ -262,7 +262,6 @@
 			data.id!='undefined'?data.id:getUrlParams()
 			this.logIn = window.localStorage.getItem("logstate");
 			window.addEventListener("scroll", this.scorllBar);
-			console.log(this.travelersReviews)
 		},
 		watch: {
 			"detail.latestBooking": function(val, oldVal) {

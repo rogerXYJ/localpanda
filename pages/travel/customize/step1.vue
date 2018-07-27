@@ -223,6 +223,7 @@
                     duration: 0,
                     arriveCity: '',
                     utcOffset: new Date().getTimezoneOffset() / 60 * -1,
+                    flag:false
                 },
                 formRules: {
                     participant: [
@@ -311,7 +312,6 @@
                         if(this.arriveCityNotDecided){
                             formData.arriveCity = 'Not Decided';
                         }
-                        
                         stepFormStorage.addStorage(storageKey, formData);
                         if(formData.accommodationIncluded){
                             window.location.href = "/travel/customize/step2";
@@ -340,26 +340,33 @@
 		},
 		mounted: function() {
 			this.logIn = window.localStorage.getItem("logstate");
-            let formData = stepFormStorage.getStorage(storageKey);
-            if(JSON.stringify(formData).length > 7){
-                try{
-                    if(formData.arriveTime === 'Not Decided'){
-                        formData.arriveTime = '';
-                        this.arriveTimeNotDecided = true;
-                    }else{
-                        this.arriveTimeDate = formData.arriveTime;
-                    }
-                    if(formData.arriveCity === 'Not Decided'){
-                        formData.arriveCity = '';
-                        this.arriveCityNotDecided = true;
-                    }else{
-                        this.arriveCity = formData.arriveCity;
-                        this.arriveCityInput = formData.arriveCity;
-                    }
-                    this.form = formData;
-                }catch(e){
+            let formData = stepFormStorage.getStorage('STEP_1_FORM_STORAGE');
+            console.log(formData)
+            console.log(formData.flag)
+            if(!formData.flag){
+            	stepFormStorage.clearStorage('STEP_1_FORM_STORAGE');
+            }else{
+        
+            	if(JSON.stringify(formData).length > 7){
+	                try{
+	                    if(formData.arriveTime === 'Not Decided'){
+	                        formData.arriveTime = '';
+	                        this.arriveTimeNotDecided = true;
+	                    }else{
+	                        this.arriveTimeDate = formData.arriveTime;
+	                    }
+	                    if(formData.arriveCity === 'Not Decided'){
+	                        formData.arriveCity = '';
+	                        this.arriveCityNotDecided = true;
+	                    }else{
+	                        this.arriveCity = formData.arriveCity;
+	                        this.arriveCityInput = formData.arriveCity;
+	                    }
+	                    this.form = formData;
+	                }catch(e){
                 }
-            }
+             }
+           }
             this.formReady = true;
         }
 	}

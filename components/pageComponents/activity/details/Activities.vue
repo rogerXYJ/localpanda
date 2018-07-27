@@ -42,8 +42,9 @@
 				</ul>
 				<div class="languages clearfix">
 
-					<label class="iconfont">&#xe627;<em>Languages: </em></label>
-					<span> English, French, Spanish, Russian, German, Japanese, Korean</span>
+					<label class="iconfont">&#xe627;<em>{{detail.groupType=='Group'?'Language:':'Languages'}} </em></label>
+					<span v-if="detail.groupType=='Group'"> English</span>
+					<span v-else>English, French, Spanish, Russian, German, Japanese, Korean</span>
 				</div>
 				<div class="location clearfix">
 					<label class="iconfont" style="font-size: 20px;">&#xe610;<em>Location:</em></label>
@@ -96,6 +97,67 @@
 					</div>
 
 				</div>
+				
+				<div class="provide" id="provide">
+					<h3>What's Included?</h3>
+					<ul v-if="itemsIncluded">
+						<li :key="index" v-for="(item,index) in itemsIncluded">{{item}}</li>
+					</ul>
+					<ul v-if="inclusions">
+						<li :key="index" v-for="(item,index) in inclusions">
+							<h5>{{item.title}}</h5>
+							<p v-if="item.content" v-html="item.content"></p>
+						</li>
+					</ul>
+				</div>
+				<div class="provide" v-if="exclusions" id="exclusions">
+					<h3>Exclusions</h3>
+					<ul>
+						<li :key="index" v-for="(item,index) in exclusions">
+							<h5>{{item.title}}</h5>
+							<p v-if="item.content" v-html="item.content"></p>
+						</li>
+					</ul>
+				</div>
+				<div class="review" v-if="travelersReviews.entities&&travelersReviews.entities.length>0" id="review">
+					<div class="reviewTitle clearfix">
+						<h3>{{travelersReviews.entities.length==1?"Review":"Reviews"}} ({{travelersReviews.records}})</h3>
+						<grade :score="travelersReviews.avgScore" :big="'true'"></grade>
+					</div>
+					
+					<div class="reviewItem" v-for="(item,index) in travelersReviews.entities">
+						<div class="reviewInfo clearfix">
+							<div class="headPhoto">
+								<img v-if="item.userPortraitPhoto" :src="item.userPortraitPhoto.url"/>
+								<span v-else>{{item.userName.substring(0,1).toUpperCase()}}</span>
+							</div>
+							<div class="visitor">
+								<div class="name clearfix">
+									<h4>{{item.userName}}</h4>
+									<grade :score="item.score"></grade>
+								</div>
+								<div class="time">{{(item.createTime).substring(0,10)}}</div>
+							</div>
+						</div>
+						<div class="reviewContent" v-if="!item.text280">{{item.content.substring(0,280)}}<span @click="showText(index)" v-if="item.content.length>280">...<em style="color: #1bbc9d; font-size: 16px;">Read more</em></span></div>
+						<div class="reviewContent" v-else>{{item.content}}</div>
+						<ul class="clearfix" v-if="item.userCommentPhoto&&item.userCommentPhoto.length>0">
+							<li v-lazy:background-image="i.url" @click="showTavelPhotoList(index,item.userCommentPhoto)" v-for="(i,index) in item.userCommentPhoto" ></li>
+						</ul>
+						
+					</div>
+					<div class="moreBtn" v-if="!showMoreBth && travelersReviews.records>pageSize">
+						<button @click="moreReviews">Browse More</button>
+					</div>
+				</div>
+				<div class="notes" v-if="notice.length>0" id="notice">
+					<h3>Additional Info</h3>
+					<p v-for="(item,index) in notice" :key="index">{{item}}</p>
+				</div>
+				<div class="notes" v-if="picInfo.refundInstructions" id="CancellationPolicy">
+					<h3>Rescheduling and Cancellation Policy</h3>
+					<p v-html="picInfo.refundInstructions.replace(/\r\n/g,'<br/>')"></p>
+				</div>
 				<div class="provide" v-if="picInfo.details.length>0" id="picDetails">
 					<h3>Price Details</h3>
 					<p style="font-size: 16px;margin-top: 10px;" v-if="picInfo.childDiscount">Children's price is   $  {{returnFloat(picInfo.childDiscount)}} USD  less than adults' price.</p>
@@ -129,70 +191,11 @@
 					<div class="view" v-if="isShowTable" @click="showTable">View More</div>
 					<p class="picNote" v-if="picInfo.priceInstructions">{{picInfo.priceInstructions}}</p>
 				</div>
-				<div class="provide" id="provide">
-					<h3>What's Included?</h3>
-					<ul v-if="itemsIncluded">
-						<li :key="index" v-for="(item,index) in itemsIncluded">{{item}}</li>
-					</ul>
-					<ul v-if="inclusions">
-						<li :key="index" v-for="(item,index) in inclusions">
-							<h5>{{item.title}}</h5>
-							<p v-if="item.content" v-html="item.content"></p>
-						</li>
-					</ul>
-				</div>
-				<div class="provide" v-if="exclusions" id="exclusions">
-					<h3>Exclusions</h3>
-					<ul>
-						<li :key="index" v-for="(item,index) in exclusions">
-							<h5>{{item.title}}</h5>
-							<p v-if="item.content" v-html="item.content"></p>
-						</li>
-					</ul>
-				</div>
-				<div class="notes" v-if="notice.length>0" id="notice">
-					<h3>Additional Info</h3>
-					<p v-for="(item,index) in notice" :key="index">{{item}}</p>
-				</div>
-				<div class="notes" v-if="picInfo.refundInstructions" id="CancellationPolicy">
-					<h3>Rescheduling and Cancellation Policy</h3>
-					<p v-html="picInfo.refundInstructions.replace(/\r\n/g,'<br/>')"></p>
-				</div>
 				<div class="notes" id="notes" v-if="remark.length>0">
 					<h3>Notes</h3>
 					<p v-if="remark" :key="index" v-for="(item,index) in remark">{{item}}</p>
 				</div>
-				<div class="review" v-if="travelersReviews.entities&&travelersReviews.entities.length>0" id="review">
-					<div class="reviewTitle clearfix">
-						<h3>{{travelersReviews.entities.length==1?"Review":"Reviews"}} ({{travelersReviews.records}})</h3>
-						<grade :score="travelersReviews.avgScore" :big="'true'"></grade>
-					</div>
-					
-					<div class="reviewItem" v-for="(item,index) in travelersReviews.entities">
-						<div class="reviewInfo clearfix">
-							<div class="headPhoto">
-								<img v-if="item.userPortraitPhoto" :src="item.userPortraitPhoto.url"/>
-								<span v-else>{{item.userName.substring(0,1).toUpperCase()}}</span>
-							</div>
-							<div class="visitor">
-								<div class="name clearfix">
-									<h4>{{item.userName}}</h4>
-									<grade :score="item.score"></grade>
-								</div>
-								<div class="time">{{(item.createTime).substring(0,10)}}</div>
-							</div>
-						</div>
-						<div class="reviewContent" v-if="!item.text280">{{item.content.substring(0,280)}}<span @click="showText(index)" v-if="item.content.length>280">...<em style="color: #1bbc9d; font-size: 16px;">Read more</em></span></div>
-						<div class="reviewContent" v-else>{{item.content}}</div>
-						<ul class="clearfix" v-if="item.userCommentPhoto&&item.userCommentPhoto.length>0">
-							<li v-lazy:background-image="i.url" @click="showTavelPhotoList(index,item.userCommentPhoto)" v-for="(i,index) in item.userCommentPhoto" ></li>
-						</ul>
-						
-					</div>
-					<div class="moreBtn" v-if="!showMoreBth && travelersReviews.records>pageSize">
-						<button @click="moreReviews">Browse More</button>
-					</div>
-				</div>
+				
 				<!--<grade></grade>-->
 			</div>
 
@@ -319,12 +322,12 @@
 								</div>
 								<div class="select clearfix">
 									<div class="selectDate" :class="picInfo.departureTime?'':'long'">
-										<b>Date</b>
+										<b>Available On</b>
 										<!--<flatPickr placeholder="Date" v-model="dateTime" :config="options"></flatPickr>-->
 										<input id="js_changetime" readonly v-model="dateTime" type="text" placeholder="Date">
 									</div>
 									<div class="selectTime" v-if="picInfo.departureTime" >
-										<b>Time</b>
+										<b></b>
 										<div class="time" @click.stop="showTime">
 											<input readonly="readonly" v-model="time" placeholder="Time"/>
 											<i class="iconfont" v-if="!isShowTime">&#xe60f;</i>
@@ -415,7 +418,8 @@
 	import {
 		GetDateStr,
 		addmulMonth,
-		getUrlParams
+		getUrlParams,
+		delNullArr
 	} from "~/assets/js/plugin/utils";
 	import Contact from '~/components/Contact/Contact';
 	import Alert from '~/components/Prompt/Alert';
@@ -503,6 +507,10 @@
 			Alert
 		},
 		methods: {
+			delNullArr:this.delNullArr,
+			aa(aa){
+				
+			},
 			//点评翻页
 			moreReviews(){
 				let self=this
@@ -750,7 +758,7 @@
 //				else {
 //					this.infant--;
 //				}
-			},
+		},
 			showTime() {
 				this.isShowTime = true;
 				if(this.isShowAdults == true) {
@@ -855,7 +863,7 @@
 
 					localStorage.setItem("orderInfo", orderInfo);
 
-					location.href = "/activity/booking"
+					location.href = "/activity/booking/"+that.detail.activityId
 
 					//routes.push('/fillYourInfo')
 				}
@@ -1297,6 +1305,7 @@
 									float: left;
 									.time {
 										position: relative;
+										top: 19px;
 										input {
 											width: calc(100% - 10px);
 											height: 40px;
@@ -1722,12 +1731,23 @@
 						margin-top: 28px;
 						padding-bottom: 34px;
 						border-bottom: 1px solid #dde0e0;
+						
 						li {
+							&:last-child{
+								.item{
+									padding-bottom: 0!important;
+								}
+								.item_v{
+									.contTitle{
+										padding-bottom: 0!important;
+									}
+								}
+							}
 							&:nth-of-type(odd) {
 								background: rgba(27, 188, 157, 0.06);
 							}
 							.item {
-								padding: 24px 0;
+								padding: 15px 0;
 								.cont_title {
 									
 									font-size: 18px;

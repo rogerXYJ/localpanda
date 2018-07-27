@@ -117,7 +117,7 @@
 		methods: {
             onSubmit(formName) {
                 this.$refs[formName].validate((valid) => {
-                    console.log(this.$refs[formName].model);
+                    //console.log(this.$refs[formName].model);
                     // console.log(this.form);
                     if (valid) {
                         console.log('step2 submit success');
@@ -125,6 +125,17 @@
                         formData.accommodationMinPrice = formData.accommodation.accommodationMinPrice;
                         formData.accommodationMaxPrice = formData.accommodation.accommodationMaxPrice;
                         delete formData.accommodation;
+	      				
+	                    for(let i = 0;i<formData.roomRequirements.length;i++){
+	                    	if(formData.roomRequirements[i].roomNumber<1&&formData.roomRequirements[i].extraBed==false){
+	                    		
+                        		formData.roomRequirements.splice(i,formData.roomRequirements.length)
+                        		
+                        	}
+	                    }
+                		if(formData.roomRequirements.length<1){
+                			delete formData["roomRequirements"]
+                		}
                         stepFormStorage.addStorage(storageKey, formData);
                         window.location.href = "/travel/customize/step3";
                     } else {
@@ -146,6 +157,9 @@
                 this.form.otherRoomRequirements = value;
             },
             prevForm(){
+            	let formData = stepFormStorage.getStorage('STEP_1_FORM_STORAGE');
+            	formData.flag=true
+            	stepFormStorage.addStorage('STEP_1_FORM_STORAGE', formData);
                 window.location.href = "/travel/customize/step1";
             }
 		},

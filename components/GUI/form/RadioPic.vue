@@ -215,6 +215,7 @@
             &__error{
                 margin-top: 5px;
                 font-size: 12px;
+                line-height: 20px;
                 color: #f56c6c;
             }
         }

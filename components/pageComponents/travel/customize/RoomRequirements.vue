@@ -42,6 +42,7 @@
             let checkboxValue = [];
             if(!!this.otherRoomRequirementsValue){
                 checkboxValue[0] = this.otherRoomRequirementsValue;
+                console.log(checkboxValue[0])
             }
             return {
                 checkboxValue,

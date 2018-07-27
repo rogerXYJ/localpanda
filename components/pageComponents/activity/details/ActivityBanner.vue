@@ -4,7 +4,7 @@
 		<div v-swiper:swiper="swiperOptionBannerPc">
 			<div class="swiper-wrapper" :class="{showbanner:showbanner}">
 				<div class="swiper-slide" :key="index" v-for="(slide, index) in bannerPhotos">
-					<img :src="slide"  />
+					<img :src="slide.url"  />
 				</div>
 			</div>
 			

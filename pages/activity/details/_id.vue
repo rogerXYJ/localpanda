@@ -61,9 +61,14 @@
 			error,
 			apiBasePath,
 			redirect
-		}) {
+		},callback) {
+
+			//callback(null, { title: res.data.title });
+
+			var consoleTimeS = new Date().getTime();
+			console.log('node start time:'+consoleTimeS);
+
 			let id = route.params.id;
-//			let participants=route.query.participants
 			// 服务端渲染部分 这部分操作还没有页面实例，只是初始化页面数据
 			let data = {
 				detail: {}, //详情数据
@@ -83,116 +88,242 @@
 				inclusions:[],
 				exclusions:[],
 				notice:[],
-				photoList:"",
-				travelersReviews:{},
+				photoList:[],
+				recommed:[],
+				remarkData:[],
+				travelersReviews: '',
 				pageSize:3,
-				pageNum:1,
-//				participants:participants
+				pageNum:1
 			};
-			let response = {};
+			var response = {};
 			let apiActivityPriceRes = {};
 			let apiActivityRecommendRes = {};
 			let photoList={};
-			let travelersReviews={}
+			
 			try {
-				//活动详情
-				response = await Vue.axios.get(apiBasePath + "activity/basic/" + id);
-				if(response.data.valid == 1) {
-					data.detail = response.data;
-					response.data.highlights ?
-						(data.highlights = delNullArr(response.data.highlights.split("\n"))) :
-						"";
-					response.data.itemsIncluded ?
-						(data.itemsIncluded = delNullArr(
-							response.data.itemsIncluded.split("\n")
-						)) :
-						"";
-					data.destinations = response.data.destinations.join(", ");
-					response.data.introduction ?
-						(data.introduction = delNullArr(
-							response.data.introduction.split("\n")
-						)) :
-						"";
-					response.data.remark ?
-						(data.remark = delNullArr(response.data.remark.split("\n"))) :
-						"";
-					data.destination = response.data.destinations[0];
-					response.data.inclusions?data.inclusions=response.data.inclusions:data.inclusions=""
-					response.data.exclusions?data.exclusions=response.data.exclusions:data.exclusions="";
-					response.data.notice&&response.data.notice!=""?(data.notice=delNullArr(
-						response.data.notice.split("\n")
-					)):'';
-					if(response.data.latestBooking < 1) {
-						data.toast =
-							"This activity was booked by another guest in the past hour.";
-					} else if(response.data.latestBooking == 1) {
-						data.toast = "This activity was booked by another guest an hour ago.";
-					} else {
-						data.toast =
-							"This activity was booked by another guest " +
-							response.data.latestBooking +
-							" hours ago.";
-					}
-				} else {
-					return error({
-						statusCode: 500,
-						message: "500"
+				//基本信息
+				var Promise1 = new Promise(function(resolve, reject){
+					Vue.axios.get(apiBasePath + "product/activity/" + id).then(function(res) {
+						// var consoleTimeS2 = new Date().getTime();
+						// 	console.log('基本信息接口花费时间：'+(consoleTimeS2-consoleTimeS)+' ms');
+						resolve(res);
+					}, function(res) {
+						resolve(res);
 					});
-				}
-				//推荐活动
-				apiActivityRecommendRes = await Vue.axios.get(
-					apiBasePath + "activity/recommend/" + id
-				);
+				});
+
 				
-				data.recommed = apiActivityRecommendRes.data;
-				
-				//游客点评
-				let travelersParam={
-					activityId:id,
-					pageNum:data.pageNum,
-					pageSize:data.pageSize,
-					status:1
-				}
-				travelersReviews=await Vue.axios.post(apiBasePath+'user/comment/detail/list',JSON.stringify(travelersParam),{
-					headers: {
-						'Content-Type': 'application/json; charset=UTF-8'
-					}
-				})
-				if(travelersReviews.data.entities){
-					for(let i=0;i<travelersReviews.data.entities.length;i++){
-						travelersReviews.data.entities[i].text280=false
-					}
-					data.travelersReviews=travelersReviews.data	
-				}
-				
-				
+
 				//游客图片
-				let photoParams={
-					"objectId": id,
-					"objectType": "ACTIVITY_TRAVELER"
-				}
-				photoList=await Vue.axios.post(
-					apiBasePath+"activity/traveler/photo/all",JSON.stringify(photoParams),{
-						headers: {
-						'Content-Type': 'application/json; charset=UTF-8'
+				var Promise2 = new Promise(function(resolve, reject){
+					Vue.axios.get(apiBasePath+"public/photo/"+id+"/ACTIVITY_TRAVELER/list").then(function(res) {
+						// var consoleTimeS2 = new Date().getTime();
+						// 	console.log('游客图片接口花费时间：'+(consoleTimeS2-consoleTimeS)+' ms');
+						resolve(res);
+					}, function(res) {
+						resolve(res);
+					});
+				});
+
+				//推荐信息
+				var Promise3 = new Promise(function(resolve, reject){
+					Vue.axios.get(apiBasePath + "product/activity/"+id+"/recommend").then(function(res) {
+						// var consoleTimeS2 = new Date().getTime();
+						// 	console.log('推荐接口花费时间：'+(consoleTimeS2-consoleTimeS)+' ms');
+						resolve(res);
+					}, function(res) {
+						resolve(res);
+					});
+				});
+
+				//价格信息
+				var Promise4 = new Promise(function(resolve, reject){
+					Vue.axios.get(apiBasePath + "product/activity/"+id+"/price").then(function(res) {
+						// var consoleTimeS2 = new Date().getTime();
+						// 	console.log('价格接口花费时间：'+(consoleTimeS2-consoleTimeS)+' ms');
+						resolve(res);
+					}, function(res) {
+						resolve(res);
+					});
+				});
+
+				var Promise7 = new Promise(function(resolve, reject){
+					Vue.axios.get(apiBasePath + "product/activity/"+id+"/price/detail").then(function(res) {
+						// var consoleTimeS2 = new Date().getTime();
+						// 	console.log('价格接口花费时间：'+(consoleTimeS2-consoleTimeS)+' ms');
+						resolve(res);
+					}, function(res) {
+						resolve(res);
+					});
+				});
+
+				//点评
+				var Promise5 = new Promise(function(resolve, reject){
+					Vue.axios.post(apiBasePath+"user/comment/list",JSON.stringify({"activityId": id,'pageNum':1,'pageSize':3}),{
+							headers: {
+							'Content-Type': 'application/json'
+							}
+						}).then(function(res) {
+							// var consoleTimeS2 = new Date().getTime();
+							// console.log('点评接口花费时间：'+(consoleTimeS2-consoleTimeS)+' ms');
+						resolve(res);
+					}, function(res) {
+						resolve(res);
+					});
+				});
+
+				//banner
+				var Promise6 = new Promise(function(resolve, reject){
+					Vue.axios.get(apiBasePath+"public/photo/"+id+"/ACTIVITY_BANNER/list").then(function(res) {
+						// var consoleTimeS2 = new Date().getTime();
+						// 	console.log('游客图片接口花费时间：'+(consoleTimeS2-consoleTimeS)+' ms');
+						resolve(res);
+					}, function(res) {
+						resolve(res);
+					});
+				});
+
+				//行程
+				var Promise8 = new Promise(function(resolve, reject){
+					Vue.axios.get(apiBasePath+"product/activity/"+id+"/itinerary/list").then(function(res) {
+						// var consoleTimeS2 = new Date().getTime();
+						// 	console.log('游客图片接口花费时间：'+(consoleTimeS2-consoleTimeS)+' ms');
+						resolve(res);
+					}, function(res) {
+						resolve(res);
+					});
+				});
+
+				//包含
+				var Promise9 = new Promise(function(resolve, reject){
+					Vue.axios.get(apiBasePath+"product/activity/"+id+"/content/ITEMS_INCLUDED/list").then(function(res) {
+						resolve(res);
+					}, function(res) {
+						resolve(res);
+					});
+				});
+
+				//不包含
+				var Promise10 = new Promise(function(resolve, reject){
+					Vue.axios.get(apiBasePath+"product/activity/"+id+"/content/ITEMS_EXCLUDED/list").then(function(res) {
+						resolve(res);
+					}, function(res) {
+						resolve(res);
+					});
+				});
+
+				//注意事项
+				var Promise11 = new Promise(function(resolve, reject){
+					Vue.axios.get(apiBasePath+"product/activity/"+id+"/content/NOTICE/list").then(function(res) {
+						resolve(res);
+					}, function(res) {
+						resolve(res);
+					});
+				});
+
+				
+				Promise.all([Promise1,Promise2,Promise3,Promise4,Promise5,Promise6,Promise7,Promise8,Promise9,Promise10,Promise11]).then(function(results){
+
+					//基本信息
+					response = results[0];
+					var detailData = response.data;
+
+					//console.log(detailData);
+					
+					if(detailData) {//.valid == 1
+						
+						detailData.highlights ?
+							(data.highlights = delNullArr(detailData.highlights.split("\n"))) :
+							"";
+							
+						detailData.itemsIncluded ?
+							(data.itemsIncluded = delNullArr(
+								detailData.itemsIncluded.split("\n")
+							)) :
+							"";
+						data.destinations = detailData.destinations.join(", ");
+						detailData.introduction ?
+							(data.introduction = delNullArr(
+								detailData.introduction.split("\n")
+							)) :
+							"";
+						detailData.remark ?
+							(data.remark = delNullArr(detailData.remark.split("\n"))) :
+							"";
+						data.destination = detailData.destinations[0];
+						
+						data.inclusions = results[8].data || [];
+						data.exclusions = results[9].data || [];
+						data.notice = results[10].data || [];
+						//detailData.notice ? (data.notice=delNullArr(results[10].data.split("\n"))) : '';
+
+						if(detailData.latestBooking < 1) {
+							data.toast =
+								"This activity was booked by another guest in the past hour.";
+						} else if(detailData.latestBooking == 1) {
+							data.toast = "This activity was booked by another guest an hour ago.";
+						} else {
+							data.toast =
+								"This activity was booked by another guest " +
+								detailData.latestBooking +
+								" hours ago.";
+						}
+
+
+						data.detail = detailData;
+
+						//banner图
+						data.detail.bannerPhotos = results[5].data || [];
+						//行程信息
+						data.detail.itineraries = results[7].data || [];
+
+
+					} else {
+						return error({
+							statusCode: 500,
+							message: "500"
+						});
+					};
+
+					//游客照片
+					photoList = results[1];
+					data.photoList=photoList.data;
+
+					//推荐信息
+					apiActivityRecommendRes = results[2];
+					data.recommed = apiActivityRecommendRes.data;
+
+					//价格信息
+					apiActivityPriceRes = results[3];
+					data.picInfo = apiActivityPriceRes.data;
+					data.picInfo.departureTime ? (data.time = data.picInfo.departureTime[0]) : (data.time = "");
+					data.picInfo.details = results[6].data;
+
+					//点评信息
+					var remarkData = results[4];
+					if(remarkData.data){
+						data.travelersReviews = remarkData.data;
+
+						if(remarkData.data.entities){
+							for(let i=0;i<remarkData.data.entities.length;i++){
+								remarkData.data.entities[i].text280=false
+							}
+							data.travelersReviews=remarkData.data;
 						}
 					}
-				);
-				data.photoList=photoList.data
-				
-				//价格
-				apiActivityPriceRes = await Vue.axios.get(
-					apiBasePath + "activity/price/" + id
-				);
-				// if (apiActivityPriceRes.data.available == 1) {
-				data.picInfo = apiActivityPriceRes.data;
-				data.picInfo.departureTime ?
-					(data.time = data.picInfo.departureTime[0]) :
-					(data.time = "");
-				
-				// } else {
-				// return redirect("/");
-				// }
+					
+
+
+					var consoleTimeS2 = new Date().getTime();
+					console.log('node end time:'+consoleTimeS2);
+					console.log('在node端渲染，请求所有接口花费时间：'+(consoleTimeS2-consoleTimeS)+' ms');
+
+					//同步回调
+					callback(null,data);
+
+				});
+
+
 			} catch(err) {
 				console.log(err);
 				return error({
@@ -200,8 +331,10 @@
 					message: JSON.stringify(err)
 				});
 			}
+
 			
-			return data;
+			
+			//return data;
 		},
 		head() {
 			let title = this.detail.title;

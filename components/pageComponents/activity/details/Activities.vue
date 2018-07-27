@@ -67,10 +67,10 @@
 				<div class="journey" id="journey" ref="journey">
 					<ul>
 						<li :key="index" v-for="(i,index) in detail.itineraries">
-							<div class="item_v clearfix" v-if="i.photoUrl">
+							<div class="item_v clearfix" v-if="i.photo">
 								<div class="contTitle">
 									
-									<div><img v-lazy="i.photoUrl" /><h3>{{i.title}}</h3><span v-if="i.description" v-html="i.description.replace(/\r|\n/g,'<br/>')"></span></div>
+									<div><img v-lazy="i.photo.url" /><h3>{{i.title}}</h3><span v-if="i.description" v-html="i.description.replace(/\r|\n/g,'<br/>')"></span></div>
 									
 								</div>
 								<!--<div class="cont">
@@ -152,7 +152,7 @@
 				</div>
 				<div class="notes" v-if="notice.length>0" id="notice">
 					<h3>Additional Info</h3>
-					<p v-for="(item,index) in notice" :key="index">{{item}}</p>
+					<p v-for="(item,index) in notice" :key="index">{{item.title}}</p>
 				</div>
 				<div class="notes" v-if="picInfo.refundInstructions" id="CancellationPolicy">
 					<h3>Rescheduling and Cancellation Policy</h3>
@@ -522,7 +522,7 @@
 					pageSize:this.pageSize,
 					status:1
 				}
-				this.axios.post('https://api.localpanda.com/api/user/comment/detail/list',JSON.stringify(params),{
+				this.axios.post('https://api.localpanda.com/api/user/comment/list',JSON.stringify(params),{
 					headers: {
 						'Content-Type': 'application/json; charset=UTF-8'
 					}

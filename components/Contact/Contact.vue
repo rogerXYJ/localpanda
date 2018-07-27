@@ -478,6 +478,8 @@
 				}
 				.fillDate {
 					margin-top: 15px;
+					position: relative;
+					z-index: 2;
 					.date {
 						float: left;
 						.datetime {

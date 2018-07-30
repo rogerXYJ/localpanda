@@ -32,14 +32,13 @@ export default {
         guidelist:'',
         activeList:'',
         logIn:'',
-        
         isIndex:true
       }
       let briefRes = {};
       let batchRes = {};
       try {
-        briefRes = await axios.get(apiBasePath + 'guide/brief/' + data.id);
-        batchRes = await axios.get(apiBasePath + 'activity/batch/' + data.activityId);
+       // briefRes = await axios.get(apiBasePath + 'guide/brief/' + data.id);
+        batchRes = await axios.get(apiBasePath + 'product/activity/batch/' + data.activityId);
       } catch (err) {
         if (err.response.status !== 404) {
           return error({ statusCode: 500, message: store.state.lang.text.an_error_occured })
@@ -47,7 +46,7 @@ export default {
         return error({ statusCode: 404, message: store.state.lang.text.api_page_not_found })
       }
       data.initialState = {
-        guidelist: briefRes.data,
+        //guidelist: briefRes.data,
         activeList: batchRes.data
       };
       return data;

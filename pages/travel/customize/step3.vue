@@ -164,7 +164,7 @@ export default {
                     formData = Object.assign(formData, formDataStep1);
                     formData = Object.assign(formData, formDataStep2);
                     console.log(formData);
-                    this.axios.post('https://api.localpanda.com/api/user/customization/commit',JSON.stringify(formData),{
+                    this.axios.post('https://api.localpanda.com/api/user/customization',JSON.stringify(formData),{
                     	headers: {
 							'Content-Type': 'application/json; charset=UTF-8'
 						}

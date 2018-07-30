@@ -589,7 +589,7 @@
 						keyword:this.seachContent,
 						size:10
 					}
-					Vue.axios.post('https://api.localpanda.com/api/suggest',JSON.stringify(postData),{
+					Vue.axios.post('https://api.localpanda.com/api/search/suggest',JSON.stringify(postData),{
 					
 						headers: {
 							'Content-Type': 'application/json; charset=UTF-8'
@@ -1057,7 +1057,7 @@
 						keyword:val,
 						size:10
 					}
-					Vue.axios.post('https://api.localpanda.com/api/suggest',JSON.stringify(postData),{
+					Vue.axios.post('https://api.localpanda.com/api/search/suggest',JSON.stringify(postData),{
 					
 						headers: {
 							'Content-Type': 'application/json; charset=UTF-8'

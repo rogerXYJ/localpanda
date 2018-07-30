@@ -208,7 +208,7 @@
 			},
 			getActivityOrders(obj){
 				var that = this;
-				that.axios.post(this.apiBasePath + "activity/order/list", JSON.stringify(obj), {
+				that.axios.post(this.apiBasePath + "order/activity/list", JSON.stringify(obj), {
 					headers: {
 						'Content-Type': 'application/json; charset=UTF-8'
 					}
@@ -292,7 +292,7 @@
 			}
 
 			//查导游订单
-			that.axios.post(this.apiBasePath + "order/list", JSON.stringify(obj), {
+			that.axios.post(this.apiBasePath + "order/activity/list", JSON.stringify(obj), {
 				headers: {
 					'Content-Type': 'application/json; charset=UTF-8'
 				}

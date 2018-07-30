@@ -731,7 +731,7 @@
 
 							if(that.addOder == false) {
 								that.addOder = true
-								that.axios.put("https://api.localpanda.com/api/activity/order/create", JSON.stringify(obj), {
+								that.axios.put("https://api.localpanda.com/api/order/activity", JSON.stringify(obj), {
 									headers: {
 										'Content-Type': 'application/json; charset=UTF-8'
 									}
@@ -782,7 +782,7 @@
 						}
 						if(that.addOder == false) {
 							that.addOder = true
-							that.axios.put(this.apiBasePath + "activity/order/create", JSON.stringify(obj), {
+							that.axios.put(this.apiBasePath + "order/activity", JSON.stringify(obj), {
 								headers: {
 									'Content-Type': 'application/json; charset=UTF-8'
 								}

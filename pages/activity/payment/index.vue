@@ -365,7 +365,7 @@
 
 			getInfo() {
 				let that = this
-				Vue.axios.get(this.apiBasePath + "activity/order/detail/" + that.orderId).then(function(res) {
+				Vue.axios.get(this.apiBasePath + "order/activity/" + that.orderId).then(function(res) {
 					console.log(res.data);
 					that.opctions = res.data
 					that.email = res.data.contactInfo.emailAddress;

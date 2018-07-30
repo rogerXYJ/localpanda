@@ -23,7 +23,7 @@
 			}
 			let articleData={}
 			try {
-		        articleData = await Vue.axios.get(apiBasePath+"travel/article/"+ data.articleId)
+		        articleData = await Vue.axios.get(apiBasePath+"content/article/"+ data.articleId)
 		       	data.cont=articleData.data.content
 		       	data.title=articleData.data.title
 		       	data.keywords=articleData.data.keywords

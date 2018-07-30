@@ -224,7 +224,7 @@
 							keyword: search,
 							size: 10
 						}
-						that.axios.post('https://api.localpanda.com/api/suggest', JSON.stringify(postData), {
+						that.axios.post('https://api.localpanda.com/api/search/suggest', JSON.stringify(postData), {
 	
 							headers: {
 								'Content-Type': 'application/json; charset=UTF-8'

@@ -18,27 +18,27 @@
                         <div class="GUI-form__grid">
                             <div class="GUI-form__grid-col">
                                 <el-form-item class="GUI-form-item" label="First name" prop="firstName">
-                                    <el-input v-model="form.firstName" placeholder="firstName…"></el-input>
+                                    <el-input v-model="form.firstName" ></el-input>
                                 </el-form-item>
                             </div>
                             <div class="GUI-form__grid-col">
                                 <el-form-item class="GUI-form-item" label="Last name" prop="lastName">
-                                    <el-input v-model="form.lastName" placeholder="lastName…"></el-input>
+                                    <el-input v-model="form.lastName" ></el-input>
                                 </el-form-item>
                             </div>
                         </div>
                         <el-form-item class="GUI-form-item width100" label="Email Address" prop="emailAddress">
-                            <el-input v-model="form.emailAddress" placeholder="Email…"></el-input>
+                            <el-input v-model="form.emailAddress" ></el-input>
                         </el-form-item>
                         <div class="GUI-form__grid">
                             <div class="GUI-form__grid-col">
                                 <el-form-item class="GUI-form-item" label="Nationality" prop="nationality">
-                                    <el-input v-model="form.nationality" placeholder="Please Select…"></el-input>
+                                    <el-input v-model="form.nationality" ></el-input>
                                 </el-form-item>
                             </div>
                             <div class="GUI-form__grid-col">
                                 <el-form-item class="GUI-form-item" label="Phone Number" prop="phoneNumber">
-                                    <el-input v-model="form.phoneNumber" placeholder="Phone Number…"></el-input>
+                                    <el-input v-model="form.phoneNumber" ></el-input>
                                 </el-form-item>
                             </div>
                         </div>

@@ -68,6 +68,7 @@
 			text: function (newText, oldText) {
 				
 				this.oldText = oldText;
+				console.log(this.oldText )
 				this.onChange(newText);
 			},
 			value: function (newText, oldText) {

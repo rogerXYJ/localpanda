@@ -79,6 +79,7 @@
             },
             onChange(value, isOther){
                 let arr = this.valueArr.slice();
+                console.log(arr)
                 this.$emit('input', arr);
                 //console.log(arr)
             },

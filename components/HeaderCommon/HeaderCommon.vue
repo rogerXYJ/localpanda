@@ -56,8 +56,8 @@
 			<div class="contact_item clearfix">
 				<span class="iconfont font">&#xe67d;</span>
 				<div class="contact_cont">
-					<h3><b>Phone numbers</b></h3>
-					<h4>For urgent matters plase call us.</h4>
+					<h3><b>Phone Numbers</b></h3>
+					<h4>Call us to fasten the communication process.</h4>
 					<div class="phone">
 						<div>
 							<i>
@@ -73,7 +73,7 @@
 									 <use xlink:href="#icon-usa"></use>
 								</svg>
 							</i>
-							<span>(US) +1 888 930 8849</span>
+							<span>(US) +1 888 930-8849 (Toll Free)</span>
 						</div>	
 					</div>				
 				</div>
@@ -81,8 +81,9 @@
 			<div class="contact_item pad20 clearfix">
 				<span class="iconfont font">&#xe67f;</span>
 				<div class="contact_cont">
-					<h3><b>Service@localpanda.com</b></h3>
+					<h3><b>Email</b></h3>
 					<h4>We respond within one hour during opening hours.</h4>
+					<p>Service@localpanda.com</p>
 				</div>
 			</div>
 			<div class="contact_item pad20 clearfix">
@@ -97,7 +98,7 @@
 				<span class="iconfont font">&#xe66c;</span>
 				<div class="contact_cont">
 					<h3><b>WeChat</b></h3>
-					<h4>Add our public account and communicate with our customer service.</h4>
+					<h4>Add our public account and communicate with our customer service directly.</h4>
 					<div class="QR_code"><img src="https://resource.localpanda.cn/static/icon/LPwechat.jpg" alt=""></div>
 				</div>
 			</div>
@@ -528,11 +529,9 @@ body{
 				float: left;
 				font-size: 18px;
 				color:#1bbc9d;
-				margin-right: 20px;
 			}
 			.contact_cont{
-				float: left;
-				width: 84%;
+				padding-left: 26px;
 				h3{
 					font-size: 16px;
 					//text-align: left!important;
@@ -541,12 +540,12 @@ body{
 					font-size: 14px;
 					color:#878e95;
 					margin-top:5px;
-					//text-align: left!important;
+					width: 90%;
 				}
 				.phone{
-					margin-top: 20px;
+					margin-top: 5px;
 					div{
-						padding: 15px 0;
+						padding: 10px 0;
 						&:first-child{
 							border-bottom: 1px solid #ebebeb;	
 						}
@@ -562,10 +561,10 @@ body{
 				p{
 					font-size: 16px;
 					font-weight: bold;
-					margin-top: 30px;
+					margin-top: 10px;
 				}
 				.QR_code{
-					margin-top: 25px;
+					margin-top: 15px;
 					width: 98px;
 					height: 98px;
 					background: #ccc;
@@ -579,7 +578,7 @@ body{
 	}
 	
 	.pad20{
-		padding: 20px 0;
+		padding: 15px 0;
 	}
 	
 	.border{

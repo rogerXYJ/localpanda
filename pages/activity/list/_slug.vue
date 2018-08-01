@@ -66,7 +66,7 @@
 					<span class="iconfont">&#xe651;</span>
 					<div class="slogn_cont">
 						<h4>Personalized Experiences</h4>
-						<p>We work closely with you to craft and deliver experiences </br> that fit your personality, interests, and travel style</p>
+						<p>We work closely with you to deliver experiences </br> that fit your personality, interests, and travel style</p>
 					</div>
 				</div>
 			</div>
@@ -1339,7 +1339,7 @@
 						border-left: 1px solid #ebebeb;
 						float: left;
 						padding-left: 73px;
-						width: 638px;
+						width: 538px;
 						ul{
 							li{
 								float: left;

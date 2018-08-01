@@ -65,7 +65,7 @@
 					    "firstName":"lulu",
 					    "emailAddress":"luluyao@localpanda.com"*/
 					}
-					that.axios.post("https://api.localpanda.com/api/activity/order/list", JSON.stringify(obj), {
+					that.axios.post("https://api.localpanda.com/api/order/activity/list", JSON.stringify(obj), {
 						headers: {
 							'Content-Type': 'application/json; charset=UTF-8'
 						}

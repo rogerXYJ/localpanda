@@ -9,28 +9,28 @@
 					<a href="javascript:">2. confirmation</a>
 				</div>
 				<h3>Fill in your information</h3>
-				<h5><span class="iconfont">&#xe617;</span>As a guest user, you can access your order details through your name and email</h5>
+				<h5 v-if="!logIn"><span class="iconfont">&#xe617;</span>As a guest user, you can access your order details through your name and email</h5>
 				<div class="orderContact">
 					<h4>Contact Information</h4>
 					<div class="cont">
 						<div class="cont-item">
 							<p>First Name<b>*</b></p>
-							<input :class="{err:oderFirstNameErr}" @focus="fousOderfisrtname" @blur="gabulr(0)" v-model="oderFirstName" />
+							<input id="firstName" :class="{err:oderFirstNameErr}" @focus="fousOderfisrtname" @blur="gabulr(0)" v-model="oderFirstName" />
 						</div>
 						<div class="cont-item">
 							<p>Last Name<b>*</b></p>
-							<input :class="{err:oderlastNameErr}" @focus="fousoderlastName" @blur="gabulr(1)" v-model="oderlastName" />
+							<input id="lastName" :class="{err:oderlastNameErr}" @focus="fousoderlastName" @blur="gabulr(1)" v-model="oderlastName" />
 						</div>
 					</div>
 					<div class="emalAddress">
 						<p>Email Address<b>*</b></p>
-						<input :class="{err:emailAddressErr}" @focus="fousEmal" @blur="gabulr(2)" v-model="emailAddress"  placeholder="Please fill out your valid email address since your order info will be sent to that address."/>
+						<input id="email" :class="{err:emailAddressErr}" @focus="fousEmal" @blur="gabulr(2)" v-model="emailAddress"  placeholder="Please fill out your valid email address since your order info will be sent to that address."/>
 					</div>
 					<div class="cont">
 						<div class="cont-item">
 							<p>Country Code<b>*</b></p>
 							<div class="code-box">
-								<input :class="{err:codeErr}" @click.stop="focusCode(0)" @focus="focusCode(0)" @blur="gabulr(3)" v-model="mobileCode" />
+								<input id="code" :class="{err:codeErr}" @click.stop="focusCode(0)" @focus="focusCode(0)" @blur="gabulr(3)" v-model="mobileCode" />
 								<div class="countryCode" v-if="showCode" :class="codeList.length>0?'width100':''">
 									<ul v-if="codeList.length>0">
 										<li v-for="item in codeList" @click.stop="selectCode(item.country_name,item.prefix,0)">{{item.country_name}} (+{{item.prefix}})</li>
@@ -42,7 +42,7 @@
 						</div>
 						<div class="cont-item">
 							<p>Mobile Phone<b>*</b></p>
-							<input :class="{err:phoneErr}" @focus="fousPhone" @blur="gabulr(4)" v-model="phone" placeholder="For our guide to contact you" />
+							<input id="mobilePhone" :class="{err:phoneErr}" @focus="fousPhone" @blur="gabulr(4)" v-model="phone" placeholder="For our guide to contact you" />
 						</div>
 					</div>
 					<div class="comments">
@@ -118,7 +118,7 @@
 							You can reschedule or cancel your trip at zero cost before Aug 31st, 2018.
 							You can get a 100% refund up to {{opctions.refundTimeLimit}} hours before your trip.
 						</p>-->
-						<p class="refundPolicy" style="color: red;font-size: 14px;">You can get a 100% refund up to {{opctions.refundTimeLimit}} hours before your trip.</p>
+						<p class="refundPolicy" style="color: red;font-size: 14px;">You can get a 100% refund up to {{opctions.refundTimeLimit*24>48?opctions.refundTimeLimit:opctions.refundTimeLimit*24}} {{opctions.refundTimeLimit*24>48?'days':'hours'}} before your trip.</p>
 						<p class="text" style="font-size: 14px;margin-top: 20px;" v-if="logIn!=1">You ordered as a guest. To view your order details, you can click "My Bookings" on the top bar then type in the reservee's email address and name you entered before to access that information.</p>
 						
 						<div class="nextBtn">
@@ -166,7 +166,11 @@
 							<span class="iconfont">&#xe666;</span>
 						</div>
 					</div>
-
+				</div>
+				<div class="serve">
+					<p><i class="iconfont">&#xe654;</i>No hidden booking or credit card fees</p>
+					<p><i class="iconfont">&#xe654;</i>Instant confirmation after booking</p>
+					<p><i class="iconfont">&#xe654;</i>Best Price Guarantee</p>
 				</div>
 				<div class="bookbtn">
 					<p>Pay With:</p>
@@ -634,7 +638,11 @@
 				this.opctions.amount=this.returnFloat(this.opctions.adultsPic - this.opctions.childDiscount)
 				this.couponType = ""
 			},
-				
+			errorFn(dom){
+				let errDom=document.getElementById(dom)
+				let htmlBody = document.documentElement;
+				htmlBody.scrollTop=errDom.offsetTop
+			},
 			//下单
 			next() {
 				let next = false
@@ -644,30 +652,35 @@
 				if(that.oderFirstName == "" || regExp.isNub(that.oderFirstName) || regExp.isCode(that.oderFirstName)) {
 					//that.gaFail()
 					next = false
+					that.errorFn("firstName")
 					that.oderFirstNameErr = true
 					that.isShowAlert = true
 					that.alertMessage = "There are required fields without values or with incorrect values. Please check the info you've provided and make sure all the required fields have been filled."
 				} else if(that.oderlastName == "" || regExp.isNub(that.oderlastName) || regExp.isCode(that.oderlastName)) {
 					//that.gaFail()
 					next = false
+					that.errorFn("lastName")
 					that.oderlastNameErr = true
 					that.isShowAlert = true
 					that.alertMessage = "There are required fields without values or with incorrect values. Please check the info you've provided and make sure all the required fields have been filled."
 				} else if(!regExp.isEmail(that.emailAddress)) {
 					//that.gaFail()
 					next = false
+					that.errorFn("email")
 					that.emailAddressErr = true
 					that.isShowAlert = true
 					that.alertMessage = "There are required fields without values or with incorrect values. Please check the info you've provided and make sure all the required fields have been filled."
 				} else if(!that.mobileCode) {
 					//that.gaFail()
 					next = false
+					that.errorFn("code")
 					that.codeErr = true
 					that.isShowAlert = true
 					that.alertMessage = "There are required fields without values or with incorrect values. Please check the info you've provided and make sure all the required fields have been filled."
 				} else if(that.phone == "" || !regExp.isMobil(that.phone)) {
 					//that.gaFail()
 					next = false
+					that.errorFn("mobilePhone")
 					that.phoneErr = true
 					that.isShowAlert = true
 					that.alertMessage = "There are required fields without values or with incorrect values. Please check the info you've provided and make sure all the required fields have been filled."
@@ -762,7 +775,8 @@
 							eventLabel: 'activity_order_succ',
 						});
 						obj = {
-							"userId": that.opctions.userId,
+						    userId: localStorage.getItem("userid") ?
+							localStorage.getItem("userid") : null,
 							"activityId": that.opctions.activityId,
 							"amount": that.opctions.amount,
 							"currency": that.opctions.currency,
@@ -814,6 +828,7 @@
 		mounted: function() {
 			this.opctions = localStorage.getItem("orderInfo") ? JSON.parse(localStorage.getItem("orderInfo")) : ''
 			this.logIn = window.localStorage.getItem("logstate")
+			console.log(this.logIn)
 			this.goBackFn()
 			console.log(this.opctions)
 			var self = this;
@@ -853,26 +868,22 @@
 					}
 					self.codeList = [];
 					var other = [];
-					var str = val.replace(/\(/, "\\\(").replace(/\)/, "\\\)").replace(/\+/, '\\\+').replace(/\-/,'\\\-')
-					console.log(typeof str)
-					
+					var str = val.replace(/\(/, "\\\(").replace(/\)/, "\\\)").replace(/\+/, '\\\+').replace(/\-/,'\\\-');
 					for(let i = 0; i < this.countryCode.length; i++) {
-							console.log(new RegExp(("^" + str), "i"))
-							console.log(self.countryCode[i].country_name + "( +" + self.countryCode[i].prefix + ")")
-						if(new RegExp(("^" + str), "i").test(self.countryCode[i].country_name + "(+" + self.countryCode[i].prefix + ")")) {
-							
+						var str1=self.countryCode[i].country_name + "(+" + self.countryCode[i].prefix + ")"
+						if(new RegExp(('^'+str),"i").test(str1)){
 							var json = {
 								country_name: self.countryCode[i].country_name,
 								prefix: self.countryCode[i].prefix
 							}
 							other.push(json)
-
+							
 						}
 					}
+					
 					self.codeList = other
 					//this.countryCode=arr
 
-					console.log(self.codeList)
 				} else {
 					self.codeList = self.countryCode
 
@@ -953,6 +964,27 @@
 </style>
 <style lang="scss" scoped>
 	@import "~assets/scss/base/_setting.scss";
+	
+	/** 服务 **/
+	.serve{
+		padding: 30px;
+		margin-top: 10px;
+		box-shadow: 0px 2px 6px 0px rgba(53, 58, 63, .1);
+		p{
+			font-size:16px;			
+			position: relative;
+			line-height:22px;
+			i{
+				font-size:12px;
+				color:#1bbc9d;
+				display: inline-block;
+				margin-right: 5px;
+			}
+		}
+	}
+	
+	
+	
 	/** 下单 优惠券不存在提示**/
 	
 	.dialog {

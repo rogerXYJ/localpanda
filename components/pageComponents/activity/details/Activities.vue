@@ -827,7 +827,7 @@
 						userId: localStorage.getItem("userid") ?
 							localStorage.getItem("userid") : null,
 						activityId: that.detail.activityId,
-						refundTimeLimit: that.detail.refundTimeLimit * 24,
+						refundTimeLimit: that.picInfo.refundTimeLimit,
 						amount: that.children > 0 && that.picInfo.childDiscount ?
 							that.returnFloat(that.returnFloat(that.adultsPic) - that.returnFloat(that.children * that.picInfo.childDiscount)) :
 							that.returnFloat(that.adultsPic),
@@ -1022,7 +1022,7 @@
 			}
 			that.setPriceData();
 			that.detailAll = that.tableData(that.picInfo.details);
-			
+			console.log(that.picInfo)
 			//url参数有人数
 			
 			for(var i = 0; i < that.picInfo.details.length; i++) {

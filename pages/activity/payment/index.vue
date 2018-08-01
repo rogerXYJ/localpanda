@@ -77,7 +77,7 @@
 						<p style="margin-top: 20px; font-size: 18px;color:red" v-if="payStatus">{{payErrMsg}}</p>
 					</div>
 				</div>
-				<p class="refundPolicy" style="margin-top: 30px; color: red;">You can get a 100% refund up to {{refundTimeLimit}} hours before your trip.</p>
+				<p class="refundPolicy" style="margin-top: 30px; color: red;">You can get a 100% refund up to {{refundTimeLimit*24>48?refundTimeLimit:refundTimeLimit*24}} {{refundTimeLimit*24>48?'days':'hours'}} before your trip.</p>
 				<p style="width: 600px;margin-top: 20px; color: red;" v-if="logInHide">You ordered as a guest. To view your order details, you can click "My Bookings" on the top bar then type in the reservee's email address and name you entered before to access that information.</p>
 				<button class="btnlinner paybtn" @click="getToken">Pay Now</button>
 			</div>
@@ -204,7 +204,7 @@
 				apiBasePath: apiBasePath
 			}
 		},
-
+		
 		data() {
 			return {
 				opctions: {
@@ -366,10 +366,9 @@
 			getInfo() {
 				let that = this
 				Vue.axios.get(this.apiBasePath + "order/activity/" + that.orderId).then(function(res) {
-					console.log(res.data);
 					that.opctions = res.data
 					that.email = res.data.contactInfo.emailAddress;
-					that.refundTimeLimit = that.opctions.activityInfo.refundTimeLimit * 24
+					that.refundTimeLimit = that.opctions.activityPrice.refundTimeLimit 
 					if(that.opctions.currency == "CNY") {
 						that.id = 1
 					}
@@ -559,8 +558,12 @@
 			},
 			payEnd(flagNum) {
 				var that = this;
+				let obj ={
+					orderId:this.orderId,
+					flag:flagNum?1:0
+				}
 				//https://www.localpanda.cn/api/payment/wechat/status?orderId=1106357805
-				this.axios.get("https://api.localpanda.com/api/payment/query/status?orderId=" + this.orderId + '&flag=' + (flagNum ? 1 : 0), {
+				this.axios.post("https://api.localpanda.com/api/payment/query/status",JSON.stringify(obj),{
 					headers: {
 						'Content-Type': 'application/json; charset=UTF-8'
 					}

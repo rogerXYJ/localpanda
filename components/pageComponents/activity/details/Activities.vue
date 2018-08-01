@@ -25,7 +25,7 @@
 						<p v-if="detail.sales&&detail.sales>0">Booked {{detail.sales}} {{detail.sales==1?'time':'times'}} (last 30 days)</p>
 					</div>
 				</div>
-				<ul class="description clearfix">
+				<ul class="description clearfix" id="description">
 					<li>
 						<label class="iconfont">&#xe653;</label>
 						<span>Mode: {{detail.trafficType}}</span>
@@ -42,7 +42,7 @@
 				</ul>
 				<div class="languages clearfix">
 
-					<label class="iconfont">&#xe627;<em>{{detail.groupType=='Group'?'Language:':'Languages'}} </em></label>
+					<label class="iconfont">&#xe627;<em>{{detail.groupType=='Group'?'Language:':'Languages:'}} </em></label>
 					<span v-if="detail.groupType=='Group'"> English</span>
 					<span v-else>English, French, Spanish, Russian, German, Japanese, Korean</span>
 				</div>
@@ -51,7 +51,7 @@
 					<span>{{destinations}}</span>
 				</div>
 				<p class="says">{{detail.recommendedReason}}</p>
-				<div class="heightLights" id="heightLights">
+				<div class="heightLights" id="heightLights" v-if="highlights&&highlights.length>0||(introduction&&introduction>0)||(detail.itineraries&&detail.itineraries.length>0)">
 					<div class="expect">
 						<h3>What You Can Expect</h3>
 						<p v-if="highlights&&highlights.length>0" :key="index" class="heightLightsList clearfix" v-for="(item,index) in highlights"><i class="iconfont">&#xe654;</i><span>{{item}}</span></p>
@@ -64,7 +64,7 @@
 					</div>
 
 				</div>
-				<div class="journey" id="journey" ref="journey">
+				<div class="journey" id="journey" ref="journey" v-if="detail.itineraries&&detail.itineraries.length>0">
 					<ul>
 						<li :key="index" v-for="(i,index) in detail.itineraries">
 							<div class="item_v clearfix" v-if="i.photo">
@@ -98,7 +98,7 @@
 
 				</div>
 				
-				<div class="provide" id="provide">
+				<div class="provide" id="provide" v-if="itemsIncluded&&itemsIncluded.length>0||(inclusions&&inclusions.length>0)">
 					<h3>What's Included?</h3>
 					<ul v-if="itemsIncluded">
 						<li :key="index" v-for="(item,index) in itemsIncluded">{{item}}</li>
@@ -110,7 +110,7 @@
 						</li>
 					</ul>
 				</div>
-				<div class="provide" v-if="exclusions" id="exclusions">
+				<div class="provide" v-if="exclusions&&exclusions.length>0" id="exclusions">
 					<h3>Exclusions</h3>
 					<ul>
 						<li :key="index" v-for="(item,index) in exclusions">
@@ -156,7 +156,7 @@
 				</div>
 				<div class="notes" v-if="picInfo.refundInstructions" id="CancellationPolicy">
 					<h3>Rescheduling and Cancellation Policy</h3>
-					<p v-html="picInfo.refundInstructions.replace(/\r\n/g,'<br/>')"></p>
+					<p v-html="picInfo.refundInstructions.replace(/\r|\n/g,'<br/>')"></p>
 				</div>
 				<div class="provide" v-if="picInfo.details.length>0" id="picDetails">
 					<h3>Price Details</h3>
@@ -418,8 +418,7 @@
 	import {
 		GetDateStr,
 		addmulMonth,
-		getUrlParams,
-		delNullArr
+		getUrlParams
 	} from "~/assets/js/plugin/utils";
 	import Contact from '~/components/Contact/Contact';
 	import Alert from '~/components/Prompt/Alert';
@@ -507,10 +506,6 @@
 			Alert
 		},
 		methods: {
-			delNullArr:this.delNullArr,
-			aa(aa){
-				
-			},
 			//点评翻页
 			moreReviews(){
 				let self=this
@@ -636,7 +631,7 @@
 				let that = this;
 				window.ga && ga(gaSend, {
 					hitType: "event",
-					eventCategory: "Button",
+					eventCategory: "activity_detail",
 					eventAction: "Click",
 					eventLabel: "activity_inquiry"
 				});
@@ -669,7 +664,7 @@
 				this.isShowView = true;
 				window.ga && ga(gaSend, {
 					hitType: "event",
-					eventCategory: "Button",
+					eventCategory: "activity_detail",
 					eventAction: "Click",
 					eventLabel: "activity_view_more"
 				});
@@ -1305,7 +1300,7 @@
 									float: left;
 									.time {
 										position: relative;
-										top: 19px;
+										top: 16px;
 										input {
 											width: calc(100% - 10px);
 											height: 40px;

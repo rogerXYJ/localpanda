@@ -406,7 +406,7 @@
 												"deviceType":"PC"
 											}
 
-											Vue.axios.put(this.apiBasePath + "order/create", JSON.stringify(obj), {
+											Vue.axios.put(this.apiBasePath + "order/guide", JSON.stringify(obj), {
 												headers: {
 													'Content-Type': 'application/json; charset=UTF-8'
 												}
@@ -448,7 +448,7 @@
 										}
 										if(that.addOder==false){
 											that.addOder=true
-											Vue.axios.put(this.apiBasePath + "order/create", JSON.stringify(obj), {
+											Vue.axios.put(this.apiBasePath + "order/guide", JSON.stringify(obj), {
 												headers: {
 													'Content-Type': 'application/json; charset=UTF-8'
 												}
@@ -517,7 +517,7 @@
 
 											}
 
-											Vue.axios.put(this.apiBasePath + "order/create", JSON.stringify(obj), {
+											Vue.axios.put(this.apiBasePath + "order/guide", JSON.stringify(obj), {
 												headers: {
 													'Content-Type': 'application/json; charset=UTF-8'
 												}
@@ -560,7 +560,7 @@
 												"deviceType":"PC"
 											}
 
-											Vue.axios.put(this.apiBasePath + "order/create", JSON.stringify(obj), {
+											Vue.axios.put(this.apiBasePath + "order/guide", JSON.stringify(obj), {
 												headers: {
 													'Content-Type': 'application/json; charset=UTF-8'
 												}

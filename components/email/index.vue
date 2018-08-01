@@ -67,7 +67,7 @@
 						"utcOffset": new Date().getTimezoneOffset() / 60 * -1
 					}
 					if(!that.isclick){
-						that.axios.post("https://api.localpanda.com/api/user/feedback/commit", JSON.stringify(obj), {
+						that.axios.put("https://api.localpanda.com/api/user/feedback", JSON.stringify(obj), {
 							headers: {
 								'Content-Type': 'application/json; charset=UTF-8'
 							}

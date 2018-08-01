@@ -3,11 +3,15 @@
 		<HeaderCommon :logIn="logIn" @closeSearchList="closeFn"></HeaderCommon>
 		<div class="banner">
 			<div class="linerBackground">
+				<div class="covertitle">
+					<h3>Unlock Local Access to China</h3>
+					<h4>Explore hundreds of unique, immersive and authentic experiences</h4>
+				</div>
 				<!--seach bar -->
 				<div class="selectInfo">
 					<input type="" v-model="seachContent" @click.stop="showHot" maxlength="60" @keyup.enter="seachFn" placeholder="Attraction, Activity, Destination" />
 					<div class="selectPeople"@click.stop="showSelectPeople">
-						<span>For {{postData.participants}} People <i class="iconfont">&#xe60f;</i></span>
+						<span>{{postData.participants}} People <i class="iconfont">&#xe60f;</i></span>
 						<input-number v-if="selectPeople" :participants="postData.participants" :selectNumber="selectNumber" @showSelectPeople="setSelectPeople" @getPeople="setPeople"></input-number>
 					</div>
 					
@@ -40,6 +44,31 @@
 					</div>
 				</div>
 				
+			</div>
+		</div>
+		<div class="slogn">
+			<div class="slogn_box">
+				<div class="slogn_item">
+					<span class="iconfont">&#xe677;</span>
+					<div class="slogn_cont">
+						<h4>Bridging East and West</h4>
+						<p>Our multicultural team understands what China has to </br>offer and what you as a traveler are looking for</p>
+					</div>
+				</div>
+				<div class="slogn_item">
+					<span class="iconfont">&#xe678;</span>
+					<div class="slogn_cont">
+						<h4>Exceptional Trips</h4>
+						<p>We hand-pick our offerings to ensure excellence in </br> quality and competitive pricing</p>
+					</div>
+				</div>
+				<div class="slogn_item">
+					<span class="iconfont">&#xe651;</span>
+					<div class="slogn_cont">
+						<h4>Personalized Experiences</h4>
+						<p>We work closely with you to craft and deliver experiences </br> that fit your personality, interests, and travel style</p>
+					</div>
+				</div>
 			</div>
 		</div>
 		<div class="page-content">
@@ -1197,30 +1226,47 @@
 		background: #faf9f8;
 		.banner {
 			position: relative;
-			background: url("https://resource.localpanda.cn/static/headerPhotos/BackGround.jpg") no-repeat;
+			background: url("https://resource.localpanda.cn/static/headerPhotos/ListBanner.jpg") no-repeat;
 			background-size: cover;
-			height: 350px;
+			background-position: center;
+			height: 290px;
 			.linerBackground {
-				position: absolute;
-				bottom: 0;
-				background: rgba(0, 0, 0, 0.5);
+				.covertitle{
+					text-align: center;
+					padding-top: 72px;
+					h3{
+						font-size: 44px;
+						color: #fff;
+						font-weight: bold;
+						text-shadow: 2.5px 2.5px 10px rgba(0, 0, 0, .3);
+					};
+					h4{
+						font-size: 20px;
+						color: #ffffff;
+						margin: 24px 0;
+						text-shadow: 2.5px 2.5px 10px rgba(0, 0, 0, .3);
+					}
+				}
+				/*position: absolute;
+				top: 50%;
+				transform:translateY(-50%) ;
 				height: 64px;
 				width: 100%;
-				text-align: center;
+				text-align: center;*/
 			}
 			.selectInfo {
 				height: 48px;
-				width: 1140px;
+				width: 1040px;
 				border-radius: 6px;
 				background: #fff;
-				margin: 8px auto 0;
+				margin: 0 auto;
 				position: relative;
 				a{
 					display: block;
 				}
 				input{
 					border-radius: 6px;
-					width: calc(100% - 131px - 150px);
+					width: 742px;
 					border: none;
 					height:100%;
 					margin: 0;
@@ -1230,7 +1276,7 @@
 					
 				};
 				.selectPeople{
-					width: 149px;
+					width: 136px;
 					height: 48px;
 					display: inline-block;
 					line-height: 48px;
@@ -1238,8 +1284,11 @@
 					border-left: 1px solid #ebebeb;
 					cursor: pointer;
 					position: relative;
+					padding-left: 30px;
 					i{
-						font-size: 14px;
+						font-size: 12px;
+						position: absolute;
+						right: 18px;
 					}
 					
 				}
@@ -1333,6 +1382,52 @@
 								font-size: 16px;
 								margin-right: 24px;
 							}
+						}
+					}
+				}
+			}
+		}
+		.slogn{
+			background: #fff;
+			width: 100%;
+			box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.1);
+			margin-bottom: 5px;
+			.slogn_box{
+				width: 1284px;
+				margin: 0 auto;
+				padding: 25px 0;
+				display: flex;
+				.slogn_item{
+					flex: 1;
+					span{
+						font-size: 34px;
+						background-image: -webkit-linear-gradient(135deg,#009efd,#1bbc9d);
+						-webkit-text-fill-color: transparent;
+						-webkit-background-clip: text;
+						
+						
+						background-image: -moz-linear-gradient(135deg,#009efd,#1bbc9d);
+						-moz-text-fill-color: transparent;
+						-moz-background-clip: text;
+						
+						background-image: -moz-linear-gradient(135deg,#009efd,#1bbc9d);
+						-ms-text-fill-color: transparent;
+						-ms-background-clip: text;
+						
+						background-image: -o-linear-gradient(135deg,#009efd,#1bbc9d);
+						-o-text-fill-color: transparent;
+						-o-background-clip: text;
+					}
+					.slogn_cont{
+						float: right;
+						width: 90%;
+						h4{
+							font-weight: bold;
+							font-size: 16px;
+						};
+						p{
+							font-size: 14px;
+							margin-top: 5px;
 						}
 					}
 				}

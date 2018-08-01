@@ -184,7 +184,7 @@
 			},
 			downLoad(index) {
 				var node = document.getElementById("downNode");
-				var html = '<form method="POST" target="_blank" action="'+ this.apiBasePath + 'order/contract/download">' +
+				var html = '<form method="POST" target="_blank" action="'+ this.apiBasePath + 'order/guide/contract/">' +
 					'<input name="orderId" type="hidden"  value="' + this.bookList[index].orderId + '">' +
 					'</form>';
 				node.innerHTML = html;
@@ -238,7 +238,7 @@
 
 
 				var self = this;
-				self.axios.get("https://www.localpanda.cn/api/payment/wxinfo/get?code=" + this.urlCode, {
+				self.axios.get("https://www.localpanda.cn/api/payment/query/openid?code=" + this.urlCode, {
 					headers: {
 						'Content-Type': 'application/json'
 					}
@@ -292,7 +292,7 @@
 			}
 
 			//查导游订单
-			that.axios.post(this.apiBasePath + "order/activity/list", JSON.stringify(obj), {
+			that.axios.post(this.apiBasePath + "order/guide/list", JSON.stringify(obj), {
 				headers: {
 					'Content-Type': 'application/json; charset=UTF-8'
 				}

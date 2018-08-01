@@ -367,7 +367,7 @@
 				
 				let data = this;
 				var hightLights =
-					document.getElementById("heightLights").offsetTop +
+					document.getElementById("description").offsetTop +
 					document.getElementById("banner").offsetHeight +
 					60 -
 					76;

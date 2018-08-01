@@ -560,7 +560,7 @@
 			payEnd(flagNum) {
 				var that = this;
 				//https://www.localpanda.cn/api/payment/wechat/status?orderId=1106357805
-				this.axios.get("https://api.localpanda.com/api/payment/wechat/status?orderId=" + this.orderId + '&flag=' + (flagNum ? 1 : 0), {
+				this.axios.get("https://api.localpanda.com/api/payment/query/status?orderId=" + this.orderId + '&flag=' + (flagNum ? 1 : 0), {
 					headers: {
 						'Content-Type': 'application/json; charset=UTF-8'
 					}

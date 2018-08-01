@@ -122,6 +122,7 @@ export default {
                 phoneNumber: "",
                 nationality: "",
                 message: "",
+                isSubmiting:false,
                 utcOffset:new Date().getTimezoneOffset() / 60 * -1,
             },
                 formRules: {
@@ -164,7 +165,7 @@ export default {
                     formData = Object.assign(formData, formDataStep1);
                     formData = Object.assign(formData, formDataStep2);
                     console.log(formData);
-                    this.axios.post('https://api.localpanda.com/api/user/customization',JSON.stringify(formData),{
+                    this.axios.put('https://api.localpanda.com/api/user/customization',JSON.stringify(formData),{
                     	headers: {
 							'Content-Type': 'application/json; charset=UTF-8'
 						}

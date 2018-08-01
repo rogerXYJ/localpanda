@@ -9,8 +9,9 @@
 					<a href="javascript:">2. confirmation</a>
 				</div>
 				<h3>Fill in your information</h3>
+				<h5><span class="iconfont">&#xe617;</span>As a guest user, you can access your order details through your name and email</h5>
 				<div class="orderContact">
-					<h4>Reservation Information</h4>
+					<h4>Contact Information</h4>
 					<div class="cont">
 						<div class="cont-item">
 							<p>First Name<b>*</b></p>
@@ -23,8 +24,7 @@
 					</div>
 					<div class="emalAddress">
 						<p>Email Address<b>*</b></p>
-						<input :class="{err:emailAddressErr}" @focus="fousEmal" @blur="gabulr(2)" v-model="emailAddress" />
-						<span>Your voucher will be sent here, make sure it is correct</span>
+						<input :class="{err:emailAddressErr}" @focus="fousEmal" @blur="gabulr(2)" v-model="emailAddress"  placeholder="Please fill out your valid email address since your order info will be sent to that address."/>
 					</div>
 					<div class="cont">
 						<div class="cont-item">
@@ -42,7 +42,7 @@
 						</div>
 						<div class="cont-item">
 							<p>Mobile Phone<b>*</b></p>
-							<input :class="{err:phoneErr}" @focus="fousPhone" @blur="gabulr(4)" v-model="phone" />
+							<input :class="{err:phoneErr}" @focus="fousPhone" @blur="gabulr(4)" v-model="phone" placeholder="For our guide to contact you" />
 						</div>
 					</div>
 					<div class="comments">
@@ -51,12 +51,12 @@
 						<textarea v-else v-model="comments" @blur="gabulr(5)"></textarea>
 					</div>
 				</div>
-				<div class="check">
+				<!--<div class="check">
 					<span>Check this box if the contact for the reservation does NOT match the Primary Traveler.</span>
 					<em v-if="check==0" @click="checkFn(0)" class="checkbox"></em>
 					<em v-if="check==1" @click="checkFn(1)" class="checkbox backgrond iconfont">&#xe61e;</em>
-				</div>
-				<div class="addOrderContact" v-if="check==1">
+				</div>-->
+				<!--<div class="addOrderContact" v-if="check==1">
 					<ul>
 						<li>
 							<h4>Key Traveler</h4>
@@ -97,7 +97,7 @@
 							</div>
 						</li>
 					</ul>
-				</div>
+				</div>-->
 				<div class="coupon">
 					<checkbox v-model="checkedAll" :change="changeFn">
 						Have a Gift Card or Coupon Code? Proceed to checkout to redeem it.
@@ -114,8 +114,13 @@
 				</div>
 				<div class="Comments">
 					<div class="information">
+						<!--<p class="refundPolicy" style="font-size: 14px;">
+							You can reschedule or cancel your trip at zero cost before Aug 31st, 2018.
+							You can get a 100% refund up to {{opctions.refundTimeLimit}} hours before your trip.
+						</p>-->
 						<p class="refundPolicy" style="color: red;font-size: 14px;">You can get a 100% refund up to {{opctions.refundTimeLimit}} hours before your trip.</p>
 						<p class="text" style="font-size: 14px;margin-top: 20px;" v-if="logIn!=1">You ordered as a guest. To view your order details, you can click "My Bookings" on the top bar then type in the reservee's email address and name you entered before to access that information.</p>
+						
 						<div class="nextBtn">
 							<div class="next" @click="placeOrder">NEXT</div>
 						</div>
@@ -174,7 +179,7 @@
 
 		</div>
 		<AlertGoBack :isShowAlertTitle="isShowAlertTitle" :alertTitle="alertTitle" :alertMessage="alertMessage" v-on:setIsShowAlertFn="getIsShowAlertFn"></AlertGoBack>
-		<Alert :isShowAlert="isShowAlert" :alertTitle='alertTitle' :alertMessage="alertMessage" v-on:setIsShowAlert="getIsShowAlert"></Alert>
+		<!--<Alert :isShowAlert="isShowAlert" :alertTitle='alertTitle' :alertMessage="alertMessage" v-on:setIsShowAlert="getIsShowAlert"></Alert>-->
 		<FooterCommon></FooterCommon>
 		<div class="dialog" v-if="orderHasCouponRate">
 			<div class="dialogContent">
@@ -394,22 +399,22 @@
 				}
 
 			},
-			checkFn(id) {
-				if(id == 0) {
-					this.check = 1
-
-				} else {
-					this.check = 0
-					this.TravellerFirstName = ''
-					this.TravellerlastName = ''
-					this.TravelleremailAddress = ''
-					this.Travellerphone = ''
-
-				}
-			},
-			getIsShowAlert(val) {
-				this.isShowAlert = val;
-			},
+//			checkFn(id) {
+//				if(id == 0) {
+//					this.check = 1
+//
+//				} else {
+//					this.check = 0
+//					this.TravellerFirstName = ''
+//					this.TravellerlastName = ''
+//					this.TravelleremailAddress = ''
+//					this.Travellerphone = ''
+//
+//				}
+//			},
+//			getIsShowAlert(val) {
+//				this.isShowAlert = val;
+//			},
 			getIsShowAlertFn(val) {
 				this.isShowAlertTitle = val;
 			},
@@ -667,88 +672,88 @@
 					that.isShowAlert = true
 					that.alertMessage = "There are required fields without values or with incorrect values. Please check the info you've provided and make sure all the required fields have been filled."
 				} else {
-					if(that.check == 1) {
-						if(that.TravellerFirstName == "" || regExp.isNub(that.TravellerFirstName) || regExp.isCode(that.TravellerFirstName)) {
-							//that.gaFail()
-							next = false
-							that.TravellerFirstNameErr = true
-							that.isShowAlert = true
-							that.alertMessage = "There are required fields without values or with incorrect values. Please check the info you've provided and make sure all the required fields have been filled."
-						} else if(that.TravellerlastName == "" || regExp.isNub(that.TravellerlastName) || regExp.isCode(that.TravellerlastName)) {
-							//that.gaFail()
-							next = false
-							that.TravellerlastNameErr = true
-							that.isShowAlert = true
-							that.alertMessage = "There are required fields without values or with incorrect values. Please check the info you've provided and make sure all the required fields have been filled."
-						} else if(!regExp.isEmail(that.TravelleremailAddress)) {
-							//that.gaFail()
-							next = false
-							that.TravelleremailAddressErr = true
-							that.isShowAlert = true
-							that.alertMessage = "There are required fields without values or with incorrect values. Please check the info you've provided and make sure all the required fields have been filled."
-						} else if(!regExp.isMobil(that.Travellerphone)) {
-							that.TravellerphoneErr = true
-							that.isShowAlert = true
-							that.alertMessage = "There are required fields without values or with incorrect values. Please check the info you've provided and make sure all the required fields have been filled."
-						} else {
-							next = true
-							ga(gaSend, {
-								hitType: 'event',
-								eventCategory: 'activity_booking',
-								eventAction: 'submit',
-								eventLabel: 'activity_order_succ',
-							});
-							obj = {
-								"userId": that.opctions.userId,
-								"activityId": that.opctions.activityId,
-								"amount": that.opctions.amount,
-								"currency": that.opctions.currency,
-								"adultNum": that.opctions.adultNum,
-								"childrenNum": that.opctions.childrenNum,
-								"infantNum": 0,
-								"startDate": that.opctions.startDate,
-								"startTime": that.opctions.startTime,
-								"averagePrice": that.opctions.averagePrice,
-								"childDiscount": that.opctions.childDiscount,
-								"comments": that.comments ? that.comments : null,
-								"couponDiscount": that.couponType ? that.opctions.couponDiscount : null,
-								"couponCode": that.couponType ? that.couponCode : null,
-								"contactInfo": {
-									"firstName": that.oderFirstName,
-									"lastName": that.oderlastName,
-									"phoneNumber": that.code + that.phone,
-									"emailAddress": that.emailAddress
-								},
-								"travelerInfo": {
-									"firstName": that.TravellerFirstName,
-									"lastName": that.TravellerlastName,
-									"phoneNumber": that.travellCode + that.Travellerphone,
-									"emailAddress": that.TravelleremailAddress
-								},
-								"utcOffset": new Date().getTimezoneOffset() / 60 * -1,
-								"deviceType": "PC"
-							}
-
-							if(that.addOder == false) {
-								that.addOder = true
-								that.axios.put("https://api.localpanda.com/api/order/activity", JSON.stringify(obj), {
-									headers: {
-										'Content-Type': 'application/json; charset=UTF-8'
-									}
-								}).then(function(response) {
-
-									var loginState = (that.logIn ? that.logIn : 0);
-									//var hostUrl = obj.currency == 'CNY' ? 'https://www.localpanda.cn' : 'https://www.localpanda.com';
-									window.location.href = "/activity/payment?objectId=" + response.data.response + '&login=' + loginState;
-
-								}, function(response) {})
-							}
-
-						}
-						if(next == false) {
-							that.gaFail()
-						}
-					} else {
+//					if(that.check == 1) {
+//						if(that.TravellerFirstName == "" || regExp.isNub(that.TravellerFirstName) || regExp.isCode(that.TravellerFirstName)) {
+//							//that.gaFail()
+//							next = false
+//							that.TravellerFirstNameErr = true
+//							that.isShowAlert = true
+//							that.alertMessage = "There are required fields without values or with incorrect values. Please check the info you've provided and make sure all the required fields have been filled."
+//						} else if(that.TravellerlastName == "" || regExp.isNub(that.TravellerlastName) || regExp.isCode(that.TravellerlastName)) {
+//							//that.gaFail()
+//							next = false
+//							that.TravellerlastNameErr = true
+//							that.isShowAlert = true
+//							that.alertMessage = "There are required fields without values or with incorrect values. Please check the info you've provided and make sure all the required fields have been filled."
+//						} else if(!regExp.isEmail(that.TravelleremailAddress)) {
+//							//that.gaFail()
+//							next = false
+//							that.TravelleremailAddressErr = true
+//							that.isShowAlert = true
+//							that.alertMessage = "There are required fields without values or with incorrect values. Please check the info you've provided and make sure all the required fields have been filled."
+//						} else if(!regExp.isMobil(that.Travellerphone)) {
+//							that.TravellerphoneErr = true
+//							that.isShowAlert = true
+//							that.alertMessage = "There are required fields without values or with incorrect values. Please check the info you've provided and make sure all the required fields have been filled."
+//						} else {
+//							next = true
+//							ga(gaSend, {
+//								hitType: 'event',
+//								eventCategory: 'activity_booking',
+//								eventAction: 'submit',
+//								eventLabel: 'activity_order_succ',
+//							});
+//							obj = {
+//								"userId": that.opctions.userId,
+//								"activityId": that.opctions.activityId,
+//								"amount": that.opctions.amount,
+//								"currency": that.opctions.currency,
+//								"adultNum": that.opctions.adultNum,
+//								"childrenNum": that.opctions.childrenNum,
+//								"infantNum": 0,
+//								"startDate": that.opctions.startDate,
+//								"startTime": that.opctions.startTime,
+//								"averagePrice": that.opctions.averagePrice,
+//								"childDiscount": that.opctions.childDiscount,
+//								"comments": that.comments ? that.comments : null,
+//								"couponDiscount": that.couponType ? that.opctions.couponDiscount : null,
+//								"couponCode": that.couponType ? that.couponCode : null,
+//								"contactInfo": {
+//									"firstName": that.oderFirstName,
+//									"lastName": that.oderlastName,
+//									"phoneNumber": that.code + that.phone,
+//									"emailAddress": that.emailAddress
+//								},
+//								"travelerInfo": {
+//									"firstName": that.TravellerFirstName,
+//									"lastName": that.TravellerlastName,
+//									"phoneNumber": that.travellCode + that.Travellerphone,
+//									"emailAddress": that.TravelleremailAddress
+//								},
+//								"utcOffset": new Date().getTimezoneOffset() / 60 * -1,
+//								"deviceType": "PC"
+//							}
+//
+//							if(that.addOder == false) {
+//								that.addOder = true
+//								that.axios.put("https://api.localpanda.com/api/order/activity", JSON.stringify(obj), {
+//									headers: {
+//										'Content-Type': 'application/json; charset=UTF-8'
+//									}
+//								}).then(function(response) {
+//
+//									var loginState = (that.logIn ? that.logIn : 0);
+//									//var hostUrl = obj.currency == 'CNY' ? 'https://www.localpanda.cn' : 'https://www.localpanda.com';
+//									window.location.href = "/activity/payment?objectId=" + response.data.response + '&login=' + loginState;
+//
+//								}, function(response) {})
+//							}
+//
+//						}
+//						if(next == false) {
+//							that.gaFail()
+//						}
+//					} else {
 						next = true
 						ga(gaSend, {
 							hitType: 'event',
@@ -800,7 +805,7 @@
 						that.gaFail()
 					}
 				}
-			}
+			//}
 
 		},
 		created: function() {
@@ -810,7 +815,7 @@
 			this.opctions = localStorage.getItem("orderInfo") ? JSON.parse(localStorage.getItem("orderInfo")) : ''
 			this.logIn = window.localStorage.getItem("logstate")
 			this.goBackFn()
-
+			console.log(this.opctions)
 			var self = this;
 			//设置默认币种
 			self.nowExchange = {
@@ -848,11 +853,14 @@
 					}
 					self.codeList = [];
 					var other = [];
-					var str = val.replace(/\(/, "\\\(").replace(/\)/, "\\\)").replace(/\+/, '\\\+')
-
+					var str = val.replace(/\(/, "\\\(").replace(/\)/, "\\\)").replace(/\+/, '\\\+').replace(/\-/,'\\\-')
+					console.log(typeof str)
+					
 					for(let i = 0; i < this.countryCode.length; i++) {
-
-						if(new RegExp(("^" + str), "i").test(self.countryCode[i].country_name + "(" + "+" + self.countryCode[i].prefix + ")")) {
+							console.log(new RegExp(("^" + str), "i"))
+							console.log(self.countryCode[i].country_name + "( +" + self.countryCode[i].prefix + ")")
+						if(new RegExp(("^" + str), "i").test(self.countryCode[i].country_name + "(+" + self.countryCode[i].prefix + ")")) {
+							
 							var json = {
 								country_name: self.countryCode[i].country_name,
 								prefix: self.countryCode[i].prefix
@@ -864,7 +872,7 @@
 					self.codeList = other
 					//this.countryCode=arr
 
-					//console.log(self.codeList)
+					console.log(self.codeList)
 				} else {
 					self.codeList = self.countryCode
 
@@ -881,35 +889,35 @@
 				}
 
 			},
-			mobileTravellCode: function(val, oldVal) {
-				let self = this
-				if(val) {
-					self.travelCodeList = [];
-					var other = [];
-					var str = val.replace(/\(/, "\\\(").replace(/\)/, "\\\)").replace(/\+/, '\\\+')
-					for(let i = 0; i < this.countryCode.length; i++) {
-
-						if(new RegExp(("^" + str), "i").test(self.countryCode[i].country_name + "(" + "+" + self.countryCode[i].prefix + ")")) {
-							var json = {
-								country_name: self.countryCode[i].country_name,
-								prefix: self.countryCode[i].prefix
-							}
-							other.push(json)
-
-						} else {
-
-						}
-					}
-
-					self.travelCodeList = other
-					//this.countryCode=arr
-
-					//console.log(self.codeList)
-				} else {
-					self.travelCodeList = self.countryCode
-
-				}
-			}
+//			mobileTravellCode: function(val, oldVal) {
+//				let self = this
+//				if(val) {
+//					self.travelCodeList = [];
+//					var other = [];
+//					var str = val.replace(/\(/, "\\\(").replace(/\)/, "\\\)").replace(/\+/, '\\\+')
+//					for(let i = 0; i < this.countryCode.length; i++) {
+//
+//						if(new RegExp(("^" + str), "i").test(self.countryCode[i].country_name + "(" + "+" + self.countryCode[i].prefix + ")")) {
+//							var json = {
+//								country_name: self.countryCode[i].country_name,
+//								prefix: self.countryCode[i].prefix
+//							}
+//							other.push(json)
+//
+//						} else {
+//
+//						}
+//					}
+//
+//					self.travelCodeList = other
+//					//this.countryCode=arr
+//
+//					//console.log(self.codeList)
+//				} else {
+//					self.travelCodeList = self.countryCode
+//
+//				}
+//			}
 		}
 	}
 </script>
@@ -919,7 +927,22 @@
 	#header {
 		box-shadow: 0px 2px 6px 0px rgba(53, 58, 63, 0.1);
 	}
-	
+	input::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+    	color:   #878e95;
+    	font-size:14px ;
+	}
+	input:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+	   color:    #878e95;
+	   font-size:14px ;
+	}
+	input::-moz-placeholder { /* Mozilla Firefox 19+ */
+	   color:    #878e95;
+	   font-size:14px ;
+	}
+	input:-ms-input-placeholder { /* Internet Explorer 10-11 */
+	   color:   #878e95;
+	   font-size:14px ;
+	}
 	body {
 		min-width: 1200px;
 	}
@@ -1169,6 +1192,17 @@
 					color: #353a3f;
 					font-weight: bold;
 					margin-top: 55px;
+				}
+				h5{
+					
+					span{
+						font-size: 18px;
+						vertical-align: baseline;
+						display: inline-block;
+						margin-right:5px;
+					}
+					font-size: 14px;
+					margin-top: 15px;
 				}
 				.orderContact {
 					margin-top: 35px;

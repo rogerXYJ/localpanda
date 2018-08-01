@@ -564,7 +564,7 @@
 			},
 			getDate() {
 				const that = this
-				that.axios.get("https://api.localpanda.com/api/stock/guide/" + that.guideId + "?startDate=" + that.picmsg.earliestBookDate + "&days=90").then(function(response) {
+				that.axios.get("https://api.localpanda.com/api/order/guide/stock/" + that.guideId + "?startDate=" + that.picmsg.earliestBookDate + "&days=90").then(function(response) {
 					that.carAllsuerDate = response.data
 					that.carHalfsuerDate = response.data
 					//that.carHalfarr=response.data

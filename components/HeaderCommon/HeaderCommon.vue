@@ -24,15 +24,14 @@
 				<li @click="isShowAnonymityback">My Bookings</li>
 				<li @click="show">Log In</li>
 				<!--<li @click="goAboutUs">About Us</li>-->
-				<li @click="getscoll">Contact Us</li>
+				<li @mouseenter="showContactUs=true" @mouseleave="showContactUs=false">Contact Us</li>
 
 			</ul>
 			<ul class="login" v-if="logIn==1">
-
 				<li @click="showContact">Customize Your Trip<em class="hot">HOT</em></li>
 				<li @click="goBook" style="margin-right: 40px;">My Bookings</li>
 				<!--<li @click="goAboutUs" style="margin-right: 40px;">About Us</li>-->
-				<li @click="getscoll">Contact Us</li>
+				<li @mouseenter="showContactUs=true" @mouseleave="showContactUs=false">Contact Us</li>
 				<li @click.stop="contshow"><img :src="logimg" /></li>
 				<div class="cont" :class="{'isshow':iscontshow}">
 					<ol>
@@ -53,7 +52,56 @@
 			</ul>
 
 		</div>
-
+		<div class="contact_box" v-show="showContactUs">
+			<div class="contact_item clearfix">
+				<span class="iconfont font">&#xe67d;</span>
+				<div class="contact_cont">
+					<h3><b>Phone numbers</b></h3>
+					<h4>For urgent matters plase call us.</h4>
+					<div class="phone">
+						<div>
+							<i>
+								<svg class="iconCountry" aria-hidden="true">
+									 <use xlink:href="#icon-china"></use>
+								</svg>
+							</i>
+							<span>(CN) +86 21 8018 2090</span>
+						</div>
+						<div>
+							<i>
+								<svg class="iconCountry" aria-hidden="true">
+									 <use xlink:href="#icon-usa"></use>
+								</svg>
+							</i>
+							<span>(US) +1 888 930 8849</span>
+						</div>	
+					</div>				
+				</div>
+			</div>
+			<div class="contact_item pad20 clearfix">
+				<span class="iconfont font">&#xe67f;</span>
+				<div class="contact_cont">
+					<h3><b>Service@localpanda.com</b></h3>
+					<h4>We respond within one hour during opening hours.</h4>
+				</div>
+			</div>
+			<div class="contact_item pad20 clearfix">
+				<span class="iconfont font">&#xe67e;</span>
+				<div class="contact_cont">
+					<h3><b>WhatsApp</b></h3>
+					<h4>We respond within one hour during opening hours.</h4>
+					<p>+86 166 2018 3842</p>
+				</div>
+			</div>
+			<div class="contact_item pad20 clearfix">
+				<span class="iconfont font">&#xe66c;</span>
+				<div class="contact_cont">
+					<h3><b>WeChat</b></h3>
+					<h4>Add our public account and communicate with our customer service.</h4>
+					<div class="QR_code"><img src="https://resource.localpanda.cn/static/icon/LPwechat.jpg" alt=""></div>
+				</div>
+			</div>
+		</div>
 		<AlertTitle :alertTitleStatus="alertTitleStatus" v-on:alert-title-call-back="alertTitleCallBack">
 			<h3 slot="alertTitleLogin">{{alertTitleLogin}}</h3>
 			<p slot="alertTitleMessage">{{alertTitleMessage}}</p>
@@ -148,7 +196,7 @@
 				deviceWidth: null,
 				AnonymityStatus: "", //匿名订单
 				loadJs: false,
-
+				showContactUs:false,
 				//搜索
 				search: '',
 				seachContentList: [],
@@ -224,7 +272,7 @@
 							keyword: search,
 							size: 10
 						}
-						that.axios.post('https://api.localpanda.com/api/suggest', JSON.stringify(postData), {
+						that.axios.post('https://api.localpanda.com/api/search/suggest', JSON.stringify(postData), {
 	
 							headers: {
 								'Content-Type': 'application/json; charset=UTF-8'
@@ -322,8 +370,7 @@
 				that.alertTitleStatus = false;
 			},
 			getscoll() {
-				//window.scrollTo(100,document.body.scrollHeight)
-				window.location.href = "/info/contact-us"
+				
 			},
 			loadScript(url, callback) {
 				var that = this
@@ -453,8 +500,87 @@
 body{
 		min-width: 1300px;
 	}
+
 </style>
 <style lang="scss" scoped>
+	/** contact us **/
+
+	.contact_box{
+		position: absolute;
+		right: 0;
+		top: 60px;
+		background: #fff;
+		width: 320px;
+		z-index: 66666;
+		box-shadow: 0px 2px 6px 0px 
+		rgba(0, 0, 0, 0.1);
+		border-bottom-left-radius: 5px;
+		border-bottom-right-radius: 5px;
+		padding: 24px 0 29px;
+		.contact_item{
+			margin:0 16px;
+			border-bottom: 1px solid  #ebebeb;
+			&:last-child{
+				border-bottom: 0!important;
+				padding-bottom: 0!important;
+			}
+			.font{
+				float: left;
+				font-size: 18px;
+				color:#1bbc9d;
+				margin-right: 20px;
+			}
+			.contact_cont{
+				float: left;
+				width: 84%;
+				h3{
+					font-size: 16px;
+					//text-align: left!important;
+				};
+				h4{
+					font-size: 14px;
+					color:#878e95;
+					margin-top:5px;
+					//text-align: left!important;
+				}
+				.phone{
+					margin-top: 20px;
+					div{
+						padding: 15px 0;
+						&:first-child{
+							border-bottom: 1px solid #ebebeb;	
+						}
+						
+					}
+					span{
+						display: inline-block;
+						margin-left: 8px;
+						font-size: 14px;
+						font-weight: bold;
+					}
+				}
+				p{
+					font-size: 16px;
+					font-weight: bold;
+					margin-top: 30px;
+				}
+				.QR_code{
+					margin-top: 25px;
+					width: 98px;
+					height: 98px;
+					background: #ccc;
+					img{
+						width: 100%;
+						height: 100%;
+					}
+				}
+			}
+		}
+	}
+	
+	.pad20{
+		padding: 20px 0;
+	}
 	
 	.border{
 		border-top: 2px solid #1bbc9d!important;
@@ -629,7 +755,13 @@ body{
 			}
 		}
 	}
-	
+	.iconCountry {
+       width: 20px; 
+       height: 14px;
+       vertical-align: -0.15em;
+       fill: currentColor;
+       overflow: hidden;
+    }
 	.icon {
 		width: 280px;
 		height: 34px;

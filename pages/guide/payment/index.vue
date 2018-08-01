@@ -82,7 +82,7 @@ export default {
     let apiOrderDetailRes = {};
     try {
       apiOrderDetailRes = await Vue.axios.get(
-        apiBasePath + "order/detail/" + orderId
+        apiBasePath + "order/guide/" + orderId
       );
 
       if(apiOrderDetailRes.data && apiOrderDetailRes.data.guideInfo){

@@ -287,9 +287,18 @@
                     
                 }
             },
-            /*"form.arriveCity":function(val,oldVal){
-            	console.log(val)
-            }*/
+            "form.destinations":function(val,oldVal){
+	            	console.log(val)
+	            	if(val.length==1&&val[0]==""){
+	            		val.splice(0,1)
+	            	}
+            },
+            "form.interests":function(val,oldVal){
+            	if(val.length==1&&val[0]==""){
+            		val.splice(0,1)
+            	}
+            }
+           	
 		},
 		methods: {
             onSubmit(formName) {
@@ -303,7 +312,7 @@
                     }
 
                     if (valid) {
-                        console.log('step1 submit success');
+//                      console.log('step1 submit success');
                         
                         let formData = Object.assign({},this.form);
                         if(this.arriveTimeNotDecided){
@@ -312,15 +321,16 @@
                         if(this.arriveCityNotDecided){
                             formData.arriveCity = 'Not Decided';
                         }
+                        formData.flag=true
                         stepFormStorage.addStorage(storageKey, formData);
-                        if(formData.accommodationIncluded){
-                            window.location.href = "/travel/customize/step2";
-                        }else{
-                            window.location.href = "/travel/customize/step3";
-                        }
+                     if(formData.accommodationIncluded){
+                         window.location.href = "/travel/customize/step2";
+                     }else{
+                          window.location.href = "/travel/customize/step3";
+                      }
                     } else {
                         console.log('error submit!!');
-                        //var valModel = this.$refs[formName].model;
+                        //var valModel = this.$refs[formNam e].model;
                         //console.log(valModel);
                         setTimeout(function(){
                             var errorDom = document.getElementsByClassName('is-error');

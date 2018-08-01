@@ -365,7 +365,7 @@
 
 			getInfo() {
 				let that = this
-				Vue.axios.get(this.apiBasePath + "activity/order/detail/" + that.orderId).then(function(res) {
+				Vue.axios.get(this.apiBasePath + "order/activity/" + that.orderId).then(function(res) {
 					console.log(res.data);
 					that.opctions = res.data
 					that.email = res.data.contactInfo.emailAddress;
@@ -560,7 +560,7 @@
 			payEnd(flagNum) {
 				var that = this;
 				//https://www.localpanda.cn/api/payment/wechat/status?orderId=1106357805
-				this.axios.get("https://api.localpanda.com/api/payment/wechat/status?orderId=" + this.orderId + '&flag=' + (flagNum ? 1 : 0), {
+				this.axios.get("https://api.localpanda.com/api/payment/query/status?orderId=" + this.orderId + '&flag=' + (flagNum ? 1 : 0), {
 					headers: {
 						'Content-Type': 'application/json; charset=UTF-8'
 					}

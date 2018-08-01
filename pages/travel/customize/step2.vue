@@ -84,6 +84,7 @@
             	logIn:'',
                 formReady: false,
                 form: {
+                	flag:false,
                     accommodation: {
                         accommodationMinPrice: 0,
                         accommodationMaxPrice: 0,
@@ -136,6 +137,7 @@
                 		if(formData.roomRequirements.length<1){
                 			delete formData["roomRequirements"]
                 		}
+                		formData.flag=true
                         stepFormStorage.addStorage(storageKey, formData);
                         window.location.href = "/travel/customize/step3";
                     } else {
@@ -157,9 +159,6 @@
                 this.form.otherRoomRequirements = value;
             },
             prevForm(){
-            	let formData = stepFormStorage.getStorage('STEP_1_FORM_STORAGE');
-            	formData.flag=true
-            	stepFormStorage.addStorage('STEP_1_FORM_STORAGE', formData);
                 window.location.href = "/travel/customize/step1";
             }
 		},
@@ -172,22 +171,28 @@
             pageBody.scrollTop = goTop;
 
 			this.logIn = window.localStorage.getItem("logstate");
+		
             let formData = stepFormStorage.getStorage(storageKey);
-            console.log(formData);
-            if(JSON.stringify(formData).length > 7){
-                try{
-                    
-                    formData.accommodation = {
-                        accommodationMinPrice: formData.accommodationMinPrice || 0,
-                        accommodationMaxPrice: formData.accommodationMaxPrice || 0,
-                    }
-                    delete formData.accommodationMinPrice;
-                    delete formData.accommodationMaxPrice;
-                    this.form = formData;
-                }catch(e){
-                    
-                }
+            if(!formData.falg){
+            	stepFormStorage.clearStorage(storageKey);
+            }else{
+            	if(JSON.stringify(formData).length > 7){
+	                try{
+	                    
+	                    formData.accommodation = {
+	                        accommodationMinPrice: formData.accommodationMinPrice || 0,
+	                        accommodationMaxPrice: formData.accommodationMaxPrice || 0,
+	                    }
+	                    delete formData.accommodationMinPrice;
+	                    delete formData.accommodationMaxPrice;
+	                    this.form = formData;
+	                }catch(e){
+	                    
+	                }
+	            }
             }
+           
+            
             this.formReady = true;
         }
 	}

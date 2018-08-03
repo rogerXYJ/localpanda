@@ -150,9 +150,13 @@
 						<button @click="moreReviews">Browse More</button>
 					</div>
 				</div>
-				<div class="notes" v-if="detail.notice.length>0" id="notice">
+				<!-- <div class="notes" v-if="detail.notice.length>0" id="notice">
 					<h3>Additional Info</h3>
 					<p v-for="(item,index) in detail.notice" :key="index">{{item.title}}</p>
+				</div> -->
+				<div class="notes" v-if="detail.notice" id="notice">
+					<h3>Additional Info</h3>
+					<p>{{detail.notice}}</p>
 				</div>
 				<div class="notes" v-if="picInfo.refundInstructions" id="CancellationPolicy">
 					<h3>Rescheduling and Cancellation Policy</h3>

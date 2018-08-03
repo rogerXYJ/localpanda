@@ -24,14 +24,14 @@
 				<li @click="isShowAnonymityback">My Bookings</li>
 				<li @click="show">Log In</li>
 				<!--<li @click="goAboutUs">About Us</li>-->
-				<li @mouseenter="showContactUs=true" @mouseleave="showContactUs=false">Contact Us</li>
+				<li @mouseenter="showContactUs=true" @mouseleave="showContactUs=false"><a href="/info/contact-us">Contact Us</a></li>
 
 			</ul>
 			<ul class="login" v-if="logIn==1">
 				<li @click="showContact">Customize Your Trip<em class="hot">HOT</em></li>
 				<li @click="goBook" style="margin-right: 40px;">My Bookings</li>
 				<!--<li @click="goAboutUs" style="margin-right: 40px;">About Us</li>-->
-				<li @mouseenter="showContactUs=true" @mouseleave="showContactUs=false">Contact Us</li>
+				<li @mouseenter="showContactUs=true" @mouseleave="showContactUs=false"><a href="/info/contact-us">Contact Us</a></li>
 				<li @click.stop="contshow"><img :src="logimg" /></li>
 				<div class="cont" :class="{'isshow':iscontshow}">
 					<ol>
@@ -835,6 +835,12 @@ body{
 						color: #fff;
 						font-weight: bold;
 						margin-left: 8px;
+					}
+					a{
+						display: block;
+						&:hover{
+							color: #00B886;
+						}
 					}
 					&:first-child {
 						margin-left: 0;

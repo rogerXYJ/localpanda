@@ -839,6 +839,12 @@ body{
 						font-weight: bold;
 						margin-left: 8px;
 					}
+					a{
+						display: block;
+						&:hover{
+							color: #00B886;
+						}
+					}
 					&:first-child {
 						margin-left: 0;
 					}

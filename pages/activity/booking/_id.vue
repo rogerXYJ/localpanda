@@ -3,15 +3,15 @@
 		<HeaderCommon :logIn="logIn"></HeaderCommon>
 		<div class="fill">
 			<div class="fillPageLeft">
-				<div class="link">
+				<!--<div class="link">
 					<a href="javascript:">1. Fill in your information</a>
 					<i class="iconfont">&#xe620;</i>
 					<a href="javascript:">2. confirmation</a>
 				</div>
-				<h3>Fill in your information</h3>
+				<h3>Fill in your information</h3>-->
 				<h5 v-if="!logIn"><span class="iconfont">&#xe617;</span>As a guest user, you can access your order details through your name and email</h5>
 				<div class="orderContact">
-					<h4>Contact Information</h4>
+					<h4>Reservation Information</h4>
 					<div class="cont">
 						<div class="cont-item">
 							<p>First Name<b>*</b></p>
@@ -24,7 +24,7 @@
 					</div>
 					<div class="emalAddress">
 						<p>Email Address<b>*</b></p>
-						<input id="email" :class="{err:emailAddressErr}" @focus="fousEmal" @blur="gabulr(2)" v-model="emailAddress"  placeholder="Please fill out your valid email address since your order info will be sent to that address."/>
+						<input id="email" :class="{err:emailAddressErr}" @focus="fousEmal" @blur="gabulr(2)" v-model="emailAddress"  placeholder="We'll send your confirmation here"/>
 					</div>
 					<div class="cont">
 						<div class="cont-item">
@@ -119,7 +119,7 @@
 							You can get a 100% refund up to {{opctions.refundTimeLimit}} hours before your trip.
 						</p>-->
 						<p class="refundPolicy" style="color: red;font-size: 14px;">You can get a 100% refund up to {{opctions.refundTimeLimit*24>48?opctions.refundTimeLimit:opctions.refundTimeLimit*24}} {{opctions.refundTimeLimit*24>48?'days':'hours'}} before your trip.</p>
-						<p class="text" style="font-size: 14px;margin-top: 20px;" v-if="logIn!=1">You ordered as a guest. To view your order details, you can click "My Bookings" on the top bar then type in the reservee's email address and name you entered before to access that information.</p>
+						<!--<p class="text" style="font-size: 14px;margin-top: 20px;" v-if="logIn!=1">You ordered as a guest. To view your order details, you can click "My Bookings" on the top bar then type in the reservee's email address and name you entered before to access that information.</p>-->
 						
 						<div class="nextBtn">
 							<div class="next" @click="placeOrder">NEXT</div>
@@ -868,20 +868,31 @@
 					}
 					self.codeList = [];
 					var other = [];
+					var other1=[]
 					var str = val.replace(/\(/, "\\\(").replace(/\)/, "\\\)").replace(/\+/, '\\\+').replace(/\-/,'\\\-');
 					for(let i = 0; i < this.countryCode.length; i++) {
 						var str1=self.countryCode[i].country_name + "(+" + self.countryCode[i].prefix + ")"
-						if(new RegExp(('^'+str),"i").test(str1)){
-							var json = {
-								country_name: self.countryCode[i].country_name,
-								prefix: self.countryCode[i].prefix
+						if(new RegExp(str,"i").test(str1)){
+							if(val[0].toLowerCase==str1[0].toLowerCase()){
+								console.log(1111)
+								var json = {
+									country_name: self.countryCode[i].country_name,
+									prefix: self.countryCode[i].prefix
+								}
+								other.push(json)
+							}else{
+								var json={
+									country_name: self.countryCode[i].country_name,
+									prefix: self.countryCode[i].prefix
+								}
+								other1.push(json)
 							}
-							other.push(json)
+							
 							
 						}
 					}
 					
-					self.codeList = other
+					self.codeList = other.concat(other1)
 					//this.countryCode=arr
 
 				} else {
@@ -1098,7 +1109,7 @@
 					padding: 30px 30px 40px;
 					width: 316px;
 					.head {
-						padding-bottom: 30px;
+						padding-bottom: 15px;
 						border-bottom: 1px solid #dde0e0;
 						.serviceform {
 							h3 {
@@ -1113,14 +1124,14 @@
 						}
 					}
 					.date {
-						padding: 30px 0;
+						padding: 15px 0;
 						border-bottom: 1px solid #dde0e0;
 						p {
 							font-size: 18px;
 						}
 					}
 					.pic {
-						padding: 30px 0;
+						padding: 15px 0;
 						border-bottom: 1px solid #dde0e0;
 						.adult {
 							.formula {
@@ -1138,7 +1149,7 @@
 						}
 					}
 					.total {
-						padding-top: 30px;
+						padding-top: 15px;
 						.totle-title {
 							float: left;
 							font-size: 18px;

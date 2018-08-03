@@ -35,7 +35,7 @@
         height: 500px;
         position: relative;
         overflow: hidden;
-        background: url(https://resource.localpanda.cn/static/customize/customizebanner.jpg) center center no-repeat #efefef;
+        background: url(https://resource.localpanda.com/static/customize/customizebanner.jpg) center center no-repeat #efefef;
         background-size: cover;
         h2{
             margin-top: 184px;

@@ -24,14 +24,14 @@
 				<li @click="isShowAnonymityback">My Bookings</li>
 				<li @click="show">Log In</li>
 				<!--<li @click="goAboutUs">About Us</li>-->
-				<li @mouseenter="showContactUs=true" @mouseleave="showContactUs=false">Contact Us</li>
+				<li @click="goUrlContact" @mouseenter="showContactUs=true" @mouseleave="showContactUs=false">Contact Us</li>
 
 			</ul>
 			<ul class="login" v-if="logIn==1">
 				<li @click="showContact">Customize Your Trip<em class="hot">HOT</em></li>
 				<li @click="goBook" style="margin-right: 40px;">My Bookings</li>
 				<!--<li @click="goAboutUs" style="margin-right: 40px;">About Us</li>-->
-				<li @mouseenter="showContactUs=true" @mouseleave="showContactUs=false">Contact Us</li>
+				<li @click="goUrlContact" @mouseenter="showContactUs=true" @mouseleave="showContactUs=false">Contact Us</li>
 				<li @click.stop="contshow"><img :src="logimg" /></li>
 				<div class="cont" :class="{'isshow':iscontshow}">
 					<ol>
@@ -52,7 +52,7 @@
 			</ul>
 
 		</div>
-		<div class="contact_box" v-show="showContactUs">
+		<div class="contact_box" v-show="showContactUs"  @mouseenter="showContactUs=true" @mouseleave="showContactUs=false">
 			<div class="contact_item clearfix">
 				<span class="iconfont font">&#xe67d;</span>
 				<div class="contact_cont">
@@ -261,6 +261,9 @@
 					
 				}
 				
+			},
+			goUrlContact(){
+				location.href="/info/contact-us"
 			},
 			searchkey(){
 				let search= this.search
@@ -517,7 +520,7 @@ body{
 		rgba(0, 0, 0, 0.1);
 		border-bottom-left-radius: 5px;
 		border-bottom-right-radius: 5px;
-		padding: 24px 0 29px;
+		padding: 15px 0 20px;
 		.contact_item{
 			margin:0 16px;
 			border-bottom: 1px solid  #ebebeb;
@@ -578,7 +581,7 @@ body{
 	}
 	
 	.pad20{
-		padding: 15px 0;
+		padding: 10px 0;
 	}
 	
 	.border{

@@ -14,18 +14,43 @@
 					</div>
 					<em class="productId">Product ID: {{detail.activityId}}</em>
 				</div>
-				<div class="tags clearfix">
-					<span class="tag">{{detail.category}}  <b>·</b>  {{detail.groupType}}</span>
-					
-				</div>
+		
 				<div class="activitiyTitle">
-					<h3>{{detail.title}}</h3>
-					<div class="types">
-						<a v-for="i in detail.tourTypes" :href="returnUrl(i)"><span >{{i}}</span></a>
-						<p v-if="detail.sales&&detail.sales>0">Booked {{detail.sales}} {{detail.sales==1?'time':'times'}} (last 30 days)</p>
+					<h3><span v-if="detail.groupType" :class="detail.groupType=='private'?'pr':'gr'">{{detail.groupType}}</span>{{detail.title}}</h3>
+					<div class="service">
+						<span>
+							<label class="iconfont">&#xe624;</label>
+							<em>{{detail.duration}} {{detail.durationUnit|firstUpperCase}}</em>
+						</span>
+						<span>
+							<label class="iconfont">&#xe652;</label>
+							<em v-if="picInfo.minParticipants==picInfo.maxParticipants">{{picInfo.minParticipants}}</em>
+							<em v-else>{{picInfo.minParticipants}} - {{picInfo.maxParticipants}}</em>
+						</span>
+						<span>
+							<label  class="iconfont">&#xe627;</label>
+							<em v-if="detail.groupType=='Group'">English</em>
+							<em v-else>English, Español, Français, Deutsch, русский язык</em>
+						</span>
+						<span>
+							<label  class="iconfont">&#xe610;</label>
+							<em>{{destinations}}</em>
+						</span>
+						
+					</div>
+					
+					
+					
+					<div class="types" v-if="detail.attractions&&detail.attractions.length>0">
+					
+						<a v-if="detail.attractions.length>4&&!showMoreTag" v-for="i in tagAttractions" :href="returnUrl(i)"><span>{{i}}</span></a>
+						<a class="showtag" v-else v-for="i in detail.attractions" :href="returnUrl(i)"><span>{{i}}</span></a>
+						
+						<a v-if="detail.attractions.length>4" @click="showMoreTag=!showMoreTag">···</a>
+						<!--<p v-if="detail.sales&&detail.sales>0">Booked {{detail.sales}} {{detail.sales==1?'time':'times'}} (last 30 days)</p>-->
 					</div>
 				</div>
-				<ul class="description clearfix" id="description">
+				<!--<ul class="description clearfix" id="description">
 					<li>
 						<label class="iconfont">&#xe653;</label>
 						<span>Mode: {{detail.trafficType}}</span>
@@ -49,22 +74,25 @@
 				<div class="location clearfix">
 					<label class="iconfont" style="font-size: 20px;">&#xe610;<em>Location:</em></label>
 					<span>{{destinations}}</span>
-				</div>
+				</div>-->
+				
 				<p class="says">{{detail.recommendedReason}}</p>
 				<div class="heightLights" id="heightLights" v-if="highlights&&highlights.length>0||(introduction&&introduction>0)||(detail.itineraries&&detail.itineraries.length>0)">
 					<div class="expect">
-						<h3>What You Can Expect</h3>
-						<p v-if="highlights&&highlights.length>0" :key="index" class="heightLightsList clearfix" v-for="(item,index) in highlights"><i class="iconfont">&#xe654;</i><span>{{item}}</span></p>
-						<p class="introductionCont" v-if="introduction.length==1">{{introduction[0]}}</p>
+						<h3>Why you’ll love this trip</h3>
+						<p v-if="highlights&&highlights.length>0" :key="index" class="heightLightsList" v-for="(item,index) in highlights">
+							<span>{{item}}</span></p>
+						<!--<p class="introductionCont" v-if="introduction.length==1">{{introduction[0]}}</p>
 						<div class="introduction" :class="{'overflow':isShowView}" v-if="introduction.length>1">
 							<p v-if="isShowView==false">{{introduction[0]}}</p>
 							<p :key="index" v-else v-for="(j,index) in introduction">{{j}}</p>
 						</div>
-						<div v-if="introduction.length>1&&isShowView==false" class="viewMore" @click="showVeiwMore()">View more</div>
+						<div v-if="introduction.length>1&&isShowView==false" class="viewMore" @click="showVeiwMore()">View more</div>-->
 					</div>
 
 				</div>
 				<div class="journey" id="journey" ref="journey" v-if="detail.itineraries&&detail.itineraries.length>0">
+					<h3>Itinerary</h3>
 					<ul>
 						<li :key="index" v-for="(i,index) in detail.itineraries">
 							<div class="item_v clearfix" v-if="i.photo">
@@ -73,10 +101,6 @@
 									<div><img v-lazy="i.photo.url" /><h3>{{i.title}}</h3><span v-if="i.description" v-html="i.description.replace(/\r|\n/g,'<br/>')"></span></div>
 									
 								</div>
-								<!--<div class="cont">
-									
-								</div>-->
-
 							</div>
 							<div class="item clearfix" v-else>
 								<div class="cont_title" id="aa">{{i.title}}</div>
@@ -84,9 +108,19 @@
 							</div>
 						</li>
 					</ul>
-
+					 <!--<timeline>
+			      <div :key="index" v-for="(i,index) in detail.itineraries">
+			        <timeline-item>
+					        <label>stop{{index+1}}</label>
+					        <h4>{{i.title}}</h4>
+					        <p v-if="i.description" v-html="i.description.replace(/\r|\n/g,'<br/>')"></p>
+					        <img v-if="i.photo.url" v-lazy="i.photo.url"  alt=""/>
+			
+			        </timeline-item>
+			      </div>
+			    </timeline>-->
 				</div>
-				 <div class="notes" v-if="photoList.length>0" @click="showPhoto" id="photoList">
+				 <div class="notes" v-if="photoList&&photoList.length>0" @click="showPhoto" id="photoList">
 					<h3>Pictures of our travelers</h3>
 					<div class="photoCover" v-lazy:background-image="photoList.length>0?photoList[0].url:''">
 						<div class="mask"></div>
@@ -98,26 +132,28 @@
 
 				</div>
 				
-				<div class="provide" id="provide" v-if="itemsIncluded&&itemsIncluded.length>0||(inclusions&&inclusions.length>0)">
-					<h3>What's Included?</h3>
-					<ul v-if="itemsIncluded">
-						<li :key="index" v-for="(item,index) in itemsIncluded">{{item}}</li>
-					</ul>
-					<ul v-if="inclusions">
-						<li :key="index" v-for="(item,index) in inclusions">
-							<h5>{{item.title}}</h5>
-							<p v-if="item.content" v-html="item.content"></p>
-						</li>
-					</ul>
-				</div>
-				<div class="provide" v-if="exclusions&&exclusions.length>0" id="exclusions">
-					<h3>Exclusions</h3>
-					<ul>
-						<li :key="index" v-for="(item,index) in exclusions">
-							<h5>{{item.title}}</h5>
-							<p v-if="item.content" v-html="item.content"></p>
-						</li>
-					</ul>
+				<div class="provide clearfix" id="provide" v-if="itemsIncluded&&itemsIncluded.length>0||(inclusions&&inclusions.length>0)">
+					<div class="inclusions" v-if="itemsIncluded&&itemsIncluded.length>0||(inclusions&&inclusions.length>0)">
+							<h3>Inclusions</h3>
+							<ul>
+								<li :key="index" v-for="(item,index) in itemsIncluded">{{item}}</li>
+							</ul>
+							<ul v-if="inclusions">
+								<li :key="index" v-for="(item,index) in inclusions">
+									<h5>{{item.title}}</h5>
+									<p v-if="item.content" v-html="item.content"></p>
+								</li>
+							</ul>
+					</div>
+					<div class="exclusions" v-if="exclusions&&exclusions.length>0" id="exclusions">
+						<h3>Exclusions</h3>
+						<ul>
+							<li :key="index" v-for="(item,index) in exclusions">
+								<h5>{{item.title}}</h5>
+								<p v-if="item.content" v-html="item.content"></p>
+							</li>
+						</ul>
+					</div>
 				</div>
 				<div class="review" v-if="travelersReviews.entities&&travelersReviews.entities.length>0" id="review">
 					<div class="reviewTitle clearfix">
@@ -150,7 +186,7 @@
 						<button @click="moreReviews">Browse More</button>
 					</div>
 				</div>
-				<div class="notes" v-if="detail.notice.length>0" id="notice">
+				<div class="notes" v-if="detail.notice&&detail.notice.length>0" id="notice">
 					<h3>Additional Info</h3>
 					<p v-for="(item,index) in detail.notice" :key="index">{{item.title}}</p>
 				</div>
@@ -158,7 +194,7 @@
 					<h3>Rescheduling and Cancellation Policy</h3>
 					<p v-html="picInfo.refundInstructions.replace(/\r|\n/g,'<br/>')"></p>
 				</div>
-				<div class="provide" v-if="picInfo.details.length>0" id="picDetails">
+				<div class="provide" v-if="picInfo.details&&picInfo.details.length>0" id="picDetails">
 					<h3>Price Details</h3>
 					<p style="font-size: 16px;margin-top: 10px;" v-if="picInfo.childDiscount">Children's price is   $  {{returnFloat(picInfo.childDiscount)}} USD  less than adults' price.</p>
 					<el-table :data="sixArr" stripe style="width: 100%">
@@ -191,7 +227,7 @@
 					<div class="view" v-if="isShowTable" @click="showTable">View More</div>
 					<p class="picNote" v-if="picInfo.priceInstructions">{{picInfo.priceInstructions}}</p>
 				</div>
-				<div class="notes" id="notes" v-if="remark.length>0">
+				<div class="notes" id="notes" v-if="remark&&remark.length>0">
 					<h3>Notes</h3>
 					<p v-if="remark" :key="index" v-for="(item,index) in remark">{{item}}</p>
 				</div>
@@ -199,7 +235,7 @@
 				<!--<grade></grade>-->
 			</div>
 
-			<div class="recommend" id="recommend" v-if="recommed.length>0">
+			<div class="recommend" id="recommend" v-if="recommed&&recommed.length>0">
 				<h3>Similar Experiences</h3>
 				<ul class="clearfix">
 					<li :key="index" v-for="(i,index) in recommed">
@@ -366,40 +402,27 @@
 									<button class="bookNow" @click.stop="order">Book Now</button>
 									<button class="inquiryBtn" @click="showContact">Inquire</button>
 								</div>
-
+								<div class="sales">
+										<span v-if="detail.sales&&detail.sales>0">Booked {{detail.sales}} {{detail.sales==1?'time':'times'}} (last 30 days)</span>
+										<grade class="fl" :score="travelersReviews.avgScore" :big="'true'"></grade>
+								</div>
 							</div>
 
 						</div>
 					</div>
-					<div class="blockUsPs" :class="{block:isShow}">
+					<div class="blockUsPs" :class="{block:isShowMeau}">
 						<ul>
-							<li v-if="detail.category=='Private tour'||detail.category=='Transportation'">
-								<i class="iconfont">&#xe654;</i>
-								<p>100% Private</p>
-							</li>
-							<li v-if="detail.category=='Private tour'||detail.category=='Transportation'">
-								<i class="iconfont">&#xe654;</i>
-								<p>100% Personalizable</p>
-							</li>
-							<li>
-								<i class="iconfont">&#xe654;</i>
-								<p>Easy booking</p>
-							</li>
-							<li>
-								<i class="iconfont">&#xe654;</i>
-								<p>Best price guaranteed</p>
-							</li>
-							<li>
-								<i class="iconfont">&#xe654;</i>
-								<p>Professional customer service</p>
-							</li>
 							<li>
 								<i class="iconfont">&#xe654;</i>
 								<p>No hidden booking or credit card fees</p>
 							</li>
 							<li>
 								<i class="iconfont">&#xe654;</i>
-								<p>No cancellation fee with early notice</p>
+								<p>Instant confirmation after booking</p>
+							</li>
+							<li>
+								<i class="iconfont">&#xe654;</i>
+								<p>Best Price Guarantee</p>
 							</li>
 						</ul>
 					</div>
@@ -426,8 +449,10 @@
 	require('~/assets/scss/G-ui/flatpickr.min.css')
 	import Pic from "~/components/pageComponents/activity/details/Pic"
 	import grade from "~/components/pageComponents/activity/details/grade"
+	import { Timeline, TimelineItem, TimelineTitle } from '~/plugins/panda/stepline'
 	export default {
 		props: [
+			"isShowMeau",
 			"remark",
 			"detail",
 			"highlights",
@@ -495,7 +520,9 @@
 				index:0,
 				pageNum:1,
 				pageSize:3,
-				showMoreBth:false
+				showMoreBth:false,
+				showMoreTag:false,
+				tagAttractions:[],
 			};
 			
 		},
@@ -503,7 +530,10 @@
 			grade,
 			Pic,
 			Contact,
-			Alert
+			Alert,
+			Timeline, 
+			TimelineItem, 
+			TimelineTitle
 		},
 		methods: {
 			//点评翻页
@@ -892,13 +922,16 @@
 					
 				}else{
 					for(let i = 0; i < details[details.length-1].capacity; i++) {
+						
 						let thisD = details[i];
+						
 						newArr.push(thisD);
 						if(i + 1 > details.length - 1) break;
-
+						
 						var thisC = thisD.capacity;
 						var nextC = details[i + 1].capacity;
 						var forLen = nextC - thisC - 1;
+					
 						for(let j = 0; j < forLen; j++) {
 							var midArr = newObj(details[i+1]);
 							//console.log(midArr)
@@ -911,8 +944,6 @@
 	
 					}
 				}
-				
-				
 				
 				return newArr;
 				}
@@ -1014,6 +1045,14 @@
 			let that = this;
 			let participants=this.$route.query.participants;
 			that.people=participants?(that.picInfo.maxParticipants==1?1:parseInt(participants)):(that.picInfo.minParticipants<3?(that.picInfo.maxParticipants==1?1:2):that.picInfo.minParticipants);
+			console.log(this.detail)
+			console.log(this.detail.attractions)
+			if(this.detail.attractions&&this.detail.attractions.length>0){console.log(this.detail.attractions)
+				if(this.detail.attractions.length>4){
+					this.tagAttractions=this.detail.attractions.splice(0,4)
+					console.log(this.tagAttractions)
+				}
+			}
 			
 			//that.people=that.picInfo.minParticipants<3?that.picInfo.maxParticipants:(participants?parseInt(participants):that.picInfo.minParticipants)
 			if(that.people){
@@ -1022,7 +1061,7 @@
 			}
 			that.setPriceData();
 			that.detailAll = that.tableData(that.picInfo.details);
-			console.log(that.picInfo)
+			
 			//url参数有人数
 			
 			for(var i = 0; i < that.picInfo.details.length; i++) {
@@ -1082,6 +1121,33 @@
 	};
 </script>
 <style lang="scss">
+/*	.timeline-item{
+		padding: 0 0 20px 80px!important;
+			label{
+				position: absolute;
+				left: 0px;
+				top: -1px;
+				font-size: 16px;
+			}
+			h4{
+				font-size: 18px;
+				font-weight: bold;
+			}
+			p{
+				margin-top:20px;
+				font-size: 16px;
+				line-height: 24px;
+				
+			}
+			img{
+				width: 652px;
+			}
+		}*/
+	
+	
+	
+	
+	
 	.el-table__row .cell {
 		text-align: center;
 		span {
@@ -1538,7 +1604,7 @@
 					}
 				}
 				.blockUsPs {
-					background: #f1f1f1;
+					background:rgba(27, 188, 157, .06);
 					padding: 9px 20px 24px 20px;
 					overflow: hidden;
 					position: relative;
@@ -1560,133 +1626,100 @@
 			}
 			.activitiesInfo {
 				width: 734px;
-				.tags {
-					margin: 30px 0 10px;
-					.tag {
-						
-						color: #1bbc9d;
-						font-size: 14px;
-						
-					}
-					
-				}
+				
 				.activitiyTitle {
+					margin-top:30px;
 					h3 {
 						font-weight: bold;
 						font-size: 32px;
+						vertical-align:middle;
+						span{
+							display: inline-block;
+							margin-right: 10px;
+							font-size: 18px!important;
+							padding: 7px 9px;
+							color: #fff;
+							border-radius: 5px;
+							&.pr{
+								background:#52b589;
+							}
+							&.gr{
+								background:#f4b33f;
+							}
+						}
+					}
+					.service{
+						margin-top: 30px;
+						span{
+							display: inline-block;
+							margin-right:20px;
+							&:last-child{
+								margin-right: 0;
+							}
+							label{
+								font-size: 12px;
+								display: inline-block;
+								margin-right:8px;
+							}
+							em{
+								font-size: 16px;
+								
+							}
+						}
 					}
 					.types {
-						margin: 29px 0 24px;
 						p{
 							font-size: 16px;
 							color: #878e95;
 							margin-top: 9px;
 						}
 						a {
-								
 								color: #1bbc9d;
-								text-decoration: underline;
-								font-size: 18px;
-								position: relative;
-								padding: 0 16px;
+								margin-top: 12px;
+								font-size: 14px;
+								margin-right:6px;
+								padding:3px 6px;
+								border:1px solid #1bbc9d;
+								border-radius: 5px;
 								display:inline-block;
-							
-							&:first-child {
-								
-									padding-left: 0;	
-								
-								
-							}
-							&:not(:first-child) {
-								
-									&:after {
-										content: "";
-										width: 4px;
-										height: 4px;
-										border-radius: 50%;
-										background:  #878e95;
-										position: absolute;
-										left: 0px;
-										top: 50%;
-										transform: translateY(-50%);
-									}
-								
-								
-							}
+								cursor:pointer; 
+								&:last-child{
+									margin-right: 0;
+								}
 						}
+						
 					}
-				}
-				.description {
-					padding-top: 33px;
-					border-top: 1px solid #dde0e0;
-					li {
-						float: left;
-						width: 33.33333%;
-						label {
-							margin-right: 14px;
-							font-size: 18px;
-							color: #878e95;
-						}
-						span {
-							font-size: 18px;
-						}
-					}
-				}
-				.location,
-				.languages {
-					width: 100%;
-					margin-top: 24px;
-					label {
-						float: left;
-						font-size: 18px;
-						color: #878e95;
-						vertical-align: middle;
-						em {
-							color: #353a3f;
-							margin-left: 14px;
-							font-size: 18px;
-						}
-					}
-					span {
-						float: left;
-						font-size: 18px;
-						width: 80%;
-						word-wrap: break-word;
-						margin-top: 2px;
-						margin-left: 8px;
-					}
-				}
-				.location {
-					padding-bottom: 33px;
 				}
 				.says {
-					
+					margin-top: 30px;
 					font-style: oblique;
 					border-bottom: 1px solid #dde0e0;
-					font-size: 18px;
+					font-size: 16px;
 					line-height: 26px;
 					color: #353a3f;
-					padding-bottom: 33px;
+					padding-bottom: 30px;
 				}
 				.heightLights {
-					padding: 33px 0 28px;
+					padding: 30px 0;
 					border-bottom:1px solid #dde0e0;
 					.heightLightsList{
 						font-size: 18px;
 						margin-top: 12px;
+						padding-left:14px;
+						position:relative; 
 						&:first-child {
 							margin-top: 0;
 						}
-						i {
-							font-size: 12px;
-							color: #1bbc9d;
-							float: left;
-							margin-top: 3px;
-						}
-						span {
-							width: 90%;
-							float: left;
-							margin-left: 12px;
+						&:after{
+							position: absolute;
+							content: '';
+							width: 5px;
+							height: 5px;
+							left: 0;
+							border-radius: 50%;
+							background:#353a3f;
+							top: 50%;
+							transform: translateY(-50%);
 						}
 					}
 					.expect {
@@ -1714,7 +1747,7 @@
 						}
 					}
 				}
-				.journey {
+			.journey {
 					
 					h3{
 						margin: 28px 0 22px;
@@ -1770,7 +1803,7 @@
 									div {
 										font-size: 18px;
 										line-height: 26px;
-										text-align: justify;
+										
 									
 									}
 									img{
@@ -1793,13 +1826,22 @@
 					}
 				}
 				.provide {
-					margin-top: 34px;
-					padding-bottom: 34px;
+					margin-top: 30px;
+					padding-bottom: 30px;
 					border-bottom: 1px solid #dde0e0;
 					.picNote{
 						font-size: 18px;
 						margin-top: 20px;
 					}
+					.inclusions  {
+						width: 47%;
+						float: left;
+						margin-right: 3%;
+					}
+					 .exclusions{
+					 	width: 50%;
+						float: left;
+					 }
 					h3 {
 						font-size: 24px;
 						font-weight: bold;
@@ -1829,14 +1871,14 @@
 								top: 10px;
 							}
 							&:first-child {
-								margin-top: 30px;
+								margin-top: 25px;
 							}
 						}
 					}
 				}
 				.notes {
-					margin-top: 34px;
-					padding-bottom: 34px;
+					margin-top: 30px;
+					padding-bottom: 30px;
 					border-bottom: 1px solid #dde0e0;
 					h3 {
 						font-size: 24px;
@@ -2089,7 +2131,7 @@
 					margin-right: 16px;
 					width: 109px;
 					height: 109px;
-					background:url("https://resource.localpanda.cn/activity/banners/11027_1106614229_U5251601.jpg");
+					background:url("https://resource.localpanda.com/activity/banners/11027_1106614229_U5251601.jpg");
 					background-repeat:no-repeat;
 					background-size:cover;
 					background-position:center; 
@@ -2117,6 +2159,17 @@
 				
 			};
 			
+		}
+		.sales{
+			padding-top: 20px;
+			span{
+				font-size: 14px;
+				color:#878e95;
+			}
+			.fl{
+				float:right;
+				margin-top: -6px!important;
+			}
 		}
 		
 	}

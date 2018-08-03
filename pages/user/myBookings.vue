@@ -238,7 +238,7 @@
 
 
 				var self = this;
-				self.axios.get("https://www.localpanda.cn/api/payment/query/openid?code=" + this.urlCode, {
+				self.axios.post("https://www.localpanda.cn/api/payment/query/openid?code=" + this.urlCode, {
 					headers: {
 						'Content-Type': 'application/json'
 					}

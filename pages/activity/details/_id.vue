@@ -3,8 +3,8 @@
 		<HeaderCommon :logIn="logIn"></HeaderCommon>
 		<Meau v-if="isShowMeau" :notice="notice" :exclusions="exclusions" :picInfo="picInfo" :photoList="photoList" :recommed="recommed" :travelersReviews="travelersReviews"></Meau>
 		<ActivityBanner :bannerPhotos="detail.bannerPhotos" ></ActivityBanner>
-
 		<Activities 
+			:isShowMeau="isShowMeau"
 			:remark="remark" 
 			:notice="notice" 
 			:inclusions="inclusions" 
@@ -367,7 +367,7 @@
 				
 				let data = this;
 				var hightLights =
-					document.getElementById("description").offsetTop +
+					document.getElementById("heightLights").offsetTop +
 					document.getElementById("banner").offsetHeight +
 					60 -
 					76;

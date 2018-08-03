@@ -58,14 +58,13 @@
 		position: absolute;
 		background: #fff;
 		padding: 20px;
-		padding-left: 0;
 		border-left: 1px solid #dde0e0;
 		border-right: 1px solid #dde0e0;
 		border-bottom: 1px solid #dde0e0;
 		border-radius: 0 2px 2px 0;
-		width: 305px;
+		width: 285px;
 		z-index: 20;
-		left: -50%;
+		left: -33%;
 			b {
 				display: inline-block;
 				line-height: 40px;

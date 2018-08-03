@@ -6,7 +6,7 @@
 
 				<div class="swiper-slide">
 	        <a href="/travel/customize/step1">
-						<div class="imgBanner" :style="{background:'url(https://resource.localpanda.cn/static/homePage/banner3.jpg)'}">
+						<div class="imgBanner" :style="{background:'url(https://resource.localpanda.com/static/homePage/banner3.jpg)'}">
 							<p class="banner_tit_s">With Local Panda</p>
 							<h3>BY YOU. / FOR YOU.</h3>
 							<p>Choose your cities, match your dates, design your own bespoke journey</p>
@@ -16,7 +16,7 @@
 	      </div>
 				<div class="swiper-slide">
 	        <a href="/activity/details/11201">
-						<div class="imgBanner" :style="{background:'url(https://resource.localpanda.cn/static/homePage/banner4.jpg)'}">
+						<div class="imgBanner" :style="{background:'url(https://resource.localpanda.com/static/homePage/banner4.jpg)'}">
 							<p class="banner_tit_s">Looking for adventure on a budget?</p>
 							<h3 class="txtUppercase">Small group cultural experiences</h3>
 							<p>Explore Shanghai’s Yu Garden and experience an authentic Chinese tea ceremony with a local guide</p>
@@ -27,7 +27,7 @@
 
 	      <div class="swiper-slide">
 	        <a href="/activity/recommend/Beijing/Popular-and-Classic-Tours">
-						<div class="imgBanner" :style="{background:'url(https://resource.localpanda.cn/static/homePage/banner1.jpg)'}">
+						<div class="imgBanner" :style="{background:'url(https://resource.localpanda.com/static/homePage/banner1.jpg)'}">
 							<span class="banner_tag">Beijing Tours</span>
 						</div>
 						<div class="text">
@@ -39,7 +39,7 @@
 	      </div>
 				<div class="swiper-slide">
 	        <a href="/activity/recommend/Shanghai/Popular-and-Classic-Tours">
-						<div class="imgBanner" :style="{background:'url(https://resource.localpanda.cn/static/homePage/banner2.jpg)'}">
+						<div class="imgBanner" :style="{background:'url(https://resource.localpanda.com/static/homePage/banner2.jpg)'}">
 							<span class="banner_tag">Shanghai Tours</span>
 						</div>
 						<div class="text">
@@ -90,14 +90,14 @@
 				deviceWidth:null,
 				swiperSlides: [
 					{
-						url: "https://resource.localpanda.cn/static/homePage/banner1.jpg",
+						url: "https://resource.localpanda.com/static/homePage/banner1.jpg",
 						link:'/activity/recommend/Beijing/Popular-and-Classic-Tours',
 						loc:'Beijing Tours'
 						
 						
 					},
 					{
-						url:"https://resource.localpanda.cn/static/homePage/banner2.jpg",
+						url:"https://resource.localpanda.com/static/homePage/banner2.jpg",
 						link:'/activity/recommend/Shanghai/Popular-and-Classic-Tours',
 						loc:'Shanghai Tours'
 					}

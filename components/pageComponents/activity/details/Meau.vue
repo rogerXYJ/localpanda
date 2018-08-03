@@ -2,9 +2,9 @@
 	<div id="menu">
 			<div class="menu_list">
 				<ul class="clearfix">
-					<li @click="goAnchor('heightLights')">What to Expect</li>
+					<li v-if="" @click="goAnchor('heightLights')">What to Expect</li>
 					<!--<li v-if="photoList.length>0" @click="goAnchor('photoList')">Moments in Travel</li>-->
-				
+					<li@click="goAnchor('journey')">Itinerary</li>
 					<li @click="goAnchor('provide')">Inclusions & Exclusions</li>
 					<li v-if="travelersReviews.entities&&travelersReviews.entities.length>0" @click="goAnchor('review')">Reviews</li>
 					<!--<li v-if="exclusions" @click="goAnchor('exclusions')">Exclusions</li>-->

@@ -243,7 +243,7 @@ export default {
         height: 800px;
         position: relative;
         overflow: hidden;
-        background: url('https://resource.localpanda.cn/static/headerPhotos/AmazingExperiences.jpg') no-repeat;
+        background: url('https://resource.localpanda.com/static/headerPhotos/AmazingExperiences.jpg') no-repeat;
         background-size: cover;
         background-position: center;
         clip-path: polygon(0 0%,100% 0%,100% 95%,0 100%);
@@ -385,7 +385,7 @@ export default {
             height: 465px;
             float: right;
             margin-left: 150px;
-            background: url('https://resource.localpanda.cn/static/headerPhotos/Jun.jpg');
+            background: url('https://resource.localpanda.com/static/headerPhotos/Jun.jpg');
         }
         &__content{
             overflow: hidden;
@@ -406,7 +406,7 @@ export default {
         width: 100%;
         position: relative;
         overflow: hidden;
-        background: url('https://resource.localpanda.cn/static/headerPhotos/LocalpandaTeam.jpg') no-repeat ;
+        background: url('https://resource.localpanda.com/static/headerPhotos/LocalpandaTeam.jpg') no-repeat ;
         background-size:cover ;
         background-position: center;
         clip-path: polygon(0 5%, 100% 0, 100% 100%, 0 100%);

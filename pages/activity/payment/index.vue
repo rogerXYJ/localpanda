@@ -4,14 +4,14 @@
 
 		<div class="oderdetial clearfix">
 			<div class="select">
-				<div class="link">
+				<!--<div class="link">
 					<a href="javascript:">1. Fill in your information</a>
 					<i class="iconfont">&#xe620;</i>
 					<a href="javascript:">2. Select payment method</a>
 					<i class="iconfont">&#xe620;</i>
 					<a href="javascript:">3. confirmation</a>
-				</div>
-				<h3 class="oderDetailTitle">Select payment method</h3>
+				</div>-->
+				<h3 class="oderDetailTitle" v-if="opctions.currency=='CNY'">Select payment method</h3>
 				<div class="selectInfo">
 					<h4>Pay with</h4>
 					<div class="selectPay">
@@ -31,7 +31,7 @@
 							<div class="stripePay" @click="selectCard(1)">
 								<div class="payicon">
 									<i class="selectTrue" v-if="id==0"></i>
-									<i class="selectNull" v-else></i> Credit Card
+									<i class="selectNull" v-else></i> Debit / Credit Card
 									<div class="chartIcon">
 										<span>
 											<svg class="icon1" aria-hidden="true">
@@ -43,11 +43,11 @@
 													<use xlink:href="#icon-americanexpress"></use>
 											</svg>
 										</span>
-										<span>
+										<!--<span>
 											<svg class="icon1" aria-hidden="true">
 													<use xlink:href="#icon-paypal"></use>
 											</svg>
-										</span>
+										</span>-->
 										<span>
 											<svg class="icon1" aria-hidden="true">
 													<use xlink:href="#icon-visa"></use>
@@ -170,6 +170,7 @@
 		//require('~/assets/js/pages/talk.js')
 		require('~/assets/js/pages/ga.js')
 		require('~/assets/js/plugin/l10n.js')
+		
 	}
 	import { GetQueryString } from '~/assets/js/plugin/utils.js'
 	import HeaderCommon from '~/components/HeaderCommon/HeaderCommon'
@@ -186,12 +187,14 @@
 		name: 'payNow',
 		head() {
 			return {
-				script: [{
+				script: [
+					{
 						src: 'https://js.stripe.com/v3/',
+						//src:'https://resource.localpanda.cn/static/js/lp/stripe.js',
 						type: 'text/javascript'
 					},
 					{
-						src: 'https://resource.localpanda.cn/static/js/qrcode.min.js',
+						src: 'https://resource.localpanda.com/static/js/qrcode.min.js',
 						type: 'text/javascript'
 					}
 				]
@@ -514,7 +517,7 @@
 						//var imgSrc = 'data:image/png;base64,'+response.data.code_url;
 						//self.wxPayEwm = imgSrc;
 						var payLogo = new Image();
-						payLogo.src = 'https://resource.localpanda.cn/static/icon/wechat.png';
+						payLogo.src = 'https://resource.localpanda.com/static/icon/wechat.png';
 						payLogo.className = 'ewmLogo';
 						wxPayEwm.appendChild(payLogo);
 
@@ -594,9 +597,10 @@
 			}
 		},
 		created: function() {
-
+			
 		},
 		mounted: function() {
+			console.log(window.Stripe)
 			this.orderId = GetQueryString("objectId")
 			this.getInfo()
 			this.stripeFn()

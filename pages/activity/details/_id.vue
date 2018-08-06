@@ -415,7 +415,7 @@
 <style lang="scss">
 	//@import '~/assets/scss/_main.scss';
 	//@import '~/assets/font/iconfont.css';
-	body{
+	.acitivity_detail{
 		min-width:1200px;
 	}
 </style>

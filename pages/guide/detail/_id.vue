@@ -382,9 +382,6 @@
 		box-shadow: 0px 2px 6px 0px rgba(53, 58, 63, 0.1);
 	}
 	
-	.text {
-		width: 671px !important;
-	}
 </style>
 <style lang="scss" scoped>
 	//@import '~/assets/scss/base/_setting.scss';

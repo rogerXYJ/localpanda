@@ -236,7 +236,7 @@
 					width: 671px;
 					textarea {
 						border:1px solid #ebebeb;
-						width: calc(100% - 10px);
+						width: 100%;
 						height: 131px;
 						padding-top: 10px;
 						padding-left: 10px;

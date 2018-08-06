@@ -230,42 +230,44 @@ on a 1-1 basis.</p>
 	@import "~/assets/scss/G-ui/flatpickr.min.css";
 	//@import '~/assets/scss/_main.scss';
 	//@import '~/assets/font/iconfont.css';
-	input::-webkit-input-placeholder, textarea::-webkit-input-placeholder {   
-	 /* WebKit browsers */   
-	color: #878e95;   
-	}   
-	input:-moz-placeholder, textarea:-moz-placeholder {   
-	/* Mozilla Firefox 4 to 18 */   
-	color: #878e95   
-	}   
-	input::-moz-placeholder, textarea::-moz-placeholder {   
-	 /* Mozilla Firefox 19+ */   
-	color: #878e95
-	}   
-	input:-ms-input-placeholder, textarea:-ms-input-placeholder {   
-	 /* Internet Explorer 10+ */   
-	color: #878e95  
-	}
-	.flatpickr-calendar{
-			position: fixed!important;
-			min-width: 346px;
-			min-height: 316px;
-			left: 50%!important;
-			top: 50%!important;
-			transform: translate(-50%,-50%);
+	.inquiry{
+		input::-webkit-input-placeholder, textarea::-webkit-input-placeholder {   
+		/* WebKit browsers */   
+		color: #878e95;   
+		}   
+		input:-moz-placeholder, textarea:-moz-placeholder {   
+		/* Mozilla Firefox 4 to 18 */   
+		color: #878e95   
+		}   
+		input::-moz-placeholder, textarea::-moz-placeholder {   
+		/* Mozilla Firefox 19+ */   
+		color: #878e95
+		}   
+		input:-ms-input-placeholder, textarea:-ms-input-placeholder {   
+		/* Internet Explorer 10+ */   
+		color: #878e95  
 		}
-		.flatpickr-calendar.animate.open{
-			animation:all 0ms cubic-bezier(.23,1,.32,1)!important
-		}
-	.inputItem {
-		
-		.flatpickr-input {
-			width:calc(100% - 0.24rem)!important;
-			height: 1.146666rem;
-			border:1px solid #dde0e0;
-			border-radius: 0.08rem;
-			padding-left: 0.24rem!important;
-			font-size: 0.48rem!important;
+		.flatpickr-calendar{
+				position: fixed!important;
+				min-width: 346px;
+				min-height: 316px;
+				left: 50%!important;
+				top: 50%!important;
+				transform: translate(-50%,-50%);
+			}
+			.flatpickr-calendar.animate.open{
+				animation:all 0ms cubic-bezier(.23,1,.32,1)!important
+			}
+		.inputItem {
+			
+			.flatpickr-input {
+				width:calc(100% - 0.24rem)!important;
+				height: 1.146666rem;
+				border:1px solid #dde0e0;
+				border-radius: 0.08rem;
+				padding-left: 0.24rem!important;
+				font-size: 0.48rem!important;
+			}
 		}
 	}
 </style> 

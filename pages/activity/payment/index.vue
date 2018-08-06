@@ -710,6 +710,7 @@
 					border: 1px solid #dde0e0;
 					border-bottom: none;
 					border-radius: 3px;
+					.selectCard{ cursor: pointer;}
 					.wxPay,
 					.stripePay {
 						height: 56px;

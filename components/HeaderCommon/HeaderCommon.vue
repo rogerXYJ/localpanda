@@ -500,12 +500,7 @@
 
 	}
 </script>
-<style lang="scss">
-body{
-		min-width: 1300px;
-	}
 
-</style>
 <style lang="scss" scoped>
 	/** contact us **/
 
@@ -775,6 +770,7 @@ body{
 	#header {
 		height: 60px;
 		background: #fff;
+		min-width: 1300px;
 		.heder-cont {
 			width: 100%;
 			min-width: 1170px;

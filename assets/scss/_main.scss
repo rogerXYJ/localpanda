@@ -12,8 +12,10 @@
 //@import 'base/_imgtextH.scss';
 //图片
 //@import "base/_sprite.scss";
+
+
 //字体
-//@import "../font/iconfont.scss";
+@import "../font/iconfont.css";
 body,
 html {
     background: #fff;
@@ -52,6 +54,7 @@ src:url('~/static/font/Regular-min.woff');
     //input,textarea,li,a,p,b
     tap-highlight-color: rgba(0, 0, 0, 0);
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    box-sizing: border-box;
 }
 
 .clearfix:after {

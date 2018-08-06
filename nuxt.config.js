@@ -1,5 +1,3 @@
-var path = require('path');
-
 module.exports = {
   router: {
     middleware: [
@@ -48,13 +46,7 @@ module.exports = {
   performance: {
     prefetch: false
 
-  },
-  // modules: [
-  //   'nuxt-sass-resources-loader'
-  // ],
-  // sassResources: [
-  //   '~/assets/scss/base/_main.scss'
-  // ]
+  }
 }
 
 //{ src: '~/plugins/vue-infinite-loading.js'}

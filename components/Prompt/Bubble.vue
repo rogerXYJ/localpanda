@@ -45,7 +45,7 @@
 		p {
 			padding: 15px 30px;
 			text-align: center;
-			color: $white;
+			color: #fff;
 			font-size: 24px;
 		}
 		&.isShow {

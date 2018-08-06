@@ -43,7 +43,7 @@
 			left: 50%;
 			margin: -1.6rem auto 0 -1.6rem;
 			i {
-				color: $white;
+				color: #fff;
 				font-size: 1.306666rem;
 				margin: 0.8rem auto 0;
 				display: block;
@@ -52,7 +52,7 @@
 			.loading-message {
 				text-align: center;
 				font-size: $font26;
-				color: $white;
+				color: #fff;
 				position: absolute;
 				bottom: 0.533333rem;
 				width: 100%;

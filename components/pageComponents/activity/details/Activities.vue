@@ -1201,7 +1201,7 @@
 	}
 </style>
 <style lang="scss" scoped>
-	@import "~/assets/font/iconfont.css";
+	//@import '~/assets/font/iconfont.css';
 	.question{
 		display: inline-block;
 		text-align: center;

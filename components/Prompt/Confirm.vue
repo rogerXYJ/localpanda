@@ -61,7 +61,7 @@
 		.box {
 			width:360px;
 			height: 218px;
-			background: $white;
+			background: #fff;
 			position: fixed;
 			border-radius: 4px;
 			box-shadow: 0px 0px 1px #ccc;

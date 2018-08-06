@@ -127,7 +127,7 @@
 </script>
 
 <style lang="scss">
-	@import "~assets/scss/base/_setting.scss";
+	//@import '~/assets/scss/base/_setting.scss';
 	
 	#Activities {
 		width: 1170px;

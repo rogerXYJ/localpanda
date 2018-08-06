@@ -627,8 +627,8 @@
 	}
 </script>
 <style lang="scss">
-	@import '~assets/scss/_main.scss';
-	@import '~/assets/font/iconfont.css';
+	//@import '~/assets/scss/_main.scss';
+	//@import '~/assets/font/iconfont.css';
 	
 	/** select **/
 	.el-popper[x-placement^=bottom]{
@@ -723,7 +723,7 @@
 	}
 </style>
 <style lang="scss" scoped>
-	@import "~assets/scss/base/_setting.scss";
+	//@import '~/assets/scss/base/_setting.scss';
 	.no-margin {
 		margin-top: 24px;
 		width: 300px!important;

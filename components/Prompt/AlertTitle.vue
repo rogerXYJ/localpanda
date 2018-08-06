@@ -192,7 +192,7 @@
 	</div>
 </template>
 <style lang="scss" scoped>
-	@import "~assets/scss/base/_setting.scss";
+	//@import '~/assets/scss/base/_setting.scss';
 	@import "~assets/scss/base/_animate.scss";
 	.alertTitleOuter {
 		background: rgba(0, 0, 0, 0.5);
@@ -211,7 +211,7 @@
 		.boxshow {
 			width: 398px;
 			/*height: 4.4rem;*/
-			background: $white;
+			background: #fff;
 			height: 300px;
 			overflow: hidden;
 			position: absolute;
@@ -223,7 +223,7 @@
 				width: 350px;
 				/*height: 2.493333rem;*/
 				padding-top: 62px;
-				font-size: $font32;
+				font-size: 32px;
 				margin: 0 auto;
 				h3 {
 					font-size: 24px;

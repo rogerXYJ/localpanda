@@ -69,7 +69,7 @@
 		.box {
 			width: 7.466666rem;
 			height: 5rem;
-			background: $white;
+			background: #fff;
 			border-radius: $radius8;
 			overflow: hidden;
 			position: absolute;

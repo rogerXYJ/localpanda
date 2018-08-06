@@ -102,7 +102,7 @@
 
 </style>
 <style lang="scss" scoped>
-	@import "~assets/scss/base/_setting.scss";
+	//@import '~/assets/scss/base/_setting.scss';
 	#Guide {
 		margin-top: 60px;
 		.guideList {

@@ -334,7 +334,7 @@
 }
 </style>
 <style lang="scss" scoped>
-	@import "~assets/scss/base/_setting.scss";
+	//@import '~/assets/scss/base/_setting.scss';
 	@import "~assets/scss/base/_animate.scss";
 	@import'~/assets/font/iconfont.css';
 	.alertTitleOuter {
@@ -369,7 +369,7 @@
 			}
 			width: 854px;
 			/*height: 4.4rem;*/
-			background: $white;
+			background: #fff;
 			overflow: hidden;
 			position: absolute;
 			top: 0;

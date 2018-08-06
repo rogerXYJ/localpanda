@@ -126,7 +126,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-	@import "~assets/scss/base/_setting.scss";
+	//@import '~/assets/scss/base/_setting.scss';
 	@import "~assets/scss/base/_animate.scss";
 	.alertPicOuter {
 		background: rgba(0, 0, 0, 0.8);

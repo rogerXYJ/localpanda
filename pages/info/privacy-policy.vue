@@ -71,8 +71,8 @@ export default {
 }
 </script>
 <style lang="scss">
-    @import '~assets/scss/_main.scss';
-    @import '~/assets/font/iconfont.css';
+    //@import '~/assets/scss/_main.scss';
+    //@import '~/assets/font/iconfont.css';
     @import '~assets/scss/G-ui/base.scss';
 
     .heder-cont{
@@ -80,7 +80,7 @@ export default {
     }
 </style>
 <style lang="scss" scoped>
-    @import "~assets/scss/base/_setting.scss";
+    //@import '~/assets/scss/base/_setting.scss';
     
     h2, h3{
         text-align: center;

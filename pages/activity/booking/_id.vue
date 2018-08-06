@@ -47,7 +47,7 @@
 					</div>
 					<div class="comments">
 						<h4>Other Required Information</h4>
-						<textarea v-if="opctions.category=='Private Tour'" @blur="gabulr(5)" placeholder="please provide your hotel address so the guide can pick you up." v-model="comments"></textarea>
+						<textarea v-if="opctions.pickup==1" @blur="gabulr(5)" placeholder="Fill out your hotel address for our guide to pick you up and your preferences for us to personalize your trips" v-model="comments"></textarea>
 						<textarea v-else v-model="comments" @blur="gabulr(5)"></textarea>
 					</div>
 				</div>
@@ -200,7 +200,7 @@
 
 <script>
 	if(process.browser) {
-		require('~/assets/js/pages/talk.js')
+		//require('~/assets/js/pages/talk.js')
 		//require('~/assets/js/pages/ga.js')
 	}
 	import Vue from 'vue'
@@ -945,7 +945,7 @@
 <style lang="scss">
 	//@import '~/assets/scss/_main.scss';
 	//@import '~/assets/font/iconfont.css';
-	#header {
+	#header{
 		box-shadow: 0px 2px 6px 0px rgba(53, 58, 63, 0.1);
 	}
 	input::-webkit-input-placeholder { /* WebKit, Blink, Edge */
@@ -977,7 +977,7 @@
 	
 	/** 服务 **/
 	.serve{
-		padding: 30px;
+		padding:15px 30px;
 		margin-top: 10px;
 		box-shadow: 0px 2px 6px 0px rgba(53, 58, 63, .1);
 		p{
@@ -992,9 +992,6 @@
 			}
 		}
 	}
-	
-	
-	
 	/** 下单 优惠券不存在提示**/
 	
 	.dialog {
@@ -1073,16 +1070,16 @@
 	}
 	
 	.emalAddress {
-		margin-top: 25px;
+		margin-top: 15px;
 		width: 100%;
 		p {
 			font-size: 18px;
-			margin-bottom: 10px;
+			margin-bottom: 6px;
 			font-weight: bold;
 		}
 		input {
 			width: calc(100% - 22px);
-			height: 44px;
+			height: 35px;
 			font-size: 18px;
 			border: 1px solid #dde0e0;
 			border-radius: 3px;
@@ -1096,16 +1093,16 @@
 		.fill {
 			width: 1170px;
 			margin: 0 auto;
-			padding: 60px 0 100px;
+			padding: 15px 0 150px;
 			position: relative;
 			.oderdetial {
 				position: absolute;
-				top: 60px;
+				top: 15px;
 				right: 0;
 				.payfordetail {
 					box-shadow: 0px 2px 6px 0px rgba(53, 58, 63, 0.1);
 					background: #fff;
-					padding: 30px 30px 40px;
+					padding: 15px 30px;
 					width: 316px;
 					.head {
 						padding-bottom: 15px;
@@ -1195,8 +1192,8 @@
 					}
 				}
 				.bookbtn {
-					margin-top: 20px;
-					padding: 30px;
+					margin-top: 10px;
+					padding:15px 30px;
 					background: #faf9f8;
 					p {
 						font-size: 18px;
@@ -1244,12 +1241,11 @@
 						margin-right:5px;
 					}
 					font-size: 14px;
-					margin-top: 15px;
+					
 				}
 				.orderContact {
-					margin-top: 35px;
-					padding-bottom: 33px;
-					border-bottom: 1px solid #dde0e0;
+					margin-top: 15px;
+					
 					b {
 						color: red;
 					}
@@ -1258,18 +1254,18 @@
 						font-weight: bold;
 					}
 					.cont {
-						margin-top: 25px;
+						margin-top: 15px;
 						display: flex;
 						.cont-item {
 							flex: 1;
 							p {
 								font-size: 18px;
-								margin-bottom: 10px;
+								margin-bottom: 6px;
 								font-weight: bold;
 							}
 							input {
 								width: 345px;
-								height: 44px;
+								height: 35px;
 								font-size: 18px;
 								border: 1px solid #dde0e0;
 								border-radius: 3px;
@@ -1280,19 +1276,19 @@
 						}
 					}
 					.comments {
-						margin-top: 25px;
+						margin-top: 15px;
 						h4 {
 							font-size: 18px;
 							font-weight: bold;
-							margin-bottom: 10px;
+							margin-bottom: 6px;
 						}
 						textarea {
 							width: 684px;
-							height: 40px;
+							height: 70px;
 							border-radius: 3px;
 							border: solid 1px #dde0e0;
 							resize: none;
-							padding: 20px;
+							padding:0 20px;
 							font-size: 18px;
 						}
 					}
@@ -1417,10 +1413,10 @@
 						margin-top: 20px;
 						.next {
 							width: 90px;
-							height: 46px;
+							height: 40px;
 							font-weight: bold;
 							text-align: center;
-							line-height: 46px;
+							line-height: 40px;
 							background-image: linear-gradient(270deg, #009efd 0%, #1bbc9d 100%);
 							color: #fff;
 							border-radius: 20px;
@@ -1431,10 +1427,10 @@
 				}
 				.coupon {
 					background: #faf9f8;
-					margin-top: 25px;
+					margin-top: 15px;
 					font-size: 14px;
 					box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.1);
-					padding: 20px;
+					padding: 10px;
 					a {
 						color: #1bbc9d;
 					}

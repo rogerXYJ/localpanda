@@ -895,7 +895,8 @@
 						title: that.detail.title,
 						childDiscountP: that.returnFloat(that.picInfo.childDiscount),
 						childDiscountPP: that.picInfo.childDiscountDefault?that.returnFloat(that.picInfo.childDiscountDefault):0,
-						category: that.detail.category,
+						//category: that.detail.category,
+						pickup:that.detail.pickup,
 						averagePrice: that.returnFloat(
 							that.adultsPic / (that.adults + that.children!=0?that.adults + that.children:that.people)
 						),
@@ -1071,7 +1072,7 @@
 			let that = this;
 			let participants=this.$route.query.participants;
 			that.people=participants?(that.picInfo.maxParticipants==1?1:parseInt(participants)):(that.picInfo.minParticipants<3?(that.picInfo.maxParticipants==1?1:2):that.picInfo.minParticipants);
-
+			
 			if(this.detail.attractions&&this.detail.attractions.length>0){
 				if(this.detail.attractions.length>4){
 					this.tagAttractions=this.detail.attractions.splice(0,4)
@@ -1081,6 +1082,7 @@
 				}
 			}
 			console.log(this.picInfo)
+			console.log(this.detail)
 			//that.people=that.picInfo.minParticipants<3?that.picInfo.maxParticipants:(participants?parseInt(participants):that.picInfo.minParticipants)
 			if(that.people){
 				that.isShowBook=true

@@ -106,7 +106,7 @@
 	#Guide {
 		margin-top: 60px;
 		.guideList {
-			background: url("https://resource.localpanda.com/static/homePage/background.jpg") no-repeat;
+			background: url("https://resource.localpanda.cn/static/homePage/background.jpg") no-repeat;
 			background-size: cover;
 			height: 488px;
 			padding-top: 31px;

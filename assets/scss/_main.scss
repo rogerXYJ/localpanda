@@ -33,18 +33,18 @@ html {
 }
 @font-face {
     font-family:"coopbl";
-    src: url('https://resource.localpanda.com/static/font/COOPBL.TTF');
+    src: url('https://resource.localpanda.cn/static/font/COOPBL.TTF');
 }
 @font-face {
     font-family:"pacifico";
-    src: url('https://resource.localpanda.com/static/font/pacifico.ttf');
+    src: url('https://resource.localpanda.cn/static/font/pacifico.ttf');
     
 }
 
-//@font-face{
-//font-family: "Ubuntu";
-//src:url('~/static/font/Regular-min.woff');
-//}
+@font-face{
+font-family: "Ubuntu";
+src:url('~/static/font/Regular-min.woff');
+}
 
 * {
     margin: 0;

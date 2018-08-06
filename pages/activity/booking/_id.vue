@@ -873,8 +873,7 @@
 					for(let i = 0; i < this.countryCode.length; i++) {
 						var str1=self.countryCode[i].country_name + "(+" + self.countryCode[i].prefix + ")"
 						if(new RegExp(str,"i").test(str1)){
-							if(val[0].toLowerCase==str1[0].toLowerCase()){
-								console.log(1111)
+							if(val[0].toLowerCase()==str1[0].toLowerCase()){
 								var json = {
 									country_name: self.countryCode[i].country_name,
 									prefix: self.countryCode[i].prefix

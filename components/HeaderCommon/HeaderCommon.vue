@@ -514,7 +514,7 @@ body{
 		right: 0;
 		top: 60px;
 		background: #fff;
-		width: 320px;
+		width: 340px;
 		z-index: 66666;
 		box-shadow: 0px 2px 6px 0px 
 		rgba(0, 0, 0, 0.1);

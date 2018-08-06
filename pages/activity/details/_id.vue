@@ -1,7 +1,7 @@
 <template>
 	<div id="activitiesDetail">
 		<HeaderCommon :logIn="logIn"></HeaderCommon>
-		<Meau v-if="isShowMeau" :notice="notice" :exclusions="exclusions" :picInfo="picInfo" :photoList="photoList" :recommed="recommed" :travelersReviews="travelersReviews"></Meau>
+		<Meau v-if="isShowMeau" :inclusions="inclusions" :highlights="highlights" :notice="notice" :exclusions="exclusions" :picInfo="picInfo" :photoList="photoList" :recommed="recommed" :travelersReviews="travelersReviews"></Meau>
 		<ActivityBanner :bannerPhotos="detail.bannerPhotos" ></ActivityBanner>
 		<Activities 
 			:isShowMeau="isShowMeau"
@@ -43,9 +43,9 @@
 </template>
 
 <script>
-	if (process.browser) {
-	  require('~/assets/js/pages/talk.js')
-	}
+	// if (process.browser) {
+	//   require('~/assets/js/pages/talk.js')
+	// }
 	import HeaderCommon from "~/components/HeaderCommon/HeaderCommon";
 	import FooterCommon from "~/components/FooterCommon/FooterCommon";
 	import ActivityBanner from "~/components/pageComponents/activity/details/ActivityBanner";
@@ -366,8 +366,9 @@
 			scorllBar() {
 				
 				let data = this;
-				var hightLights =
-					document.getElementById("heightLights").offsetTop +
+				var hightLights;
+				
+					(document.getElementById("heightLights")?(hightLights =document.getElementById("heightLights").offsetTop):(hightLights =800))+
 					document.getElementById("banner").offsetHeight +
 					60 -
 					76;

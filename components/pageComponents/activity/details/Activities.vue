@@ -43,8 +43,8 @@
 					
 					<div class="types" v-if="detail.attractions&&detail.attractions.length>0">
 					
-						<a v-if="detail.attractions.length>4&&!showMoreTag" v-for="i in tagAttractions" :href="returnUrl(i)"><span>{{i}}</span></a>
-						<a class="showtag" v-else v-for="i in detail.attractions" :href="returnUrl(i)"><span>{{i}}</span></a>
+						<a v-if="!showMoreTag" v-for="i in tagAttractions" :href="returnUrl(i)"><span>{{i}}</span></a>
+						<a class="showtag" v-else v-for="i in tagAttractions" :href="returnUrl(i)"><span>{{i}}</span></a>
 						
 						<a v-if="detail.attractions.length>4" @click="showMoreTag=!showMoreTag">···</a>
 						<!--<p v-if="detail.sales&&detail.sales>0">Booked {{detail.sales}} {{detail.sales==1?'time':'times'}} (last 30 days)</p>-->
@@ -76,10 +76,10 @@
 					<span>{{destinations}}</span>
 				</div>-->
 				
-				<p class="says">{{detail.recommendedReason}}</p>
-				<div class="heightLights" id="heightLights" v-if="highlights&&highlights.length>0||(introduction&&introduction>0)||(detail.itineraries&&detail.itineraries.length>0)">
+				<p class="says" v-if="detail.recommendedReason">{{detail.recommendedReason}}</p>
+				<div class="heightLights" id="heightLights" v-if="highlights&&highlights.length>0">
 					<div class="expect">
-						<h3>Why you’ll love this trip</h3>
+						<h3>Why you'll love this trip</h3>
 						<p v-if="highlights&&highlights.length>0" :key="index" class="heightLightsList" v-for="(item,index) in highlights">
 							<span>{{item}}</span></p>
 						<!--<p class="introductionCont" v-if="introduction.length==1">{{introduction[0]}}</p>
@@ -132,7 +132,7 @@
 
 				</div>
 				
-				<div class="provide clearfix" id="provide" v-if="itemsIncluded&&itemsIncluded.length>0||(inclusions&&inclusions.length>0)">
+				<div class="provide clearfix" id="provide" >
 					<div class="inclusions" v-if="itemsIncluded&&itemsIncluded.length>0||(inclusions&&inclusions.length>0)">
 							<h3>Inclusions</h3>
 							<ul>
@@ -193,7 +193,7 @@
 				</div> -->
 				<div class="notes" v-if="detail.notice" id="notice">
 					<h3>Additional Info</h3>
-					<p>{{detail.notice}}</p>
+					<p v-for="item in delNullArr(detail.notice.split('/r/n'))">{{item}}</p>
 				</div>
 				<div class="notes" v-if="picInfo.refundInstructions" id="CancellationPolicy">
 					<h3>Rescheduling and Cancellation Policy</h3>
@@ -409,7 +409,10 @@
 								</div>
 								<div class="sales">
 										<span v-if="detail.sales&&detail.sales>0">Booked {{detail.sales}} {{detail.sales==1?'time':'times'}} (last 30 days)</span>
-										<grade class="fl" :score="travelersReviews.avgScore" :big="'true'"></grade>
+										<div class="fl" v-if="travelersReviews.avgScore" @click="goReview">
+											<grade style="margin-top:0"  :score="travelersReviews.avgScore" :big="'true'"></grade>
+											<span>  ( {{travelersReviews.records}} )</span>
+										</div>
 								</div>
 							</div>
 
@@ -446,7 +449,8 @@
 	import {
 		GetDateStr,
 		addmulMonth,
-		getUrlParams
+		getUrlParams,
+		
 	} from "~/assets/js/plugin/utils";
 	import Contact from '~/components/Contact/Contact';
 	import Alert from '~/components/Prompt/Alert';
@@ -541,10 +545,21 @@
 			TimelineTitle
 		},
 		methods: {
+			delNullArr(array){
+				for(var i = 0; i < array.length; i++) {
+					if(array[i] == "" || typeof(array[i]) == "undefined") {
+						array.splice(i, 1);
+						i = i - 1;
+
+					}
+
+				}
+				return array;
+
+			},
 			//点评翻页
 			moreReviews(){
-				let self=this
-					
+				let self=this	
 				this.pageNum++
 				let params={
 					activityId:this.id,
@@ -901,6 +916,11 @@
 					this.gaFail()
 				}
 			},
+			goReview(){
+				var anchor = document.getElementById("review")
+				document.body.scrollTop = anchor.offsetTop+document.getElementById("banner").offsetHeight+60-76
+				document.documentElement.scrollTop =anchor.offsetTop+document.getElementById("banner").offsetHeight+60-76
+			},
 			tableData(details) {
 				
 				var newObj = function(obj) {
@@ -1006,6 +1026,7 @@
 				}
 				
 			},
+			
 			isShowBook(val, oldVal) {
 				if(val) {
 					this.isShow = true;
@@ -1050,15 +1071,16 @@
 			let that = this;
 			let participants=this.$route.query.participants;
 			that.people=participants?(that.picInfo.maxParticipants==1?1:parseInt(participants)):(that.picInfo.minParticipants<3?(that.picInfo.maxParticipants==1?1:2):that.picInfo.minParticipants);
-			console.log(this.detail)
-			console.log(this.detail.attractions)
-			if(this.detail.attractions&&this.detail.attractions.length>0){console.log(this.detail.attractions)
+
+			if(this.detail.attractions&&this.detail.attractions.length>0){
 				if(this.detail.attractions.length>4){
 					this.tagAttractions=this.detail.attractions.splice(0,4)
 					console.log(this.tagAttractions)
+				}else{
+					this.tagAttractions=this.detail.attractions
 				}
 			}
-			
+			console.log(this.picInfo)
 			//that.people=that.picInfo.minParticipants<3?that.picInfo.maxParticipants:(participants?parseInt(participants):that.picInfo.minParticipants)
 			if(that.people){
 				that.isShowBook=true
@@ -1894,6 +1916,18 @@
 						font-size: 18px;
 						line-height: 26px;
 						margin-top: 10px;
+						padding-left:15px;
+						position: relative;
+						&:after{
+								content: "";
+								position: absolute;
+								width: 4px;
+								height: 4px;
+								border-radius: 50%;
+								background: #353a3f;
+								left: 0px;
+								top: 10px;
+						}
 					}
 					.photoCover {
 						margin-top: 0.64rem;
@@ -2136,7 +2170,7 @@
 					margin-right: 16px;
 					width: 109px;
 					height: 109px;
-					background:url("https://resource.localpanda.com/activity/banners/11027_1106614229_U5251601.jpg");
+					background:url("https://resource.localpanda.cn/activity/banners/11027_1106614229_U5251601.jpg");
 					background-repeat:no-repeat;
 					background-size:cover;
 					background-position:center; 
@@ -2170,10 +2204,12 @@
 			span{
 				font-size: 14px;
 				color:#878e95;
+				vertical-align:super;
 			}
 			.fl{
 				float:right;
 				margin-top: -6px!important;
+				cursor: pointer;
 			}
 		}
 		

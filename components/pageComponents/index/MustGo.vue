@@ -35,7 +35,7 @@
 			return {
 				dataSource: [
 					{
-						cover: 'https://resource.localpanda.com/static/homePage/Beijing.jpg',
+						cover: 'https://resource.localpanda.cn/static/homePage/Beijing.jpg',
 						title: 'Beijing',
 						value: 'Beijing',
 						//linkUrl:'https://www.localpanda.com/activity/list/Beijing',
@@ -47,7 +47,7 @@
 						],
 					},
 					{
-						cover: 'https://resource.localpanda.com/static/homePage/Shanghai.png',
+						cover: 'https://resource.localpanda.cn/static/homePage/Shanghai.png',
 						title: 'Shanghai',
 						value: 'Shanghai',
 						content: [
@@ -58,7 +58,7 @@
 						linkUrl:'/activity/list/Shanghai'
 					},
 					{
-						cover: 'https://resource.localpanda.com/static/homePage/Chengdu.jpg',
+						cover: 'https://resource.localpanda.cn/static/homePage/Chengdu.jpg',
 						title: 'Chengdu',
 						value: 'Chengdu',
 						linkUrl:'/activity/list/Chengdu',
@@ -69,7 +69,7 @@
 					},
 
 					{
-						cover: "https://resource.localpanda.com/static/homePage/Xi'an.png",
+						cover: "https://resource.localpanda.cn/static/homePage/Xi'an.png",
 						title: 'Xi\'an',
 						value: 'Xi\'an',
 						linkUrl:'/activity/list/Xian',
@@ -79,7 +79,7 @@
 						]
 					},
 					{
-						cover: 'https://resource.localpanda.com/static/homePage/Guilin.png',
+						cover: 'https://resource.localpanda.cn/static/homePage/Guilin.png',
 						title: 'Guilin',
 						linkUrl:'/activity/list/Guilin',
 						value:'Guilin',

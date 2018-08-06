@@ -1168,7 +1168,7 @@
 		}
 		.banner {
 			position: relative;
-			background:url("https://resource.localpanda.com/static/headerPhotos/BackGround.jpg") no-repeat;
+			background:url("https://resource.localpanda.cn/static/headerPhotos/BackGround.jpg") no-repeat;
 			background-size: cover;
 			height: 260px;
 			.linerBackground{

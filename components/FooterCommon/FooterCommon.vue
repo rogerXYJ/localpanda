@@ -37,6 +37,7 @@
 					<li>
 						<h3>PAYMENTS</h3>
 						<div class="payments">
+							
 							<span>
 								<svg class="icon" aria-hidden="true">
 										<use xlink:href="#icon-mastercard"></use>
@@ -47,6 +48,7 @@
 										<use xlink:href="#icon-americanexpress"></use>
 								</svg>
 							</span>
+							
 							<span>
 								<svg class="icon" aria-hidden="true">
 										<use xlink:href="#icon-paypal"></use>
@@ -83,6 +85,14 @@
 				
 				
 				<div class="cooperationIcon">
+					<a class="wechat">
+						<svg class="icon2" aria-hidden="true" @mouseenter="showChat=true" @mouseleave="showChat=false">
+								<use xlink:href="#icon-wechat1"></use>
+						</svg>
+						<div class="wechatCode" v-show="showChat" @mouseenter="showChat=true" @mouseleave="showChat=false">
+							<img src="https://resource.localpanda.cn/static/icon/LPwechat.jpg"  alt=""/>
+						</div>
+					</a>
 					<a href="https://www.facebook.com/LocalPandaGuides/?fref=ts">
 						<svg class="icon2" aria-hidden="true">
 								<use xlink:href="#icon-facebook"></use>
@@ -91,6 +101,11 @@
 					<a href="https://twitter.com/LocalPandaGuide">
 						<svg class="icon2" aria-hidden="true">
 								<use xlink:href="#icon-twitter1"></use>
+						</svg>
+					</a>
+					<a href="https://api.whatsapp.com/send?phone=8616620183842">
+						<svg class="icon2" aria-hidden="true">
+								<use xlink:href="#icon-whatsapp"></use>
 						</svg>
 					</a>
 					<a href="https://www.instagram.com/localpandaguides/">
@@ -126,7 +141,8 @@ import { fail } from 'assert';
 		data() {
 			return {
 				ContactStatus: false,
-				objectType: 'CONSULTING'
+				objectType: 'CONSULTING',
+				showChat:false
 				
 			}
 		},
@@ -271,7 +287,7 @@ import { fail } from 'assert';
 				}
 				.cooperation{
 					padding-top:44px;
-					overflow: hidden;
+					
 					.cooperation-text{
 						.icon1{ }
 						em{
@@ -291,6 +307,24 @@ import { fail } from 'assert';
 							margin-right:14px;
 							&:last-child{
 								margin-right: 0;
+							}
+						}
+						.wechat{
+							position:relative;
+							.wechatCode{
+								position:absolute;
+								width: 98px;
+								height: 98px;
+								padding: 16px;
+								top:-134px;
+								left: -50px;
+								z-index:2;
+								box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.1);
+								border-radius: 5px;
+								img{
+									width: 100%;
+									height: 100%;
+								}
 							}
 						}
 					}

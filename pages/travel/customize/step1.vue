@@ -382,8 +382,8 @@
 	}
 </script>
 <style lang="scss">
-	@import '~assets/scss/_main.scss';
-	@import '~/assets/font/iconfont.css';
+	//@import '~/assets/scss/_main.scss';
+	//@import '~/assets/font/iconfont.css';
     @import '~assets/scss/G-ui/base.scss';
     @import '~assets/scss/G-ui/element-ui.scss';
     @import 'flatpickr/dist/flatpickr.css';
@@ -404,7 +404,7 @@
     
 </style>
 <style lang="scss" scoped>
-    @import "~assets/scss/base/_setting.scss";
+    //@import '~/assets/scss/base/_setting.scss';
     .travel-des{        
         &__item{
             border: 3px solid #fff;

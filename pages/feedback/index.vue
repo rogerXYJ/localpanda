@@ -153,8 +153,8 @@ get back to you within 1 day. </p>
 }
 </script>
 <style lang="scss">
-	@import '~assets/scss/_main.scss';
-	@import '~/assets/font/iconfont.css';
+	//@import '~/assets/scss/_main.scss';
+	//@import '~/assets/font/iconfont.css';
 	input::-webkit-input-placeholder, textarea::-webkit-input-placeholder {   
 	 /* WebKit browsers */   
 	color: #878e95;   

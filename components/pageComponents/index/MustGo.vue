@@ -105,7 +105,7 @@
 
 </style>
 <style lang="scss" scoped>
-	@import "~assets/scss/base/_setting.scss";
+	//@import '~/assets/scss/base/_setting.scss';
 	#mustGo {
 		width: 1170px;
 		margin: 60px auto 0;

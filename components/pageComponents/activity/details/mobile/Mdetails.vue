@@ -550,7 +550,7 @@
 </style>
 
 <style lang="scss" scoped>
-	@import "~/assets/font/iconfont.css";
+	//@import '~/assets/font/iconfont.css';
 	.price {
 		text-align: right;
 	.picinfo {

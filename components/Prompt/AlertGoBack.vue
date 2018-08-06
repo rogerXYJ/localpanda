@@ -68,7 +68,7 @@
 </script>
 
 <style lang="scss" scoped>
-	@import "~assets/scss/base/_setting.scss";
+	//@import '~/assets/scss/base/_setting.scss';
 	@import "~assets/scss/base/_animate.scss";
 	.alertTitle {
 		.fixed{

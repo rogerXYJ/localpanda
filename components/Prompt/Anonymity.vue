@@ -271,7 +271,7 @@
 	</div>
 </template>
 <style lang="scss" scoped>
-	@import "~assets/scss/base/_setting.scss";
+	//@import '~/assets/scss/base/_setting.scss';
 	@import "~assets/scss/base/_animate.scss";
 	.alertTitleOuter {
 		background: rgba(0, 0, 0, 0.5);
@@ -289,7 +289,7 @@
 		}
 		.boxshow {
 			width: 540px;
-			background: $white;
+			background: #fff;
 			overflow: hidden;
 			position: absolute;
 			top: 50%;

@@ -1,3 +1,4 @@
+var path = require('path');
 
 module.exports = {
   router: {
@@ -6,15 +7,22 @@ module.exports = {
     ]
   },
   build: {
-      // publicPath: 'https://resource.localpanda.cn/static/js/',
-      // testGa: true,
-      // payCode: 'pk_live_mRSdUvgwE4pZo2IVofL4cVch',
+
+      //publicPath: 'https://resource.localpanda.com/static/js/',
+      //testGa: true,
+     // payCode: 'pk_live_mRSdUvgwE4pZo2IVofL4cVch',
+
+    
+    extractCSS: {
+      allChunks: true 
+    },
     vendor: [
-        'axios',
-        'vue-lazyload',
-        'element-ui',
-        '~/assets/font/iconfont.js',
-    ]
+      'axios',
+      'vue-lazyload',
+      'element-ui',
+      '~/assets/font/iconfont.js',
+    ],
+    
   },
   babel: {
     plugins: [['component', [{
@@ -30,6 +38,7 @@ module.exports = {
     { src: '~plugins/ga.js', ssr: false }
   ],
   css: [
+    '~/assets/scss/_main.scss',
     'element-ui/lib/theme-chalk/index.css',
     'swiper/dist/css/swiper.css'
   ],
@@ -39,7 +48,13 @@ module.exports = {
   performance: {
     prefetch: false
 
-  }
+  },
+  // modules: [
+  //   'nuxt-sass-resources-loader'
+  // ],
+  // sassResources: [
+  //   '~/assets/scss/base/_main.scss'
+  // ]
 }
 
 //{ src: '~/plugins/vue-infinite-loading.js'}

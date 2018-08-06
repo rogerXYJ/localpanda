@@ -1200,14 +1200,14 @@
 	}
 </script>
 <style lang="scss">
-	@import '~assets/scss/_main.scss';
-	@import '~/assets/font/iconfont.css';
+	//@import '~/assets/scss/_main.scss';
+	//@import '~/assets/font/iconfont.css';
 	div::-webkit-scrollbar { width: 8px; }
 	div::-webkit-scrollbar-track { background-color: #eeeeee;  border-radius: 4px; }
 	div::-webkit-scrollbar-thumb { border-radius: 4px;  background-color: #f4b33f; }
 </style>
 <style lang="scss" scoped>
-	@import "~assets/scss/base/_setting.scss";
+	//@import '~/assets/scss/base/_setting.scss';
 	
 	.animated {
 		-webkit-animation-duration: 1s;

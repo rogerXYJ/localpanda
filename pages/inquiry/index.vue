@@ -228,8 +228,8 @@ on a 1-1 basis.</p>
 </script>
 <style lang="scss">
 	@import "~/assets/scss/G-ui/flatpickr.min.css";
-	@import '~assets/scss/_main.scss';
-	@import '~/assets/font/iconfont.css';
+	//@import '~/assets/scss/_main.scss';
+	//@import '~/assets/font/iconfont.css';
 	input::-webkit-input-placeholder, textarea::-webkit-input-placeholder {   
 	 /* WebKit browsers */   
 	color: #878e95;   

@@ -384,8 +384,8 @@
 	}
 </script>
 <style lang="scss">
-	@import '~assets/scss/_main.scss';
-	@import '~/assets/font/iconfont.css';
+	//@import '~/assets/scss/_main.scss';
+	//@import '~/assets/font/iconfont.css';
 	body,
 	html {
 		height: 100%;
@@ -398,7 +398,7 @@
 	}
 </style>
 <style lang="scss" scoped>
-	@import "~assets/scss/base/_setting.scss";
+	//@import '~/assets/scss/base/_setting.scss';
 	.topSeach {
 		overflow-X:hidden;
 		.hotbanner {

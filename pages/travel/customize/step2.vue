@@ -202,7 +202,7 @@
 	//@import '~/assets/font/iconfont.css';
     @import '~assets/scss/G-ui/base.scss';
     @import '~assets/scss/G-ui/element-ui.scss';
-
+.page__container{
     .el-slider__runway{
         .el-slider__bar{
             opacity: 0.5;
@@ -227,7 +227,7 @@
             }
         }
     }
-    
+}
 </style>
 <style lang="scss" scoped>
     //@import '~/assets/scss/base/_setting.scss';

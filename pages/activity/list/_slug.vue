@@ -1153,41 +1153,43 @@
 <style lang="scss">
 	//@import '~/assets/scss/_main.scss';
 	//@import '~/assets/font/iconfont.css';
-	.checkbox_label{
-		padding: 0;
-		padding-left: 20px;
-	}
-	.checkbox_content {
-		font-size: 16px;
-		padding-right: 0!important;
-		padding-left: 0!important;
-		line-height: 22px;
-		white-space: inherit!important;
-	
-	}
-	.checkbox_box{
-		float: left;
-		margin-left: -20px;
-		margin-top: 3px;
-	}
-	.el-slider__button-wrapper{
-		z-index: 10!important;
-	}
-	.el-pagination.is-background .el-pager li:not(.disabled).active {
-		background-image: linear-gradient(-90deg, #009efd 0%, #1bbc9d 100%)
-	}
-	
-	.el-pagination.is-background .btn-next,
-	.el-pagination.is-background .btn-prev,
-	.el-pagination.is-background .el-pager li {
-		background: #fff;
-		color: #353a3f;
-	}
-	
-	#footercommon {
-		border-top: 1px solid #E6E6E6;
-		.footInfo {
-			width: 1284px!important;
+	.activityList{
+		.checkbox_label{
+			padding: 0;
+			padding-left: 20px;
+		}
+		.checkbox_content {
+			font-size: 16px;
+			padding-right: 0!important;
+			padding-left: 0!important;
+			line-height: 22px;
+			white-space: inherit!important;
+		
+		}
+		.checkbox_box{
+			float: left;
+			margin-left: -20px;
+			margin-top: 3px;
+		}
+		.el-slider__button-wrapper{
+			z-index: 10!important;
+		}
+		.el-pagination.is-background .el-pager li:not(.disabled).active {
+			background-image: linear-gradient(-90deg, #009efd 0%, #1bbc9d 100%)
+		}
+		
+		.el-pagination.is-background .btn-next,
+		.el-pagination.is-background .btn-prev,
+		.el-pagination.is-background .el-pager li {
+			background: #fff;
+			color: #353a3f;
+		}
+		
+		#footercommon {
+			border-top: 1px solid #E6E6E6;
+			.footInfo {
+				width: 1284px!important;
+			}
 		}
 	}
 </style>

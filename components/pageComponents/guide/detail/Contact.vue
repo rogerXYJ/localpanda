@@ -2384,7 +2384,6 @@
 								border-left: 1px solid #dde0e0;
 								border-right: 1px solid #dde0e0;
 								border-bottom: 1px solid #dde0e0;
-								width:317px;
 								border-radius: 0 2px 2px 0;
 								.border {
 									padding-top: 20px;

@@ -30,7 +30,7 @@
 						<div class="cont-item">
 							<p>Country Code<b>*</b></p>
 							<div class="code-box">
-								<input id="code" :class="{err:codeErr}" @click.stop="focusCode(0)" @focus="focusCode(0)" @blur="gabulr(3)" v-model="mobileCode" />
+								<input id="code" :class="{err:codeErr}" @click.stop="focusCode(0)" @focus="focusCode(0)" @blur="gabulr(3)" autocomplete="off" v-model="mobileCode" />
 								<div class="countryCode" v-if="showCode" :class="codeList.length>0?'width100':''">
 									<ul v-if="codeList.length>0">
 										<li v-for="item in codeList" @click.stop="selectCode(item.country_name,item.prefix,0)">{{item.country_name}} (+{{item.prefix}})</li>
@@ -1059,6 +1059,7 @@
 				height: 40px;
 				line-height: 40px;
 				font-size: 14px;
+				cursor: pointer;
 				&:hover {
 					color: #fff;
 					height: 40px;
@@ -1069,7 +1070,7 @@
 	}
 	
 	.width100 {
-		width: 110%!important;
+		width: 100%!important;
 	}
 	
 	.emalAddress {

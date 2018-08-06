@@ -387,24 +387,28 @@
     @import '~assets/scss/G-ui/base.scss';
     @import '~assets/scss/G-ui/element-ui.scss';
     @import 'flatpickr/dist/flatpickr.css';
-    .arrive-time{        
-        .flatpickr-calendar{
-            margin: 0 auto;
-            box-shadow:none !important;
-            -webkit-box-shadow:none !important;
+    .page__container{
+        .arrive-time{        
+            .flatpickr-calendar{
+                margin: 0 auto;
+                box-shadow:none !important;
+                -webkit-box-shadow:none !important;
+            }
+            .flatpickr-months .flatpickr-prev-month.flatpickr-prev-month, 
+            .flatpickr-months .flatpickr-next-month.flatpickr-prev-month,
+            .flatpickr-months .flatpickr-prev-month.flatpickr-next-month, 
+            .flatpickr-months .flatpickr-next-month.flatpickr-next-month{
+                top: 20px!important;
+            }
         }
-        .flatpickr-months .flatpickr-prev-month.flatpickr-prev-month, 
-        .flatpickr-months .flatpickr-next-month.flatpickr-prev-month,
-        .flatpickr-months .flatpickr-prev-month.flatpickr-next-month, 
-        .flatpickr-months .flatpickr-next-month.flatpickr-next-month{
-            top: 20px!important;
-        }
+        .flatpickr-months .flatpickr-prev-month svg, .flatpickr-months .flatpickr-next-month svg{ margin-top: 0;}
+
     }
-    .flatpickr-months .flatpickr-prev-month svg, .flatpickr-months .flatpickr-next-month svg{ margin-top: 0;}
     
 </style>
 <style lang="scss" scoped>
     //@import '~/assets/scss/base/_setting.scss';
+.page__container{
     .travel-des{        
         &__item{
             border: 3px solid #fff;
@@ -508,5 +512,5 @@
         color:#e14f3f;
         font-size:16px;
     }
-    
+}
 </style>

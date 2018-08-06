@@ -1144,6 +1144,9 @@
 					that.isShowTime = false;
 					that.isShowAdults = false;
 				});
+			
+
+			document.querySelector('body').className = "acitivity_detail";
 		}
 	};
 </script>
@@ -1173,7 +1176,7 @@
 	
 	
 	
-	
+
 	
 	.el-table__row .cell {
 		text-align: center;
@@ -1221,6 +1224,12 @@
 	.el-table td {
 		border: 0;
 	}
+
+.acitivity_detail{
+	.flatpickr-calendar{
+		margin-left: 10px;
+	}
+}
 </style>
 <style lang="scss" scoped>
 	//@import '~/assets/font/iconfont.css';
@@ -1330,7 +1339,7 @@
 								font-size: 14px;
 								box-shadow: 0px 2px 6px 0px rgba(53, 58, 63, 0.1);
 								z-index: 20;
-								width: 354px;
+								width: 100%;
 								left: 0px;
 								p {
 									
@@ -1374,7 +1383,7 @@
 									.flatpickr-input {
 										height: 40px !important;
 										padding-left: 10px !important;
-										width: calc(100% - 10px)!important;
+										width: 100%;
 										border-color: #e3e5e9;
 										border-right: none;
 										border-radius: 0px 3px 0px 3px !important;

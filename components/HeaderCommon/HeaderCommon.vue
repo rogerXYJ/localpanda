@@ -720,7 +720,7 @@
 					display: inline-block;
 					position: relative;
 					line-height: 46px;
-					height: 46px;
+					height: 47px;
 					font-size: 16px;
 					border-bottom: 1px solid #dde0e0;
 					select {

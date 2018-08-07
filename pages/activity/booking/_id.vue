@@ -15,22 +15,22 @@
 					<div class="cont">
 						<div class="cont-item">
 							<p>First Name<b>*</b></p>
-							<input id="firstName" :class="{err:oderFirstNameErr}" @focus="fousOderfisrtname" @blur="gabulr(0)" v-model="oderFirstName" />
+							<input id="firstName" :class="{err:oderFirstNameErr}" @focus="fousOderfisrtname" @blur="gabulr(0)" v-model="oderFirstName" :style="{backgroundColor:test.test1?'rgb(250, 255, 189)':'rgb(250, 250, 250)'}"/>
 						</div>
 						<div class="cont-item">
 							<p>Last Name<b>*</b></p>
-							<input id="lastName" :class="{err:oderlastNameErr}" @focus="fousoderlastName" @blur="gabulr(1)" v-model="oderlastName" />
+							<input id="lastName" :class="{err:oderlastNameErr}" @focus="fousoderlastName" @blur="gabulr(1)" v-model="oderlastName" :style="{backgroundColor:test.test2?'rgb(250, 255, 189)':'rgb(250, 250, 250)'}"/>
 						</div>
 					</div>
 					<div class="emalAddress">
 						<p>Email Address<b>*</b></p>
-						<input id="email" :class="{err:emailAddressErr}" @focus="fousEmal" @blur="gabulr(2)" v-model="emailAddress"  placeholder="We'll send your confirmation here"/>
+						<input id="email" :class="{err:emailAddressErr}" @focus="fousEmal" @blur="gabulr(2)" v-model="emailAddress"  placeholder="We'll send your confirmation here" :style="{backgroundColor:test.test3?'rgb(250, 255, 189)':'rgb(250, 250, 250)'}"/>
 					</div>
 					<div class="cont">
 						<div class="cont-item">
 							<p>Country Code<b>*</b></p>
 							<div class="code-box">
-								<input id="code" :class="{err:codeErr}" @click.stop="focusCode(0)" @focus="focusCode(0)" @blur="gabulr(3)" autocomplete="off" v-model="mobileCode" />
+								<input id="code" :class="{err:codeErr}" @click.stop="focusCode(0)" @focus="focusCode(0)" @blur="gabulr(3)" autocomplete="off" v-model="mobileCode" :style="{backgroundColor:test.test4?'rgb(250, 255, 189)':'rgb(250, 250, 250)'}"/>
 								<div class="countryCode" v-if="showCode" :class="codeList.length>0?'width100':''">
 									<ul v-if="codeList.length>0">
 										<li v-for="item in codeList" @click.stop="selectCode(item.country_name,item.prefix,0)">{{item.country_name}} (+{{item.prefix}})</li>
@@ -42,13 +42,13 @@
 						</div>
 						<div class="cont-item">
 							<p>Mobile Phone<b>*</b></p>
-							<input id="mobilePhone" :class="{err:phoneErr}" @focus="fousPhone" @blur="gabulr(4)" v-model="phone" placeholder="For our guide to contact you" />
+							<input id="mobilePhone" :class="{err:phoneErr}" @focus="fousPhone" @blur="gabulr(4)" v-model="phone" placeholder="For our guide to contact you" :style="{backgroundColor:test.test5?'rgb(250, 255, 189)':'rgb(250, 250, 250)'}"/>
 						</div>
 					</div>
 					<div class="comments">
 						<h4>Other Required Information</h4>
-						<textarea v-if="opctions.pickup==1" @blur="gabulr(5)" placeholder="Fill out your hotel address for our guide to pick you up and your preferences for us to personalize your trips" v-model="comments"></textarea>
-						<textarea v-else v-model="comments" @blur="gabulr(5)"></textarea>
+						<textarea rows="3" v-if="opctions.pickup==1" @blur="gabulr(5)" placeholder="Fill out your hotel address for our guide to pick you up and your preferences for us to personalize your trips" v-model="comments"></textarea>
+						<textarea rows="3" v-else v-model="comments" @blur="gabulr(5)"></textarea>
 					</div>
 				</div>
 				<!--<div class="check">
@@ -237,6 +237,13 @@
 					couponDiscount: 0 //优惠价格
 
 				},
+				test:{
+					test1:false,//firstName
+					test2:false,//lastName
+					test3:false,//email
+					test4:false,//国家区号
+					test5:false,//phone
+				},
 				//订单联系人
 				oderFirstName: '',
 				oderFirstNameErr: false,
@@ -248,7 +255,6 @@
 				phoneErr: false,
 				mobileCode: '',
 				codeErr: '',
-
 				//出游联系人
 				TravellerFirstName: '',
 				TravellerFirstNameErr: false,
@@ -854,10 +860,39 @@
 
 		},
 		watch: {
-			
+			oderFirstName(val){
+				if(val){
+					this.test.test1=true
+					console.log(this.test.test1)
+				}else{
+					this.test.test1=false
+				}
+			},
+			oderlastName(val){
+				if(val){
+					this.test.test2=true
+				}else{
+					this.test.test2=false
+				}
+			},
+			emailAddress(val){
+				if(val){
+					this.test.test3=true
+				}else{
+					this.test.test3=false
+				}
+			},
+			phone(val){
+				if(val){
+					this.test.test5=true
+				}else{
+					this.test.test5=false
+				}
+			},
 			mobileCode: function(val, oldVal) {
 				let self = this
 				if(val) {
+					this.test.test4=true
 					if(val.length == 1) {
 						ga(gaSend, {
 							hitType: 'event',
@@ -895,6 +930,7 @@
 					//this.countryCode=arr
 
 				} else {
+					this.test.test4=false
 					self.codeList = self.countryCode
 
 				}
@@ -910,67 +946,42 @@
 				}
 
 			},
-//			mobileTravellCode: function(val, oldVal) {
-//				let self = this
-//				if(val) {
-//					self.travelCodeList = [];
-//					var other = [];
-//					var str = val.replace(/\(/, "\\\(").replace(/\)/, "\\\)").replace(/\+/, '\\\+')
-//					for(let i = 0; i < this.countryCode.length; i++) {
-//
-//						if(new RegExp(("^" + str), "i").test(self.countryCode[i].country_name + "(" + "+" + self.countryCode[i].prefix + ")")) {
-//							var json = {
-//								country_name: self.countryCode[i].country_name,
-//								prefix: self.countryCode[i].prefix
-//							}
-//							other.push(json)
-//
-//						} else {
-//
-//						}
-//					}
-//
-//					self.travelCodeList = other
-//					//this.countryCode=arr
-//
-//					//console.log(self.codeList)
-//				} else {
-//					self.travelCodeList = self.countryCode
-//
-//				}
-//			}
+
 		}
 	}
 </script>
 <style lang="scss">
 	//@import '~/assets/scss/_main.scss';
 	//@import '~/assets/font/iconfont.css';
-	#header{
-		box-shadow: 0px 2px 6px 0px rgba(53, 58, 63, 0.1);
+	.fillYourInfo{
+		#header{
+			box-shadow: 0px 2px 6px 0px rgba(53, 58, 63, 0.1);
+		}
+		input::-webkit-input-placeholder,textarea::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+	    	color:   #878e95;
+	    	font-size:14px ;
+		}
+		input:-moz-placeholder,textarea:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+		   color:    #878e95;
+		   font-size:14px ;
+		}
+		input::-moz-placeholder,textarea::-moz-placeholder { /* Mozilla Firefox 19+ */
+		   color:    #878e95;
+		   font-size:14px ;
+		}
+		input:-ms-input-placeholder,textarea:-ms-input-placeholder { /* Internet Explorer 10-11 */
+		   color:   #878e95;
+		   font-size:14px ;
+		}
+		body {
+			min-width: 1200px;
+		}
+		
+		.checkbox_label .checkbox_content {
+			white-space: normal!important;
+		}	
 	}
-	input::-webkit-input-placeholder { /* WebKit, Blink, Edge */
-    	color:   #878e95;
-    	font-size:14px ;
-	}
-	input:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
-	   color:    #878e95;
-	   font-size:14px ;
-	}
-	input::-moz-placeholder { /* Mozilla Firefox 19+ */
-	   color:    #878e95;
-	   font-size:14px ;
-	}
-	input:-ms-input-placeholder { /* Internet Explorer 10-11 */
-	   color:   #878e95;
-	   font-size:14px ;
-	}
-	body {
-		min-width: 1200px;
-	}
-	
-	.checkbox_label .checkbox_content {
-		white-space: normal!important;
-	}
+
 </style>
 <style lang="scss" scoped>
 	//@import '~/assets/scss/base/_setting.scss';
@@ -1072,15 +1083,15 @@
 	
 	.emalAddress {
 		margin-top: 15px;
-		width: 100%;
+		
 		p {
 			font-size: 18px;
 			margin-bottom: 6px;
 			font-weight: bold;
 		}
 		input {
-			width: calc(100% - 22px);
-			height: 35px;
+			width: calc(100% - 30px);
+			height: 36px;
 			font-size: 18px;
 			border: 1px solid #dde0e0;
 			border-radius: 3px;
@@ -1104,7 +1115,7 @@
 					box-shadow: 0px 2px 6px 0px rgba(53, 58, 63, 0.1);
 					background: #fff;
 					padding: 15px 30px;
-					width: 316px;
+					width: 376px;
 					.head {
 						padding-bottom: 15px;
 						border-bottom: 1px solid #dde0e0;
@@ -1141,7 +1152,7 @@
 							}
 						}
 						.child {
-							margin-top: 20px;
+							margin-top: 15px;
 							font-size: 18px;
 						}
 					}
@@ -1255,9 +1266,11 @@
 						font-weight: bold;
 					}
 					.cont {
+						width: calc(100% - 15px);
 						margin-top: 15px;
 						display: flex;
 						.cont-item {
+							
 							flex: 1;
 							p {
 								font-size: 18px;
@@ -1266,10 +1279,12 @@
 							}
 							input {
 								width: 345px;
-								height: 35px;
+								height: 36px;
 								font-size: 18px;
-								border: 1px solid #dde0e0;
+								border: 1px solid;
 								border-radius: 3px;
+								border-color:#858585 #c2c2c2 #c2c2c2;
+								box-shadow:inset 0 1px 0 rgba(0,0,0,.1), inset 0 1px 1px rgba(0,0,0,.05);
 								&:hover {
 									border-color: #1bbc9d;
 								}
@@ -1284,12 +1299,12 @@
 							margin-bottom: 6px;
 						}
 						textarea {
-							width: 684px;
-							height: 70px;
+							width: calc(100% - 30px);
+							
 							border-radius: 3px;
 							border: solid 1px #dde0e0;
 							resize: none;
-							padding:0 20px;
+							padding:0 10px;
 							font-size: 18px;
 						}
 					}
@@ -1404,7 +1419,7 @@
 					.information {
 						p {
 							font-size: 18px;
-							margin-top: 30px;
+							margin-top: 15px;
 							a {
 								color: #1bbc9d;
 							}
@@ -1432,6 +1447,7 @@
 					font-size: 14px;
 					box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.1);
 					padding: 10px;
+					width:704px;
 					a {
 						color: #1bbc9d;
 					}
@@ -1476,5 +1492,7 @@
 		.err {
 			border-color: red!important;
 		}
+		
+		
 	}
 </style>

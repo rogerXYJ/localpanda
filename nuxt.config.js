@@ -6,7 +6,7 @@ module.exports = {
   },
   build: {
 
-      //publicPath: 'https://resource.localpanda.com/static/js/',
+      //publicPath: 'https://resource.localpanda.cn/static/js/',
       //testGa: true,
      // payCode: 'pk_live_mRSdUvgwE4pZo2IVofL4cVch',
 

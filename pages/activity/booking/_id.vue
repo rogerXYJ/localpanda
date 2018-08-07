@@ -11,26 +11,26 @@
 				<h3>Fill in your information</h3>-->
 				<h5 v-if="!logIn"><span class="iconfont">&#xe617;</span>As a guest user, you can access your order details through your name and email</h5>
 				<div class="orderContact">
-					<h4>Reservation Information</h4>
+					<h4>Contact Information</h4>
 					<div class="cont">
 						<div class="cont-item">
 							<p>First Name<b>*</b></p>
-							<input id="firstName" :class="{err:oderFirstNameErr}" @focus="fousOderfisrtname" @blur="gabulr(0)" v-model="oderFirstName" :style="{backgroundColor:test.test1?'rgb(250, 255, 189)':'rgb(250, 250, 250)'}"/>
+							<input id="firstName" :class="{err:oderFirstNameErr}" @focus="fousOderfisrtname" @blur="gabulr(0)" v-model="oderFirstName" :style="{backgroundColor:test.test1?'rgb(250, 255, 189)':'rgb(255, 255, 255)'}"/>
 						</div>
 						<div class="cont-item">
 							<p>Last Name<b>*</b></p>
-							<input id="lastName" :class="{err:oderlastNameErr}" @focus="fousoderlastName" @blur="gabulr(1)" v-model="oderlastName" :style="{backgroundColor:test.test2?'rgb(250, 255, 189)':'rgb(250, 250, 250)'}"/>
+							<input id="lastName" :class="{err:oderlastNameErr}" @focus="fousoderlastName" @blur="gabulr(1)" v-model="oderlastName" :style="{backgroundColor:test.test2?'rgb(250, 255, 189)':'rgb(255, 255, 255)'}"/>
 						</div>
 					</div>
 					<div class="emalAddress">
 						<p>Email Address<b>*</b></p>
-						<input id="email" :class="{err:emailAddressErr}" @focus="fousEmal" @blur="gabulr(2)" v-model="emailAddress"  placeholder="We'll send your confirmation here" :style="{backgroundColor:test.test3?'rgb(250, 255, 189)':'rgb(250, 250, 250)'}"/>
+						<input id="email" :class="{err:emailAddressErr}" @focus="fousEmal" @blur="gabulr(2)" v-model="emailAddress"  placeholder="We'll send your confirmation here" :style="{backgroundColor:test.test3?'rgb(250, 255, 189)':'rgb(255, 255, 255)'}"/>
 					</div>
 					<div class="cont">
 						<div class="cont-item">
 							<p>Country Code<b>*</b></p>
 							<div class="code-box">
-								<input id="code" :class="{err:codeErr}" @click.stop="focusCode(0)" @focus="focusCode(0)" @blur="gabulr(3)" autocomplete="off" v-model="mobileCode" :style="{backgroundColor:test.test4?'rgb(250, 255, 189)':'rgb(250, 250, 250)'}"/>
+								<input id="code" :class="{err:codeErr}" @click.stop="focusCode(0)" @focus="focusCode(0)" @blur="gabulr(3)" autocomplete="off" v-model="mobileCode" :style="{backgroundColor:test.test4?'rgb(250, 255, 189)':'rgb(255, 255, 255)'}"/>
 								<div class="countryCode" v-if="showCode" :class="codeList.length>0?'width100':''">
 									<ul v-if="codeList.length>0">
 										<li v-for="item in codeList" @click.stop="selectCode(item.country_name,item.prefix,0)">{{item.country_name}} (+{{item.prefix}})</li>
@@ -42,7 +42,7 @@
 						</div>
 						<div class="cont-item">
 							<p>Mobile Phone<b>*</b></p>
-							<input id="mobilePhone" :class="{err:phoneErr}" @focus="fousPhone" @blur="gabulr(4)" v-model="phone" placeholder="For our guide to contact you" :style="{backgroundColor:test.test5?'rgb(250, 255, 189)':'rgb(250, 250, 250)'}"/>
+							<input id="mobilePhone" :class="{err:phoneErr}" @focus="fousPhone" @blur="gabulr(4)" v-model="phone" placeholder="For our guide to contact you" :style="{backgroundColor:test.test5?'rgb(250, 255, 189)':'rgb(255, 255, 255)'}"/>
 						</div>
 					</div>
 					<div class="comments">
@@ -1491,6 +1491,7 @@
 		}
 		.err {
 			border-color: red!important;
+			color: red!important;
 		}
 		
 		

@@ -113,7 +113,7 @@
 						<div class="totalPic">{{opctions.symbol}}{{returnFloat(opctions.amount)}}</div>
 					</div>
 				</div>
-				<div class="payWidth">
+				<!--<div class="payWidth">
 					<h4>You can pay with:</h4>
 					<div class="payments">
 						<span>
@@ -126,11 +126,11 @@
 									<use xlink:href="#icon-americanexpress"></use>
 							</svg>
 						</span>
-						<!-- <span>
+						 <span>
 							<svg class="icon" aria-hidden="true">
 									<use xlink:href="#icon-paypal"></use>
 							</svg>
-						</span> -->
+						</span> 
 						<span>
 							<svg class="icon" aria-hidden="true">
 									<use xlink:href="#icon-visa"></use>
@@ -143,7 +143,7 @@
 							</svg>
 						</span>
 					</div>
-				</div>
+				</div>-->
 			</div>
 
 		</div>

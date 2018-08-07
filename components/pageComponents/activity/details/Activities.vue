@@ -28,13 +28,17 @@
 							<em v-else>{{picInfo.minParticipants}} - {{picInfo.maxParticipants}}</em>
 						</span>
 						<span>
-							<label  class="iconfont">&#xe627;</label>
-							<em v-if="detail.groupType=='Group'">English</em>
-							<em v-else>English, Español, Français, Deutsch, русский язык</em>
+							<label  class="iconfont">&#xe684;</label>
+							<em>{{detail.trafficType}}</em>
 						</span>
 						<span>
 							<label  class="iconfont">&#xe610;</label>
 							<em>{{destinations}}</em>
+						</span>
+						<span>
+							<label  class="iconfont">&#xe627;</label>
+							<em v-if="detail.groupType=='Group'">English</em>
+							<em v-else>English, Español, Français, Deutsch, русский язык</em>
 						</span>
 						
 					</div>
@@ -1687,10 +1691,11 @@
 						}
 					}
 					.service{
-						margin-top: 30px;
+						margin-top: 20px;
 						span{
 							display: inline-block;
-							margin-right:20px;
+							margin-right:40px;
+							margin-bottom: 5px;
 							&:last-child{
 								margin-right: 0;
 							}

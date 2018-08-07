@@ -617,31 +617,39 @@
 <style lang="scss">
 	//@import '~/assets/scss/_main.scss';
 	//@import '~/assets/font/iconfont.css';
-	#header {
-		box-shadow: 0px 2px 6px 0px rgba(53, 58, 63, 0.1);
-	}
-	
-	body {
-		min-width: 1200px;
-	}
-	
-	.ewmLogo {
-		position: absolute;
-		width: 30px;
-		height: 30px;
-		left: 50%;
-		top: 50%;
-		-webkit-transform: translate(-50%, -50%);
-		transform: translate(-50%, -50%);
-		border-radius: 5px;
-	}
-	
-	.refresh_code {
-		color: #00B886;
-		cursor: pointer;
-		&:hover {
-			color: #00B886;
+	.payNow{
+		#header {
+			box-shadow: 0px 2px 6px 0px rgba(53, 58, 63, 0.1);
 		}
+		
+		body {
+			min-width: 1200px;
+		}
+		
+		.ewmLogo {
+			position: absolute;
+			width: 30px;
+			height: 30px;
+			left: 50%;
+			top: 50%;
+			-webkit-transform: translate(-50%, -50%);
+			transform: translate(-50%, -50%);
+			border-radius: 5px;
+		}
+		
+		.refresh_code {
+			color: #00B886;
+			cursor: pointer;
+			&:hover {
+				color: #00B886;
+			}
+		}
+
+
+		#header .heder-cont{
+			.init,.headleft .search{ display: none;}
+		}
+
 	}
 </style>
 <style lang="scss" scoped>

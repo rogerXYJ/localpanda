@@ -1691,7 +1691,7 @@
 						}
 					}
 					.service{
-						margin-top: 20px;
+						margin-top: 30px;
 						span{
 							display: inline-block;
 							margin-right:40px;
@@ -1700,7 +1700,7 @@
 								margin-right: 0;
 							}
 							label{
-								font-size: 12px;
+								font-size: 16px;
 								display: inline-block;
 								margin-right:8px;
 							}

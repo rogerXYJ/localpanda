@@ -1419,7 +1419,7 @@
 					.information {
 						p {
 							font-size: 18px;
-							margin-top: 30px;
+							margin-top: 15px;
 							a {
 								color: #1bbc9d;
 							}

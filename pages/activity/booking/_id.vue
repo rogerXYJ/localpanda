@@ -28,7 +28,7 @@
 					</div>
 					<div class="cont">
 						<div class="cont-item">
-							<p>Country Code<b>*</b></p>
+							<p>Country orTerritory Code<b>*</b></p>
 							<div class="code-box">
 								<input id="code" :class="{err:codeErr}" @click.stop="focusCode(0)" @focus="focusCode(0)" @blur="gabulr(3)" autocomplete="off" v-model="mobileCode" :style="{backgroundColor:test.test4?'rgb(250, 255, 189)':'rgb(255, 255, 255)'}"/>
 								<div class="countryCode" v-if="showCode" :class="codeList.length>0?'width100':''">
@@ -46,9 +46,9 @@
 						</div>
 					</div>
 					<div class="comments">
-						<h4>Other Required Information</h4>
-						<textarea rows="3" v-if="opctions.pickup==1" @blur="gabulr(5)" placeholder="Fill out your hotel address for our guide to pick you up and your preferences for us to personalize your trips" v-model="comments"></textarea>
-						<textarea rows="3" v-else v-model="comments" @blur="gabulr(5)"></textarea>
+						<h4>Other Information</h4>
+						<textarea rows="3" v-if="opctions.pickup==1" @blur="gabulr(5)" placeholder="You can fill out your travel preferences here for us to personalize your trip" v-model="comments"></textarea>
+						<textarea rows="3" v-else v-model="comments" @blur="gabulr(5)" placeholder="You can fill out your travel preferences here for us to personalize your trip"></textarea>
 					</div>
 				</div>
 				<!--<div class="check">
@@ -980,6 +980,10 @@
 		.checkbox_label .checkbox_content {
 			white-space: normal!important;
 		}	
+
+		#header .heder-cont{
+			.init,.headleft .search{ display: none;}
+		}
 	}
 
 </style>
@@ -1493,6 +1497,9 @@
 			border-color: red!important;
 			color: red!important;
 		}
+
+
+		
 		
 		
 	}

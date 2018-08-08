@@ -183,7 +183,7 @@
 				<ul class="clearfix">
 					<li>
 						<div class="visitor-headPic">
-							<img v-lazy="'https://resource.localpanda.cn/static/content/reviews/Claudia.jpg'"/>
+							<img v-lazy="'https://cloud.localpanda.com/static/content/reviews/Claudia.jpg'"/>
 						</div>
 						<div class="visitor-message">
 							<b>Claudia Flores </b>
@@ -193,7 +193,7 @@
 					</li>
 					<li>
 						<div class="visitor-headPic">
-							<img v-lazy="'https://resource.localpanda.cn/static/content/reviews/Selvarani.jpg'"/>
+							<img v-lazy="'https://cloud.localpanda.com/static/content/reviews/Selvarani.jpg'"/>
 						</div>
 						<div class="visitor-message">
 							<b>Selvarani Saravanamuthu</b>
@@ -203,7 +203,7 @@
 					</li>
 					<li>
 						<div class="visitor-headPic">
-							<img v-lazy="'https://resource.localpanda.cn/static/content/reviews/Cynthia.jpg'"/>
+							<img v-lazy="'https://cloud.localpanda.com/static/content/reviews/Cynthia.jpg'"/>
 						</div>
 						<div class="visitor-message">
 							<b>Cynthia Huang</b>
@@ -343,7 +343,7 @@
 				mapPosition:[
 					{
 						cont:"Great Wall",
-						imgUrl:"https://resource.localpanda.cn/content/landingpage/chinatour/Location.png",
+						imgUrl:"https://cloud.localpanda.com/content/landingpage/chinatour/Location.png",
 						isMap:false,
 						position:{
 							top:"286px",
@@ -353,7 +353,7 @@
 					},
 					{
 						cont:'Forbidden City',
-						imgUrl:'https://resource.localpanda.cn/content/landingpage/chinatour/Location.png',
+						imgUrl:'https://cloud.localpanda.com/content/landingpage/chinatour/Location.png',
 						isMap:false,
 						position:{
 							top:"300px",
@@ -363,14 +363,14 @@
 					},
 					{
 						cont:'Bund',
-						imgUrl:'https://resource.localpanda.cn/content/landingpage/chinatour/Location.png',
+						imgUrl:'https://cloud.localpanda.com/content/landingpage/chinatour/Location.png',
 						isMap:false,
 						position:{bottom:"299px",right:"105px"},
 						word:"bund"
 					},
 					{
 						cont:'Terracotta Warriors',
-						imgUrl:'https://resource.localpanda.cn/content/landingpage/chinatour/Location.png',
+						imgUrl:'https://cloud.localpanda.com/content/landingpage/chinatour/Location.png',
 						isMap:false,
 						position:{
 							top:"409px",
@@ -380,28 +380,28 @@
 					},
 					{
 						cont:'Panda',
-						imgUrl:'https://resource.localpanda.cn/content/landingpage/chinatour/Location.png',
+						imgUrl:'https://cloud.localpanda.com/content/landingpage/chinatour/Location.png',
 						isMap:false,
 						position:{top:"470px",right:"373px"},
 						word:"giant_pandas"
 					},
 					{
 						cont:'Leshan Giant Buddha',
-						imgUrl:'https://resource.localpanda.cn/content/landingpage/chinatour/Location.png',
+						imgUrl:'https://cloud.localpanda.com/content/landingpage/chinatour/Location.png',
 						isMap:false,
 						position:{top:"490px",right:"375px"},
 						word:"leshan_giant_buddha"
 					},
 					{
 						cont:'Jiuzhaigou',
-						imgUrl:'https://resource.localpanda.cn/content/landingpage/chinatour/Location.png',
+						imgUrl:'https://cloud.localpanda.com/content/landingpage/chinatour/Location.png',
 						isMap:false,
 						position:{top:"432px",right:"366px"},
 						word:"jiuzhaigou"
 					},
 					{
 						cont:'Guilin and Yangshuo',
-						imgUrl:'https://resource.localpanda.cn/content/landingpage/chinatour/Location.png',
+						imgUrl:'https://cloud.localpanda.com/content/landingpage/chinatour/Location.png',
 						isMap:false,
 						position:{bottom:"167px",right:"269px"},
 						word:"guilin_and_yangshuo"
@@ -409,7 +409,7 @@
 					
 					{
 						cont:'Water Towns',
-						imgUrl:'https://resource.localpanda.cn/content/landingpage/chinatour/Location.png',
+						imgUrl:'https://cloud.localpanda.com/content/landingpage/chinatour/Location.png',
 						isMap:false,
 						position:{bottom:"300px",right:"125px"},
 						word:"water_town"
@@ -417,14 +417,14 @@
 					},
 					{
 						cont:'Hangzhou West Lake',
-						imgUrl:'https://resource.localpanda.cn/content/landingpage/chinatour/Location.png',
+						imgUrl:'https://cloud.localpanda.com/content/landingpage/chinatour/Location.png',
 						isMap:false,
 						position:{bottom:"279px",right:"127px"},
 						word:"west_lake"
 					},
 					{
 						cont:"Yellow Mountain",
-						imgUrl:'https://resource.localpanda.cn/content/landingpage/chinatour/Location.png',
+						imgUrl:'https://cloud.localpanda.com/content/landingpage/chinatour/Location.png',
 						isMap:false,
 						position:{bottom:"275px",right:"155px"},
 						word:"yellow_mountain"
@@ -432,7 +432,7 @@
 					},
 					{
 						cont:"Zhangjiajie",
-						imgUrl:'https://resource.localpanda.cn/content/landingpage/chinatour/Location.png',
+						imgUrl:'https://cloud.localpanda.com/content/landingpage/chinatour/Location.png',
 						isMap:false,
 						position:{top:"501px",right:"265px"},
 						word:"zhangjiajie"
@@ -440,7 +440,7 @@
 					},
 					{
 						cont:"Tibet",
-						imgUrl:'https://resource.localpanda.cn/content/landingpage/chinatour/Location.png',
+						imgUrl:'https://cloud.localpanda.com/content/landingpage/chinatour/Location.png',
 						isMap:false,
 						position:{
 							bottom:"268px",
@@ -455,72 +455,72 @@
 				mapList:[
 					{
 						cont:"Great Wall",
-						imgUrl:"https://resource.localpanda.cn/content/landingpage/chinatour/GreatWall.jpg",
+						imgUrl:"https://cloud.localpanda.com/content/landingpage/chinatour/GreatWall.jpg",
 						word:"great_wall"
 						
 					},
 					{
 						cont:'Forbidden City',
-						imgUrl:'https://resource.localpanda.cn/content/landingpage/chinatour/ForbiddenCity.jpg',
+						imgUrl:'https://cloud.localpanda.com/content/landingpage/chinatour/ForbiddenCity.jpg',
 						word:"forbidden_city"
 					},
 					{
 						cont:'Bund',
-						imgUrl:'https://resource.localpanda.cn/content/landingpage/chinatour/TheBund.jpg',
+						imgUrl:'https://cloud.localpanda.com/content/landingpage/chinatour/TheBund.jpg',
 						word:"bund"
 					},
 					{
 						cont:'Terracotta Warriors',
-						imgUrl:'https://resource.localpanda.cn/content/landingpage/chinatour/TerracottaWarriors.jpg',
+						imgUrl:'https://cloud.localpanda.com/content/landingpage/chinatour/TerracottaWarriors.jpg',
 						word:"terracotta_warriors"
 					},
 					
 					{
 						cont:'Panda',
-						imgUrl:'https://resource.localpanda.cn/content/landingpage/chinatour/GiantPandas.jpg',
+						imgUrl:'https://cloud.localpanda.com/content/landingpage/chinatour/GiantPandas.jpg',
 						word:"giant_pandas"
 					},
 					{
 						cont:'Leshan Giant Buddha',
-						imgUrl:'https://resource.localpanda.cn/content/landingpage/chinatour/LeshanGiantBuddha.jpg',
+						imgUrl:'https://cloud.localpanda.com/content/landingpage/chinatour/LeshanGiantBuddha.jpg',
 						word:"leshan_giant_buddha"
 					},
 					{
 						cont:'Jiuzhaigou',
-						imgUrl:'https://resource.localpanda.cn/content/landingpage/chinatour/Jiuzhaigou.jpg',
+						imgUrl:'https://cloud.localpanda.com/content/landingpage/chinatour/Jiuzhaigou.jpg',
 						word:"jiuzhaigou"
 					},
 					{
 						cont:'Guilin and Yangshuo',
-						imgUrl:'https://resource.localpanda.cn/content/landingpage/chinatour/Yangshuo.jpg',
+						imgUrl:'https://cloud.localpanda.com/content/landingpage/chinatour/Yangshuo.jpg',
 						word:"guilin_and_yangshuo"
 					},
 					
 					{
 						cont:'Water Towns',
-						imgUrl:'https://resource.localpanda.cn/content/landingpage/chinatour/WaterTown.jpg',
+						imgUrl:'https://cloud.localpanda.com/content/landingpage/chinatour/WaterTown.jpg',
 						word:"water_town"
 					},
 					{
 						cont:'Hangzhou West Lake',
-						imgUrl:'https://resource.localpanda.cn/content/landingpage/chinatour/WestLake.jpg',
+						imgUrl:'https://cloud.localpanda.com/content/landingpage/chinatour/WestLake.jpg',
 						word:"west_lake"
 					},
 					{
 						cont:"Yellow Mountain",
-						imgUrl:'https://resource.localpanda.cn/content/landingpage/chinatour/MountHuangshan.jpg',
+						imgUrl:'https://cloud.localpanda.com/content/landingpage/chinatour/MountHuangshan.jpg',
 						word:"yellow_mountain"
 						
 					},
 					{
 						cont:"Zhangjiajie",
-						imgUrl:'https://resource.localpanda.cn/content/landingpage/chinatour/Zhangjiajie.jpg',
+						imgUrl:'https://cloud.localpanda.com/content/landingpage/chinatour/Zhangjiajie.jpg',
 						word:"zhangjiajie"
 						
 					},
 					{
 						cont:"Tibet",
-						imgUrl:'https://resource.localpanda.cn/content/landingpage/chinatour/Tibet.jpg',
+						imgUrl:'https://cloud.localpanda.com/content/landingpage/chinatour/Tibet.jpg',
 						word:"tibet"
 						
 					}
@@ -566,7 +566,7 @@
 						],
 						activites: [{
 								linkUrl:"/activity/details/11237",
-								activityPhoto: "https://resource.localpanda.cn/activity/banners/11237_1106630623_U5366072.jpg",
+								activityPhoto: "https://cloud.localpanda.com/activity/banners/11237_1106630623_U5366072.jpg",
 								title: '"China Essentials: Wonders, Scenery, and Pandas" 13-Day Private Tour',
 								duration: '13 Days & 12 Nights',
 								nowPrice: "$1298.90",
@@ -618,7 +618,7 @@
 							},
 							{
 								linkUrl:"/activity/details/11238",
-								activityPhoto: "https://resource.localpanda.cn/activity/banners/11238_1106630706.jpg",
+								activityPhoto: "https://cloud.localpanda.com/activity/banners/11238_1106630706.jpg",
 								title: '"Classic Wonders" 11-Day Private Tour',
 								duration: '11 Days & 10 Nights',
 								nowPrice: "$1047.90",
@@ -669,7 +669,7 @@
 							},
 							{
 								linkUrl:'/activity/details/11239',
-								activityPhoto: "https://resource.localpanda.cn/activity/banners/11239_1106630708.jpg",
+								activityPhoto: "https://cloud.localpanda.com/activity/banners/11239_1106630708.jpg",
 								title: '"Ancient and Modern China" 8-Day Private Tour',
 								duration: '8 Days & 7 Nights',
 								nowPrice: "$757.00",
@@ -720,7 +720,7 @@
 							},
 							{
 								linkUrl:'/activity/details/11240',
-								activityPhoto: "https://resource.localpanda.cn/activity/banners/11240_1106630710.jpg",
+								activityPhoto: "https://cloud.localpanda.com/activity/banners/11240_1106630710.jpg",
 								title: '"Highlights Explosion" 6-Day Private Tour',
 								duration: '6 Days & 5 Nights',
 								nowPrice: "$454.00",
@@ -786,7 +786,7 @@
 						],
 						activites: [{
 								linkUrl:'/activity/details/11241',
-								activityPhoto:"https://resource.localpanda.cn/activity/banners/11241_1106630829.jpg",
+								activityPhoto:"https://cloud.localpanda.com/activity/banners/11241_1106630829.jpg",
 								title: '"China Scenery and Floating Mountains" 11-Day Private Tour',
 								duration: '11 Days & 10 Nights',
 								nowPrice: "$1384.90",
@@ -838,7 +838,7 @@
 							},
 							{
 								linkUrl:'/activity/details/11251',
-								activityPhoto: "https://resource.localpanda.cn/activity/banners/11251_1106699508_U5848932.jpg",
+								activityPhoto: "https://cloud.localpanda.com/activity/banners/11251_1106699508_U5848932.jpg",
 								title: '"Beautiful China and Holy Tibet" 13-Day Private Tour',
 								duration: '13-Day Private Tour',
 								nowPrice: "$1895.90",
@@ -889,7 +889,7 @@
 							},
 							{
 								linkUrl:'/activity/details/11242',
-								activityPhoto: "https://resource.localpanda.cn/activity/banners/11242_1106630830.jpg",
+								activityPhoto: "https://cloud.localpanda.com/activity/banners/11242_1106630830.jpg",
 								title: '"Riches of China and Yangtze River Delta" 13-Day Private Tour',
 								duration: '13 Days & 12 Nights',
 								nowPrice: "$1394.00",
@@ -940,7 +940,7 @@
 							},
 							{
 								linkUrl:'/activity/details/11245',
-								activityPhoto: "https://resource.localpanda.cn/activity/banners/11245_1106630831.jpg",
+								activityPhoto: "https://cloud.localpanda.com/activity/banners/11245_1106630831.jpg",
 								title: '"Yangtze River Delta and Yellow Mountain" 8-Day Private Tour',
 								duration: '8 Days & 7 Nights',
 								nowPrice: "$696.90",
@@ -1009,7 +1009,7 @@
 					],
 					activites: [{
 							linkUrl:'/activity/details/11246',
-							activityPhoto: "https://resource.localpanda.cn/activity/banners/11246_1106630921.jpg",
+							activityPhoto: "https://cloud.localpanda.com/activity/banners/11246_1106630921.jpg",
 							title: '"The Pursuit of Happiness" 11-Day Private Tour',
 							duration: '11 Days & 10 Nights',
 							nowPrice: "$1147.90",
@@ -1060,7 +1060,7 @@
 						},
 						{	
 							linkUrl:'/activity/details/11247',
-							activityPhoto: "https://resource.localpanda.cn/activity/banners/11247_1106630922.jpg",
+							activityPhoto: "https://cloud.localpanda.com/activity/banners/11247_1106630922.jpg",
 							title: '"China Full Immersion" 13-Day Private Tour',
 							duration: '13 Days & 12 Nights',
 							nowPrice: "$1448.90",
@@ -1283,7 +1283,7 @@
 	.chinaTour {
 		.banner {
 			height: 500px;
-			background: url("https://resource.localpanda.cn/content/landingpage/chinatour/Banner.jpg") no-repeat;
+			background: url("https://cloud.localpanda.com/content/landingpage/chinatour/Banner.jpg") no-repeat;
 			background-size: cover;
 			background-position: center;
 			position: relative;
@@ -1366,7 +1366,7 @@
 						}
 					}
 					.map {
-						background: url("https://resource.localpanda.cn/content/landingpage/chinatour/Map.jpg") no-repeat;
+						background: url("https://cloud.localpanda.com/content/landingpage/chinatour/Map.jpg") no-repeat;
 						background-size: cover;
 						background-position: center;
 						float: right;

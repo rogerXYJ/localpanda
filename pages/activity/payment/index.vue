@@ -190,11 +190,11 @@
 				script: [
 					{
 						src: 'https://js.stripe.com/v3/',
-						//src:'https://resource.localpanda.cn/static/js/lp/stripe.js',
+						//src:'https://cloud.localpanda.com/static/js/lp/stripe.js',
 						type: 'text/javascript'
 					},
 					{
-						src: 'https://resource.localpanda.cn/static/js/qrcode.min.js',
+						src: 'https://cloud.localpanda.com/static/js/qrcode.min.js',
 						type: 'text/javascript'
 					}
 				]
@@ -517,7 +517,7 @@
 						//var imgSrc = 'data:image/png;base64,'+response.data.code_url;
 						//self.wxPayEwm = imgSrc;
 						var payLogo = new Image();
-						payLogo.src = 'https://resource.localpanda.cn/static/icon/wechat.png';
+						payLogo.src = 'https://cloud.localpanda.com/static/icon/wechat.png';
 						payLogo.className = 'ewmLogo';
 						wxPayEwm.appendChild(payLogo);
 

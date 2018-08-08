@@ -16,7 +16,7 @@
 				</div>
 		
 				<div class="activitiyTitle">
-					<h3><span v-if="detail.groupType" :class="detail.groupType=='private'?'pr':'gr'">{{detail.groupType}}</span>{{detail.title}}</h3>
+					<h3><span v-if="detail.groupType" :class="detail.groupType=='Private'?'pr':'gr'">{{detail.groupType}}</span>{{detail.title}}</h3>
 					<div class="service">
 						<span>
 							<label class="iconfont">&#xe624;</label>
@@ -53,33 +53,7 @@
 						<a v-if="detail.attractions.length>4" @click="showMoreTag=!showMoreTag">···</a>
 						<!--<p v-if="detail.sales&&detail.sales>0">Booked {{detail.sales}} {{detail.sales==1?'time':'times'}} (last 30 days)</p>-->
 					</div>
-				</div>
-				<!--<ul class="description clearfix" id="description">
-					<li>
-						<label class="iconfont">&#xe653;</label>
-						<span>Mode: {{detail.trafficType}}</span>
-					</li>
-					<li>
-						<label class="iconfont">&#xe624;</label>
-						<span>Duration: {{detail.duration}} {{detail.durationUnit|firstUpperCase}}</span>
-					</li>
-					<li>
-						<label class="iconfont" style="font-size: 20px;">&#xe652;</label>
-						<span v-if="picInfo.minParticipants==picInfo.maxParticipants">Participants: {{picInfo.minParticipants}}</span>
-						<span v-else>Participants: {{picInfo.minParticipants}} - {{picInfo.maxParticipants}}</span>
-					</li>
-				</ul>
-				<div class="languages clearfix">
-
-					<label class="iconfont">&#xe627;<em>{{detail.groupType=='Group'?'Language:':'Languages:'}} </em></label>
-					<span v-if="detail.groupType=='Group'"> English</span>
-					<span v-else>English, French, Spanish, Russian, German, Japanese, Korean</span>
-				</div>
-				<div class="location clearfix">
-					<label class="iconfont" style="font-size: 20px;">&#xe610;<em>Location:</em></label>
-					<span>{{destinations}}</span>
-				</div>-->
-				
+				</div>				
 				<p class="says" v-if="detail.recommendedReason">{{detail.recommendedReason}}</p>
 				<div class="heightLights" id="heightLights" v-if="highlights&&highlights.length>0">
 					<div class="expect">
@@ -1676,6 +1650,7 @@
 						font-size: 32px;
 						vertical-align:middle;
 						span{
+							vertical-align:bottom;
 							display: inline-block;
 							margin-right: 10px;
 							font-size: 18px!important;
@@ -1686,7 +1661,7 @@
 								background:#52b589;
 							}
 							&.gr{
-								background:#f4b33f;
+								background:#efae99;
 							}
 						}
 					}
@@ -2186,7 +2161,7 @@
 					margin-right: 16px;
 					width: 109px;
 					height: 109px;
-					background:url("https://resource.localpanda.cn/activity/banners/11027_1106614229_U5251601.jpg");
+					background:url("https://cloud.localpanda.com/activity/banners/11027_1106614229_U5251601.jpg");
 					background-repeat:no-repeat;
 					background-size:cover;
 					background-position:center; 

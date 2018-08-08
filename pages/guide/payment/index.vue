@@ -10,7 +10,7 @@
 				<div class="bookbtn">
 				<p>Pay with:</p>
 				<div class="payfor">
-					<img style="width: 200px;" src="https://resource.localpanda.cn/static/icon/stripe.png" />
+					<img style="width: 200px;" src="https://cloud.localpanda.com/static/icon/stripe.png" />
 				</div>
 				<div style="font-size: 16px;line-height: 20px;display: block; margin-top: 20px;"><b>Secure Payment:</b> </br>We use Stripe’s online payment system, which sends your payment info directly to Stripe’s secure servers, so your data is never sent to Local Panda’s servers and cannot be stolen.</div>
 			</div>
@@ -131,7 +131,7 @@ export default {
       let that = this;
       that.stripeHandler = StripeCheckout.configure({
         key: payCode,
-        image: "https://resource.localpanda.cn/static/icon/logo.png", // 显示在支付对话框的图片，可自己指定
+        image: "https://cloud.localpanda.com/static/icon/logo.png", // 显示在支付对话框的图片，可自己指定
         alipay: true, // 启用支付宝支付
         token: function(token) {
           // 用户填写完资料并且 Stripe 校验成功后的回调函数

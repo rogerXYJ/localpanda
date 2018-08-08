@@ -175,7 +175,7 @@
 				<div class="bookbtn">
 					<p>Pay With:</p>
 					<div class="payfor">
-						<img style="width:200px" src="https://resource.localpanda.cn/static/icon/stripe.png" />
+						<img style="width:200px" src="https://cloud.localpanda.com/static/icon/stripe.png" />
 					</div>
 					<div style=" width:316px;font-size: 16px;line-height: 20px;display: block; margin-top: 20px;"><b>Secure Payment:</b> </br>We use Stripe's online payment system, which sends your payment info directly to Stripe's secure servers, so your data is never sent to Local Panda's servers and cannot be stolen.</div>
 				</div>
@@ -1057,7 +1057,7 @@
 	
 	.countryCode {
 		position: absolute;
-		top: 52px;
+		top: 37px;
 		left: 0;
 		width: calc(100% - 10px);
 		box-shadow: 0px 2px 10px 0px rgba(53, 58, 63, 0.2);

@@ -1,4 +1,4 @@
-const cdnPath = 'https://resource.localpanda.cn';
+const cdnPath = 'https://cloud.localpanda.com';
 module.exports = {
     whoDataSource: [
         {

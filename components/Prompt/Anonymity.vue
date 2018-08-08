@@ -246,12 +246,12 @@
 			<div class="con">
 				<div class="facebook">
 					<h3 class="title">Log in with Facebook</h3>
-					<p>If you have already logged in via your Facebook account and placed an order, you can login through Facebook and view the status of your order.</p>
+					<p>If you have already logged in via your Facebook account and placed an order, you can login through Facebook and  view your order details.</p>
 					<div class="btn" @click="ok"><button><span class="iconfont">&#xe613;</span>Log in with Facebook</button></div>
 				</div>
 				<div class="others">
 					<h3>For Guest Users</h3>
-					<p>Please enter reservee's following information to view the order status</p>
+					
 					<div class="name clearfix">
 						<div class="firstName">
 							<input v-model="first" placeholder="First name" @focus="foucsIn(0)" :class="{err:firstErr}"/>

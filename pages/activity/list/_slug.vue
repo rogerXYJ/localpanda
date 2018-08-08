@@ -1229,7 +1229,7 @@
 		background: #faf9f8;
 		.banner {
 			position: relative;
-			background: url("https://resource.localpanda.cn/static/headerPhotos/ListBanner.jpg") no-repeat;
+			background: url("https://cloud.localpanda.com/static/headerPhotos/ListBanner.jpg") no-repeat;
 			background-size: cover;
 			background-position: center;
 			height: 290px;

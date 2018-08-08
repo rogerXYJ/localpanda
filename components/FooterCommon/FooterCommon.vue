@@ -90,7 +90,7 @@
 								<use xlink:href="#icon-wechat1"></use>
 						</svg>
 						<div class="wechatCode" v-show="showChat" @mouseenter="showChat=true" @mouseleave="showChat=false">
-							<img src="https://resource.localpanda.cn/static/icon/LPwechat.jpg"  alt=""/>
+							<img src="https://cloud.localpanda.com/static/icon/LPwechat.jpg"  alt=""/>
 						</div>
 					</a>
 					<a href="https://www.facebook.com/LocalPandaGuides/?fref=ts">

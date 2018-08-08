@@ -9,7 +9,7 @@
 				</div>
 				<!--seach bar -->
 				<div class="selectInfo">
-					<input type="" v-model="seachContent" @click.stop="showHot" maxlength="60" @keyup.enter="seachFn" placeholder="Attraction, Activity, Destination" />
+					<input type="" v-model="seachContent" @click.stop="showHot" maxlength="60" @keyup.enter="seachFn" autocomplete="off" placeholder="Attraction, Activity, Destination" />
 					<div class="selectPeople"@click.stop="showSelectPeople">
 						<span>{{postData.participants}} People <i class="iconfont">&#xe60f;</i></span>
 						<input-number v-if="selectPeople" :participants="postData.participants" :selectNumber="selectNumber" @showSelectPeople="setSelectPeople" @getPeople="setPeople"></input-number>
@@ -1299,7 +1299,9 @@
 					width: 107px;
 					height: 48px;
 					background-image: linear-gradient(270deg,#009efd 0%,#1bbc9d 100%);
-					float: right;
+					position: absolute;
+					right: 0;
+					top:0;
 					border-top-right-radius:  6px;
 					border-bottom-right-radius: 6px;
 					font-size: 16px;

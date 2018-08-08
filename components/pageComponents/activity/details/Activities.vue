@@ -28,7 +28,7 @@
 							<em v-else>{{picInfo.minParticipants}} - {{picInfo.maxParticipants}}</em>
 						</span>
 						<span>
-							<label  class="iconfont">&#xe684;</label>
+							<label  class="iconfont fs14">&#xeb0e;</label>
 							<em>{{detail.trafficType}}</em>
 						</span>
 						<span>
@@ -1703,6 +1703,9 @@
 								font-size: 16px;
 								display: inline-block;
 								margin-right:8px;
+							}
+							.fs14{
+								font-size:14px;
 							}
 							em{
 								font-size: 16px;

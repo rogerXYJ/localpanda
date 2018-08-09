@@ -862,6 +862,7 @@
 							localStorage.getItem("userid") : null,
 						activityId: that.detail.activityId,
 						refundTimeLimit: that.picInfo.refundTimeLimit,
+						fullRefund:that.picInfo.fullRefund,
 						amount: that.children > 0 && that.picInfo.childDiscount ?
 							that.returnFloat(that.returnFloat(that.adultsPic) - that.returnFloat(that.children * that.picInfo.childDiscount)) :
 							that.returnFloat(that.adultsPic),

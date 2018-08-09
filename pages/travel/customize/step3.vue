@@ -1,5 +1,5 @@
 <template >    
-    <div class="page__container">
+    <div class="page__container3">
     	<HeaderCommon :logIn="logIn"></HeaderCommon>
         <Banner></Banner>
         <StepBar step="3"></StepBar>
@@ -244,7 +244,7 @@ export default {
 </style>
 
 <style lang="scss">
-.page__container{
+.page__container3{
     .GUI-form {
         .GUI-form__grid-col {
             padding-right: 24px;

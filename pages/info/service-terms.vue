@@ -69,10 +69,11 @@ export default {
     //@import '~/assets/scss/_main.scss';
     //@import '~/assets/font/iconfont.css';
     @import '~assets/scss/G-ui/base.scss';
-
+.privacy__container{
     .heder-cont{
         box-shadow:0 0 10px rgba(0,0,0,0.4);
     }
+}
 </style>
 <style lang="scss" scoped>
     //@import '~/assets/scss/base/_setting.scss';

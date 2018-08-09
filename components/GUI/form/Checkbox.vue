@@ -90,7 +90,7 @@
 	}
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
     .GUI-checkbox{
         overflow: hidden;
         &__group{
@@ -106,7 +106,7 @@
         &__item.el-checkbox{
             width: 216px;
             float: left;
-            margin: 0 9px;
+            margin: 0 9px !important;
             &-pic{
                 width: 216px;
                 height: 216px;

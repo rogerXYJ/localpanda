@@ -1063,6 +1063,7 @@
 <style lang="scss">
 	//@import '~/assets/scss/_main.scss';
 	//@import '~/assets/font/iconfont.css';
+.activityList{
 	.el-input__inner {
 		width: 160px;
 		height: 40px;
@@ -1135,13 +1136,14 @@
 		background: #fff;
 		color: #353a3f;
 	}
-	
+}	
 	#footercommon {
 		border-top: 1px solid #E6E6E6;
 		.footInfo {
 			width: 1284px!important;
 		}
 	}
+
 </style>
 <style lang="scss" scoped>
 	//@import '~/assets/scss/base/_setting.scss';

@@ -1,5 +1,5 @@
 <template >    
-    <div class="page__container">
+    <div class="page__container2">
     	<HeaderCommon :logIn="logIn"></HeaderCommon>
         <Banner></Banner>
         <StepBar step="2"></StepBar>
@@ -202,7 +202,7 @@
 	//@import '~/assets/font/iconfont.css';
     @import '~assets/scss/G-ui/base.scss';
     @import '~assets/scss/G-ui/element-ui.scss';
-.page__container{
+.page__container2{
     .el-slider__runway{
         .el-slider__bar{
             opacity: 0.5;

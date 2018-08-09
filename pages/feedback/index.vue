@@ -155,27 +155,30 @@ get back to you within 1 day. </p>
 <style lang="scss">
 	//@import '~/assets/scss/_main.scss';
 	//@import '~/assets/font/iconfont.css';
-	input::-webkit-input-placeholder, textarea::-webkit-input-placeholder {   
-	 /* WebKit browsers */   
-	color: #878e95;   
-	}   
-	input:-moz-placeholder, textarea:-moz-placeholder {   
-	/* Mozilla Firefox 4 to 18 */   
-	color: #878e95   
-	}   
-	input::-moz-placeholder, textarea::-moz-placeholder {   
-	 /* Mozilla Firefox 19+ */   
-	color: #878e95
-	}   
-	input:-ms-input-placeholder, textarea:-ms-input-placeholder {   
-	 /* Internet Explorer 10+ */   
-	color: #878e95  
-	}
+	
 	
 </style> 
 <style lang="scss" scoped>
 	.feedback{
 		padding:0 0.586666rem;
+
+		input::-webkit-input-placeholder, textarea::-webkit-input-placeholder {   
+		/* WebKit browsers */   
+		color: #878e95;   
+		}   
+		input:-moz-placeholder, textarea:-moz-placeholder {   
+		/* Mozilla Firefox 4 to 18 */   
+		color: #878e95   
+		}   
+		input::-moz-placeholder, textarea::-moz-placeholder {   
+		/* Mozilla Firefox 19+ */   
+		color: #878e95
+		}   
+		input:-ms-input-placeholder, textarea:-ms-input-placeholder {   
+		/* Internet Explorer 10+ */   
+		color: #878e95  
+		}
+
 		.back {
 			padding: 0.426666rem 0 0.56rem;
 			i{

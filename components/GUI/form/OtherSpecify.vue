@@ -102,7 +102,7 @@
 	}
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .GUI-other-specify{
     width: 100%;
 	overflow: hidden;

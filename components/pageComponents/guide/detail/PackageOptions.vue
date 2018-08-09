@@ -631,6 +631,7 @@
 	//@import '~/assets/font/iconfont.css';
 	
 	/** select **/
+	#packageOptions{
 	.el-popper[x-placement^=bottom]{
 		margin-top: 0!important;
 	}
@@ -720,6 +721,7 @@
 	}
 	:-ms-input-placeholder { /* Internet Explorer 10+ */
 	    color: #878e95!important;
+	}
 	}
 </style>
 <style lang="scss" scoped>

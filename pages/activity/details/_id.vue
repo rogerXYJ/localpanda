@@ -433,6 +433,7 @@
 	
 	#activitiesDetail {
 		overflow-x: hidden;
+		background: #fff;
 		.bannerImg {
 			height: 552px;
 			img {

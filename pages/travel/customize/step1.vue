@@ -1,5 +1,5 @@
 <template >    
-    <div class="page__container">
+    <div class="page__container step1">
     	<HeaderCommon :logIn="logIn"></HeaderCommon>
         <Banner></Banner>
         <StepBar step="1"></StepBar>
@@ -408,7 +408,8 @@
 </style>
 <style lang="scss" scoped>
     //@import '~/assets/scss/base/_setting.scss';
-.page__container{
+.step1{
+    background:#fff;
     .travel-des{        
         &__item{
             border: 3px solid #fff;

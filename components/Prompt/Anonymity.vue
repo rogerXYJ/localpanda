@@ -343,7 +343,7 @@
 				.name{
 					margin-top: 16px;
 					height:44px;
-					
+					padding-left:20px;
 					.firstName{
 						float: left;
 						width: 220px;
@@ -371,6 +371,7 @@
 					}
 				}
 				.email{
+					padding-left:20px;
 					margin-top: 20px;
 					input{
 							width: 428px;

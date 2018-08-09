@@ -10,7 +10,7 @@
 					<!--<li v-if="exclusions" @click="goAnchor('exclusions')">Exclusions</li>-->
 					<!--<li v-if="notice.length>0" @click="goAnchor('notice')">Additional Info</li>-->
 					<!--<li v-if="picInfo.priceInstructions" @click="goAnchor('PriceNote')">Price Note</li>-->
-					<li v-if="picInfo.refundInstructions" @click="goAnchor('CancellationPolicy')">Rescheduling / Cancellation</li>
+					<li v-if="picInfo.refundInstructions" @click="goAnchor('CancellationPolicy')">Rescheduling & Cancellation</li>
 					<li v-if="picInfo.details.length>0" @click="goAnchor('picDetails')">Price Details</li>
 					<!--<li @click="goAnchor('notes')">Notes</li>-->
 					

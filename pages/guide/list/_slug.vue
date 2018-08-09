@@ -228,8 +228,8 @@ export default {
 };
 </script>
 <style lang="scss">
-//@import '~/assets/scss/_main.scss';
-//@import '~/assets/font/iconfont.css';
+.guideList{
+
 .el-input__inner {
   width: 168px !important;
   height: 40px;
@@ -278,6 +278,7 @@ export default {
 }
 .el-select .el-input.is-focus .el-input__inner {
   border-color: #b4bccc !important;
+}
 }
 </style>
 <style lang="scss" scoped>

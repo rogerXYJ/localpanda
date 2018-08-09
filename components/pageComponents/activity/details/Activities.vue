@@ -71,7 +71,20 @@
 				</div>
 				<div class="journey" id="journey" ref="journey" v-if="detail.itineraries&&detail.itineraries.length>0">
 					<h3>Itinerary</h3>
-					<ul>
+					 <timeline v-if="showNewStyle" class="new">
+						<div :key="index" v-for="(i,index) in detail.itineraries" >
+							<timeline-item>
+									<label>stop{{index+1}}</label>
+									<h4>{{i.title}}</h4>
+									<p v-if="i.description" v-html="i.description.replace(/\r|\n/g,'<br/>')"></p>
+									<div  v-if="i.photo">
+										<img  v-lazy="i.photo.url"  alt=""/>
+									</div>
+					
+							</timeline-item>
+			      </div>
+			    </timeline>
+					<ul v-else class="old">
 						<li :key="index" v-for="(i,index) in detail.itineraries">
 							<div class="item_v clearfix" v-if="i.photo">
 								<div class="contTitle">
@@ -86,17 +99,7 @@
 							</div>
 						</li>
 					</ul>
-					 <!--<timeline>
-			      <div :key="index" v-for="(i,index) in detail.itineraries">
-			        <timeline-item>
-					        <label>stop{{index+1}}</label>
-					        <h4>{{i.title}}</h4>
-					        <p v-if="i.description" v-html="i.description.replace(/\r|\n/g,'<br/>')"></p>
-					        <img v-if="i.photo.url" v-lazy="i.photo.url"  alt=""/>
-			
-			        </timeline-item>
-			      </div>
-			    </timeline>-->
+					
 				</div>
 				 <div class="notes" v-if="photoList&&photoList.length>0" @click="showPhoto" id="photoList">
 					<h3>Pictures of our travelers</h3>
@@ -312,7 +315,7 @@
 											<div class="children clearfix">
 												<div class="years">
 													<b>Children</b>
-													<span v-if="picInfo.childStandard">{{picInfo.infantStandard}} - {{picInfo.childStandard}} years</span>
+													<span v-if="picInfo.childStandard">≤ {{picInfo.childStandard}} years</span>
 												</div>
 												
 												<div class="selectAdults">
@@ -1051,7 +1054,11 @@
 		},
 		mounted: function() {
 			let that = this;
-//			if(this.$route.query.newStyle)
+			if(this.$route.query.newStyle||this.detail.newType){
+				this.showNewStyle=true	
+			}else{
+				this.showNewStyle=false	
+			}
 			
 			
 			
@@ -1138,7 +1145,7 @@
 	};
 </script>
 <style lang="scss">
-/*	.timeline-item{
+	.timeline-item{
 		padding: 0 0 20px 80px!important;
 			label{
 				position: absolute;
@@ -1158,8 +1165,9 @@
 			}
 			img{
 				width: 652px;
+				margin-top: 22px;
 			}
-		}*/
+		}
 	
 	
 	
@@ -1365,8 +1373,8 @@
 										margin-bottom: 10px;
 										display: block;
 									}
-									width: 50%;
-									float: left;
+									width: 100%;
+									
 									.flatpickr-input {
 										height: 40px !important;
 										padding-left: 10px !important;
@@ -1379,58 +1387,8 @@
 										}
 									}
 								}
-								.selectTime {
-									b {
-										font-size: 14px;
-										margin-bottom: 10px;
-										display: block;
-									}
-									width: 50%;
-									float: left;
-									.time {
-										position: relative;
-										top: 16px;
-										input {
-											width: calc(100% - 10px);
-											height: 40px;
-											border: 1px solid #e3e5e9;
-											border-radius: 3px 0px 3px 0;
-											cursor: pointer;
-											font-size: 16px;
-										}
-										i {
-											position: absolute;
-											right: 10px;
-											font-size: 10px;
-											top: 50%;
-											margin-top: -5px;
-										}
-										.timeList {
-											position: absolute;
-											top: 47px;
-											max-width: 175px;
-											max-height: 300px;
-											overflow: auto;
-											background: #fff;
-											box-shadow: 0px 2px 10px 0px rgba(53, 58, 63, 0.2);
-											z-index: 20;
-											ul {
-												li {
-													height: 50px;
-													width: 175px;
-													text-align: center;
-													line-height: 50px;
-													font-size: 18px;
-													cursor: pointer;
-													&:hover {
-														background-image: linear-gradient( -90deg, #009efd 0%, #1bbc9d 100%);
-														color: #fff;
-													}
-												}
-											}
-										}
-									}
-								}
+								
+									
 							}
 							.selectPepole {
 								width: 100%;
@@ -1461,7 +1419,7 @@
 										position: absolute;
 										z-index: 100;
 										top: 42px;
-										left: -20px;
+										left: 0px;
 										width: 346px;
 										box-shadow: 0px 2px 10px 0px rgba(53, 58, 63, 0.2);
 										background: #fff;
@@ -1776,14 +1734,14 @@
 					}
 				}
 			.journey {
-					
+				
 					h3{
 						margin: 28px 0 22px;
 						
 						font-size: 24px;
 						font-weight: bold;
 					}
-					ul {
+					.old {
 						margin-top: 28px;
 						padding-bottom: 34px;
 						border-bottom: 1px solid #dde0e0;

@@ -117,7 +117,7 @@
 
 				<div class="searchBox_index clearfix">
 					<div class="searchInput">
-						<input id="searchInput" @keyup="searchkey" maxlength="60" placeholder="Attraction, Activity, Destination" @keyup.enter="seachFn" @focus="input_highlight=true" @blur="input_highlight=false" v-model="search" />
+						<input id="searchInput" type="text" @keyup="searchkey" maxlength="60" placeholder="Attraction, Activity, Destination" autocomplete="off" @keyup.enter="seachFn" @focus="input_highlight=true" @blur="input_highlight=false" v-model="search" />
 						<span class="input_highlight" :class="{border:input_highlight}">{{search}}</span>
 					</div>
 					<div class="select_people">

@@ -28,7 +28,7 @@
 					</div>
 					<div class="cont">
 						<div class="cont-item">
-							<p>Country orTerritory Code<b>*</b></p>
+							<p>Country or Territory Code<b>*</b></p>
 							<div class="code-box">
 								<input id="code" :class="{err:codeErr}" @click.stop="focusCode(0)" @focus="focusCode(0)" @blur="gabulr(3)" autocomplete="off" v-model="mobileCode" :style="{backgroundColor:test.test4?'rgb(250, 255, 189)':'rgb(255, 255, 255)'}"/>
 								<div class="countryCode" v-if="showCode" :class="codeList.length>0?'width100':''">

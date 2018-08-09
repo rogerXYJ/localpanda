@@ -169,9 +169,10 @@
 					<h3>Additional Info</h3>
 					<p v-for="(item,index) in detail.notice" :key="index">{{item.title}}</p>
 				</div> -->
-				<div class="notes" v-if="detail.notice" id="notice">
-					<h3>Additional Info</h3>
-					<p v-for="item in delNullArr(detail.notice.split('/r/n'))">{{item}}</p>
+				
+				<div class="notes" id="notes" v-if="remark&&remark.length>0">
+					<h3>Notes</h3>
+					<p v-if="remark" :key="index" v-for="(item,index) in remark">{{item}}</p>
 				</div>
 				<div class="notes" v-if="picInfo.refundInstructions" id="CancellationPolicy">
 					<h3>Rescheduling and Cancellation Policy</h3>
@@ -210,10 +211,11 @@
 					<div class="view" v-if="isShowTable" @click="showTable">View More</div>
 					<p class="picNote" v-if="picInfo.priceInstructions">{{picInfo.priceInstructions}}</p>
 				</div>
-				<div class="notes" id="notes" v-if="remark&&remark.length>0">
-					<h3>Notes</h3>
-					<p v-if="remark" :key="index" v-for="(item,index) in remark">{{item}}</p>
+				<div class="notes" v-if="detail.notice" id="notice">
+					<h3>Additional Info</h3>
+					<p v-for="item in delNullArr(detail.notice.split('/r/n'))">{{item}}</p>
 				</div>
+				
 				
 				<!--<grade></grade>-->
 			</div>
@@ -340,12 +342,12 @@
 									</div>
 								</div>
 								<div class="select clearfix">
-									<div class="selectDate" :class="picInfo.departureTime?'':'long'">
+									<div class="selectDate">
 										<b>Available On</b>
 										<!--<flatPickr placeholder="Date" v-model="dateTime" :config="options"></flatPickr>-->
 										<input id="js_changetime" readonly v-model="dateTime" type="text" placeholder="Date">
 									</div>
-									<div class="selectTime" v-if="picInfo.departureTime" >
+									<!--<div class="selectTime" v-if="picInfo.departureTime" >
 										<b></b>
 										<div class="time" @click.stop="showTime">
 											<input readonly="readonly" v-model="time" placeholder="Time"/>
@@ -359,7 +361,7 @@
 											</div>
 										</div>
 
-									</div>
+									</div>-->
 								</div>
 								
 								<div class="picDetail" v-if="isShowBook">
@@ -510,6 +512,7 @@
 				showMoreBth:false,
 				showMoreTag:false,
 				tagAttractions:[],
+				showNewStyle:false
 			};
 			
 		},
@@ -1048,6 +1051,10 @@
 		},
 		mounted: function() {
 			let that = this;
+//			if(this.$route.query.newStyle)
+			
+			
+			
 			let participants=this.$route.query.participants;
 			that.people=participants?(that.picInfo.maxParticipants==1?1:parseInt(participants)):(that.picInfo.minParticipants<3?(that.picInfo.maxParticipants==1?1:2):that.picInfo.minParticipants);
 			

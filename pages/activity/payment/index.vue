@@ -77,7 +77,7 @@
 						<p style="margin-top: 20px; font-size: 18px;color:red" v-if="payStatus">{{payErrMsg}}</p>
 					</div>
 				</div>
-				<p class="refundPolicy" style="margin-top: 30px; color: red;">You can get a 100% refund up to {{refundTimeLimit*24>48?refundTimeLimit:refundTimeLimit*24}} {{refundTimeLimit*24>48?'days':'hours'}} before your trip.</p>
+				<p class="refundPolicy" style="margin-top: 30px; color: red;">You can reschedule or cancel your trip at zero cost before {{opctions.finalRefundPeriod}}.</p>
 			<!--	<p style="width: 600px;margin-top: 20px; color: red;" v-if="logInHide">You ordered as a guest. To view your order details, you can click "My Bookings" on the top bar then type in the reservee's email address and name you entered before to access that information.</p>-->
 				<button class="btnlinner paybtn" @click="getToken">Pay Now</button>
 			</div>
@@ -190,11 +190,11 @@
 				script: [
 					{
 						src: 'https://js.stripe.com/v3/',
-						//src:'https://resource.localpanda.cn/static/js/lp/stripe.js',
+						//src:'https://cloud.localpanda.com/static/js/lp/stripe.js',
 						type: 'text/javascript'
 					},
 					{
-						src: 'https://resource.localpanda.cn/static/js/qrcode.min.js',
+						src: 'https://cloud.localpanda.com/static/js/qrcode.min.js',
 						type: 'text/javascript'
 					}
 				]
@@ -517,7 +517,7 @@
 						//var imgSrc = 'data:image/png;base64,'+response.data.code_url;
 						//self.wxPayEwm = imgSrc;
 						var payLogo = new Image();
-						payLogo.src = 'https://resource.localpanda.cn/static/icon/wechat.png';
+						payLogo.src = 'https://cloud.localpanda.com/static/icon/wechat.png';
 						payLogo.className = 'ewmLogo';
 						wxPayEwm.appendChild(payLogo);
 

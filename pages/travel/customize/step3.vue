@@ -1,5 +1,5 @@
 <template >    
-    <div class="page__container3">
+    <div class="page__container step3">
     	<HeaderCommon :logIn="logIn"></HeaderCommon>
         <Banner></Banner>
         <StepBar step="3"></StepBar>
@@ -244,7 +244,8 @@ export default {
 </style>
 
 <style lang="scss">
-.page__container3{
+.step3{
+    background:#fff;
     .GUI-form {
         .GUI-form__grid-col {
             padding-right: 24px;
@@ -268,7 +269,7 @@ export default {
             
         }
         .width100{
-        width:100%;  	
+         width:calc(100% - 26px);  	
         }  
     } 
 }

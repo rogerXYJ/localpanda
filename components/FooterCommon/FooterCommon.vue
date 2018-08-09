@@ -86,11 +86,11 @@
 				
 				<div class="cooperationIcon">
 					<a class="wechat">
-						<svg class="icon2" aria-hidden="true" @mouseenter="showChat=true" @mouseleave="showChat=false">
+						<svg class="icon2" aria-hidden="true" @mouseenter="showChat=true" @mouseleave='showChat=false'>
 								<use xlink:href="#icon-wechat1"></use>
 						</svg>
-						<div class="wechatCode" v-show="showChat" @mouseenter="showChat=true" @mouseleave="showChat=false">
-							<img src="https://resource.localpanda.cn/static/icon/LPwechat.jpg"  alt=""/>
+						<div class="wechatCode" v-if="showChat"  @mouseenter="showChat=true" @mouseleave='showChat=false'>
+							<img src="https://cloud.localpanda.com/static/icon/LPwechat.jpg"  alt=""/>
 						</div>
 					</a>
 					<a href="https://www.facebook.com/LocalPandaGuides/?fref=ts">
@@ -287,7 +287,7 @@ import { fail } from 'assert';
 				}
 				.cooperation{
 					padding-top:44px;
-					overflow: hidden;
+					
 					.cooperation-text{
 						.icon1{ }
 						em{
@@ -316,8 +316,8 @@ import { fail } from 'assert';
 								width: 98px;
 								height: 98px;
 								padding: 16px;
-								top:-134px;
-								left: -50px;
+								top:-108px;
+								left: -34px;
 								z-index:2;
 								box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.1);
 								border-radius: 5px;

@@ -16,7 +16,7 @@
 				</div>
 		
 				<div class="activitiyTitle">
-					<h3><span v-if="detail.groupType" :class="detail.groupType=='private'?'pr':'gr'">{{detail.groupType}}</span>{{detail.title}}</h3>
+					<h3><span v-if="detail.groupType" :class="detail.groupType=='Private'?'pr':'gr'">{{detail.groupType}}</span>{{detail.title}}</h3>
 					<div class="service">
 						<span>
 							<label class="iconfont">&#xe624;</label>
@@ -53,33 +53,7 @@
 						<a v-if="detail.attractions.length>4" @click="showMoreTag=!showMoreTag">···</a>
 						<!--<p v-if="detail.sales&&detail.sales>0">Booked {{detail.sales}} {{detail.sales==1?'time':'times'}} (last 30 days)</p>-->
 					</div>
-				</div>
-				<!--<ul class="description clearfix" id="description">
-					<li>
-						<label class="iconfont">&#xe653;</label>
-						<span>Mode: {{detail.trafficType}}</span>
-					</li>
-					<li>
-						<label class="iconfont">&#xe624;</label>
-						<span>Duration: {{detail.duration}} {{detail.durationUnit|firstUpperCase}}</span>
-					</li>
-					<li>
-						<label class="iconfont" style="font-size: 20px;">&#xe652;</label>
-						<span v-if="picInfo.minParticipants==picInfo.maxParticipants">Participants: {{picInfo.minParticipants}}</span>
-						<span v-else>Participants: {{picInfo.minParticipants}} - {{picInfo.maxParticipants}}</span>
-					</li>
-				</ul>
-				<div class="languages clearfix">
-
-					<label class="iconfont">&#xe627;<em>{{detail.groupType=='Group'?'Language:':'Languages:'}} </em></label>
-					<span v-if="detail.groupType=='Group'"> English</span>
-					<span v-else>English, French, Spanish, Russian, German, Japanese, Korean</span>
-				</div>
-				<div class="location clearfix">
-					<label class="iconfont" style="font-size: 20px;">&#xe610;<em>Location:</em></label>
-					<span>{{destinations}}</span>
-				</div>-->
-				
+				</div>				
 				<p class="says" v-if="detail.recommendedReason">{{detail.recommendedReason}}</p>
 				<div class="heightLights" id="heightLights" v-if="highlights&&highlights.length>0">
 					<div class="expect">
@@ -97,7 +71,20 @@
 				</div>
 				<div class="journey" id="journey" ref="journey" v-if="detail.itineraries&&detail.itineraries.length>0">
 					<h3>Itinerary</h3>
-					<ul>
+					 <timeline v-if="showNewStyle" class="new">
+						<div :key="index" v-for="(i,index) in detail.itineraries" >
+							<timeline-item>
+									<label>stop{{index+1}}</label>
+									<h4>{{i.title}}</h4>
+									<p v-if="i.description" v-html="i.description.replace(/\r|\n/g,'<br/>')"></p>
+									<div  v-if="i.photo">
+										<img  v-lazy="i.photo.url"  alt=""/>
+									</div>
+					
+							</timeline-item>
+			      </div>
+			    </timeline>
+					<ul v-else class="old">
 						<li :key="index" v-for="(i,index) in detail.itineraries">
 							<div class="item_v clearfix" v-if="i.photo">
 								<div class="contTitle">
@@ -112,17 +99,7 @@
 							</div>
 						</li>
 					</ul>
-					 <!--<timeline>
-			      <div :key="index" v-for="(i,index) in detail.itineraries">
-			        <timeline-item>
-					        <label>stop{{index+1}}</label>
-					        <h4>{{i.title}}</h4>
-					        <p v-if="i.description" v-html="i.description.replace(/\r|\n/g,'<br/>')"></p>
-					        <img v-if="i.photo.url" v-lazy="i.photo.url"  alt=""/>
-			
-			        </timeline-item>
-			      </div>
-			    </timeline>-->
+					
 				</div>
 				 <div class="notes" v-if="photoList&&photoList.length>0" @click="showPhoto" id="photoList">
 					<h3>Pictures of our travelers</h3>
@@ -195,9 +172,10 @@
 					<h3>Additional Info</h3>
 					<p v-for="(item,index) in detail.notice" :key="index">{{item.title}}</p>
 				</div> -->
-				<div class="notes" v-if="detail.notice" id="notice">
-					<h3>Additional Info</h3>
-					<p v-for="item in delNullArr(detail.notice.split('/r/n'))">{{item}}</p>
+				
+				<div class="notes" id="notes" v-if="remark&&remark.length>0">
+					<h3>Notes</h3>
+					<p v-if="remark" :key="index" v-for="(item,index) in remark">{{item}}</p>
 				</div>
 				<div class="notes" v-if="picInfo.refundInstructions" id="CancellationPolicy">
 					<h3>Rescheduling and Cancellation Policy</h3>
@@ -236,10 +214,11 @@
 					<div class="view" v-if="isShowTable" @click="showTable">View More</div>
 					<p class="picNote" v-if="picInfo.priceInstructions">{{picInfo.priceInstructions}}</p>
 				</div>
-				<div class="notes" id="notes" v-if="remark&&remark.length>0">
-					<h3>Notes</h3>
-					<p v-if="remark" :key="index" v-for="(item,index) in remark">{{item}}</p>
+				<div class="notes" v-if="detail.notice" id="notice">
+					<h3>Additional Info</h3>
+					<p v-for="item in delNullArr(detail.notice.split('/r/n'))">{{item}}</p>
 				</div>
+				
 				
 				<!--<grade></grade>-->
 			</div>
@@ -336,7 +315,7 @@
 											<div class="children clearfix">
 												<div class="years">
 													<b>Children</b>
-													<span v-if="picInfo.childStandard">{{picInfo.infantStandard}} - {{picInfo.childStandard}} years</span>
+													<span v-if="picInfo.childStandard">≤ {{picInfo.childStandard}} years</span>
 												</div>
 												
 												<div class="selectAdults">
@@ -366,12 +345,12 @@
 									</div>
 								</div>
 								<div class="select clearfix">
-									<div class="selectDate" :class="picInfo.departureTime?'':'long'">
+									<div class="selectDate">
 										<b>Available On</b>
 										<!--<flatPickr placeholder="Date" v-model="dateTime" :config="options"></flatPickr>-->
 										<input id="js_changetime" readonly v-model="dateTime" type="text" placeholder="Date">
 									</div>
-									<div class="selectTime" v-if="picInfo.departureTime" >
+									<!--<div class="selectTime" v-if="picInfo.departureTime" >
 										<b></b>
 										<div class="time" @click.stop="showTime">
 											<input readonly="readonly" v-model="time" placeholder="Time"/>
@@ -385,7 +364,7 @@
 											</div>
 										</div>
 
-									</div>
+									</div>-->
 								</div>
 								
 								<div class="picDetail" v-if="isShowBook">
@@ -536,6 +515,7 @@
 				showMoreBth:false,
 				showMoreTag:false,
 				tagAttractions:[],
+				showNewStyle:false
 			};
 			
 		},
@@ -882,6 +862,7 @@
 							localStorage.getItem("userid") : null,
 						activityId: that.detail.activityId,
 						refundTimeLimit: that.picInfo.refundTimeLimit,
+						fullRefund:that.picInfo.fullRefund,
 						amount: that.children > 0 && that.picInfo.childDiscount ?
 							that.returnFloat(that.returnFloat(that.adultsPic) - that.returnFloat(that.children * that.picInfo.childDiscount)) :
 							that.returnFloat(that.adultsPic),
@@ -1074,6 +1055,14 @@
 		},
 		mounted: function() {
 			let that = this;
+			if(this.$route.query.newStyle||this.detail.newType){
+				this.showNewStyle=true	
+			}else{
+				this.showNewStyle=false	
+			}
+			
+			
+			
 			let participants=this.$route.query.participants;
 			that.people=participants?(that.picInfo.maxParticipants==1?1:parseInt(participants)):(that.picInfo.minParticipants<3?(that.picInfo.maxParticipants==1?1:2):that.picInfo.minParticipants);
 			
@@ -1157,7 +1146,7 @@
 	};
 </script>
 <style lang="scss">
-/*	.timeline-item{
+	.timeline-item{
 		padding: 0 0 20px 80px!important;
 			label{
 				position: absolute;
@@ -1177,8 +1166,9 @@
 			}
 			img{
 				width: 652px;
+				margin-top: 22px;
 			}
-		}*/
+		}
 	
 	
 	
@@ -1384,8 +1374,8 @@
 										margin-bottom: 10px;
 										display: block;
 									}
-									width: 50%;
-									float: left;
+									width: 100%;
+									
 									.flatpickr-input {
 										height: 40px !important;
 										padding-left: 10px !important;
@@ -1398,58 +1388,8 @@
 										}
 									}
 								}
-								.selectTime {
-									b {
-										font-size: 14px;
-										margin-bottom: 10px;
-										display: block;
-									}
-									width: 50%;
-									float: left;
-									.time {
-										position: relative;
-										top: 16px;
-										input {
-											width: calc(100% - 10px);
-											height: 40px;
-											border: 1px solid #e3e5e9;
-											border-radius: 3px 0px 3px 0;
-											cursor: pointer;
-											font-size: 16px;
-										}
-										i {
-											position: absolute;
-											right: 10px;
-											font-size: 10px;
-											top: 50%;
-											margin-top: -5px;
-										}
-										.timeList {
-											position: absolute;
-											top: 47px;
-											max-width: 175px;
-											max-height: 300px;
-											overflow: auto;
-											background: #fff;
-											box-shadow: 0px 2px 10px 0px rgba(53, 58, 63, 0.2);
-											z-index: 20;
-											ul {
-												li {
-													height: 50px;
-													width: 175px;
-													text-align: center;
-													line-height: 50px;
-													font-size: 18px;
-													cursor: pointer;
-													&:hover {
-														background-image: linear-gradient( -90deg, #009efd 0%, #1bbc9d 100%);
-														color: #fff;
-													}
-												}
-											}
-										}
-									}
-								}
+								
+									
 							}
 							.selectPepole {
 								width: 100%;
@@ -1480,7 +1420,7 @@
 										position: absolute;
 										z-index: 100;
 										top: 42px;
-										left: -20px;
+										left: 0px;
 										width: 346px;
 										box-shadow: 0px 2px 10px 0px rgba(53, 58, 63, 0.2);
 										background: #fff;
@@ -1676,6 +1616,7 @@
 						font-size: 32px;
 						vertical-align:middle;
 						span{
+							vertical-align:bottom;
 							display: inline-block;
 							margin-right: 10px;
 							font-size: 18px!important;
@@ -1686,7 +1627,7 @@
 								background:#52b589;
 							}
 							&.gr{
-								background:#f4b33f;
+								background:#efae99;
 							}
 						}
 					}
@@ -1794,14 +1735,14 @@
 					}
 				}
 			.journey {
-					
+				
 					h3{
 						margin: 28px 0 22px;
 						
 						font-size: 24px;
 						font-weight: bold;
 					}
-					ul {
+					.old {
 						margin-top: 28px;
 						padding-bottom: 34px;
 						border-bottom: 1px solid #dde0e0;
@@ -2189,7 +2130,7 @@
 					margin-right: 16px;
 					width: 109px;
 					height: 109px;
-					background:url("https://resource.localpanda.cn/activity/banners/11027_1106614229_U5251601.jpg");
+					background:url("https://cloud.localpanda.com/activity/banners/11027_1106614229_U5251601.jpg");
 					background-repeat:no-repeat;
 					background-size:cover;
 					background-position:center; 

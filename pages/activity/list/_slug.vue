@@ -9,7 +9,7 @@
 				</div>
 				<!--seach bar -->
 				<div class="selectInfo">
-					<input type="" v-model="seachContent" @click.stop="showHot" maxlength="60" @keyup.enter="seachFn" autocomplete="off" placeholder="Attraction, Activity, Destination" />
+					<input type="text" v-model="seachContent" @click.stop="showHot" maxlength="60" @keyup.enter="seachFn" autocomplete="off" placeholder="Attraction, Activity, Destination" />
 					<div class="selectPeople"@click.stop="showSelectPeople">
 						<span>{{postData.participants}} People <i class="iconfont">&#xe60f;</i></span>
 						<input-number v-if="selectPeople" :participants="postData.participants" :selectNumber="selectNumber" @showSelectPeople="setSelectPeople" @getPeople="setPeople"></input-number>
@@ -1229,7 +1229,7 @@
 		background: #faf9f8;
 		.banner {
 			position: relative;
-			background: url("https://resource.localpanda.cn/static/headerPhotos/ListBanner.jpg") no-repeat;
+			background: url("https://cloud.localpanda.com/static/headerPhotos/ListBanner.jpg") no-repeat;
 			background-size: cover;
 			background-position: center;
 			height: 290px;

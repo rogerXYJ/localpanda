@@ -126,6 +126,8 @@
 	}
 </script>
 <style lang="scss">
+.M-filter{
+
 	.el-checkbox__inner {
 		width: 0.426666rem;
 		height: 0.426666rem;
@@ -142,6 +144,8 @@
 		font-size: 0.426666rem;
 		color: #353a3f;
 	}
+	
+}
 </style>
 <style lang="scss" scoped>
 	.M-filter {

@@ -3,14 +3,22 @@
 		<div class="filterModelContent">
 			<div class="filterModelBox">
 				<i class="iconfont back" @click="close">&#xe606;</i>
-				<div class="filterModelBoxDetail clearfix">
-					<checkbox-group  v-model="filterCheck[toLower(type)]">
-						<div class="checkboxlist" v-for="(i,key,index) in filterContent" :class="type=='ATTRACTION'?'floatHalf':''">
-							<checkbox :label="key" :key="key">{{key}} ({{i}})</checkbox>
+				<div class="filterModelBoxDetail clearfix" v-if="type=='DURATION'">
+					
+					<checkbox-group  v-model="filterCheck[toLower('DURATION')]">
+						<div class="checkboxlist" v-for="(i,key,index) in filterContent">
+							<checkbox :label="key"  :key="key">{{returnD(key)}} ({{i}})</checkbox>
 						</div>
-					</checkbox-group>				
+						
+					</checkbox-group>		
 				</div>
-				
+				<div class="filterModelBoxDetail clearfix" v-else>
+					<checkbox-group  v-model="filterCheck[toLower(type)]">
+							<div class="checkboxlist" v-for="(i,key,index) in filterContent" :class="type=='ATTRACTION'?'floatHalf':''">
+								<checkbox :label="key" :key="key">{{key}} ({{i}})</checkbox>
+							</div>
+						</checkbox-group>	
+				</div>
 			</div>
 			<div class="btn" >
 				<button @click="close">Apply</button>
@@ -42,12 +50,20 @@
 			toLower(val) {
 				return val.toLowerCase()
 			},
+			returnD(key) {
+				if(key == 0) {
+					return "Half Day"
+				} else if(key == 1) {
+					return "One Day"
+				}
+				return key + " Days"
+			},
 			
 		},
 		mounted:function(){
 			//console.log(this.filterContent)
 			//console.log(this.filterCheck[this.type.toUpperCase()])
-			
+			console.log(this.filterCheck)
 			console.log(this.type)
 		}
 	}

@@ -133,7 +133,7 @@
 			.bg{
 				height: calc(100% - 20px);
 				width: calc(100% - 20px);
-				background: url("https://resource.localpanda.cn/content/landingpage/bg.png") no-repeat;
+				background: url("https://cloud.localpanda.com/content/landingpage/bg.png") no-repeat;
 				background-position: center;
 				background-size: cover;
 				position: relative;

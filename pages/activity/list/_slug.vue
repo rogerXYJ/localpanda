@@ -1214,7 +1214,7 @@
 		}
 	}
 	.checkbox-group{
-		max-height: 210px;
+		max-height: 200px;
 		overflow: hidden;
 	}
 	.activityList {
@@ -1652,7 +1652,7 @@
 									.type {
 										position: absolute;
 										bottom: 0;
-										width: calc(100% - 20px);
+										width: 100%;
 										height: 34px;
 										font-size: 16px;
 										font-weight: bold;
@@ -1665,7 +1665,7 @@
 							}
 							.activitDe {
 								float: right;
-								width: 627px;
+								width: 667px;
 								padding: 20px;
 								
 								.activeType {

@@ -72,34 +72,34 @@
 				<div class="journey" id="journey" ref="journey" v-if="detail.itineraries&&detail.itineraries.length>0">
 					<h3>Itinerary</h3>
 					 <timeline v-if="showNewStyle" class="new">
-						<div :key="index" v-for="(i,index) in detail.itineraries" >
+						<div class="newItem" :key="index" v-for="(i,index) in detail.itineraries">
 							<timeline-item>
 									<label>stop{{index+1}}</label>
 									<h4>{{i.title}}</h4>
-									<p v-if="i.description" v-html="i.description.replace(/\r|\n/g,'<br/>')"></p>
+									<p v-if="i.description" v-html="i.description.replace(/\r\n/g,'<br/>')"></p>
 									<div  v-if="i.photo">
 										<img  v-lazy="i.photo.url"  alt=""/>
 									</div>
 					
 							</timeline-item>
-			      </div>
-			    </timeline>
+						</div>
+					</timeline>
 					<ul v-else class="old">
 						<li :key="index" v-for="(i,index) in detail.itineraries">
 							<div class="item_v clearfix" v-if="i.photo">
 								<div class="contTitle">
 									
-									<div><img v-lazy="i.photo.url" /><h3>{{i.title}}</h3><span v-if="i.description" v-html="i.description.replace(/\r|\n/g,'<br/>')"></span></div>
+									<div><img v-lazy="i.photo.url" /><h3>{{i.title}}</h3><span v-if="i.description" v-html="i.description.replace(/\r\n/g,'<br/>')"></span></div>
 									
 								</div>
 							</div>
 							<div class="item clearfix" v-else>
 								<div class="cont_title" id="aa">{{i.title}}</div>
-								<div class="cont" v-if="i.description" v-html="i.description.replace(/\r|\n/g,'<br/>')"></div>
+								<div class="cont" v-if="i.description" v-html="i.description.replace(/\r\n/g,'<br/>')"></div>
 							</div>
 						</li>
 					</ul>
-					
+					<a class="more" href="javascript:;">Veiw More</a>	
 				</div>
 				 <div class="notes" v-if="photoList&&photoList.length>0" @click="showPhoto" id="photoList">
 					<h3>Pictures of our travelers</h3>
@@ -315,7 +315,7 @@
 											<div class="children clearfix">
 												<div class="years">
 													<b>Children</b>
-													<span v-if="picInfo.childStandard">≤ {{picInfo.childStandard}} years</span>
+													<span v-if="picInfo.childStandard">≤ {{picInfo.childStandard}} years old</span>
 												</div>
 												
 												<div class="selectAdults">
@@ -515,7 +515,8 @@
 				showMoreBth:false,
 				showMoreTag:false,
 				tagAttractions:[],
-				showNewStyle:false
+				showNewStyle:false,
+				itinerary:[],//行程折叠
 			};
 			
 		},
@@ -1055,12 +1056,21 @@
 		},
 		mounted: function() {
 			let that = this;
+			//ab test 行程
 			if(this.$route.query.newStyle||this.detail.newType){
 				this.showNewStyle=true	
 			}else{
 				this.showNewStyle=false	
 			}
 			
+
+			//行程折叠
+			// console.log(this.detail.itineraries)
+			// if(this.detail.itineraries&&this.detail.itineraries.length>4){
+			// 	this.itineraries=this.detail.itineraries.splice(0,4)
+			// }else{
+			// 	this.itineraries=this.detail.itineraries
+			// }
 			
 			
 			let participants=this.$route.query.participants;
@@ -1146,12 +1156,23 @@
 	};
 </script>
 <style lang="scss">
+	.newItem{
+		&:last-child{
+			.timeline-item{
+				padding-bottom: 0!important;
+				&:after{
+					width:0!important;
+				}
+			}
+			
+		}
+	}
 	.timeline-item{
 		padding: 0 0 20px 80px!important;
 			label{
 				position: absolute;
 				left: 0px;
-				top: -1px;
+				top: -3px;
 				font-size: 16px;
 			}
 			h4{
@@ -1735,7 +1756,16 @@
 					}
 				}
 			.journey {
-				
+				.more{
+					display:inline-block;
+					padding-left:15px;
+					font-size:16px;
+					color:#1bbc9d;
+					font-weight:bold;
+					margin-top:20px;
+				}
+				padding-bottom: 34px;
+				border-bottom: 1px solid #dde0e0;
 					h3{
 						margin: 28px 0 22px;
 						
@@ -1744,8 +1774,7 @@
 					}
 					.old {
 						margin-top: 28px;
-						padding-bottom: 34px;
-						border-bottom: 1px solid #dde0e0;
+						
 						
 						li {
 							&:last-child{

@@ -72,7 +72,7 @@
 				<div class="journey" id="journey" ref="journey" v-if="detail.itineraries&&detail.itineraries.length>0">
 					<h3>Itinerary</h3>
 					 <timeline v-if="showNewStyle" class="new">
-						<div class="newItem" :key="index" v-for="(i,index) in detail.itineraries" >
+						<div class="newItem" :key="index" v-for="(i,index) in detail.itineraries">
 							<timeline-item>
 									<label>stop{{index+1}}</label>
 									<h4>{{i.title}}</h4>
@@ -82,24 +82,24 @@
 									</div>
 					
 							</timeline-item>
-			      </div>
-			    </timeline>
+						</div>
+					</timeline>
 					<ul v-else class="old">
 						<li :key="index" v-for="(i,index) in detail.itineraries">
 							<div class="item_v clearfix" v-if="i.photo">
 								<div class="contTitle">
 									
-									<div><img v-lazy="i.photo.url" /><h3>{{i.title}}</h3><span v-if="i.description" v-html="i.description.replace(/\r|\n/g,'<br/>')"></span></div>
+									<div><img v-lazy="i.photo.url" /><h3>{{i.title}}</h3><span v-if="i.description" v-html="i.description.replace(/\r\n/g,'<br/>')"></span></div>
 									
 								</div>
 							</div>
 							<div class="item clearfix" v-else>
 								<div class="cont_title" id="aa">{{i.title}}</div>
-								<div class="cont" v-if="i.description" v-html="i.description.replace(/\r|\n/g,'<br/>')"></div>
+								<div class="cont" v-if="i.description" v-html="i.description.replace(/\r\n/g,'<br/>')"></div>
 							</div>
 						</li>
 					</ul>
-					
+					<a class="more" href="javascript:;">Veiw More</a>	
 				</div>
 				 <div class="notes" v-if="photoList&&photoList.length>0" @click="showPhoto" id="photoList">
 					<h3>Pictures of our travelers</h3>
@@ -515,7 +515,8 @@
 				showMoreBth:false,
 				showMoreTag:false,
 				tagAttractions:[],
-				showNewStyle:false
+				showNewStyle:false,
+				itinerary:[],//行程折叠
 			};
 			
 		},
@@ -1055,12 +1056,21 @@
 		},
 		mounted: function() {
 			let that = this;
+			//ab test 行程
 			if(this.$route.query.newStyle||this.detail.newType){
 				this.showNewStyle=true	
 			}else{
 				this.showNewStyle=false	
 			}
 			
+
+			//行程折叠
+			// console.log(this.detail.itineraries)
+			// if(this.detail.itineraries&&this.detail.itineraries.length>4){
+			// 	this.itineraries=this.detail.itineraries.splice(0,4)
+			// }else{
+			// 	this.itineraries=this.detail.itineraries
+			// }
 			
 			
 			let participants=this.$route.query.participants;
@@ -1746,11 +1756,16 @@
 					}
 				}
 			.journey {
-				.new{
-					padding-bottom:30px;
-					border-bottom:1px solid #dde0e0;
+				.more{
+					display:inline-block;
+					padding-left:15px;
+					font-size:16px;
+					color:#1bbc9d;
+					font-weight:bold;
+					margin-top:20px;
 				}
-			
+				padding-bottom: 34px;
+				border-bottom: 1px solid #dde0e0;
 					h3{
 						margin: 28px 0 22px;
 						
@@ -1759,8 +1774,7 @@
 					}
 					.old {
 						margin-top: 28px;
-						padding-bottom: 34px;
-						border-bottom: 1px solid #dde0e0;
+						
 						
 						li {
 							&:last-child{

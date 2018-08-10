@@ -419,7 +419,8 @@
 				// var month = parseInt(dt.getMonth()) + 1;
 				dt.setDate(dt.getDate()-n)
 				var date=parseInt(dt.getDate())
-				return dt.getFullYear() + "-" + mm + "-" + date;
+				
+				return dt.getFullYear() + "-" + (parseInt(mm)<10?'0'+mm:mm) + "-" + date;
 			},
 //			checkFn(id) {
 //				if(id == 0) {
@@ -816,7 +817,7 @@
 							"couponCode": that.couponType ? that.couponCode : null,
 							"utcOffset": new Date().getTimezoneOffset() / 60 * -1,
 							"deviceType": "PC",
-							"finalRefundPeriod":that.delmulDay(that.startDate,that.that.refundTimeLimit)
+							"finalRefundPeriod":that.delmulDay(that.opctions.startDate,that.opctions.refundTimeLimit)
 						}
 						if(that.addOder == false) {
 							that.addOder = true
@@ -1033,7 +1034,7 @@
 		.dialogContent {
 			position: absolute;
 			width: 400px;
-			height: 200px;
+			height: 280px;
 			left: 50%;
 			top: 50%;
 			transform: translate(-50%, -50%);

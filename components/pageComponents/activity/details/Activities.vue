@@ -72,11 +72,11 @@
 				<div class="journey" id="journey" ref="journey" v-if="detail.itineraries&&detail.itineraries.length>0">
 					<h3>Itinerary</h3>
 					 <timeline v-if="showNewStyle" class="new">
-						<div :key="index" v-for="(i,index) in detail.itineraries" >
+						<div class="newItem" :key="index" v-for="(i,index) in detail.itineraries" >
 							<timeline-item>
 									<label>stop{{index+1}}</label>
 									<h4>{{i.title}}</h4>
-									<p v-if="i.description" v-html="i.description.replace(/\r|\n/g,'<br/>')"></p>
+									<p v-if="i.description" v-html="i.description.replace(/\r\n/g,'<br/>')"></p>
 									<div  v-if="i.photo">
 										<img  v-lazy="i.photo.url"  alt=""/>
 									</div>
@@ -315,7 +315,7 @@
 											<div class="children clearfix">
 												<div class="years">
 													<b>Children</b>
-													<span v-if="picInfo.childStandard">≤ {{picInfo.childStandard}} years</span>
+													<span v-if="picInfo.childStandard">≤ {{picInfo.childStandard}} years old</span>
 												</div>
 												
 												<div class="selectAdults">
@@ -1146,12 +1146,23 @@
 	};
 </script>
 <style lang="scss">
+	.newItem{
+		&:last-child{
+			.timeline-item{
+				padding-bottom: 0!important;
+				&:after{
+					width:0!important;
+				}
+			}
+			
+		}
+	}
 	.timeline-item{
 		padding: 0 0 20px 80px!important;
 			label{
 				position: absolute;
 				left: 0px;
-				top: -1px;
+				top: -3px;
 				font-size: 16px;
 			}
 			h4{
@@ -1735,7 +1746,11 @@
 					}
 				}
 			.journey {
-				
+				.new{
+					padding-bottom:30px;
+					border-bottom:1px solid #dde0e0;
+				}
+			
 					h3{
 						margin: 28px 0 22px;
 						

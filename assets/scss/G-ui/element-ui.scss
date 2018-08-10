@@ -144,17 +144,17 @@
         font-size: 18px;
         margin-bottom: 30px;
 
-        &:before{
-            content: '*';
-            width: 34px;
-            display: inline-block;
-            font-family:"iconfont" !important;
-            font-size: 17px;
-            font-style:normal;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-            color: #e14f3f;
-        }
+        // &:before{
+        //     content: '*';
+        //     width: 34px;
+        //     display: inline-block;
+        //     font-family:"iconfont" !important;
+        //     font-size: 17px;
+        //     font-style:normal;
+        //     -webkit-font-smoothing: antialiased;
+        //     -moz-osx-font-smoothing: grayscale;
+        //     color: #e14f3f;
+        // }
 
         &:after{
             content: '';

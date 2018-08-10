@@ -514,5 +514,11 @@
         color:#e14f3f;
         font-size:16px;
     }
+    
+}
+</style>
+<style lang="scss">
+.page__container .GUI-form .el-form-item.is-error .el-form-item__content{
+    padding-top: 0;
 }
 </style>

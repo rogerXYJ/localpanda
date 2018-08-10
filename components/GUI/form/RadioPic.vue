@@ -151,8 +151,8 @@
 	}
 </script>
 
-<style lang="scss" scoped>
-    .GUI-radio-pic{
+<style lang="scss">
+.GUI-radio-pic{
         overflow: hidden;
         &__item{
             width: 216px;
@@ -169,7 +169,7 @@
                 display: block;
             }
         }
-    }
+    
     .GUI-radio-pic__group{
         overflow: hidden;
     }
@@ -220,9 +220,17 @@
             }
         }
     }
-    .GUI-form{
-        .el-radio__inner{
-            border-color: #bbb;
+    
+    .el-radio__inner{
+        border-color: #bbb;
+    }
+    
+}
+.step2{
+    .GUI-radio-pic{
+        .el-radio__input{
+            margin-top: 10px;
         }
     }
+}
 </style>

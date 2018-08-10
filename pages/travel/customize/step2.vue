@@ -228,6 +228,9 @@
             }
         }
     }
+    .GUI-form .el-form-item.is-error .el-form-item__content{
+        padding-top: 0;
+    }
 }
 </style>
 <style lang="scss" scoped>

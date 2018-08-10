@@ -272,5 +272,8 @@ export default {
          width:calc(100% - 26px);  	
         }  
     } 
+    .GUI-form .el-form-item.is-error .el-form-item__content{
+        padding-top: 0;
+    }
 }
 </style>

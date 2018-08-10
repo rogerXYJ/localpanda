@@ -90,7 +90,7 @@
 	}
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
     .GUI-checkbox{
         overflow: hidden;
         &__group{

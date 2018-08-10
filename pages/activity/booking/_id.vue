@@ -627,17 +627,47 @@
 			},
 			//判断是否使用优惠券下单
 			placeOrder() {
-				let self = this;
-				if(self.checkedAll) {
-					if(self.couponType) {
-						self.next()
-					} else {
-						self.orderHasCouponRate = true
-					}
+				let that=this
+				let next = false
+				if(that.oderFirstName == "" || regExp.isNub(that.oderFirstName) || regExp.isCode(that.oderFirstName)) {
+					next = false
+					that.errorFn("firstName")
+					that.oderFirstNameErr = true
+				} else if(that.oderlastName == "" || regExp.isNub(that.oderlastName) || regExp.isCode(that.oderlastName)) {
+					next = false
+					that.errorFn("lastName")
+					that.oderlastNameErr = true
+					
+				} else if(!regExp.isEmail(that.emailAddress)) {
+					next = false
+					that.errorFn("email")
+					that.emailAddressErr = true
+					
+				} else if(!that.mobileCode) {
+					next = false
+					that.errorFn("code")
+					that.codeErr = true
+				
+				} else if(that.phone == "" || !regExp.isMobil(that.phone)) {
+					next = false
+					that.errorFn("mobilePhone")
+					that.phoneErr = true
+					
 				} else {
-					self.next()
+						next=true
+						 if(that.checkedAll) {
+						 	if(that.couponType) {
+						 		that.next()
+						 	} else {
+						 		that.orderHasCouponRate = true
+						 	}
+						 } else {
+						 	that.next()
+						 }
+					if(next == false) {
+						that.gaFail()
+					}
 				}
-
 			},
 			continueFn() {
 				let self = this
@@ -664,184 +694,58 @@
 			},
 			//下单
 			next() {
-				let next = false
 				const that = this
 				var obj; //that.addOder = true
-				var couponDiscount;
-				if(that.oderFirstName == "" || regExp.isNub(that.oderFirstName) || regExp.isCode(that.oderFirstName)) {
-					//that.gaFail()
-					next = false
-					that.errorFn("firstName")
-					that.oderFirstNameErr = true
-					that.isShowAlert = true
-					that.alertMessage = "There are required fields without values or with incorrect values. Please check the info you've provided and make sure all the required fields have been filled."
-				} else if(that.oderlastName == "" || regExp.isNub(that.oderlastName) || regExp.isCode(that.oderlastName)) {
-					//that.gaFail()
-					next = false
-					that.errorFn("lastName")
-					that.oderlastNameErr = true
-					that.isShowAlert = true
-					that.alertMessage = "There are required fields without values or with incorrect values. Please check the info you've provided and make sure all the required fields have been filled."
-				} else if(!regExp.isEmail(that.emailAddress)) {
-					//that.gaFail()
-					next = false
-					that.errorFn("email")
-					that.emailAddressErr = true
-					that.isShowAlert = true
-					that.alertMessage = "There are required fields without values or with incorrect values. Please check the info you've provided and make sure all the required fields have been filled."
-				} else if(!that.mobileCode) {
-					//that.gaFail()
-					next = false
-					that.errorFn("code")
-					that.codeErr = true
-					that.isShowAlert = true
-					that.alertMessage = "There are required fields without values or with incorrect values. Please check the info you've provided and make sure all the required fields have been filled."
-				} else if(that.phone == "" || !regExp.isMobil(that.phone)) {
-					//that.gaFail()
-					next = false
-					that.errorFn("mobilePhone")
-					that.phoneErr = true
-					that.isShowAlert = true
-					that.alertMessage = "There are required fields without values or with incorrect values. Please check the info you've provided and make sure all the required fields have been filled."
-				} else {
-//					if(that.check == 1) {
-//						if(that.TravellerFirstName == "" || regExp.isNub(that.TravellerFirstName) || regExp.isCode(that.TravellerFirstName)) {
-//							//that.gaFail()
-//							next = false
-//							that.TravellerFirstNameErr = true
-//							that.isShowAlert = true
-//							that.alertMessage = "There are required fields without values or with incorrect values. Please check the info you've provided and make sure all the required fields have been filled."
-//						} else if(that.TravellerlastName == "" || regExp.isNub(that.TravellerlastName) || regExp.isCode(that.TravellerlastName)) {
-//							//that.gaFail()
-//							next = false
-//							that.TravellerlastNameErr = true
-//							that.isShowAlert = true
-//							that.alertMessage = "There are required fields without values or with incorrect values. Please check the info you've provided and make sure all the required fields have been filled."
-//						} else if(!regExp.isEmail(that.TravelleremailAddress)) {
-//							//that.gaFail()
-//							next = false
-//							that.TravelleremailAddressErr = true
-//							that.isShowAlert = true
-//							that.alertMessage = "There are required fields without values or with incorrect values. Please check the info you've provided and make sure all the required fields have been filled."
-//						} else if(!regExp.isMobil(that.Travellerphone)) {
-//							that.TravellerphoneErr = true
-//							that.isShowAlert = true
-//							that.alertMessage = "There are required fields without values or with incorrect values. Please check the info you've provided and make sure all the required fields have been filled."
-//						} else {
-//							next = true
-//							ga(gaSend, {
-//								hitType: 'event',
-//								eventCategory: 'activity_booking',
-//								eventAction: 'submit',
-//								eventLabel: 'activity_order_succ',
-//							});
-//							obj = {
-//								"userId": that.opctions.userId,
-//								"activityId": that.opctions.activityId,
-//								"amount": that.opctions.amount,
-//								"currency": that.opctions.currency,
-//								"adultNum": that.opctions.adultNum,
-//								"childrenNum": that.opctions.childrenNum,
-//								"infantNum": 0,
-//								"startDate": that.opctions.startDate,
-//								"startTime": that.opctions.startTime,
-//								"averagePrice": that.opctions.averagePrice,
-//								"childDiscount": that.opctions.childDiscount,
-//								"comments": that.comments ? that.comments : null,
-//								"couponDiscount": that.couponType ? that.opctions.couponDiscount : null,
-//								"couponCode": that.couponType ? that.couponCode : null,
-//								"contactInfo": {
-//									"firstName": that.oderFirstName,
-//									"lastName": that.oderlastName,
-//									"phoneNumber": that.code + that.phone,
-//									"emailAddress": that.emailAddress
-//								},
-//								"travelerInfo": {
-//									"firstName": that.TravellerFirstName,
-//									"lastName": that.TravellerlastName,
-//									"phoneNumber": that.travellCode + that.Travellerphone,
-//									"emailAddress": that.TravelleremailAddress
-//								},
-//								"utcOffset": new Date().getTimezoneOffset() / 60 * -1,
-//								"deviceType": "PC"
-//							}
-//
-//							if(that.addOder == false) {
-//								that.addOder = true
-//								that.axios.put("https://api.localpanda.com/api/order/activity", JSON.stringify(obj), {
-//									headers: {
-//										'Content-Type': 'application/json; charset=UTF-8'
-//									}
-//								}).then(function(response) {
-//
-//									var loginState = (that.logIn ? that.logIn : 0);
-//									//var hostUrl = obj.currency == 'CNY' ? 'https://www.localpanda.cn' : 'https://www.localpanda.com';
-//									window.location.href = "/activity/payment?objectId=" + response.data.response + '&login=' + loginState;
-//
-//								}, function(response) {})
-//							}
-//
-//						}
-//						if(next == false) {
-//							that.gaFail()
-//						}
-//					} else {
-						next = true
-						ga(gaSend, {
-							hitType: 'event',
-							eventCategory: 'activity_booking',
-							eventAction: 'submit',
-							eventLabel: 'activity_order_succ',
-						});
-						obj = {
-						    userId: localStorage.getItem("userid") ?
-							localStorage.getItem("userid") : null,
-							"activityId": that.opctions.activityId,
-							"amount": that.opctions.amount,
-							"currency": that.opctions.currency,
-							"adultNum": that.opctions.adultNum,
-							"childrenNum": that.opctions.childrenNum,
-							"infantNum": 0,
-							"startDate": that.opctions.startDate,
-							"startTime": that.opctions.startTime,
-							"averagePrice": that.opctions.averagePrice,
-							"childDiscount": that.opctions.childDiscount,
-							"comments": that.comments ? that.comments : null,
-							"contactInfo": {
-								"firstName": that.oderFirstName,
-								"lastName": that.oderlastName,
-								"phoneNumber": that.code + that.phone,
-								"emailAddress": that.emailAddress
-							},
-							"couponDiscount": that.couponType ? that.opctions.couponDiscount : null,
-							"couponCode": that.couponType ? that.couponCode : null,
-							"utcOffset": new Date().getTimezoneOffset() / 60 * -1,
-							"deviceType": "PC",
-							"finalRefundPeriod":that.delmulDay(that.opctions.startDate,that.opctions.refundTimeLimit)
-						}
-						if(that.addOder == false) {
-							that.addOder = true
-							that.axios.put(this.apiBasePath + "order/activity", JSON.stringify(obj), {
-								headers: {
-									'Content-Type': 'application/json; charset=UTF-8'
-								}
-							}).then(function(response) {
-
-								console.log(response)
-								//var hostUrl = obj.currency=='CNY' ? 'https://www.localpanda.cn' : 'https://www.localpanda.com';
-								var loginState = (that.logIn ? that.logIn : 0);
-								window.location.href = "/activity/payment?objectId=" + response.data.response + '&login=' + loginState;
-
-							}, function(response) {})
-						}
-					}
-					if(next == false) {
-						that.gaFail()
-					}
+				ga(gaSend, {
+					hitType: 'event',
+					eventCategory: 'activity_booking',
+					eventAction: 'submit',
+					eventLabel: 'activity_order_succ',
+				});
+				obj = {
+					userId: localStorage.getItem("userid") ?
+					localStorage.getItem("userid") : null,
+					"activityId": that.opctions.activityId,
+					"amount": that.opctions.amount,
+					"currency": that.opctions.currency,
+					"adultNum": that.opctions.adultNum,
+					"childrenNum": that.opctions.childrenNum,
+					"infantNum": 0,
+					"startDate": that.opctions.startDate,
+					"startTime": that.opctions.startTime,
+					"averagePrice": that.opctions.averagePrice,
+					"childDiscount": that.opctions.childDiscount,
+					"comments": that.comments ? that.comments : null,
+					"contactInfo": {
+						"firstName": that.oderFirstName,
+						"lastName": that.oderlastName,
+						"phoneNumber": that.code + that.phone,
+						"emailAddress": that.emailAddress
+					},
+					"couponDiscount": that.couponType ? that.opctions.couponDiscount : null,
+					"couponCode": that.couponType ? that.couponCode : null,
+					"utcOffset": new Date().getTimezoneOffset() / 60 * -1,
+					"deviceType": "PC",
+					"finalRefundPeriod":that.delmulDay(that.opctions.startDate,that.opctions.refundTimeLimit)
 				}
-			//}
+				if(that.addOder == false) {
+					that.addOder = true
+					that.axios.put(this.apiBasePath + "order/activity", JSON.stringify(obj), {
+						headers: {
+							'Content-Type': 'application/json; charset=UTF-8'
+						}
+					}).then(function(response) {
 
-		},
+						console.log(response)
+						//var hostUrl = obj.currency=='CNY' ? 'https://www.localpanda.cn' : 'https://www.localpanda.com';
+						var loginState = (that.logIn ? that.logIn : 0);
+						window.location.href = "/activity/payment?objectId=" + response.data.response + '&login=' + loginState;
+
+					}, function(response) {})
+				}
+			}
+
+	},
 		created: function() {
 
 		},

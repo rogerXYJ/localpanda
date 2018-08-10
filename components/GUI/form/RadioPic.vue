@@ -224,8 +224,13 @@
     .el-radio__inner{
         border-color: #bbb;
     }
-    .el-radio__input{
-        margin-top: 10px;
+    
+}
+.step2{
+    .GUI-radio-pic{
+        .el-radio__input{
+            margin-top: 10px;
+        }
     }
 }
 </style>

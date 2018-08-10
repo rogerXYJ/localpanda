@@ -72,7 +72,7 @@
 	}
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .GUI-level-select{
     position: relative;
     &__list{

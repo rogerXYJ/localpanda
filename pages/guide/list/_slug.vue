@@ -227,58 +227,59 @@ export default {
   }
 };
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
+//@import '~/assets/scss/_main.scss';
+//@import '~/assets/font/iconfont.css';
 .guideList{
-
-.el-input__inner {
-  width: 168px !important;
-  height: 40px;
-  font-size: 18px !important;
-  border-radius: 20px !important;
-  border-color: none;
-  padding-left: 20px !important;
-  border: none !important;
-}
-.el-popper[x-placement^="bottom"] {
-  margin-top: 2px !important;
-}
-.el-popper .popper__arrow,
-.el-popper .popper__arrow::after {
-  border-style: none !important;
-}
-.el-select-dropdown {
-  text-align: center;
-  border-radius: 20px !important;
-  border: none !important;
-}
-
-.el-select-dropdown__item.selected {
-  color: #1bbc9d !important;
-  font-weight: normal !important;
-}
-
-.el-select-dropdown__item {
-  font-size: 18px !important;
-  text-align: left !important;
-  &.hover {
-    background-color: #fff !important;
-    border-radius: 20px;
+  .el-input__inner {
+    width: 168px !important;
+    height: 40px;
+    font-size: 18px !important;
+    border-radius: 20px !important;
+    border-color: none;
+    padding-left: 20px !important;
+    border: none !important;
   }
-  &:hover {
-    background-color: #fff !important;
-    border-radius: 20px;
-    color: #1bbc9d;
+  .el-popper[x-placement^="bottom"] {
+    margin-top: 2px !important;
   }
-}
-.el-icon-arrow-up {
-  &:before {
-    content: "\e60c" !important;
-    color: #353a3f;
+  .el-popper .popper__arrow,
+  .el-popper .popper__arrow::after {
+    border-style: none !important;
   }
-}
-.el-select .el-input.is-focus .el-input__inner {
-  border-color: #b4bccc !important;
-}
+  .el-select-dropdown {
+    text-align: center;
+    border-radius: 20px !important;
+    border: none !important;
+  }
+
+  .el-select-dropdown__item.selected {
+    color: #1bbc9d !important;
+    font-weight: normal !important;
+  }
+
+  .el-select-dropdown__item {
+    font-size: 18px !important;
+    text-align: left !important;
+    &.hover {
+      background-color: #fff !important;
+      border-radius: 20px;
+    }
+    &:hover {
+      background-color: #fff !important;
+      border-radius: 20px;
+      color: #1bbc9d;
+    }
+  }
+  .el-icon-arrow-up {
+    &:before {
+      content: "\e60c" !important;
+      color: #353a3f;
+    }
+  }
+  .el-select .el-input.is-focus .el-input__inner {
+    border-color: #b4bccc !important;
+  }
 }
 </style>
 <style lang="scss" scoped>

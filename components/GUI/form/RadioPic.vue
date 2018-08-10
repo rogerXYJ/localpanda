@@ -151,7 +151,7 @@
 	}
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
     .GUI-radio-pic{
         overflow: hidden;
         &__item{

@@ -464,7 +464,8 @@
             }
         }
         .GUI-checkbox__item.el-checkbox{
-        	float: inherit!important;
+            float: inherit!important;
+            margin-left: 9px;
         }
         .GUI-checkbox__item--current{
             .travel-interest__item{

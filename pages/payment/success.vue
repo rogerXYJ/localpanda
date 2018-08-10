@@ -82,9 +82,11 @@ order details.You can also email service@localpanda.com or call us at +86 (21) 8
 <style lang="scss">
 	//@import '~/assets/scss/_main.scss';
 	//@import '~/assets/font/iconfont.css';
+.success{
 	#header {
 		box-shadow: 0px 2px 6px 0px rgba(53, 58, 63, 0.1);
 	}
+}
 </style>
 <style lang="scss" scoped>
 //@import '~/assets/scss/base/_setting.scss';

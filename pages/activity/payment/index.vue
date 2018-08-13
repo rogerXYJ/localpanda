@@ -449,7 +449,7 @@
 				isPay = true
 				let that = this
 				let obj = {
-					amount: that.opctions.amount * 100,
+					amount: that.opctions.amount,
 					currency: that.opctions.currency,
 					objectId: that.orderId,
 					token: token.id,
@@ -504,7 +504,7 @@
 				var obj = {
 					tradeType: 'NATIVE',
 					objectId: this.opctions.orderId,
-					amount: this.opctions.amount * 100,
+					amount: this.opctions.amount,
 					objectType: 'ACTIVITY',
 					deviceType:self.device()
 				};

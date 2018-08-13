@@ -38,7 +38,7 @@ export default {
       let batchRes = {};
       try {
        // briefRes = await axios.get(apiBasePath + 'guide/brief/' + data.id);
-        batchRes = await axios.get(apiBasePath + 'product/activity/batch/' + data.activityId);
+        batchRes = await axios.get(apiBasePath + 'product/activity/batch/' + data.activityId+'?currency=USD');
       } catch (err) {
         if (err.response.status !== 404) {
           return error({ statusCode: 500, message: store.state.lang.text.an_error_occured })

@@ -24,6 +24,7 @@
 			:travelersReviews="travelersReviews"
 			:pageSize="pageSize"
 			:pageNum="pageNum"
+			@currencyChange="currencyChangeFn"
 			></Activities>
 		<FooterCommon></FooterCommon>
 		<div class="toast-container" v-if="toastShow">
@@ -127,7 +128,7 @@
 
 				//推荐信息
 				var Promise3 = new Promise(function(resolve, reject){
-					Vue.axios.get(apiBasePath + "product/activity/"+id+"/recommend").then(function(res) {
+					Vue.axios.get(apiBasePath + "product/activity/"+id+"/recommend?currency=USD").then(function(res) {
 						// var consoleTimeS2 = new Date().getTime();
 						// 	console.log('推荐接口花费时间：'+(consoleTimeS2-consoleTimeS)+' ms');
 						resolve(res);
@@ -138,7 +139,7 @@
 
 				//价格信息
 				var Promise4 = new Promise(function(resolve, reject){
-					Vue.axios.get(apiBasePath + "product/activity/"+id+"/price").then(function(res) {
+					Vue.axios.get(apiBasePath + "product/activity/"+id+"/price?currency=USD").then(function(res) {
 						// var consoleTimeS2 = new Date().getTime();
 						// 	console.log('价格接口花费时间：'+(consoleTimeS2-consoleTimeS)+' ms');
 						resolve(res);
@@ -147,8 +148,9 @@
 					});
 				});
 
+				//价格明细
 				var Promise7 = new Promise(function(resolve, reject){
-					Vue.axios.get(apiBasePath + "product/activity/"+id+"/price/detail").then(function(res) {
+					Vue.axios.get(apiBasePath + "product/activity/"+id+"/price/detail?currency=USD").then(function(res) {
 						// var consoleTimeS2 = new Date().getTime();
 						// 	console.log('价格接口花费时间：'+(consoleTimeS2-consoleTimeS)+' ms');
 						resolve(res);
@@ -390,6 +392,9 @@
 					data.isShowBookNow = false;
 					data.isscroll = false;
 				}
+			},
+			currencyChangeFn(data){
+				this.recommed = data;
 			}
 		},
 		mounted: function() {

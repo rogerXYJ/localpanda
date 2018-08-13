@@ -264,6 +264,7 @@
 				pageSize: 16,
 				participants:participants,
 				type:type,
+				currency:'USD',
 				sort: {
 					type:'SCORE'
 				}

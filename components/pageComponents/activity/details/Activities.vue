@@ -223,6 +223,8 @@
 				<!--<grade></grade>-->
 			</div>
 
+
+			<!-- 产品推荐 -->
 			<div class="recommend" id="recommend" v-if="recommed&&recommed.length>0">
 				<h3>Similar Experiences</h3>
 				<ul class="clearfix">
@@ -241,8 +243,8 @@
 							    -webkit-box-orient:vertical;">{{i.title}}</h4>
 								<div class="duration"><i class="iconfont">&#xe624;</i>Duration: {{i.duration}} {{i.durationUnit|firstUpperCase}}</div>
 								<div class="pic">
-									<div class="old-pic" v-if="i.originalPrice">${{returnFloat(i.originalPrice)}}</div>
-									<div class="current-price">From<b>${{returnFloat(i.bottomPrice)}}</b><span>  pp</span></div>
+									<div class="old-pic" v-if="i.originalPrice">{{nowExchange.symbol}}{{returnFloat(i.originalPrice)}}</div>
+									<div class="current-price">From<b>{{nowExchange.symbol}}{{returnFloat(i.bottomPrice)}}</b><span>  pp</span></div>
 								</div>
 							</div>
 						</a>
@@ -622,6 +624,15 @@
 					// 		self.returnFloat(self.returnFloat(self.adultsPic) - self.returnFloat(self.children * self.picInfo.childDiscount)) :
 					// 		self.returnFloat(self.adultsPic);
 				}
+
+
+
+				//请求推荐模块
+				this.axios.get("https://api.localpanda.com/api/product/activity/"+this.id+"/recommend?currency="+value).then(function(res) {
+					if(res.status==200){
+						self.$emit('currencyChange',res.data);
+					}
+				}, function(res) {});
 				
 			},
 			//设置默认价格

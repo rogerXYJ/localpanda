@@ -101,7 +101,7 @@
 					</ul>
 					<a class="more" href="javascript:;">Veiw More</a>	
 				</div>
-				 <div class="notes" v-if="photoList&&photoList.length>0" @click="showPhoto" id="photoList">
+				 <!-- <div class="notes" v-if="photoList&&photoList.length>0" @click="showPhoto" id="photoList">
 					<h3>Pictures of our travelers</h3>
 					<div class="photoCover" v-lazy:background-image="photoList.length>0?photoList[0].url:''">
 						<div class="mask"></div>
@@ -111,7 +111,7 @@
 						</div>
 					</div>
 
-				</div>
+				</div> -->
 				
 				<div class="provide clearfix" id="provide" >
 					<div class="inclusions" v-if="itemsIncluded&&itemsIncluded.length>0||(inclusions&&inclusions.length>0)">
@@ -460,7 +460,7 @@
 			"exclusions",
 			"notice",
 			"destination",
-			"photoList",
+			//"photoList",
 			"travelersReviews",
 		],
 		name: "Activities",

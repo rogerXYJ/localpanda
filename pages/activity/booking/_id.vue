@@ -118,7 +118,7 @@
 							You can reschedule or cancel your trip at zero cost before Aug 31st, 2018.
 							You can get a 100% refund up to {{opctions.refundTimeLimit}} hours before your trip.
 						</p>-->
-						<p class="refundPolicy" style="color: red;font-size: 14px;" v-if="opctions.fullRefund">You can reschedule or cancel your trip at zero cost before {{delmulDay(opctions.startDate,opctions.refundTimeLimit)}}.</p>
+						<p class="refundPolicy" style="color: red;font-size: 14px;" v-if="opctions.fullRefund">You can reschedule or cancel your trip at zero cost before {{formatDate(delmulDay(opctions.startDate,opctions.refundTimeLimit))}}.</p>
 						<!--<p class="text" style="font-size: 14px;margin-top: 20px;" v-if="logIn!=1">You ordered as a guest. To view your order details, you can click "My Bookings" on the top bar then type in the reservee's email address and name you entered before to access that information.</p>-->
 						
 						<div class="nextBtn">
@@ -409,18 +409,38 @@
 				}
 
 			},
+			//退款时间计算
 			 delmulDay(dtstr, n) {
 				var s = dtstr.split("-");
 				var yy = parseInt(s[0]);
 				var mm = parseInt(s[1]);
 				var dd = parseInt(s[2]);
 				var dt = new Date(yy, mm, dd);
-				// dt.setMonth(dt.getMonth() + n);
-				// var month = parseInt(dt.getMonth()) + 1;
-				dt.setDate(dt.getDate()-n)
-				var date=parseInt(dt.getDate())
-				
+				dt.setDate(dt.getDate()-n);
+				var date=parseInt(dt.getDate());
 				return dt.getFullYear() + "-" + (parseInt(mm)<10?'0'+mm:mm) + "-" + date;
+			},
+			//国际时间转成美国时间
+			formatDate(millinSeconds){
+				var date = new Date(millinSeconds);
+				var monthArr = new Array("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Spt","Oct","Nov","Dec");
+				var suffix = new Array("st","nd","rd","th");
+				
+				var year = date.getFullYear(); //年
+				var month = monthArr[date.getMonth()]; //月
+				var ddate = date.getDate(); //日
+				//ddate=ddate<10?"0"+ddate:ddate
+
+				if(ddate % 10 < 1 || ddate % 10 > 3) {
+					ddate = ddate + suffix[3];
+				}else if(ddate % 10 == 1) {
+					ddate = ddate + suffix[0];
+				} else if(ddate % 10 == 2) {
+					ddate = ddate + suffix[1];
+				}else {
+					ddate = ddate + suffix[2];
+				}
+				return month + " "+ ddate + ", " + year;
 			},
 //			checkFn(id) {
 //				if(id == 0) {

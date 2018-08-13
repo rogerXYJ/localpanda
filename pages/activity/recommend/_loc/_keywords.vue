@@ -386,11 +386,14 @@
 <style lang="scss">
 	//@import '~/assets/scss/_main.scss';
 	//@import '~/assets/font/iconfont.css';
+.topSeach{
 	body,
 	html {
 		height: 100%;
 		background: #FAF9F8!important;
 	}
+}
+	
 	
 	#headercommon {
 		background: #fff!important;

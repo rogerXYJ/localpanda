@@ -47,9 +47,10 @@
 					
 					<div class="types" v-if="detail.attractions&&detail.attractions.length>0">
 					
-						<a v-for="i in tagAttractions" :href="returnUrl(i)"><span>{{i}}</span></a>
+						<a v-if="!showMoreTag" v-for="i in tagAttractions" :href="returnUrl(i)"><span>{{i}}</span></a>
+						<a class="showtag" v-else v-for="i in tagAttractions" :href="returnUrl(i)"><span>{{i}}</span></a>
 						
-						<a v-if="detail.attractions.length>4" @click="tagFn">···</a>
+						<a v-if="detail.attractions.length>4" @click="showMoreTag=!showMoreTag">···</a>
 						<!--<p v-if="detail.sales&&detail.sales>0">Booked {{detail.sales}} {{detail.sales==1?'time':'times'}} (last 30 days)</p>-->
 					</div>
 				</div>				
@@ -71,7 +72,7 @@
 				<div class="journey" id="journey" ref="journey" v-if="detail.itineraries&&detail.itineraries.length>0">
 					<h3>Itinerary</h3>
 					 <timeline v-if="showNewStyle" class="new">
-						<div class="newItem"  v-for="(i,index) in itinerary">
+						<div class="newItem" :key="index" v-for="(i,index) in detail.itineraries">
 							<timeline-item>
 									<label>stop{{index+1}}</label>
 									<h4>{{i.title}}</h4>
@@ -82,10 +83,9 @@
 					
 							</timeline-item>
 						</div>
-						
 					</timeline>
 					<ul v-else class="old">
-						<li  v-for="(i,index) in itinerary">
+						<li :key="index" v-for="(i,index) in detail.itineraries">
 							<div class="item_v clearfix" v-if="i.photo">
 								<div class="contTitle">
 									
@@ -98,9 +98,8 @@
 								<div class="cont" v-if="i.description" v-html="i.description.replace(/\r\n/g,'<br/>')"></div>
 							</div>
 						</li>
-						
 					</ul>
-					<a v-if="detail.itineraries.length>4" class="more" href="javascript:;" @click="fn">{{showMoreItinerary?'Veiw More':'Veiw Less'}}</a>	
+					<a class="more" href="javascript:;">Veiw More</a>	
 				</div>
 				 <div class="notes" v-if="photoList&&photoList.length>0" @click="showPhoto" id="photoList">
 					<h3>Pictures of our travelers</h3>
@@ -293,8 +292,8 @@
 										<div class="people" v-if="children>0">
 											<span v-if="people==1||adults==1">Adult x 1</span>
 											<span v-else>Adults x {{adults}}</span> 
-											<span v-if="children==1"> , Child x 1</span>
-											<span v-if="children>1"> , Children x  {{children}}</span>
+											<span v-if="children==1"> , child x 1</span>
+											<span v-if="children>1"> , children x  {{children}}</span>
 										</div> 
 										<i class="iconfont" v-if="!isShowAdults">&#xe60f;</i>
 										<i class="iconfont" v-else>&#xe63f;</i>
@@ -518,7 +517,6 @@
 				tagAttractions:[],
 				showNewStyle:false,
 				itinerary:[],//行程折叠
-				showMoreItinerary:false
 			};
 			
 		},
@@ -532,24 +530,6 @@
 			TimelineTitle
 		},
 		methods: {
-			fn(){
-				this.showMoreItinerary=!this.showMoreItinerary
-				if(this.showMoreItinerary){
-					this.itinerary=this.detail.itineraries.concat().splice(0,4)
-				}else{
-					this.itinerary=this.detail.itineraries
-				}
-
-			},
-			tagFn(){
-				this.showMoreTag=!this.showMoreTag
-				if(this.showMoreTag){
-					this.tagAttractions=this.detail.attractions.concat().splice(0,4)
-				}else{
-					this.tagAttractions=this.detail.attractions
-				}
-				
-			},
 			delNullArr(array){
 				for(var i = 0; i < array.length; i++) {
 					if(array[i] == "" || typeof(array[i]) == "undefined") {
@@ -786,7 +766,9 @@
 			showTable() {
 				this.isShowTable = false
 				this.sixArr=this.tableData(this.picInfo.details)
+
 			},
+			
 			add(id) {
 				if(id == 0) {
 					this.adults++;
@@ -1083,16 +1065,12 @@
 			
 
 			//行程折叠
-		
-			if(this.detail.itineraries&&this.detail.itineraries.length>0){
-				if(this.detail.itineraries.length>4){
-					this.showMoreItinerary=true
-					this.itinerary=this.detail.itineraries.concat().splice(0,4)	
-				}else{
-					this.itinerary=this.detail.itineraries
-				}
-				
-			}
+			// console.log(this.detail.itineraries)
+			// if(this.detail.itineraries&&this.detail.itineraries.length>4){
+			// 	this.itineraries=this.detail.itineraries.splice(0,4)
+			// }else{
+			// 	this.itineraries=this.detail.itineraries
+			// }
 			
 			
 			let participants=this.$route.query.participants;
@@ -1100,9 +1078,8 @@
 			
 			if(this.detail.attractions&&this.detail.attractions.length>0){
 				if(this.detail.attractions.length>4){
-					this.showMoreTag=true
-					this.tagAttractions=this.detail.attractions.concat().splice(0,4)
-					
+					this.tagAttractions=this.detail.attractions.splice(0,4)
+					console.log(this.tagAttractions)
 				}else{
 					this.tagAttractions=this.detail.attractions
 				}

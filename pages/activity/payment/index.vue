@@ -77,7 +77,7 @@
 						<p style="margin-top: 20px; font-size: 18px;color:red" v-if="payStatus">{{payErrMsg}}</p>
 					</div>
 				</div>
-				<p class="refundPolicy" style="margin-top: 30px; color: red;">You can reschedule or cancel your trip at zero cost before {{opctions.finalRefundPeriod}}.</p>
+				<p class="refundPolicy" style=" font-size:14px;margin-top: 30px; color: red;" v-if="opctions.finalRefundPeriod">You can reschedule or cancel your trip at zero cost before {{formatDate(opctions.finalRefundPeriod)}}.</p>
 			<!--	<p style="width: 600px;margin-top: 20px; color: red;" v-if="logInHide">You ordered as a guest. To view your order details, you can click "My Bookings" on the top bar then type in the reservee's email address and name you entered before to access that information.</p>-->
 				<button class="btnlinner paybtn" @click="getToken">Pay Now</button>
 			</div>
@@ -172,7 +172,7 @@
 		require('~/assets/js/plugin/l10n.js')
 		
 	}
-	import { GetQueryString } from '~/assets/js/plugin/utils.js'
+	import { GetQueryString,formatDate } from '~/assets/js/plugin/utils.js'
 	import HeaderCommon from '~/components/HeaderCommon/HeaderCommon'
 	import FooterCommon from '~/components/FooterCommon/FooterCommon';
 	import Loading from '~/components/Loading/Loading'
@@ -185,6 +185,7 @@
 
 	export default {
 		name: 'payNow',
+		
 		head() {
 			return {
 				script: [
@@ -200,16 +201,18 @@
 				]
 			}
 		},
-		async asyncData({
-			apiBasePath
+		async asyncData({route,
+			store,
+			error,
+			apiBasePath,
+			redirect
 		}) {
-			return {
-				apiBasePath: apiBasePath
-			}
-		},
-		
-		data() {
-			return {
+			var consoleTimeS = new Date().getTime();
+			console.log('node start time:'+consoleTimeS);
+			
+			
+			let id=route.query.objectId;
+			let data ={	
 				opctions: {
 					averagePrice: 0,
 					childrenNum: 0,
@@ -221,7 +224,7 @@
 				halfDates: '',
 				enName: '',
 				headPortraitUrl: '',
-				orderId: '',
+				orderId:id,
 				logIn: '',
 				email: '',
 				token: '',
@@ -244,9 +247,33 @@
 				payStatus: false,
 				payErrMsg: '',
 				isPay: false
-
-			}
+		
+		};
+			
+		var dataInfo={}
+		try {
+		        dataInfo = await Vue.axios.get(apiBasePath+"order/activity/" + id);
+		        data.opctions = dataInfo.data
+				data.email = dataInfo.data.contactInfo.emailAddress;
+				data.refundTimeLimit = dataInfo.data.activityPrice.refundTimeLimit 
+				if(data.opctions.currency == "CNY") {
+					data.id = 1
+				}
+		       	
+			 	
+		      } catch (err) {
+		      	//return error(JSON.stringify(err));
+		    }
+			var consoleTimeS2 = new Date().getTime();
+			console.log('node end time:'+consoleTimeS2);
+			console.log('在node端渲染，请求所有接口花费时间：'+(consoleTimeS2-consoleTimeS)+' ms');
+			return data;
+			
+			
+			
 		},
+		
+		
 		components: {
 			HeaderCommon,
 			FooterCommon,
@@ -298,7 +325,8 @@
 				}
 				console.log(id)
 			},
-			
+			//国际时间转成美国时间
+			formatDate:formatDate,
 			//卡元素信息
 			stripeFn() {
 				this.stripe = Stripe(payCode)
@@ -365,19 +393,19 @@
 				});
 				cardCvc.mount('#card-cvc');
 			},
-
-			getInfo() {
-				let that = this
-				Vue.axios.get(this.apiBasePath + "order/activity/" + that.orderId).then(function(res) {
-					that.opctions = res.data
-					that.email = res.data.contactInfo.emailAddress;
-					that.refundTimeLimit = that.opctions.activityPrice.refundTimeLimit 
-					if(that.opctions.currency == "CNY") {
-						that.id = 1
-					}
-
-				}, function(res) {})
-			},
+//
+//			getInfo() {
+//				let that = this
+//				Vue.axios.get(this.apiBasePath + "order/activity/" + that.orderId).then(function(res) {
+//					that.opctions = res.data
+//					that.email = res.data.contactInfo.emailAddress;
+//					that.refundTimeLimit = that.opctions.activityPrice.refundTimeLimit 
+//					if(that.opctions.currency == "CNY") {
+//						that.id = 1
+//					}
+//
+//				}, function(res) {})
+//			},
 			getToken() {
 				let that = this
 				
@@ -461,11 +489,12 @@
 
 				//console.log(that.opctions.currency);
 
-				Vue.axios.post(that.apiBasePath + "payment/pay/stripe", JSON.stringify(obj), {
+				Vue.axios.post("https://api.localpanda.com/api/payment/pay/stripe", JSON.stringify(obj), {
 					headers: {
 						'Content-Type': 'application/json; charset=UTF-8'
 					}
 				}).then(function(response) {
+					console.log(response)
 					that.payStatus = false
 					that.errMsg = response.data.errorMessage
 					let reg = /Exception/g
@@ -602,7 +631,8 @@
 		mounted: function() {
 			console.log(window.Stripe)
 			this.orderId = GetQueryString("objectId")
-			this.getInfo()
+			console.log(this.opctions)
+//			this.getInfo()
 			this.stripeFn()
 			//this.getToken()
 			this.logIn = window.localStorage.getItem("logstate")

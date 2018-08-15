@@ -104,7 +104,7 @@
 	}
 </script>
 <style lang="scss">
-	
+.email{
 	.checkbox_content{
 		color: #878e95;
 		font-size: 16px;
@@ -112,6 +112,8 @@
 	.checkbox_box{
 		background: #fff;
 	}
+}
+	
 </style>
 <style lang="scss" scoped>
 	

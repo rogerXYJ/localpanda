@@ -192,8 +192,8 @@ export default {
 			
 		}
 		.none{
-			width: 10px;
-			height: 10px;
+			width: 12px;
+			height: 12px;
 			background: #fff;
 			border:2px solid #dde0e0;
 			vertical-align: top;

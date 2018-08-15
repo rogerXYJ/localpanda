@@ -49,6 +49,7 @@
 					
 						<a v-for="i in tagAttractions" :href="returnUrl(i)"><span>{{i}}</span></a>
 						
+						
 						<a v-if="detail.attractions.length>4" @click="tagFn">···</a>
 						<!--<p v-if="detail.sales&&detail.sales>0">Booked {{detail.sales}} {{detail.sales==1?'time':'times'}} (last 30 days)</p>-->
 					</div>
@@ -71,7 +72,7 @@
 				<div class="journey" id="journey" ref="journey" v-if="detail.itineraries&&detail.itineraries.length>0">
 					<h3>Itinerary</h3>
 					 <timeline v-if="showNewStyle" class="new">
-						<div class="newItem"  v-for="(i,index) in itinerary">
+						<div class="newItem" :key="index" v-for="(i,index) in itinerary">
 							<timeline-item>
 									<label>stop{{index+1}}</label>
 									<h4>{{i.title}}</h4>
@@ -82,10 +83,9 @@
 					
 							</timeline-item>
 						</div>
-						
 					</timeline>
 					<ul v-else class="old">
-						<li  v-for="(i,index) in itinerary">
+						<li :key="index" v-for="(i,index) in itinerary">
 							<div class="item_v clearfix" v-if="i.photo">
 								<div class="contTitle">
 									
@@ -98,11 +98,10 @@
 								<div class="cont" v-if="i.description" v-html="i.description.replace(/\r\n/g,'<br/>')"></div>
 							</div>
 						</li>
-						
 					</ul>
-					<a v-if="detail.itineraries.length>4" class="more" href="javascript:;" @click="fn">{{showMoreItinerary?'Veiw More':'Veiw Less'}}</a>	
+				<a v-if="detail.itineraries.length>4&&showMoreItinerary" class="more" href="javascript:;" @click="fn">Veiw More</a>
 				</div>
-				 <div class="notes" v-if="photoList&&photoList.length>0" @click="showPhoto" id="photoList">
+				 <!-- <div class="notes" v-if="photoList&&photoList.length>0" @click="showPhoto" id="photoList">
 					<h3>Pictures of our travelers</h3>
 					<div class="photoCover" v-lazy:background-image="photoList.length>0?photoList[0].url:''">
 						<div class="mask"></div>
@@ -112,7 +111,7 @@
 						</div>
 					</div>
 
-				</div>
+				</div> -->
 				
 				<div class="provide clearfix" id="provide" >
 					<div class="inclusions" v-if="itemsIncluded&&itemsIncluded.length>0||(inclusions&&inclusions.length>0)">
@@ -295,8 +294,8 @@
 										<div class="people" v-if="children>0">
 											<span v-if="people==1||adults==1">Adult x 1</span>
 											<span v-else>Adults x {{adults}}</span> 
-											<span v-if="children==1"> , Child x 1</span>
-											<span v-if="children>1"> , Children x  {{children}}</span>
+											<span v-if="children==1"> , child x 1</span>
+											<span v-if="children>1"> , children x  {{children}}</span>
 										</div> 
 										<i class="iconfont" v-if="!isShowAdults">&#xe60f;</i>
 										<i class="iconfont" v-else>&#xe63f;</i>
@@ -466,7 +465,7 @@
 			"exclusions",
 			"notice",
 			"destination",
-			"photoList",
+			//"photoList",
 			"travelersReviews",
 		],
 		name: "Activities",
@@ -537,23 +536,23 @@
 			TimelineTitle
 		},
 		methods: {
-			fn(){
-				this.showMoreItinerary=!this.showMoreItinerary
-				if(this.showMoreItinerary){
-					this.itinerary=this.detail.itineraries.concat().splice(0,4)
-				}else{
-					this.itinerary=this.detail.itineraries
-				}
-
-			},
 			tagFn(){
 				this.showMoreTag=!this.showMoreTag
 				if(this.showMoreTag){
-					this.tagAttractions=this.detail.attractions.concat().splice(0,4)
+					this.tagAttractions=this.detail.attractions.concat().splice(0,4)	
 				}else{
 					this.tagAttractions=this.detail.attractions
 				}
-				
+			},
+			fn(){
+				console.log(1111)
+				this.showMoreItinerary=false
+				if(this.showMoreItinerary){
+					
+					this.itinerary=this.detail.itineraries.concat().splice(0,4)	
+				}else{
+					this.itinerary=this.detail.itineraries
+				}
 			},
 			delNullArr(array){
 				for(var i = 0; i < array.length; i++) {
@@ -800,7 +799,9 @@
 			showTable() {
 				this.isShowTable = false
 				this.sixArr=this.tableData(this.picInfo.details)
+
 			},
+			
 			add(id) {
 				if(id == 0) {
 					this.adults++;
@@ -1094,9 +1095,20 @@
 			}else{
 				this.showNewStyle=false	
 			}
-			
+			console.log(this.picInfo)
+			console.log(this.detail)
+		//tag
+		if(this.detail.attractions&&this.detail.attractions.length>0){
+				if(this.detail.attractions.length>4){
+					this.showMoreTag=true
+					this.tagAttractions=this.detail.attractions.concat().splice(0,4)	
+				}else{
+					this.tagAttractions=this.detail.attractions
+				}
+				
+			}	
 
-			//行程折叠
+	//行程折叠
 		
 			if(this.detail.itineraries&&this.detail.itineraries.length>0){
 				if(this.detail.itineraries.length>4){
@@ -1111,18 +1123,8 @@
 			
 			let participants=this.$route.query.participants;
 			that.people=participants?(that.picInfo.maxParticipants==1?1:parseInt(participants)):(that.picInfo.minParticipants<3?(that.picInfo.maxParticipants==1?1:2):that.picInfo.minParticipants);
+		
 			
-			if(this.detail.attractions&&this.detail.attractions.length>0){
-				if(this.detail.attractions.length>4){
-					this.showMoreTag=true
-					this.tagAttractions=this.detail.attractions.concat().splice(0,4)
-					
-				}else{
-					this.tagAttractions=this.detail.attractions
-				}
-			}
-			console.log(this.picInfo)
-			console.log(this.detail)
 			//that.people=that.picInfo.minParticipants<3?that.picInfo.maxParticipants:(participants?parseInt(participants):that.picInfo.minParticipants)
 			if(that.people){
 				that.isShowBook=true
@@ -1855,6 +1857,7 @@
 								.contTitle {
 									float: left;
 									padding: 15px 0 15px 20px;
+									width:100%;
 									
 									h3 {
 										font-size: 18px;

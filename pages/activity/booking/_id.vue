@@ -30,8 +30,8 @@
 						<div class="cont-item">
 							<p>Country or Territory Code<b>*</b></p>
 							<div class="code-box">
-								<input id="code" :class="{err:codeErr}" @click.stop="focusCode(0)" @focus="focusCode(0)" @blur="gabulr(3)" autocomplete="off" v-model="mobileCode" :style="{backgroundColor:test.test4?'rgb(250, 255, 189)':'rgb(255, 255, 255)'}"/>
-								<div class="countryCode" v-if="showCode" :class="codeList.length>0?'width100':''">
+								<input id="code" :class="{err:codeErr}" @click.stop="focusCode(0)" @focus="focusCode(0)" @blur="gabulr(3)" @change="changeCode" autocomplete="off" v-model="mobileCode" :style="{backgroundColor:test.test4?'rgb(250, 255, 189)':'rgb(255, 255, 255)'}"/>
+								<div class="countryCode" v-show="showCode" :class="codeList.length>0?'width100':''">
 									<ul v-if="codeList.length>0">
 										<li v-for="item in codeList" @click.stop="selectCode(item.country_name,item.prefix,0)">{{item.country_name}} (+{{item.prefix}})</li>
 									</ul>
@@ -118,11 +118,11 @@
 							You can reschedule or cancel your trip at zero cost before Aug 31st, 2018.
 							You can get a 100% refund up to {{opctions.refundTimeLimit}} hours before your trip.
 						</p>-->
-						<p class="refundPolicy" style="color: red;font-size: 14px;" v-if="opctions.fullRefund">You can reschedule or cancel your trip at zero cost before {{delmulDay(opctions.startDate,opctions.refundTimeLimit)}}.</p>
+						<p class="refundPolicy" style="color: red;font-size: 14px;" v-if="opctions.fullRefund&&timeout">You can reschedule or cancel your trip at zero cost before {{formatDate(delmulDay(opctions.startDate,opctions.refundTimeLimit))}}.</p>
 						<!--<p class="text" style="font-size: 14px;margin-top: 20px;" v-if="logIn!=1">You ordered as a guest. To view your order details, you can click "My Bookings" on the top bar then type in the reservee's email address and name you entered before to access that information.</p>-->
 						
 						<div class="nextBtn">
-							<div class="next" @click="placeOrder">NEXT</div>
+							<div class="next" @click.stop="placeOrder">NEXT</div>
 						</div>
 					</div>
 				</div>
@@ -204,7 +204,7 @@
 		//require('~/assets/js/pages/ga.js')
 	}
 	import Vue from 'vue'
-	import { regExp } from '~/assets/js/plugin/utils'
+	import { regExp ,formatDate} from '~/assets/js/plugin/utils'
 	import HeaderCommon from '~/components/HeaderCommon/HeaderCommon';
 	import FooterCommon from '~/components/FooterCommon/FooterCommon';
 	import AlertGoBack from '~/components/Prompt/AlertGoBack';
@@ -298,6 +298,8 @@
 				couponType: '', //优惠券类型
 				standard: 0, //切换优惠价格的基准价格
 				total:0,
+				timeout:false,
+				clickCountryCode:false
 			}
 
 		},
@@ -409,19 +411,15 @@
 				}
 
 			},
+			//退款时间计算
 			 delmulDay(dtstr, n) {
-				var s = dtstr.split("-");
-				var yy = parseInt(s[0]);
-				var mm = parseInt(s[1]);
-				var dd = parseInt(s[2]);
-				var dt = new Date(yy, mm, dd);
-				// dt.setMonth(dt.getMonth() + n);
-				// var month = parseInt(dt.getMonth()) + 1;
-				dt.setDate(dt.getDate()-n)
-				var date=parseInt(dt.getDate())
-				
-				return dt.getFullYear() + "-" + (parseInt(mm)<10?'0'+mm:mm) + "-" + date;
+				var dt = new Date(dtstr.replace(/\-/g,'/'));
+				console.log(dt)
+				dt.setDate(dt.getDate()-n);
+				return dt.getFullYear() + "-" +parseInt(dt.getMonth()+1) + "-" + dt.getDate();
 			},
+			//国际时间转成美国时间
+			formatDate:formatDate,
 //			checkFn(id) {
 //				if(id == 0) {
 //					this.check = 1
@@ -549,7 +547,11 @@
 				}
 
 			},
+			changeCode(){
+				this.clickCountryCode=false
+			},
 			selectCode(country, code, index) {
+				this.clickCountryCode=true
 				ga(gaSend, {
 					hitType: 'event',
 					eventCategory: 'activity_booking',
@@ -643,10 +645,12 @@
 					that.errorFn("email")
 					that.emailAddressErr = true
 					
-				} else if(!that.mobileCode) {
+				} else if(!that.mobileCode.replace(/(^\s+)|(\s+$)/g, "")||!this.clickCountryCode) {
 					next = false
 					that.errorFn("code")
 					that.codeErr = true
+					that.showCode=true
+					console.log(that.showCode)
 				
 				} else if(that.phone == "" || !regExp.isMobil(that.phone)) {
 					next = false
@@ -655,6 +659,7 @@
 					
 				} else {
 						next=true
+						that.showCode=false
 						 if(that.checkedAll) {
 						 	if(that.couponType) {
 						 		that.next()
@@ -726,7 +731,8 @@
 					"couponCode": that.couponType ? that.couponCode : null,
 					"utcOffset": new Date().getTimezoneOffset() / 60 * -1,
 					"deviceType": "PC",
-					"finalRefundPeriod":that.delmulDay(that.opctions.startDate,that.opctions.refundTimeLimit)
+					//"fullRefund":that.opctions.fullRefund,
+					"finalRefundPeriod":that.opctions.fullRefund&&that.timeout?that.delmulDay(that.opctions.startDate,that.opctions.refundTimeLimit):null
 				}
 				if(that.addOder == false) {
 					that.addOder = true
@@ -752,7 +758,18 @@
 		mounted: function() {
 			this.opctions = localStorage.getItem("orderInfo") ? JSON.parse(localStorage.getItem("orderInfo")) : ''
 			this.logIn = window.localStorage.getItem("logstate")
-			console.log(this.logIn)
+
+			var time1=new Date(this.opctions.startDate.replace(/-/g, '/')).getTime();
+			var time2=new Date().getTime();
+			if(parseFloat((time1-time2)/1000/60/60/24)>this.opctions.refundTimeLimit){
+				this.timeout=true
+			}else{
+				this.timeout=false
+			}
+			console.log(this.timeout)
+
+
+
 			this.goBackFn()
 			console.log(this.opctions)
 			var self = this;
@@ -809,6 +826,8 @@
 			},
 			mobileCode: function(val, oldVal) {
 				let self = this
+				val=val.replace(/(^\s+)|(\s+$)/g, "")
+				
 				if(val) {
 					this.test.test4=true
 					if(val.length == 1) {

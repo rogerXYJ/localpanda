@@ -89,6 +89,7 @@ export default {
        
     mounted: function() {
     	this.logIn = window.localStorage.getItem("logstate");
+    	console.log(this.activeList)
       document.documentElement.scrollTop=0
     }
 }

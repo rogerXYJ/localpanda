@@ -19,17 +19,15 @@
 
 			</ul>
 			<ul class="init" v-if="(logIn==0||logIn==null)&&!isAnonymity">
-
+				<!-- <li>111</li> -->
 				<li @click="showContact">Customize Your Trip<em class="hot">HOT</em></li>
 				<li @click="isShowAnonymityback">My Bookings</li>
 				<li @click="show">Log In</li>
-				<!--<li @click="goAboutUs">About Us</li>-->
 				<li @click="goUrlContact" @mouseenter="showContactUs=true" @mouseleave="showContactUs=false">Contact Us</li>
-
 			</ul>
 			<ul class="login" v-if="logIn==1">
 				<li @click="showContact">Customize Your Trip<em class="hot">HOT</em></li>
-				<li @click="goBook" style="margin-right: 40px;">My Bookings</li>
+				<li @click="goBook" style="margin-right: 33px;">My Bookings</li>
 				<!--<li @click="goAboutUs" style="margin-right: 40px;">About Us</li>-->
 				<li @click="goUrlContact" @mouseenter="showContactUs=true" @mouseleave="showContactUs=false">Contact Us</li>
 				<li @click.stop="contshow"><img :src="logimg" /></li>
@@ -817,13 +815,14 @@
 				;
 			}
 			.init {
+				
 				float: right;
 				margin-right: 38px;
 				li {
 					position: relative;
 					float: left;
 					font-size: 16px;
-					margin-left: 40px;
+					margin-left: 33px;
 					line-height: 60px;
 					height: 60px;
 					.hot {

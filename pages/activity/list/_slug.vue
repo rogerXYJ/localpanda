@@ -1167,10 +1167,17 @@
 			white-space: inherit!important;
 		
 		}
-		.checkbox_box{
-			float: left;
-			margin-left: -20px;
-			margin-top: 3px;
+		.checkbox_label{
+			.checkbox_box{
+				float: left;
+				margin-left: -20px;
+				margin-top: 3px;
+				border-color: #666;
+				margin-top: 5px;
+			}
+		}
+		.isChecked .checkbox_box{
+			border-color: #1bbc9d;
 		}
 		.el-slider__button-wrapper{
 			z-index: 10!important;

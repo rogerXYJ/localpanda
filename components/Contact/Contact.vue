@@ -16,7 +16,7 @@
 				textInfo: '',
 				textInfoErr: false,
 				
-				peopleNub: 0,
+				peopleNub: '',
 				
 				//日期参数 
 				dateTime: '',
@@ -97,20 +97,25 @@
 			},
 			ok() {
 				let that = this
-				let ok=false
-				if(that.name == '' || regExp.isNub(that.name) || regExp.isCode(that.name)) {
+				let ok=false;
+
+
+				// else if(that.peopleNub==0){
+					
+				// 	that.isshowchoose=true
+				// 	ok=false
+				// }
+
+
+				if(that.textInfo == '') {
+					that.textInfoErr = true
+					ok=false
+				}else if(that.name == '' || regExp.isNub(that.name) || regExp.isCode(that.name)) {
 					that.nameErr = true
 					ok=false
 					//that.gaFail()
 				} else if(!regExp.isEmail(that.email)) {
 					that.emailErr = true
-					ok=false
-				}else if(that.peopleNub==0){
-					
-					that.isshowchoose=true
-					ok=false
-				}else if(that.textInfo == '') {
-					that.textInfoErr = true
 					ok=false
 				}else{
 					ok=true
@@ -244,19 +249,15 @@
 
 				</ul>
 				<p v-if="objectType=='GUIDE'">Hi, I'm {{enName}}! Contact me if you want to know more about me or if you have anything you want to inquire from me. I'll reply you within one business day. </p>
-				<div class="fill clearfix">
-					<div class="name">
-						<b>Name<span>*</span></b>
-						<input :class="{err:nameErr}" v-model="name" @focus="namefocus" />
-					</div>
-					<div class="phone">
-						<!--<b>Phone Number</b>
-						<input :class="{err:phoneErr}" v-model="phone" @focus="phonefocus"/>-->
-						<b>Email Address<span>*</span></b>
 
-						<input :class="{err:emailErr}" v-model="email" @focus="emailfocus" />
-					</div>
+
+
+				<div class="other">
+					<b>Message<span>*</span></b>
+					<textarea v-if="objectType=='CONSULTING'" placeholder="Please give us some further details about your trip, including your interests, requirements, or what kind of activities & experiences you are looking for" v-model="textInfo" :class="{err:textInfoErr}" @focus="textInfofocus"></textarea>
+					<textarea v-else placeholder="Write a brief message to tell us a little bit about your trip including your plans, requirements, or interests." v-model="textInfo" :class="{err:textInfoErr}" @focus="textInfofocus"></textarea>
 				</div>
+				
 				<!--<div class="email">
 					<b>Email Address<span>*</span></b>
 					<input :class="{err:emailErr}" v-model="email" @focus="emailfocus" @blur="emailbulr"/>
@@ -272,7 +273,8 @@
 						</div>
 					</div>
 					<div class="nuber">
-						<b>Number of People<span>*</span></b>
+						<b>Number of People</b>
+						<!-- <span>*</span> -->
 						<div class="peopleN">
 							<div class="peopleshow" :class="{noBottom:isshowchoose}" @click.stop="showchoose">
 								<i class="iconfont icon-people">&#xe63d;</i>
@@ -298,15 +300,26 @@
 					
 					
 				</div>
+
+				<div class="fill clearfix">
+					<div class="name">
+						<b>Name<span>*</span></b>
+						<input :class="{err:nameErr}" v-model="name" @focus="namefocus" />
+					</div>
+					<div class="phone">
+						<!--<b>Phone Number</b>
+						<input :class="{err:phoneErr}" v-model="phone" @focus="phonefocus"/>-->
+						<b>Email Address<span>*</span></b>
+
+						<input :class="{err:emailErr}" v-model="email" @focus="emailfocus" />
+					</div>
+				</div>
+
 				<div class='destination' v-if="objectType=='CONSULTING'">
 					<b>Destinations</b>
 					<input v-model="destination" placeholder="Please list the destinations that you want to visit. (eg. Beijing, Forbidden City, etc)" />
 				</div>
-				<div class="other">
-					<b>Message<span>*</span></b>
-					<textarea v-if="objectType=='CONSULTING'" placeholder="Please give us some further details about your trip, including your interests, requirements, or what kind of activities & experiences you are looking for" v-model="textInfo" :class="{err:textInfoErr}" @focus="textInfofocus"></textarea>
-					<textarea v-else placeholder="Write a brief message to tell us a little bit about your trip including your plans, requirements, or interests." v-model="textInfo" :class="{err:textInfoErr}" @focus="textInfofocus"></textarea>
-				</div>
+				
 
 				<div class="btn">
 					<a class="continue" @click.stop="ok()">SUBMIT</a>

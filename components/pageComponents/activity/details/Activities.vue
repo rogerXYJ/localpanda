@@ -391,7 +391,10 @@
 								</div>
 								<div class="inquiry">
 									<button class="bookNow" @click.stop="order">Book Now</button>
-									<button class="inquiryBtn" @click="showContact">Inquire</button>
+									<div class="inquiry_box">
+										<button class="inquiryBtn" @click="showContact">Inquire</button>
+										<a class="inquiryBtn" href="/inquiry/talk" target="_blank">Talk To Panda</a>
+									</div>
 								</div>
 								<div class="sales">
 										<span v-if="detail.sales&&detail.sales>0">Booked {{detail.sales}} {{detail.sales==1?'time':'times'}} (last 30 days)</span>
@@ -1597,7 +1600,7 @@
 								}
 							}
 							.inquiry {
-								button {
+								button,a {
 									width: 100%;
 									height: 42px;
 									text-align: center;
@@ -1612,10 +1615,19 @@
 										background-image: linear-gradient( 270deg, #009efd 0%, #1bbc9d 100%);
 										color: #fff;
 									}
-									&.inquiryBtn{
+									
+								}
+								.inquiry_box{
+									.inquiryBtn{
 										background:#fff;
 										border:1px solid #1bbc9d;
 										color: #1bbc9d;
+										width: 46%;
+										display: inline-block;
+										cursor: pointer;
+									}
+									.inquiryBtn:nth-child(1){
+										float: right;
 									}
 								}
 								.cancat {

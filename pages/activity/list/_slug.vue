@@ -1005,18 +1005,19 @@
 					for(var key in val) {
 						if(Array.isArray(val[key])){
 							var thisVal = val[key].concat()
-							if(val[key].length){
+							if(val[key].length>0){
 								this.showSelected=true
 								options[key] = thisVal.sort();
 								if(thisVal.length==1){
 									this.Ga('filter',key)
 									this.Ga('filter',"filter_apply")
 								}
+								postFilters.push({
+									type: key.toUpperCase(),
+									filterValues: val[key]
+								})
 							}
-							postFilters.push({
-								type: key.toUpperCase(),
-								filterValues: val[key]
-							})
+							
 							
 						}else if(key=='price' && !Array.isArray(val[key])){
 							if(val[key].maxValue<=500||val[key].minValue>0){
@@ -1056,11 +1057,11 @@
 					
 					jumpData.options = encodeURIComponent(JSON.stringify(options));
 					//检测是否有筛选项
-					
+
+
+
 					this.postData.filters = postFilters
-					
-					
-					
+					console.log(this.postData.filters )
 					this.getData()
 					
 					var urlQuery = '';

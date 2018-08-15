@@ -47,10 +47,10 @@
 					
 					<div class="types" v-if="detail.attractions&&detail.attractions.length>0">
 					
-						<a v-if="!showMoreTag" v-for="i in tagAttractions" :href="returnUrl(i)"><span>{{i}}</span></a>
-						<a class="showtag" v-else v-for="i in tagAttractions" :href="returnUrl(i)"><span>{{i}}</span></a>
+						<a v-for="i in tagAttractions" :href="returnUrl(i)"><span>{{i}}</span></a>
 						
-						<a v-if="detail.attractions.length>4" @click="showMoreTag=!showMoreTag">···</a>
+						
+						<a v-if="detail.attractions.length>4" @click="tagFn">···</a>
 						<!--<p v-if="detail.sales&&detail.sales>0">Booked {{detail.sales}} {{detail.sales==1?'time':'times'}} (last 30 days)</p>-->
 					</div>
 				</div>				
@@ -72,7 +72,7 @@
 				<div class="journey" id="journey" ref="journey" v-if="detail.itineraries&&detail.itineraries.length>0">
 					<h3>Itinerary</h3>
 					 <timeline v-if="showNewStyle" class="new">
-						<div class="newItem" :key="index" v-for="(i,index) in detail.itineraries">
+						<div class="newItem" :key="index" v-for="(i,index) in itinerary">
 							<timeline-item>
 									<label>stop{{index+1}}</label>
 									<h4>{{i.title}}</h4>
@@ -85,7 +85,7 @@
 						</div>
 					</timeline>
 					<ul v-else class="old">
-						<li :key="index" v-for="(i,index) in detail.itineraries">
+						<li :key="index" v-for="(i,index) in itinerary">
 							<div class="item_v clearfix" v-if="i.photo">
 								<div class="contTitle">
 									
@@ -99,7 +99,7 @@
 							</div>
 						</li>
 					</ul>
-					<a class="more" href="javascript:;">Veiw More</a>	
+				<a v-if="detail.itineraries.length>4&&showMoreItinerary" class="more" href="javascript:;" @click="fn">Veiw More</a>
 				</div>
 				 <!-- <div class="notes" v-if="photoList&&photoList.length>0" @click="showPhoto" id="photoList">
 					<h3>Pictures of our travelers</h3>
@@ -519,6 +519,7 @@
 				tagAttractions:[],
 				showNewStyle:false,
 				itinerary:[],//行程折叠
+				showMoreItinerary:false
 			};
 			
 		},
@@ -532,6 +533,24 @@
 			TimelineTitle
 		},
 		methods: {
+			tagFn(){
+				this.showMoreTag=!this.showMoreTag
+				if(this.showMoreTag){
+					this.tagAttractions=this.detail.attractions.concat().splice(0,4)	
+				}else{
+					this.tagAttractions=this.detail.attractions
+				}
+			},
+			fn(){
+				console.log(1111)
+				this.showMoreItinerary=false
+				if(this.showMoreItinerary){
+					
+					this.itinerary=this.detail.itineraries.concat().splice(0,4)	
+				}else{
+					this.itinerary=this.detail.itineraries
+				}
+			},
 			delNullArr(array){
 				for(var i = 0; i < array.length; i++) {
 					if(array[i] == "" || typeof(array[i]) == "undefined") {
@@ -1073,30 +1092,36 @@
 			}else{
 				this.showNewStyle=false	
 			}
-			
+			console.log(this.picInfo)
+			console.log(this.detail)
+		//tag
+		if(this.detail.attractions&&this.detail.attractions.length>0){
+				if(this.detail.attractions.length>4){
+					this.showMoreTag=true
+					this.tagAttractions=this.detail.attractions.concat().splice(0,4)	
+				}else{
+					this.tagAttractions=this.detail.attractions
+				}
+				
+			}	
 
-			//行程折叠
-			// console.log(this.detail.itineraries)
-			// if(this.detail.itineraries&&this.detail.itineraries.length>4){
-			// 	this.itineraries=this.detail.itineraries.splice(0,4)
-			// }else{
-			// 	this.itineraries=this.detail.itineraries
-			// }
+	//行程折叠
+		
+			if(this.detail.itineraries&&this.detail.itineraries.length>0){
+				if(this.detail.itineraries.length>4){
+					this.showMoreItinerary=true
+					this.itinerary=this.detail.itineraries.concat().splice(0,4)	
+				}else{
+					this.itinerary=this.detail.itineraries
+				}
+				
+			}
 			
 			
 			let participants=this.$route.query.participants;
 			that.people=participants?(that.picInfo.maxParticipants==1?1:parseInt(participants)):(that.picInfo.minParticipants<3?(that.picInfo.maxParticipants==1?1:2):that.picInfo.minParticipants);
+		
 			
-			if(this.detail.attractions&&this.detail.attractions.length>0){
-				if(this.detail.attractions.length>4){
-					this.tagAttractions=this.detail.attractions.splice(0,4)
-					console.log(this.tagAttractions)
-				}else{
-					this.tagAttractions=this.detail.attractions
-				}
-			}
-			console.log(this.picInfo)
-			console.log(this.detail)
 			//that.people=that.picInfo.minParticipants<3?that.picInfo.maxParticipants:(participants?parseInt(participants):that.picInfo.minParticipants)
 			if(that.people){
 				that.isShowBook=true
@@ -1820,6 +1845,7 @@
 								.contTitle {
 									float: left;
 									padding: 15px 0 15px 20px;
+									width:100%;
 									
 									h3 {
 										font-size: 18px;

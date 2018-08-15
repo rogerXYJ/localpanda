@@ -22,6 +22,17 @@ var GetDateStr = function(AddDayCount) {
 	var d = dd.getDate();
 	return y + "-" + m + "-" + d;
 }
+var formatDate = function(millinSeconds){
+	var date = new Date(millinSeconds.replace(/\-/g,'/'));
+	var monthArr = new Array("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sept","Oct","Nov","Dec");
+	var suffix = new Array("st","nd","rd","th");
+	
+	var year = date.getFullYear(); //年
+	var month = monthArr[date.getMonth()]; //月
+	var ddate = date.getDate(); //日
+	//ddate=ddate<10?"0"+ddate:ddat
+	return month + " "+ ddate + ", " + year;
+}
 var loadScript = function(url, callback) {
 	var script = document.createElement('script');
     var head = document.getElementsByTagName('head')[0];
@@ -404,6 +415,7 @@ var getPriceMark = function(cur,str){
 //es6 模块
 //export default Utils
 export {
+	formatDate,
 	getNowFormatDate,
 	loadScript,
 	cutXiaoNum,

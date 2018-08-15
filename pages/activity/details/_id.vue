@@ -116,15 +116,16 @@
 				
 
 				//游客图片
-				// var Promise2 = new Promise(function(resolve, reject){
-				// 	Vue.axios.get(apiBasePath+"public/photo/"+id+"/ACTIVITY_TRAVELER/list").then(function(res) {
-				// 		// var consoleTimeS2 = new Date().getTime();
-				// 		// 	console.log('游客图片接口花费时间：'+(consoleTimeS2-consoleTimeS)+' ms');
-				// 		resolve(res);
-				// 	}, function(res) {
-				// 		resolve(res);
-				// 	});
-				// });
+				var Promise2 = new Promise(function(resolve, reject){
+					resolve(res);
+					// Vue.axios.get(apiBasePath+"public/photo/"+id+"/ACTIVITY_TRAVELER/list").then(function(res) {
+					// 	// var consoleTimeS2 = new Date().getTime();
+					// 	// 	console.log('游客图片接口花费时间：'+(consoleTimeS2-consoleTimeS)+' ms');
+					// 	resolve(res);
+					// }, function(res) {
+					// 	resolve(res);
+					// });
+				});
 
 				//推荐信息
 				var Promise3 = new Promise(function(resolve, reject){
@@ -224,7 +225,7 @@
 				});
 
 				
-				Promise.all([Promise1,Promise2,Promise3,Promise4,Promise5,Promise6,Promise7,Promise8,Promise9,Promise10,Promise11]).then(function(results){
+				Promise.all([Promise1,Promise1,Promise3,Promise4,Promise5,Promise6,Promise7,Promise8,Promise9,Promise10,Promise11]).then(function(results){
 
 					//基本信息
 					response = results[0];

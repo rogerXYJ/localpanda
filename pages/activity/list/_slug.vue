@@ -1573,27 +1573,26 @@
 					margin-left: 30px;
 					.recommended {
 						float: left;
-						width: 244px;
-						height: 40px;
-						border-radius: 6px;
-						border: solid 1px #dde0e0;
-						line-height: 42px;
 						position: relative;
 						font-size: 16px;
 						.selectSort {
-							width: 100%;
-							height: 100%;
+							border: solid 1px #dde0e0;
+							width: 244px;
+							height: 40px;
 							padding-left: 14px;
 							font-size: 16px;
 							-webkit-appearance: none;
 							-moz-appearance: none;
 							appearance: none;
 							background-color: transparent;
-							border: none;
+							border-radius: 6px;
+							position: relative;
+							z-index: 1;
 						}
 						i {
 							position: absolute;
 							right: 14px;
+							top:12px;
 						}
 					}
 					.all {

@@ -1283,7 +1283,7 @@
 
 .acitivity_detail{
 	.flatpickr-calendar{
-		margin-left: 10px;
+		
 	}
 }
 </style>

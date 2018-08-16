@@ -4,7 +4,13 @@
     <div class="talk_tip" v-if="!isWork()">
 We respond within one hour during opening hours (Mon-Sun 9 am to 10 pm Beijing time).<br><br>
 If it’s not our operating hours, please leave us your requests in the left “Advise Me” section. Our staff will send a reply to your email the next day.</div>
-    <div class="talk_tip2" v-if="loadTime">Cannot connect to server!</div>
+    <div class="talk_tip2" v-if="loadTime">
+      <p>Due to internet connection problems, Online Chat is currently offline.<br><br>
+You can contact us in the following ways:<br>
++86 (21) 8018-2090<br>
++1 (888) 930-8849 (US toll-free)<br>
+service@localpanda.com</p>
+    </div>
 		<Loading :loadingStatus="loadingStatus"></Loading>
 	</div>
 </template>

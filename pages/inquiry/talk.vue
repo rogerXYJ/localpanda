@@ -1,6 +1,10 @@
 <template>
 	<div class="talk">
 		<h2 class="talk_title">Talk To Localpanda</h2>
+    <div class="talk_tip" v-if="!isWork()">
+We respond within one hour during opening hours (Mon-Sun 9 am to 10 pm Beijing time).<br><br>
+If it’s not our operating hours, please leave us your requests in the left “Advise Me” section. Our staff will send a reply to your email the next day.</div>
+    <div class="talk_tip2" v-if="loadTime">Cannot connect to server!</div>
 		<Loading :loadingStatus="loadingStatus"></Loading>
 	</div>
 </template>
@@ -19,7 +23,8 @@ export default {
 		
 		return {
 			acitivityId : acitivityId?acitivityId:'',
-			loadingStatus:false
+      loadingStatus:false,
+      loadTime:false
 		}
 	},
 	components: {
@@ -71,15 +76,11 @@ export default {
     },
     loadDesk(){
       var that = this;
-      
-      if(!this.isWork()){
-        return;
-      }
-
+      var allTime = 0;
       this.webWidgetTimer = setInterval(function(){
         var webWidget = that.getIframe();
         if(webWidget && webWidget.contentWindow.document.querySelector('.meshim_widget_components_ChatWindow.large')){
-          that.loadingStatus = true;
+          that.loadingStatus = false;
 					window.clearInterval(that.webWidgetTimer);
 
 					var iframeDocument = webWidget.contentWindow.document;
@@ -93,6 +94,13 @@ export default {
 						style.innerHTML = str; 
 						}
 					iframeDocument.querySelector('body').appendChild(style);
+        }
+
+        allTime+=200;
+        if(allTime>15000){
+          that.loadTime = true;
+          that.loadingStatus = false;
+          window.clearInterval(that.webWidgetTimer);
         }
       },200);
     }
@@ -113,22 +121,37 @@ export default {
 		zE(function() {
 			zE.setLocale('en_US');
 		});
-		//在线交谈
-		this.loadingStatus = true;
-    this.loadDesk();
-    document.body.className = document.body.className?document.body.className+' show_zendesk': 'show_zendesk';
+    //在线交谈
+    
+    if(this.isWork()){
+      this.loadingStatus = true;
+      this.loadDesk();
+      document.body.className = document.body.className?document.body.className+' show_zendesk': 'show_zendesk';
+    }else{
+      var style = document.createElement('style');
+      style.type="text/css";
+      var cssText = '#launcher{width: 0% !important;height: 0% !important;left: -999px !important;}';
+      if(style.styleSheet){         //ie下
+        style.styleSheet.cssText = cssText;
+      } else {
+        style.innerHTML = cssText; 
+      }
+      document.querySelector('body').appendChild(style);
+    }
+		
 	}
 }
 </script>
 <style lang="scss">
 .talk{
+  position: absolute;
+  left: 0;
+  top: 30px;
+  width: 100%;
 	.talk_title{
-		position: absolute;
-		left: 0;
-		top: 30px;
-		width: 100%;
 		font-weight: bold;
 		text-align: center;
+    font-size: 18px;
 	}
 	.loaders{
     width: 100%;
@@ -137,6 +160,12 @@ export default {
     left: auto;
     top:auto;
     margin-top: 2rem;
+  }
+  .talk_tip,.talk_tip2{
+    width: 600px;
+    margin: 30px auto 0;
+    font-size: 14px;
+    color: #333;
   }
 }
 .show_zendesk{

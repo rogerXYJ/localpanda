@@ -103,7 +103,7 @@ export default {
         }
 
         allTime+=200;
-        if(allTime>15000){
+        if(allTime>=10000){
           that.loadTime = true;
           that.loadingStatus = false;
           window.clearInterval(that.webWidgetTimer);

@@ -1,7 +1,7 @@
 <template>
 	<div id="activitiesDetail">
 		<HeaderCommon :logIn="logIn"></HeaderCommon>
-		<Meau v-if="isShowMeau" :inclusions="inclusions" :highlights="highlights" :notice="notice" :exclusions="exclusions" :picInfo="picInfo" :photoList="photoList" :recommed="recommed" :travelersReviews="travelersReviews"></Meau>
+		<Meau v-if="isShowMeau" :inclusions="inclusions" :highlights="highlights" :notice="notice" :exclusions="exclusions" :picInfo="picInfo" :photoList="photoList" :recommed="recommed" :travelersReviews="travelersReviews" :userABtestID="userABtestID" :ABtest="ABtest" ></Meau>
 		<ActivityBanner :bannerPhotos="detail.bannerPhotos" ></ActivityBanner>
 		<Activities 
 			:isShowMeau="isShowMeau"
@@ -23,7 +23,9 @@
 			:recommed="recommed"
 			:travelersReviews="travelersReviews"
 			:pageSize="pageSize"
-			:pageNum="pageNum"
+			:pageNum="pageNum" 
+			:userABtestID="userABtestID" 
+			:ABtest="ABtest" 
 			@currencyChange="currencyChangeFn"
 			></Activities>
 		<FooterCommon></FooterCommon>
@@ -61,8 +63,22 @@
 			store,
 			error,
 			apiBasePath,
-			redirect
+			redirect,
+			req
 		},callback) {
+
+			//获取页面cookie
+			var userCookie = {};
+			if(req){
+				var cookie = req.headers.cookie;
+				if(cookie){
+					var cookieArr = cookie.split(';');
+					for(var i=0;i<cookieArr.length;i++){
+						var thisCookie = cookieArr[i].split('=');
+						userCookie[thisCookie[0].trim()] = (thisCookie[1]||'').trim();
+					}
+				}
+			};
 
 			//callback(null, { title: res.data.title });
 
@@ -94,12 +110,21 @@
 				remarkData:[],
 				travelersReviews: '',
 				pageSize:3,
-				pageNum:1
+				pageNum:1,
+				userABtestID:'',
+				ABtest: false
 			};
 			var response = {};
 			let apiActivityPriceRes = {};
 			let apiActivityRecommendRes = {};
 			let photoList={};
+			
+
+			//ABtest 点评
+			if(id == '11280' || id =='11068' || id =='11037'){
+				data.ABtest = true;
+			}
+
 			
 			try {
 				//基本信息
@@ -117,7 +142,7 @@
 
 				//游客图片
 				var Promise2 = new Promise(function(resolve, reject){
-					resolve(res);
+					resolve({});
 					// Vue.axios.get(apiBasePath+"public/photo/"+id+"/ACTIVITY_TRAVELER/list").then(function(res) {
 					// 	// var consoleTimeS2 = new Date().getTime();
 					// 	// 	console.log('游客图片接口花费时间：'+(consoleTimeS2-consoleTimeS)+' ms');
@@ -399,10 +424,16 @@
 			}
 		},
 		mounted: function() {
-			let data = this;
-			data.id!='undefined'?data.id:getUrlParams()
+			var self = this;
+			self.id!='undefined'?self.id:getUrlParams()
 			this.logIn = window.localStorage.getItem("logstate");
 			window.addEventListener("scroll", this.scorllBar);
+
+			setTimeout(function(){
+				//获取ABtestID
+				var userABtestID = Cookie.get('userABtestID');
+				self.userABtestID = userABtestID?userABtestID:'';
+			},100);
 		},
 		watch: {
 			"detail.latestBooking": function(val, oldVal) {

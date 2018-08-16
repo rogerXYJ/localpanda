@@ -76,7 +76,7 @@
 							<timeline-item>
 									<label>stop{{index+1}}</label>
 									<h4>{{i.title}}</h4>
-									<p v-if="i.description" v-html="i.description.replace(/\r\n/g,'<br/>')"></p>
+									<p v-if="i.description" v-html="i.description.replace(/\r\n/g,'<br>').replace(/\n/g,'<br>')"></p>
 									<div  v-if="i.photo">
 										<img  v-lazy="i.photo.url"  alt=""/>
 									</div>
@@ -89,13 +89,13 @@
 							<div class="item_v clearfix" v-if="i.photo">
 								<div class="contTitle">
 									
-									<div><img v-lazy="i.photo.url" /><h3>{{i.title}}</h3><span v-if="i.description" v-html="i.description.replace(/\r\n/g,'<br/>')"></span></div>
+									<div><img v-lazy="i.photo.url" /><h3>{{i.title}}</h3><span v-if="i.description" v-html="i.description.replace(/\r\n/g,'<br>').replace(/\n/g,'<br>')"></span></div>
 									
 								</div>
 							</div>
 							<div class="item clearfix" v-else>
 								<div class="cont_title" id="aa">{{i.title}}</div>
-								<div class="cont" v-if="i.description" v-html="i.description.replace(/\r\n/g,'<br/>')"></div>
+								<div class="cont" v-if="i.description" v-html="i.description.replace(/\r\n/g,'<br>').replace(/\n/g,'<br>')"></div>
 							</div>
 						</li>
 					</ul>
@@ -179,7 +179,7 @@
 				</div>
 				<div class="notes" v-if="picInfo.refundInstructions" id="CancellationPolicy">
 					<h3>Rescheduling and Cancellation Policy</h3>
-					<p v-html="picInfo.refundInstructions.replace(/\r|\n/g,'<br/>')"></p>
+					<p v-html="picInfo.refundInstructions.replace(/\r\n/g,'<br>').replace(/\n/g,'<br>')"></p>
 				</div>
 				<div class="provide" v-if="picInfo.details&&picInfo.details.length>0" id="picDetails">
 					<h3>Price Details</h3>
@@ -1079,7 +1079,7 @@
 			},
 			replaceVal(val){
 				if(val){
-					//return val.replace(/\r\n/g,'<br/>');
+					//return val.replace(/\r\n/g,'<br>');
 				}
 			}
 		},

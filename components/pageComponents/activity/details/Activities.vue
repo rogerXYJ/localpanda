@@ -397,7 +397,7 @@
 								</div>
 								<div class="sales">
 										<span v-if="detail.sales&&detail.sales>0">Booked {{detail.sales}} {{detail.sales==1?'time':'times'}} (last 30 days)</span>
-										<div class="fl" v-if="travelersReviews.avgScore" @click="goReview">
+										<div class="fl" v-if="travelersReviews.avgScore&&!ABtest || isABtestShow" @click="goReview">
 											<grade style="margin-top:0"  :score="travelersReviews.avgScore" :big="'true'"></grade>
 											<span>  ( {{travelersReviews.records}} )</span>
 										</div>

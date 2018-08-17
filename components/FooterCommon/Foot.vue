@@ -174,10 +174,13 @@
 	}
 </script>
 <style lang="scss">
+#footercommon{
 	.btnlinner {
 		margin-top: 20px;
 		width: 114px;
 	}
+}
+	
 </style>
 <style lang="scss" scoped>
 	#footercommon {

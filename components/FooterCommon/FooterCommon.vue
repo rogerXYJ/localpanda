@@ -69,7 +69,14 @@
 						
 					</li>
 					<li>
-						<a class="footer_customize" href="/travel/customize/step1">Customize Your Trip</a>
+						<h3>CURRENCY</h3>
+						<div class='selectCurrency'>
+							<select>
+								<option>11111</option>
+							</select>
+						</div>
+
+						<!-- <a class="footer_customize" href="/travel/customize/step1">Customize Your Trip</a> -->
 					</li>
 				</ul>
 			</div>

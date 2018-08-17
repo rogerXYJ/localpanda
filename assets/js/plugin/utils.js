@@ -24,7 +24,7 @@ var GetDateStr = function(AddDayCount) {
 }
 var formatDate = function(millinSeconds){
 	var date = new Date(millinSeconds.replace(/\-/g,'/'));
-	var monthArr = new Array("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sept","Oct","Nov","Dec");
+	var monthArr = new Array("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec");
 	var suffix = new Array("st","nd","rd","th");
 	
 	var year = date.getFullYear(); //年

@@ -420,22 +420,7 @@
 			},
 			//国际时间转成美国时间
 			formatDate:formatDate,
-//			checkFn(id) {
-//				if(id == 0) {
-//					this.check = 1
-//
-//				} else {
-//					this.check = 0
-//					this.TravellerFirstName = ''
-//					this.TravellerlastName = ''
-//					this.TravelleremailAddress = ''
-//					this.Travellerphone = ''
-//
-//				}
-//			},
-//			getIsShowAlert(val) {
-//				this.isShowAlert = val;
-//			},
+
 			getIsShowAlertFn(val) {
 				this.isShowAlertTitle = val;
 			},

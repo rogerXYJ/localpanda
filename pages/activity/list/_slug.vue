@@ -435,6 +435,8 @@
 				istrue: false,
 				//请求接口数据
 				postData: postData,
+				//切换币种
+				//currencyOptions:{},
 				//筛选数据
 				//aggregations: data.aggregations ? data.aggregations : [],
 				
@@ -576,7 +578,12 @@
 			
 	},
 	methods: {
-			//全局搜索，搜索不显示
+			// //接收切换币种
+			// setgetCurrency(val){
+			// 	console.log(val)
+			// 	this.currencyOptions=val
+			// }
+			// //全局搜索，搜索不显示
 			closeFn(value){
 				this.showSeachList=value
 				this.isShowHot=value
@@ -953,8 +960,8 @@
 					if(res.data.records < this.postData.pageSize) {
 						this.isdisabled = false
 					}
-					if(this.aggregations) {
-						this.aggregations.forEach(item => {
+					if( res.data.aggregations) {
+						 res.data.aggregations.forEach(item => {
 							var thisFilter = [];
 							for(var key in item.items) {
 								thisFilter.push(key);

@@ -431,6 +431,10 @@
 			this.logIn = window.localStorage.getItem("logstate");
 			window.addEventListener("scroll", this.scorllBar);
 
+
+
+
+			var galoadTimer = null;
 			setTimeout(function(){
 				//获取ABtestID
 				var userABtestID = Cookie.get('userABtestID');
@@ -439,12 +443,21 @@
 				//GA统计
 				self.isABtestShow = self.travelersReviews.entities && self.travelersReviews.entities.length && self.ABtest && self.userABtestID%2==0;
 				if(self.isABtestShow){
-					ga(gaSend, {
-						hitType: 'event',
-						eventCategory: 'activity_detail',
-						eventAction: 'abtest_comment',
-						eventLabel: 'load',
-					});
+
+					galoadTimer = setInterval(function(){
+						if(window.ga){
+							window.clearInterval(galoadTimer);
+							ga(gaSend, {
+								hitType: 'event',
+								eventCategory: 'activity_detail',
+								eventAction: 'abtest_comment',
+								eventLabel: 'load',
+							});
+						}
+					},500);
+
+
+					
 					//console.log('ABtest产品，加载到了点评！');
 				}
 

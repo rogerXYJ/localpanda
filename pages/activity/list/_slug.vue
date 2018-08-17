@@ -193,7 +193,7 @@
 							</li>
 						</ul>
 						<div class="pagination-page" v-if="isdisabled">
-							<el-pagination background layout="prev, pager, next" :total="records" class="el-pagination is-background" @current-change="handleCurrentChange" :page-size="16">
+							<el-pagination background layout="prev, pager, next"  :current-page="postData.pageNum" :total="records" class="el-pagination is-background" @current-change="handleCurrentChange" :page-size="16">
 							</el-pagination>
 						</div>
 					</div>
@@ -423,7 +423,7 @@
 				activityList: listData,
 				logIn: '',
 				loadingStatus: false,
-				isdisabled: data.records > postData.pageSize ? true : false, //是否显示翻页
+				isdisabled: data.records&&data.records > postData.pageSize ? true : false, //是否显示翻页
 				
 				checkPrice:price,//选择价格区间值
 				apiBasePath: apiBasePath,
@@ -472,9 +472,7 @@
 				showSeachList:false,//显示搜索列表
 				selectPeople:false,//显示选择人数
 				selectNumber:selectNumber,//人数最大最小值
-				
-				
-
+				isfilter:false,	
 			}
 
 		},
@@ -590,7 +588,8 @@
 			//筛选价格
 			filterPriceChange(e){
 				let that=this
-				
+				that.postData.pageNum=1
+				this.isfilter=true
 				//that.postData.filters.push(priceCheck)
 				
 				that.jumpUrl()
@@ -648,7 +647,7 @@
 				this.showModel=val
 			},
 			closeChecked(e){
-				
+				this.isfilter=true
 				let checked=this.filterCheck
 				for(var key in checked){
 					if(!checked[key].length){
@@ -762,9 +761,10 @@
 				}
 			},
 			clearAll() {
-				
+				this.isfilter=true
 				var filterCheck= this.filterCheck
 				this.showSelected=false
+				this.postData.pageNum=1
 				for(var key in filterCheck){
 					filterCheck[key]=[]
 				}
@@ -780,7 +780,8 @@
 			},
 			//删除选中的单个选项
 			clearCheck(item,index){
-				
+				this.isfilter=true
+				this.postData.pageNum=1
 				for(var key in this.filterCheck) {
 					if(key==item){
 						this.filterCheck[item].splice(index,1)
@@ -818,13 +819,19 @@
 				};
 				this.Ga('sort',gaLabel);
 				this.Ga('sort','sort');
-				
+				this.postData.pageNum=1
+				this.isfilter=true
 				this.jumpUrl()
 
 			},
 			handleCurrentChange(val) {
+				console.log(val)
 				let that = this
+				if(this.isfilter){
+					val=1
+				}
 				that.postData.pageNum = val
+				console.log(val)
 				that.getData()
 				
 			},
@@ -940,6 +947,7 @@
 				}
 				this.loadingStatus = true
 				
+				console.log(this.postData)
 				//return
 				Vue.axios.post(this.apiBasePath + "search/activity", JSON.stringify(this.postData), {
 					headers: {
@@ -953,8 +961,8 @@
 					if(res.data.records < this.postData.pageSize) {
 						this.isdisabled = false
 					}
-					if(this.aggregations) {
-						this.aggregations.forEach(item => {
+					if(res.data.aggregations) {
+						res.data.aggregations.forEach(item => {
 							var thisFilter = [];
 							for(var key in item.items) {
 								thisFilter.push(key);
@@ -1062,6 +1070,7 @@
 
 					this.postData.filters = postFilters
 					console.log(this.postData.filters )
+					this.postData.pageNum=1
 					this.getData()
 					
 					var urlQuery = '';

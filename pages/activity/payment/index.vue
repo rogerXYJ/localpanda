@@ -731,7 +731,6 @@
 					}
 				}
 				.oderDetailTitle {
-					margin-top: 64px;
 					font-size: 36px;
 					font-weight: bold;
 				}

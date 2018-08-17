@@ -136,7 +136,7 @@
 						</ul>
 					</div>
 				</div>
-				<div class="review" v-if="travelersReviews.entities&&travelersReviews.entities.length>0&&!ABtest || travelersReviews.entities.length && ABtest && userABtestID%2==0" id="review">
+				<div class="review" v-if="travelersReviews.entities&&travelersReviews.entities.length>0&&!ABtest || travelersReviews.entities && travelersReviews.entities.length && ABtest && userABtestID%2==0" id="review">
 					<div class="reviewTitle clearfix">
 						<h3>{{travelersReviews.entities.length==1?"Review":"Reviews"}} ({{travelersReviews.records}})</h3>
 						<grade :score="travelersReviews.avgScore" :big="'true'"></grade>
@@ -468,7 +468,8 @@
 			//"photoList",
 			"travelersReviews",
 			"userABtestID",
-			"ABtest"
+			"ABtest",
+			"isABtestShow"
 		],
 		name: "Activities",
 		data() {
@@ -929,6 +930,17 @@
 					orderInfo = JSON.stringify(orderInfo);
 
 					localStorage.setItem("orderInfo", orderInfo);
+
+
+					//点评ABtest
+					if(this.isABtestShow){
+						ga(gaSend, {
+							hitType: 'event',
+							eventCategory: 'activity_detail',
+							eventAction: 'abtest_comment',
+							eventLabel: 'book',
+						});
+					}
 
 					location.href = "/activity/booking/"+that.detail.activityId
 

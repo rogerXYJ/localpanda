@@ -6,7 +6,7 @@
 					<!--<li v-if="photoList.length>0" @click="goAnchor('photoList')">Moments in Travel</li>-->
 					<li @click="goAnchor('journey')">Itinerary</li>
 					<li v-if="(exclusions&&exclusions.length>0)||(inclusions&&inclusions.length>0)" @click="goAnchor('provide')">Inclusions & Exclusions</li>
-					<li v-if="travelersReviews.entities&&travelersReviews.entities.length>0&&!ABtest || travelersReviews.entities.length && ABtest && userABtestID%2==0" @click="goAnchor('review')">Reviews</li>
+					<li v-if="travelersReviews.entities&&travelersReviews.entities.length>0&&!ABtest || travelersReviews.entities && travelersReviews.entities.length && ABtest && userABtestID%2==0" @click="goAnchor('review')">Reviews</li>
 					<!--<li v-if="exclusions" @click="goAnchor('exclusions')">Exclusions</li>-->
 					<!--<li v-if="notice.length>0" @click="goAnchor('notice')">Additional Info</li>-->
 					<!--<li v-if="picInfo.priceInstructions" @click="goAnchor('PriceNote')">Price Note</li>-->

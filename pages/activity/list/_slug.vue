@@ -423,7 +423,7 @@
 				activityList: listData,
 				logIn: '',
 				loadingStatus: false,
-				isdisabled: data.records&&data.records > postData.pageSize ? true : false, //是否显示翻页
+				isdisabled: data.records > postData.pageSize ? true : false, //是否显示翻页
 				
 				checkPrice:price,//选择价格区间值
 				apiBasePath: apiBasePath,
@@ -589,7 +589,7 @@
 			filterPriceChange(e){
 				let that=this
 				that.postData.pageNum=1
-				this.isfilter=true
+			
 				//that.postData.filters.push(priceCheck)
 				
 				that.jumpUrl()
@@ -647,7 +647,7 @@
 				this.showModel=val
 			},
 			closeChecked(e){
-				this.isfilter=true
+			
 				let checked=this.filterCheck
 				for(var key in checked){
 					if(!checked[key].length){
@@ -761,7 +761,7 @@
 				}
 			},
 			clearAll() {
-				this.isfilter=true
+				
 				var filterCheck= this.filterCheck
 				this.showSelected=false
 				this.postData.pageNum=1
@@ -780,7 +780,7 @@
 			},
 			//删除选中的单个选项
 			clearCheck(item,index){
-				this.isfilter=true
+				
 				this.postData.pageNum=1
 				for(var key in this.filterCheck) {
 					if(key==item){
@@ -820,18 +820,14 @@
 				this.Ga('sort',gaLabel);
 				this.Ga('sort','sort');
 				this.postData.pageNum=1
-				this.isfilter=true
+			
 				this.jumpUrl()
 
 			},
 			handleCurrentChange(val) {
 				console.log(val)
 				let that = this
-				if(this.isfilter){
-					val=1
-				}
 				that.postData.pageNum = val
-				console.log(val)
 				that.getData()
 				
 			},
@@ -960,6 +956,8 @@
 					this.records = res.data.records
 					if(res.data.records < this.postData.pageSize) {
 						this.isdisabled = false
+					}else{
+						this.isdisabled = true
 					}
 					if(res.data.aggregations) {
 						res.data.aggregations.forEach(item => {

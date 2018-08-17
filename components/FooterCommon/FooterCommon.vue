@@ -72,7 +72,9 @@
 						<h3>CURRENCY</h3>
 						<div class='selectCurrency'>
 							<select>
-								<option>11111</option>
+								<option>1111111</option>
+								<option>1111111</option>
+								<option>1111111</option>
 							</select>
 						</div>
 
@@ -80,7 +82,7 @@
 					</li>
 				</ul>
 			</div>
-			<div class="cooperation">
+			<div class="cooperation clearfix">
 				<svg class="icon1" aria-hidden="true">
 						<use xlink:href="#icon-logo_"></use>
 				</svg>

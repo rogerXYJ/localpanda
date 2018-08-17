@@ -953,8 +953,8 @@
 					if(res.data.records < this.postData.pageSize) {
 						this.isdisabled = false
 					}
-					if(this.aggregations) {
-						this.aggregations.forEach(item => {
+					if(res.data.aggregations) {
+						res.data.aggregations.forEach(item => {
 							var thisFilter = [];
 							for(var key in item.items) {
 								thisFilter.push(key);

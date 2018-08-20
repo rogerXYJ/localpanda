@@ -183,7 +183,7 @@
 				</div>
 				<div class="provide" v-if="picInfo.details&&picInfo.details.length>0" id="picDetails">
 					<h3>Price Details</h3>
-					<p style="font-size: 16px;margin-top: 10px;" v-if="picInfo.childDiscount">Children's price is   $  {{returnFloat(picInfo.childDiscount)}} USD  less than adults' price.</p>
+					<p style="font-size: 16px;margin-top: 10px;" v-if="picInfo.childDiscount">Children's price is   {{nowExchange.symbol}}  {{returnFloat(picInfo.childDiscount)}} USD  less than adults' price.</p>
 					<el-table :data="sixArr" stripe style="width: 100%">
 						<el-table-column prop="capacity" label="Number of people" width="244.6" align="center">
 							<template slot-scope="scope">

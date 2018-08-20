@@ -938,6 +938,12 @@
 		#header .heder-cont{
 			.init,.headleft .search{ display: none;}
 		}
+
+		.footerInfo{
+			li:nth-child(5){
+				display: none!important;
+			}
+		}
 	}
 
 </style>

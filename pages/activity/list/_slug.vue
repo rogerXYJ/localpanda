@@ -95,7 +95,39 @@
 						<div class="title">
 							<h3>Price/person for party of {{postData.participants}}</h3>
 						</div>
-						<div class="filterItem1">
+						<div class="filterItem1" v-if="currency.code == 'CNY'">
+							 <el-slider
+						      v-model="checkPrice"
+						      :step="30"
+						      range
+						     :max="3030"
+						     :format-tooltip="format"
+						      @change="filterPriceChange"
+						      >
+						    </el-slider>
+						    <div class="clearfix">
+						    	<span style="font-size: 16px; position: relative;left: -4px;font-weight: bold;">{{currency.symbol}}{{checkPrice[0]}}</span>
+						    	<span style="font-size: 16px; position: relative;float:right;right:-13px;top:-2px;font-weight: bold;">{{currency.symbol}}{{checkPrice[1]>3000?'3000+':checkPrice[1]}}</span>
+						    </div>
+						    
+						</div>
+						<div class="filterItem1" v-else-if="currency.code == 'JPY'">
+							 <el-slider
+						      v-model="checkPrice"
+						      :step="500"
+						      range
+						     :max="50500"
+						     :format-tooltip="format"
+						      @change="filterPriceChange"
+						      >
+						    </el-slider>
+						    <div class="clearfix">
+						    	<span style="font-size: 16px; position: relative;left: -4px;font-weight: bold;">{{currency.symbol}}{{checkPrice[0]}}</span>
+						    	<span style="font-size: 16px; position: relative;float:right;right:-13px;top:-2px;font-weight: bold;">{{currency.symbol}}{{checkPrice[1]>50000?'50000+':checkPrice[1]}}</span>
+						    </div>
+						    
+						</div>
+						<div class="filterItem1" v-else>
 							 <el-slider
 						      v-model="checkPrice"
 						      :step="5"
@@ -182,7 +214,7 @@
 											</div>
 											<div class="totalPic">
 												<div class="nowPic">
-													<b>{{currency.symbol}}{{returnFloat(item.perPersonPrice)}}</b><span> pp</span>
+													<b><span class="currency_code">{{currency.code}}</span> {{currency.symbol}}{{returnFloat(item.perPersonPrice)}}</b><span> pp</span>
 												</div>
 												<p v-if="item.sales&&item.sales>0">Booked {{item.sales}} {{item.sales==1?'time':'times'}} (last 30 days)</p>
 											</div>
@@ -211,7 +243,7 @@
 		</div>
 
 		<Foot></Foot>
-		<FooterCommon></FooterCommon>
+		<FooterCommon :nowCurrency="currency" @headCurrency="headCurrencyFn"></FooterCommon>
 		<Loading :loadingStatus="loadingStatus"></Loading>
 		<Contact :ContactStatus="ContactStatus" v-on:isshowfn="isShowFn" v-on:contact-call-back="contactCallBack" :objectType="objectType"></Contact>
 		<Alert :isShowAlert="isShowAlert" :alertTitle="alertTitle" :alertMessage="alertMessage" v-on:setIsShowAlert="getIsShowAlert"></Alert>
@@ -293,6 +325,12 @@
 
 
 			var price=[0,505];
+			if(currency.code=='CNY'){
+				price = [0,3030];
+			}else if(currency.code=='JPY'){
+				price = [0,50500];
+			}
+			
 			//兼容老的key，老key转为新key
 			var oldType = function(text) {
 				if(text == 'TOURTYPE') {
@@ -800,8 +838,15 @@
 				this.postData.pageNum=1
 				for(var key in filterCheck){
 					filterCheck[key]=[]
+				};
+
+				var price=[0,505];
+				if(this.currency.code=='CNY'){
+					price = [0,3030];
+				}else if(this.currency.code=='JPY'){
+					price = [0,50500];
 				}
-				this.checkPrice=[0,505]
+				this.checkPrice=price;
 			},
 			showMore(filterCheck,item,type){
 				this.showModel=true
@@ -1028,6 +1073,13 @@
 			headCurrencyFn(currency){
 				this.postData.currency = currency.code;
 				this.currency = currency;
+				var price=[0,505];
+				if(this.currency.code=='CNY'){
+					price = [0,3030];
+				}else if(this.currency.code=='JPY'){
+					price = [0,50500];
+				}
+				this.checkPrice = price;
 				this.getData();
 			}
 		},
@@ -1840,6 +1892,11 @@
 										}
 										span {
 											color: #353a3f;
+										}
+										.currency_code{
+											font-weight: normal;
+											font-size:14px;
+											color: #666;
 										}
 									}
 									p{

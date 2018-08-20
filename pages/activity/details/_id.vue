@@ -1,6 +1,6 @@
 <template>
 	<div id="activitiesDetail">
-		<HeaderCommon :logIn="logIn"></HeaderCommon>
+		<HeaderCommon :logIn="logIn" :nowCurrency="currency" @headCurrency="headCurrencyFn"></HeaderCommon>
 		<Meau v-if="isShowMeau" :inclusions="inclusions" :highlights="highlights" :notice="notice" :exclusions="exclusions" :picInfo="picInfo" :photoList="photoList" :recommed="recommed" :travelersReviews="travelersReviews" :userABtestID="userABtestID" :ABtest="ABtest" ></Meau>
 		<ActivityBanner :bannerPhotos="detail.bannerPhotos" ></ActivityBanner>
 		<Activities 
@@ -27,9 +27,10 @@
 			:userABtestID="userABtestID" 
 			:ABtest="ABtest" 
 			:isABtestShow="isABtestShow"
-			@currencyChange="currencyChangeFn"
+			@currencyChange="currencyChangeFn" 
+			v-model="currency"
 			></Activities>
-		<FooterCommon></FooterCommon>
+		<FooterCommon :nowCurrency="currency" @headCurrency="headCurrencyFn"></FooterCommon>
 		<div class="toast-container" v-if="toastShow">
 			<div class="toast-message clearfix">
 				<span>
@@ -114,13 +115,17 @@
 				pageNum:1,
 				userABtestID:'',
 				ABtest: false,
-				isABtestShow:false
+				isABtestShow:false,
+				currency:{code: "USD", symbol: "$", exchangeRate: 1}
 			};
 			var response = {};
 			let apiActivityPriceRes = {};
 			let apiActivityRecommendRes = {};
 			let photoList={};
 			
+			if(userCookie.currency){
+				data.currency = JSON.parse(decodeURIComponent(userCookie.currency));
+			}
 
 			//ABtest 点评
 			if(id == '11280' || id =='11068'){
@@ -156,7 +161,7 @@
 
 				//推荐信息
 				var Promise3 = new Promise(function(resolve, reject){
-					Vue.axios.get(apiBasePath + "product/activity/"+id+"/recommend?currency=USD").then(function(res) {
+					Vue.axios.get(apiBasePath + "product/activity/"+id+"/recommend?currency="+data.currency.code).then(function(res) {
 						// var consoleTimeS2 = new Date().getTime();
 						// 	console.log('推荐接口花费时间：'+(consoleTimeS2-consoleTimeS)+' ms');
 						resolve(res);
@@ -167,7 +172,7 @@
 
 				//价格信息
 				var Promise4 = new Promise(function(resolve, reject){
-					Vue.axios.get(apiBasePath + "product/activity/"+id+"/price?currency=USD").then(function(res) {
+					Vue.axios.get(apiBasePath + "product/activity/"+id+"/price?currency="+data.currency.code).then(function(res) {
 						// var consoleTimeS2 = new Date().getTime();
 						// 	console.log('价格接口花费时间：'+(consoleTimeS2-consoleTimeS)+' ms');
 						resolve(res);
@@ -178,7 +183,7 @@
 
 				//价格明细
 				var Promise7 = new Promise(function(resolve, reject){
-					Vue.axios.get(apiBasePath + "product/activity/"+id+"/price/detail?currency=USD").then(function(res) {
+					Vue.axios.get(apiBasePath + "product/activity/"+id+"/price/detail?currency="+data.currency.code).then(function(res) {
 						// var consoleTimeS2 = new Date().getTime();
 						// 	console.log('价格接口花费时间：'+(consoleTimeS2-consoleTimeS)+' ms');
 						resolve(res);
@@ -423,6 +428,10 @@
 			},
 			currencyChangeFn(data){
 				this.recommed = data;
+				//console.log(data);
+			},
+			headCurrencyFn(currency){
+				this.currency = currency;
 			}
 		},
 		mounted: function() {

@@ -1,14 +1,14 @@
  <template>
     <div class="indexst">
-    <HeaderCommon :logIn="logIn" :isIndex="isIndex"></HeaderCommon>
+    <HeaderCommon :logIn="logIn" :isIndex="isIndex" :nowCurrency="currency" @headCurrency="headCurrencyFn"></HeaderCommon>
         <Banner ></Banner>
         <MustGo ></MustGo>
        
-        <Activities :activeList="initialState.activeList" ></Activities>
+        <Activities :activeList="initialState.activeList" :currency="currency"></Activities>
         <!-- <Guide :guidelist="initialState.guidelist" ></Guide> -->
         <OurServices ></OurServices>
       <Foot></Foot>
-      <FooterCommon></FooterCommon>
+      <FooterCommon :nowCurrency="currency" @headCurrency="headCurrencyFn"></FooterCommon>
         
     </div>
 </template>
@@ -24,7 +24,7 @@ import OurServices from '~/components/pageComponents/index/OurServices';
 import Foot from '~/components/FooterCommon/Foot';
 import axios from 'axios';
 export default {
-    async asyncData ({ route, store, error, env, apiBasePath}) {
+    async asyncData ({ route, store, error, env, apiBasePath,req}) {
       // 服务端渲染部分 这部分操作还没有页面实例，只是初始化页面数据
       let data = {
         id:["10023","10033","10045","10030"],
@@ -32,13 +32,36 @@ export default {
         guidelist:'',
         activeList:'',
         logIn:'',
-        isIndex:true
+        isIndex:true,
+        apiBasePath:apiBasePath,
+        currency : {code: "USD", symbol: "$", exchangeRate: 1}
       }
       let briefRes = {};
       let batchRes = {};
+
+
+      //获取页面cookie
+			var userCookie = {};
+			if(req){
+				var cookie = req.headers.cookie;
+				if(cookie){
+					var cookieArr = cookie.split(';');
+					for(var i=0;i<cookieArr.length;i++){
+						var thisCookie = cookieArr[i].split('=');
+						userCookie[thisCookie[0].trim()] = (thisCookie[1]||'').trim();
+					}
+				}
+			};
+
+			if(userCookie.currency){
+				data.currency = JSON.parse(decodeURIComponent(userCookie.currency));
+      }
+      
+
+      
       try {
        // briefRes = await axios.get(apiBasePath + 'guide/brief/' + data.id);
-        batchRes = await axios.get(apiBasePath + 'product/activity/batch/' + data.activityId+'?currency=USD');
+        batchRes = await axios.get(apiBasePath + 'product/activity/batch/' + data.activityId+'?currency='+data.currency.code);
       } catch (err) {
         if (err.response.status !== 404) {
           return error({ statusCode: 500, message: store.state.lang.text.an_error_occured })
@@ -82,9 +105,19 @@ export default {
     	}
     },
     methods: {
-       
+			headCurrencyFn(currency){
+        this.currency = currency;
+        
+			}
     },
-    created() {
+    watch:{
+      currency:function(val){
+        var self = this;
+        //切换币种,重新拉去数据
+        axios.get(this.apiBasePath + 'product/activity/batch/' + this.activityId+'?currency='+val.code).then(function(res){
+          self.initialState.activeList = res.data;
+        });
+      }
     },
        
     mounted: function() {

@@ -259,7 +259,7 @@
 							<div class="picPp clearfix">
 								
 									<div class="picLeft">
-										<select class="currency_type" @change="changeCurrency">
+										<select class="currency_type" v-model="picInfo.currency" @change="changeCurrency">
 											<option :value="item.code" v-for="item in exchange" :key="item.code">{{item.code}}</option>
 										</select>
 										<span class="iconfont">&#xe666;</span>
@@ -469,7 +469,8 @@
 			"travelersReviews",
 			"userABtestID",
 			"ABtest",
-			"isABtestShow"
+			"isABtestShow",
+			"value"
 		],
 		name: "Activities",
 		data() {
@@ -651,6 +652,8 @@
 				}
 
 
+				//当前币种
+				self.$emit('input',this.nowExchange);
 
 				//请求推荐模块
 				this.axios.get("https://api.localpanda.com/api/product/activity/"+this.id+"/recommend?currency="+value).then(function(res) {
@@ -788,13 +791,17 @@
 				return url
 			},
 			returnFloat(value) {
-				value*=1;
 				if(value) {
+					var bit = bit || 2;
 					var numberArr = (''+value).split('.');
-					if(numberArr.length>1 && numberArr[1].length>2){
-						return (value+0.005).toFixed(2);
+					if(numberArr.length>1 && numberArr[1].length>bit){
+						var zeroStr = '';
+						for(var i=0;i<bit;i++){
+							zeroStr+='0';
+						}
+						return (value+('0.'+zeroStr+'5')*1).toFixed(bit);
 					}
-					return value.toFixed(2);
+					return value.toFixed(bit);
 				}else{
 					return 0;
 				}
@@ -1076,6 +1083,10 @@
 					document.body.style.overflowY="visible"
 				}
 			},
+			value:function(val){
+				this.nowExchange = val;
+				this.changeCurrency(val.code)
+			}
 //			isShowAdults(val,oldVal){
 //				let that=this
 //				if(val){

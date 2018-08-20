@@ -69,7 +69,7 @@
 									<div class="duration"><i class="iconfont">&#xe624;</i>Duration: {{item.duration}} {{item.durationUnit|firstUpperCase}}</div>
 									<div class="totalPic">
 										
-										<div class="nowPic">From <b>${{item.bottomPrice}}</b><span>  pp</span></div>
+										<div class="nowPic">From <b>{{currency.symbol}}{{returnFloat(item.bottomPrice)}}</b><span>  pp</span></div>
 									</div>
 								</div>
 							
@@ -91,7 +91,7 @@
 <script>
 	
 	export default {
-		props:["activeList","isDeviceType"],
+		props:["activeList","isDeviceType","currency"],
 		name: "Activities",
 		data() {
 			return {
@@ -114,6 +114,22 @@
 
 				}
 				return array;
+			},
+			returnFloat(value) {
+				if(value) {
+					var bit = bit || 2;
+					var numberArr = (''+value).split('.');
+					if(numberArr.length>1 && numberArr[1].length>bit){
+						var zeroStr = '';
+						for(var i=0;i<bit;i++){
+							zeroStr+='0';
+						}
+						return (value+('0.'+zeroStr+'5')*1).toFixed(bit);
+					}
+					return value.toFixed(bit);
+				}else{
+					return 0;
+				}
 			},
 		},
 		filters:{

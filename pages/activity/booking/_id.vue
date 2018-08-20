@@ -410,6 +410,10 @@
 					}
 				}
 
+
+				//修改全站默认币种
+				Cookie.set('currency',JSON.stringify(this.nowExchange),{path:'/','expires':30});
+
 			},
 			//退款时间计算
 			 delmulDay(dtstr, n) {
@@ -593,14 +597,18 @@
 
 			},
 			returnFloat(value) {
-				value *= 1;
 				if(value) {
-					var numberArr = ('' + value).split('.');
-					if(numberArr.length > 1 && numberArr[1].length > 2) {
-						return(value + 0.005).toFixed(2);
+					var bit = bit || 2;
+					var numberArr = (''+value).split('.');
+					if(numberArr.length>1 && numberArr[1].length>bit){
+						var zeroStr = '';
+						for(var i=0;i<bit;i++){
+							zeroStr+='0';
+						}
+						return (value+('0.'+zeroStr+'5')*1).toFixed(bit);
 					}
-					return value.toFixed(2);
-				} else {
+					return value.toFixed(bit);
+				}else{
 					return 0;
 				}
 			},
@@ -764,7 +772,7 @@
 				currency: self.opctions.currency
 			};
 			//加载币种
-			self.axios.get("https://api.localpanda.com/api/public/currency/all/USD").then(function(response) {
+			self.axios.get("https://api.localpanda.com/api/public/currency/all/"+self.opctions.currency).then(function(response) {
 				// console.log(response);
 				if(response.status == 200) {
 					self.exchange = response.data;

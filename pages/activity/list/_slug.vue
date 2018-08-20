@@ -1,6 +1,6 @@
 <template>
 	<div class="activityList">
-		<HeaderCommon :logIn="logIn" @closeSearchList="closeFn"></HeaderCommon>
+		<HeaderCommon :logIn="logIn" @closeSearchList="closeFn" :nowCurrency="currency" @headCurrency="headCurrencyFn"></HeaderCommon>
 		<div class="banner">
 			<div class="linerBackground">
 				<div class="covertitle">
@@ -106,8 +106,8 @@
 						      >
 						    </el-slider>
 						    <div class="clearfix">
-						    	<span style="font-size: 16px; position: relative;left: -4px;font-weight: bold;">${{checkPrice[0]}}</span>
-						    	<span style="font-size: 16px; position: relative;float:right;right:-13px;top:-2px;font-weight: bold;">${{checkPrice[1]>500?'500+':checkPrice[1]}}</span>
+						    	<span style="font-size: 16px; position: relative;left: -4px;font-weight: bold;">{{currency.symbol}}{{checkPrice[0]}}</span>
+						    	<span style="font-size: 16px; position: relative;float:right;right:-13px;top:-2px;font-weight: bold;">{{currency.symbol}}{{checkPrice[1]>500?'500+':checkPrice[1]}}</span>
 						    </div>
 						    
 						</div>
@@ -182,7 +182,7 @@
 											</div>
 											<div class="totalPic">
 												<div class="nowPic">
-													<b>${{returnFloat(item.perPersonPrice)}}</b><span> pp</span>
+													<b>{{currency.symbol}}{{returnFloat(item.perPersonPrice)}}</b><span> pp</span>
 												</div>
 												<p v-if="item.sales&&item.sales>0">Booked {{item.sales}} {{item.sales==1?'time':'times'}} (last 30 days)</p>
 											</div>
@@ -239,7 +239,8 @@
 			store,
 			error,
 			apiBasePath,
-			redirect
+			redirect,
+			req
 		}) {
 
 			let options = route.query.opctions ? JSON.parse(route.query.opctions) : '';
@@ -268,8 +269,30 @@
 				sort: {
 					type:'SCORE'
 				}
+			};
+
+
+			//获取页面cookie
+			var userCookie = {};
+			if(req){
+				var cookie = req.headers.cookie;
+				if(cookie){
+					var cookieArr = cookie.split(';');
+					for(var i=0;i<cookieArr.length;i++){
+						var thisCookie = cookieArr[i].split('=');
+						userCookie[thisCookie[0].trim()] = (thisCookie[1]||'').trim();
+					}
+				}
+			};
+
+			var currency = {code: "USD", symbol: "$", exchangeRate: 1};
+			if(userCookie.currency){
+				currency = JSON.parse(decodeURIComponent(userCookie.currency));
+				postData.currency = currency.code;
 			}
-			var price=[0,505]
+
+
+			var price=[0,505];
 			//兼容老的key，老key转为新key
 			var oldType = function(text) {
 				if(text == 'TOURTYPE') {
@@ -436,6 +459,7 @@
 				//请求接口数据
 				postData: postData,
 				//切换币种
+				currency:currency,
 				//currencyOptions:{},
 				//筛选数据
 				//aggregations: data.aggregations ? data.aggregations : [],
@@ -754,17 +778,19 @@
 			},
 			//小数点取两位
 			returnFloat(value) {
-				var value = Math.round(parseFloat(value) * 100) / 100;
-				var xsd = value.toString().split(".");
-				if(xsd.length == 1) {
-					value = value.toString() + ".00";
-					return value;
-				}
-				if(xsd.length > 1) {
-					if(xsd[1].length < 2) {
-						value = value.toString() + "0";
+				if(value) {
+					var bit = bit || 2;
+					var numberArr = (''+value).split('.');
+					if(numberArr.length>1 && numberArr[1].length>bit){
+						var zeroStr = '';
+						for(var i=0;i<bit;i++){
+							zeroStr+='0';
+						}
+						return (value+('0.'+zeroStr+'5')*1).toFixed(bit);
 					}
-					return value;
+					return value.toFixed(bit);
+				}else{
+					return 0;
 				}
 			},
 			clearAll() {
@@ -999,6 +1025,11 @@
 
 				});
 			},
+			headCurrencyFn(currency){
+				this.postData.currency = currency.code;
+				this.currency = currency;
+				this.getData();
+			}
 		},
 		watch: {
 			'filterCheck': {

@@ -21,9 +21,9 @@
 			<ul class="init" v-if="(logIn==0||logIn==null)&&!isAnonymity">
 				<li>
 					<select class="selectCurrey" v-model="currency">
-						<option v-for="(item,index) in exchange" @change="selectCurrency(exchange,index)">{{item.code}}({{item.symbol}})</option>
+						<option v-for="(item,index) in exchange" :value="item.code">{{item.code}} ( {{item.symbol}} )</option>
 					</select>
-					<span class="iconfont">&#xe60f;</span>
+					<span class="iconfont selectCurreyIcon">&#xe666;</span>
 				</li>
 				<li @click="showContact">Customize Your Trip<em class="hot">HOT</em></li>
 				<li @click="isShowAnonymityback">My Bookings</li>
@@ -181,7 +181,7 @@
 	import Alert from '~/components/Prompt/Alert'
 	//import Contact from '~/components/Contact/Contact'
 	export default {
-		props: ["logIn", "isAnonymity", "isIndex","showSeachList"],
+		props: ["logIn", "isAnonymity", "isIndex","showSeachList",'nowCurrency'],
 		name: 'headercommon',
 		data() {
 			return {
@@ -204,7 +204,7 @@
 				//搜索
 				search: '',
 				//币种
-				currency:'',
+				currency:'USD',
 				exchange:'',
 
 				seachContentList: [],
@@ -268,14 +268,6 @@
 					
 				}
 				
-			},
-			//切换币种
-			selectCurrency(val,index){
-				let value={
-					currencyList:val,
-					currency:val[index].code
-				}
-				this.$emit("selectVal",value)
 			},
 			goUrlContact(){
 				location.href="/info/contact-us"
@@ -500,6 +492,20 @@
 
 			that.fbToken = window.localStorage.getItem("fbToken")
 
+
+
+			//获取币种列表
+			window.currencyCallbackHeader = function(data){
+				that.exchange = data;
+			}
+
+			//读取币种
+			var nowCurrency = JSON.parse(Cookie.get('currency'));
+			if(nowCurrency){
+				this.currency = nowCurrency.code;
+			}
+			
+
 		},
 		watch: {
 			search(val, oldVal) {
@@ -511,6 +517,30 @@
 				}else{
 					this.showBodyScroll()
 				}
+			},
+			nowCurrency:function(val){
+				this.currency= val.code;
+			},
+			currency:function(val){
+				var thisCurrency = '',
+					exchange = this.exchange;
+				for(var i=0;i<exchange.length;i++){
+					var thisData = exchange[i];
+					if(thisData.code==val){
+						thisCurrency = thisData;
+					}
+				}
+
+				if(thisCurrency){
+					Cookie.set('currency',JSON.stringify({
+						code: thisCurrency.code,
+						symbol: thisCurrency.symbol
+					}),{path:'/','expires':30});
+
+					this.$emit('headCurrency',thisCurrency);
+				}
+				
+				
 			}
 		}
 
@@ -838,13 +868,20 @@
 				float: right;
 				margin-right: 38px;
 				.selectCurrey{
-					padding-right: 14px;
+					padding-right: 25px;
 					font-size: 16px;
 					-webkit-appearance: none;
 					-moz-appearance: none;
 					appearance: none;
 					background-color: transparent;
 					border: none;
+					position: relative;
+					z-index: 2;
+				}
+				.selectCurreyIcon{
+					position: absolute;
+					right: 2px;
+					font-size: 22px;
 				}
 				li {
 					position: relative;

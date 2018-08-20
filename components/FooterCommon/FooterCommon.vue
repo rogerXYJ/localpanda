@@ -69,11 +69,21 @@
 						
 					</li>
 					<li>
-						<a class="footer_customize" href="/travel/customize/step1">Customize Your Trip</a>
+						<h3>CURRENCY</h3>
+						<div class='selectCurrency'>
+							<select>
+								<option>US($)</option>
+								<option>1111111</option>
+								<option>1111111</option>
+							</select>
+							<i class="iconfont">&#xe60f;</i>
+						</div>
+
+						<!-- <a class="footer_customize" href="/travel/customize/step1">Customize Your Trip</a> -->
 					</li>
 				</ul>
 			</div>
-			<div class="cooperation">
+			<div class="cooperation clearfix">
 				<svg class="icon1" aria-hidden="true">
 						<use xlink:href="#icon-logo_"></use>
 				</svg>
@@ -243,6 +253,36 @@ import { fail } from 'assert';
 										transform: translateX(10px);
 									}
 									
+								}
+								.selectCurrency{
+									width: 256px;
+									border: 1px solid #dde0e0;
+									height: 48px;
+									border-radius: 3px;
+									position: relative;
+									select{
+										//清除select的边框样式
+									border: none;
+									//清除select聚焦时候的边框颜色
+									outline: none;
+									//将select的宽高等于div的宽高
+									width: 100%;
+									height: 46px;
+									line-height: 46px;
+									//隐藏select的下拉图标
+									appearance: none;
+									-webkit-appearance: none;
+									-moz-appearance: none;
+									//通过padding-left的值让文字居中
+									padding-left: 17px;
+									font-size: 18px;
+									}
+									i{
+										position:absolute;
+										right: 17px;
+										top: 50%;
+										transform: translateY(-50%)
+									}
 								}
 								.run_stop{
 									color: #878E95;

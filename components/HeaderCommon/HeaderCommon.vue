@@ -19,7 +19,12 @@
 
 			</ul>
 			<ul class="init" v-if="(logIn==0||logIn==null)&&!isAnonymity">
-				<!-- <li>111</li> -->
+				<li>
+					<select class="selectCurrey" v-model="currency">
+						<option v-for="(item,index) in exchange" @change="selectCurrency(exchange,index)">{{item.code}}({{item.symbol}})</option>
+					</select>
+					<span class="iconfont">&#xe60f;</span>
+				</li>
 				<li @click="showContact">Customize Your Trip<em class="hot">HOT</em></li>
 				<li @click="isShowAnonymityback">My Bookings</li>
 				<li @click="show">Log In</li>
@@ -198,6 +203,10 @@
 				showContactUs:false,
 				//搜索
 				search: '',
+				//币种
+				currency:'',
+				exchange:'',
+
 				seachContentList: [],
 				showBgSearch: false,
 				selectPeople: 2,
@@ -259,6 +268,14 @@
 					
 				}
 				
+			},
+			//切换币种
+			selectCurrency(val,index){
+				let value={
+					currencyList:val,
+					currency:val[index].code
+				}
+				this.$emit("selectVal",value)
 			},
 			goUrlContact(){
 				location.href="/info/contact-us"
@@ -473,6 +490,7 @@
 		mounted() {
 			let that = this
 			this.search=this.$route.query.keyword?this.$route.query.keyword:''
+			
 			document.body.addEventListener("click", function() {
 				that.iscontshow = true,
 				that.showBgSearch=false
@@ -652,6 +670,7 @@
 									color:#1bbc9d;
 								}	
 							}
+							
 						}
 					}
 				}
@@ -768,7 +787,7 @@
 	#header {
 		height: 60px;
 		background: #fff;
-		min-width: 1300px;
+		min-width: 1400px;
 		.heder-cont {
 			width: 100%;
 			min-width: 1170px;
@@ -818,6 +837,15 @@
 				
 				float: right;
 				margin-right: 38px;
+				.selectCurrey{
+					padding-right: 14px;
+					font-size: 16px;
+					-webkit-appearance: none;
+					-moz-appearance: none;
+					appearance: none;
+					background-color: transparent;
+					border: none;
+				}
 				li {
 					position: relative;
 					float: left;
@@ -844,18 +872,21 @@
 						margin-left: 0;
 					}
 					&:hover {
-						cursor: pointer;
-						color: #00B886;
-						&:after {
-							content: "";
-							height: 2px;
-							width: 100%;
-							background-image: linear-gradient(-90deg, #009efd 0%, #1bbc9d 100%);
-							display: block;
-							position: absolute;
-							left: 0;
-							bottom: 1px;
+						&:not-nth(:first-child){
+							cursor: pointer;
+							color: #00B886;
+							&:after {
+								content: "";
+								height: 2px;
+								width: 100%;
+								background-image: linear-gradient(-90deg, #009efd 0%, #1bbc9d 100%);
+								display: block;
+								position: absolute;
+								left: 0;
+								bottom: 1px;
+							}
 						}
+					
 					}
 				}
 			}

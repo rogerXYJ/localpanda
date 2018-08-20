@@ -10,9 +10,13 @@
 				<!--seach bar -->
 				<div class="selectInfo">
 					<input type="text" v-model="seachContent" @click.stop="showHot" maxlength="60" @keyup.enter="seachFn" autocomplete="off" placeholder="Attraction, Activity, Destination" />
-					<div class="selectPeople"@click.stop="showSelectPeople">
-						<span>{{postData.participants}} People <i class="iconfont">&#xe60f;</i></span>
-						<input-number v-if="selectPeople" :participants="postData.participants" :selectNumber="selectNumber" @showSelectPeople="setSelectPeople" @getPeople="setPeople"></input-number>
+					<div class="selectPeople">
+						<!-- <span>{{postData.participants}} People <i class="iconfont">&#xe60f;</i></span>
+						<input-number v-if="selectPeople" :participants="postData.participants" :selectNumber="selectNumber" @showSelectPeople="setSelectPeople" @getPeople="setPeople"></input-number> -->
+						<select v-model="postData.participants" class="participants" @change="setPeople">
+							<option v-for="(item,index) in participantsOption">{{item.selectparticipant}}</option>
+						</select>
+						<i class="iconfont">&#xe60f;</i>
 					</div>
 					
 					<button class="seachBtn" @click="seachFn">Search</button>
@@ -93,7 +97,7 @@
 					</div>
 					<div class="filterBox padding">
 						<div class="title">
-							<h3>Price/person for party of {{postData.participants}}</h3>
+							<h3>{{postData.participants!='Guests Number'?'Price/person for party of ' + postData.participants.substring(0,1):'Price/person'}}</h3>
 						</div>
 						<div class="filterItem1">
 							 <el-slider
@@ -182,7 +186,7 @@
 											</div>
 											<div class="totalPic">
 												<div class="nowPic">
-													<b>${{returnFloat(item.perPersonPrice)}}</b><span> pp</span>
+													<b>${{postData.participants!='Guests Number'?returnFloat(item.perPersonPrice):returnFloat(item.bottomPrice)}}</b><span>{{postData.participants!='Guests Number'?' pp for party of '+ postData.participants.substring(0,1):' pp'}}</span>
 												</div>
 												<p v-if="item.sales&&item.sales>0">Booked {{item.sales}} {{item.sales==1?'time':'times'}} (last 30 days)</p>
 											</div>
@@ -239,7 +243,8 @@
 			store,
 			error,
 			apiBasePath,
-			redirect
+			redirect,
+			req
 		}) {
 
 			let options = route.query.opctions ? JSON.parse(route.query.opctions) : '';
@@ -250,10 +255,7 @@
 			let sort = route.query.sort ? JSON.parse(route.query.sort) : '';
 			let keyword =route.query.keyword ?route.query.keyword : '';
 			let type=route.query.type?route.query.type:'link'
-			let participants=route.query.participants?route.query.participants:2;
-			
 			let loc = (slug.toLowerCase() =='china' && !options && !keyword) ? 'Beijing' : slug;
-			
 			if(keyword){
 				loc = keyword;
 			}
@@ -262,13 +264,21 @@
 				keyword: loc == 'Xian' ? "Xi'an" : loc,
 				pageNum: 1,
 				pageSize: 16,
-				participants:participants,
+				participants:'Guests Number',
 				type:type,
 				currency:'USD',
 				sort: {
 					type:'SCORE'
 				}
 			}
+			let obj = Object.assign({}, postData);
+			//处理调用select 人数
+			if(obj.participants=='Guests Number'){
+				delete obj.participants
+			}else{
+				obj.participants=obj.participants.substring(0,1)
+			}
+			console.log(obj)
 			var price=[0,505]
 			//兼容老的key，老key转为新key
 			var oldType = function(text) {
@@ -328,7 +338,7 @@
 			//服务端请求数据
 			let listdata = {}
 			try {
-				listdata = await Vue.axios.post(apiBasePath + "search/activity", JSON.stringify(postData), {
+				listdata = await Vue.axios.post(apiBasePath + "search/activity", JSON.stringify(obj), {
 					headers: {
 						'Content-Type': 'application/json; charset=UTF-8'
 					}
@@ -339,6 +349,7 @@
 			}
 			var data = listdata.data
 			var listData = listdata.data.entities
+			console.log(listData)
 			let filterAll = {},
 				filterCheck = {},
 				selectNumber={};
@@ -392,6 +403,56 @@
 			};
 			return {
 				listdata: data,
+				participantsOption:[
+					{
+						selectparticipant:'Guests Number',
+
+					},
+					{
+						selectparticipant:'1 person',
+						label:1
+					},
+					{
+						selectparticipant:'2 people',
+						label:2
+
+					},
+					{
+						selectparticipant:'3 people',
+						label:3
+
+					},
+					{
+						selectparticipant:'4 people',
+						label:4
+
+					},
+					{
+						selectparticipant:'5 people',
+						label:5
+
+					},
+					{
+						selectparticipant:'6 people',
+						label:6
+
+					},
+					{
+						selectparticipant:'7 people',
+						label:7
+
+					},
+					{
+						selectparticipant:'8 people',
+						label:8
+
+					},
+					{
+						selectparticipant:'9 people & more',
+						label:9
+
+					},
+					],
 				options: [
 					{
 						value: 'Shanghai',
@@ -578,12 +639,7 @@
 			
 	},
 	methods: {
-			// //接收切换币种
-			// setgetCurrency(val){
-			// 	console.log(val)
-			// 	this.currencyOptions=val
-			// }
-			// //全局搜索，搜索不显示
+			
 			closeFn(value){
 				this.showSeachList=value
 				this.isShowHot=value
@@ -602,17 +658,8 @@
 				
 				that.jumpUrl()
 			},
-			//显示选择人数
-			showSelectPeople(){
-				this.selectPeople=true
+			setPeople(){
 				
-			},
-			setSelectPeople(val){
-				this.selectPeople=val
-				
-			},
-			setPeople(val){
-				this.postData.participants=val
 				this.jumpUrl()
 				
 			},
@@ -851,7 +898,11 @@
 					keyword:this.seachContent,
 					participants:this.postData.participants,
 					//type:this.postData.type
-					
+				}
+				if(jumpData.participants=="Guests Number"){
+					delete jumpData.participants 
+				}else{
+					jumpData.participants=jumpData.participants.substring(0,1)
 				}
 				//console.log(filterCheck)
 				
@@ -946,9 +997,14 @@
 					}
 				}
 				this.loadingStatus = true
-				
+				let postData=Object.assign({},this.postData);
+				if(this.postData.participants=="Guests Number"){
+					delete postData.participants
+				}else{
+					postData.participants= postData.participants.substring(0,1)	
+				}
 				//return
-				Vue.axios.post(this.apiBasePath + "search/activity", JSON.stringify(this.postData), {
+				Vue.axios.post(this.apiBasePath + "search/activity", JSON.stringify(postData), {
 					headers: {
 						'Content-Type': 'application/json; charset=UTF-8'
 					}
@@ -1273,6 +1329,7 @@
 				background: #fff;
 				margin: 0 auto;
 				position: relative;
+				
 				a{
 					display: block;
 				}
@@ -1288,7 +1345,7 @@
 					
 				};
 				.selectPeople{
-					width: 136px;
+					width: 190px;
 					height: 48px;
 					display: inline-block;
 					line-height: 48px;
@@ -1296,11 +1353,23 @@
 					border-left: 1px solid #ebebeb;
 					cursor: pointer;
 					position: relative;
-					padding-left: 30px;
+					
+					.participants{
+						width:100%;
+						padding-left: 30px;
+						height:100%;
+						border:none;
+						-webkit-appearance: none;
+						-moz-appearance: none;
+						appearance: none;
+						background-color: transparent;
+
+						
+					}
 					i{
-						font-size: 12px;
 						position: absolute;
-						right: 18px;
+						right:20px;
+
 					}
 					
 				}

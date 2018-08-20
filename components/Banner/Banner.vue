@@ -26,7 +26,7 @@
 	      </div>
 
 	      <div class="swiper-slide">
-	        <a href="/activity/recommend/Beijing/Popular-and-Classic-Tours">
+	        <a href="/activity/list/Beijing">
 						<div class="imgBanner" :style="{background:'url(https://cloud.localpanda.com/static/homePage/banner1.jpg)'}">
 							<span class="banner_tag">Beijing Tours</span>
 						</div>
@@ -38,7 +38,7 @@
 					</a>
 	      </div>
 				<div class="swiper-slide">
-	        <a href="/activity/recommend/Shanghai/Popular-and-Classic-Tours">
+	        <a href="/activity/list/Shanghai">
 						<div class="imgBanner" :style="{background:'url(https://cloud.localpanda.com/static/homePage/banner2.jpg)'}">
 							<span class="banner_tag">Shanghai Tours</span>
 						</div>

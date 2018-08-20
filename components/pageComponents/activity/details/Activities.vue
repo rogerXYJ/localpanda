@@ -99,7 +99,7 @@
 							</div>
 						</li>
 					</ul>
-				<a v-if="detail.itineraries.length>4&&showMoreItinerary" class="more" href="javascript:;" @click="fn">Veiw More</a>
+				<a v-if="detail.itineraries.length>3&&showMoreItinerary" class="more" href="javascript:;" @click="fn">Veiw More</a>
 				</div>
 				 <!-- <div class="notes" v-if="photoList&&photoList.length>0" @click="showPhoto" id="photoList">
 					<h3>Pictures of our travelers</h3>
@@ -1136,9 +1136,9 @@
 	//行程折叠
 		
 			if(this.detail.itineraries&&this.detail.itineraries.length>0){
-				if(this.detail.itineraries.length>4){
+				if(this.detail.itineraries.length>3){
 					this.showMoreItinerary=true
-					this.itinerary=this.detail.itineraries.concat().splice(0,4)	
+					this.itinerary=this.detail.itineraries.concat().splice(0,3)	
 				}else{
 					this.itinerary=this.detail.itineraries
 				}

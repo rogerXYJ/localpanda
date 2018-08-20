@@ -1,7 +1,7 @@
 <template>
 	<div id="activitiesDetail">
-		<HeaderCommon :logIn="logIn"></HeaderCommon>
-		<Meau v-if="isShowMeau" :inclusions="inclusions" :highlights="highlights" :notice="notice" :exclusions="exclusions" :picInfo="picInfo" :photoList="photoList" :recommed="recommed" :travelersReviews="travelersReviews"></Meau>
+		<HeaderCommon :logIn="logIn" :nowCurrency="currency" @headCurrency="headCurrencyFn"></HeaderCommon>
+		<Meau v-if="isShowMeau" :inclusions="inclusions" :highlights="highlights" :notice="notice" :exclusions="exclusions" :picInfo="picInfo" :photoList="photoList" :recommed="recommed" :travelersReviews="travelersReviews" :userABtestID="userABtestID" :ABtest="ABtest" ></Meau>
 		<ActivityBanner :bannerPhotos="detail.bannerPhotos" ></ActivityBanner>
 		<Activities 
 			:isShowMeau="isShowMeau"
@@ -23,10 +23,14 @@
 			:recommed="recommed"
 			:travelersReviews="travelersReviews"
 			:pageSize="pageSize"
-			:pageNum="pageNum"
-			@currencyChange="currencyChangeFn"
+			:pageNum="pageNum" 
+			:userABtestID="userABtestID" 
+			:ABtest="ABtest" 
+			:isABtestShow="isABtestShow"
+			@currencyChange="currencyChangeFn" 
+			v-model="currency"
 			></Activities>
-		<FooterCommon></FooterCommon>
+		<FooterCommon :nowCurrency="currency" @headCurrency="headCurrencyFn"></FooterCommon>
 		<div class="toast-container" v-if="toastShow">
 			<div class="toast-message clearfix">
 				<span>
@@ -61,8 +65,22 @@
 			store,
 			error,
 			apiBasePath,
-			redirect
+			redirect,
+			req
 		},callback) {
+
+			//获取页面cookie
+			var userCookie = {};
+			if(req){
+				var cookie = req.headers.cookie;
+				if(cookie){
+					var cookieArr = cookie.split(';');
+					for(var i=0;i<cookieArr.length;i++){
+						var thisCookie = cookieArr[i].split('=');
+						userCookie[thisCookie[0].trim()] = (thisCookie[1]||'').trim();
+					}
+				}
+			};
 
 			//callback(null, { title: res.data.title });
 
@@ -94,12 +112,26 @@
 				remarkData:[],
 				travelersReviews: '',
 				pageSize:3,
-				pageNum:1
+				pageNum:1,
+				userABtestID:'',
+				ABtest: false,
+				isABtestShow:false,
+				currency:{code: "USD", symbol: "$", exchangeRate: 1}
 			};
 			var response = {};
 			let apiActivityPriceRes = {};
 			let apiActivityRecommendRes = {};
 			let photoList={};
+			
+			if(userCookie.currency){
+				data.currency = JSON.parse(decodeURIComponent(userCookie.currency));
+			}
+
+			//ABtest 点评
+			if(id == '11280' || id =='11068'){
+				data.ABtest = true;
+			}
+
 			
 			try {
 				//基本信息
@@ -117,7 +149,7 @@
 
 				//游客图片
 				var Promise2 = new Promise(function(resolve, reject){
-					resolve(res);
+					resolve({});
 					// Vue.axios.get(apiBasePath+"public/photo/"+id+"/ACTIVITY_TRAVELER/list").then(function(res) {
 					// 	// var consoleTimeS2 = new Date().getTime();
 					// 	// 	console.log('游客图片接口花费时间：'+(consoleTimeS2-consoleTimeS)+' ms');
@@ -129,7 +161,7 @@
 
 				//推荐信息
 				var Promise3 = new Promise(function(resolve, reject){
-					Vue.axios.get(apiBasePath + "product/activity/"+id+"/recommend?currency=USD").then(function(res) {
+					Vue.axios.get(apiBasePath + "product/activity/"+id+"/recommend?currency="+data.currency.code).then(function(res) {
 						// var consoleTimeS2 = new Date().getTime();
 						// 	console.log('推荐接口花费时间：'+(consoleTimeS2-consoleTimeS)+' ms');
 						resolve(res);
@@ -140,7 +172,7 @@
 
 				//价格信息
 				var Promise4 = new Promise(function(resolve, reject){
-					Vue.axios.get(apiBasePath + "product/activity/"+id+"/price?currency=USD").then(function(res) {
+					Vue.axios.get(apiBasePath + "product/activity/"+id+"/price?currency="+data.currency.code).then(function(res) {
 						// var consoleTimeS2 = new Date().getTime();
 						// 	console.log('价格接口花费时间：'+(consoleTimeS2-consoleTimeS)+' ms');
 						resolve(res);
@@ -151,7 +183,7 @@
 
 				//价格明细
 				var Promise7 = new Promise(function(resolve, reject){
-					Vue.axios.get(apiBasePath + "product/activity/"+id+"/price/detail?currency=USD").then(function(res) {
+					Vue.axios.get(apiBasePath + "product/activity/"+id+"/price/detail?currency="+data.currency.code).then(function(res) {
 						// var consoleTimeS2 = new Date().getTime();
 						// 	console.log('价格接口花费时间：'+(consoleTimeS2-consoleTimeS)+' ms');
 						resolve(res);
@@ -396,13 +428,49 @@
 			},
 			currencyChangeFn(data){
 				this.recommed = data;
+				//console.log(data);
+			},
+			headCurrencyFn(currency){
+				this.currency = currency;
 			}
 		},
 		mounted: function() {
-			let data = this;
-			data.id!='undefined'?data.id:getUrlParams()
+			var self = this;
+			self.id!='undefined'?self.id:getUrlParams()
 			this.logIn = window.localStorage.getItem("logstate");
 			window.addEventListener("scroll", this.scorllBar);
+
+
+
+
+			var galoadTimer = null;
+			setTimeout(function(){
+				//获取ABtestID
+				var userABtestID = Cookie.get('userABtestID');
+				self.userABtestID = userABtestID?userABtestID:'';
+
+				//GA统计
+				self.isABtestShow = self.travelersReviews.entities && self.travelersReviews.entities.length && self.ABtest && self.userABtestID%2==0;
+				if(self.isABtestShow){
+
+					galoadTimer = setInterval(function(){
+						if(window.ga){
+							window.clearInterval(galoadTimer);
+							ga(gaSend, {
+								hitType: 'event',
+								eventCategory: 'activity_detail',
+								eventAction: 'abtest_comment',
+								eventLabel: 'load',
+							});
+						}
+					},500);
+
+
+					
+					//console.log('ABtest产品，加载到了点评！');
+				}
+
+			},100);
 		},
 		watch: {
 			"detail.latestBooking": function(val, oldVal) {

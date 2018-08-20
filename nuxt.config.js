@@ -6,9 +6,9 @@ module.exports = {
   },
   build: {
 
-      publicPath: 'https://cloud.localpanda.com/static/js/',
-      testGa: true,
-      payCode: 'pk_live_mRSdUvgwE4pZo2IVofL4cVch',
+      // publicPath: 'https://cloud.localpanda.com/static/js/',
+      // testGa: true,
+      // payCode: 'pk_live_mRSdUvgwE4pZo2IVofL4cVch',
 
     
     extractCSS: {
@@ -33,7 +33,8 @@ module.exports = {
     { src: '~/plugins/axios.js'},
     { src: '~/plugins/vue-lazyload.js', ssr: false },
     { src: '~/plugins/element-ui.js', ssr: true },
-    { src: '~plugins/ga.js', ssr: false }
+    { src: '~plugins/ga.js', ssr: false },
+    { src: '~/plugins/main.js', ssr: false }
   ],
   css: [
     '~/assets/scss/_main.scss',

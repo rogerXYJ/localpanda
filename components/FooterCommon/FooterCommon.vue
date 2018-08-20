@@ -71,12 +71,10 @@
 					<li>
 						<h3>CURRENCY</h3>
 						<div class='selectCurrency'>
-							<select>
-								<option>US($)</option>
-								<option>1111111</option>
-								<option>1111111</option>
+							<select class="selectCurrey" v-model="currency">
+								<option v-for="(item,index) in exchange" :value="item.code">{{item.code}} ( {{item.symbol}} )</option>
 							</select>
-							<i class="iconfont">&#xe60f;</i>
+							<i class="iconfont selectCurrencyIcon">&#xe60f;</i>
 						</div>
 
 						<!-- <a class="footer_customize" href="/travel/customize/step1">Customize Your Trip</a> -->
@@ -146,13 +144,16 @@ import { fail } from 'assert';
 	  require('~/assets/font/iconfont.js')
 	}
 	export default {
-		props:["showBook","logIn"],
+		props:["showBook","logIn",'nowCurrency'],
 		name: 'footercommon',
 		data() {
 			return {
 				ContactStatus: false,
 				objectType: 'CONSULTING',
-				showChat:false
+				showChat:false,
+				//币种
+				currency:'USD',
+				exchange:'',
 				
 			}
 		},
@@ -164,10 +165,45 @@ import { fail } from 'assert';
 		},
 		mounted() {
 			
+			//获取币种列表
+			var that = this;
+			window.currencyCallbackFooter = function(data){
+				that.exchange = data;
+			}
+
+			//读取币种
+			var nowCurrency = JSON.parse(Cookie.get('currency'));
+			if(nowCurrency){
+				this.currency = nowCurrency.code;
+			}
 			
 		},
 		
-		created(){
+		watch:{
+			nowCurrency:function(val){
+				this.currency= val.code;
+			},
+			currency:function(val){
+				var thisCurrency = '',
+					exchange = this.exchange;
+				for(var i=0;i<exchange.length;i++){
+					var thisData = exchange[i];
+					if(thisData.code==val){
+						thisCurrency = thisData;
+					}
+				}
+
+				if(thisCurrency){
+					Cookie.set('currency',JSON.stringify({
+						code: thisCurrency.code,
+						symbol: thisCurrency.symbol
+					}),{path:'/','expires':30});
+
+					this.$emit('headCurrency',thisCurrency);
+				}
+				
+				
+			}
 		}
 	}
 </script>
@@ -276,12 +312,14 @@ import { fail } from 'assert';
 									//通过padding-left的值让文字居中
 									padding-left: 17px;
 									font-size: 18px;
+									background: none;
 									}
 									i{
 										position:absolute;
 										right: 17px;
 										top: 50%;
-										transform: translateY(-50%)
+										transform: translateY(-50%);
+										font-size: 12px;
 									}
 								}
 								.run_stop{

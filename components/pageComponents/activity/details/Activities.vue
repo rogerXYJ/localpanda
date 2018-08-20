@@ -76,7 +76,7 @@
 							<timeline-item>
 									<label>stop{{index+1}}</label>
 									<h4>{{i.title}}</h4>
-									<p v-if="i.description" v-html="i.description.replace(/\r\n/g,'<br/>')"></p>
+									<p v-if="i.description" v-html="i.description.replace(/\r\n/g,'<br>').replace(/\n/g,'<br>')"></p>
 									<div  v-if="i.photo">
 										<img  v-lazy="i.photo.url"  alt=""/>
 									</div>
@@ -89,13 +89,13 @@
 							<div class="item_v clearfix" v-if="i.photo">
 								<div class="contTitle">
 									
-									<div><img v-lazy="i.photo.url" /><h3>{{i.title}}</h3><span v-if="i.description" v-html="i.description.replace(/\r\n/g,'<br/>')"></span></div>
+									<div><img v-lazy="i.photo.url" /><h3>{{i.title}}</h3><span v-if="i.description" v-html="i.description.replace(/\r\n/g,'<br>').replace(/\n/g,'<br>')"></span></div>
 									
 								</div>
 							</div>
 							<div class="item clearfix" v-else>
 								<div class="cont_title" id="aa">{{i.title}}</div>
-								<div class="cont" v-if="i.description" v-html="i.description.replace(/\r\n/g,'<br/>')"></div>
+								<div class="cont" v-if="i.description" v-html="i.description.replace(/\r\n/g,'<br>').replace(/\n/g,'<br>')"></div>
 							</div>
 						</li>
 					</ul>
@@ -136,7 +136,7 @@
 						</ul>
 					</div>
 				</div>
-				<div class="review" v-if="travelersReviews.entities&&travelersReviews.entities.length>0" id="review">
+				<div class="review" v-if="travelersReviews.entities&&travelersReviews.entities.length>0&&!ABtest || travelersReviews.entities && travelersReviews.entities.length && ABtest && userABtestID%2==0" id="review">
 					<div class="reviewTitle clearfix">
 						<h3>{{travelersReviews.entities.length==1?"Review":"Reviews"}} ({{travelersReviews.records}})</h3>
 						<grade :score="travelersReviews.avgScore" :big="'true'"></grade>
@@ -179,7 +179,7 @@
 				</div>
 				<div class="notes" v-if="picInfo.refundInstructions" id="CancellationPolicy">
 					<h3>Rescheduling and Cancellation Policy</h3>
-					<p v-html="picInfo.refundInstructions.replace(/\r|\n/g,'<br/>')"></p>
+					<p v-html="picInfo.refundInstructions.replace(/\r\n/g,'<br>').replace(/\n/g,'<br>')"></p>
 				</div>
 				<div class="provide" v-if="picInfo.details&&picInfo.details.length>0" id="picDetails">
 					<h3>Price Details</h3>
@@ -259,7 +259,7 @@
 							<div class="picPp clearfix">
 								
 									<div class="picLeft">
-										<select class="currency_type" @change="changeCurrency">
+										<select class="currency_type" v-model="picInfo.currency" @change="changeCurrency">
 											<option :value="item.code" v-for="item in exchange" :key="item.code">{{item.code}}</option>
 										</select>
 										<span class="iconfont">&#xe666;</span>
@@ -390,11 +390,14 @@
 								</div>
 								<div class="inquiry">
 									<button class="bookNow" @click.stop="order">Book Now</button>
-									<button class="inquiryBtn" @click="showContact">Inquire</button>
+									<div class="inquiry_box">
+										<button class="inquiryBtn" @click="showContact">Inquire</button>
+										<a class="inquiryBtn" href="/inquiry/talk" target="_blank">Talk To Panda</a>
+									</div>
 								</div>
 								<div class="sales">
 										<span v-if="detail.sales&&detail.sales>0">Booked {{detail.sales}} {{detail.sales==1?'time':'times'}} (last 30 days)</span>
-										<div class="fl" v-if="travelersReviews.avgScore" @click="goReview">
+										<div class="fl" v-if="travelersReviews.avgScore&&!ABtest || isABtestShow" @click="goReview">
 											<grade style="margin-top:0"  :score="travelersReviews.avgScore" :big="'true'"></grade>
 											<span>  ( {{travelersReviews.records}} )</span>
 										</div>
@@ -464,6 +467,10 @@
 			"destination",
 			//"photoList",
 			"travelersReviews",
+			"userABtestID",
+			"ABtest",
+			"isABtestShow",
+			"value"
 		],
 		name: "Activities",
 		data() {
@@ -645,6 +652,8 @@
 				}
 
 
+				//当前币种
+				self.$emit('input',this.nowExchange);
 
 				//请求推荐模块
 				this.axios.get("https://api.localpanda.com/api/product/activity/"+this.id+"/recommend?currency="+value).then(function(res) {
@@ -782,13 +791,17 @@
 				return url
 			},
 			returnFloat(value) {
-				value*=1;
 				if(value) {
+					var bit = bit || 2;
 					var numberArr = (''+value).split('.');
-					if(numberArr.length>1 && numberArr[1].length>2){
-						return (value+0.005).toFixed(2);
+					if(numberArr.length>1 && numberArr[1].length>bit){
+						var zeroStr = '';
+						for(var i=0;i<bit;i++){
+							zeroStr+='0';
+						}
+						return (value+('0.'+zeroStr+'5')*1).toFixed(bit);
 					}
-					return value.toFixed(2);
+					return value.toFixed(bit);
 				}else{
 					return 0;
 				}
@@ -925,6 +938,17 @@
 
 					localStorage.setItem("orderInfo", orderInfo);
 
+
+					//点评ABtest
+					if(this.isABtestShow){
+						ga(gaSend, {
+							hitType: 'event',
+							eventCategory: 'activity_detail',
+							eventAction: 'abtest_comment',
+							eventLabel: 'book',
+						});
+					}
+
 					location.href = "/activity/booking/"+that.detail.activityId
 
 					//routes.push('/fillYourInfo')
@@ -1059,6 +1083,10 @@
 					document.body.style.overflowY="visible"
 				}
 			},
+			value:function(val){
+				this.nowExchange = val;
+				this.changeCurrency(val.code)
+			}
 //			isShowAdults(val,oldVal){
 //				let that=this
 //				if(val){
@@ -1076,7 +1104,7 @@
 			},
 			replaceVal(val){
 				if(val){
-					//return val.replace(/\r\n/g,'<br/>');
+					//return val.replace(/\r\n/g,'<br>');
 				}
 			}
 		},
@@ -1280,7 +1308,7 @@
 
 .acitivity_detail{
 	.flatpickr-calendar{
-		margin-left: 10px;
+		
 	}
 }
 </style>
@@ -1599,7 +1627,7 @@
 								}
 							}
 							.inquiry {
-								button {
+								button,a {
 									width: 100%;
 									height: 42px;
 									text-align: center;
@@ -1614,10 +1642,19 @@
 										background-image: linear-gradient( 270deg, #009efd 0%, #1bbc9d 100%);
 										color: #fff;
 									}
-									&.inquiryBtn{
+									
+								}
+								.inquiry_box{
+									.inquiryBtn{
 										background:#fff;
 										border:1px solid #1bbc9d;
 										color: #1bbc9d;
+										width: 46%;
+										display: inline-block;
+										cursor: pointer;
+									}
+									.inquiryBtn:nth-child(1){
+										float: right;
 									}
 								}
 								.cancat {

@@ -410,6 +410,10 @@
 					}
 				}
 
+
+				//修改全站默认币种
+				Cookie.set('currency',JSON.stringify(this.nowExchange),{path:'/','expires':30});
+
 			},
 			//退款时间计算
 			 delmulDay(dtstr, n) {
@@ -593,14 +597,18 @@
 
 			},
 			returnFloat(value) {
-				value *= 1;
 				if(value) {
-					var numberArr = ('' + value).split('.');
-					if(numberArr.length > 1 && numberArr[1].length > 2) {
-						return(value + 0.005).toFixed(2);
+					var bit = bit || 2;
+					var numberArr = (''+value).split('.');
+					if(numberArr.length>1 && numberArr[1].length>bit){
+						var zeroStr = '';
+						for(var i=0;i<bit;i++){
+							zeroStr+='0';
+						}
+						return (value+('0.'+zeroStr+'5')*1).toFixed(bit);
 					}
-					return value.toFixed(2);
-				} else {
+					return value.toFixed(bit);
+				}else{
 					return 0;
 				}
 			},
@@ -764,7 +772,7 @@
 				currency: self.opctions.currency
 			};
 			//加载币种
-			self.axios.get("https://api.localpanda.com/api/public/currency/all/USD").then(function(response) {
+			self.axios.get("https://api.localpanda.com/api/public/currency/all/"+self.opctions.currency).then(function(response) {
 				// console.log(response);
 				if(response.status == 200) {
 					self.exchange = response.data;
@@ -824,32 +832,55 @@
 						});
 					}
 					self.codeList = [];
-					var other = [];
-					var other1=[]
-					var str = val.replace(/\(/, "\\\(").replace(/\)/, "\\\)").replace(/\+/, '\\\+').replace(/\-/,'\\\-');
-					for(let i = 0; i < this.countryCode.length; i++) {
-						var str1=self.countryCode[i].country_name + "(+" + self.countryCode[i].prefix + ")"
-						if(new RegExp(str,"i").test(str1)){
-							if(val[0].toLowerCase()==str1[0].toLowerCase()){
-								var json = {
-									country_name: self.countryCode[i].country_name,
-									prefix: self.countryCode[i].prefix
-								}
-								other.push(json)
-							}else{
-								var json={
-									country_name: self.countryCode[i].country_name,
-									prefix: self.countryCode[i].prefix
-								}
-								other1.push(json)
-							}
+					// var other = [];
+					// var other1=[]
+					// var str = val.replace(/\(/, "\\\(").replace(/\)/, "\\\)").replace(/\+/, '\\\+').replace(/\-/,'\\\-');
+					// for(let i = 0; i < this.countryCode.length; i++) {
+					// 	var str1=self.countryCode[i].country_name + "(+" + self.countryCode[i].prefix + ")"
+					// 	if(new RegExp(str,"i").test(str1)){
+					// 		if(val[0].toLowerCase()==str1[0].toLowerCase()){
+					// 			var json = {
+					// 				country_name: self.countryCode[i].country_name,
+					// 				prefix: self.countryCode[i].prefix
+					// 			}
+					// 			other.push(json)
+					// 		}else{
+					// 			var json={
+					// 				country_name: self.countryCode[i].country_name,
+					// 				prefix: self.countryCode[i].prefix
+					// 			}
+					// 			other1.push(json)
+					// 		}
 							
 							
+					// 	}
+					// }
+					
+					// self.codeList = other.concat(other1)
+					//this.countryCode=arr
+					var newVal = val.replace('(','\\(').replace(')','\\)').replace('+','\\+').replace('-','\\-');
+					var thisKey = [],
+						otherKey = [];
+					var countryCode = this.countryCode;
+					for(var i=0;i<this.countryCode.length;i++){
+						var thisData = this.countryCode[i];
+						var regStr = thisData.country_name;
+						if(/(^-?[0-9]\d*$)/.test(newVal)){
+							regStr = thisData.prefix;
+						}
+						if((new RegExp(newVal,'i')).test(regStr)){
+							thisKey.push(thisData);
+						}else{
+							otherKey.push(thisData);
 						}
 					}
-					
-					self.codeList = other.concat(other1)
-					//this.countryCode=arr
+					thisKey.sort(function(a,b){
+						if(/(^-?[0-9]\d*$)/.test(newVal)){
+							return a.prefix.indexOf(newVal)-b.prefix.indexOf(newVal);
+						}
+						return a.country_name.toLowerCase().indexOf(newVal)-b.country_name.toLowerCase().indexOf(newVal);
+					})
+					self.codeList = thisKey;
 
 				} else {
 					this.test.test4=false

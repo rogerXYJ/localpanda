@@ -731,12 +731,11 @@
 					}
 				}
 				.oderDetailTitle {
-					margin-top: 64px;
 					font-size: 36px;
 					font-weight: bold;
 				}
 				.selectInfo {
-					margin-top: 44px;
+					margin-top: 25px;
 					width: 476px;
 					h4 {
 						font-size: 18px;

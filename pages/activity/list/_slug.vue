@@ -1,6 +1,6 @@
 <template>
 	<div class="activityList">
-		<HeaderCommon :logIn="logIn" @closeSearchList="closeFn"></HeaderCommon>
+		<HeaderCommon :logIn="logIn" @closeSearchList="closeFn" :nowCurrency="currency" @headCurrency="headCurrencyFn"></HeaderCommon>
 		<div class="banner">
 			<div class="linerBackground">
 				<div class="covertitle">
@@ -110,8 +110,8 @@
 						      >
 						    </el-slider>
 						    <div class="clearfix">
-						    	<span style="font-size: 16px; position: relative;left: -4px;font-weight: bold;">${{checkPrice[0]}}</span>
-						    	<span style="font-size: 16px; position: relative;float:right;right:-13px;top:-2px;font-weight: bold;">${{checkPrice[1]>500?'500+':checkPrice[1]}}</span>
+						    	<span style="font-size: 16px; position: relative;left: -4px;font-weight: bold;">{{currency.symbol}}{{checkPrice[0]}}</span>
+						    	<span style="font-size: 16px; position: relative;float:right;right:-13px;top:-2px;font-weight: bold;">{{currency.symbol}}{{checkPrice[1]>500?'500+':checkPrice[1]}}</span>
 						    </div>
 						    
 						</div>
@@ -197,7 +197,7 @@
 							</li>
 						</ul>
 						<div class="pagination-page" v-if="isdisabled">
-							<el-pagination background layout="prev, pager, next" :total="records" class="el-pagination is-background" @current-change="handleCurrentChange" :page-size="16">
+							<el-pagination background layout="prev, pager, next"  :current-page="postData.pageNum" :total="records" class="el-pagination is-background" @current-change="handleCurrentChange" :page-size="16">
 							</el-pagination>
 						</div>
 					</div>
@@ -270,6 +270,26 @@
 				sort: {
 					type:'SCORE'
 				}
+			};
+
+
+			//获取页面cookie
+			var userCookie = {};
+			if(req){
+				var cookie = req.headers.cookie;
+				if(cookie){
+					var cookieArr = cookie.split(';');
+					for(var i=0;i<cookieArr.length;i++){
+						var thisCookie = cookieArr[i].split('=');
+						userCookie[thisCookie[0].trim()] = (thisCookie[1]||'').trim();
+					}
+				}
+			};
+
+			var currency = {code: "USD", symbol: "$", exchangeRate: 1};
+			if(userCookie.currency){
+				currency = JSON.parse(decodeURIComponent(userCookie.currency));
+				postData.currency = currency.code;
 			}
 			let obj = Object.assign({}, postData);
 			//处理调用select 人数
@@ -497,6 +517,7 @@
 				//请求接口数据
 				postData: postData,
 				//切换币种
+				currency:currency,
 				//currencyOptions:{},
 				//筛选数据
 				//aggregations: data.aggregations ? data.aggregations : [],
@@ -535,9 +556,7 @@
 				showSeachList:false,//显示搜索列表
 				selectPeople:false,//显示选择人数
 				selectNumber:selectNumber,//人数最大最小值
-				
-				
-
+				isfilter:false,	
 			}
 
 		},
@@ -653,7 +672,8 @@
 			//筛选价格
 			filterPriceChange(e){
 				let that=this
-				
+				that.postData.pageNum=1
+			
 				//that.postData.filters.push(priceCheck)
 				
 				that.jumpUrl()
@@ -702,7 +722,7 @@
 				this.showModel=val
 			},
 			closeChecked(e){
-				
+			
 				let checked=this.filterCheck
 				for(var key in checked){
 					if(!checked[key].length){
@@ -802,23 +822,26 @@
 			},
 			//小数点取两位
 			returnFloat(value) {
-				var value = Math.round(parseFloat(value) * 100) / 100;
-				var xsd = value.toString().split(".");
-				if(xsd.length == 1) {
-					value = value.toString() + ".00";
-					return value;
-				}
-				if(xsd.length > 1) {
-					if(xsd[1].length < 2) {
-						value = value.toString() + "0";
+				if(value) {
+					var bit = bit || 2;
+					var numberArr = (''+value).split('.');
+					if(numberArr.length>1 && numberArr[1].length>bit){
+						var zeroStr = '';
+						for(var i=0;i<bit;i++){
+							zeroStr+='0';
+						}
+						return (value+('0.'+zeroStr+'5')*1).toFixed(bit);
 					}
-					return value;
+					return value.toFixed(bit);
+				}else{
+					return 0;
 				}
 			},
 			clearAll() {
 				
 				var filterCheck= this.filterCheck
 				this.showSelected=false
+				this.postData.pageNum=1
 				for(var key in filterCheck){
 					filterCheck[key]=[]
 				}
@@ -835,6 +858,7 @@
 			//删除选中的单个选项
 			clearCheck(item,index){
 				
+				this.postData.pageNum=1
 				for(var key in this.filterCheck) {
 					if(key==item){
 						this.filterCheck[item].splice(index,1)
@@ -872,11 +896,13 @@
 				};
 				this.Ga('sort',gaLabel);
 				this.Ga('sort','sort');
-				
+				this.postData.pageNum=1
+			
 				this.jumpUrl()
 
 			},
 			handleCurrentChange(val) {
+				console.log(val)
 				let that = this
 				that.postData.pageNum = val
 				that.getData()
@@ -1015,9 +1041,11 @@
 					this.records = res.data.records
 					if(res.data.records < this.postData.pageSize) {
 						this.isdisabled = false
+					}else{
+						this.isdisabled = true
 					}
-					if( res.data.aggregations) {
-						 res.data.aggregations.forEach(item => {
+					if(res.data.aggregations) {
+						res.data.aggregations.forEach(item => {
 							var thisFilter = [];
 							for(var key in item.items) {
 								thisFilter.push(key);
@@ -1049,6 +1077,11 @@
 
 				});
 			},
+			headCurrencyFn(currency){
+				this.postData.currency = currency.code;
+				this.currency = currency;
+				this.getData();
+			}
 		},
 		watch: {
 			'filterCheck': {
@@ -1125,6 +1158,7 @@
 
 					this.postData.filters = postFilters
 					console.log(this.postData.filters )
+					this.postData.pageNum=1
 					this.getData()
 					
 					var urlQuery = '';
@@ -1231,10 +1265,17 @@
 			white-space: inherit!important;
 		
 		}
-		.checkbox_box{
-			float: left;
-			margin-left: -20px;
-			margin-top: 3px;
+		.checkbox_label{
+			.checkbox_box{
+				float: left;
+				margin-left: -20px;
+				margin-top: 3px;
+				border-color: #666;
+				margin-top: 5px;
+			}
+		}
+		.isChecked .checkbox_box{
+			border-color: #1bbc9d;
 		}
 		.el-slider__button-wrapper{
 			z-index: 10!important;
@@ -1642,27 +1683,26 @@
 					margin-left: 30px;
 					.recommended {
 						float: left;
-						width: 244px;
-						height: 40px;
-						border-radius: 6px;
-						border: solid 1px #dde0e0;
-						line-height: 42px;
 						position: relative;
 						font-size: 16px;
 						.selectSort {
-							width: 100%;
-							height: 100%;
+							border: solid 1px #dde0e0;
+							width: 244px;
+							height: 40px;
 							padding-left: 14px;
 							font-size: 16px;
 							-webkit-appearance: none;
 							-moz-appearance: none;
 							appearance: none;
 							background-color: transparent;
-							border: none;
+							border-radius: 6px;
+							position: relative;
+							z-index: 1;
 						}
 						i {
 							position: absolute;
 							right: 14px;
+							top:12px;
 						}
 					}
 					.all {

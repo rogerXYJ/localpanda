@@ -470,7 +470,8 @@
 			"userABtestID",
 			"ABtest",
 			"isABtestShow",
-			"value"
+			"value",
+			"participants"
 		],
 		name: "Activities",
 		data() {

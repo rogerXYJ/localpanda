@@ -14,7 +14,7 @@
 						<!-- <span>{{postData.participants}} People <i class="iconfont">&#xe60f;</i></span>
 						<input-number v-if="selectPeople" :participants="postData.participants" :selectNumber="selectNumber" @showSelectPeople="setSelectPeople" @getPeople="setPeople"></input-number> -->
 						<select v-model="postData.participants" class="participants" @change="setPeople">
-							<option v-for="(item,index) in participantsOption">{{item.selectparticipant}}</option>
+							<option v-for="(item,index) in participantsOption" :value="item.label">{{item.selectparticipant}}</option>
 						</select>
 						<i class="iconfont">&#xe60f;</i>
 					</div>
@@ -97,7 +97,7 @@
 					</div>
 					<div class="filterBox padding">
 						<div class="title">
-							<h3>{{postData.participants!='Guests Number'?'Price/person for party of ' + postData.participants.substring(0,1):'Price/person'}}</h3>
+							<h3>{{postData.participants!=0?'Price/person for party of ' + postData.participants:'Price/person'}}</h3>
 						</div>
 						<div class="filterItem1">
 							 <el-slider
@@ -186,7 +186,7 @@
 											</div>
 											<div class="totalPic">
 												<div class="nowPic">
-													<b>${{postData.participants!='Guests Number'?returnFloat(item.perPersonPrice):returnFloat(item.bottomPrice)}}</b><span>{{postData.participants!='Guests Number'?' pp for party of '+ postData.participants.substring(0,1):' pp'}}</span>
+													<b>{{postData.participants==0?'From  ':''}}   {{currency.symbol}}{{postData.participants!=0?returnFloat(item.perPersonPrice):returnFloat(item.bottomPrice)}}</b><span>{{postData.participants!=0?' pp for party of '+ postData.participants:' pp'}}</span>
 												</div>
 												<p v-if="item.sales&&item.sales>0">Booked {{item.sales}} {{item.sales==1?'time':'times'}} (last 30 days)</p>
 											</div>
@@ -235,7 +235,7 @@
 	import Foot from '~/components/FooterCommon/Foot';
 	import { checkboxGroup, checkbox } from "~/plugins/panda/checkbox/";
 	import filterModel from '~/components/pageComponents/activity/list/filterModel';
-	import inputNumber from '~/components/pageComponents/activity/list/input-number'
+	//import inputNumber from '~/components/pageComponents/activity/list/input-number'
 	export default {
 		name: 'activityList',
 		async asyncData({
@@ -264,7 +264,7 @@
 				keyword: loc == 'Xian' ? "Xi'an" : loc,
 				pageNum: 1,
 				pageSize: 16,
-				participants:'Guests Number',
+				participants:0,
 				type:type,
 				currency:'USD',
 				sort: {
@@ -291,12 +291,15 @@
 				currency = JSON.parse(decodeURIComponent(userCookie.currency));
 				postData.currency = currency.code;
 			}
+			var participants=0
+			if(userCookie.participants){
+				participants = JSON.parse(decodeURIComponent(userCookie.participants));
+				postData.participants = participants;
+			}
 			let obj = Object.assign({}, postData);
 			//处理调用select 人数
-			if(obj.participants=='Guests Number'){
+			if(obj.participants==0){
 				delete obj.participants
-			}else{
-				obj.participants=obj.participants.substring(0,1)
 			}
 			console.log(obj)
 			var price=[0,505]
@@ -426,6 +429,7 @@
 				participantsOption:[
 					{
 						selectparticipant:'Guests Number',
+						label:0
 
 					},
 					{
@@ -616,7 +620,7 @@
 			checkboxGroup,
 			checkbox,
 			filterModel,
-			inputNumber
+			//inputNumber
 		},
 		computed: {
 			//获取指定顺序的数据 
@@ -678,8 +682,9 @@
 				
 				that.jumpUrl()
 			},
+			//
 			setPeople(){
-				
+				Cookie.set('participants',this.postData.participants,{path:'/','expires':30})
 				this.jumpUrl()
 				
 			},
@@ -925,10 +930,8 @@
 					participants:this.postData.participants,
 					//type:this.postData.type
 				}
-				if(jumpData.participants=="Guests Number"){
+				if(jumpData.participants==0){
 					delete jumpData.participants 
-				}else{
-					jumpData.participants=jumpData.participants.substring(0,1)
 				}
 				//console.log(filterCheck)
 				
@@ -1024,10 +1027,8 @@
 				}
 				this.loadingStatus = true
 				let postData=Object.assign({},this.postData);
-				if(this.postData.participants=="Guests Number"){
+				if(this.postData.participants==0){
 					delete postData.participants
-				}else{
-					postData.participants= postData.participants.substring(0,1)	
 				}
 				//return
 				Vue.axios.post(this.apiBasePath + "search/activity", JSON.stringify(postData), {

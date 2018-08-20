@@ -29,6 +29,7 @@
 			:isABtestShow="isABtestShow"
 			@currencyChange="currencyChangeFn" 
 			v-model="currency"
+			:participants="participants"
 			></Activities>
 		<FooterCommon :nowCurrency="currency" @headCurrency="headCurrencyFn"></FooterCommon>
 		<div class="toast-container" v-if="toastShow">
@@ -116,7 +117,8 @@
 				userABtestID:'',
 				ABtest: false,
 				isABtestShow:false,
-				currency:{code: "USD", symbol: "$", exchangeRate: 1}
+				currency:{code: "USD", symbol: "$", exchangeRate: 1},
+				participants:0
 			};
 			var response = {};
 			let apiActivityPriceRes = {};
@@ -126,7 +128,9 @@
 			if(userCookie.currency){
 				data.currency = JSON.parse(decodeURIComponent(userCookie.currency));
 			}
-
+			if(userCookie.participants){
+				data.participants=userCookie.participants
+			}	
 			//ABtest 点评
 			if(id == '11280' || id =='11068'){
 				data.ABtest = true;

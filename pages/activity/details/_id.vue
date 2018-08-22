@@ -412,8 +412,7 @@
 				
 				document.getElementById("recommend") ?
 					(recommendTop = document.getElementById("recommend").offsetTop) :
-					(recommendTop = 2000);
-					
+					(recommendTop = document.getElementById('footer').offsetTop);	
 				if(window.scrollY > hightLights && window.scrollY < recommendTop) {
 					data.isShowMeau = true;
 					data.isShowBookNow = true;

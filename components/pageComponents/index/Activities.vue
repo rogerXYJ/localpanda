@@ -69,7 +69,7 @@
 									<div class="duration"><i class="iconfont">&#xe624;</i>Duration: {{item.duration}} {{item.durationUnit|firstUpperCase}}</div>
 									<div class="totalPic">
 										
-										<div class="nowPic">From <b>{{currency.symbol}}{{returnFloat(item.bottomPrice)}}</b><span>  pp</span></div>
+										<div class="nowPic">From <span>{{currency.code}} </span> <b>{{currency.symbol}}{{returnFloat(item.bottomPrice)}}</b><span>  pp</span></div>
 									</div>
 								</div>
 							

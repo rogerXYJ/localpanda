@@ -331,7 +331,7 @@
 				var opctions = self.opctions,
 					details = opctions.details;
 				var people = opctions.adultNum + opctions.childrenNum;
-				var price = details[people - 1].defaultPrice;
+				var price = details[people - 1].price;
 				if(self.couponCode){
 					self.axios.get("https://api.localpanda.com/api/order/coupon/" + self.couponCode).then(res => {
 						if(res.status == 200 && res.data) {
@@ -349,15 +349,15 @@
 									self.opctions.couponDiscount = self.standard
 								}
 								
-//								for(var i=0;i<self.exchange.length;i++){
-//									if(self.opctions.currency==self.exchange[i].code){
-//										self.opctions.couponDiscount=self.returnFloat(self.opctions.couponDiscount*self.exchange[i].exchangeRate)
-//										console.log(self.exchange[i].exchangeRate)
-//										console.log(self.exchange[i].code)
-//										console.log(self.opctions.currency)
-//										break
-//									}
-//								}
+								// for(var i=0;i<self.exchange.length;i++){
+								// 	if(self.opctions.currency==self.exchange[i].code){
+								// 		self.opctions.couponDiscount=self.returnFloat(self.opctions.couponDiscount*self.exchange[i].exchangeRate)
+								// 		console.log(self.exchange[i].exchangeRate)
+								// 		console.log(self.exchange[i].code)
+								// 		console.log(self.opctions.currency)
+								// 		break
+								// 	}
+								// }
 								self.opctions.amount=self.returnFloat(self.opctions.adultsPic - self.opctions.childDiscount -self.opctions.couponDiscount)
 								
 							}
@@ -378,7 +378,8 @@
 					details = opctions.details;
 				var people = opctions.adultNum + opctions.childrenNum;
 				//当前人数的默认价格
-				var price = details[people - 1].defaultPrice;
+				var price = details[people - 1].price;
+				console.log(details)
 				var standard = self.standard
 				//换算折扣价
 				var exchange = this.exchange;
@@ -391,6 +392,12 @@
 						//切换价格详情币种
 						opctions.adultsPic = this.returnFloat(price * thisEx.exchangeRate);
 						opctions.childDiscount = this.returnFloat(opctions.childDiscountPP * opctions.childrenNum * thisEx.exchangeRate);
+						console.log(opctions.childDiscountPP)
+						console.log(opctions.childrenNum)
+						console.log(thisEx.exchangeRate)
+						console.log(opctions.adultsPic)
+						console.log(opctions.amount)
+						console.log(opctions.childDiscount)
 						if(self.couponType == "RATE") {
 							opctions.couponDiscount = this.returnFloat((opctions.adultsPic-opctions.childDiscount) * self.couponRate)
 						} else if(self.couponType == "FIXED") {
@@ -412,7 +419,7 @@
 
 
 				//修改全站默认币种
-				Cookie.set('currency',JSON.stringify(this.nowExchange),{path:'/','expires':30});
+				//Cookie.set('currency',JSON.stringify(this.nowExchange),{path:'/','expires':30});
 
 			},
 			//退款时间计算
@@ -899,6 +906,9 @@
 				}
 
 			},
+			thisEx:function(){
+
+			}
 
 		}
 	}
@@ -935,10 +945,32 @@
 			white-space: normal!important;
 		}	
 
-		#header .heder-cont{
-			.init,.headleft .search{ display: none;}
+		// #header .heder-cont{
+		// 	.init,.headleft .search{ display: none;}
+		// }
+		#header {
+			.init{
+				li{
+					&:nth-child(0){
+						display: none;
+					}
+					&:nth-child(1){
+						display: none;
+					}
+					&:nth-child(2){
+						display: none;
+					}
+					&:nth-child(4){
+						display: none;
+					}	
+				}
+			}
+			
+			.search{ 
+				display: none!important;
+			}
+			
 		}
-
 		.footerInfo{
 			li:nth-child(5){
 				display: none!important;

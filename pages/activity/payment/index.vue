@@ -676,8 +676,28 @@
 		}
 
 
-		#header .heder-cont{
-			.init,.headleft .search{ display: none;}
+		#header {
+			.init{
+				li{
+					&:nth-child(0){
+						display: none;
+					}
+					&:nth-child(1){
+						display: none;
+					}
+					&:nth-child(2){
+						display: none;
+					}
+					&:nth-child(4){
+						display: none;
+					}	
+				}
+			}
+			
+			.search{ 
+				display: none!important;
+			}
+			
 		}
 
 	}

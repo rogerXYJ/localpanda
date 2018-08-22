@@ -37,7 +37,11 @@
 					<li>
 						<h3>PAYMENTS</h3>
 						<div class="payments">
-							
+							<span>
+								<svg class="icon" aria-hidden="true">
+										<use xlink:href="#icon-visa"></use>
+								</svg>
+							</span>
 							<span>
 								<svg class="icon" aria-hidden="true">
 										<use xlink:href="#icon-mastercard"></use>
@@ -54,11 +58,7 @@
 										<use xlink:href="#icon-paypal"></use>
 								</svg>
 							</span>
-							<span>
-								<svg class="icon" aria-hidden="true">
-										<use xlink:href="#icon-visa"></use>
-								</svg>
-							</span>
+							
 							<br>
 							<span class="footer_weixin">
 								<svg class="icon" aria-hidden="true">

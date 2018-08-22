@@ -183,7 +183,7 @@
 				</div>
 				<div class="provide" v-if="picInfo.details&&picInfo.details.length>0" id="picDetails">
 					<h3>Price Details</h3>
-					<p style="font-size: 16px;margin-top: 10px;" v-if="picInfo.childDiscount">Children's price is   {{nowExchange.symbol}}  {{returnFloat(picInfo.childDiscount)}} USD  less than adults' price.</p>
+					<p style="font-size: 16px;margin-top: 10px;" v-if="picInfo.childDiscount">Children's price is   {{nowExchange.symbol}}  {{returnFloat(picInfo.childDiscount)}} {{nowExchange.code}}  less than adults' price.</p>
 					<el-table :data="sixArr" stripe style="width: 100%">
 						<el-table-column prop="capacity" label="Number of people" width="244.6" align="center">
 							<template slot-scope="scope">
@@ -243,8 +243,8 @@
 							    -webkit-box-orient:vertical;">{{i.title}}</h4>
 								<div class="duration"><i class="iconfont">&#xe624;</i>Duration: {{i.duration}} {{i.durationUnit|firstUpperCase}}</div>
 								<div class="pic">
-									<div class="old-pic" v-if="i.originalPrice">{{nowExchange.symbol}}{{returnFloat(i.originalPrice)}}</div>
-									<div class="current-price">From<b>{{nowExchange.symbol}}{{returnFloat(i.bottomPrice)}}</b><span>  pp</span></div>
+									<div class="old-pic" v-if="i.originalPrice">{{nowExchange.code}}{{nowExchange.symbol}}{{returnFloat(i.originalPrice)}}</div>
+									<div class="current-price">From <span>{{nowExchange.code}}</span><b>{{nowExchange.symbol}}{{returnFloat(i.bottomPrice)}}</b><span>  pp</span></div>
 								</div>
 							</div>
 						</a>
@@ -266,7 +266,7 @@
 									</div>
 									<div class="picRight" >
 										<div style="color: #FFF;">
-											<b style="font-size: 22px">{{nowExchange.symbol}}{{detailAll.length>0 ? returnFloat(detailAll[people-detailAll[0].capacity].price/people) : returnFloat(detailAll[people]/people)}}</b> 
+											<b style="font-size: 22px">{{nowExchange.symbol}}{{returnFloat(picInfo.details[people-1].price/people)}}</b> 
 											pp for party of {{people}}
 											<span class="question" @mouseover="showNode" @mouseleave="hidden">?</span>
 										</div>
@@ -397,10 +397,10 @@
 								</div>
 								<div class="sales">
 										<span v-if="detail.sales&&detail.sales>0">Booked {{detail.sales}} {{detail.sales==1?'time':'times'}} (last 30 days)</span>
-										<div class="fl" v-if="travelersReviews.avgScore&&!ABtest || isABtestShow" @click="goReview">
+										<!-- <div class="fl" v-if="travelersReviews.avgScore&&!ABtest || isABtestShow" @click="goReview">
 											<grade style="margin-top:0"  :score="travelersReviews.avgScore" :big="'true'"></grade>
 											<span>  ( {{travelersReviews.records}} )</span>
-										</div>
+										</div> -->
 								</div>
 							</div>
 
@@ -610,6 +610,8 @@
 				var value = e.target ? e.target.value : e;
 				var picInfo = this.picInfo;
 				var thisDetail = picInfo.details;
+				
+				console.log()
 
 				//换算折扣价
 				var exchange = this.exchange;
@@ -627,6 +629,8 @@
 						if(picInfo.defaultPrice.childDiscount){
 							//之所以在这里加returnFloat，是为了让儿童优惠后的总价格，不会超过总价-儿童优惠价
 							picInfo.childDiscount = picInfo.defaultPrice.childDiscount * thisEx.exchangeRate;
+							
+							console.log(picInfo.childDiscount)
 						}
 						//切换价格详情币种
 						for(var i=0;i<thisDetail.length;i++){
@@ -643,7 +647,7 @@
 						break;
 					}
 				}
-				this.detailAll = this.tableData(thisDetail);
+				//this.detailAll = this.tableData(thisDetail);
 				if(this.people>0){
 					this.adultsPic = thisDetail[this.people-1].price;
 					// self.amount = that.children > 0 && picInfo.childDiscount ?
@@ -808,8 +812,7 @@
 			},
 			showTable() {
 				this.isShowTable = false
-				this.sixArr=this.tableData(this.picInfo.details)
-
+				this.sixArr=this.picInfo.details
 			},
 			
 			add(id) {
@@ -910,7 +913,7 @@
 						amount: that.children > 0 && that.picInfo.childDiscount ?
 							that.returnFloat(that.returnFloat(that.adultsPic) - that.returnFloat(that.children * that.picInfo.childDiscount)) :
 							that.returnFloat(that.adultsPic),
-						details: that.detailAll,
+						details: that.picInfo.details,
 						currency: that.picInfo.currency,
 						peopleNum:that.people,
 						symbol: that.nowExchange.symbol,
@@ -923,7 +926,7 @@
 						coverPhotoUrl: that.detail.coverPhotoUrl,
 						title: that.detail.title,
 						childDiscountP: that.returnFloat(that.picInfo.childDiscount),
-						childDiscountPP: that.picInfo.childDiscountDefault?that.returnFloat(that.picInfo.childDiscountDefault):0,
+						childDiscountPP: that.picInfo.childDiscount?that.returnFloat(that.picInfo.childDiscount):0,
 						//category: that.detail.category,
 						pickup:that.detail.pickup,
 						averagePrice: that.returnFloat(
@@ -962,57 +965,57 @@
 				document.body.scrollTop = anchor.offsetTop+document.getElementById("banner").offsetHeight+60-76
 				document.documentElement.scrollTop =anchor.offsetTop+document.getElementById("banner").offsetHeight+60-76
 			},
-			tableData(details) {
+			// tableData(details) {
 				
-				var newObj = function(obj) {
-						var o = {};
-						for(var key in obj) {
-							o[key] = obj[key];
-						}
-						return o;
-					}
+			// 	var newObj = function(obj) {
+			// 			var o = {};
+			// 			for(var key in obj) {
+			// 				o[key] = obj[key];
+			// 			}
+			// 			return o;
+			// 		}
 
-				let newArr = [],
-					tableD = [];
+			// 	let newArr = [],
+			// 		tableD = [];
 
 
 
-				if(details.length==1){
-					for(let i=0;i<details[0].capacity;i++){
-						var s=newObj(details[0]);
-						newArr.push(s)
-					}
-					for(var k=0;k<newArr.length;k++){
-						newArr[k].capacity=k+1
-					}
+			// 	if(details.length==1){
+			// 		for(let i=0;i<details[0].capacity;i++){
+			// 			var s=newObj(details[0]);
+			// 			newArr.push(s)
+			// 		}
+			// 		for(var k=0;k<newArr.length;k++){
+			// 			newArr[k].capacity=k+1
+			// 		}
 					
-				}else{
-					for(let i = 0; i < details[details.length-1].capacity; i++) {
+			// 	}else{
+			// 		for(let i = 0; i < details[details.length-1].capacity; i++) {
 						
-						let thisD = details[i];
+			// 			let thisD = details[i];
 						
-						newArr.push(thisD);
-						if(i + 1 > details.length - 1) break;
+			// 			newArr.push(thisD);
+			// 			if(i + 1 > details.length - 1) break;
 						
-						var thisC = thisD.capacity;
-						var nextC = details[i + 1].capacity;
-						var forLen = nextC - thisC - 1;
+			// 			var thisC = thisD.capacity;
+			// 			var nextC = details[i + 1].capacity;
+			// 			var forLen = nextC - thisC - 1;
 					
-						for(let j = 0; j < forLen; j++) {
-							var midArr = newObj(details[i+1]);
-							//console.log(midArr)
-							newArr.push(midArr);
-						}
-						//console.log(newArr)
-					}
-					for(var k = 0; k < newArr.length; k++) {
-						newArr[k].capacity = k + newArr[0].capacity;
+			// 			for(let j = 0; j < forLen; j++) {
+			// 				var midArr = newObj(details[i+1]);
+			// 				//console.log(midArr)
+			// 				newArr.push(midArr);
+			// 			}
+			// 			//console.log(newArr)
+			// 		}
+			// 		for(var k = 0; k < newArr.length; k++) {
+			// 			newArr[k].capacity = k + newArr[0].capacity;
 	
-					}
-				}
+			// 		}
+			// 	}
 				
-				return newArr;
-				}
+			// 	return newArr;
+			// 	}
 		},
 		watch: {
 			dateTime(val, oldVal) {
@@ -1121,7 +1124,7 @@
 				this.showNewStyle=false	
 			}
 			console.log(this.picInfo)
-			console.log(this.detail)
+			//console.log(this.detail)
 		//tag
 		if(this.detail.attractions&&this.detail.attractions.length>0){
 				if(this.detail.attractions.length>4){
@@ -1156,7 +1159,7 @@
 				that.adults=that.people
 			}
 			that.setPriceData();
-			that.detailAll = that.tableData(that.picInfo.details);
+			// that.detailAll = that.tableData(that.picInfo.details);
 			
 			//url参数有人数
 			
@@ -1179,6 +1182,7 @@
 			
 			if(that.picInfo.childDiscount){
 				that.picInfo.childDiscountDefault = that.picInfo.childDiscount;
+				console.log(that.picInfo.childDiscountDefault)
 			}
 			
 			//加载币种
@@ -1197,12 +1201,13 @@
 
 			
 //			console.log(that.detailAll)
-			if(that.tableData(that.picInfo.details).length>5){
+			if(that.picInfo.details.length>6){
 				this.isShowTable=true
-				that.sixArr=that.detailAll.concat().splice(0,6);
+				that.sixArr=that.picInfo.details.concat().splice(0,6);
 			}else{
-				that.sixArr=that.detailAll;
+				that.sixArr=that.picInfo.details;
 			}
+			console.log(that.sixArr)
 			//that.sixArr=that.tableData(that.picInfo.details)
 			//初始化日历
 			that.flatPickr = new Flatpickr('#js_changetime', that.options);

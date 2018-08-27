@@ -104,6 +104,35 @@ export default {
     //@import '~/assets/scss/_main.scss';
     //@import '~/assets/font/iconfont.css';
     @import '~assets/scss/G-ui/base.scss';
+    .privacy__container{
+         #header {
+			.init{
+				li{
+					&:nth-child(0){
+						display: none;
+					}
+					&:nth-child(1){
+						display: none;
+					}
+					&:nth-child(3){
+						display: none;
+					}
+					
+				}
+			}
+			
+			.search{ 
+				display: none!important;
+			}
+			
+		}
+		.footerInfo{
+			li:nth-child(5){
+				display: none!important;
+			}
+		}
+    }
+   
 </style>
 <style lang="scss" scoped>
     //@import '~/assets/scss/base/_setting.scss';

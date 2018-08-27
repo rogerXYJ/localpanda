@@ -2,7 +2,7 @@
 	<div class="talk">
 		<h2 class="talk_title">Talk To Localpanda</h2>
     <div class="talk_tip" v-if="!isWork()">
-We respond within one hour during opening hours (Mon-Sun 9 am to 10 pm Beijing time). <br><br>
+We respond within one hour during opening hours (Mon-Sun 9 am to 8 pm Beijing time). <br><br>
 If it’s not our operating hours, please leave us your requests in the left “Advise Me” section. Our staff will reply ASAP.</div>
     <div class="talk_tip2" v-if="loadTime">
       <p>Due to internet connection problems, Online Chat is currently offline.<br><br>
@@ -75,7 +75,7 @@ export default {
       //获取东八区时区
       var nowDate = this.getLocalTime(8),
         nowHour = nowDate.getHours();
-      if(nowHour>=9 && nowHour<22){
+      if(nowHour>=9 && nowHour<20){
         return true;
       };
       return false;

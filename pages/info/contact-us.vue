@@ -1,5 +1,5 @@
- <template>
-    <div class="page__container">
+ <template> 
+    <div class="page__container contact_us">
     	<HeaderCommon :logIn="logIn"></HeaderCommon>
         <div class="about-cover">
             <h2 >Contact Us</h2>
@@ -195,6 +195,34 @@ export default {
     //@import '~/assets/font/iconfont.css';
     @import '~assets/scss/G-ui/base.scss';
     //@import '~/assets/scss/base/_setting.scss';
+    .contact_us{
+        #header {
+			.init{
+				li{
+					&:nth-child(0){
+						display: none;
+					}
+					&:nth-child(1){
+						display: none;
+					}
+					&:nth-child(3){
+						display: none;
+					}
+					
+				}
+			}
+			
+			.search{ 
+				display: none!important;
+			}
+			
+		}
+		.footerInfo{
+			li:nth-child(5){
+				display: none!important;
+			}
+		}
+    }
 </style>
 <style lang="scss" scoped>
   

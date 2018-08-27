@@ -1,9 +1,9 @@
 <template>
 	<div id="activitiesDetail">
 		<HeaderCommon :logIn="logIn" :nowCurrency="currency" @headCurrency="headCurrencyFn"></HeaderCommon>
-		<Meau v-if="isShowMeau" :inclusions="inclusions" :highlights="highlights" :notice="notice" :exclusions="exclusions" :picInfo="picInfo" :photoList="photoList" :recommed="recommed" :travelersReviews="travelersReviews" :userABtestID="userABtestID" :ABtest="ABtest" ></Meau>
+		<Meau  v-show="isShowMeau" :nowCurrency="currency" @headCurrency="headCurrencyFn" :inclusions="inclusions" :highlights="highlights" :notice="notice" :exclusions="exclusions" :picInfo="picInfo" :photoList="photoList" :recommed="recommed" :travelersReviews="travelersReviews" :userABtestID="userABtestID" :ABtest="ABtest" ></Meau>
 		<ActivityBanner :bannerPhotos="detail.bannerPhotos" ></ActivityBanner>
-		<Activities 
+		<Activities
 			:isShowMeau="isShowMeau"
 			:remark="remark" 
 			:notice="notice" 
@@ -116,7 +116,8 @@
 				userABtestID:'',
 				ABtest: false,
 				isABtestShow:false,
-				currency:{code: "USD", symbol: "$", exchangeRate: 1}
+				currency:{code: "USD", symbol: "$", exchangeRate: 1},
+				
 			};
 			var response = {};
 			let apiActivityPriceRes = {};
@@ -263,7 +264,7 @@
 					response = results[0];
 					var detailData = response.data;
 
-					//console.log(detailData);
+					
 					
 					if(detailData.valid || route.query.valid==1) {//.valid == 1
 						
@@ -334,7 +335,7 @@
 					data.picInfo = apiActivityPriceRes.data;
 					data.picInfo.departureTime ? (data.time = data.picInfo.departureTime[0]) : (data.time = "");
 					data.picInfo.details = results[6].data;
-
+					console.log(data.picInfo.details)
 					//点评信息
 					var remarkData = results[4];
 					if(remarkData.data){
@@ -429,6 +430,7 @@
 				this.recommed = data;
 				//console.log(data);
 			},
+			
 			headCurrencyFn(currency){
 				this.currency = currency;
 			}
@@ -438,11 +440,12 @@
 			self.id!='undefined'?self.id:getUrlParams()
 			this.logIn = window.localStorage.getItem("logstate");
 			window.addEventListener("scroll", this.scorllBar);
-
-
-
-
 			var galoadTimer = null;
+			 var currency=JSON.parse(Cookie.get('currency'))?JSON.parse(Cookie.get('currency')):{code:'USD',symbol:'$'}
+				if(this.currency!=currency){
+					this.currency=currency
+				}
+    		
 			setTimeout(function(){
 				//获取ABtestID
 				var userABtestID = Cookie.get('userABtestID');

@@ -74,6 +74,9 @@ if(!Cookie.get('userABtestID')){
       if(typeof window.currencyCallbackFooter == 'function'){
         window.currencyCallbackFooter(data);
       }
+      if(typeof window.currencyCallbackMeau == 'function'){
+        window.currencyCallbackMeau(data)
+      }
     }
   }
 })();

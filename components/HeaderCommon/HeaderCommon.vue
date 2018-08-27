@@ -19,19 +19,43 @@
 
 			</ul>
 			<ul class="init" v-if="(logIn==0||logIn==null)&&!isAnonymity">
-				<li>
-					<select class="selectCurrey" v-model="currency">
+				<li class="selectCurrency" @click.stop="showCurrency=true">
+					<label>{{currency}} ( {{symbol}} ) <span class="iconfont">&#xe666;</span> </label>
+					<div class="currencyBox" v-if="showCurrency">
+						<div class="currencyItem" :class="{color:item.sure}"  v-for="(item,index) in exchange" @click.stop="setCurrency(item,index)">
+							{{item.code}} ( {{item.symbol}} )
+							<span v-if="item.sure" class="iconfont true">&#xe61e;</span>
+						</div>
+
+					</div>
+					<!-- <select class="selectCurrey" v-model="currency">
 						<option v-for="(item,index) in exchange" :value="item.code">{{item.code}} ( {{item.symbol}} )</option>
-					</select>
-					<span class="iconfont selectCurreyIcon">&#xe666;</span>
+					</select>-->
+					
+					
 				</li>
-				<li @click="showContact">Customize Your Trip<em class="hot">HOT</em></li>
+				<!-- <li @click="showContact">Customize Your Trip<em class="hot">HOT</em></li> -->
 				<li @click="isShowAnonymityback">My Bookings</li>
 				<li @click="show">Log In</li>
 				<li @click="goUrlContact" @mouseenter="showContactUs=true" @mouseleave="showContactUs=false">Contact Us</li>
 			</ul>
 			<ul class="login" v-if="logIn==1">
-				<li @click="showContact">Customize Your Trip<em class="hot">HOT</em></li>
+				<!-- <li @click="showContact">Customize Your Trip<em class="hot">HOT</em></li> -->
+				<li class="selectCurrency" @click.stop="showCurrency=true">
+					<label>{{currency}} ( {{symbol}} ) <span class="iconfont">&#xe666;</span> </label>
+					<div class="currencyBox" v-if="showCurrency">
+						<div class="currencyItem" :class="{color:item.sure}"  v-for="(item,index) in exchange" @click.stop="setCurrency(item,index)">
+							{{item.code}} ( {{item.symbol}} )
+							<span v-if="item.sure" class="iconfont true">&#xe61e;</span>
+						</div>
+
+					</div>
+					<!-- <select class="selectCurrey" v-model="currency">
+						<option v-for="(item,index) in exchange" :value="item.code">{{item.code}} ( {{item.symbol}} )</option>
+					</select>-->
+					
+					
+				</li>
 				<li @click="goBook" style="margin-right: 33px;">My Bookings</li>
 				<!--<li @click="goAboutUs" style="margin-right: 40px;">About Us</li>-->
 				<li @click="goUrlContact" @mouseenter="showContactUs=true" @mouseleave="showContactUs=false">Contact Us</li>
@@ -205,7 +229,9 @@
 				search: '',
 				//币种
 				currency:'USD',
+				symbol:'$',
 				exchange:'',
+				showCurrency:false,
 
 				seachContentList: [],
 				showBgSearch: false,
@@ -478,31 +504,55 @@
 
 				});
 			},
+			setCurrency(val,index){
+				this.currency=val.code
+				this.symbol=val.symbol
+				this.showCurrency=false
+				for(let i = 0;i<this.exchange.length;i++){
+					this.exchange[i].sure=0
+					this.exchange[index].sure=1
+				}
+			},
 		},
 		mounted() {
+			
 			let that = this
 			this.search=this.$route.query.keyword?this.$route.query.keyword:''
 			
 			document.body.addEventListener("click", function() {
 				that.iscontshow = true,
 				that.showBgSearch=false
-
+				that.showCurrency=false
 			})
 			that.logimg = window.localStorage.getItem("key")
 
 			that.fbToken = window.localStorage.getItem("fbToken")
-
+			
 
 
 			//获取币种列表
 			window.currencyCallbackHeader = function(data){
+				for(let i = 0;i<data.length;i++){
+					data[i].sure=0
+				}
+				console.log(data)
 				that.exchange = data;
+				
 			}
 
 			//读取币种
 			var nowCurrency = JSON.parse(Cookie.get('currency'));
 			if(nowCurrency){
 				this.currency = nowCurrency.code;
+				this.symbol=nowCurrency.symbol;
+				for(var i =0 ;i<that.exchange.length;i++){
+					
+					if(this.currency==that.exchange[i].code){
+						that.exchange[i].sure=1
+					}else{
+						that.exchange[i].sure=0
+					}
+				}
 			}
 			
 
@@ -520,6 +570,7 @@
 			},
 			nowCurrency:function(val){
 				this.currency= val.code;
+				this.symbol=val.symbol;
 			},
 			currency:function(val){
 				var thisCurrency = '',
@@ -530,12 +581,13 @@
 						thisCurrency = thisData;
 					}
 				}
-
 				if(thisCurrency){
 					Cookie.set('currency',JSON.stringify({
 						code: thisCurrency.code,
-						symbol: thisCurrency.symbol
+						symbol: thisCurrency.symbol,
+						sure:thisCurrency.sure
 					}),{path:'/','expires':30});
+					console.log(Cookie.get('currency'))
 
 					this.$emit('headCurrency',thisCurrency);
 				}
@@ -548,6 +600,9 @@
 </script>
 
 <style lang="scss" scoped>
+.color{
+	color: #1bbc9d;
+}
 	/** contact us **/
 
 	.contact_box{
@@ -867,21 +922,34 @@
 				
 				float: right;
 				margin-right: 38px;
-				.selectCurrey{
-					padding-right: 25px;
-					font-size: 16px;
-					-webkit-appearance: none;
-					-moz-appearance: none;
-					appearance: none;
-					background-color: transparent;
-					border: none;
-					position: relative;
-					z-index: 2;
+				.selectCurrency{
+					cursor: pointer;
 				}
-				.selectCurreyIcon{
+				.currencyBox{
 					position: absolute;
+					background: #fff;
+					box-shadow: 0px 1px 6px 0px rgba(0, 0, 0, 0.1);
+					border-radius: 5px;
+					width: 240px;
 					right: 2px;
-					font-size: 22px;
+					z-index:999999;
+					.currencyItem{
+						cursor: pointer;
+						height: 56px;
+						line-height: 56px;
+						margin:0 15px;
+						border-bottom: 1px solid #ebebeb;
+						&:last-child{
+							border:none;
+						}
+						.true{
+							color: #1bbc9d;
+							font-size: 14px;
+							position: absolute;
+							right: 15px;
+						}
+						
+					}
 				}
 				li {
 					position: relative;

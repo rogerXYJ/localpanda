@@ -76,9 +76,35 @@ export default {
     @import '~assets/scss/G-ui/base.scss';
 
     .privacy__container{
-    .heder-cont{
-        box-shadow:0 0 10px rgba(0,0,0,0.4);
-    }
+        .heder-cont{
+            box-shadow:0 0 10px rgba(0,0,0,0.4);
+        }
+        #header {
+			.init{
+				li{
+					&:nth-child(0){
+						display: none;
+					}
+					&:nth-child(1){
+						display: none;
+					}
+					&:nth-child(3){
+						display: none;
+					}
+					
+				}
+			}
+			
+			.search{ 
+				display: none!important;
+			}
+			
+		}
+		.footerInfo{
+			li:nth-child(5){
+				display: none!important;
+			}
+		}
     }
 </style>
 <style lang="scss" scoped>

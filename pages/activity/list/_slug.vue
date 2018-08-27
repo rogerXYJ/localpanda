@@ -1056,7 +1056,7 @@
 						})
 						
 					}
-					window.scrollTo(0,100);
+					window.scrollTo(0,0);
 				}, (res) => {
 
 				})
@@ -1244,6 +1244,16 @@
 				that.selectPeople=false
 				
 			})
+			// if(window.name != "bencalie"){
+			// 	location.reload();
+			// 	window.name = "bencalie";
+			// }else{
+			// 	window.name = "";
+			// }
+			var currency=JSON.parse(Cookie.get('currency'))?JSON.parse(Cookie.get('currency')):{code:'USD',symbol:'$'}
+			if(this.currency!=currency){
+				this.currency=currency
+			}
 			that.logIn = localStorage.getItem("logstate") ? localStorage.getItem("logstate") : null
 
 		},

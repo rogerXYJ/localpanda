@@ -648,9 +648,6 @@
 	//@import '~/assets/scss/_main.scss';
 	//@import '~/assets/font/iconfont.css';
 	.payNow{
-		#header {
-			box-shadow: 0px 2px 6px 0px rgba(53, 58, 63, 0.1);
-		}
 		
 		body {
 			min-width: 1200px;
@@ -676,8 +673,32 @@
 		}
 
 
-		#header .heder-cont{
-			.init,.headleft .search{ display: none;}
+		#header {
+			box-shadow: 0px 2px 6px 0px rgba(53, 58, 63, 0.1);
+			.init{
+				li{
+					&:nth-child(0){
+						display: none;
+					}
+					&:nth-child(1){
+						display: none;
+					}
+					&:nth-child(3){
+						display: none;
+					}
+					
+				}
+			}
+			
+			.search{ 
+				display: none!important;
+			}
+			
+		}
+		.footerInfo{
+			li:nth-child(5){
+				display: none!important;
+			}
 		}
 
 	}

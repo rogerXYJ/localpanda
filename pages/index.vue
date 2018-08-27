@@ -124,6 +124,16 @@ export default {
     	this.logIn = window.localStorage.getItem("logstate");
     	console.log(this.activeList)
       document.documentElement.scrollTop=0
+    //    if(window.name != "bencalie"){
+    //      location.reload();
+    //      window.name = "bencalie";
+    //  }else{
+    //      window.name = "";
+    //  }
+    var currency=JSON.parse(Cookie.get('currency'))?JSON.parse(Cookie.get('currency')):{code:'USD',symbol:'$'}
+			if(this.currency!=currency){
+				this.currency=currency
+			}
     }
 }
 </script>

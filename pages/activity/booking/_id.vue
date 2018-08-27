@@ -159,12 +159,12 @@
 					<div class="total clearfix">
 						<div class="totle-title">Total ({{opctions.currency}})</div>
 						<div class="totalPic">{{nowExchange.symbol}}{{opctions.amount}}</div>
-						<div class="picRate">
+						<!-- <div class="picRate">
 							<select class="currency_type" @change="changeCurrency" v-model="opctions.currency">
 								<option :value="item.code" v-for="item in exchange" :key="item.currency">{{item.code}}</option>
 							</select>
 							<span class="iconfont">&#xe666;</span>
-						</div>
+						</div> -->
 					</div>
 				</div>
 				<div class="serve">
@@ -331,7 +331,7 @@
 				var opctions = self.opctions,
 					details = opctions.details;
 				var people = opctions.adultNum + opctions.childrenNum;
-				var price = details[people - 1].defaultPrice;
+				var price = details[people - 1].price;
 				if(self.couponCode){
 					self.axios.get("https://api.localpanda.com/api/order/coupon/" + self.couponCode).then(res => {
 						if(res.status == 200 && res.data) {
@@ -349,15 +349,15 @@
 									self.opctions.couponDiscount = self.standard
 								}
 								
-//								for(var i=0;i<self.exchange.length;i++){
-//									if(self.opctions.currency==self.exchange[i].code){
-//										self.opctions.couponDiscount=self.returnFloat(self.opctions.couponDiscount*self.exchange[i].exchangeRate)
-//										console.log(self.exchange[i].exchangeRate)
-//										console.log(self.exchange[i].code)
-//										console.log(self.opctions.currency)
-//										break
-//									}
-//								}
+								// for(var i=0;i<self.exchange.length;i++){
+								// 	if(self.opctions.currency==self.exchange[i].code){
+								// 		self.opctions.couponDiscount=self.returnFloat(self.opctions.couponDiscount*self.exchange[i].exchangeRate)
+								// 		console.log(self.exchange[i].exchangeRate)
+								// 		console.log(self.exchange[i].code)
+								// 		console.log(self.opctions.currency)
+								// 		break
+								// 	}
+								// }
 								self.opctions.amount=self.returnFloat(self.opctions.adultsPic - self.opctions.childDiscount -self.opctions.couponDiscount)
 								
 							}
@@ -371,50 +371,57 @@
 				
 			},
 			//价格换算
-			changeCurrency(e) {
-				var self = this;
-				var value = e.target.value,
-					opctions = self.opctions,
-					details = opctions.details;
-				var people = opctions.adultNum + opctions.childrenNum;
-				//当前人数的默认价格
-				var price = details[people - 1].defaultPrice;
-				var standard = self.standard
-				//换算折扣价
-				var exchange = this.exchange;
-				for(var i = 0; i < exchange.length; i++) {
-					var thisEx = exchange[i];
-					//检测当前货币类型
-					if(thisEx.code == value) {
-						//设置当前币种
-						this.nowExchange = thisEx;
-						//切换价格详情币种
-						opctions.adultsPic = this.returnFloat(price * thisEx.exchangeRate);
-						opctions.childDiscount = this.returnFloat(opctions.childDiscountPP * opctions.childrenNum * thisEx.exchangeRate);
-						if(self.couponType == "RATE") {
-							opctions.couponDiscount = this.returnFloat((opctions.adultsPic-opctions.childDiscount) * self.couponRate)
-						} else if(self.couponType == "FIXED") {
-							opctions.couponDiscount = this.returnFloat(standard * thisEx.exchangeRate)
-						}else{
-							opctions.couponDiscount=0
-						}
-						opctions.averagePrice = this.returnFloat(opctions.adultsPic / people);
-						opctions.amount = this.returnFloat(opctions.adultsPic - this.returnFloat(opctions.childrenNum * thisEx.exchangeRate * opctions.childDiscountPP) - opctions.couponDiscount);
+			// changeCurrency(e) {
+			// 	var self = this;
+			// 	var value = e.target.value,
+			// 		opctions = self.opctions,
+			// 		details = opctions.details;
+			// 	var people = opctions.adultNum + opctions.childrenNum;
+			// 	//当前人数的默认价格
+			// 	var price = details[people - 1].price;
+			// 	console.log(details)
+			// 	var standard = self.standard
+			// 	//换算折扣价
+			// 	var exchange = this.exchange;
+			// 	for(var i = 0; i < exchange.length; i++) {
+			// 		var thisEx = exchange[i];
+			// 		//检测当前货币类型
+			// 		if(thisEx.code == value) {
+			// 			//设置当前币种
+			// 			this.nowExchange = thisEx;
+			// 			//切换价格详情币种
+			// 			opctions.adultsPic = this.returnFloat(price * thisEx.exchangeRate);
+			// 			opctions.childDiscount = this.returnFloat(opctions.childDiscountPP * opctions.childrenNum * thisEx.exchangeRate);
+			// 			console.log(opctions.childDiscountPP)
+			// 			console.log(opctions.childrenNum)
+			// 			console.log(thisEx.exchangeRate)
+			// 			console.log(opctions.adultsPic)
+			// 			console.log(opctions.amount)
+			// 			console.log(opctions.childDiscount)
+			// 			if(self.couponType == "RATE") {
+			// 				opctions.couponDiscount = this.returnFloat((opctions.adultsPic-opctions.childDiscount) * self.couponRate)
+			// 			} else if(self.couponType == "FIXED") {
+			// 				opctions.couponDiscount = this.returnFloat(standard * thisEx.exchangeRate)
+			// 			}else{
+			// 				opctions.couponDiscount=0
+			// 			}
+			// 			opctions.averagePrice = this.returnFloat(opctions.adultsPic / people);
+			// 			opctions.amount = this.returnFloat(opctions.adultsPic - this.returnFloat(opctions.childrenNum * thisEx.exchangeRate * opctions.childDiscountPP) - opctions.couponDiscount);
 						
-						opctions.symbol = thisEx.symbol;
+			// 			opctions.symbol = thisEx.symbol;
 						
-						self.total=opctions.amount
+			// 			self.total=opctions.amount
 						
 						
-						break;
-					}
-				}
+			// 			break;
+			// 		}
+			// 	}
 
 
-				//修改全站默认币种
-				Cookie.set('currency',JSON.stringify(this.nowExchange),{path:'/','expires':30});
+			// 	//修改全站默认币种
+			// 	//Cookie.set('currency',JSON.stringify(this.nowExchange),{path:'/','expires':30});
 
-			},
+			// },
 			//退款时间计算
 			 delmulDay(dtstr, n) {
 				var dt = new Date(dtstr.replace(/\-/g,'/'));
@@ -772,13 +779,13 @@
 				currency: self.opctions.currency
 			};
 			//加载币种
-			self.axios.get("https://api.localpanda.com/api/public/currency/all/"+self.opctions.currency).then(function(response) {
-				// console.log(response);
-				if(response.status == 200) {
-					self.exchange = response.data;
-					console.log(self.exchange )
-				}
-			}, function(response) {});
+			// self.axios.get("https://api.localpanda.com/api/public/currency/all/"+self.opctions.currency).then(function(response) {
+			// 	// console.log(response);
+			// 	if(response.status == 200) {
+			// 		self.exchange = response.data;
+			// 		console.log(self.exchange )
+			// 	}
+			// }, function(response) {});
 			self.codeList = self.countryCode
 			self.travelCodeList = self.countryCode
 			document.getElementsByTagName('body')[0].addEventListener("click", () => {
@@ -899,6 +906,9 @@
 				}
 
 			},
+			thisEx:function(){
+
+			}
 
 		}
 	}
@@ -935,8 +945,34 @@
 			white-space: normal!important;
 		}	
 
-		#header .heder-cont{
-			.init,.headleft .search{ display: none;}
+		// #header .heder-cont{
+		// 	.init,.headleft .search{ display: none;}
+		// }
+		#header {
+			.init{
+				li{
+					&:nth-child(0){
+						display: none;
+					}
+					&:nth-child(1){
+						display: none;
+					}
+					&:nth-child(3){
+						display: none;
+					}
+					
+				}
+			}
+			
+			.search{ 
+				display: none!important;
+			}
+			
+		}
+		.footerInfo{
+			li:nth-child(5){
+				display: none!important;
+			}
 		}
 	}
 

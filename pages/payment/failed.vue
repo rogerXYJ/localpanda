@@ -81,8 +81,29 @@
 <style lang="scss">
 	//@import '~/assets/scss/_main.scss';
 	//@import '~/assets/font/iconfont.css';
+.failed{
 	#header {
 		box-shadow: 0px 2px 6px 0px rgba(53, 58, 63, 0.1);
+	}
+	#header {
+		.init{
+			li{
+				&:nth-child(0){
+						display: none;
+					}
+					&:nth-child(1){
+						display: none;
+					}
+					&:nth-child(3){
+						display: none;
+					}
+			}
+		}
+		
+		.search{ 
+			display: none!important;
+		}
+	}
 	}
 </style>
 <style lang="scss" scoped>

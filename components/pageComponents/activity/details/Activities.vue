@@ -99,7 +99,7 @@
 							</div>
 						</li>
 					</ul>
-				<a v-if="detail.itineraries.length>4&&showMoreItinerary" class="more" href="javascript:;" @click="fn">Veiw More</a>
+				<a v-if="detail.itineraries.length>3&&showMoreItinerary" class="more" href="javascript:;" @click="fn">View More</a>
 				</div>
 				 <!-- <div class="notes" v-if="photoList&&photoList.length>0" @click="showPhoto" id="photoList">
 					<h3>Pictures of our travelers</h3>
@@ -183,7 +183,7 @@
 				</div>
 				<div class="provide" v-if="picInfo.details&&picInfo.details.length>0" id="picDetails">
 					<h3>Price Details</h3>
-					<p style="font-size: 16px;margin-top: 10px;" v-if="picInfo.childDiscount">Children's price is   $  {{returnFloat(picInfo.childDiscount)}} USD  less than adults' price.</p>
+					<p style="font-size: 16px;margin-top: 10px;" v-if="picInfo.childDiscount">Children's price is   {{nowExchange.symbol}}  {{returnFloat(picInfo.childDiscount)}} {{nowExchange.code}}  less than adults' price.</p>
 					<el-table :data="sixArr" stripe style="width: 100%">
 						<el-table-column prop="capacity" label="Number of people" width="244.6" align="center">
 							<template slot-scope="scope">
@@ -244,7 +244,7 @@
 								<div class="duration"><i class="iconfont">&#xe624;</i>Duration: {{i.duration}} {{i.durationUnit|firstUpperCase}}</div>
 								<div class="pic">
 									<div class="old-pic" v-if="i.originalPrice">{{nowExchange.symbol}}{{returnFloat(i.originalPrice)}}</div>
-									<div class="current-price">From<b>{{nowExchange.symbol}}{{returnFloat(i.bottomPrice)}}</b><span>  pp</span></div>
+									<div class="current-price">From <span>{{nowExchange.code}}</span><b>{{nowExchange.symbol}}{{returnFloat(i.bottomPrice)}}</b><span>  pp</span></div>
 								</div>
 							</div>
 						</a>
@@ -258,15 +258,16 @@
 						<div class="bookbox">
 							<div class="picPp clearfix">
 								
-									<div class="picLeft">
+									<!-- <div class="picLeft">
 										<select class="currency_type" v-model="picInfo.currency" @change="changeCurrency">
 											<option :value="item.code" v-for="item in exchange" :key="item.code">{{item.code}}</option>
 										</select>
 										<span class="iconfont">&#xe666;</span>
-									</div>
+									</div> -->
 									<div class="picRight" >
 										<div style="color: #FFF;">
-											<b style="font-size: 22px">{{nowExchange.symbol}}{{detailAll.length>0 ? returnFloat(detailAll[people-detailAll[0].capacity].price/people) : returnFloat(detailAll[people]/people)}}</b> 
+											{{nowExchange.code}}
+											<b style="font-size: 22px">{{nowExchange.symbol}}{{returnFloat(picInfo.details[people-1].price/people)}}</b> 
 											pp for party of {{people}}
 											<span class="question" @mouseover="showNode" @mouseleave="hidden">?</span>
 										</div>
@@ -392,15 +393,15 @@
 									<button class="bookNow" @click.stop="order">Book Now</button>
 									<div class="inquiry_box">
 										<button class="inquiryBtn" @click="showContact">Inquire</button>
-										<a class="inquiryBtn" href="/inquiry/talk" target="_blank">Talk To Panda</a>
+										<a class="inquiryBtn" href="/inquiry/talk" target="_blank">Chat with Panda</a>
 									</div>
 								</div>
 								<div class="sales">
 										<span v-if="detail.sales&&detail.sales>0">Booked {{detail.sales}} {{detail.sales==1?'time':'times'}} (last 30 days)</span>
-										<div class="fl" v-if="travelersReviews.avgScore&&!ABtest || isABtestShow" @click="goReview">
+										<!-- <div class="fl" v-if="travelersReviews.avgScore&&!ABtest || isABtestShow" @click="goReview">
 											<grade style="margin-top:0"  :score="travelersReviews.avgScore" :big="'true'"></grade>
 											<span>  ( {{travelersReviews.records}} )</span>
-										</div>
+										</div> -->
 								</div>
 							</div>
 
@@ -550,11 +551,10 @@
 				}
 			},
 			fn(){
-				console.log(1111)
 				this.showMoreItinerary=false
 				if(this.showMoreItinerary){
 					
-					this.itinerary=this.detail.itineraries.concat().splice(0,4)	
+					this.itinerary=this.detail.itineraries.concat().splice(0,3)	
 				}else{
 					this.itinerary=this.detail.itineraries
 				}
@@ -611,48 +611,69 @@
 				var value = e.target ? e.target.value : e;
 				var picInfo = this.picInfo;
 				var thisDetail = picInfo.details;
-
 				//换算折扣价
 				var exchange = this.exchange;
-				for(var i=0;i<exchange.length;i++){
-					var thisEx = exchange[i];
-					//检测当前货币类型
-					if(thisEx.code==value){
-						//设置当前币种
-						this.nowExchange = thisEx;
-						//切换折扣价币种
-						picInfo.currency = value;
-						picInfo.symbol = thisEx.symbol;
-						picInfo.bottomPrice = picInfo.defaultPrice.bottomPrice * thisEx.exchangeRate;
-						picInfo.originalPrice = picInfo.defaultPrice.originalPrice * thisEx.exchangeRate;
-						if(picInfo.defaultPrice.childDiscount){
-							//之所以在这里加returnFloat，是为了让儿童优惠后的总价格，不会超过总价-儿童优惠价
-							picInfo.childDiscount = picInfo.defaultPrice.childDiscount * thisEx.exchangeRate;
-						}
-						//切换价格详情币种
-						for(var i=0;i<thisDetail.length;i++){
-							thisDetail[i].price = thisDetail[i].defaultPrice * thisEx.exchangeRate;
-						}
+				// for(var i=0;i<exchange.length;i++){
+				// 	var thisEx = exchange[i];
+				// 	//检测当前货币类型
+				// 	if(thisEx.code==value){
+				// 		//设置当前币种
+				// 		this.nowExchange = thisEx;
+				// 		//切换折扣价币种
+				// 		picInfo.currency = value;
+				// 		picInfo.symbol = thisEx.symbol;
+				// 		picInfo.bottomPrice = picInfo.defaultPrice.bottomPrice * thisEx.exchangeRate;
+				// 		picInfo.originalPrice = picInfo.defaultPrice.originalPrice * thisEx.exchangeRate;
+				// 		if(picInfo.defaultPrice.childDiscount){
+				// 			//之所以在这里加returnFloat，是为了让儿童优惠后的总价格，不会超过总价-儿童优惠价
+				// 			picInfo.childDiscount =picInfo.defaultPrice.childDiscount * thisEx.exchangeRate;
+				// 		}
+				// 		//切换价格详情币种
+				// 		for(var i=0;i<thisDetail.length;i++){
+				// 			thisDetail[i].price = thisDetail[i].defaultPrice * thisEx.exchangeRate;
+				// 		}
 
-						//切换详情币种
-						var sixArr = this.sixArr;
-						for(var i=0;i<sixArr.length;i++){
-							//之所以在这里加returnFloat，是为了让儿童优惠后的总价格，不会超过总价-儿童优惠价
-							sixArr[i].price = sixArr[i].defaultPrice * thisEx.exchangeRate;
-						}
+				// 		//切换详情币种
+				// 		var sixArr = this.sixArr;
+				// 		for(var i=0;i<sixArr.length;i++){
+				// 			//之所以在这里加returnFloat，是为了让儿童优惠后的总价格，不会超过总价-儿童优惠价
+				// 			sixArr[i].price = sixArr[i].defaultPrice * thisEx.exchangeRate;
+				// 		}
 						
-						break;
-					}
-				}
-				this.detailAll = this.tableData(thisDetail);
-				if(this.people>0){
-					this.adultsPic = thisDetail[this.people-1].price;
-					// self.amount = that.children > 0 && picInfo.childDiscount ?
-					// 		self.returnFloat(self.returnFloat(self.adultsPic) - self.returnFloat(self.children * self.picInfo.childDiscount)) :
-					// 		self.returnFloat(self.adultsPic);
-				}
-
-
+				// 		break;
+				// 	}
+				// }
+				// if(self.people>0){
+				// 	self.adultsPic = thisDetail[this.people-1].price;
+				// 	// self.amount = that.children > 0 && picInfo.childDiscount ?
+				// 	// 		self.returnFloat(self.returnFloat(self.adultsPic) - self.returnFloat(self.children * self.picInfo.childDiscount)) :
+				// 	// 		self.returnFloat(self.adultsPic);
+				// }
+					self.axios.get("https://api.localpanda.com/api/product/activity/"+this.id+"/price?currency="+value).then(function(res) {
+							self.picInfo.childDiscount=res.data.childDiscount
+							self.picInfo.currency=res.data.currency
+							
+					}, function(res) {
+						
+					});
+					
+					self.axios.get("https://api.localpanda.com/api/product/activity/"+this.id+"/price/detail?currency="+value).then(function(res) {
+							self.picInfo.details=res.data
+							
+							self.sixArr=res.data
+							if(self.people>0){
+								self.adultsPic = self.picInfo.details[self.people-1].price;	
+							}
+							if(res.data.length>6){
+								self.isShowTable=true
+								self.sixArr=res.data.concat().splice(0,6);
+							}else{
+								self.sixArr=res.data;
+							}
+					}, function(res) {
+						
+					});
+				
 				//当前币种
 				self.$emit('input',this.nowExchange);
 
@@ -809,8 +830,7 @@
 			},
 			showTable() {
 				this.isShowTable = false
-				this.sixArr=this.tableData(this.picInfo.details)
-
+				this.sixArr=this.picInfo.details
 			},
 			
 			add(id) {
@@ -861,6 +881,8 @@
 				if(this.isShowTime == true) this.isShowTime = false;
 				this.isShowAdults = true;
 				this.isShowBook = true;
+				this.$emit('showPeople',true)
+				
 				
 			},
 			gaFail(){
@@ -911,7 +933,7 @@
 						amount: that.children > 0 && that.picInfo.childDiscount ?
 							that.returnFloat(that.returnFloat(that.adultsPic) - that.returnFloat(that.children * that.picInfo.childDiscount)) :
 							that.returnFloat(that.adultsPic),
-						details: that.detailAll,
+						details: that.picInfo.details,
 						currency: that.picInfo.currency,
 						peopleNum:that.people,
 						symbol: that.nowExchange.symbol,
@@ -924,7 +946,7 @@
 						coverPhotoUrl: that.detail.coverPhotoUrl,
 						title: that.detail.title,
 						childDiscountP: that.returnFloat(that.picInfo.childDiscount),
-						childDiscountPP: that.picInfo.childDiscountDefault?that.returnFloat(that.picInfo.childDiscountDefault):0,
+						childDiscountPP: that.picInfo.childDiscount?that.returnFloat(that.picInfo.childDiscount):0,
 						//category: that.detail.category,
 						pickup:that.detail.pickup,
 						averagePrice: that.returnFloat(
@@ -963,57 +985,6 @@
 				document.body.scrollTop = anchor.offsetTop+document.getElementById("banner").offsetHeight+60-76
 				document.documentElement.scrollTop =anchor.offsetTop+document.getElementById("banner").offsetHeight+60-76
 			},
-			tableData(details) {
-				
-				var newObj = function(obj) {
-						var o = {};
-						for(var key in obj) {
-							o[key] = obj[key];
-						}
-						return o;
-					}
-
-				let newArr = [],
-					tableD = [];
-
-
-
-				if(details.length==1){
-					for(let i=0;i<details[0].capacity;i++){
-						var s=newObj(details[0]);
-						newArr.push(s)
-					}
-					for(var k=0;k<newArr.length;k++){
-						newArr[k].capacity=k+1
-					}
-					
-				}else{
-					for(let i = 0; i < details[details.length-1].capacity; i++) {
-						
-						let thisD = details[i];
-						
-						newArr.push(thisD);
-						if(i + 1 > details.length - 1) break;
-						
-						var thisC = thisD.capacity;
-						var nextC = details[i + 1].capacity;
-						var forLen = nextC - thisC - 1;
-					
-						for(let j = 0; j < forLen; j++) {
-							var midArr = newObj(details[i+1]);
-							//console.log(midArr)
-							newArr.push(midArr);
-						}
-						//console.log(newArr)
-					}
-					for(var k = 0; k < newArr.length; k++) {
-						newArr[k].capacity = k + newArr[0].capacity;
-	
-					}
-				}
-				
-				return newArr;
-				}
 		},
 		watch: {
 			dateTime(val, oldVal) {
@@ -1053,20 +1024,8 @@
 					that.error = false;
 					that.dateErrText = "*Final headcount does not include babies.";
 				}
-				for(var i = 0; i < that.picInfo.details.length; i++) {
-					if(val == that.picInfo.details[i].capacity) {
-						that.adultsPic = that.picInfo.details[i].price;
-			
-						break;
-						} else {
-							if(val< that.picInfo.details[i].capacity) {
-								that.adultsPic = that.picInfo.details[i].price;
-				
-								break;
-							}
-						}
-				}
-				
+				that.adultsPic=that.picInfo.details[val-1].price;
+				console.log(that.adultsPic)
 			},
 			
 			isShowBook(val, oldVal) {
@@ -1085,9 +1044,12 @@
 				}
 			},
 			value:function(val){
+				console.log(val)
 				this.nowExchange = val;
 				this.changeCurrency(val.code)
-			}
+			},
+			
+
 //			isShowAdults(val,oldVal){
 //				let that=this
 //				if(val){
@@ -1121,8 +1083,6 @@
 			}else{
 				this.showNewStyle=false	
 			}
-			console.log(this.picInfo)
-			console.log(this.detail)
 		//tag
 		if(this.detail.attractions&&this.detail.attractions.length>0){
 				if(this.detail.attractions.length>4){
@@ -1137,9 +1097,9 @@
 	//行程折叠
 		
 			if(this.detail.itineraries&&this.detail.itineraries.length>0){
-				if(this.detail.itineraries.length>4){
+				if(this.detail.itineraries.length>3){
 					this.showMoreItinerary=true
-					this.itinerary=this.detail.itineraries.concat().splice(0,4)	
+					this.itinerary=this.detail.itineraries.concat().splice(0,3)	
 				}else{
 					this.itinerary=this.detail.itineraries
 				}
@@ -1156,40 +1116,31 @@
 				that.isShowBook=true
 				that.adults=that.people
 			}
-			that.setPriceData();
-			that.detailAll = that.tableData(that.picInfo.details);
+			//that.setPriceData();
+			// that.detailAll = that.tableData(that.picInfo.details);
+			that.adultsPic=that.picInfo.details[that.people-1].price;
 			
-			//url参数有人数
+			var currency= JSON.parse(Cookie.get('currency'))?JSON.parse(Cookie.get('currency')):{'code':'USD','symbol':'$'};
+			 //that.exchange=currency
+			 that.nowExchange=currency
+			 console.log(that.nowExchange)
 			
-			for(var i = 0; i < that.picInfo.details.length; i++) {
-					if(that.people  == that.picInfo.details[i].capacity) {
-						that.adultsPic = that.picInfo.details[i].price;
-			
-						break;
-						} else {
-							if(that.people < that.picInfo.details[i].capacity) {
-								that.adultsPic = that.picInfo.details[i].price;
-				
-								break;
-							}
-						}
-				}
-			 
 			 
 			//调整数据，设置默认价格 
 			
-			if(that.picInfo.childDiscount){
-				that.picInfo.childDiscountDefault = that.picInfo.childDiscount;
-			}
+			// if(that.picInfo.childDiscount){
+			// 	that.picInfo.childDiscountDefault = that.picInfo.childDiscount;
+			// 	console.log(that.picInfo.childDiscountDefault)
+			// }
 			
 			//加载币种
-			that.axios.get("https://api.localpanda.com/api/public/currency/all/"+that.picInfo.currency).then(function(response) {
-				// console.log(response);
-				if(response.status==200){
-					that.exchange = response.data;
-					that.nowExchange = that.exchange[0];
-				}
-			}, function(response) {});
+			// that.axios.get("https://api.localpanda.com/api/public/currency/all/"+that.picInfo.currency).then(function(response) {
+			// 	// console.log(response);
+			// 	if(response.status==200){
+			// 		that.exchange = response.data;
+			// 		that.nowExchange = that.exchange[0];
+			// 	}
+			// }, function(response) {});
 
 			//this.sixArr=this.tableData(this.picInfo.details)
 
@@ -1198,12 +1149,13 @@
 
 			
 //			console.log(that.detailAll)
-			if(that.tableData(that.picInfo.details).length>5){
+			if(that.picInfo.details.length>6){
 				this.isShowTable=true
-				that.sixArr=that.detailAll.concat().splice(0,6);
+				that.sixArr=that.picInfo.details.concat().splice(0,6);
 			}else{
-				that.sixArr=that.detailAll;
+				that.sixArr=that.picInfo.details;
 			}
+			
 			//that.sixArr=that.tableData(that.picInfo.details)
 			//初始化日历
 			that.flatPickr = new Flatpickr('#js_changetime', that.options);

@@ -14,7 +14,7 @@
 						<!-- <span>{{postData.participants}} People <i class="iconfont">&#xe60f;</i></span>
 						<input-number v-if="selectPeople" :participants="postData.participants" :selectNumber="selectNumber" @showSelectPeople="setSelectPeople" @getPeople="setPeople"></input-number> -->
 						<select v-model="postData.participants" class="participants" @change="setPeople">
-							<option v-for="(item,index) in participantsOption" :value="item.label">{{item.selectparticipant}}</option>
+							<option v-for="(item,index) in participantsOptionFn()" :value="item.label">{{item.selectparticipant}}</option>
 						</select>
 						<i class="iconfont">&#xe60f;</i>
 					</div>
@@ -192,7 +192,7 @@
 						<ul>
 							<li class="activity-item" v-for="item in activityList">
 
-								<a :href="'/activity/details/'+item.activityId+'?participants='+postData.participants" target="_blank">
+								<a :href="'/activity/details/'+item.activityId+(postData.participants==0?'':'?participants='+postData.participants)" target="_blank">
 									<div class="activity">
 										<div class="activity-photo" v-lazy:background-image="item.coverPhotoUrl">
 											<p class="type">{{item.category}}</p>
@@ -218,11 +218,8 @@
 											</div>
 											<div class="totalPic">
 												<div class="nowPic">
-<<<<<<< HEAD
-													<b>{{postData.participants==0?'From  ':''}}   {{currency.symbol}}{{postData.participants!=0?returnFloat(item.perPersonPrice):returnFloat(item.bottomPrice)}}</b><span>{{postData.participants!=0?' pp for party of '+ postData.participants:' pp'}}</span>
-=======
-													<b><span class="currency_code">{{currency.code}}</span> {{currency.symbol}}{{returnFloat(item.perPersonPrice)}}</b><span> pp</span>
->>>>>>> master
+													{{postData.participants==0?'From  ':''}}
+													<b><span class="currency_code">{{currency.code}}</span>  {{currency.symbol}}{{postData.participants!=0?returnFloat(item.perPersonPrice):returnFloat(item.bottomPrice)}}</b><span>{{postData.participants!=0?' pp for party of '+ postData.participants:' pp'}}</span>
 												</div>
 												<p v-if="item.sales&&item.sales>0">Booked {{item.sales}} {{item.sales==1?'time':'times'}} (last 30 days)</p>
 											</div>
@@ -271,6 +268,7 @@
 	import Foot from '~/components/FooterCommon/Foot';
 	import { checkboxGroup, checkbox } from "~/plugins/panda/checkbox/";
 	import filterModel from '~/components/pageComponents/activity/list/filterModel';
+import { createECDH } from 'crypto';
 	//import inputNumber from '~/components/pageComponents/activity/list/input-number'
 	export default {
 		name: 'activityList',
@@ -327,7 +325,6 @@
 				currency = JSON.parse(decodeURIComponent(userCookie.currency));
 				postData.currency = currency.code;
 			}
-<<<<<<< HEAD
 			var participants=0
 			if(userCookie.participants){
 				participants = JSON.parse(decodeURIComponent(userCookie.participants));
@@ -338,19 +335,13 @@
 			if(obj.participants==0){
 				delete obj.participants
 			}
-			console.log(obj)
+			
 			var price=[0,505]
-=======
-
-
-			var price=[0,505];
 			if(currency.code=='CNY'){
 				price = [0,3030];
 			}else if(currency.code=='JPY'){
 				price = [0,50500];
 			}
-			
->>>>>>> master
 			//兼容老的key，老key转为新key
 			var oldType = function(text) {
 				if(text == 'TOURTYPE') {
@@ -420,7 +411,7 @@
 			}
 			var data = listdata.data
 			var listData = listdata.data.entities
-			console.log(listData)
+			
 			let filterAll = {},
 				filterCheck = {},
 				selectNumber={};
@@ -708,6 +699,7 @@
 			},
 			
 			
+			
 	},
 	methods: {
 			
@@ -915,6 +907,27 @@
 				
 				
 			},
+			participantsOptionFn(){
+				var participants=this.participantsOption,
+				minParticipants=this.selectNumber.minValue,
+				maxParticipants=this.selectNumber.maxValue;
+				console.log(minParticipants)
+				console.log(maxParticipants)
+				console.log(participants)
+				var newParticipants=[];
+				for(var i = 1;i<participants.length;i++){
+					if(participants[i].label>=minParticipants&&participants[i].label<=maxParticipants){
+						newParticipants.push(participants[i])
+					}
+				}
+				console.log(newParticipants)
+				newParticipants.unshift({
+					selectparticipant:'Guests Number',
+					label:0
+				})
+				
+				return newParticipants;
+			},
 			//删除选中的单个选项
 			clearCheck(item,index){
 				
@@ -941,7 +954,7 @@
 				
 			},
 			getUrl(value,type){
-				return '/activity/list/China?keyword=' + value+'&participants='+this.postData.participants+'&type='+type;	
+				return '/activity/list/China?keyword=' + value+(this.postData.participants==0?'':'&participants='+this.postData.participants)+'&type='+type;	
 			},
 
 			sortFn(val) {
@@ -982,7 +995,7 @@
 					options:{},
 					sort:{},
 					keyword:this.seachContent,
-					participants:this.postData.participants,
+					participants:this.postData.participants==0?'':this.postData.participants,
 					//type:this.postData.type
 				}
 				if(jumpData.participants==0){
@@ -1047,7 +1060,7 @@
 					}
 				};
 				urlQuery = urlQuery.substring(1); //去掉第一个&
-				//console.log(decodeURIComponent(urlQuery))
+				console.log(decodeURIComponent(urlQuery))
 				var url = '/activity/list/China' + (urlQuery ? ('?' + urlQuery) : '');
 				history.pushState(null, null, url);
 				//location.href =url
@@ -1294,7 +1307,7 @@
 			that.value = that.loc == "Xian" ? "Xi'an" : that.loc
 		},
 		mounted: function() {
-			console.log(this.checkPrice)
+			console.log(this.listdata)
 			const that = this
 			for(var key in that.filterCheck){
 				if(that.filterCheck[key].length>0){

@@ -118,11 +118,7 @@
 				ABtest: false,
 				isABtestShow:false,
 				currency:{code: "USD", symbol: "$", exchangeRate: 1},
-<<<<<<< HEAD
 				participants:0
-=======
-				
->>>>>>> master
 			};
 			var response = {};
 			let apiActivityPriceRes = {};

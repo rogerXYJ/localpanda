@@ -1108,6 +1108,7 @@
 			
 			console.log(this.picInfo)
 			let participants=this.participants;
+			console.log(this.participants)
 			that.people=participants?(that.picInfo.maxParticipants==1?1:parseInt(participants)):(that.picInfo.minParticipants<3?(that.picInfo.maxParticipants==1?1:2):that.picInfo.minParticipants);
 			console.log(that.people)
 			

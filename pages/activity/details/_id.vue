@@ -141,6 +141,7 @@
 						// var consoleTimeS2 = new Date().getTime();
 						// 	console.log('基本信息接口花费时间：'+(consoleTimeS2-consoleTimeS)+' ms');
 						resolve(res);
+						
 					}, function(res) {
 						resolve(res);
 					});
@@ -256,14 +257,12 @@
 						resolve(res);
 					});
 				});
-
-				
 				Promise.all([Promise1,Promise1,Promise3,Promise4,Promise5,Promise6,Promise7,Promise8,Promise9,Promise10,Promise11]).then(function(results){
 
 					//基本信息
 					response = results[0];
 					var detailData = response.data;
-
+					console.log(detailData)
 					
 					
 					if(detailData.valid || route.query.valid==1) {//.valid == 1
@@ -291,6 +290,7 @@
 						data.inclusions = results[8].data || [];
 						data.exclusions = results[9].data || [];
 						data.notice = results[10].data || [];
+						console.log(data.notice)
 						//detailData.notice ? (data.notice=delNullArr(results[10].data.split("\n"))) : '';
 
 						if(detailData.latestBooking < 1) {
@@ -335,7 +335,7 @@
 					data.picInfo = apiActivityPriceRes.data;
 					data.picInfo.departureTime ? (data.time = data.picInfo.departureTime[0]) : (data.time = "");
 					data.picInfo.details = results[6].data;
-					console.log(data.picInfo.details)
+					
 					//点评信息
 					var remarkData = results[4];
 					if(remarkData.data){
@@ -436,6 +436,7 @@
 			}
 		},
 		mounted: function() {
+			console.log(this.notice)
 			var self = this;
 			self.id!='undefined'?self.id:getUrlParams()
 			this.logIn = window.localStorage.getItem("logstate");

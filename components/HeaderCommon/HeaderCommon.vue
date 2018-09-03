@@ -527,7 +527,9 @@
 			that.logimg = window.localStorage.getItem("key")
 
 			that.fbToken = window.localStorage.getItem("fbToken")
-			
+			 window.addEventListener('scroll',function(){
+				that.showCurrency=false
+			})
 
 
 			//获取币种列表

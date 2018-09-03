@@ -42,14 +42,8 @@
 						</span>
 						
 					</div>
-					
-					
-					
 					<div class="types" v-if="detail.attractions&&detail.attractions.length>0">
-					
 						<a v-for="i in tagAttractions" :href="returnUrl(i)"><span>{{i}}</span></a>
-						
-						
 						<a v-if="detail.attractions.length>4" @click="tagFn">···</a>
 						<!--<p v-if="detail.sales&&detail.sales>0">Booked {{detail.sales}} {{detail.sales==1?'time':'times'}} (last 30 days)</p>-->
 					</div>
@@ -214,9 +208,18 @@
 					<div class="view" v-if="isShowTable" @click="showTable">View More</div>
 					<p class="picNote" v-if="picInfo.priceInstructions">{{picInfo.priceInstructions}}</p>
 				</div>
-				<div class="notes" v-if="detail.notice" id="notice">
+				<div class="notes" v-if="detail.notice||(notice&&notice.length>0)" id="notice">
 					<h3>Additional Info</h3>
-					<p v-for="item in delNullArr(detail.notice.split('/r/n'))">{{item}}</p>
+					<div v-if="detail.notice && !notice.length">
+						<p  v-for="item in delNullArr(detail.notice.split('/r/n'))">{{item}}</p>
+					</div>
+					
+					<ul v-if="notice&&notice.length>0">
+						<li v-for="item in notice">
+							<h5>{{item.title}}</h5>
+							<span v-if="item.content">{{item.content}}</span>
+						</li>
+					</ul>
 				</div>
 				
 				
@@ -267,7 +270,8 @@
 									<div class="picRight" >
 										<div style="color: #FFF;">
 											{{nowExchange.code}}
-											<b style="font-size: 22px">{{nowExchange.symbol}}{{returnFloat(picInfo.details[people-1].price/people)}}</b> 
+											<b style="font-size: 22px" v-if="picInfo.details.length==1&&picInfo.details[0].capacity==1">{{nowExchange.symbol}}{{returnFloat(picInfo.details[0].price)}}</b>
+											<b style="font-size: 22px" v-else>{{nowExchange.symbol}}{{returnFloat(picInfo.details[people-1].price/people)}}</b>  
 											pp for party of {{people}}
 											<span class="question" @mouseover="showNode" @mouseleave="hidden">?</span>
 										</div>
@@ -472,7 +476,7 @@
 			"ABtest",
 			"isABtestShow",
 			"value",
-			"participants"
+			"AvailableDate"
 		],
 		name: "Activities",
 		data() {
@@ -489,10 +493,6 @@
 				isShowBook: false,
 				isShowAdults: false,
 				isShowTime: false,
-				options: {
-					minDate: this.picInfo.earliestBookDate,
-					maxDate: addmulMonth(this.picInfo.earliestBookDate, 12)
-				},
 				adultsPic: "",
 				objectType: "ACTIVITY",
 				error: false,
@@ -1076,6 +1076,7 @@
 			
 		},
 		mounted: function() {
+			console.log(this.AvailableDate)
 			let that = this;
 			//ab test 行程
 			if(this.$route.query.newStyle||this.detail.newType){
@@ -1083,6 +1084,7 @@
 			}else{
 				this.showNewStyle=false	
 			}
+			
 		//tag
 		if(this.detail.attractions&&this.detail.attractions.length>0){
 				if(this.detail.attractions.length>4){
@@ -1124,7 +1126,6 @@
 			var currency= JSON.parse(Cookie.get('currency'))?JSON.parse(Cookie.get('currency')):{'code':'USD','symbol':'$'};
 			 //that.exchange=currency
 			 that.nowExchange=currency
-			 console.log(that.nowExchange)
 			
 			 
 			//调整数据，设置默认价格 
@@ -1147,7 +1148,7 @@
 
 			//初始化清空日期
 			that.dateTime = ""
-
+			console.log(that.detail)
 			
 //			console.log(that.detailAll)
 			if(that.picInfo.details.length>6){
@@ -1159,7 +1160,11 @@
 			
 			//that.sixArr=that.tableData(that.picInfo.details)
 			//初始化日历
-			that.flatPickr = new Flatpickr('#js_changetime', that.options);
+			that.flatPickr = new Flatpickr('#js_changetime', {
+				minDate: that.picInfo.earliestBookDate,
+				maxDate: addmulMonth(that.picInfo.earliestBookDate, 12),
+				enable:that.AvailableDate
+			});
 			
 			document
 				.getElementsByTagName("body")[0]
@@ -1928,6 +1933,36 @@
 						font-size: 24px;
 						font-weight: bold;
 						margin-bottom: 24px;
+					}
+					ul{
+						li{
+							padding-left: 20px;
+							display: inherit;
+							margin-top: 15px;
+							font-size: 18px;
+							position: relative;
+							h5 {
+								font-size: 18px;
+							}
+							span {
+								display: inline-block;
+								font-size: 14px;
+								margin-top: 4px;
+							}
+							&:after {
+								content: "";
+								position: absolute;
+								width: 4px;
+								height: 4px;
+								border-radius: 50%;
+								background: #353a3f;
+								left: 0px;
+								top: 10px;
+							}
+							&:first-child {
+								margin-top: 25px;
+							}
+						}
 					}
 					p {
 						font-size: 18px;

@@ -2,14 +2,14 @@
 	<div class="fillYourInfo">
 		<HeaderCommon :logIn="logIn"></HeaderCommon>
 		<div class="fill">
+			<h4 class="page_title">Secure booking — only takes 1 minute!</h4>
+			<div class="safeguard">
+				<span><i class="iconfont">&#xe654;</i>&nbsp;We protect your personal information</span>
+				<span><i class="iconfont">&#xe654;</i>&nbsp;No hidden booking or credit card fees</span>
+				<span><i class="iconfont">&#xe654;</i>&nbsp;100% secure payment</span>
+				<span><i class="iconfont">&#xe654;</i>&nbsp;Instant confirmation after booking</span>
+			</div>
 			<div class="fillPageLeft">
-				<!--<div class="link">
-					<a href="javascript:">1. Fill in your information</a>
-					<i class="iconfont">&#xe620;</i>
-					<a href="javascript:">2. confirmation</a>
-				</div>
-				<h3>Fill in your information</h3>-->
-				<h5 v-if="!logIn"><span class="iconfont">&#xe617;</span>As a guest user, you can access your order details through your name and email</h5>
 				<div class="orderContact">
 					<h4>Contact Information</h4>
 					<div class="cont">
@@ -51,53 +51,6 @@
 						<textarea rows="3" v-else v-model="comments" @blur="gabulr(5)" placeholder="You can fill out your travel preferences here for us to personalize your trip"></textarea>
 					</div>
 				</div>
-				<!--<div class="check">
-					<span>Check this box if the contact for the reservation does NOT match the Primary Traveler.</span>
-					<em v-if="check==0" @click="checkFn(0)" class="checkbox"></em>
-					<em v-if="check==1" @click="checkFn(1)" class="checkbox backgrond iconfont">&#xe61e;</em>
-				</div>-->
-				<!--<div class="addOrderContact" v-if="check==1">
-					<ul>
-						<li>
-							<h4>Key Traveler</h4>
-
-							<div class="name">
-								<div class="firstName">
-									<p>First Name<b>*</b></p>
-									<input :class="{err:TravellerFirstNameErr}" @focus="fousFirst()" v-model="TravellerFirstName" />
-
-								</div>
-								<div class="lastname">
-									<p>Last Name<b>*</b></p>
-									<input :class="{err:TravellerlastNameErr}" @focus="fousLastName()" v-model="TravellerlastName" />
-								</div>
-							</div>
-							<div class="emalAddress">
-								<p>Email Address<b>*</b></p>
-								<input :class="{err:TravelleremailAddressErr}" @focus="fousidcard" v-model="TravelleremailAddress" />
-							</div>
-							<div class="nuber">
-								<div class="paddnumber">
-									<p>Country Code</p>
-									<div class="code-box">
-										<input :class="{err:TravelleremailAddressErr}" @click.stop="focusCode(1)" @focus="focusCode(1)" @blur="gabulr(3)" v-model="mobileTravellCode" />
-										<div class="countryCode" v-if="showTravellCode">
-											<ul v-if="travelCodeList.length>0">
-												<li v-for="item in travelCodeList" @click.stop="selectCode(item.country_name,item.prefix,1)">{{item.country_name}} (+{{item.prefix}})</li>
-											</ul>
-											<div class="empty" v-else>There are no results that match your search.</div>
-										</div>
-									</div>
-
-								</div>
-								<div class="Mobilephone">
-									<p>Mobile Phone(optional)</p>
-									<input :class="{err:TravellerphoneErr}" @focus="fousphonenumb()" @blur="gabulr(4)" v-model="Travellerphone" />
-								</div>
-							</div>
-						</li>
-					</ul>
-				</div>-->
 				<div class="coupon">
 					<checkbox v-model="checkedAll" :change="changeFn">
 						Have a Gift Card or Coupon Code? Proceed to checkout to redeem it.
@@ -118,7 +71,10 @@
 							You can reschedule or cancel your trip at zero cost before Aug 31st, 2018.
 							You can get a 100% refund up to {{opctions.refundTimeLimit}} hours before your trip.
 						</p>-->
-						<p class="refundPolicy" style="color: red;font-size: 14px;" v-if="opctions.fullRefund&&timeout">You can reschedule or cancel your trip at zero cost before {{formatDate(delmulDay(opctions.startDate,opctions.refundTimeLimit))}}.</p>
+						<span class="iconfont" v-if="opctions.fullRefund&&timeout||!logIn">&#xe617;</span>
+						<p class="refundPolicy" style="font-size: 14px;" v-if="opctions.fullRefund&&timeout">You can reschedule or cancel your trip at zero cost before {{formatDate(delmulDay(opctions.startDate,opctions.refundTimeLimit))}}.</p>
+						<h5 v-if="!logIn">As a guest user, you can access your order details through your name and email</h5>
+						
 						<!--<p class="text" style="font-size: 14px;margin-top: 20px;" v-if="logIn!=1">You ordered as a guest. To view your order details, you can click "My Bookings" on the top bar then type in the reservee's email address and name you entered before to access that information.</p>-->
 						
 						<div class="nextBtn">
@@ -168,19 +124,54 @@
 					</div>
 				</div>
 				<div class="serve">
-					<p><i class="iconfont">&#xe654;</i>No hidden booking or credit card fees</p>
-					<p><i class="iconfont">&#xe654;</i>Instant confirmation after booking</p>
-					<p><i class="iconfont">&#xe654;</i>Best Price Guarantee</p>
-				</div>
-				<div class="bookbtn">
-					<p>Pay With:</p>
-					<div class="payfor">
-						<img style="width:200px" src="https://cloud.localpanda.com/static/icon/stripe.png" />
-					</div>
-					<div style=" width:316px;font-size: 16px;line-height: 20px;display: block; margin-top: 20px;"><b>Secure Payment:</b> </br>We use Stripe's online payment system, which sends your payment info directly to Stripe's secure servers, so your data is never sent to Local Panda's servers and cannot be stolen.</div>
+					<h5>HAVING 	TROUBLE BOOKING?</h5>
+					<a href="/inquiry/talk" target="_blank">Chat with Us</a>
+					<p>Email us: <span>service@localpanda.com</span></p>
 				</div>
 			</div>
 
+			<div class="visitors">
+				<h3>What travellers are saying</h3>
+				<ul class="clearfix">
+					<li>
+						<p class="appraise">Local Panda had an incredible amount of attention and patience throughout my trip. My guide, Jamie, was intelligent and articulative. Thanks again!</p>
+						<div class="travellers clearfix">
+							<div class="travellersPhoto">
+								<img v-lazy="'https://cloud.localpanda.com/static/content/reviews/Claudia.jpg'">
+							</div>
+							<div class="travellersMessage">
+								<p><b>Claudia Flores </b>  ( Mexico )</p>
+								<p>August 2018</p>
+							</div>
+						</div>
+					</li>
+					<li>
+						<p class="appraise">I have to say a huge thank you to Local Panda for putting together this memorable trip we will Cheris forever. Thetours have been par excellence.</p>
+</p>
+						<div class="travellers clearfix">
+							<div class="travellersPhoto">
+								<img v-lazy="'https://cloud.localpanda.com/static/content/reviews/SamMorgan.jpg'">
+							</div>
+							<div class="travellersMessage">
+								<p><b>Sam Morgan </b>  ( Australia )</p>
+								<p>August 2018</p>
+							</div>
+						</div>
+					</li>
+					<li>
+						<p class="appraise">Rebecca's  knowledge was beyond anything we could've hoped for. The personalized service sets Local Panda apart. Choose Panda if you want to do something off of the beaten path!</p>
+						<div class="travellers clearfix">
+							<div class="travellersPhoto">
+								<img  v-lazy="'https://cloud.localpanda.com/static/content/reviews/Cynthia.jpg'">
+							</div>
+							<div class="travellersMessage">
+								<p><b>Cynthia Huang</b>   ( California )</p>
+								<p>July 2018</p>
+							</div>
+						</div>
+					</li>
+				</ul>
+			</div>
 		</div>
 		<AlertGoBack :isShowAlertTitle="isShowAlertTitle" :alertTitle="alertTitle" :alertMessage="alertMessage" v-on:setIsShowAlertFn="getIsShowAlertFn"></AlertGoBack>
 		<!--<Alert :isShowAlert="isShowAlert" :alertTitle='alertTitle' :alertMessage="alertMessage" v-on:setIsShowAlert="getIsShowAlert"></Alert>-->
@@ -979,23 +970,91 @@
 </style>
 <style lang="scss" scoped>
 	//@import '~/assets/scss/base/_setting.scss';
-	
-	/** 服务 **/
-	.serve{
-		padding:15px 30px;
-		margin-top: 10px;
-		box-shadow: 0px 2px 6px 0px rgba(53, 58, 63, .1);
-		p{
-			font-size:16px;			
-			position: relative;
-			line-height:22px;
-			i{
-				font-size:12px;
-				color:#1bbc9d;
-				display: inline-block;
-				margin-right: 5px;
+	.visitors{
+		margin-top:80px;
+		h3{
+			font-size:24px;
+			font-weight:bold;
+		}
+		ul{
+			margin-top:30px;
+			li{
+				height:285px;
+				border-radius: 5px;
+				margin-left:20px;
+				float: left;
+				width:376px;
+				padding:30px;
+				padding-bottom:20px;
+				border: solid 1px #ebebeb;
+				&:first-child{
+					margin-left:0
+				}
+				.appraise{
+					font-size:16px;
+				}
+				.travellers{
+					margin-top:36px;
+					.travellersPhoto{
+						float:left;
+						width:80px;
+						height:80px;
+						border-radius: 50%;
+						img{
+							width:100%;
+							height:100%;
+							border-radius: 50%;
+						}
+					}
+					.travellersMessage{
+						float:left;
+						margin-left:19px;
+						p{
+							margin-top:10px;
+							font-size:14px;
+							color: #878e95;
+							b{
+								font-size:18px;
+								color: #353a3f;
+							}
+						}
+					}
+				}
+				
 			}
 		}
+	}
+	/** 服务 **/
+	.serve{
+		padding:30px;
+		margin-top: 20px;
+		background:#faf9f8;
+		text-align:center;
+		h5{
+			
+			font-size:18px;
+			font-weight:bold;
+		}
+		a{
+			display: block;
+			height: 36px;
+			background-color: #ffffff;
+			border-radius: 18px;
+			border: solid 1px #dde0e0;
+			
+			line-height:36px;
+			margin-top:15px;
+			font-size:16px;
+		}
+		p{
+			margin-top:20px;
+			
+			font-size:16px;
+			span{
+				color:#fe483e;
+			}
+		}
+	
 	}
 	/** 下单 优惠券不存在提示**/
 	
@@ -1099,11 +1158,32 @@
 		.fill {
 			width: 1170px;
 			margin: 0 auto;
-			padding: 15px 0 150px;
+			padding: 40px 0 80px;
 			position: relative;
+			.page_title{
+				font-size:24px;
+				color: #1bbc9d;
+				font-weight:bold;
+			}
+			.safeguard{
+				margin-top:24px;
+				span{
+					display:inline-block;
+					margin-right:18px;
+					color: #52b589;
+					font-size:16px;
+					i{
+						font-size:12px;
+					}
+					&:last-child{
+						margin-right:0;
+					}
+
+				}
+			}
 			.oderdetial {
 				position: absolute;
-				top: 15px;
+				top: 135px;
 				right: 0;
 				.payfordetail {
 					box-shadow: 0px 2px 6px 0px rgba(53, 58, 63, 0.1);
@@ -1411,9 +1491,16 @@
 				.Comments {
 					margin-top: 30px;
 					.information {
+						span{
+							float:left;
+						}
+						h5{
+							padding-left:25px;
+							color:#878e95;
+						}
 						p {
+							padding-left:25px;
 							font-size: 18px;
-							margin-top: 15px;
 							a {
 								color: #1bbc9d;
 							}

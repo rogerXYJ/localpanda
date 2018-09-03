@@ -30,6 +30,8 @@
 			@currencyChange="currencyChangeFn" 
 			v-model="currency"
 			:participants="participants"
+			:AvailableDate="AvailableDate"
+
 			></Activities>
 		<FooterCommon :nowCurrency="currency" @headCurrency="headCurrencyFn"></FooterCommon>
 		<div class="toast-container" v-if="toastShow">
@@ -118,7 +120,9 @@
 				ABtest: false,
 				isABtestShow:false,
 				currency:{code: "USD", symbol: "$", exchangeRate: 1},
-				participants:0
+				participants:0,
+				AvailableDate:[]
+
 			};
 			var response = {};
 			let apiActivityPriceRes = {};
@@ -140,17 +144,31 @@
 			try {
 				//基本信息
 				var Promise1 = new Promise(function(resolve, reject){
+					
 					Vue.axios.get(apiBasePath + "product/activity/" + id).then(function(res) {
 						// var consoleTimeS2 = new Date().getTime();
 						// 	console.log('基本信息接口花费时间：'+(consoleTimeS2-consoleTimeS)+' ms');
+						
+						
+						if(!res.data.Available){
+							
+							Vue.axios.get(apiBasePath + "product/activity/" + id +'/sale/calendar').then(function(data) {
+								var AvailableDate=[]
+								var dd=data.data;
+								for(let i=0;i<dd.length;i++){
+									AvailableDate.push(dd[i].saleDate)
+								}
+								
+								data.AvailableDate=AvailableDate
+								console.log(data.AvailableDate)
+							},function(res){})
+						}
 						resolve(res);
-					}, function(res) {
-						resolve(res);
+					}, function(res){
+						resolve(res)
 					});
-				});
-
+				})
 				
-
 				//游客图片
 				var Promise2 = new Promise(function(resolve, reject){
 					resolve({});
@@ -259,14 +277,16 @@
 						resolve(res);
 					});
 				});
-
-				
-				Promise.all([Promise1,Promise1,Promise3,Promise4,Promise5,Promise6,Promise7,Promise8,Promise9,Promise10,Promise11]).then(function(results){
+				//团期
+				// var Promise12 = new Promise(function(resolve, reject){
+					
+				// });
+				Promise.all([Promise1,Promise2,Promise3,Promise4,Promise5,Promise6,Promise7,Promise8,Promise9,Promise10,Promise11]).then(function(results){
 
 					//基本信息
 					response = results[0];
 					var detailData = response.data;
-
+					
 					
 					
 					if(detailData.valid || route.query.valid==1) {//.valid == 1
@@ -294,6 +314,7 @@
 						data.inclusions = results[8].data || [];
 						data.exclusions = results[9].data || [];
 						data.notice = results[10].data || [];
+						
 						//detailData.notice ? (data.notice=delNullArr(results[10].data.split("\n"))) : '';
 
 						if(detailData.latestBooking < 1) {
@@ -310,12 +331,16 @@
 
 
 						data.detail = detailData;
-
+						//console.log(data.detail)
 						//banner图
 						data.detail.bannerPhotos = results[5].data || [];
 						//行程信息
 						data.detail.itineraries = results[7].data || [];
 
+
+						
+
+						// data.AvailableDate=results[11].data||[];
 
 					} else {
 						//同步回调
@@ -338,7 +363,7 @@
 					data.picInfo = apiActivityPriceRes.data;
 					data.picInfo.departureTime ? (data.time = data.picInfo.departureTime[0]) : (data.time = "");
 					data.picInfo.details = results[6].data;
-					console.log(data.picInfo.details)
+					
 					//点评信息
 					var remarkData = results[4];
 					if(remarkData.data){
@@ -439,6 +464,7 @@
 			}
 		},
 		mounted: function() {
+			console.log(this.AvailableDate)
 			var self = this;
 			self.id!='undefined'?self.id:getUrlParams()
 			this.logIn = window.localStorage.getItem("logstate");

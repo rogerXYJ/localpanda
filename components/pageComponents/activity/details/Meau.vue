@@ -85,6 +85,9 @@ export default {
     var that = this;
     document.body.addEventListener("click", function() {
 				that.showCurrency=false
+      })
+    window.addEventListener('scroll',function(){
+				that.showCurrency=false
 			})
     window.currencyCallbackMeau = function(data) {
       console.log(data);

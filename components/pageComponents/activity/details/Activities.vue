@@ -476,6 +476,7 @@
 			"ABtest",
 			"isABtestShow",
 			"value",
+			"AvailableDate"
 		],
 		name: "Activities",
 		data() {
@@ -492,10 +493,6 @@
 				isShowBook: false,
 				isShowAdults: false,
 				isShowTime: false,
-				options: {
-					minDate: this.picInfo.earliestBookDate,
-					maxDate: addmulMonth(this.picInfo.earliestBookDate, 12)
-				},
 				adultsPic: "",
 				objectType: "ACTIVITY",
 				error: false,
@@ -1079,7 +1076,7 @@
 			
 		},
 		mounted: function() {
-			
+			console.log(this.AvailableDate)
 			let that = this;
 			//ab test 行程
 			if(this.$route.query.newStyle||this.detail.newType){
@@ -1160,7 +1157,11 @@
 			
 			//that.sixArr=that.tableData(that.picInfo.details)
 			//初始化日历
-			that.flatPickr = new Flatpickr('#js_changetime', that.options);
+			that.flatPickr = new Flatpickr('#js_changetime', {
+				minDate: that.picInfo.earliestBookDate,
+				maxDate: addmulMonth(that.picInfo.earliestBookDate, 12),
+				enable:that.AvailableDate
+			});
 			
 			document
 				.getElementsByTagName("body")[0]

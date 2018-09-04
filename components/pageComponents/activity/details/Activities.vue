@@ -260,23 +260,19 @@
 					<div class="boxshowdow">
 						<div class="bookbox">
 							<div class="picPp clearfix">
-								
-									<!-- <div class="picLeft">
-										<select class="currency_type" v-model="picInfo.currency" @change="changeCurrency">
-											<option :value="item.code" v-for="item in exchange" :key="item.code">{{item.code}}</option>
-										</select>
-										<span class="iconfont">&#xe666;</span>
-									</div> -->
 									<div class="picRight" >
 										<div style="color: #FFF;">
+											{{participants==0?'From':''}}
 											{{nowExchange.code}}
 											<b style="font-size: 22px" v-if="picInfo.details.length==1&&picInfo.details[0].capacity==1">{{nowExchange.symbol}}{{returnFloat(picInfo.details[0].price)}}</b>
-											<b style="font-size: 22px" v-else>{{nowExchange.symbol}}{{returnFloat(picInfo.details[people-1].price/people)}}</b>  
-											pp for party of {{people}}
+											<b style="font-size: 22px" v-if="participants==0"> {{nowExchange.symbol}} {{returnFloat(picInfo.bottomPrice)}}  </b>{{participants==0?'per person':''}}
+											<b style="font-size:22px" v-if="participants>0">{{nowExchange.symbol}}{{returnFloat(picInfo.details[people-1].price/people)}}</b> 
+											{{participants==0?'':'pp for party of'}} {{participants>0?people:''}}
 											<span class="question" @mouseover="showNode" @mouseleave="hidden">?</span>
 										</div>
+										<p style="font-size:12px;" v-if="participants==0">Price based on group of {{minPeople}}</p>
 									</div>
-								
+
 								 <div class="priceNote" v-if="isShowPicNode" @mouseover="showNodeCont" @mouseleave="hiddenCont">
 									
 									<p>This is the price per person for a group of 2 (see "What's Included" for details).</br>
@@ -287,6 +283,28 @@
 
 							</div>
 							<div class="selectBox">
+								<div class="select clearfix">
+									<div class="selectDate">
+										<b>Available On</b>
+										<!--<flatPickr placeholder="Date" v-model="dateTime" :config="options"></flatPickr>-->
+										<input id="js_changetime" readonly v-model="dateTime" type="text" placeholder="Date">
+									</div>
+									<!--<div class="selectTime" v-if="picInfo.departureTime" >
+										<b></b>
+										<div class="time" @click.stop="showTime">
+											<input readonly="readonly" v-model="time" placeholder="Time"/>
+											<i class="iconfont" v-if="!isShowTime">&#xe60f;</i>
+											<i class="iconfont" v-else>&#xe63f;</i>
+											<div v-if="isShowTime" @click.stop="showTime" class="timeList">
+												<ul>
+													<li :key="index" v-for="(item,index) in picInfo.departureTime" @click.stop="confirmTime(index)">{{item}}</li>
+
+												</ul>
+											</div>
+										</div>
+
+									</div>-->
+								</div>
 								<div class="selectPepole">
 									<b>Guests</b>
 									<div class="Guests" @click.stop="showAdults">
@@ -294,6 +312,7 @@
 										<!--<div class="people" v-if="children==0&&adults==0">{{people}}</div>
 										<div class="people" v-if="children==0&&adults==1">{{people}} Person</div>
 										<div class="people" v-if="children>0||adults>1">{{people}} People</div>-->
+										<div class="people"  v-if="children==0&&people=='Guests Number'">{{people}}</div>
 										<div class="people" v-if="children==0&&people==1">Adult x 1</div>
 										<div class="people" v-if="children==0&&people>1">Adults x {{people}}</div>
 										<div class="people" v-if="children>0">
@@ -347,32 +366,14 @@
 													<em class="iconfont" v-else>&#xe64b;</em>
 												</div>
 											</div>-->
-										</div>
-
-									</div>
-								</div>
-								<div class="select clearfix">
-									<div class="selectDate">
-										<b>Available On</b>
-										<!--<flatPickr placeholder="Date" v-model="dateTime" :config="options"></flatPickr>-->
-										<input id="js_changetime" readonly v-model="dateTime" type="text" placeholder="Date">
-									</div>
-									<!--<div class="selectTime" v-if="picInfo.departureTime" >
-										<b></b>
-										<div class="time" @click.stop="showTime">
-											<input readonly="readonly" v-model="time" placeholder="Time"/>
-											<i class="iconfont" v-if="!isShowTime">&#xe60f;</i>
-											<i class="iconfont" v-else>&#xe63f;</i>
-											<div v-if="isShowTime" @click.stop="showTime" class="timeList">
-												<ul>
-													<li :key="index" v-for="(item,index) in picInfo.departureTime" @click.stop="confirmTime(index)">{{item}}</li>
-
-												</ul>
+											<div class="submit">
+												<button class="submitBtn" @click.stop="isShowAdults=false">Submit</button>
 											</div>
 										</div>
 
-									</div>-->
+									</div>
 								</div>
+								
 								
 								<div class="picDetail" v-if="isShowBook">
 									<b class='headTitle'>Price Breakdown<span @click.stop="picDetailposition('picDetails')">Price Details</span></b>
@@ -476,9 +477,11 @@
 			"ABtest",
 			"isABtestShow",
 			"value",
-			"AvailableDate"
+			"AvailableDate",
+			"participants"
 		],
 		name: "Activities",
+		
 		data() {
 			return {
 				number:2,//起价
@@ -488,7 +491,7 @@
 				dateTime: "", //riqi
 				adults: 0, //成人  默认1人
 				children: 0, //儿童
-				people:2,
+				people:this.participants?this.participants:'Guests Number',
 				time: "",
 				isShowBook: false,
 				isShowAdults: false,
@@ -528,7 +531,8 @@
 				tagAttractions:[],
 				showNewStyle:false,
 				itinerary:[],//行程折叠
-				showMoreItinerary:false
+				showMoreItinerary:false,
+				minPeople:0,
 			};
 			
 		},
@@ -1024,8 +1028,14 @@
 					that.error = false;
 					that.dateErrText = "*Final headcount does not include babies.";
 				}
-				that.adultsPic=that.picInfo.details[val-1].price;
-				console.log(that.adultsPic)
+				console.log(val)
+				if(val>0){
+					console.log(that.picInfo.details[that.people-1])
+					that.adultsPic=that.picInfo.details[that.people-1].price;
+					
+				}
+				
+				
 			},
 			
 			isShowBook(val, oldVal) {
@@ -1044,7 +1054,6 @@
 				}
 			},
 			value:function(val){
-				console.log(val)
 				this.nowExchange = val;
 				this.changeCurrency(val.code)
 			},
@@ -1076,7 +1085,7 @@
 			
 		},
 		mounted: function() {
-			console.log(this.AvailableDate)
+			console.log(this.picInfo)
 			let that = this;
 			//ab test 行程
 			if(this.$route.query.newStyle||this.detail.newType){
@@ -1108,20 +1117,44 @@
 				
 			}
 			
-			console.log(this.picInfo)
+			//人数
+
+			//最低价格人数
+			var picInfo=that.picInfo.details
+			console.log(that.picInfo.bottomPrice)
+			for(var i=0;i<picInfo.length;i++){
+				// console.log(picInfo[i].price)
+				// console.log(picInfo[i].capacity)
+				if(that.picInfo.bottomPrice==that.returnFloat(picInfo[i].price/picInfo[i].capacity)){
+					
+					that.minPeople=picInfo[i].capacity
+				}
+			}
+			
+
 			let participants=this.participants;
-			console.log(this.participants)
-			that.people=participants?(that.picInfo.maxParticipants==1?1:parseInt(participants)):(that.picInfo.minParticipants<3?(that.picInfo.maxParticipants==1?1:2):that.picInfo.minParticipants);
-			console.log(that.people)
+			if(participants==0){
+				that.people="Guests Number"
+			}else{
+				that.people=parseInt(participants)
+				that.adultsPic=that.picInfo.details[that.people-1].price;
+			}
+		
+			
+
+
+			
+			//that.people=participants?(that.picInfo.maxParticipants==1?1:parseInt(participants)):(that.picInfo.minParticipants<3?(that.picInfo.maxParticipants==1?1:2):that.picInfo.minParticipants);
+			
 			
 			//that.people=that.picInfo.minParticipants<3?that.picInfo.maxParticipants:(participants?parseInt(participants):that.picInfo.minParticipants)
-			if(that.people){
+			if(that.people!='Guests Number'){
 				that.isShowBook=true
-				that.adults=that.people
+				that.adults= parseInt(that.people)
 			}
 			//that.setPriceData();
 			// that.detailAll = that.tableData(that.picInfo.details);
-			that.adultsPic=that.picInfo.details[that.people-1].price;
+			
 			
 			var currency= JSON.parse(Cookie.get('currency'))?JSON.parse(Cookie.get('currency')):{'code':'USD','symbol':'$'};
 			 //that.exchange=currency
@@ -1148,7 +1181,7 @@
 
 			//初始化清空日期
 			that.dateTime = ""
-			console.log(that.detail)
+			
 			
 //			console.log(that.detailAll)
 			if(that.picInfo.details.length>6){
@@ -1339,9 +1372,8 @@
 					.bookbox {
 						.picPp {
 							
-							padding-left: 20px;
-							height: 50px;
-							line-height: 50px;
+							padding: 10px;
+							min-height: 50px;
 							background: #353a3f;
 							font-size: 14px;
 							.picLeft {
@@ -1411,7 +1443,7 @@
 						.selectBox {
 							padding: 20px;
 							.select {
-								margin-top: 10px;
+								
 								.selectDate {
 									b {
 										font-size: 14px;
@@ -1437,7 +1469,7 @@
 							}
 							.selectPepole {
 								width: 100%;
-								
+								margin-top: 10px;
 								b {
 									font-size: 14px;
 									margin-bottom: 10px;
@@ -1468,7 +1500,22 @@
 										width: 346px;
 										box-shadow: 0px 2px 10px 0px rgba(53, 58, 63, 0.2);
 										background: #fff;
-										padding: 20px;
+										padding: 35px;
+										.submit{
+											margin-top:30px;
+											padding:0 20px;
+											button{
+												background-image: linear-gradient( 270deg, #009efd 0%, #1bbc9d 100%);
+												color:#fff;
+												line-height: 42px;
+												font-size: 16px;
+												font-weight: bold;
+												border-radius: 30px;
+												height:42px;
+												text-align:center;
+												width:100%;
+											}
+										}
 										b{
 											font-size: 18px;
 											line-height: 40px;	
@@ -1494,7 +1541,7 @@
 										}
 										
 										.children {
-											margin-top: 10px;
+											margin-top: 20px;
 										}
 										.adults,
 										.children {

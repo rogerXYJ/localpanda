@@ -90,10 +90,9 @@ export default {
 				that.showCurrency=false
 			})
     window.currencyCallbackMeau = function(data) {
-      console.log(data);
       that.exchange = data;
     };
-    console.log(that.exchange);
+  
     //读取币种
     var nowCurrency = JSON.parse(Cookie.get("currency"));
     if (nowCurrency) {

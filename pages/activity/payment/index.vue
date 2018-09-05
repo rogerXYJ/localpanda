@@ -18,7 +18,7 @@
 						<div class="selectCard">
 							<div class="wxPay" @click="selectCard(0)" v-show="opctions.currency=='CNY'">
 								<div class="payicon">
-									<i class="selectTrue" v-if="id==1"></i>
+									<i class="selectTrue" v-if="id==0"></i>
 									<i class="selectNull" v-else></i> Wechat
 									<div class="chartIcon">
 										<svg class="icon1" aria-hidden="true">
@@ -28,9 +28,13 @@
 								</div>
 
 							</div>
+
+							
+
+
 							<div class="stripePay" @click="selectCard(1)">
 								<div class="payicon">
-									<i class="selectTrue" v-if="id==0"></i>
+									<i class="selectTrue" v-if="id==1"></i>
 									<i class="selectNull" v-else></i> Debit / Credit Card
 									<div class="chartIcon">
 										<span>
@@ -57,9 +61,27 @@
 								</div>
 
 							</div>
+
+
+							<div class="stripePay" @click="selectCard(2)" v-if="opctions.currency != 'CNY'">
+								<div class="payicon">
+									<i class="selectTrue" v-if="id==2"></i>
+									<i class="selectNull" v-else></i> PayPal
+									<div class="chartIcon">
+										<span>
+											<svg class="icon1" aria-hidden="true">
+													<use xlink:href="#icon-paypal"></use>
+											</svg>
+										</span>
+									</div>
+								</div>
+
+							</div>
+
+
 						</div>
 					</div>
-					<div class="cardInfo" v-show="id==0">
+					<div class="cardInfo" v-show="id==1">
 						<h4>Card info</h4>
 						<div class="cardNub">
 							<div class="card">
@@ -79,7 +101,9 @@
 				</div>
 				<p class="refundPolicy" style=" font-size:14px;margin-top: 30px; color: red;" v-if="opctions.finalRefundPeriod">You can reschedule or cancel your trip at zero cost before {{formatDate(opctions.finalRefundPeriod)}}.</p>
 			<!--	<p style="width: 600px;margin-top: 20px; color: red;" v-if="logInHide">You ordered as a guest. To view your order details, you can click "My Bookings" on the top bar then type in the reservee's email address and name you entered before to access that information.</p>-->
-				<button class="btnlinner paybtn" @click="getToken">Pay Now</button>
+				<button class="btnlinner paybtn" @click="getToken" v-show="id!=2">Pay Now</button>
+				<div class="paypalBtn" id="paypal-button-container" v-show="id==2"></div>
+				
 			</div>
 			<div class="detailsbox">
 				<div class="payfordetail">
@@ -197,6 +221,10 @@
 					{
 						src: 'https://cloud.localpanda.com/static/js/qrcode.min.js',
 						type: 'text/javascript'
+					},
+					{
+						src: 'https://www.paypalobjects.com/api/checkout.js',
+						type: 'text/javascript'
 					}
 				]
 			}
@@ -243,7 +271,7 @@
 				//stripe支付
 				cardNumber: '',
 				stripe: "",
-				id: 0, //切换支付方式
+				id: 1, //切换支付方式
 				payStatus: false,
 				payErrMsg: '',
 				isPay: false
@@ -257,7 +285,7 @@
 				data.email = dataInfo.data.contactInfo.emailAddress;
 				data.refundTimeLimit = dataInfo.data.activityPrice.refundTimeLimit 
 				if(data.opctions.currency == "CNY") {
-					data.id = 1
+					data.id = 0
 				}
 		       	
 			 	
@@ -319,11 +347,12 @@
 			selectCard(id) {
 
 				if(id == 0) {
-					this.id = 1
-				} else {
 					this.id = 0
+				} else if(id==1) {
+					this.id = 1
+				}else{
+					this.id = 2;
 				}
-				console.log(id)
 			},
 			//国际时间转成美国时间
 			formatDate:formatDate,
@@ -410,7 +439,7 @@
 				let that = this
 				
 				if(this.opctions.currency == 'CNY') {
-					if(that.id==1){
+					if(that.id==0){
 						this.wxPay();
 					}else{
 						that.stripePayNow()
@@ -418,7 +447,12 @@
 					
 
 				} else {
-					that.stripePayNow()
+					if(that.id==1){
+						that.stripePayNow();
+					}else{
+						that.paypal();
+					}
+					
 				}
 
 			},
@@ -623,6 +657,112 @@
 				if(thisTag == 'a' || thisTag == 'A') {
 					this.wxPay();
 				}
+			},
+			paypal(){
+				console.log(this.opctions);
+				var self = this;
+				var putData = {
+					"amount": this.opctions.amount,
+					"currency": this.opctions.currency,
+					"deviceType": this.device(),
+					"email": this.opctions.contactInfo.emailAddress,
+					"objectId": this.orderId,
+					"objectType": "ACTIVITY",
+					"paySerial": "",
+					"platform": "PAYPAL",
+					"response": "",
+					"status": ""//SUCCESSFUL/FAILED
+				};
+				
+
+				paypal.Button.render({
+					env : paypalCode, // sandbox | production
+					style:{
+						color: 'blue',
+						height: 42
+					},
+					client: {
+            sandbox:    'AQU-ZaCuePiwF7vwM6FhAW-fq69LI6HuWuGqbk9JXEP_gZw1gronm1T25EHY7pXeevEQL3g4TVfO16PV',
+            production: 'AQdt9x4Glxn-Hxi42yzQE--MucskE38eUdITLxMQFhg1JKsmSyIWMYCd3_a_6pVGzIkspkV5OGfDccn9'
+        	},
+
+					// Show the buyer a 'Pay Now' button in the checkout flow
+					commit : false,
+
+					payment: function (data, actions) {
+            return actions.payment.create({
+							transactions: [{
+								amount: {
+									total: putData.amount,
+									currency: putData.currency
+								},
+								item_list: {
+									items: [
+										{
+											name: self.opctions.activityInfo.title,
+											quantity: '1',
+											price: putData.amount,
+											currency: putData.currency
+										}
+									]
+								}
+							}],
+							note_to_payer: 'Contact us for any questions on your order.'
+						});
+					},
+
+					// onAuthorize() is called when the buyer approves the payment
+					onAuthorize : function(data, actions) {
+						
+						var execute = actions.payment.execute().then(function(res) {
+
+							delete res.payer;
+							delete res.transactions;
+
+							putData.paySerial = data.paymentID;
+							putData.response = JSON.stringify(res);
+							putData.status = 'SUCCESSFUL';
+							self.paypalCreate(putData);
+						});
+						return execute;
+					},
+					onError: function (err) {
+						putData.paySerial = err.paymentID;
+						putData.response = err;
+						putData.status = 'FAILED';
+						self.paypalCreate(putData);
+					},
+
+					onCancel: function(data, actions) {
+						// putData.paySerial = err.paymentID;
+						// putData.response = err;
+						// putData.status = 'FAILED';
+						// self.paypalCreate(putData);
+						console.log(data);
+					}
+
+				}, '#paypal-button-container');
+
+			},
+			paypalCreate(putData){
+
+				var that = this;
+				this.loadingStatus = true;
+				this.axios.post("https://api.localpanda.com/api/payment/pay/paypal",JSON.stringify(putData), {
+					headers: {
+						'Content-Type': 'application/json'
+					}
+				}).then(function(response) {
+					that.loadingStatus = false;
+					if(putData.status == 'SUCCESSFUL') {
+						//跳转
+						window.location.href = "/payment/success?email=" + that.email + "&orderId=" + that.orderId + '&amount=' + that.opctions.amount + "&succeed=true" + "&currency=" + that.opctions.currency + "&symbol=" + that.opctions.symbol
+					} else {
+							window.location.href = "/payment/failed?email=" + that.email + "&orderId=" + that.orderId + '&amount=' + that.opctions.amount + "&type=1" + "&errMsg=fail&succeed=false" + "&currency=" + that.opctions.currency + "&symbol=" + that.opctions.symbol
+					}
+				}, function(response) {
+					
+				})
 			}
 		},
 		created: function() {
@@ -634,6 +774,12 @@
 			console.log(this.opctions)
 //			this.getInfo()
 			this.stripeFn()
+
+			//paypal支付
+			if(this.opctions.currency !='CNY'){
+				this.paypal();
+			}
+
 			//this.getToken()
 			this.logIn = window.localStorage.getItem("logstate")
 
@@ -699,6 +845,11 @@
 			li:nth-child(5){
 				display: none!important;
 			}
+		}
+
+		.paypal-button,.xcomponent-outlet{
+			width: 100%!important;
+			height: 100%!important;
 		}
 
 	}
@@ -948,6 +1099,11 @@
 		.paybtn {
 			font-size: 16px;
 			font-weight: bold;
+		}
+		.paypalBtn{
+			width: 200px;
+			height: 42px;
+			margin-top: 30px;
 		}
 		.win_bg {
 			width: 100%;

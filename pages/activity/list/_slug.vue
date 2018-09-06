@@ -1,6 +1,6 @@
 <template>
 	<div class="activityList">
-		<HeaderCommon :logIn="logIn" @closeSearchList="closeFn" :nowCurrency="currency" @headCurrency="headCurrencyFn"></HeaderCommon>
+		<HeaderCommon :logIn="logIn" @closeSearchList="closeFn" :nowCurrency="currency" @headCurrency="headCurrencyFn" :selectNumber="selectNumber"></HeaderCommon>
 		<div class="banner">
 			<div class="linerBackground">
 				<div class="covertitle">
@@ -10,9 +10,14 @@
 				<!--seach bar -->
 				<div class="selectInfo">
 					<input type="text" v-model="seachContent" @click.stop="showHot" maxlength="60" @keyup.enter="seachFn" autocomplete="off" placeholder="Attraction, Activity, Destination" />
-					<div class="selectPeople"@click.stop="showSelectPeople">
-						<span>{{postData.participants}} People <i class="iconfont">&#xe60f;</i></span>
-						<input-number v-if="selectPeople" :participants="postData.participants" :selectNumber="selectNumber" @showSelectPeople="setSelectPeople" @getPeople="setPeople"></input-number>
+					<div class="selectPeople">
+						<!-- <span>{{postData.participants}} People <i class="iconfont">&#xe60f;</i></span>
+						<input-number v-if="selectPeople" :participants="postData.participants" :selectNumber="selectNumber" @showSelectPeople="setSelectPeople" @getPeople="setPeople"></input-number> -->
+						<select v-model="postData.participants" class="participants" @change="setPeople">
+							<option v-for="(item,index) in participantsOptionFn()" :value="item.label">{{item.selectparticipant}}</option>
+							
+						</select>
+						<i class="iconfont">&#xe60f;</i>
 					</div>
 					
 					<button class="seachBtn" @click="seachFn">Search</button>
@@ -93,7 +98,7 @@
 					</div>
 					<div class="filterBox padding">
 						<div class="title">
-							<h3>Price/person for party of {{postData.participants}}</h3>
+							<h3>{{postData.participants!=0?'Price/person for party of ' + postData.participants:'Price/person'}}</h3>
 						</div>
 						<div class="filterItem1" v-if="currency.code == 'CNY'">
 							 <el-slider
@@ -188,7 +193,7 @@
 						<ul>
 							<li class="activity-item" v-for="item in activityList">
 
-								<a :href="'/activity/details/'+item.activityId+'?participants='+postData.participants" target="_blank">
+								<a :href="'/activity/details/'+item.activityId" target="_blank">
 									<div class="activity">
 										<div class="activity-photo" v-lazy:background-image="item.coverPhotoUrl">
 											<p class="type">{{item.category}}</p>
@@ -214,7 +219,8 @@
 											</div>
 											<div class="totalPic">
 												<div class="nowPic">
-													<b><span class="currency_code">{{currency.code}}</span> {{currency.symbol}}{{returnFloat(item.perPersonPrice)}}</b><span> pp</span>
+													{{postData.participants==0?'From  ':''}}
+													<b><span class="currency_code">{{currency.code}}</span>  {{currency.symbol}}{{postData.participants!=0?returnFloat(item.perPersonPrice):returnFloat(item.bottomPrice)}}</b><span>{{postData.participants!=0?(postData.participants>1?' pp for party of '+ postData.participants:' for 1 preson'):' pp'}}</span>
 												</div>
 												<p v-if="item.sales&&item.sales>0">Booked {{item.sales}} {{item.sales==1?'time':'times'}} (last 30 days)</p>
 											</div>
@@ -266,7 +272,8 @@
 	import Foot from '~/components/FooterCommon/Foot';
 	import { checkboxGroup, checkbox } from "~/plugins/panda/checkbox/";
 	import filterModel from '~/components/pageComponents/activity/list/filterModel';
-	import inputNumber from '~/components/pageComponents/activity/list/input-number'
+import { createECDH } from 'crypto';
+	//import inputNumber from '~/components/pageComponents/activity/list/input-number'
 	export default {
 		name: 'activityList',
 		async asyncData({
@@ -286,10 +293,7 @@
 			let sort = route.query.sort ? JSON.parse(route.query.sort) : '';
 			let keyword =route.query.keyword ?route.query.keyword : '';
 			let type=route.query.type?route.query.type:'link'
-			let participants=route.query.participants?route.query.participants:2;
-			
 			let loc = (slug.toLowerCase() =='china' && !options && !keyword) ? 'Beijing' : slug;
-			
 			if(keyword){
 				loc = keyword;
 			}
@@ -298,7 +302,7 @@
 				keyword: loc == 'Xian' ? "Xi'an" : loc,
 				pageNum: 1,
 				pageSize: 16,
-				participants:participants,
+				participants:0,
 				type:type,
 				currency:'USD',
 				sort: {
@@ -325,15 +329,19 @@
 				currency = JSON.parse(decodeURIComponent(userCookie.currency));
 				postData.currency = currency.code;
 			}
-
-
-			var price=[0,505];
+			var participants=0
+			if(userCookie.participants){
+				participants = JSON.parse(decodeURIComponent(userCookie.participants));
+				postData.participants = participants;
+			}
+			
+			
+			var price=[0,505]
 			if(currency.code=='CNY'){
 				price = [0,3030];
 			}else if(currency.code=='JPY'){
 				price = [0,50500];
 			}
-			
 			//兼容老的key，老key转为新key
 			var oldType = function(text) {
 				if(text == 'TOURTYPE') {
@@ -388,11 +396,15 @@
 				postData.filters = postFilters;
 				
 			};
-			//console.log(price)
+			let obj = Object.assign({}, postData);
+			//处理调用select 人数
+			if(obj.participants==0){
+				delete obj.participants
+			}
 			//服务端请求数据
 			let listdata = {}
 			try {
-				listdata = await Vue.axios.post(apiBasePath + "search/activity", JSON.stringify(postData), {
+				listdata = await Vue.axios.post(apiBasePath + "search/activity", JSON.stringify(obj), {
 					headers: {
 						'Content-Type': 'application/json; charset=UTF-8'
 					}
@@ -403,6 +415,7 @@
 			}
 			var data = listdata.data
 			var listData = listdata.data.entities
+			
 			let filterAll = {},
 				filterCheck = {},
 				selectNumber={};
@@ -456,6 +469,57 @@
 			};
 			return {
 				listdata: data,
+				participantsOption:[
+					{
+						selectparticipant:'Guests Number',
+						label:0
+
+					},
+					{
+						selectparticipant:'1 person',
+						label:1
+					},
+					{
+						selectparticipant:'2 people',
+						label:2
+
+					},
+					{
+						selectparticipant:'3 people',
+						label:3
+
+					},
+					{
+						selectparticipant:'4 people',
+						label:4
+
+					},
+					{
+						selectparticipant:'5 people',
+						label:5
+
+					},
+					{
+						selectparticipant:'6 people',
+						label:6
+
+					},
+					{
+						selectparticipant:'7 people',
+						label:7
+
+					},
+					{
+						selectparticipant:'8 people',
+						label:8
+
+					},
+					{
+						selectparticipant:'9 people & more',
+						label:9
+
+					},
+					],
 				options: [
 					{
 						value: 'Shanghai',
@@ -599,7 +663,7 @@
 			checkboxGroup,
 			checkbox,
 			filterModel,
-			inputNumber
+			//inputNumber
 		},
 		computed: {
 			//获取指定顺序的数据 
@@ -639,14 +703,10 @@
 			},
 			
 			
+			
 	},
 	methods: {
-			// //接收切换币种
-			// setgetCurrency(val){
-			// 	console.log(val)
-			// 	this.currencyOptions=val
-			// }
-			// //全局搜索，搜索不显示
+			
 			closeFn(value){
 				this.showSeachList=value
 				this.isShowHot=value
@@ -666,17 +726,9 @@
 				
 				that.jumpUrl()
 			},
-			//显示选择人数
-			showSelectPeople(){
-				this.selectPeople=true
-				
-			},
-			setSelectPeople(val){
-				this.selectPeople=val
-				
-			},
-			setPeople(val){
-				this.postData.participants=val
+			//
+			setPeople(){
+				Cookie.set('participants',this.postData.participants,{path:'/','expires':30})
 				this.jumpUrl()
 				
 			},
@@ -859,6 +911,23 @@
 				
 				
 			},
+			participantsOptionFn(){
+				var participants=this.participantsOption,
+				minParticipants=this.selectNumber.minValue,
+				maxParticipants=this.selectNumber.maxValue;
+				var newParticipants=[];
+				for(var i = 1;i<participants.length;i++){
+					if(participants[i].label>=minParticipants&&participants[i].label<=maxParticipants){
+						newParticipants.push(participants[i])
+					}
+				}
+				newParticipants.unshift({
+					selectparticipant:'Guests Number',
+					label:0
+				})
+				
+				return newParticipants;
+			},
 			//删除选中的单个选项
 			clearCheck(item,index){
 				
@@ -885,7 +954,7 @@
 				
 			},
 			getUrl(value,type){
-				return '/activity/list/China?keyword=' + value+'&participants='+this.postData.participants+'&type='+type;	
+				return '/activity/list/China?keyword=' + value+'&type='+type;	
 			},
 
 			sortFn(val) {
@@ -926,10 +995,12 @@
 					options:{},
 					sort:{},
 					keyword:this.seachContent,
-					participants:this.postData.participants,
+					// participants:this.postData.participants==0?'':this.postData.participants,
 					//type:this.postData.type
-					
 				}
+				// if(jumpData.participants==0){
+				// 	delete jumpData.participants 
+				// }
 				//console.log(filterCheck)
 				
 				//var sort = this.postData.sort;
@@ -978,7 +1049,6 @@
 				
 				//跳转并对对象转码
 				jumpData.options = encodeURIComponent(JSON.stringify(options));
-				console.log(jumpData)
 				//检测是否有筛选项
 				var urlQuery = '';
 				for(var key in jumpData){
@@ -989,7 +1059,7 @@
 					}
 				};
 				urlQuery = urlQuery.substring(1); //去掉第一个&
-				//console.log(decodeURIComponent(urlQuery))
+				console.log(decodeURIComponent(urlQuery))
 				var url = '/activity/list/China' + (urlQuery ? ('?' + urlQuery) : '');
 				history.pushState(null, null, url);
 				//location.href =url
@@ -1023,10 +1093,12 @@
 					}
 				}
 				this.loadingStatus = true
-				
-				console.log(this.postData)
+				let postData=Object.assign({},this.postData);
+				if(this.postData.participants==0){
+					delete postData.participants
+				}
 				//return
-				Vue.axios.post(this.apiBasePath + "search/activity", JSON.stringify(this.postData), {
+				Vue.axios.post(this.apiBasePath + "search/activity", JSON.stringify(postData), {
 					headers: {
 						'Content-Type': 'application/json; charset=UTF-8'
 					}
@@ -1098,7 +1170,7 @@
 						options:{},
 						sort:{},
 						keyword:this.seachContent,
-						participants:this.postData.participants,
+						//participants:this.postData.participants,
 						//type:this.postData.type
 					}
 					for(var key in val) {
@@ -1234,13 +1306,14 @@
 			that.value = that.loc == "Xian" ? "Xi'an" : that.loc
 		},
 		mounted: function() {
-			console.log(this.checkPrice)
+			console.log(this.listdata)
 			const that = this
 			for(var key in that.filterCheck){
 				if(that.filterCheck[key].length>0){
 					that.showSelected=true
 				}
-			}	
+			}
+			document.querySelector('.participants option').setAttribute("hidden",'hidden')	
 			document.body.addEventListener("click",()=>{
 				that.isShowHot=false
 				that.showSeachList=false
@@ -1383,6 +1456,7 @@
 				background: #fff;
 				margin: 0 auto;
 				position: relative;
+				
 				a{
 					display: block;
 				}
@@ -1398,7 +1472,7 @@
 					
 				};
 				.selectPeople{
-					width: 136px;
+					width: 190px;
 					height: 48px;
 					display: inline-block;
 					line-height: 48px;
@@ -1406,11 +1480,23 @@
 					border-left: 1px solid #ebebeb;
 					cursor: pointer;
 					position: relative;
-					padding-left: 30px;
+					
+					.participants{
+						width:100%;
+						padding-left: 30px;
+						height:100%;
+						border:none;
+						-webkit-appearance: none;
+						-moz-appearance: none;
+						appearance: none;
+						background-color: transparent;
+
+						
+					}
 					i{
-						font-size: 12px;
 						position: absolute;
-						right: 18px;
+						right:20px;
+
 					}
 					
 				}

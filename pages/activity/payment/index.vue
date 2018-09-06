@@ -210,8 +210,24 @@
 	export default {
 		name: 'payNow',
 		
+		
 		head() {
+			let title = 'Payment ';
+			let description = 'Enter your payment information and proceed to the confirmation page'
+			let keywords =''
 			return {
+				title: title,
+				meta: [{
+						hid: "keywords",
+						name: "keywords",
+						content: keywords
+					},
+					{
+						hid: "description",
+						name: "description",
+						content: description
+					}
+				],
 				script: [
 					{
 						src: 'https://js.stripe.com/v3/',

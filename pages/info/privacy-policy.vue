@@ -63,6 +63,25 @@ export default {
         HeaderCommon,
         Foot
     },
+    head() {
+        let title = 'Privacy Policy - Localpanda.com';
+        let description = 'Local Panda is responsible for protecting your security and confidentiality when sharing your information.'
+        let keywords ='Privacy Policy, Local Panda'
+        return {
+            title: title,
+            meta: [{
+                    hid: "keywords",
+                    name: "keywords",
+                    content: keywords
+                },
+                {
+                    hid: "description",
+                    name: "description",
+                    content: description
+                }
+            ]
+        };
+	},
     methods: {
     },
     mounted: function() {

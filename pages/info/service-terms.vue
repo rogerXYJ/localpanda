@@ -54,6 +54,25 @@ export default {
             logIn:''
     	}
     },
+    head() {
+        let title = 'Terms of Service - Localpanda.com ';
+        let description = 'The receipt of your deposit or payment indicates that you and your travel agent (when applicable) have read these Terms and Conditions and accepted them. '
+        let keywords ='travel terms and conditions, trip reservations, payment, cancellation refunds, tour china'
+        return {
+            title: title,
+            meta: [{
+                    hid: "keywords",
+                    name: "keywords",
+                    content: keywords
+                },
+                {
+                    hid: "description",
+                    name: "description",
+                    content: description
+                }
+            ]
+        };
+	},
     components: {
         HeaderCommon,
         Foot

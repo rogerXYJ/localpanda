@@ -79,6 +79,25 @@
 			HeaderCommon,
 			FooterCommon
 		},
+		 head() {
+			let title = 'My Profile - Localpanda.com ';
+			let description = 'Review your profile with Local Panda '
+			let keywords ='My Profile, Local Panda'
+			return {
+				title: title,
+				meta: [{
+						hid: "keywords",
+						name: "keywords",
+						content: keywords
+					},
+					{
+						hid: "description",
+						name: "description",
+						content: description
+					}
+				]
+			};
+		},
 		methods: {
 			getinfo() {
 				let that = this

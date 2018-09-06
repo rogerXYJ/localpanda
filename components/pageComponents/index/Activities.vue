@@ -66,7 +66,7 @@
 							    -webkit-box-orient:vertical;">
 										{{item.title}}
 									</div>
-									<div class="duration"><i class="iconfont">&#xe624;</i>Duration: {{item.duration}} {{item.durationUnit|firstUpperCase}}</div>
+									<div class="duration"><i class="iconfont">&#xe624;</i> {{item.duration}} {{item.durationUnit|firstUpperCase}}</div>
 									<div class="totalPic">
 										
 										<div class="nowPic">From <span>{{currency.code}} </span> <b>{{currency.symbol}}{{returnFloat(item.bottomPrice)}}</b><span>  pp</span></div>
@@ -254,7 +254,7 @@
 									}
 								}
 							.totalPic{
-								padding-top: 10px;
+								
 								.oldpic{
 									text-align: right;
 									font-size: 14px;
@@ -262,7 +262,9 @@
 									text-decoration: line-through;
 								}
 								.nowPic{
-									text-align: right;
+									position:absolute;
+									bottom: 20px;
+									right: 20px;
 									font-size: 14px;
 									color:#878e95;
 									b{

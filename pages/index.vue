@@ -4,7 +4,7 @@
         <Banner ></Banner>
         <MustGo ></MustGo>
        
-        <Activities :activeList="initialState.activeList" :currency="currency"></Activities>
+        <Activities :participants="participants" :activeList="initialState.activeList" :currency="currency"></Activities>
         <!-- <Guide :guidelist="initialState.guidelist" ></Guide> -->
         <OurServices ></OurServices>
       <Foot></Foot>
@@ -34,7 +34,8 @@ export default {
         logIn:'',
         isIndex:true,
         apiBasePath:apiBasePath,
-        currency : {code: "USD", symbol: "$", exchangeRate: 1}
+        currency : {code: "USD", symbol: "$", exchangeRate: 1},
+        participants:0,
       }
       let briefRes = {};
       let batchRes = {};
@@ -56,7 +57,9 @@ export default {
 			if(userCookie.currency){
 				data.currency = JSON.parse(decodeURIComponent(userCookie.currency));
       }
-      
+      if(userCookie.participants){
+        data.participants = JSON.parse(decodeURIComponent(userCookie.participants));
+      }
 
       
       try {
@@ -133,7 +136,8 @@ export default {
     var currency=JSON.parse(Cookie.get('currency'))?JSON.parse(Cookie.get('currency')):{code:'USD',symbol:'$'}
 			if(this.currency!=currency){
 				this.currency=currency
-			}
+      }
+      
     }
 }
 </script>

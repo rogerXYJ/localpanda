@@ -138,7 +138,7 @@
 		<Alert :isShowAlert="isShowAlert" :alertTitle="alertTitle" :alertMessage="alertMessage" v-on:setIsShowAlert="getIsShowAlert"></Alert>
 		<Anonymity :AnonymityStatus="AnonymityStatus" v-on:anonymity-back="isAnonymityback"></Anonymity>
 
-		<div class="searchBox" v-if="showBgSearch" @click.stop="showBgSearch=true">
+		<div class="searchBox" v-if="showBgSearch" @click.stop="showBgSearchFn">
 			<div class="close"><i class="iconfont" @click.stop="close">&#xe606;</i></div>
 			<div class="contentBox">
 
@@ -148,8 +148,8 @@
 						<span class="input_highlight" :class="{border:input_highlight}">{{search}}</span>
 					</div>
 					<div class="select_people">
-						<select v-model="selectPeople">
-							<option v-for="(item,index) in selectOptions" :value="item.value">
+						<select id="select_people_box" v-model="selectPeople" @change="selectPeopleFn">
+							<option v-for="(item,index) in selectOptionsFn()" :value="item.value">
 								<label>{{item.text}}</label>
 							</option>
 						</select>
@@ -205,7 +205,7 @@
 	import Alert from '~/components/Prompt/Alert'
 	//import Contact from '~/components/Contact/Contact'
 	export default {
-		props: ["logIn", "isAnonymity", "isIndex","showSeachList",'nowCurrency'],
+		props: ["logIn", "isAnonymity", "isIndex","showSeachList",'nowCurrency','selectNumber'],
 		name: 'headercommon',
 		data() {
 			return {
@@ -232,11 +232,15 @@
 				symbol:'$',
 				exchange:'',
 				showCurrency:false,
-
 				seachContentList: [],
 				showBgSearch: false,
-				selectPeople: 2,
-				selectOptions: [{
+				selectPeople: 0,
+				selectOptions: [
+					{
+						value:0,
+						text:'Guests Number'
+					},
+					{
 						value: 1,
 						text: "1 Person"
 					},
@@ -266,8 +270,12 @@
 					},
 					{
 						value: 8,
-						text: "More than 8 people"
+						text: "8 people"
 					},
+					{
+						value:9,
+						text:'9 people & more'
+					}
 				],
 				options: ['Shanghai', 'Beijing', "Xi'an", "Guilin", 'Chengdu',"Tibet","Suzhou","Hangzhou"],
 				thems: ["Bund", "Watertown", "Great Wall", "Terra-Cotta Warriors", "Forbidden City", "Li River", "Layover Tour", "Day trips", "Local Food", "Dumplings", "Landmarks", "Short Excursions", "Family Friendly","Panda","Everest Base Camp"],
@@ -284,6 +292,13 @@
 
 		},
 		methods: {
+			showBgSearchFn(){
+				this.showBgSearch=true
+				
+			},
+			selectPeopleFn(){
+				Cookie.set('participants',this.selectPeople,{path:'/','expires':30})
+			},
 				//点击搜索按钮
 			seachFn(){
 				this.search=this.search.replace(/^\s+|\s+$/g,'');
@@ -350,6 +365,7 @@
 			//显示搜索
 			showSearch() {
 				this.showBgSearch = true
+				
 				this.$emit('closeSearchList',false)
 				setTimeout(() => {
 					document.getElementById("searchInput").focus();
@@ -504,6 +520,30 @@
 
 				});
 			},
+			selectOptionsFn(){
+				let self=this
+				if(self.selectNumber){
+					console.log(1111)
+					var participants=self.selectOptions,
+					minParticipants=self.selectNumber.minValue,
+					maxParticipants=self.selectNumber.maxValue;
+					var newParticipants=[];
+					for(var i = 1;i<participants.length;i++){
+						if(participants[i].value>=minParticipants&&participants[i].value<=maxParticipants){
+							newParticipants.push(participants[i])
+						}
+					}
+					console.log(newParticipants)
+					newParticipants.unshift({
+						text:'Guests Number',
+						value:0
+					})
+					
+					return newParticipants;
+				}else{
+					return self.selectOptions
+				}
+			},
 			setCurrency(val,index){
 				this.currency=val.code
 				this.symbol=val.symbol
@@ -518,6 +558,7 @@
 			
 			let that = this
 			this.search=this.$route.query.keyword?this.$route.query.keyword:''
+			
 			
 			document.body.addEventListener("click", function() {
 				that.iscontshow = true,
@@ -556,7 +597,7 @@
 					}
 				}
 			}
-			
+		 	this.selectPeople=JSON.parse(Cookie.get('participants'))?JSON.parse(Cookie.get('participants')):0;
 
 		},
 		watch: {
@@ -565,7 +606,12 @@
 			},
 			showBgSearch(val){
 				if(val){
+					this.selectPeople=JSON.parse(Cookie.get('participants'))?JSON.parse(Cookie.get('participants')):0;
 					this.hideBodyScroll()
+					setTimeout(()=>{
+						document.querySelector('#select_people_box option').setAttribute('hidden','hidden')
+					},200)
+					//
 				}else{
 					this.showBodyScroll()
 				}

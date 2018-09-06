@@ -177,7 +177,7 @@
 				</div>
 				<div class="provide" v-if="picInfo.details&&picInfo.details.length>0" id="picDetails">
 					<h3>Price Details</h3>
-					<p style="font-size: 16px;margin-top: 10px;" v-if="picInfo.childDiscount">Children's price is   {{nowExchange.symbol}}  {{returnFloat(picInfo.childDiscount)}} {{nowExchange.code}}  less than adults' price.</p>
+					<p style="font-size: 16px;margin-top: 10px;" v-if="picInfo.childDiscount">Children's price is {{nowExchange.code}}   {{nowExchange.symbol}}  {{returnFloat(picInfo.childDiscount)}}   less than adults' price.</p>
 					<el-table :data="sixArr" stripe style="width: 100%">
 						<el-table-column prop="capacity" label="Number of people" width="244.6" align="center">
 							<template slot-scope="scope">
@@ -187,20 +187,14 @@
 						</el-table-column>
 						<el-table-column prop="price" label="Total cost" width="244.6" align="center">
 							<template slot-scope="scope">
-								<span>{{nowExchange.symbol}} {{returnFloat(scope.row.price)}} {{nowExchange.code}}</span>
+								<span>{{nowExchange.code}} {{nowExchange.symbol}} {{returnFloat(scope.row.price)}}</span>
 							</template>
 						</el-table-column>
-						<!-- <el-table-column prop="chlidenNumb" label="Number of people" width="183">
-							<template slot-scope="scope">
-								<div v-show="scope.row.right.capacity">
-									<span>{{scope.row.right.capacity}} people</span>
-								</div>
-							</template>
-						</el-table-column> -->
+						
 						<el-table-column prop="childenTotal" label="Price per person" width="245" align="center">
 							<template slot-scope="scope">
 								<div v-show="scope.row.capacity">
-									<span>{{nowExchange.symbol}} {{returnFloat(scope.row.price/scope.row.capacity)}} {{nowExchange.code}}</span>
+									<span>{{nowExchange.code}} {{nowExchange.symbol}} {{returnFloat(scope.row.price/scope.row.capacity)}} </span>
 								</div>
 							</template>
 						</el-table-column>
@@ -244,10 +238,10 @@
 
 								<h4 style="-moz-box-orient: vertical;
 							    -webkit-box-orient:vertical;">{{i.title}}</h4>
-								<div class="duration"><i class="iconfont">&#xe624;</i>Duration: {{i.duration}} {{i.durationUnit|firstUpperCase}}</div>
+								<div class="duration"><i class="iconfont">&#xe624;</i>{{i.duration}} {{i.durationUnit|firstUpperCase}}</div>
 								<div class="pic">
-									<div class="old-pic" v-if="i.originalPrice">{{nowExchange.symbol}}{{returnFloat(i.originalPrice)}}</div>
-									<div class="current-price">From <span>{{nowExchange.code}}</span><b>{{nowExchange.symbol}}{{returnFloat(i.bottomPrice)}}</b><span>  pp</span></div>
+									<!-- <div class="old-pic" v-if="i.originalPrice">{{nowExchange.symbol}}{{returnFloat(i.originalPrice)}}</div> -->
+									<div class="current-price" >From <span>{{nowExchange.code}}</span><b>{{nowExchange.symbol}}{{returnFloat(i.bottomPrice)}}</b><span>  pp</span></div>
 								</div>
 							</div>
 						</a>
@@ -260,44 +254,62 @@
 					<div class="boxshowdow">
 						<div class="bookbox">
 							<div class="picPp clearfix">
-								
-									<!-- <div class="picLeft">
-										<select class="currency_type" v-model="picInfo.currency" @change="changeCurrency">
-											<option :value="item.code" v-for="item in exchange" :key="item.code">{{item.code}}</option>
-										</select>
-										<span class="iconfont">&#xe666;</span>
-									</div> -->
 									<div class="picRight" >
 										<div style="color: #FFF;">
-											{{nowExchange.code}}
-											<b style="font-size: 22px" v-if="picInfo.details.length==1&&picInfo.details[0].capacity==1">{{nowExchange.symbol}}{{returnFloat(picInfo.details[0].price)}}</b>
-											<b style="font-size: 22px" v-else>{{nowExchange.symbol}}{{returnFloat(picInfo.details[people-1].price/people)}}</b>  
-											pp for party of {{people}}
-											<span class="question" @mouseover="showNode" @mouseleave="hidden">?</span>
+											<p v-if="people=='Select'">From {{nowExchange.code}}&nbsp;&nbsp;<b style="font-size: 22px"> {{nowExchange.symbol}} {{startingPrice}}  </b>per person</p>
+											 
+											<p v-if="people>1">{{nowExchange.code}}&nbsp;&nbsp;<b style="font-size:22px" >{{nowExchange.symbol}}{{startingPrice}}</b> pp for party of {{people}}</p>
+											
+											<p v-if="people==1">{{nowExchange.code}}&nbsp;&nbsp;<b style="font-size:22px" >{{nowExchange.symbol}}{{startingPrice}}</b> for 1 Person</p>
+											<!-- <span class="question" @mouseover="showNode" @mouseleave="hidden">?</span> -->
 										</div>
+										<p style="font-size:12px;" v-if="people=='Select'">Price based on group of {{minPeople}}</p>
 									</div>
-								
-								 <div class="priceNote" v-if="isShowPicNode" @mouseover="showNodeCont" @mouseleave="hiddenCont">
-									
-									<p>This is the price per person for a group of 2 (see "What's Included" for details).</br>
 
-										<a href="javascript:;" @click="picDetailposition('picDetails')">Click here</a> if you want to see price for group of different size.
-									</p>
-								</div> 
+								<!--   <div class="priceNote" v-if="isShowPicNode" @mouseover="showNodeCont" @mouseleave="hiddenCont">
+									
+								 	<p>This is the price  {{people==1? 'for 1 person': (people=='Guests Number'?'per person for a group of '+minPeople:'per person for a group of '+people)}} (see "What's Included" for details).</br>
+
+								 		<a href="javascript:;" @click="picDetailposition('picDetails')">Click here</a> if you want to see price for group of different size.
+								 	</p>
+								 </div>  -->
 
 							</div>
 							<div class="selectBox">
+								<div class="select clearfix">
+									<div class="selectDate">
+										<b>Available On</b>
+										<!--<flatPickr placeholder="Date" v-model="dateTime" :config="options"></flatPickr>-->
+										<input id="js_changetime" readonly v-model="dateTime" type="text" placeholder="Date">
+									</div>
+									<!--<div class="selectTime" v-if="picInfo.departureTime" >
+										<b></b>
+										<div class="time" @click.stop="showTime">
+											<input readonly="readonly" v-model="time" placeholder="Time"/>
+											<i class="iconfont" v-if="!isShowTime">&#xe60f;</i>
+											<i class="iconfont" v-else>&#xe63f;</i>
+											<div v-if="isShowTime" @click.stop="showTime" class="timeList">
+												<ul>
+													<li :key="index" v-for="(item,index) in picInfo.departureTime" @click.stop="confirmTime(index)">{{item}}</li>
+
+												</ul>
+											</div>
+										</div>
+
+									</div>-->
+								</div>
 								<div class="selectPepole">
-									<b>Guests</b>
+									<b>Number of Travelers</b>
 									<div class="Guests" @click.stop="showAdults">
 										<!--<input class="people" readonly="readonly" v-model="people" />-->
 										<!--<div class="people" v-if="children==0&&adults==0">{{people}}</div>
 										<div class="people" v-if="children==0&&adults==1">{{people}} Person</div>
 										<div class="people" v-if="children>0||adults>1">{{people}} People</div>-->
-										<div class="people" v-if="children==0&&people==1">Adult x 1</div>
-										<div class="people" v-if="children==0&&people>1">Adults x {{people}}</div>
+										<div class="people inputColor"  v-if="children==0&&people=='Select'">{{people}}</div>
+										<div class="people" v-if="children==0&&adults==1">Adult x 1</div>
+										<div class="people" v-if="children==0&&adults>1">Adults x {{adults}}</div>
 										<div class="people" v-if="children>0">
-											<span v-if="people==1||adults==1">Adult x 1</span>
+											<span v-if="adults==1">Adult x 1</span>
 											<span v-else>Adults x {{adults}}</span> 
 											<span v-if="children==1"> , child x 1</span>
 											<span v-if="children>1"> , children x  {{children}}</span>
@@ -347,35 +359,18 @@
 													<em class="iconfont" v-else>&#xe64b;</em>
 												</div>
 											</div>-->
-										</div>
-
-									</div>
-								</div>
-								<div class="select clearfix">
-									<div class="selectDate">
-										<b>Available On</b>
-										<!--<flatPickr placeholder="Date" v-model="dateTime" :config="options"></flatPickr>-->
-										<input id="js_changetime" readonly v-model="dateTime" type="text" placeholder="Date">
-									</div>
-									<!--<div class="selectTime" v-if="picInfo.departureTime" >
-										<b></b>
-										<div class="time" @click.stop="showTime">
-											<input readonly="readonly" v-model="time" placeholder="Time"/>
-											<i class="iconfont" v-if="!isShowTime">&#xe60f;</i>
-											<i class="iconfont" v-else>&#xe63f;</i>
-											<div v-if="isShowTime" @click.stop="showTime" class="timeList">
-												<ul>
-													<li :key="index" v-for="(item,index) in picInfo.departureTime" @click.stop="confirmTime(index)">{{item}}</li>
-
-												</ul>
+											<div class="submit">
+												<button class="submitBtn" @click.stop="submitFn">Submit</button>
 											</div>
 										</div>
 
-									</div>-->
+									</div>
 								</div>
 								
+								
 								<div class="picDetail" v-if="isShowBook">
-									<b class='headTitle'>Price Breakdown<span @click.stop="picDetailposition('picDetails')">Price Details</span></b>
+									<b class='headTitle'>Price Breakdown</b>
+									<!-- <span @click.stop="picDetailposition('picDetails')">Price Details</span> -->
 									<ul>
 										<li class="clearfix">
 											<div class="formula" v-if="children==0&&adults==1">{{nowExchange.symbol}}{{returnFloat(adultsPic)}} x 1 Person</div>
@@ -476,9 +471,11 @@
 			"ABtest",
 			"isABtestShow",
 			"value",
-			"AvailableDate"
+			"AvailableDate",
+			"participants"
 		],
 		name: "Activities",
+		
 		data() {
 			return {
 				number:2,//起价
@@ -488,7 +485,7 @@
 				dateTime: "", //riqi
 				adults: 0, //成人  默认1人
 				children: 0, //儿童
-				people:2,
+				people:'',
 				time: "",
 				isShowBook: false,
 				isShowAdults: false,
@@ -528,7 +525,10 @@
 				tagAttractions:[],
 				showNewStyle:false,
 				itinerary:[],//行程折叠
-				showMoreItinerary:false
+				showMoreItinerary:false,
+				minPeople:0,
+				startingPrice:0,
+				
 			};
 			
 		},
@@ -542,6 +542,11 @@
 			TimelineTitle
 		},
 		methods: {
+			submitFn(){
+				this.isShowAdults=false
+				this.people=this.adults+this.children
+				this.startingPrice=this.returnFloat(this.picInfo.details[this.people-1].price/this.people)
+			},
 			tagFn(){
 				this.showMoreTag=!this.showMoreTag
 				if(this.showMoreTag){
@@ -649,36 +654,94 @@
 				// 	// 		self.returnFloat(self.returnFloat(self.adultsPic) - self.returnFloat(self.children * self.picInfo.childDiscount)) :
 				// 	// 		self.returnFloat(self.adultsPic);
 				// }
-					self.axios.get("https://api.localpanda.com/api/product/activity/"+this.id+"/price?currency="+value).then(function(res) {
-							self.picInfo.childDiscount=res.data.childDiscount
-							self.picInfo.currency=res.data.currency
-							
-					}, function(res) {
-						
-					});
 					
-					self.axios.get("https://api.localpanda.com/api/product/activity/"+this.id+"/price/detail?currency="+value).then(function(res) {
-							self.picInfo.details=res.data
-							
-							self.sixArr=res.data
-							if(self.people>0){
-								self.adultsPic = self.picInfo.details[self.people-1].price;	
-							}
-							if(res.data.length>6){
-								self.isShowTable=true
-								self.sixArr=res.data.concat().splice(0,6);
-							}else{
-								self.sixArr=res.data;
-							}
-					}, function(res) {
+					// self.axios.get("https://api.localpanda.com/api/product/activity/"+this.id+"/price?currency="+value).then(function(res) {
+							// self.picInfo.childDiscount=res.data.childDiscount
+							// self.picInfo.currency=res.data.currency
+							// self.picInfo.bottomPrice=res.data.bottomPrice
+					// }, function(res) {
 						
+					// });
+					
+					// self.axios.get("https://api.localpanda.com/api/product/activity/"+this.id+"/price/detail?currency="+value).then(function(res) {
+							// self.picInfo.details=res.data
+							// self.sixArr=res.data
+							// if(res.data.length>6){
+							// 	self.isShowTable=true
+							// 	self.sixArr=res.data.concat().splice(0,6);
+							// }else{
+							// 	self.sixArr=res.data;
+							// }
+					// }, function(res) {
+						
+					// });
+					// if(self.people>0){
+					// 	self.startingPrice = self.returnFloat(self.picInfo.details[self.people-1].price/self.people);	
+					// }else{
+					// 	self.startingPrice=self.returnFloat(self.picInfo.bottomPrice)
+					// }
+					// console.log(self.startingPrice)
+
+					const p1 = new Promise(function (resolve, reject) {
+						self.axios.get("https://api.localpanda.com/api/product/activity/"+self.id+"/price?currency="+value).then(function(res) {
+							// self.picInfo.childDiscount=res.data.childDiscount
+							// self.picInfo.currency=res.data.currency
+							// self.picInfo.bottomPrice=res.data.bottomPrice
+							resolve(res)
+						}, function(res) {
+							
+						});
 					});
-				
+
+					const p2 = new Promise(function (resolve, reject) {
+						self.axios.get("https://api.localpanda.com/api/product/activity/"+self.id+"/price/detail?currency="+value).then(function(res) {
+							// self.picInfo.details=res.data
+							// 	self.sixArr=res.data
+							// 	if(res.data.length>6){
+							// 		self.isShowTable=true
+							// 		self.sixArr=res.data.concat().splice(0,6);
+							// 	}else{
+							// 		self.sixArr=res.data;
+							// 	}
+							resolve(res)
+						}, function(res) {
+							
+						});
+					
+					})
+					Promise.all([p1,p2]).then(results=>{
+							if(self.picInfo.childDiscount){
+								self.picInfo.childDiscount=results[0].data.childDiscount
+							}
+							
+							self.picInfo.currency=results[0].data.currency
+							self.picInfo.bottomPrice=results[0].data.bottomPrice
+							
+
+							self.picInfo.details=results[1].data
+							self.sixArr=results[1].data
+							if(results[1].data.length>6){
+								self.isShowTable=true
+								self.sixArr=results[1].data.concat().splice(0,6);
+							}else{
+								self.sixArr=results[1].data;
+							}
+							if(self.people>0){
+								self.startingPrice = self.returnFloat(self.picInfo.details[self.people-1].price/self.people);
+								self.adultsPic=self.picInfo.details[self.people-1].price	
+							}else{
+								self.startingPrice=self.returnFloat(self.picInfo.bottomPrice)
+							}
+
+					})
+
+
+
 				//当前币种
 				self.$emit('input',this.nowExchange);
 
 				//请求推荐模块
-				this.axios.get("https://api.localpanda.com/api/product/activity/"+this.id+"/recommend?currency="+value).then(function(res) {
+				this.axios.get("https://api.localpanda.com/api/product/activity/"+this.id+"/recommend?currency="+value+(this.participants?'&participants='+this.participants:'')).then(function(res) {
 					if(res.status==200){
 						self.$emit('currencyChange',res.data);
 					}
@@ -865,6 +928,11 @@
 			},
 			showAdults() {
 				let that=this
+				if(this.people=='Select'){
+					this.adults=1
+					this.people=this.adults+this.children
+					this.startingPrice=this.returnFloat(this.picInfo.details[this.people-1].price/this.people)
+				}
 				window.ga && ga(gaSend, {
 					hitType: "event",
 					eventCategory: "activity_detail",
@@ -896,16 +964,23 @@
 			order() {
 				let that = this;
 				let isFail=true
-				if(that.people < that.picInfo.minParticipants) {
+				if(that.people == "Select"){
+					that.isShowAdults=true
+						that.adults = that.adults + 1;
+						that.people = that.adults + that.children;
+						that.adultsPic=that.returnFloat(that.picInfo.details[that.people-1].price)
+						that.startingPrice=that.returnFloat(that.picInfo.details[that.people-1].price/that.people)
+				}else if(that.people < that.picInfo.minParticipants) {
 					isFail=true
 					that.error = true;
 					that.isShowAdults = true;
 					that.dateErrText = "*Mimimum number of travelers:" + that.picInfo.minParticipants + ".";
 					//默认帮用户选一个游玩人
-//					if(that.people == "Please Select") {
-//						that.adults = this.adults + 1;
-//						that.people = this.adults + this.children;
-//					}
+					// if(that.people == "Select") {
+					// 	that.adults = that.adults + 1;
+					// 	that.people = that.adults + that.children;
+					// 	that.adultsPic=that.returnFloat(that.picInfo.details[that.people-1].price)
+					// }
 				}else if(that.dateTime == "") {
 					that.isSelectDate = true;
 					//that.dateErrText = "*Please select a date first.";
@@ -1009,26 +1084,33 @@
 			},
 			adults(val, odlVal) {
 				let that=this
-				if(val){
-					this.people =val +this.children;
+				// if(val){
+				// 	this.people =val +this.children;
 					
-				}
+				// }
 			},
 			children(val, oldVal) {
-				this.people =val + this.adults;
+				//this.people =val + this.adults;
 			},
 			people(val, odlVal) {
 				let that = this;
-				that.isShowBook = true;
+				
 				if(val >= that.picInfo.minParticipants) {
 					that.error = false;
 					that.dateErrText = "*Final headcount does not include babies.";
 				}
-				that.adultsPic=that.picInfo.details[val-1].price;
-				console.log(that.adultsPic)
+				
+				if(val>0){
+					that.isShowBook = true;
+					that.adultsPic=that.picInfo.details[that.people-1].price;
+					
+				}
+				
+				
 			},
 			
 			isShowBook(val, oldVal) {
+				
 				if(val) {
 					this.isShow = true;
 				} else {
@@ -1044,7 +1126,7 @@
 				}
 			},
 			value:function(val){
-				console.log(val)
+				let that=this
 				this.nowExchange = val;
 				this.changeCurrency(val.code)
 			},
@@ -1076,7 +1158,7 @@
 			
 		},
 		mounted: function() {
-			console.log(this.AvailableDate)
+			
 			let that = this;
 			//ab test 行程
 			if(this.$route.query.newStyle||this.detail.newType){
@@ -1108,17 +1190,52 @@
 				
 			}
 			
-			
-			let participants=this.$route.query.participants;
-			that.people=participants?(that.picInfo.maxParticipants==1?1:parseInt(participants)):(that.picInfo.minParticipants<3?(that.picInfo.maxParticipants==1?1:2):that.picInfo.minParticipants);
+			//人数
 
-			if(that.people){
-				that.isShowBook=true
-				that.adults=that.people
+			//最低价格人数
+			var picInfo=that.picInfo.details
+			
+			for(var i=0;i<picInfo.length;i++){
+				
+				// console.log(picInfo[i].price)
+				// console.log(picInfo[i].capacity)
+				if(that.picInfo.bottomPrice==that.returnFloat(picInfo[i].price/picInfo[i].capacity)){
+					
+					that.minPeople=picInfo[i].capacity
+				}else{
+					that.minPeople=that.picInfo.maxParticipants
+				}
 			}
+			
+
+			let participants=this.participants;
+			console.log(participants)
+			if(participants==0){
+				that.people="Select"
+				that.startingPrice=that.returnFloat(that.picInfo.bottomPrice)
+			}else{
+				that.people=parseInt(participants)<that.picInfo.minParticipants?that.picInfo.minParticipants:parseInt(participants)
+				that.adultsPic=that.picInfo.details[that.people-1].price;
+				that.startingPrice=that.returnFloat(that.picInfo.details[that.people-1].price/that.people)
+				that.isShowBook=true
+				that.adults= that.people-that.children
+			}
+		
+			
+
+
+			
+			//that.people=participants?(that.picInfo.maxParticipants==1?1:parseInt(participants)):(that.picInfo.minParticipants<3?(that.picInfo.maxParticipants==1?1:2):that.picInfo.minParticipants);
+			
+			
+			//that.people=that.picInfo.minParticipants<3?that.picInfo.maxParticipants:(participants?parseInt(participants):that.picInfo.minParticipants)
+			// if(that.people!='Guests Number'){
+				
+			// }
+			
 			//that.setPriceData();
 			// that.detailAll = that.tableData(that.picInfo.details);
-			that.adultsPic=that.picInfo.details[that.people-1].price;
+			
 			
 			var currency= JSON.parse(Cookie.get('currency'))?JSON.parse(Cookie.get('currency')):{'code':'USD','symbol':'$'};
 			 //that.exchange=currency
@@ -1145,7 +1262,7 @@
 
 			//初始化清空日期
 			that.dateTime = ""
-			console.log(that.detail)
+			
 			
 //			console.log(that.detailAll)
 			if(that.picInfo.details.length>6){
@@ -1157,17 +1274,31 @@
 			
 			//that.sixArr=that.tableData(that.picInfo.details)
 			//初始化日历
+			var AvailableDate=[]
+			for(var i=0;i<that.AvailableDate.length;i++){
+				AvailableDate.push(that.AvailableDate[i].saleDate)
+			}
+			console.log(AvailableDate)
 			that.flatPickr = new Flatpickr('#js_changetime', {
 				minDate: that.picInfo.earliestBookDate,
 				maxDate: addmulMonth(that.picInfo.earliestBookDate, 12),
-				enable:that.AvailableDate
+				enable:AvailableDate
 			});
-			
+			console.log(that.AvailableDate)
 			document
 				.getElementsByTagName("body")[0]
 				.addEventListener("click", function() {
 					that.isShowTime = false;
-					that.isShowAdults = false;
+					that.isShowAdults=false
+					if(that.people!='Select'){
+						that.people=that.adults+that.children
+						that.adultsPic=that.picInfo.details[that.people-1].price;
+						that.startingPrice=that.returnFloat(that.picInfo.details[that.people-1].price/that.people)
+					}else{
+						that.startingPrice=that.returnFloat(that.picInfo.bottomPrice)
+					}
+					
+					
 				});
 			
 
@@ -1270,6 +1401,9 @@
 </style>
 <style lang="scss" scoped>
 	//@import '~/assets/font/iconfont.css';
+	.inputColor{
+		color:#878e95;
+	}
 	.question{
 		display: inline-block;
 		text-align: center;
@@ -1336,9 +1470,8 @@
 					.bookbox {
 						.picPp {
 							
-							padding-left: 20px;
-							height: 50px;
-							line-height: 50px;
+							padding: 10px 10px 10px 20px;
+							min-height: 50px;
 							background: #353a3f;
 							font-size: 14px;
 							.picLeft {
@@ -1408,7 +1541,7 @@
 						.selectBox {
 							padding: 20px;
 							.select {
-								margin-top: 10px;
+								
 								.selectDate {
 									b {
 										font-size: 14px;
@@ -1434,7 +1567,7 @@
 							}
 							.selectPepole {
 								width: 100%;
-								
+								margin-top: 10px;
 								b {
 									font-size: 14px;
 									margin-bottom: 10px;
@@ -1465,7 +1598,22 @@
 										width: 346px;
 										box-shadow: 0px 2px 10px 0px rgba(53, 58, 63, 0.2);
 										background: #fff;
-										padding: 20px;
+										padding:35px 20px;
+										.submit{
+											margin-top:30px;
+											padding:0 20px;
+											button{
+												background-image: linear-gradient( 270deg, #009efd 0%, #1bbc9d 100%);
+												color:#fff;
+												line-height: 42px;
+												font-size: 16px;
+												font-weight: bold;
+												border-radius: 30px;
+												height:42px;
+												text-align:center;
+												width:100%;
+											}
+										}
 										b{
 											font-size: 18px;
 											line-height: 40px;	
@@ -1491,7 +1639,7 @@
 										}
 										
 										.children {
-											margin-top: 10px;
+											margin-top: 20px;
 										}
 										.adults,
 										.children {
@@ -2058,7 +2206,7 @@
 							}
 						}
 						.activity-cont {
-							height: 190px;
+							height: 168px;
 							position: relative;
 							padding: 20px;
 							box-shadow: 0px 2px 3px 0px rgba(53, 58, 63, 0.1);

@@ -29,7 +29,9 @@
 			:isABtestShow="isABtestShow"
 			@currencyChange="currencyChangeFn" 
 			v-model="currency"
+			:participants="participants"
 			:AvailableDate="AvailableDate"
+
 			></Activities>
 		<FooterCommon :nowCurrency="currency" @headCurrency="headCurrencyFn"></FooterCommon>
 		<div class="toast-container" v-if="toastShow">
@@ -118,8 +120,9 @@
 				ABtest: false,
 				isABtestShow:false,
 				currency:{code: "USD", symbol: "$", exchangeRate: 1},
+				participants:0,
 				AvailableDate:[]
-				
+
 			};
 			var response = {};
 			let apiActivityPriceRes = {};
@@ -129,7 +132,9 @@
 			if(userCookie.currency){
 				data.currency = JSON.parse(decodeURIComponent(userCookie.currency));
 			}
-
+			if(userCookie.participants){
+				data.participants=userCookie.participants
+			}
 			//ABtest 点评
 			if(id == '11280' || id =='11068'){
 				data.ABtest = true;
@@ -144,21 +149,23 @@
 						// var consoleTimeS2 = new Date().getTime();
 						// 	console.log('基本信息接口花费时间：'+(consoleTimeS2-consoleTimeS)+' ms');
 						
-						
+						var resData={
+							detailRes:res.data
+						}
 						if(!res.data.Available){
-							
 							Vue.axios.get(apiBasePath + "product/activity/" + id +'/sale/calendar').then(function(data) {
-								var AvailableDate=[]
-								var dd=data.data;
-								for(let i=0;i<dd.length;i++){
-									AvailableDate.push(dd[i].saleDate)
-								}
-								
-								data.AvailableDate=AvailableDate
-								console.log(data.AvailableDate)
+								// var AvailableDate=[]
+								// var dd=data.data;
+								// for(let i=0;i<dd.length;i++){
+								// 	AvailableDate.push(dd[i].saleDate)
+								// }
+								resData.availableDate=data.data
+								resolve(resData);
+								// data.AvailableDate=AvailableDate
+								// console.log(data.AvailableDate)
 							},function(res){})
 						}
-						resolve(res);
+						
 					}, function(res){
 						resolve(res)
 					});
@@ -177,11 +184,14 @@
 				});
 
 				//推荐信息
+				var url=apiBasePath + "product/activity/"+id+"/recommend?currency="+data.currency.code+(data.participants?'&participants='+data.participants:'')
+				console.log(url)
 				var Promise3 = new Promise(function(resolve, reject){
-					Vue.axios.get(apiBasePath + "product/activity/"+id+"/recommend?currency="+data.currency.code).then(function(res) {
+					Vue.axios.get(apiBasePath + "product/activity/"+id+"/recommend?currency="+data.currency.code+(data.participants?'&participants='+data.participants:'')).then(function(res) {
 						// var consoleTimeS2 = new Date().getTime();
 						// 	console.log('推荐接口花费时间：'+(consoleTimeS2-consoleTimeS)+' ms');
 						resolve(res);
+						console.log()
 					}, function(res) {
 						resolve(res);
 					});
@@ -280,10 +290,10 @@
 
 					//基本信息
 					response = results[0];
-					var detailData = response.data;
-					
-					
-					
+					var detailData = response.detailRes;
+					var availableDate=response.availableDate
+					//console.log(detailData)
+					data.AvailableDate=availableDate		
 					if(detailData.valid || route.query.valid==1) {//.valid == 1
 						
 						detailData.highlights ?
@@ -331,7 +341,12 @@
 						data.detail.bannerPhotos = results[5].data || [];
 						//行程信息
 						data.detail.itineraries = results[7].data || [];
-
+						
+						
+							
+						
+						//
+					
 
 						
 
@@ -371,7 +386,7 @@
 							data.travelersReviews=remarkData.data;
 						}
 					}
-					
+				
 
 
 					var consoleTimeS2 = new Date().getTime();

@@ -59,6 +59,25 @@ order details.You can also email service@localpanda.com or call us at +86 (21) 8
 				
 			}
 		},
+		 head() {
+			let title = 'Order Complete! - Localpanda.com ';
+			let description = 'Your Order is confirmed! You should received a confirmation email from us shortly. '
+			let keywords =''
+			return {
+				title: title,
+				meta: [{
+						hid: "keywords",
+						name: "keywords",
+						content: keywords
+					},
+					{
+						hid: "description",
+						name: "description",
+						content: description
+					}
+				]
+			};
+		},
 		components: {
 			HeaderCommon,
 			FooterCommon

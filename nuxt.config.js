@@ -7,8 +7,8 @@ module.exports = {
   build: {
 
       publicPath: 'https://cloud.localpanda.com/static/js/',
-      // testGa: true,
-      // payCode: 'pk_live_mRSdUvgwE4pZo2IVofL4cVch',
+      testGa: true,
+      payCode: 'pk_live_mRSdUvgwE4pZo2IVofL4cVch',
 
     
     extractCSS: {

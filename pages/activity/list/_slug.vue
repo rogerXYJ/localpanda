@@ -1,6 +1,6 @@
 <template>
 	<div class="activityList">
-		<HeaderCommon :logIn="logIn" @closeSearchList="closeFn" :nowCurrency="currency" @headCurrency="headCurrencyFn"></HeaderCommon>
+		<HeaderCommon :logIn="logIn" @closeSearchList="closeFn" :nowCurrency="currency" @headCurrency="headCurrencyFn" :selectNumber="selectNumber"></HeaderCommon>
 		<div class="banner">
 			<div class="linerBackground">
 				<div class="covertitle">
@@ -15,6 +15,7 @@
 						<input-number v-if="selectPeople" :participants="postData.participants" :selectNumber="selectNumber" @showSelectPeople="setSelectPeople" @getPeople="setPeople"></input-number> -->
 						<select v-model="postData.participants" class="participants" @change="setPeople">
 							<option v-for="(item,index) in participantsOptionFn()" :value="item.label">{{item.selectparticipant}}</option>
+							
 						</select>
 						<i class="iconfont">&#xe60f;</i>
 					</div>
@@ -192,7 +193,7 @@
 						<ul>
 							<li class="activity-item" v-for="item in activityList">
 
-								<a :href="'/activity/details/'+item.activityId+(postData.participants==0?'':'?participants='+postData.participants)" target="_blank">
+								<a :href="'/activity/details/'+item.activityId" target="_blank">
 									<div class="activity">
 										<div class="activity-photo" v-lazy:background-image="item.coverPhotoUrl">
 											<p class="type">{{item.category}}</p>
@@ -219,7 +220,7 @@
 											<div class="totalPic">
 												<div class="nowPic">
 													{{postData.participants==0?'From  ':''}}
-													<b><span class="currency_code">{{currency.code}}</span>  {{currency.symbol}}{{postData.participants!=0?returnFloat(item.perPersonPrice):returnFloat(item.bottomPrice)}}</b><span>{{postData.participants!=0?' pp for party of '+ postData.participants:' pp'}}</span>
+													<b><span class="currency_code">{{currency.code}}</span>  {{currency.symbol}}{{postData.participants!=0?returnFloat(item.perPersonPrice):returnFloat(item.bottomPrice)}}</b><span>{{postData.participants!=0?(postData.participants>1?' pp for party of '+ postData.participants:' for 1 preson'):' pp'}}</span>
 												</div>
 												<p v-if="item.sales&&item.sales>0">Booked {{item.sales}} {{item.sales==1?'time':'times'}} (last 30 days)</p>
 											</div>
@@ -333,11 +334,7 @@ import { createECDH } from 'crypto';
 				participants = JSON.parse(decodeURIComponent(userCookie.participants));
 				postData.participants = participants;
 			}
-			let obj = Object.assign({}, postData);
-			//处理调用select 人数
-			if(obj.participants==0){
-				delete obj.participants
-			}
+			
 			
 			var price=[0,505]
 			if(currency.code=='CNY'){
@@ -399,7 +396,11 @@ import { createECDH } from 'crypto';
 				postData.filters = postFilters;
 				
 			};
-			//console.log(price)
+			let obj = Object.assign({}, postData);
+			//处理调用select 人数
+			if(obj.participants==0){
+				delete obj.participants
+			}
 			//服务端请求数据
 			let listdata = {}
 			try {
@@ -914,16 +915,12 @@ import { createECDH } from 'crypto';
 				var participants=this.participantsOption,
 				minParticipants=this.selectNumber.minValue,
 				maxParticipants=this.selectNumber.maxValue;
-				console.log(minParticipants)
-				console.log(maxParticipants)
-				console.log(participants)
 				var newParticipants=[];
 				for(var i = 1;i<participants.length;i++){
 					if(participants[i].label>=minParticipants&&participants[i].label<=maxParticipants){
 						newParticipants.push(participants[i])
 					}
 				}
-				console.log(newParticipants)
 				newParticipants.unshift({
 					selectparticipant:'Guests Number',
 					label:0
@@ -957,7 +954,7 @@ import { createECDH } from 'crypto';
 				
 			},
 			getUrl(value,type){
-				return '/activity/list/China?keyword=' + value+(this.postData.participants==0?'':'&participants='+this.postData.participants)+'&type='+type;	
+				return '/activity/list/China?keyword=' + value+'&type='+type;	
 			},
 
 			sortFn(val) {
@@ -998,12 +995,12 @@ import { createECDH } from 'crypto';
 					options:{},
 					sort:{},
 					keyword:this.seachContent,
-					participants:this.postData.participants==0?'':this.postData.participants,
+					// participants:this.postData.participants==0?'':this.postData.participants,
 					//type:this.postData.type
 				}
-				if(jumpData.participants==0){
-					delete jumpData.participants 
-				}
+				// if(jumpData.participants==0){
+				// 	delete jumpData.participants 
+				// }
 				//console.log(filterCheck)
 				
 				//var sort = this.postData.sort;
@@ -1052,7 +1049,6 @@ import { createECDH } from 'crypto';
 				
 				//跳转并对对象转码
 				jumpData.options = encodeURIComponent(JSON.stringify(options));
-				console.log(jumpData)
 				//检测是否有筛选项
 				var urlQuery = '';
 				for(var key in jumpData){
@@ -1174,7 +1170,7 @@ import { createECDH } from 'crypto';
 						options:{},
 						sort:{},
 						keyword:this.seachContent,
-						participants:this.postData.participants,
+						//participants:this.postData.participants,
 						//type:this.postData.type
 					}
 					for(var key in val) {
@@ -1316,7 +1312,8 @@ import { createECDH } from 'crypto';
 				if(that.filterCheck[key].length>0){
 					that.showSelected=true
 				}
-			}	
+			}
+			document.querySelector('.participants option').setAttribute("hidden",'hidden')	
 			document.body.addEventListener("click",()=>{
 				that.isShowHot=false
 				that.showSeachList=false

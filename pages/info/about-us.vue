@@ -148,6 +148,25 @@ export default {
     	FooterCommon,
     	//Foot
     },
+    head() {
+        let title = 'About Us - Localpanda.com';
+        let description = 'Local Panda is a leading China Travel Platform that provides unique tours & tailor-made experiences to travelers.'
+        let keywords ='China Tour Operator, China Tour Company, China Travel Services, China Travel Agency, Local Panda'
+        return {
+            title: title,
+            meta: [{
+                    hid: "keywords",
+                    name: "keywords",
+                    content: keywords
+                },
+                {
+                    hid: "description",
+                    name: "description",
+                    content: description
+                }
+            ]
+        };
+	},
     methods: {
     	videoPlay(){
     		this.isPlay=true

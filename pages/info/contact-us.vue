@@ -109,6 +109,25 @@ export default {
     	Foot,
         Alert
     },
+    head() {
+        let title = 'Contact-Us - Localpanda.com';
+        let description = 'Contact us: Custom Tour Requests, booking & service questions, China travel agency services'
+        let keywords ='Contact Us, Customize Your Trip'
+        return {
+            title: title,
+            meta: [{
+                    hid: "keywords",
+                    name: "keywords",
+                    content: keywords
+                },
+                {
+                    hid: "description",
+                    name: "description",
+                    content: description
+                }
+            ]
+        };
+	},
     methods: {
     	getIsShowAlert(val) {
 				this.isShowAlert = val;

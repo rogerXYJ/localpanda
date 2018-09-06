@@ -290,9 +290,29 @@
 				standard: 0, //切换优惠价格的基准价格
 				total:0,
 				timeout:false,
-				clickCountryCode:false
+				clickCountryCode:false,
+				country:'',
 			}
 
+		},
+		 head() {
+			let title = 'Fill in your Booking details informaiton ';
+			let description = 'Fill out your info so we can confirm your booking!'
+			let keywords =''
+			return {
+				title: title,
+				meta: [{
+						hid: "keywords",
+						name: "keywords",
+						content: keywords
+					},
+					{
+						hid: "description",
+						name: "description",
+						content: description
+					}
+				]
+			};
 		},
 		components: {
 			HeaderCommon,
@@ -546,7 +566,7 @@
 					eventLabel: 'country_code_select',
 				});
 				if(index == 0) {
-
+					this.country=country
 					this.mobileCode = country + "(+" + code + ")"
 					this.code = "(+" + code + ")"
 					this.showCode = false
@@ -716,7 +736,8 @@
 						"firstName": that.oderFirstName,
 						"lastName": that.oderlastName,
 						"phoneNumber": that.code + that.phone,
-						"emailAddress": that.emailAddress
+						"emailAddress": that.emailAddress,
+						'nationality':that.country
 					},
 					"couponDiscount": that.couponType ? that.opctions.couponDiscount : null,
 					"couponCode": that.couponType ? that.couponCode : null,

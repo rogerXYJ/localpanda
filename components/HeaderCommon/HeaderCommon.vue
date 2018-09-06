@@ -972,6 +972,7 @@
 				margin-right: 38px;
 				.selectCurrency{
 					cursor: pointer;
+					position: relative;
 				}
 				.currencyBox{
 					position: absolute;
@@ -1048,6 +1049,36 @@
 				margin-right: 38px;
 				position: relative;
 				height: 55px;
+				.selectCurrency{
+					cursor: pointer;
+					position: relative;
+				}
+				.currencyBox{
+					position: absolute;
+					background: #fff;
+					box-shadow: 0px 1px 6px 0px rgba(0, 0, 0, 0.1);
+					border-radius: 5px;
+					width: 240px;
+					right: 2px;
+					z-index:999999;
+					.currencyItem{
+						cursor: pointer;
+						height: 56px;
+						line-height: 56px;
+						margin:0 15px;
+						border-bottom: 1px solid #ebebeb;
+						&:last-child{
+							border:none;
+						}
+						.true{
+							color: #1bbc9d;
+							font-size: 14px;
+							position: absolute;
+							right: 15px;
+						}
+						
+					}
+				}
 				li {
 					.hot {
 						padding: 3px 9px;
@@ -1062,11 +1093,11 @@
 					float: left;
 					font-size: 16px;
 					cursor: pointer;
-					&:first-child {
+					&:nth-child(1) {
 						margin-right: 40px;
-						&:hover {
-							color: #1bbc9d!important;
-						}
+						// &:hover {
+						// 	color: #1bbc9d!important;
+						// }
 					}
 					img {
 						border-radius: 50%;

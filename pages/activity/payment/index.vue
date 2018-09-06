@@ -63,7 +63,7 @@
 							</div>
 
 
-							<div class="stripePay" @click="selectCard(2)" v-if="opctions.currency != 'CNY'">
+							<div class="stripePay" @click="selectCard(2)" v-if="opctions.currency != 'CNY' && opctions.currency != 'JPY'">
 								<div class="payicon">
 									<i class="selectTrue" v-if="id==2"></i>
 									<i class="selectNull" v-else></i> PayPal

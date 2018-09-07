@@ -1299,7 +1299,7 @@
 						that.people=that.adults+that.children
 						that.adultsPic=that.picInfo.details[that.people-1].price;
 						that.startingPrice=that.returnFloat(that.picInfo.details[that.people-1].price/that.people)
-					}else{
+					}else if(that.people=='Select'){
 						that.startingPrice=that.returnFloat(that.picInfo.bottomPrice)
 					}
 

@@ -1295,13 +1295,11 @@
 					
 
 					
-					if(that.people!='Select'){
+					if(that.isShowAdults){
 						that.people=that.adults+that.children
 						that.adultsPic=that.picInfo.details[that.people-1].price;
 						that.startingPrice=that.returnFloat(that.picInfo.details[that.people-1].price/that.people)
-					}else if(that.isShowAdults){
-						that.people=that.adults+that.children
-						that.adultsPic=that.picInfo.details[that.people-1].price;
+					}else{
 						that.startingPrice=that.returnFloat(that.picInfo.bottomPrice)
 					}
 

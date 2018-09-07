@@ -305,9 +305,9 @@
 										<!--<div class="people" v-if="children==0&&adults==0">{{people}}</div>
 										<div class="people" v-if="children==0&&adults==1">{{people}} Person</div>
 										<div class="people" v-if="children>0||adults>1">{{people}} People</div>-->
-										<div class="people inputColor"  v-if="children==0&&people=='Select'">{{people}}</div>
-										<div class="people" v-if="children==0&&adults==1">Adult x 1</div>
-										<div class="people" v-if="children==0&&adults>1">Adults x {{adults}}</div>
+										<div class="people inputColor"  v-if="adults==0&&children==0&&people=='Select'">{{people}}</div>
+										<div class="people" v-else-if="children==0&&adults==1">Adult x 1</div>
+										<div class="people" v-else-if="children==0&&adults>1">Adults x {{adults}}</div>
 										<div class="people" v-if="children>0">
 											<span v-if="adults==1">Adult x 1</span>
 											<span v-else>Adults x {{adults}}</span> 
@@ -929,7 +929,8 @@
 			showAdults() {
 				let that=this
 				if(this.people=='Select'){
-					// this.adults=1
+
+					this.adults=1
 					// this.people=this.adults+this.children
 					// this.startingPrice=this.returnFloat(this.picInfo.details[this.people-1].price/this.people)
 				}
@@ -948,7 +949,7 @@
 				
 				if(this.isShowTime == true) this.isShowTime = false;
 				this.isShowAdults = true;
-				this.isShowBook = true;
+				// this.isShowBook = true;
 				this.$emit('showPeople',true)
 				
 				
@@ -1291,15 +1292,21 @@
 			document
 				.getElementsByTagName("body")[0]
 				.addEventListener("click", function() {
-					that.isShowTime = false;
-					that.isShowAdults=false
+					
+
+					
 					if(that.people!='Select'){
 						that.people=that.adults+that.children
 						that.adultsPic=that.picInfo.details[that.people-1].price;
 						that.startingPrice=that.returnFloat(that.picInfo.details[that.people-1].price/that.people)
-					}else{
+					}else if(that.isShowAdults){
+						that.people=that.adults+that.children
+						that.adultsPic=that.picInfo.details[that.people-1].price;
 						that.startingPrice=that.returnFloat(that.picInfo.bottomPrice)
 					}
+
+					that.isShowTime = false;
+					that.isShowAdults=false
 					
 					
 				});

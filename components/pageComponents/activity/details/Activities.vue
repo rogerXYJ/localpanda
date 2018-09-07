@@ -187,14 +187,14 @@
 						</el-table-column>
 						<el-table-column prop="price" label="Total cost" width="244.6" align="center">
 							<template slot-scope="scope">
-								<span>{{nowExchange.code}} {{nowExchange.symbol}} {{returnFloat(scope.row.price)}}</span>
+								<span>{{nowExchange.code}} {{nowExchange.symbol}} {{scope.row.price}}</span>
 							</template>
 						</el-table-column>
 						
 						<el-table-column prop="childenTotal" label="Price per person" width="245" align="center">
 							<template slot-scope="scope">
 								<div v-show="scope.row.capacity">
-									<span>{{nowExchange.code}} {{nowExchange.symbol}} {{returnFloat(scope.row.price/scope.row.capacity)}} </span>
+									<span>{{nowExchange.code}} {{nowExchange.symbol}} {{scope.row.perPersonPrice}} </span>
 								</div>
 							</template>
 						</el-table-column>
@@ -929,9 +929,9 @@
 			showAdults() {
 				let that=this
 				if(this.people=='Select'){
-					this.adults=1
-					this.people=this.adults+this.children
-					this.startingPrice=this.returnFloat(this.picInfo.details[this.people-1].price/this.people)
+					// this.adults=1
+					// this.people=this.adults+this.children
+					// this.startingPrice=this.returnFloat(this.picInfo.details[this.people-1].price/this.people)
 				}
 				window.ga && ga(gaSend, {
 					hitType: "event",
@@ -1223,6 +1223,7 @@
 		
 			
 
+			
 
 			
 			//that.people=participants?(that.picInfo.maxParticipants==1?1:parseInt(participants)):(that.picInfo.minParticipants<3?(that.picInfo.maxParticipants==1?1:2):that.picInfo.minParticipants);
@@ -1271,6 +1272,8 @@
 			}else{
 				that.sixArr=that.picInfo.details;
 			}
+
+			
 			
 			//that.sixArr=that.tableData(that.picInfo.details)
 			//初始化日历

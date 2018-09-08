@@ -152,7 +152,8 @@
 						var resData={
 							detailRes:res.data
 						}
-						if(!res.data.Available){
+						//console.log(resData.detailRes.Allavailable)
+						if(!resData.detailRes.allAvailable){
 							Vue.axios.get(apiBasePath + "product/activity/" + id +'/sale/calendar').then(function(data) {
 								// var AvailableDate=[]
 								// var dd=data.data;
@@ -292,7 +293,8 @@
 					response = results[0];
 					var detailData = response.detailRes;
 					var availableDate=response.availableDate
-					//console.log(detailData)
+					console.log(availableDate)
+					console.log(detailData)
 					data.AvailableDate=availableDate		
 					if(detailData.valid || route.query.valid==1) {//.valid == 1
 						

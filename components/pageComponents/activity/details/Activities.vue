@@ -1278,16 +1278,18 @@
 			
 			//that.sixArr=that.tableData(that.picInfo.details)
 			//初始化日历
-			var AvailableDate=[]
-			for(var i=0;i<that.AvailableDate.length;i++){
-				AvailableDate.push(that.AvailableDate[i].saleDate)
-			}
-			console.log(AvailableDate)
-			that.flatPickr = new Flatpickr('#js_changetime', {
-				minDate: that.picInfo.earliestBookDate,
-				maxDate: addmulMonth(that.picInfo.earliestBookDate, 12),
-				enable:AvailableDate
-			});
+			
+				var AvailableDate=[]
+				for(var i=0;i<that.AvailableDate.length;i++){
+					AvailableDate.push(that.AvailableDate[i].saleDate)
+				}
+				console.log(AvailableDate)
+				that.flatPickr = new Flatpickr('#js_changetime', {
+					minDate: that.picInfo.earliestBookDate,
+					maxDate: addmulMonth(that.picInfo.earliestBookDate, 12),
+					enable:AvailableDate
+				});
+			
 			console.log(that.AvailableDate)
 			document
 				.getElementsByTagName("body")[0]

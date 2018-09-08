@@ -184,8 +184,8 @@
 				});
 
 				//推荐信息
-				var url=apiBasePath + "product/activity/"+id+"/recommend?currency="+data.currency.code+(data.participants?'&participants='+data.participants:'')
-				console.log(url)
+				// var url=apiBasePath + "product/activity/"+id+"/recommend?currency="+data.currency.code+(data.participants?'&participants='+data.participants:'')
+				// console.log(url)
 				var Promise3 = new Promise(function(resolve, reject){
 					Vue.axios.get(apiBasePath + "product/activity/"+id+"/recommend?currency="+data.currency.code+(data.participants?'&participants='+data.participants:'')).then(function(res) {
 						// var consoleTimeS2 = new Date().getTime();

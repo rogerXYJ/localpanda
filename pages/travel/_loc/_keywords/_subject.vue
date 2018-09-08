@@ -152,7 +152,7 @@
 						<div class="visitor-message">
 							<b>Cynthia Huang</b>
 							<em>Los Angeles, California</em>
-							<p>Local Panda Exceeded our </br>expectations in every way. Our guide Rebecca was a Hangzhou native whose local knowledge of the city was beyond anything we could have hoped for. The personalized service sets Local Panda apart. If you want to see something, or do something off of the beaten path, they will go above and beyond to accommodate you." </p>
+							<p>Local Panda Exceeded our <br>expectations in every way. Our guide Rebecca was a Hangzhou native whose local knowledge of the city was beyond anything we could have hoped for. The personalized service sets Local Panda apart. If you want to see something, or do something off of the beaten path, they will go above and beyond to accommodate you." </p>
 						</div>
 					</li>
 				</ul>
@@ -184,7 +184,7 @@
 						<div class="visitor-message">
 							<b>Cynthia Huang</b>
 							<em>Los Angeles, California</em>
-							<p>Local Panda Exceeded our </br>expectations in every way. Our guide Rebecca was a Hangzhou native whose local knowledge of the city was beyond anything we could have hoped for. The personalized service sets Local Panda apart. If you want to see something, or do something off of the beaten path, they will go above and beyond to accommodate you." </p>
+							<p>Local Panda Exceeded our <br>expectations in every way. Our guide Rebecca was a Hangzhou native whose local knowledge of the city was beyond anything we could have hoped for. The personalized service sets Local Panda apart. If you want to see something, or do something off of the beaten path, they will go above and beyond to accommodate you." </p>
 						</div>
 					</li>
 				</ul>

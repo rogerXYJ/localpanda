@@ -378,7 +378,8 @@ var getPriceMark = function(cur,str){
 		{'sign':'￡','str':'GBP'},
 		{'sign':'€','str':'EUR'},
 		{'sign':'A$','str':'AUD'},
-		{'sign':'CA$','str':'CAD'}
+		{'sign':'CA$','str':'CAD'},
+		{'sign':'¥','str':'JPY'}
 	];
 	var thisCur = {};
 	for(var i=0;i<currencyAll.length;i++){

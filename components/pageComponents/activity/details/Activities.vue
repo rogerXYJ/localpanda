@@ -187,14 +187,14 @@
 						</el-table-column>
 						<el-table-column prop="price" label="Total cost" width="244.6" align="center">
 							<template slot-scope="scope">
-								<span>{{nowExchange.code}} {{nowExchange.symbol}} {{returnFloat(scope.row.price)}}</span>
+								<span>{{nowExchange.code}} {{nowExchange.symbol}} {{scope.row.price}}</span>
 							</template>
 						</el-table-column>
 						
 						<el-table-column prop="childenTotal" label="Price per person" width="245" align="center">
 							<template slot-scope="scope">
 								<div v-show="scope.row.capacity">
-									<span>{{nowExchange.code}} {{nowExchange.symbol}} {{returnFloat(scope.row.price/scope.row.capacity)}} </span>
+									<span>{{nowExchange.code}} {{nowExchange.symbol}} {{scope.row.perPersonPrice}} </span>
 								</div>
 							</template>
 						</el-table-column>
@@ -305,9 +305,9 @@
 										<!--<div class="people" v-if="children==0&&adults==0">{{people}}</div>
 										<div class="people" v-if="children==0&&adults==1">{{people}} Person</div>
 										<div class="people" v-if="children>0||adults>1">{{people}} People</div>-->
-										<div class="people inputColor"  v-if="children==0&&people=='Select'">{{people}}</div>
-										<div class="people" v-if="children==0&&adults==1">Adult x 1</div>
-										<div class="people" v-if="children==0&&adults>1">Adults x {{adults}}</div>
+										<div class="people inputColor"  v-if="adults==0&&children==0&&people=='Select'">{{people}}</div>
+										<div class="people" v-else-if="children==0&&adults==1">Adult x 1</div>
+										<div class="people" v-else-if="children==0&&adults>1">Adults x {{adults}}</div>
 										<div class="people" v-if="children>0">
 											<span v-if="adults==1">Adult x 1</span>
 											<span v-else>Adults x {{adults}}</span> 
@@ -929,9 +929,10 @@
 			showAdults() {
 				let that=this
 				if(this.people=='Select'){
+
 					this.adults=1
-					this.people=this.adults+this.children
-					this.startingPrice=this.returnFloat(this.picInfo.details[this.people-1].price/this.people)
+					// this.people=this.adults+this.children
+					// this.startingPrice=this.returnFloat(this.picInfo.details[this.people-1].price/this.people)
 				}
 				window.ga && ga(gaSend, {
 					hitType: "event",
@@ -948,7 +949,7 @@
 				
 				if(this.isShowTime == true) this.isShowTime = false;
 				this.isShowAdults = true;
-				this.isShowBook = true;
+				// this.isShowBook = true;
 				this.$emit('showPeople',true)
 				
 				
@@ -1223,6 +1224,7 @@
 		
 			
 
+			
 
 			
 			//that.people=participants?(that.picInfo.maxParticipants==1?1:parseInt(participants)):(that.picInfo.minParticipants<3?(that.picInfo.maxParticipants==1?1:2):that.picInfo.minParticipants);
@@ -1271,6 +1273,8 @@
 			}else{
 				that.sixArr=that.picInfo.details;
 			}
+
+			
 			
 			//that.sixArr=that.tableData(that.picInfo.details)
 			//初始化日历
@@ -1288,15 +1292,19 @@
 			document
 				.getElementsByTagName("body")[0]
 				.addEventListener("click", function() {
-					that.isShowTime = false;
-					that.isShowAdults=false
-					if(that.people!='Select'){
+					
+
+					
+					if(that.isShowAdults){
 						that.people=that.adults+that.children
 						that.adultsPic=that.picInfo.details[that.people-1].price;
 						that.startingPrice=that.returnFloat(that.picInfo.details[that.people-1].price/that.people)
-					}else{
+					}else if(that.people=='Select'){
 						that.startingPrice=that.returnFloat(that.picInfo.bottomPrice)
 					}
+
+					that.isShowTime = false;
+					that.isShowAdults=false
 					
 					
 				});

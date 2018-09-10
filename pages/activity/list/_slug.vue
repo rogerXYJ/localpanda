@@ -495,7 +495,7 @@ import { createECDH } from 'crypto';
 					},
 					{
 						bannerSrc:'https://cloud.localpanda.com/activityList/banners/GreatWall.jpg',
-						keywords:['The Great Wall','Great Wall of China','Great Wall Hiking'],
+						keywords:['The Great Wall','Great Wall of China','Great Wall Hiking','Great Wall'],
 						title:'Great Wall of China - Beijing',
 						subtitle:"Discover the Perfect Great Wall Trip for You"
 					},
@@ -507,7 +507,7 @@ import { createECDH } from 'crypto';
 					},
 					{
 						bannerSrc:'https://cloud.localpanda.com/activityList/banners/Panda.jpg',
-						keywords:['Pandas','Giant Pandas'],
+						keywords:['Pandas','Giant Pandas','panda'],
 						title:'Giant Pandas - Chengdu',
 						subtitle:"Hang out with China’s Favorite Animal"
 					},
@@ -531,7 +531,7 @@ import { createECDH } from 'crypto';
 					},
 					{
 						bannerSrc:'https://cloud.localpanda.com/activityList/banners/Xian.jpg',
-						keywords:["Xi'an","Xian"],
+						keywords:["Xi'an","Xian","Terra-Cotta Warriors","Terracotta"],
 						title:"Xi'an & Terracotta Warriors",
 						subtitle:"See Where Imperial China was Born"
 					},

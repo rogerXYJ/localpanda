@@ -130,7 +130,7 @@
 						</ul>
 					</div>
 				</div>
-				<div class="review" v-if="travelersReviews.entities&&travelersReviews.entities.length>0&&!ABtest || travelersReviews.entities && travelersReviews.entities.length && ABtest && userABtestID%2==0" id="review">
+				<div class="review" v-if="travelersReviews.entities&&travelersReviews.entities.length>0" id="review">
 					<div class="reviewTitle clearfix">
 						<h3>{{travelersReviews.entities.length==1?"Review":"Reviews"}} ({{travelersReviews.records}})</h3>
 						<grade :score="travelersReviews.avgScore" :big="'true'"></grade>
@@ -256,14 +256,14 @@
 							<div class="picPp clearfix">
 									<div class="picRight" >
 										<div style="color: #FFF;">
-											<p v-if="people=='Select'">From {{nowExchange.code}}&nbsp;&nbsp;<b style="font-size: 22px"> {{nowExchange.symbol}} {{startingPrice}}  </b>per person</p>
+											<p v-if="people=='Select'">{{!picInfo.unifiedPricing?'From':''}} {{nowExchange.code}}&nbsp;&nbsp;<b style="font-size: 22px"> {{nowExchange.symbol}} {{startingPrice}}  </b>per person</p>
 											 
 											<p v-if="people>1">{{nowExchange.code}}&nbsp;&nbsp;<b style="font-size:22px" >{{nowExchange.symbol}}{{startingPrice}}</b> pp for party of {{people}}</p>
 											
 											<p v-if="people==1">{{nowExchange.code}}&nbsp;&nbsp;<b style="font-size:22px" >{{nowExchange.symbol}}{{startingPrice}}</b> for 1 Person</p>
 											<!-- <span class="question" @mouseover="showNode" @mouseleave="hidden">?</span> -->
 										</div>
-										<p style="font-size:12px;" v-if="people=='Select'">Price based on group of {{minPeople}}</p>
+										<p style="font-size:12px;" v-if="people=='Select' && !picInfo.unifiedPricing">Price based on group of {{minPeople}}</p>
 									</div>
 
 								<!--   <div class="priceNote" v-if="isShowPicNode" @mouseover="showNodeCont" @mouseleave="hiddenCont">
@@ -1039,14 +1039,14 @@
 
 
 					//点评ABtest
-					if(this.isABtestShow){
-						ga(gaSend, {
-							hitType: 'event',
-							eventCategory: 'activity_detail',
-							eventAction: 'abtest_comment',
-							eventLabel: 'book',
-						});
-					}
+					// if(this.isABtestShow){
+					// 	ga(gaSend, {
+					// 		hitType: 'event',
+					// 		eventCategory: 'activity_detail',
+					// 		eventAction: 'abtest_comment',
+					// 		eventLabel: 'book',
+					// 	});
+					// }
 
 					location.href = "/activity/booking/"+that.detail.activityId
 
@@ -1210,19 +1210,22 @@
 			
 
 			let participants=this.participants;
-			console.log(participants)
+			
 			if(participants==0){
 				that.people="Select"
 				that.startingPrice=that.returnFloat(that.picInfo.bottomPrice)
 			}else{
-				that.people=parseInt(participants)<that.picInfo.minParticipants?that.picInfo.minParticipants:parseInt(participants)
+				that.people=parseInt(participants)<that.picInfo.minParticipants?that.picInfo.minParticipants:parseInt(participants);
+				//大于最大人数时，人数设置最大人数
+				if(that.people>this.picInfo.maxParticipants){
+					that.people=this.picInfo.maxParticipants;
+				}
 				that.adultsPic=that.picInfo.details[that.people-1].price;
 				that.startingPrice=that.returnFloat(that.picInfo.details[that.people-1].price/that.people)
 				that.isShowBook=true
 				that.adults= that.people-that.children
 			}
 		
-			
 
 			
 

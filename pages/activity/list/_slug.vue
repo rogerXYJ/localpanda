@@ -476,9 +476,9 @@ import { createECDH } from 'crypto';
 
 			//设置banner---开始
 			var setBanner = function(){
-				if(!keyword){
-					return '';
-				}
+				// if(!keyword){
+				// 	return '';
+				// }
 				//判断获取头部和标题
 				var bannerData = [
 					{
@@ -543,13 +543,14 @@ import { createECDH } from 'crypto';
 					}
 				];
 
+
 				//设置当前banner
 				for(var i=0;i<bannerData.length;i++){
 					var thisKeywords = bannerData[i].keywords;
 					for(var j=0;j<thisKeywords.length;j++){
 						var thisData = thisKeywords[j];
-						
-						if(keyword.toLowerCase()==thisData.toLowerCase()){
+						//if(loc.toLowerCase()=='china' && keyword.toLowerCase()==thisData.toLowerCase() || loc.toLowerCase()!='china' && loc.toLowerCase()==thisData.toLowerCase()){
+						if(keyword.toLowerCase()==thisData.toLowerCase() || loc.toLowerCase()==thisData.toLowerCase()){
 							return bannerData[i];
 						}
 					}
@@ -638,7 +639,7 @@ import { createECDH } from 'crypto';
 					},
 					
 				],
-				thems:["Panda","Watertown","Great Wall","Terra-Cotta Warriors","Forbidden City","Li River","Layover Tour","Day trips","Local Food","Dumplings","Landmarks","Short Excursions","Family Friendly","Tibet","Lama Monks","Mt.Kailash","Everest Base Camp"],
+				thems:["Bund", "Watertown", "Great Wall", "Terra-Cotta Warriors", "Forbidden City", "Li River", "Layover Tour", "Day trips", "Local Food", "Dumplings", "Landmarks", "Short Excursions", "Family Friendly","Panda","Everest Base Camp"],
 				loc: slug,
 				activityList: listData,
 				logIn: '',

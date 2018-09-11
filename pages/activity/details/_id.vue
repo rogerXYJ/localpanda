@@ -138,9 +138,9 @@
 				data.participants=userCookie.participants
 			}
 			//ABtest 点评
-			if(id == '11280' || id =='11068'){
-				data.ABtest = true;
-			}
+			// if(id == '11280' || id =='11068'){
+			// 	data.ABtest = true;
+			// }
 
 			
 			try {
@@ -154,7 +154,7 @@
 							detailRes:res.data,
 							availableDate:[]
 						}
-						
+						//console.log(res.data.allAvailable)
 						//resolve(resData)
 						if(!res.data.allAvailable){
 							Vue.axios.get(apiBasePath + "product/activity/" + id +'/sale/calendar').then(function(data) {
@@ -189,8 +189,8 @@
 					Vue.axios.get(apiBasePath + "product/activity/"+id+"/recommend?currency="+data.currency.code+(data.participants?'&participants='+data.participants:'')).then(function(res) {
 						// var consoleTimeS2 = new Date().getTime();
 						// 	console.log('推荐接口花费时间：'+(consoleTimeS2-consoleTimeS)+' ms');
-						resolve({res});
-						console.log()
+						resolve(res);
+						//console.log()
 					}, function(res) {
 						resolve(res);
 					});
@@ -291,7 +291,7 @@
 					response = results[0];
 					var detailData = response.detailRes;
 					var availableDate=response.availableDate
-					console.log(detailData)
+					//console.log(detailData)
 					//console.log(detailData)
 					data.AvailableDate=availableDate		
 					if(detailData.valid || route.query.valid==1) {//.valid == 1
@@ -367,6 +367,8 @@
 					//推荐信息
 					apiActivityRecommendRes = results[2];
 					data.recommed = apiActivityRecommendRes.data;
+
+					console.log(apiActivityRecommendRes.data);
 
 					//价格信息
 					apiActivityPriceRes = results[3];
@@ -489,33 +491,33 @@
 					this.currency=currency
 				}
     		
-			setTimeout(function(){
-				//获取ABtestID
-				var userABtestID = Cookie.get('userABtestID');
-				self.userABtestID = userABtestID?userABtestID:'';
+			// setTimeout(function(){
+			// 	//获取ABtestID
+			// 	var userABtestID = Cookie.get('userABtestID');
+			// 	self.userABtestID = userABtestID?userABtestID:'';
 
-				//GA统计
-				self.isABtestShow = self.travelersReviews.entities && self.travelersReviews.entities.length && self.ABtest && self.userABtestID%2==0;
-				if(self.isABtestShow){
+			// 	//GA统计
+			// 	self.isABtestShow = self.travelersReviews.entities && self.travelersReviews.entities.length && self.ABtest && self.userABtestID%2==0;
+			// 	if(self.isABtestShow){
 
-					galoadTimer = setInterval(function(){
-						if(window.ga){
-							window.clearInterval(galoadTimer);
-							ga(gaSend, {
-								hitType: 'event',
-								eventCategory: 'activity_detail',
-								eventAction: 'abtest_comment',
-								eventLabel: 'load',
-							});
-						}
-					},500);
+			// 		galoadTimer = setInterval(function(){
+			// 			if(window.ga){
+			// 				window.clearInterval(galoadTimer);
+			// 				ga(gaSend, {
+			// 					hitType: 'event',
+			// 					eventCategory: 'activity_detail',
+			// 					eventAction: 'abtest_comment',
+			// 					eventLabel: 'load',
+			// 				});
+			// 			}
+			// 		},500);
 
 
 					
-					//console.log('ABtest产品，加载到了点评！');
-				}
+			// 		//console.log('ABtest产品，加载到了点评！');
+			// 	}
 
-			},100);
+			// },100);
 		},
 		watch: {
 			"detail.latestBooking": function(val, oldVal) {

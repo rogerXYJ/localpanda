@@ -1,6 +1,6 @@
 <template>
 	<div id="activitiesDetail">
-		<HeaderCommon :logIn="logIn" :nowCurrency="currency" @headCurrency="headCurrencyFn"></HeaderCommon>
+		<HeaderCommon :logIn="logIn" :nowCurrency="currency" @headCurrency="headCurrencyFn" @getExchange="setExchange"></HeaderCommon>
 		<Meau  v-show="isShowMeau" :nowCurrency="currency" @headCurrency="headCurrencyFn" :inclusions="inclusions" :highlights="highlights" :notice="notice" :exclusions="exclusions" :picInfo="picInfo" :photoList="photoList" :recommed="recommed" :travelersReviews="travelersReviews" :userABtestID="userABtestID" :ABtest="ABtest" ></Meau>
 		<ActivityBanner :bannerPhotos="detail.bannerPhotos" ></ActivityBanner>
 		<Activities
@@ -31,6 +31,7 @@
 			v-model="currency"
 			:participants="participants"
 			:AvailableDate="AvailableDate"
+			:exchange="exchange"
 
 			></Activities>
 		<FooterCommon :nowCurrency="currency" @headCurrency="headCurrencyFn"></FooterCommon>
@@ -121,7 +122,8 @@
 				isABtestShow:false,
 				currency:{code: "USD", symbol: "$", exchangeRate: 1},
 				participants:0,
-				AvailableDate:[]
+				AvailableDate:[],
+				exchange:[]
 
 			};
 			var response = {};
@@ -136,9 +138,9 @@
 				data.participants=userCookie.participants
 			}
 			//ABtest 点评
-			if(id == '11280' || id =='11068'){
-				data.ABtest = true;
-			}
+			// if(id == '11280' || id =='11068'){
+			// 	data.ABtest = true;
+			// }
 
 			
 			try {
@@ -148,27 +150,26 @@
 					Vue.axios.get(apiBasePath + "product/activity/" + id).then(function(res) {
 						// var consoleTimeS2 = new Date().getTime();
 						// 	console.log('基本信息接口花费时间：'+(consoleTimeS2-consoleTimeS)+' ms');
-						
 						var resData={
-							detailRes:res.data
+							detailRes:res.data,
+							availableDate:[]
 						}
-						//console.log(resData.detailRes.Allavailable)
-						if(!resData.detailRes.allAvailable){
+						//console.log(res.data.allAvailable)
+						//resolve(resData)
+						if(!res.data.allAvailable){
 							Vue.axios.get(apiBasePath + "product/activity/" + id +'/sale/calendar').then(function(data) {
-								// var AvailableDate=[]
-								// var dd=data.data;
-								// for(let i=0;i<dd.length;i++){
-								// 	AvailableDate.push(dd[i].saleDate)
-								// }
+					
 								resData.availableDate=data.data
 								resolve(resData);
-								// data.AvailableDate=AvailableDate
-								// console.log(data.AvailableDate)
-							},function(res){})
+							},function(data){
+								resolve(resData);
+							})
+						}else{
+							resolve(resData);
 						}
 						
 					}, function(res){
-						resolve(res)
+						resolve(resData)
 					});
 				})
 				
@@ -183,16 +184,13 @@
 					// 	resolve(res);
 					// });
 				});
-
 				//推荐信息
-				// var url=apiBasePath + "product/activity/"+id+"/recommend?currency="+data.currency.code+(data.participants?'&participants='+data.participants:'')
-				// console.log(url)
 				var Promise3 = new Promise(function(resolve, reject){
 					Vue.axios.get(apiBasePath + "product/activity/"+id+"/recommend?currency="+data.currency.code+(data.participants?'&participants='+data.participants:'')).then(function(res) {
 						// var consoleTimeS2 = new Date().getTime();
 						// 	console.log('推荐接口花费时间：'+(consoleTimeS2-consoleTimeS)+' ms');
 						resolve(res);
-						console.log()
+						//console.log()
 					}, function(res) {
 						resolve(res);
 					});
@@ -293,8 +291,8 @@
 					response = results[0];
 					var detailData = response.detailRes;
 					var availableDate=response.availableDate
-					console.log(availableDate)
-					console.log(detailData)
+					//console.log(detailData)
+					//console.log(detailData)
 					data.AvailableDate=availableDate		
 					if(detailData.valid || route.query.valid==1) {//.valid == 1
 						
@@ -369,6 +367,8 @@
 					//推荐信息
 					apiActivityRecommendRes = results[2];
 					data.recommed = apiActivityRecommendRes.data;
+
+					// console.log(apiActivityRecommendRes.data);
 
 					//价格信息
 					apiActivityPriceRes = results[3];
@@ -467,16 +467,20 @@
 				}
 			},
 			currencyChangeFn(data){
+				
 				this.recommed = data;
-				//console.log(data);
+				
 			},
-			
+			setExchange(val){
+				this.exchange=val
+				
+			},
 			headCurrencyFn(currency){
 				this.currency = currency;
 			}
 		},
 		mounted: function() {
-			console.log(this.AvailableDate)
+			
 			var self = this;
 			self.id!='undefined'?self.id:getUrlParams()
 			this.logIn = window.localStorage.getItem("logstate");
@@ -487,33 +491,33 @@
 					this.currency=currency
 				}
     		
-			setTimeout(function(){
-				//获取ABtestID
-				var userABtestID = Cookie.get('userABtestID');
-				self.userABtestID = userABtestID?userABtestID:'';
+			// setTimeout(function(){
+			// 	//获取ABtestID
+			// 	var userABtestID = Cookie.get('userABtestID');
+			// 	self.userABtestID = userABtestID?userABtestID:'';
 
-				//GA统计
-				self.isABtestShow = self.travelersReviews.entities && self.travelersReviews.entities.length && self.ABtest && self.userABtestID%2==0;
-				if(self.isABtestShow){
+			// 	//GA统计
+			// 	self.isABtestShow = self.travelersReviews.entities && self.travelersReviews.entities.length && self.ABtest && self.userABtestID%2==0;
+			// 	if(self.isABtestShow){
 
-					galoadTimer = setInterval(function(){
-						if(window.ga){
-							window.clearInterval(galoadTimer);
-							ga(gaSend, {
-								hitType: 'event',
-								eventCategory: 'activity_detail',
-								eventAction: 'abtest_comment',
-								eventLabel: 'load',
-							});
-						}
-					},500);
+			// 		galoadTimer = setInterval(function(){
+			// 			if(window.ga){
+			// 				window.clearInterval(galoadTimer);
+			// 				ga(gaSend, {
+			// 					hitType: 'event',
+			// 					eventCategory: 'activity_detail',
+			// 					eventAction: 'abtest_comment',
+			// 					eventLabel: 'load',
+			// 				});
+			// 			}
+			// 		},500);
 
 
 					
-					//console.log('ABtest产品，加载到了点评！');
-				}
+			// 		//console.log('ABtest产品，加载到了点评！');
+			// 	}
 
-			},100);
+			// },100);
 		},
 		watch: {
 			"detail.latestBooking": function(val, oldVal) {

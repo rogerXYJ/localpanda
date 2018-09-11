@@ -130,7 +130,7 @@
 						</ul>
 					</div>
 				</div>
-				<div class="review" v-if="travelersReviews.entities&&travelersReviews.entities.length>0&&!ABtest || travelersReviews.entities && travelersReviews.entities.length && ABtest && userABtestID%2==0" id="review">
+				<div class="review" v-if="travelersReviews.entities&&travelersReviews.entities.length>0" id="review">
 					<div class="reviewTitle clearfix">
 						<h3>{{travelersReviews.entities.length==1?"Review":"Reviews"}} ({{travelersReviews.records}})</h3>
 						<grade :score="travelersReviews.avgScore" :big="'true'"></grade>
@@ -254,16 +254,25 @@
 					<div class="boxshowdow">
 						<div class="bookbox">
 							<div class="picPp clearfix">
+									<div class="picLeft">
+										<select class="currency_type" v-model="selectExchange"  @change="changeCurrency">
+											<option :value="item.code" v-for="item in exchange" :key="item.code">{{item.code}}</option>
+										</select>
+										<span class="iconfont">&#xe666;</span>
+									</div>
 									<div class="picRight" >
 										<div style="color: #FFF;">
-											<p v-if="people=='Select'">From {{nowExchange.code}}&nbsp;&nbsp;<b style="font-size: 22px"> {{nowExchange.symbol}} {{startingPrice}}  </b>per person</p>
+											<p v-if="people=='Select'">{{!picInfo.unifiedPricing?'From':''}} {{nowExchange.code}}&nbsp;&nbsp;<b style="font-size: 22px"> {{nowExchange.symbol}} {{startingPrice}}  </b>per person
+												<span style="font-size:12px;display:block;padding-left:70px" v-if="people=='Select' && !picInfo.unifiedPricing">Price based on group of {{minPeople}}</span>
+											</p>
 											 
-											<p v-if="people>1">{{nowExchange.code}}&nbsp;&nbsp;<b style="font-size:22px" >{{nowExchange.symbol}}{{startingPrice}}</b> pp for party of {{people}}</p>
+											<p v-if="people>1"><b style="font-size:22px" >{{nowExchange.symbol}}{{startingPrice}}</b> {{!picInfo.unifiedPricing?'pp for party of '+people : 'per person'}}</p>
 											
-											<p v-if="people==1">{{nowExchange.code}}&nbsp;&nbsp;<b style="font-size:22px" >{{nowExchange.symbol}}{{startingPrice}}</b> for 1 Person</p>
+											<p v-if="people==1"><b style="font-size:22px" >{{nowExchange.symbol}}{{startingPrice}}</b> for 1 Person</p>
 											<!-- <span class="question" @mouseover="showNode" @mouseleave="hidden">?</span> -->
+											
 										</div>
-										<p style="font-size:12px;" v-if="people=='Select'">Price based on group of {{minPeople}}</p>
+										
 									</div>
 
 								<!--   <div class="priceNote" v-if="isShowPicNode" @mouseover="showNodeCont" @mouseleave="hiddenCont">
@@ -472,7 +481,8 @@
 			"isABtestShow",
 			"value",
 			"AvailableDate",
-			"participants"
+			"participants",
+			"exchange"
 		],
 		name: "Activities",
 		
@@ -513,7 +523,7 @@
 				objectType:'ACTIVITY',
 				//汇率换算
 				nowExchange:{},//{'rate':1,'currency':'USD','symbol':'$'}
-				exchange:[],
+				//exchange:[],
 				picList:[],
 				mouseTime:null,
 				detailAll:[],
@@ -528,6 +538,7 @@
 				showMoreItinerary:false,
 				minPeople:0,
 				startingPrice:0,
+				selectExchange:'USD',
 				
 			};
 			
@@ -618,12 +629,14 @@
 				var thisDetail = picInfo.details;
 				//换算折扣价
 				var exchange = this.exchange;
-				// for(var i=0;i<exchange.length;i++){
-				// 	var thisEx = exchange[i];
-				// 	//检测当前货币类型
-				// 	if(thisEx.code==value){
+				for(var i=0;i<exchange.length;i++){
+					var thisEx = exchange[i];
+				 	//检测当前货币类型
+				 	if(thisEx.code==value){
 				// 		//设置当前币种
-				// 		this.nowExchange = thisEx;
+						 this.nowExchange = thisEx;
+					 }
+				}
 				// 		//切换折扣价币种
 				// 		picInfo.currency = value;
 				// 		picInfo.symbol = thisEx.symbol;
@@ -738,6 +751,7 @@
 
 
 				//当前币种
+				console.log(this.nowExchange)
 				self.$emit('input',this.nowExchange);
 
 				//请求推荐模块
@@ -1039,14 +1053,14 @@
 
 
 					//点评ABtest
-					if(this.isABtestShow){
-						ga(gaSend, {
-							hitType: 'event',
-							eventCategory: 'activity_detail',
-							eventAction: 'abtest_comment',
-							eventLabel: 'book',
-						});
-					}
+					// if(this.isABtestShow){
+					// 	ga(gaSend, {
+					// 		hitType: 'event',
+					// 		eventCategory: 'activity_detail',
+					// 		eventAction: 'abtest_comment',
+					// 		eventLabel: 'book',
+					// 	});
+					// }
 
 					location.href = "/activity/booking/"+that.detail.activityId
 
@@ -1129,6 +1143,7 @@
 			value:function(val){
 				let that=this
 				this.nowExchange = val;
+				this.selectExchange=val.code
 				this.changeCurrency(val.code)
 			},
 			
@@ -1210,19 +1225,22 @@
 			
 
 			let participants=this.participants;
-			console.log(participants)
+			
 			if(participants==0){
 				that.people="Select"
 				that.startingPrice=that.returnFloat(that.picInfo.bottomPrice)
 			}else{
-				that.people=parseInt(participants)<that.picInfo.minParticipants?that.picInfo.minParticipants:parseInt(participants)
+				that.people=parseInt(participants)<that.picInfo.minParticipants?that.picInfo.minParticipants:parseInt(participants);
+				//大于最大人数时，人数设置最大人数
+				if(that.people>this.picInfo.maxParticipants){
+					that.people=this.picInfo.maxParticipants;
+				}
 				that.adultsPic=that.picInfo.details[that.people-1].price;
 				that.startingPrice=that.returnFloat(that.picInfo.details[that.people-1].price/that.people)
 				that.isShowBook=true
 				that.adults= that.people-that.children
 			}
 		
-			
 
 			
 
@@ -1242,7 +1260,7 @@
 			var currency= JSON.parse(Cookie.get('currency'))?JSON.parse(Cookie.get('currency')):{'code':'USD','symbol':'$'};
 			 //that.exchange=currency
 			 that.nowExchange=currency
-			
+			that.selectExchange=currency.code
 			 
 			//调整数据，设置默认价格 
 			
@@ -1278,17 +1296,19 @@
 			
 			//that.sixArr=that.tableData(that.picInfo.details)
 			//初始化日历
-			var AvailableDate=[]
-			for(var i=0;i<that.AvailableDate.length;i++){
-				AvailableDate.push(that.AvailableDate[i].saleDate)
-			}
-			console.log(AvailableDate)
-			that.flatPickr = new Flatpickr('#js_changetime', {
-				minDate: that.picInfo.earliestBookDate,
-				maxDate: addmulMonth(that.picInfo.earliestBookDate, 12),
-				enable:AvailableDate
-			});
-			console.log(that.AvailableDate)
+			
+				var AvailableDate=[]
+				for(var i=0;i<that.AvailableDate.length;i++){
+					AvailableDate.push(that.AvailableDate[i].saleDate)
+				}
+				
+				that.flatPickr = new Flatpickr('#js_changetime', {
+					minDate: that.picInfo.earliestBookDate,
+					maxDate: addmulMonth(that.picInfo.earliestBookDate, 12),
+					enable:AvailableDate
+				});
+			
+		
 			document
 				.getElementsByTagName("body")[0]
 				.addEventListener("click", function() {
@@ -1487,6 +1507,7 @@
 								float: left;
 								position: relative;
 								margin-right:15px;
+								top:8px;
 								b {
 									font-size: 24px !important;
 									vertical-align: middle;

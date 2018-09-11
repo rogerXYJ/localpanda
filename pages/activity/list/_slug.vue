@@ -1,9 +1,14 @@
 <template>
 	<div class="activityList">
 		<HeaderCommon :logIn="logIn" @closeSearchList="closeFn" :nowCurrency="currency" @headCurrency="headCurrencyFn" :selectNumber="selectNumber"></HeaderCommon>
-		<div class="banner">
+		
+		<div class="banner" :style="bannerInfo?'background: url('+bannerInfo.bannerSrc+') no-repeat;':''">
 			<div class="linerBackground">
-				<div class="covertitle">
+				<div class="covertitle" v-if="bannerInfo">
+					<h3>{{bannerInfo.title}}</h3>
+					<h4>{{bannerInfo.subtitle}}</h4>
+				</div>
+				<div class="covertitle" v-else>
 					<h3>Unlock Local Access to China</h3>
 					<h4>Explore hundreds of unique, immersive and authentic experiences</h4>
 				</div>
@@ -25,7 +30,7 @@
 						<div class="city">
 							<h3>Popular Destinations</h3>
 							<ul>
-								<li v-for="item in options"><a @click.stop="gaRecommendation" :href="getUrl(item.value,'recommend')">{{item.value}}</a></li>
+								<li v-for="item in options"><a @click.stop="gaRecommendation" :href="getUrl(item,'recommend')">{{item}}</a></li>
 								
 							</ul>
 						</div>
@@ -299,7 +304,7 @@ import { createECDH } from 'crypto';
 			}
 			
 			let postData = {
-				keyword: loc == 'Xian' ? "Xi'an" : loc,
+				keyword: (loc == 'Xian'||loc == 'xian') ? "Xi'an" : loc,
 				pageNum: 1,
 				pageSize: 16,
 				participants:0,
@@ -467,6 +472,94 @@ import { createECDH } from 'crypto';
 					thisNumLength++;
 				}
 			};
+
+
+			//设置banner---开始
+			var setBanner = function(){
+				// if(!keyword){
+				// 	return '';
+				// }
+				//判断获取头部和标题
+				var bannerData = [
+					{
+						bannerSrc:'https://cloud.localpanda.com/activityList/banners/Beijing.jpg',
+						keywords:['Beijing'],
+						title:'Beijing Tours & Activities',
+						subtitle:"Explore China's 3000 Year-old Capital"
+					},
+					{
+						bannerSrc:'https://cloud.localpanda.com/activityList/banners/ForbiddenCity.jpg',
+						keywords:['Forbidden City','Forbidden Palace'],
+						title:'Forbidden City - Beijing',
+						subtitle:"Step Back in Time to Imperial China"
+					},
+					{
+						bannerSrc:'https://cloud.localpanda.com/activityList/banners/GreatWall.jpg',
+						keywords:['The Great Wall','Great Wall of China','Great Wall Hiking','Great Wall'],
+						title:'Great Wall of China - Beijing',
+						subtitle:"Discover the Perfect Great Wall Trip for You"
+					},
+					{
+						bannerSrc:'https://cloud.localpanda.com/activityList/banners/Hangzhou.jpg',
+						keywords:['Hangzhou'],
+						title:'Hangzhou Tours & Activities',
+						subtitle:"Incredible Day Trips from Shanghai"
+					},
+					{
+						bannerSrc:'https://cloud.localpanda.com/activityList/banners/Panda.jpg',
+						keywords:['Pandas','Giant Pandas','panda'],
+						title:'Giant Pandas - Chengdu',
+						subtitle:"Hang out with China’s Favorite Animal"
+					},
+					{
+						bannerSrc:'https://cloud.localpanda.com/activityList/banners/Shanghai.jpg',
+						keywords:['Shanghai'],
+						title:'Shanghai Tours & Activities',
+						subtitle:"Experience Life in China’s Biggest Metropolis"
+					},
+					{
+						bannerSrc:'https://cloud.localpanda.com/activityList/banners/TheBund.jpg',
+						keywords:['The Bund','Bund'],
+						title:'The Bund - Shanghai',
+						subtitle:"Where Shanghai’s Past & Future Meet"
+					},
+					{
+						bannerSrc:'https://cloud.localpanda.com/activityList/banners/WaterTown.jpg',
+						keywords:['Water town','Watertown'],
+						title:'Suzhou & China’s Water Towns',
+						subtitle:"Sleepy Canal Towns with Legendary Gardens"
+					},
+					{
+						bannerSrc:'https://cloud.localpanda.com/activityList/banners/Xian.jpg',
+						keywords:["Xi'an","Xian","Terra-Cotta Warriors"],
+						title:"Xi'an & Terracotta Warriors",
+						subtitle:"See Where Imperial China was Born"
+					},
+					{
+						bannerSrc:'https://cloud.localpanda.com/activityList/banners/Xian_01.jpg',
+						keywords:['Terracotta Warriors','Terracotta','Terracotta Army'],
+						title:"Xi'an & Terracotta Warriors",
+						subtitle:"See Where Imperial China was Born"
+					}
+				];
+
+
+				//设置当前banner
+				for(var i=0;i<bannerData.length;i++){
+					var thisKeywords = bannerData[i].keywords;
+					for(var j=0;j<thisKeywords.length;j++){
+						var thisData = thisKeywords[j];
+						//if(loc.toLowerCase()=='china' && keyword.toLowerCase()==thisData.toLowerCase() || loc.toLowerCase()!='china' && loc.toLowerCase()==thisData.toLowerCase()){
+						if(keyword.toLowerCase()==thisData.toLowerCase() || loc.toLowerCase()==thisData.toLowerCase()){
+							return bannerData[i];
+						}
+					}
+				}
+
+				return '';
+			};///设置banner---结束
+
+
 			return {
 				listdata: data,
 				participantsOption:[
@@ -520,33 +613,8 @@ import { createECDH } from 'crypto';
 
 					},
 					],
-				options: [
-					{
-						value: 'Shanghai',
-					
-					},
-					{
-						value: 'Beijing',
-						
-					},
-					{
-						value: "Xi'an",
-						
-					},
-					{
-						value: "Guilin",
-						
-					},
-					{
-						value: 'Chengdu',
-						
-					},
-					{
-						value: 'Tibet'
-					},
-					
-				],
-				thems:["Panda","Watertown","Great Wall","Terra-Cotta Warriors","Forbidden City","Li River","Layover Tour","Day trips","Local Food","Dumplings","Landmarks","Short Excursions","Family Friendly","Tibet","Lama Monks","Mt.Kailash","Everest Base Camp"],
+				options: ['Shanghai', 'Beijing', "Xi'an", "Guilin", 'Chengdu',"Tibet","Suzhou","Hangzhou"],
+				thems:["Bund", "Watertown", "Great Wall", "Terra-Cotta Warriors", "Forbidden City", "Li River", "Layover Tour", "Day trips", "Local Food", "Dumplings", "Landmarks", "Short Excursions", "Family Friendly","Panda","Everest Base Camp"],
 				loc: slug,
 				activityList: listData,
 				logIn: '',
@@ -604,6 +672,9 @@ import { createECDH } from 'crypto';
 				selectPeople:false,//显示选择人数
 				selectNumber:selectNumber,//人数最大最小值
 				isfilter:false,	
+
+
+				bannerInfo: setBanner()
 			}
 
 		},
@@ -713,8 +784,14 @@ import { createECDH } from 'crypto';
 			},
 			//处理价格筛选显示500+
 			format(e){
-				if(e>500){
-					return 500+'+'
+				var tipStr= 500;
+				if(this.currency.code=='CNY'){
+					tipStr = 3000;
+				}else if(this.currency.code=='JPY'){
+					tipStr = 50000;
+				}
+				if(e>tipStr){
+					return tipStr+'+'
 				}
 			},
 			//筛选价格
@@ -1155,7 +1232,20 @@ import { createECDH } from 'crypto';
 					price = [0,50500];
 				}
 				this.checkPrice = price;
-				this.getData();
+
+				//重置价格区间
+				var thisFil = this.postData.filters;
+				if(thisFil){
+					for(var i=0;i<thisFil.length;i++){
+						var thisData = thisFil[i];
+						if(thisData.type == 'PRICE'){
+							this.postData.filters[i] = {type: "PRICE", minValue: 0};
+						}
+					}
+				}
+
+				this.jumpUrl();
+				//this.getData();
 			}
 		},
 		watch: {
@@ -1270,7 +1360,8 @@ import { createECDH } from 'crypto';
 						this.seachList=res.data
 						if(this.seachList.length==0){
 							this.showSeachList=false
-						}
+						};
+						
 					},res=>{})
 				}else{
 					
@@ -1320,6 +1411,9 @@ import { createECDH } from 'crypto';
 				that.selectPeople=false
 				
 			})
+
+
+
 			// if(window.name != "bencalie"){
 			// 	location.reload();
 			// 	window.name = "bencalie";

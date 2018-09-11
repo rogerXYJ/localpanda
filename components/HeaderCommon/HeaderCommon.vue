@@ -578,9 +578,9 @@
 				for(let i = 0;i<data.length;i++){
 					data[i].sure=0
 				}
-				console.log(data)
-				that.exchange = data;
 				
+				that.exchange = data;
+				that.$emit('getExchange',data)
 			}
 
 			//读取币种

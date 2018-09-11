@@ -1,6 +1,6 @@
 <template>
 	<div id="activitiesDetail">
-		<HeaderCommon :logIn="logIn" :nowCurrency="currency" @headCurrency="headCurrencyFn"></HeaderCommon>
+		<HeaderCommon :logIn="logIn" :nowCurrency="currency" @headCurrency="headCurrencyFn" @getExchange="setExchange"></HeaderCommon>
 		<Meau  v-show="isShowMeau" :nowCurrency="currency" @headCurrency="headCurrencyFn" :inclusions="inclusions" :highlights="highlights" :notice="notice" :exclusions="exclusions" :picInfo="picInfo" :photoList="photoList" :recommed="recommed" :travelersReviews="travelersReviews" :userABtestID="userABtestID" :ABtest="ABtest" ></Meau>
 		<ActivityBanner :bannerPhotos="detail.bannerPhotos" ></ActivityBanner>
 		<Activities
@@ -31,6 +31,7 @@
 			v-model="currency"
 			:participants="participants"
 			:AvailableDate="AvailableDate"
+			:exchange="exchange"
 
 			></Activities>
 		<FooterCommon :nowCurrency="currency" @headCurrency="headCurrencyFn"></FooterCommon>
@@ -121,7 +122,8 @@
 				isABtestShow:false,
 				currency:{code: "USD", symbol: "$", exchangeRate: 1},
 				participants:0,
-				AvailableDate:[]
+				AvailableDate:[],
+				exchange:[]
 
 			};
 			var response = {};
@@ -465,17 +467,20 @@
 				}
 			},
 			currencyChangeFn(data){
-				console.log(data);
+				
 				this.recommed = data;
 				
 			},
-			
+			setExchange(val){
+				this.exchange=val
+				
+			},
 			headCurrencyFn(currency){
 				this.currency = currency;
 			}
 		},
 		mounted: function() {
-			console.log(this.AvailableDate)
+			
 			var self = this;
 			self.id!='undefined'?self.id:getUrlParams()
 			this.logIn = window.localStorage.getItem("logstate");

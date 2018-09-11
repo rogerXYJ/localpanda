@@ -1,6 +1,6 @@
 <template>
 	<div class="fillYourInfo">
-		<HeaderCommon :logIn="logIn"></HeaderCommon>
+		<HeaderCommon :logIn="logIn" @getExchange="setExchange"></HeaderCommon>
 		<div class="fill">
 			<h4 class="page_title">Secure booking — only takes 1 minute!</h4>
 			<div class="safeguard">
@@ -115,12 +115,12 @@
 					<div class="total clearfix">
 						<div class="totle-title">Total ({{opctions.currency}})</div>
 						<div class="totalPic">{{nowExchange.symbol}}{{opctions.amount}}</div>
-						<!-- <div class="picRate">
+						<div class="picRate">
 							<select class="currency_type" @change="changeCurrency" v-model="opctions.currency">
 								<option :value="item.code" v-for="item in exchange" :key="item.currency">{{item.code}}</option>
 							</select>
 							<span class="iconfont">&#xe666;</span>
-						</div> -->
+						</div>
 					</div>
 				</div>
 				<div class="serve">
@@ -353,8 +353,8 @@
 									self.couponRate = res.data.discount
 									self.opctions.couponDiscount =
 										self.returnFloat(self.returnFloat(self.opctions.adultsPic - self.opctions.childDiscount) * self.couponRate)
-									console.log(self.opctions.adultsPic)
-									console.log(self.opctions.childDiscount)
+									// console.log(self.opctions.adultsPic)
+									// console.log(self.opctions.childDiscount)
 								} else if(res.data.type == "FIXED") {
 									self.standard = res.data.discount
 									self.opctions.couponDiscount = self.standard
@@ -381,8 +381,63 @@
 				}
 				
 			},
+			setExchange(val){
+				this.exchange=val
+			},
 			//价格换算
-			// changeCurrency(e) {
+			 changeCurrency(e) {
+				var self = this; 
+				var value = e.target.value,
+				options=self.opctions;
+				options.currency=value
+				var exchange = this.exchange;
+				for(var i = 0; i < exchange.length; i++) {
+					var thisEx = exchange[i];
+					if(thisEx.code == value) {
+						this.nowExchange = thisEx;
+						
+					}
+				}
+				const p1 = new Promise(function (resolve, reject) {
+						self.axios.get("https://api.localpanda.com/api/product/activity/"+options.activityId+"/price?currency="+value).then(function(res) {
+							resolve(res)
+						}, function(res) {
+							
+						});
+					});
+
+					const p2 = new Promise(function (resolve, reject) {
+						self.axios.get("https://api.localpanda.com/api/product/activity/"+options.activityId+"/price/detail?currency="+value).then(function(res) {
+							resolve(res)
+						}, function(res) {
+							
+						});
+					
+					})
+					Promise.all([p1,p2]).then(results=>{
+							if(options.childDiscount){
+								options.childDiscount=self.returnFloat(results[0].data.childDiscount)
+							}
+							options.details=results[1].data
+							console.log(options.details)
+							for(var i=0;i<results[1].data.length;i++){
+								if(options.adultNum+options.childrenNum==results[1].data[i].capacity){
+									options.adultsPic=self.returnFloat(results[1].data[i].price)
+									options.averagePrice=self.returnFloat(results[1].data[i].perPersonPrice)
+									options.amount=options.childrenNum > 0 && options.childDiscount ?
+							self.returnFloat(self.returnFloat(results[1].data[i].price) - self.returnFloat(options.childrenNum * results[0].data.childDiscount)- (options.couponDiscount?options.couponDiscount:0)):
+							self.returnFloat(results[1].data[i].price)
+							
+							}
+
+							
+						}	
+							
+							
+
+					})
+				
+			 },
 			// 	var self = this;
 			// 	var value = e.target.value,
 			// 		opctions = self.opctions,
@@ -778,8 +833,6 @@
 			}else{
 				this.timeout=false
 			}
-			console.log(this.timeout)
-
 
 
 			this.goBackFn()

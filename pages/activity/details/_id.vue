@@ -368,7 +368,7 @@
 					apiActivityRecommendRes = results[2];
 					data.recommed = apiActivityRecommendRes.data;
 
-					console.log(apiActivityRecommendRes.data);
+					// console.log(apiActivityRecommendRes.data);
 
 					//价格信息
 					apiActivityPriceRes = results[3];

@@ -262,14 +262,17 @@
 									</div>
 									<div class="picRight" >
 										<div style="color: #FFF;">
-											<p v-if="people=='Select'">{{!picInfo.unifiedPricing?'From':''}} {{nowExchange.code}}&nbsp;&nbsp;<b style="font-size: 22px"> {{nowExchange.symbol}} {{startingPrice}}  </b>per person</p>
+											<p v-if="people=='Select'">{{!picInfo.unifiedPricing?'From':''}} {{nowExchange.code}}&nbsp;&nbsp;<b style="font-size: 22px"> {{nowExchange.symbol}} {{startingPrice}}  </b>per person
+												<span style="font-size:12px;display:block;padding-left:70px" v-if="people=='Select' && !picInfo.unifiedPricing">Price based on group of {{minPeople}}</span>
+											</p>
 											 
 											<p v-if="people>1"><b style="font-size:22px" >{{nowExchange.symbol}}{{startingPrice}}</b> pp for party of {{people}}</p>
 											
 											<p v-if="people==1"><b style="font-size:22px" >{{nowExchange.symbol}}{{startingPrice}}</b> for 1 Person</p>
 											<!-- <span class="question" @mouseover="showNode" @mouseleave="hidden">?</span> -->
+											
 										</div>
-										<p style="font-size:12px;" v-if="people=='Select' && !picInfo.unifiedPricing">Price based on group of {{minPeople}}</p>
+										
 									</div>
 
 								<!--   <div class="priceNote" v-if="isShowPicNode" @mouseover="showNodeCont" @mouseleave="hiddenCont">
@@ -626,7 +629,6 @@
 				var thisDetail = picInfo.details;
 				//换算折扣价
 				var exchange = this.exchange;
-				
 				for(var i=0;i<exchange.length;i++){
 					var thisEx = exchange[i];
 				 	//检测当前货币类型
@@ -1141,6 +1143,7 @@
 			value:function(val){
 				let that=this
 				this.nowExchange = val;
+				this.selectExchange=val.code
 				this.changeCurrency(val.code)
 			},
 			
@@ -1504,6 +1507,7 @@
 								float: left;
 								position: relative;
 								margin-right:15px;
+								top:8px;
 								b {
 									font-size: 24px !important;
 									vertical-align: middle;

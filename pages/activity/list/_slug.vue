@@ -30,7 +30,7 @@
 						<div class="city">
 							<h3>Popular Destinations</h3>
 							<ul>
-								<li v-for="item in options"><a @click.stop="gaRecommendation" :href="getUrl(item.value,'recommend')">{{item.value}}</a></li>
+								<li v-for="item in options"><a @click.stop="gaRecommendation" :href="getUrl(item,'recommend')">{{item}}</a></li>
 								
 							</ul>
 						</div>
@@ -531,13 +531,13 @@ import { createECDH } from 'crypto';
 					},
 					{
 						bannerSrc:'https://cloud.localpanda.com/activityList/banners/Xian.jpg',
-						keywords:["Xi'an","Xian","Terra-Cotta Warriors","Terracotta"],
+						keywords:["Xi'an","Xian","Terra-Cotta Warriors"],
 						title:"Xi'an & Terracotta Warriors",
 						subtitle:"See Where Imperial China was Born"
 					},
 					{
 						bannerSrc:'https://cloud.localpanda.com/activityList/banners/Xian_01.jpg',
-						keywords:['Terracotta Warriors','Terracotta ','Terracotta Army'],
+						keywords:['Terracotta Warriors','Terracotta','Terracotta Army'],
 						title:"Xi'an & Terracotta Warriors",
 						subtitle:"See Where Imperial China was Born"
 					}
@@ -613,32 +613,7 @@ import { createECDH } from 'crypto';
 
 					},
 					],
-				options: [
-					{
-						value: 'Shanghai',
-					
-					},
-					{
-						value: 'Beijing',
-						
-					},
-					{
-						value: "Xi'an",
-						
-					},
-					{
-						value: "Guilin",
-						
-					},
-					{
-						value: 'Chengdu',
-						
-					},
-					{
-						value: 'Tibet'
-					},
-					
-				],
+				options: ['Shanghai', 'Beijing', "Xi'an", "Guilin", 'Chengdu',"Tibet","Suzhou","Hangzhou"],
 				thems:["Bund", "Watertown", "Great Wall", "Terra-Cotta Warriors", "Forbidden City", "Li River", "Layover Tour", "Day trips", "Local Food", "Dumplings", "Landmarks", "Short Excursions", "Family Friendly","Panda","Everest Base Camp"],
 				loc: slug,
 				activityList: listData,

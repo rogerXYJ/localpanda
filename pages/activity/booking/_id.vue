@@ -436,7 +436,7 @@
 							
 
 					})
-				Cookie.set('currency',JSON.stringify(this.nowExchange),{path:'/','expires':30});
+				
 			 },
 			// 	var self = this;
 			// 	var value = e.target.value,
@@ -833,8 +833,6 @@
 			}else{
 				this.timeout=false
 			}
-			console.log(this.timeout)
-
 
 
 			this.goBackFn()

@@ -262,11 +262,7 @@
 									</div>
 									<div class="picRight" >
 										<div style="color: #FFF;">
-<<<<<<< HEAD
-											<p v-if="people=='Select'">From &nbsp;&nbsp;<b style="font-size: 22px"> {{nowExchange.symbol}} {{startingPrice}}  </b>per person</p>
-=======
 											<p v-if="people=='Select'">{{!picInfo.unifiedPricing?'From':''}} {{nowExchange.code}}&nbsp;&nbsp;<b style="font-size: 22px"> {{nowExchange.symbol}} {{startingPrice}}  </b>per person</p>
->>>>>>> master
 											 
 											<p v-if="people>1"><b style="font-size:22px" >{{nowExchange.symbol}}{{startingPrice}}</b> pp for party of {{people}}</p>
 											

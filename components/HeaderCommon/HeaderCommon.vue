@@ -45,6 +45,14 @@
 					<label>{{currency}} ( {{symbol}} ) <span class="iconfont">&#xe666;</span> </label>
 					<div class="currencyBox" v-if="showCurrency">
 						<div class="currencyItem" :class="{color:item.sure}"  v-for="(item,index) in exchange" @click.stop="setCurrency(item,index)">
+							<div style="margin-right: 12px;">
+								<svg viewBox="0 0 32 24" role="presentation" aria-hidden="true" focusable="false" style="height: 24px; width: 24px; display: block; fill: currentcolor;">
+									<path d="m0 0h32v24h-32z" fill="#de2910">
+									</path>
+									<path d="m6 7.5-2.1 1.4.8-2.45-2.1-1.55h2.6l.8-2.5.8 2.5h2.6l-2.1 1.55.8 2.45zm5.79-4.59-.92.19.64-.75-.48-.85.88.37.65-.77-.11 1 .88.37-.94.25-.1.98zm2.86 2.38-.46.82-.15-.98-.96-.2.86-.42-.16-.99.69.74.86-.42-.43.87.68.72zm-.24 3.67-.75.57.26-.95-.79-.57.96-.03.26-.97.33.95.96-.03-.75.62.33.93-.79-.51zm-2.63 2.37-.91.23.61-.77-.51-.83.89.34.62-.79-.07 1 .89.34-.93.28-.06.99z" fill="#ffde00">
+									</path>
+								</svg>
+							</div>
 							{{item.code}} ( {{item.symbol}} )
 							<span v-if="item.sure" class="iconfont true">&#xe61e;</span>
 						</div>

@@ -1260,10 +1260,12 @@ import { createECDH } from 'crypto';
 
 				//重置价格区间
 				var thisFil = this.postData.filters;
-				for(var i=0;i<thisFil.length;i++){
-					var thisData = thisFil[i];
-					if(thisData.type == 'PRICE'){
-						this.postData.filters[i] = {type: "PRICE", minValue: 0};
+				if(thisFil){
+					for(var i=0;i<thisFil.length;i++){
+						var thisData = thisFil[i];
+						if(thisData.type == 'PRICE'){
+							this.postData.filters[i] = {type: "PRICE", minValue: 0};
+						}
 					}
 				}
 

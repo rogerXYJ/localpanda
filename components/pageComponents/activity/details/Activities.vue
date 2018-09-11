@@ -266,7 +266,7 @@
 												<span style="font-size:12px;display:block;padding-left:70px" v-if="people=='Select' && !picInfo.unifiedPricing">Price based on group of {{minPeople}}</span>
 											</p>
 											 
-											<p v-if="people>1"><b style="font-size:22px" >{{nowExchange.symbol}}{{startingPrice}}</b> pp for party of {{people}}</p>
+											<p v-if="people>1"><b style="font-size:22px" >{{nowExchange.symbol}}{{startingPrice}}</b> {{!picInfo.unifiedPricing?'pp for party of '+people : 'per person'}}</p>
 											
 											<p v-if="people==1"><b style="font-size:22px" >{{nowExchange.symbol}}{{startingPrice}}</b> for 1 Person</p>
 											<!-- <span class="question" @mouseover="showNode" @mouseleave="hidden">?</span> -->

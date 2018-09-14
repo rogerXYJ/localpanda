@@ -125,7 +125,7 @@
 				</div>
 				<div class="serve">
 					<h5>HAVING 	TROUBLE BOOKING?</h5>
-					<a href="/inquiry/talk" target="_blank">Chat with Us</a>
+					<!-- <a href="/inquiry/talk" target="_blank">Chat with Us</a> -->
 					<p>Email us: <span>service@localpanda.com</span></p>
 				</div>
 			</div>

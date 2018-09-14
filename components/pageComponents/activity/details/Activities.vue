@@ -401,7 +401,7 @@
 									<button class="bookNow" @click.stop="order">Book Now</button>
 									<div class="inquiry_box">
 										<button class="inquiryBtn" @click="showContact">Inquire</button>
-										<a class="inquiryBtn" href="/inquiry/talk" target="_blank">Chat with Panda</a>
+										<!-- <a class="inquiryBtn" href="/inquiry/talk" target="_blank">Chat with Panda</a> -->
 									</div>
 								</div>
 								<div class="sales">
@@ -1789,12 +1789,12 @@
 										background:#fff;
 										border:1px solid #1bbc9d;
 										color: #1bbc9d;
-										width: 46%;
+										width: 100%;
 										display: inline-block;
 										cursor: pointer;
 									}
 									.inquiryBtn:nth-child(1){
-										float: right;
+										// float: right;
 									}
 								}
 								.cancat {

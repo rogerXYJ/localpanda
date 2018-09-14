@@ -264,7 +264,7 @@
 
 <script>
 if (process.browser) {
-  require("~/assets/js/pages/talk.js");
+  //require("~/assets/js/pages/talk.js");
 }
 import Vue from "vue";
 import { SelectId, Pagination } from "element-ui";

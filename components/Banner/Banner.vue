@@ -75,6 +75,7 @@
 					  },
 					autoplay: {
 						 disableOnInteraction: false,
+						 delay: 6000,
 					},
 					speed:1000,
 					loop:true,

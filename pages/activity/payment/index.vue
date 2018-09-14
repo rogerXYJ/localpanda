@@ -851,7 +851,11 @@
 					
 				}
 			}
-			
+			.login{
+				.selectCurrency{
+					display: none;
+				}
+			}
 			.search{ 
 				display: none!important;
 			}

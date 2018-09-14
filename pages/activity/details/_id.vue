@@ -62,6 +62,7 @@
 	import Meau from "~/components/pageComponents/activity/details/Meau";
 	import { delNullArr,getUrlParams } from "~/assets/js/plugin/utils";
 	import Vue from 'vue';
+	import bus from '~/assets/js/pages/bus.js'
 	export default {
 		name: "activitiesDetail",
 		async asyncData({
@@ -480,7 +481,7 @@
 			}
 		},
 		mounted: function() {
-			
+			console.log(bus)
 			var self = this;
 			self.id!='undefined'?self.id:getUrlParams()
 			this.logIn = window.localStorage.getItem("logstate");

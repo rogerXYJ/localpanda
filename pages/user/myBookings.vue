@@ -339,8 +339,36 @@
 	//@import '~/assets/font/iconfont.css';
 	.MyBookings{
 	#header {
-		box-shadow: 0px 2px 6px 0px rgba(53, 58, 63, 0.1);
-	}
+			box-shadow: 0px 2px 6px 0px rgba(53, 58, 63, 0.1);
+			.init{
+				li{
+					&:nth-child(0){
+						display: none;
+					}
+					&:nth-child(1){
+						display: none;
+					}
+					&:nth-child(3){
+						display: none;
+					}
+					
+				}
+			}
+			.login{
+				.selectCurrency{
+					display: none;
+				}
+			}
+			.search{ 
+				display: none!important;
+			}
+			
+		}
+		.footerInfo{
+			li:nth-child(5){
+				display: none!important;
+			}
+		}
 	}
 </style>
 <style lang="scss" scoped>

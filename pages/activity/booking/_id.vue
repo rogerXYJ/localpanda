@@ -205,16 +205,17 @@
 
 	export default {
 		async asyncData({
-			apiBasePath
-		}) {
-			return {
-				apiBasePath: apiBasePath
-			}
-		},
-		name: 'fillYourInfo',
-		data() {
-			return {
-				opctions: {
+			route,
+			store,
+			error,
+			apiBasePath,
+			redirect,
+			req
+		},callback) {
+			let id =route.params.id;
+			console.log(id)
+			let data={
+					opctions: {
 					averagePrice: 0,
 					adultsPic: 10,
 					childrenNum: 0,
@@ -292,9 +293,65 @@
 				timeout:false,
 				clickCountryCode:false,
 				country:'',
-			}
+				currency:{code: "USD", symbol: "$"}
+			};
 
+			var userCookie = {};
+			if(req){
+				var cookie = req.headers.cookie;
+				if(cookie){
+					var cookieArr = cookie.split(';');
+					for(var i=0;i<cookieArr.length;i++){
+						var thisCookie = cookieArr[i].split('=');
+						userCookie[thisCookie[0].trim()] = (thisCookie[1]||'').trim();
+					}
+				}
+			};
+			if(userCookie.currency){
+				data.currency = JSON.parse(decodeURIComponent(userCookie.currency));
+				
+			}
+			
+			try{
+				var Promise1 = new Promise(function(resolve, reject){
+					Vue.axios.get(apiBasePath + "product/activity/"+id+"/price?currency="+data.currency.code).then(function(res) {
+						// var consoleTimeS2 = new Date().getTime();
+						// 	console.log('价格接口花费时间：'+(consoleTimeS2-consoleTimeS)+' ms');
+						resolve(res);
+					}, function(res) {
+						resolve(res);
+					});
+				});
+
+			//价格明细
+			var Promise2 = new Promise(function(resolve, reject){
+				Vue.axios.get(apiBasePath + "product/activity/"+id+"/price/detail?currency="+data.currency.code).then(function(res) {
+					// var consoleTimeS2 = new Date().getTime();
+					// 	console.log('价格接口花费时间：'+(consoleTimeS2-consoleTimeS)+' ms');
+					resolve(res);
+				}, function(res) {
+					resolve(res);
+				});
+			});
+			Promise.all([Promise1,Promise2]).then(results=>{
+				
+				data.opctions.picInfo=results[0].data;
+				
+				data.opctions.picInfo.detail=results[1].data
+				callback(null,data);
+
+			})
+		
+
+		}catch(err) {
+				console.log(err);
+				return error({
+					statusCode: 500,
+					message: JSON.stringify(err)
+				});
+		}
 		},
+		name: 'fillYourInfo',
 		 head() {
 			let title = 'Fill in your Booking details informaiton ';
 			let description = 'Fill out your info so we can confirm your booking!'
@@ -381,6 +438,9 @@
 				}
 				
 			},
+			
+
+
 			setExchange(val){
 				this.exchange=val
 			},
@@ -436,58 +496,12 @@
 							
 
 					})
-				
+					Cookie.set('currency',JSON.stringify({
+						code: this.nowExchange.code,
+						symbol: this.nowExchange.symbol,
+					}),{path:'/','expires':30})
+			 
 			 },
-			// 	var self = this;
-			// 	var value = e.target.value,
-			// 		opctions = self.opctions,
-			// 		details = opctions.details;
-			// 	var people = opctions.adultNum + opctions.childrenNum;
-			// 	//当前人数的默认价格
-			// 	var price = details[people - 1].price;
-			// 	console.log(details)
-			// 	var standard = self.standard
-			// 	//换算折扣价
-			// 	var exchange = this.exchange;
-			// 	for(var i = 0; i < exchange.length; i++) {
-			// 		var thisEx = exchange[i];
-			// 		//检测当前货币类型
-			// 		if(thisEx.code == value) {
-			// 			//设置当前币种
-			// 			this.nowExchange = thisEx;
-			// 			//切换价格详情币种
-			// 			opctions.adultsPic = this.returnFloat(price * thisEx.exchangeRate);
-			// 			opctions.childDiscount = this.returnFloat(opctions.childDiscountPP * opctions.childrenNum * thisEx.exchangeRate);
-			// 			console.log(opctions.childDiscountPP)
-			// 			console.log(opctions.childrenNum)
-			// 			console.log(thisEx.exchangeRate)
-			// 			console.log(opctions.adultsPic)
-			// 			console.log(opctions.amount)
-			// 			console.log(opctions.childDiscount)
-			// 			if(self.couponType == "RATE") {
-			// 				opctions.couponDiscount = this.returnFloat((opctions.adultsPic-opctions.childDiscount) * self.couponRate)
-			// 			} else if(self.couponType == "FIXED") {
-			// 				opctions.couponDiscount = this.returnFloat(standard * thisEx.exchangeRate)
-			// 			}else{
-			// 				opctions.couponDiscount=0
-			// 			}
-			// 			opctions.averagePrice = this.returnFloat(opctions.adultsPic / people);
-			// 			opctions.amount = this.returnFloat(opctions.adultsPic - this.returnFloat(opctions.childrenNum * thisEx.exchangeRate * opctions.childDiscountPP) - opctions.couponDiscount);
-						
-			// 			opctions.symbol = thisEx.symbol;
-						
-			// 			self.total=opctions.amount
-						
-						
-			// 			break;
-			// 		}
-			// 	}
-
-
-			// 	//修改全站默认币种
-			// 	//Cookie.set('currency',JSON.stringify(this.nowExchange),{path:'/','expires':30});
-
-			// },
 			//退款时间计算
 			 delmulDay(dtstr, n) {
 				var dt = new Date(dtstr.replace(/\-/g,'/'));
@@ -801,9 +815,10 @@
 					//"fullRefund":that.opctions.fullRefund,
 					"finalRefundPeriod":that.opctions.fullRefund&&that.timeout?that.delmulDay(that.opctions.startDate,that.opctions.refundTimeLimit):null
 				}
+				console.log(obj)
 				if(that.addOder == false) {
 					that.addOder = true
-					that.axios.put(this.apiBasePath + "order/activity", JSON.stringify(obj), {
+					that.axios.put( "https://api.localpanda.com/api/order/activity", JSON.stringify(obj), {
 						headers: {
 							'Content-Type': 'application/json; charset=UTF-8'
 						}
@@ -823,9 +838,31 @@
 
 		},
 		mounted: function() {
-			this.opctions = localStorage.getItem("orderInfo") ? JSON.parse(localStorage.getItem("orderInfo")) : ''
-			this.logIn = window.localStorage.getItem("logstate")
+			var self=this
+			var opctions = localStorage.getItem("orderInfo") ? JSON.parse(localStorage.getItem("orderInfo")) : ''
 
+			if(opctions){
+				for(var key in opctions){
+					this.opctions[key]=opctions[key]
+				}
+			}
+			// this.opctions.adultsPic=this.getBasisPrice()
+			var details=this.opctions.picInfo.detail;
+			var opctions=this.opctions.picInfo
+		
+			this.opctions.childDiscount=opctions.childDiscount?details.childDiscount:0
+			for(var i = 0; i < details.length; i++) {
+				if(this.opctions.adultNum+this.opctions.childrenNum==details[i].capacity){
+					this.opctions.adultsPic=details[i].price
+					this.opctions.averagePrice=details[i].perPersonPrice
+					this.opctions.amount=opctions.childrenNum > 0 && opctions.childDiscount ?
+							self.returnFloat(self.returnFloat(details[i].price) - self.returnFloat(opctions.childrenNum * opctions.childDiscount)- (opctions.couponDiscount?opctions.couponDiscount:0)):
+							self.returnFloat(details[i].price)
+				}
+			}
+			
+			this.logIn = window.localStorage.getItem("logstate")
+			
 			var time1=new Date(this.opctions.startDate.replace(/-/g, '/')).getTime();
 			var time2=new Date().getTime();
 			if(parseFloat((time1-time2)/1000/60/60/24)>this.opctions.refundTimeLimit){
@@ -1026,6 +1063,11 @@
 						display: none;
 					}
 					
+				}
+			}
+			.login{
+				.selectCurrency{
+					display: none;
 				}
 			}
 			

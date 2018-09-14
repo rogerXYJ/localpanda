@@ -262,13 +262,13 @@
 									</div>
 									<div class="picRight" >
 										<div style="color: #FFF;">
-											<p v-if="people=='Select'">{{!picInfo.unifiedPricing?'From':''}} {{nowExchange.code}}&nbsp;&nbsp;<b style="font-size: 22px"> {{nowExchange.symbol}} {{startingPrice}}  </b>per person
+											<p v-if="people=='Select'">{{!picInfo.unifiedPricing?'From':''}}<b style="font-size: 22px"> {{nowExchange.symbol}} {{startingPrice}}  </b>per person
 												<span style="font-size:12px;display:block;padding-left:70px" v-if="people=='Select' && !picInfo.unifiedPricing">Price based on group of {{minPeople}}</span>
 											</p>
 											 
-											<p v-if="people>1"><b style="font-size:22px" >{{nowExchange.symbol}}{{startingPrice}}</b> {{!picInfo.unifiedPricing?'pp for party of '+people : 'per person'}}</p>
+											<p v-if="people>1"><b style="font-size:22px" >{{nowExchange.symbol}} {{startingPrice}}  </b> {{!picInfo.unifiedPricing?'pp for party of '+people : 'per person'}}</p>
 											
-											<p v-if="people==1"><b style="font-size:22px" >{{nowExchange.symbol}}{{startingPrice}}</b> for 1 Person</p>
+											<p v-if="people==1"><b style="font-size:22px" >{{nowExchange.symbol}} {{startingPrice}}  </b> {{!picInfo.unifiedPricing?'for 1 Person '+people : 'per person'}}</p>
 											<!-- <span class="question" @mouseover="showNode" @mouseleave="hidden">?</span> -->
 											
 										</div>
@@ -962,7 +962,14 @@
 				});
 				
 				if(this.isShowTime == true) this.isShowTime = false;
-				this.isShowAdults = true;
+				this.isShowAdults = !this.isShowAdults
+				if(that.isShowAdults){
+						that.people=that.adults+that.children
+						that.adultsPic=that.picInfo.details[that.people-1].price;
+						that.startingPrice=that.returnFloat(that.picInfo.details[that.people-1].price/that.people)
+					}else if(that.people=='Select'){
+						that.startingPrice=that.returnFloat(that.picInfo.bottomPrice)
+					}
 				// this.isShowBook = true;
 				this.$emit('showPeople',true)
 				

@@ -14,7 +14,7 @@
 					<li v-if="picInfo.refundInstructions" @click="goAnchor('CancellationPolicy')">Rescheduling & Cancellation</li>
 					<li v-if="picInfo.details.length>0" @click="goAnchor('picDetails')">Price Details</li>
 					<!--<li @click="goAnchor('notes')">Notes</li>-->
-					<li class="selectCurrency" @click.stop="showCurrency=true">
+					<li class="selectCurrency" @click.stop="showCurrency=!showCurrency">
 						<label>{{currency}} ( {{symbol}} ) <span class="iconfont">&#xe666;</span> </label>
 						<div class="currencyBox" v-if="showCurrency">
 							<div class="currencyItem" :class="{color:item.sure}"  v-for="(item,index) in exchange" @click.stop="setCurrency(item,index)">

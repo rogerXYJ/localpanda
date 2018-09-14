@@ -119,7 +119,11 @@ order details.You can also email service@localpanda.com or call us at +86 (21) 8
 					}
 			}
 		}
-		
+		.login{
+				.selectCurrency{
+					display: none;
+				}
+			}
 		.search{ 
 			display: none!important;
 		}

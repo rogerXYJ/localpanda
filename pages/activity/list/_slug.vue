@@ -103,7 +103,7 @@
 					</div>
 					<div class="filterBox padding">
 						<div class="title">
-							<h3>{{postData.participants!=0?'Price/person for party of ' + postData.participants:'Price/person'}}</h3>
+							<h3>{{postData.participants>1?'Price/person for party of ' + postData.participants:'Price/person'}}</h3>
 						</div>
 						<div class="filterItem1" v-if="currency.code == 'CNY'">
 							 <el-slider

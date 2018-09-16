@@ -268,7 +268,7 @@
 											 
 											<p v-if="people>1"><b style="font-size:22px" >{{nowExchange.symbol}} {{startingPrice}}  </b> {{!picInfo.unifiedPricing?'pp for party of '+people : 'per person'}}</p>
 											
-											<p v-if="people==1"><b style="font-size:22px" >{{nowExchange.symbol}} {{startingPrice}}  </b> {{!picInfo.unifiedPricing?'for 1 Person '+people : 'per person'}}</p>
+											<p v-if="people==1"><b style="font-size:22px" >{{nowExchange.symbol}} {{startingPrice}}  </b> per person</p>
 											<!-- <span class="question" @mouseover="showNode" @mouseleave="hidden">?</span> -->
 											
 										</div>
@@ -329,7 +329,7 @@
 										<p style="margin-top: 10px; font-size:12px;color:red;" v-if="error">{{dateErrText}}</p>
 										<!--<p style="margin-top: 10px;color:#353a3f;font-size:12px;opacity: .5;" v-if="!error&&!isSelectDate">{{dateErrText}}</p>-->
 
-										<div class="choose" v-if="isShowAdults">
+										<div class="choose" v-show="isShowAdults">
 											<div class="adults clearfix">
 												<b>Adults</b>
 												<div class="selectAdults">
@@ -962,14 +962,14 @@
 				});
 				
 				if(this.isShowTime == true) this.isShowTime = false;
-				this.isShowAdults = !this.isShowAdults
-				if(that.isShowAdults){
-						that.people=that.adults+that.children
-						that.adultsPic=that.picInfo.details[that.people-1].price;
-						that.startingPrice=that.returnFloat(that.picInfo.details[that.people-1].price/that.people)
-					}else if(that.people=='Select'){
-						that.startingPrice=that.returnFloat(that.picInfo.bottomPrice)
-					}
+				this.isShowAdults = !this.isShowAdults;
+				// if(that.isShowAdults){
+				// 	that.people=that.adults+that.children
+				// 	that.adultsPic=that.picInfo.details[that.people-1].price;
+				// 	that.startingPrice=that.returnFloat(that.picInfo.details[that.people-1].price/that.people)
+				// }else if(that.people=='Select'){
+				// 	that.startingPrice=that.returnFloat(that.picInfo.bottomPrice)
+				// }
 				// this.isShowBook = true;
 				this.$emit('showPeople',true)
 				
@@ -1315,10 +1315,12 @@
 					enable:AvailableDate
 				});
 			
-		
-			document
-				.getElementsByTagName("body")[0]
-				.addEventListener("click", function() {
+
+
+			document.querySelector('.Guests .choose').addEventListener("click", function(e) {
+				e.stopPropagation();
+			});
+			document.getElementsByTagName("body")[0].addEventListener("click", function() {
 					
 
 					

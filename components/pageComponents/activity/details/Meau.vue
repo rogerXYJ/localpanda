@@ -14,7 +14,7 @@
 					<li v-if="picInfo.refundInstructions" @click="goAnchor('CancellationPolicy')">Rescheduling & Cancellation</li>
 					<li v-if="picInfo.details.length>0" @click="goAnchor('picDetails')">Price Details</li>
 					<!--<li @click="goAnchor('notes')">Notes</li>-->
-					<li class="selectCurrency" @click.stop="showCurrency=!showCurrency">
+					<!-- <li class="selectCurrency" @click.stop="showCurrency=!showCurrency">
 						<label>{{currency}} ( {{symbol}} ) <span class="iconfont">&#xe666;</span> </label>
 						<div class="currencyBox" v-if="showCurrency">
 							<div class="currencyItem" :class="{color:item.sure}"  v-for="(item,index) in exchange" @click.stop="setCurrency(item,index)">
@@ -35,7 +35,7 @@
 							</div>
 
 						</div>
-					</li>
+					</li> -->
 					<!--<li v-if="recommed.length>0"@click="goAnchor('recommend')">Similar Experiences</li>-->
 				</ul>
 			</div>
@@ -213,15 +213,15 @@ export default {
             }
           }
         }
-        &:last-child {
-          float: right;
-          &:hover {
-            color: #353a3f;
-            &:after {
-              height: 0;
-            }
-          }
-        }
+        // &:last-child {
+        //   float: right;
+        //   &:hover {
+        //     color: #353a3f;
+        //     &:after {
+        //       height: 0;
+        //     }
+        //   }
+        // }
         &:hover {
           color: #1bbc9d;
           &:after {

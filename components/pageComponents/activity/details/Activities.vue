@@ -93,7 +93,9 @@
 							</div>
 						</li>
 					</ul>
-				<a v-if="detail.itineraries.length>3&&showMoreItinerary" class="more" href="javascript:;" @click="fn">View More</a>
+					<a v-if="detail.itineraries.length>3&&showMoreItinerary" class="more" href="javascript:;" @click="fn">View More</a>
+					
+					<p class="itinerary_tip" v-if="detail.groupType=='Private'"><span class="red">*</span> If you want to adjust your itinerary, feel free contact us. Since the tour is private, our staff can help you make changes according to your needs.</p>
 				</div>
 				 <!-- <div class="notes" v-if="photoList&&photoList.length>0" @click="showPhoto" id="photoList">
 					<h3>Pictures of our travelers</h3>
@@ -2068,6 +2070,14 @@ import { setTimeout } from 'timers';
 									}
 								}*/
 							}
+						}
+					}
+					.itinerary_tip{
+						margin-top: 20px;
+						font-size:14px;
+						
+						.red{
+							color: #f00;
 						}
 					}
 				}

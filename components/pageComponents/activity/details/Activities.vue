@@ -309,25 +309,27 @@
 								</div>
 								<div class="selectPepole">
 									<b>Number of Travelers</b>
-									<div class="Guests" @click.stop="showAdults">
+									<div class="Guests">
 										<!--<input class="people" readonly="readonly" v-model="people" />-->
 										<!--<div class="people" v-if="children==0&&adults==0">{{people}}</div>
 										<div class="people" v-if="children==0&&adults==1">{{people}} Person</div>
 										<div class="people" v-if="children>0||adults>1">{{people}} People</div>-->
-										<div class="people inputColor"  v-if="adults==0&&children==0&&people=='Select'">{{people}}</div>
-										<div class="people" v-else-if="children==0&&adults==1">Adult x 1</div>
-										<div class="people" v-else-if="children==0&&adults>1">Adults x {{adults}}</div>
-										<div class="people" v-if="children>0">
-											<span v-if="adults==1">Adult x 1</span>
-											<span v-else>Adults x {{adults}}</span> 
-											<span v-if="children==1"> , child x 1</span>
-											<span v-if="children>1"> , children x  {{children}}</span>
-										</div> 
-										<i class="iconfont" v-if="!isShowAdults">&#xe60f;</i>
-										<i class="iconfont" v-else>&#xe63f;</i>
-										<!--<p v-if="isSelectDate" style="margin-top: 10px; font-size: 12px; color:red;">{{dateErrText}}</p>-->
-										<p style="margin-top: 10px; font-size:12px;color:red;" v-if="error">{{dateErrText}}</p>
-										<!--<p style="margin-top: 10px;color:#353a3f;font-size:12px;opacity: .5;" v-if="!error&&!isSelectDate">{{dateErrText}}</p>-->
+										<div  @click="showAdults">
+											<div class="people inputColor"  v-if="adults==0&&children==0&&people=='Select'">{{people}}</div>
+											<div class="people" v-else-if="children==0&&adults==1">Adult x 1</div>
+											<div class="people" v-else-if="children==0&&adults>1">Adults x {{adults}}</div>
+											<div class="people" v-if="children>0">
+												<span v-if="adults==1">Adult x 1</span>
+												<span v-else>Adults x {{adults}}</span> 
+												<span v-if="children==1"> , child x 1</span>
+												<span v-if="children>1"> , children x  {{children}}</span>
+											</div> 
+											<i class="iconfont" v-if="!isShowAdults">&#xe60f;</i>
+											<i class="iconfont" v-else>&#xe63f;</i>
+											<!--<p v-if="isSelectDate" style="margin-top: 10px; font-size: 12px; color:red;">{{dateErrText}}</p>-->
+											<p style="margin-top: 10px; font-size:12px;color:red;" v-if="error">{{dateErrText}}</p>
+											<!--<p style="margin-top: 10px;color:#353a3f;font-size:12px;opacity: .5;" v-if="!error&&!isSelectDate">{{dateErrText}}</p>-->
+										</div>
 
 										<div class="choose" v-show="isShowAdults">
 											<div class="adults clearfix">
@@ -447,6 +449,7 @@
 		GetDateStr,
 		addmulMonth,
 		getUrlParams,
+		getParents
 		
 	} from "~/assets/js/plugin/utils";
 	import Contact from '~/components/Contact/Contact';
@@ -456,6 +459,7 @@
 	import Pic from "~/components/pageComponents/activity/details/Pic"
 	import grade from "~/components/pageComponents/activity/details/grade"
 	import { Timeline, TimelineItem, TimelineTitle } from '~/plugins/panda/stepline'
+import { setTimeout } from 'timers';
 	export default {
 		props: [
 			"isShowMeau",
@@ -962,7 +966,12 @@
 				});
 				
 				if(this.isShowTime == true) this.isShowTime = false;
-				this.isShowAdults = !this.isShowAdults;
+
+				
+				setTimeout(()=>{
+					that.isShowAdults = !that.isShowAdults;
+				},50)
+				
 				// if(that.isShowAdults){
 				// 	that.people=that.adults+that.children
 				// 	that.adultsPic=that.picInfo.details[that.people-1].price;
@@ -1317,23 +1326,28 @@
 			
 
 
-			document.querySelector('.Guests .choose').addEventListener("click", function(e) {
-				e.stopPropagation();
-			});
-			document.getElementsByTagName("body")[0].addEventListener("click", function() {
+			// document.querySelector('.Guests .choose').addEventListener("click", function(e) {
+			// 	e.stopPropagation();
+			// });
+			document.getElementsByTagName("body")[0].addEventListener("click", function(e) {
 					
+					var target = e.target;
 
-					
-					if(that.isShowAdults){
-						that.people=that.adults+that.children
-						that.adultsPic=that.picInfo.details[that.people-1].price;
-						that.startingPrice=that.returnFloat(that.picInfo.details[that.people-1].price/that.people)
-					}else if(that.people=='Select'){
-						that.startingPrice=that.returnFloat(that.picInfo.bottomPrice)
+					if(!getParents(target,'choose')){
+						if(that.isShowAdults){
+							that.people=that.adults+that.children
+							that.adultsPic=that.picInfo.details[that.people-1].price;
+							that.startingPrice=that.returnFloat(that.picInfo.details[that.people-1].price/that.people)
+							that.isShowTime = false;
+							that.isShowAdults=false
+						}else if(that.people=='Select'){
+							that.startingPrice=that.returnFloat(that.picInfo.bottomPrice)
+						}
 					}
+					
+					
 
-					that.isShowTime = false;
-					that.isShowAdults=false
+					
 					
 					
 				});

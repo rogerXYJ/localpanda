@@ -170,7 +170,7 @@
 						}
 						
 					}, function(res){
-						resolve(resData)
+						resolve(res)
 					});
 				})
 				

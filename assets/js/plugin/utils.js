@@ -390,6 +390,34 @@ var getPriceMark = function(cur,str){
 	return str ? thisCur.str : thisCur.sign;
 }
 
+var hasClass = function(obj,name){
+	var classArr = obj.className.split(' ');
+	for(var i=0;i<classArr.length;i++){
+		var thisData = classArr[i];
+		if(thisData==name){
+		return true;
+		}
+	}
+	return false;
+}
+
+
+var getParents = function(target,className){
+	//获取所有父元素
+	var parent = target;
+	var allParent = [];
+	while (parent.tagName != 'BODY') { 
+	  allParent.push(parent);
+	  parent = parent.parentNode;
+	}
+	//遍历所有父元素
+	for(var i=0;i<allParent.length;i++){
+	  if(hasClass(allParent[i],className)){
+		return allParent[i];
+	  }
+	};
+	return false;
+  }
 
 //return {
 //  GetQueryString,
@@ -439,5 +467,6 @@ export {
 	toThousands,
 	getArrayItems,
 	formatMoney,
-	getPriceMark
+	getPriceMark,
+	getParents
 }

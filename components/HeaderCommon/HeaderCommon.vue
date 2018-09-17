@@ -19,8 +19,8 @@
 
 			</ul>
 			<ul class="init" v-if="(logIn==0||logIn==null)&&!isAnonymity">
-				<li class="selectCurrency" @click.stop="showSelectCurreney">
-					<label>{{currency}} ( {{symbol}} ) <span class="iconfont">&#xe666;</span> </label>
+				<li class="selectCurrency">
+					<label @click="showSelectCurreney" class="selectCurrencyBtn">{{currency}} ( {{symbol}} ) <span class="iconfont">&#xe666;</span> </label>
 					<div class="currencyBox" v-if="showCurrency">
 						<div class="currencyItem" :class="{color:item.sure}"  v-for="(item,index) in exchange" @click.stop="setCurrency(item,index)">	
 										
@@ -54,7 +54,7 @@
 			</ul>
 			<ul class="login" v-if="logIn==1">
 				<!-- <li @click="showContact">Customize Your Trip<em class="hot">HOT</em></li> -->
-				<li class="selectCurrency" @click.stop="showSelectCurreney">
+				<li class="selectCurrency" @click="showSelectCurreney">
 					<label>{{currency}} ( {{symbol}} ) <span class="iconfont">&#xe666;</span> </label>
 					<div class="currencyBox" v-if="showCurrency">
 						<div class="currencyItem" :class="{color:item.sure}"  v-for="(item,index) in exchange" @click.stop="setCurrency(item,index)">	
@@ -222,7 +222,7 @@
 </template>
 
 <script>
-	import { GetQueryString } from "~/assets/js/plugin/utils"
+	import { GetQueryString,getParents } from "~/assets/js/plugin/utils"
 	if(process.BROWSER_BUILD) {
 		require('~/assets/font/iconfont.js')
 	}
@@ -598,10 +598,13 @@
 			this.search=this.$route.query.keyword?this.$route.query.keyword:''
 			
 			
-			document.body.addEventListener("click", function() {
-				that.iscontshow = true,
-				that.showBgSearch=false
-				that.showCurrency=false
+			document.body.addEventListener("click", function(e) {
+				if(!getParents(e.target,'selectCurrency') && e.target.className !=='selectCurrencyBtn'){
+					that.iscontshow = true,
+					that.showBgSearch=false
+					that.showCurrency=false
+				}
+				
 			})
 			that.logimg = window.localStorage.getItem("key")
 
@@ -1015,6 +1018,9 @@
 				.selectCurrency{
 					cursor: pointer;
 					position: relative;
+					.selectCurrencyBtn{
+						display: block;
+					}
 				}
 				.currencyBox{
 					position: absolute;

@@ -189,14 +189,14 @@
 						</el-table-column>
 						<el-table-column prop="price" label="Total cost" width="244.6" align="center">
 							<template slot-scope="scope">
-								<span>{{nowExchange.code}} {{nowExchange.symbol}} {{scope.row.price}}</span>
+								<span>{{nowExchange.code}} {{nowExchange.symbol}} {{returnFloat(scope.row.price)}}</span>
 							</template>
 						</el-table-column>
 						
 						<el-table-column prop="childenTotal" label="Price per person" width="245" align="center">
 							<template slot-scope="scope">
 								<div v-show="scope.row.capacity">
-									<span>{{nowExchange.code}} {{nowExchange.symbol}} {{scope.row.perPersonPrice}} </span>
+									<span>{{nowExchange.code}} {{nowExchange.symbol}} {{returnFloat(scope.row.perPersonPrice)}} </span>
 								</div>
 							</template>
 						</el-table-column>
@@ -316,7 +316,7 @@
 										<!--<div class="people" v-if="children==0&&adults==0">{{people}}</div>
 										<div class="people" v-if="children==0&&adults==1">{{people}} Person</div>
 										<div class="people" v-if="children>0||adults>1">{{people}} People</div>-->
-										<div  @click="showAdults">
+										<div class="GuestsBox"  @click="showAdults">
 											<div class="people inputColor"  v-if="adults==0&&children==0&&people=='Select'">{{people}}</div>
 											<div class="people" v-else-if="children==0&&adults==1">Adult x 1</div>
 											<div class="people" v-else-if="children==0&&adults>1">Adults x {{adults}}</div>
@@ -329,10 +329,10 @@
 											<i class="iconfont" v-if="!isShowAdults">&#xe60f;</i>
 											<i class="iconfont" v-else>&#xe63f;</i>
 											<!--<p v-if="isSelectDate" style="margin-top: 10px; font-size: 12px; color:red;">{{dateErrText}}</p>-->
-											<p style="margin-top: 10px; font-size:12px;color:red;" v-if="error">{{dateErrText}}</p>
+												<p style="margin-top: 10px; font-size:12px;color:red;" v-if="error">{{dateErrText}}</p>
 											<!--<p style="margin-top: 10px;color:#353a3f;font-size:12px;opacity: .5;" v-if="!error&&!isSelectDate">{{dateErrText}}</p>-->
 										</div>
-
+									
 										<div class="choose" v-show="isShowAdults">
 											<div class="adults clearfix">
 												<b>Adults</b>
@@ -372,7 +372,9 @@
 													<em class="iconfont" v-else>&#xe64b;</em>
 												</div>
 											</div>-->
+											<p style="margin-top: 10px; font-size:12px;color:red;" v-if="error">{{dateErrText}}</p>
 											<div class="submit">
+												
 												<button class="submitBtn" @click.stop="submitFn">Submit</button>
 											</div>
 										</div>
@@ -386,10 +388,10 @@
 									<!-- <span @click.stop="picDetailposition('picDetails')">Price Details</span> -->
 									<ul>
 										<li class="clearfix">
-											<div class="formula" v-if="children==0&&adults==1">{{nowExchange.symbol}}{{returnFloat(adultsPic)}} x 1 Person</div>
+											<div class="formula" v-if="children==0&&adults==1">{{nowExchange.symbol}}{{adultsPic}} x 1 Person</div>
 											<div class="formula" v-else>{{nowExchange.symbol}}{{returnFloat(adultsPic/people)}} x {{people}} People </div>
 
-											<div class="pic">{{nowExchange.symbol}}{{returnFloat(adultsPic)}}</div>
+											<div class="pic">{{nowExchange.symbol}}{{adultsPic}}</div>
 										</li>
 										<li class="clearfix" v-if="children>0&&picInfo.childDiscount">
 											<div class="formula"><b style="display: inline-block;">- {{nowExchange.symbol}}{{returnFloat(children*picInfo.childDiscount)}}</b> for child(ren)</div>
@@ -397,8 +399,8 @@
 									</ul>
 									<div class="total clearfix">
 										<div class="totalText">Total</div>
-										<div class="totalPic" v-if="children>0&&picInfo.childDiscount">{{nowExchange.symbol}}{{returnFloat(returnFloat(adultsPic)-returnFloat(children*picInfo.childDiscount))}}</div>
-										<div class="totalPic" v-else>{{nowExchange.symbol}}{{returnFloat(adultsPic)}}</div>
+										<div class="totalPic" v-if="children>0&&picInfo.childDiscount">{{nowExchange.symbol}}{{returnFloat(adultsPic-returnFloat(children*picInfo.childDiscount))}}</div>
+										<div class="totalPic" v-else>{{nowExchange.symbol}}{{adultsPic}}</div>
 									</div>
 								</div>
 								<div class="inquiry">
@@ -546,6 +548,7 @@ import { setTimeout } from 'timers';
 				startingPrice:0,
 				selectExchange:'USD',
 				
+				
 			};
 			
 		},
@@ -559,10 +562,28 @@ import { setTimeout } from 'timers';
 			TimelineTitle
 		},
 		methods: {
+			getPrice(){
+				var picInfo=this.picInfo.details
+				for(var i=0;i<picInfo.length;i++){
+					if(this.people==picInfo[i].capacity){
+						return {price:picInfo[i].price,perPersonPrice:picInfo[i].perPersonPrice}
+					}
+				}
+			},
 			submitFn(){
-				this.isShowAdults=false
 				this.people=this.adults+this.children
-				this.startingPrice=this.returnFloat(this.picInfo.details[this.people-1].price/this.people)
+				if(this.people < this.picInfo.minParticipants){
+					this.people='Select'
+					this.error = true;
+					this.dateErrText = "*Mimimum number of travelers:" + this.picInfo.minParticipants + ".";
+					this.startingPrice=this.returnFloat(this.picInfo.bottomPrice)
+					this.isShowBook=false
+				
+				}else{
+					
+					this.isShowAdults=false
+					this.startingPrice=this.returnFloat(this.getPrice().perPersonPrice)
+				}
 			},
 			tagFn(){
 				this.showMoreTag=!this.showMoreTag
@@ -746,8 +767,8 @@ import { setTimeout } from 'timers';
 								self.sixArr=results[1].data;
 							}
 							if(self.people>0){
-								self.startingPrice = self.returnFloat(self.picInfo.details[self.people-1].price/self.people);
-								self.adultsPic=self.picInfo.details[self.people-1].price	
+								self.startingPrice = self.returnFloat(self.getPrice().perPersonPrice);
+								self.adultsPic= self.returnFloat(self.getPrice().price)	
 							}else{
 								self.startingPrice=self.returnFloat(self.picInfo.bottomPrice)
 							}
@@ -930,7 +951,9 @@ import { setTimeout } from 'timers';
 				if(id == 0) {
 					this.adults--;
 				} else if(id == 1) {
+					
 					this.children--;
+					console.log(this.people)
 				}
 //				else {
 //					this.infant--;
@@ -948,8 +971,7 @@ import { setTimeout } from 'timers';
 			},
 			showAdults() {
 				let that=this
-				if(this.people=='Select'){
-
+				if(this.people=='Select'&&!this.error){
 					this.adults=1
 					// this.people=this.adults+this.children
 					// this.startingPrice=this.returnFloat(this.picInfo.details[this.people-1].price/this.people)
@@ -968,11 +990,14 @@ import { setTimeout } from 'timers';
 				});
 				
 				if(this.isShowTime == true) this.isShowTime = false;
-
-				
 				setTimeout(()=>{
 					that.isShowAdults = !that.isShowAdults;
 				},50)
+				if(!that.isShowAdults){
+					if(that.error){
+						that.isShowAdults=true
+					}
+				}
 				
 				// if(that.isShowAdults){
 				// 	that.people=that.adults+that.children
@@ -998,11 +1023,19 @@ import { setTimeout } from 'timers';
 				let that = this;
 				let isFail=true
 				if(that.people == "Select"){
-					that.isShowAdults=true
-						that.adults = that.adults + 1;
+						that.isShowAdults=true
+						that.adults =!that.error?1:that.adults;
+						
 						that.people = that.adults + that.children;
-						that.adultsPic=that.returnFloat(that.picInfo.details[that.people-1].price)
-						that.startingPrice=that.returnFloat(that.picInfo.details[that.people-1].price/that.people)
+						if(that.people < that.picInfo.minParticipants){
+							that.people='Select'
+							that.adultsPic=that.picInfo.bottomPrice
+							that.startingPrice=that.picInfo.bottomPrice
+						}else{
+							that.adultsPic=that.returnFloat(that.getPrice().price)
+							that.startingPrice=that.returnFloat(that.getPrice().perPersonPrice)
+						}
+						
 				}else if(that.people < that.picInfo.minParticipants) {
 					isFail=true
 					that.error = true;
@@ -1039,8 +1072,8 @@ import { setTimeout } from 'timers';
 						refundTimeLimit: that.picInfo.refundTimeLimit,
 						fullRefund:that.picInfo.fullRefund,
 						amount: that.children > 0 && that.picInfo.childDiscount ?
-							that.returnFloat(that.returnFloat(that.adultsPic) - that.returnFloat(that.children * that.picInfo.childDiscount)) :
-							that.returnFloat(that.adultsPic),
+							that.returnFloat(that.adultsPic - that.returnFloat(that.children * that.picInfo.childDiscount)) :
+							that.adultsPic,
 						details: that.picInfo.details,
 						currency: that.picInfo.currency,
 						peopleNum:that.people,
@@ -1050,7 +1083,7 @@ import { setTimeout } from 'timers';
 						//infantNum: that.infant,
 						startDate: that.dateTime,
 						startTime: that.time ? that.time : null,
-						adultsPic: that.returnFloat(that.adultsPic),
+						adultsPic: that.adultsPic,
 						coverPhotoUrl: that.detail.coverPhotoUrl,
 						title: that.detail.title,
 						childDiscountP: that.returnFloat(that.picInfo.childDiscount),
@@ -1117,10 +1150,8 @@ import { setTimeout } from 'timers';
 			},
 			adults(val, odlVal) {
 				let that=this
-				// if(val){
-				// 	this.people =val +this.children;
-					
-				// }
+			
+				
 			},
 			children(val, oldVal) {
 				//this.people =val + this.adults;
@@ -1133,9 +1164,9 @@ import { setTimeout } from 'timers';
 					that.dateErrText = "*Final headcount does not include babies.";
 				}
 				
-				if(val>0){
+				if(val>0&&!this.error){
 					that.isShowBook = true;
-					that.adultsPic=that.picInfo.details[that.people-1].price;
+					that.adultsPic=that.returnFloat(that.getPrice().price);
 					
 				}
 				
@@ -1253,8 +1284,8 @@ import { setTimeout } from 'timers';
 				if(that.people>this.picInfo.maxParticipants){
 					that.people=this.picInfo.maxParticipants;
 				}
-				that.adultsPic=that.picInfo.details[that.people-1].price;
-				that.startingPrice=that.returnFloat(that.picInfo.details[that.people-1].price/that.people)
+				that.adultsPic=that.returnFloat(that.getPrice().price);
+				that.startingPrice=that.returnFloat(that.getPrice().perPersonPrice)
 				that.isShowBook=true
 				that.adults= that.people-that.children
 			}
@@ -1338,10 +1369,21 @@ import { setTimeout } from 'timers';
 					if(!getParents(target,'choose')){
 						if(that.isShowAdults){
 							that.people=that.adults+that.children
-							that.adultsPic=that.picInfo.details[that.people-1].price;
-							that.startingPrice=that.returnFloat(that.picInfo.details[that.people-1].price/that.people)
-							that.isShowTime = false;
-							that.isShowAdults=false
+							if(that.people<that.picInfo.minParticipants){
+								that.people='Select'
+								that.error=true
+								that.isShowAdults=false
+								that.dateErrText = "*Mimimum number of travelers:" + that.picInfo.minParticipants + ".";
+								that.isShowBook=false
+								that.startingPrice=that.returnFloat(that.picInfo.bottomPrice)
+								return false
+							}else{
+								that.adultsPic=that.returnFloat(that.getPrice().price);
+								that.startingPrice=that.returnFloat(that.getPrice().perPersonPrice)
+								that.isShowTime = false;
+								that.isShowAdults=false
+							}
+							
 						}else if(that.people=='Select'){
 							that.startingPrice=that.returnFloat(that.picInfo.bottomPrice)
 						}
@@ -1629,6 +1671,7 @@ import { setTimeout } from 'timers';
 								}
 								.Guests {
 									position: relative;
+									
 									font-size: 16px;
 									.people {
 										line-height: 40px;
@@ -1641,8 +1684,8 @@ import { setTimeout } from 'timers';
 										position: absolute;
 										right: 10px;
 										font-size: 8px;
-										top: 50%;
-										transform: translateY(-50%);
+										top: 15px;
+										
 									}
 									.choose {
 										position: absolute;

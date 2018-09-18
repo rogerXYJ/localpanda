@@ -127,6 +127,11 @@
 			display: none!important;
 		}
 	}
+	.footerInfo{
+			li:nth-child(5){
+				display: none!important;
+			}
+		}
 	}
 </style>
 <style lang="scss" scoped>

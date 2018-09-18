@@ -128,6 +128,11 @@ order details.You can also email service@localpanda.com or call us at +86 (21) 8
 			display: none!important;
 		}
 	}
+	.footerInfo{
+			li:nth-child(5){
+				display: none!important;
+			}
+		}
 }
 </style>
 <style lang="scss" scoped>

@@ -189,13 +189,18 @@
 						</el-table-column>
 						<el-table-column prop="price" label="Total cost" width="244.6" align="center">
 							<template slot-scope="scope">
-								<span>{{nowExchange.code}} {{nowExchange.symbol}} {{returnFloat(scope.row.price)}}</span>
+								
+								<div class="price_detail_left">
+									<span>{{nowExchange.code}} {{nowExchange.symbol}} {{returnFloat(scope.row.price)}}</span>
+								</div>
 							</template>
 						</el-table-column>
 						
 						<el-table-column prop="childenTotal" label="Price per person" width="245" align="center">
 							<template slot-scope="scope">
-								<div v-show="scope.row.capacity">
+							
+									
+								<div class="price_detail_left" v-show="scope.row.capacity">
 									<span>{{nowExchange.code}} {{nowExchange.symbol}} {{returnFloat(scope.row.perPersonPrice)}} </span>
 								</div>
 							</template>
@@ -1491,6 +1496,10 @@ import { setTimeout } from 'timers';
 .acitivity_detail{
 	.flatpickr-calendar{
 		
+	}
+	.price_detail_left{
+		text-align: left;
+		padding-left: 50px;
 	}
 }
 </style>

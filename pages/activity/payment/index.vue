@@ -475,7 +475,9 @@
 			stripePayNow(){
 				let that=this
 				that.loadingStatus = true;
-					that.stripe.createToken(that.cardNumber).then(function(result) {
+					that.stripe.createToken(that.cardNumber,{
+						name:that.email
+					}).then(function(result) {
 						if(result.error) {
 							ga(gaSend, {
 								hitType: 'event',

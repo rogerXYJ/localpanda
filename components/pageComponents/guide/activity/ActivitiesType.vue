@@ -185,7 +185,7 @@
 				
 			</div>
 		</div>
-		<Contact :ContactStatus="ContactStatus" v-on:isshowfn="isShowFn" v-on:contact-call-back="contactCallBack" :objectId="ActivitiesInfo.id" :enName="ActivitiesInfo.guideName" :objectType="objectType"></Contact>
+		<Contact :ContactStatus="ContactStatus" v-on:contactCallback="contactCallBack" :objectId="ActivitiesInfo.id" :enName="ActivitiesInfo.guideName" :objectType="objectType"></Contact>
 		<Alert   :isShowAlert="isShowAlert" :alertTitle="alertTitle" :alertMessage="alertMessage" v-on:setIsShowAlert="getIsShowAlert"></Alert>
 	</div>
 	
@@ -215,8 +215,16 @@
 			Alert
 		},
 		methods: {
-			isShowFn(val){
-				this.istrue=val
+			
+			getIsShowAlert(val){
+				this.isShowAlert=val
+			},
+			showContact(){
+				let that=this
+				that.ContactStatus=true
+			},
+			contactCallBack(val){
+				this.istrue=val?true:false;
 				if(this.istrue==true){
 					this.isShowAlert=true
 					this.alertTitle="Submission completed!"
@@ -226,15 +234,6 @@
 					this.isShowAlert=true
 					this.alertMessage="Failed!"
 				}
-			},
-			getIsShowAlert(val){
-				this.isShowAlert=val
-			},
-			showContact(){
-				let that=this
-				that.ContactStatus=true
-			},
-			contactCallBack(val){
 				this.ContactStatus=false
 			},
 			

@@ -162,7 +162,7 @@ export default {
     box-shadow: 0px 2px 6px 0px rgba(53, 58, 63, 0.1);
     position: fixed;
     top: 0;
-    z-index: 999;
+    z-index: 99;
     ul {
       width: 1170px;
       position: fixed;

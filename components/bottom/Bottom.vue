@@ -12,7 +12,7 @@ based on your needs!</p>
 		<div class="false" @click="falseClick">
 			<i class="iconfont">&#xe606;</i>
 		</div>
-		<Contact :ContactStatus="ContactStatus" v-on:isshowfn="isShowFn" v-on:contact-call-back="contactCallBack"  :objectType="objectType"></Contact>
+		<Contact :ContactStatus="ContactStatus" v-on:contactCallback="contactCallBack"  :objectType="objectType"></Contact>
 		<Alert   :isShowAlert="isShowAlert" :alertTitle="alertTitle" :alertMessage="alertMessage" v-on:setIsShowAlert="getIsShowAlert"></Alert>
 	</div>
 </template>
@@ -40,18 +40,7 @@ based on your needs!</p>
 			Alert
 		},
 		methods: {
-			isShowFn(val){
-				this.istrue=val
-				if(this.istrue==true){
-					this.isShowAlert=true
-					this.alertTitle="Submission completed!"
-					this.alertMessage="Thank you for your feedback.We will get back to you within 1 day."
-					this.istrue=false
-				}else{
-					this.isShowAlert=true
-					this.alertMessage="Failed!"
-				}
-			},
+			
 			getIsShowAlert(val){
 				this.isShowAlert=val
 			},
@@ -76,7 +65,18 @@ based on your needs!</p>
 				that.ContactStatus=true
 			},
 			contactCallBack(val){
-				this.ContactStatus=false
+				this.istrue=val?true:false;
+				if(this.istrue==true){
+					this.isShowAlert=true
+					this.alertTitle="Submission completed!"
+					this.alertMessage="Thank you for your feedback.We will get back to you within 1 day."
+					this.istrue=false
+				}else{
+					this.isShowAlert=true
+					this.alertMessage="Failed!"
+				}
+
+				this.ContactStatus=false;
 			},
 			falseClick(){
 				 this.scrollTopshow = false;

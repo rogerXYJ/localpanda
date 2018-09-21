@@ -2,30 +2,43 @@
 	<div class="success">
 		<HeaderCommon :logIn="logIn"></HeaderCommon>
 		<div class="successInfo">
-			<div class="link">
-					<a href="javascript:">1. Fill in your information</a>
-					<i class="iconfont">&#xe620;</i>
-					<a href="javascript:">2. Select payment method</a>
-					<i class="iconfont">&#xe620;</i>
-					<a href="javascript:">3. confirmation</a>
+			<!-- <div class="link">
+				<a href="javascript:">1. Fill in your information</a>
+				<i class="iconfont">&#xe620;</i>
+				<a href="javascript:">2. Select payment method</a>
+				<i class="iconfont">&#xe620;</i>
+				<a href="javascript:">3. confirmation</a>
+			</div> -->
+			<h3>Confirmation</h3>
+			<div class="odermesg">
+				<div class="title">
+					<span class="iconfont">&#xe61e;</span>
+					<b>Your booking is Complete! You made a great choice :)</b>
 				</div>
-				<h3>Confirmation</h3>
-				<div class="odermesg">
-					<div class="title">
-						<span class="iconfont">&#xe61e;</span>
-						<b>Your booking is Complete! You made a great choice :)</b>
-					</div>
-					<div class="detail">
-						<span>Order ID: {{orderId}}</span><em>|</em><span>Payment amount: <b>{{symbol=='$'?currency+symbol:symbol}}{{amount}}</b></span>
-					</div>
-					<p style="margin-top: 10px;"> Our staff will confirm with you as soon as possible. We will reply you within one business day. You can know the details furthur by look at your 
-order details.You can also email service@localpanda.com or call us at +86 (21) 8018-2090/ +1 (888) 930-8849 (US toll free).</p>				
-
-					<p class="c_666" v-if="showTipTxt && payType!='guide'">You ordered as a guest. You can click this button to view your order details.</p>
-
-					<a class="backorderbtn" v-if="payType!='guide'" :href="logIn ? '/user/myBookings' : '/user/myBookings?email='+email+'&orderid='+orderId">View My Order</a>
+				<div class="detail">
+					<span>Order ID: {{orderId}}</span><em>|</em><span>Payment amount: <b>{{symbol=='$'?currency+symbol:symbol}}{{amount}}</b></span>
 				</div>
+				<!-- <p style="margin-top: 10px;"> Our staff will confirm with you as soon as possible. We will reply you within one business day. You can know the details furthur by look at your order details.You can also email service@localpanda.com or call us at +86 (21) 8018-2090/ +1 (888) 930-8849 (US toll free).</p>				
+
+				<p class="c_666" v-if="showTipTxt && payType!='guide'">You ordered as a guest. You can click this button to view your order details.</p> -->
+
+				<div class="service_box">
+					<p class="tip_detail">In the meantime, a confirmation email has been sent to“{{email}}”, Please check. If you have not received it, please check your junk mail folder. If you still do <br>not see it, please <a @click="showEmailBox=true">click here</a> to enter your correct or alternative email address.</p>
+					<div class="email_box" v-show="showEmailBox">
+						<input type="text" v-model="inqueryEmail">
+						<span class="btn_sendemail" @click="sendEmail">Resend email address</span>
+
+						<div class="email_tip red" v-show="emailTip">Please enter a valid email</div>
+						<div class="email_tip green" v-show="emailSendTip"><i class="iconfont">&#xe654;</i> Email address has been updated ,and We have sent an email to your new mailbox</div>
+					</div>
+				</div>
+
+				<a class="backorderbtn" v-if="payType!='guide'" :href="logIn ? '/user/myBookings' : '/user/myBookings?email='+(inqueryEmail?inqueryEmail:email)+'&orderid='+orderId">View My Order</a>
 			</div>
+
+			<service></service>
+			
+		</div>
 		<FooterCommon></FooterCommon>
 	</div>
 </template>
@@ -36,6 +49,7 @@ order details.You can also email service@localpanda.com or call us at +86 (21) 8
 	import {getPriceMark} from '~/assets/js/plugin/utils.js'
 	import HeaderCommon from '~/components/HeaderCommon/HeaderCommon'
 	import FooterCommon from '~/components/FooterCommon/FooterCommon';
+	import service from '~/components/pageComponents/inquiry/service';
 	export default {
 
 		name: 'payNow',
@@ -55,7 +69,17 @@ order details.You can also email service@localpanda.com or call us at +86 (21) 8
 				showTipTxt: false,
 				payType: payType?payType.toLowerCase():false,
 				symbol: query.symbol?query.symbol:'$',
-				currency:currency ? currency : ''
+				currency:currency ? currency : '',
+
+
+				serviceData:{id:orderId,type:'payment'},
+
+
+				dialogStatus:false,
+				emailTip:false,
+				emailSendTip:false,
+				showEmailBox:false,
+				inqueryEmail:'',
 				
 			}
 		},
@@ -80,10 +104,44 @@ order details.You can also email service@localpanda.com or call us at +86 (21) 8
 		},
 		components: {
 			HeaderCommon,
-			FooterCommon
+			FooterCommon,
+			service
 		},
 		methods: {
-			getPriceMark:getPriceMark
+			getPriceMark:getPriceMark,
+			sendEmail(){
+				var that = this;
+				if(/^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/.test(this.inqueryEmail)){
+
+					//默认是修改feedback的邮箱
+					var postData = {
+						contactInfo:{
+							emailAddress: this.inqueryEmail
+						},
+						orderId: this.orderId
+					};
+					var postUrl = 'https://api.localpanda.com/api/order/activity/email';
+
+					//修改邮箱请求
+					that.axios.post(postUrl, JSON.stringify(postData), {
+						headers: {
+							'Content-Type': 'application/json'
+						}
+					}).then(function(response) {
+						if(response.data.succeed) {
+							that.emailSendTip = true;
+							that.email = that.inqueryEmail;
+							that.inqueryEmail = '';
+						};
+
+					}, function(response) {
+
+					})
+					this.emailTip = false;
+				}else{
+					this.emailTip = true;
+				}
+			},
 		},
 		mounted: function() {
 //			this.orderId=GetQueryString("orderId")
@@ -171,12 +229,11 @@ order details.You can also email service@localpanda.com or call us at +86 (21) 8
 		h3{
 			font-weight: bold;
 			font-size:36px;
-			margin: 64px 0 44px;
+			margin: 0 0 44px;
 			
 		}
 			.odermesg{
-				padding:60px 68px 54px 84px;
-				box-shadow: 0px 2px 6px 0px rgba(53, 58, 63, 0.1);
+				padding:0 0 30px 50px;
 				.title{
 					position: relative;
 					span{
@@ -236,5 +293,45 @@ order details.You can also email service@localpanda.com or call us at +86 (21) 8
 					cursor: pointer;
 				}
 			}
+
+		.service_box{
+			font-size: 14px;
+			.tip_detail{ 
+				margin-top: 20px; font-size: 14px; line-height: 22px;
+				a{ color:#00B886; cursor: pointer;
+					&:hover{ text-decoration: underline;}
+				}
+			}
+			.email_box{
+				margin-top: 10px;
+				input{
+					width: 300px;
+					border: 1px solid #ddd;
+					height: 32px;
+					line-height: 32px;
+				}
+				.btn_sendemail{
+					display: inline-block;
+					height: 32px;
+					border-radius: 16px;
+					line-height: 30px;
+					padding: 0 20px;
+					font-size: 14px;
+					cursor: pointer;
+					background-image: -webkit-gradient(linear, right top, left top, from(#009efd), to(#1bbc9d));
+					background-image: linear-gradient(270deg, #009efd 0%, #1bbc9d 100%);
+					color: #fff;
+					margin-left: 10px;
+				}
+			}
+			.email_tip{
+				margin-top: 9px;
+				i{
+					font-size: 14px;
+				}
+			}
+			
+			
+		}
 	}
 </style>

@@ -129,7 +129,7 @@
 		<PackageOptions :guideId="guideId" :detail="detail"></PackageOptions>
 		<FooterCommon></FooterCommon>
 		<Explanation :alertTitleStatus="alertTitleStatus" v-on:alert-title-call-back="alertTitleCallBack"></Explanation>
-		<Contact :ContactStatus="ContactStatus" v-on:isshowfn="isShowFn" v-on:contact-call-back="contactCallBack" :objectId="guideId" :enName="detail.enName" :objectType="objectType"></Contact>
+		<Contact :ContactStatus="ContactStatus" v-on:contactCallback="contactCallBack" :objectId="guideId" :enName="detail.enName" :objectType="objectType"></Contact>
 		<Alert :isShowAlert="isShowAlert" :alertTitle="alertTitle" :alertMessage="alertMessage" v-on:setIsShowAlert="getIsShowAlert"></Alert>
 	</div>
 </template>
@@ -291,19 +291,7 @@
 			Alert
 		},
 		methods: {
-			isShowFn(val) {
-				this.istrue = val;
-				if(this.istrue == true) {
-					this.isShowAlert = true;
-					this.alertTitle = "Submission completed!";
-					this.alertMessage =
-						"Thank you for your feedback.We will get back to you within 1 day.";
-					this.istrue = false;
-				} else {
-					this.isShowAlert = true;
-					this.alertMessage = "Failed!";
-				}
-			},
+			
 			getIsShowAlert(val) {
 				this.isShowAlert = val;
 			},
@@ -319,6 +307,17 @@
 				that.ContactStatus = true;
 			},
 			contactCallBack(val) {
+				this.istrue=val?true:false;
+				if(this.istrue == true) {
+					this.isShowAlert = true;
+					this.alertTitle = "Submission completed!";
+					this.alertMessage =
+						"Thank you for your feedback.We will get back to you within 1 day.";
+					this.istrue = false;
+				} else {
+					this.isShowAlert = true;
+					this.alertMessage = "Failed!";
+				}
 				this.ContactStatus = false;
 			},
 			onImg() {

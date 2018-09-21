@@ -256,7 +256,7 @@
 		<Foot></Foot>
 		<FooterCommon :nowCurrency="currency" @headCurrency="headCurrencyFn"></FooterCommon>
 		<Loading :loadingStatus="loadingStatus"></Loading>
-		<Contact :ContactStatus="ContactStatus" v-on:isshowfn="isShowFn" v-on:contact-call-back="contactCallBack" :objectType="objectType"></Contact>
+		<Contact :ContactStatus="ContactStatus" v-on:contactCallback="contactCallBack" :objectType="objectType"></Contact>
 		<Alert :isShowAlert="isShowAlert" :alertTitle="alertTitle" :alertMessage="alertMessage" v-on:setIsShowAlert="getIsShowAlert"></Alert>
 		<filterModel :filterContent="filterContent" :filterCheck="filterCheck" :type="filterType" v-if="showModel" @callBack="setBack"></filterModel>	
 	</div>
@@ -984,20 +984,7 @@ export default {
       }
       return key + " Days";
     },
-    //弹框报错
-    isShowFn(val) {
-      this.istrue = val;
-      if (this.istrue == true) {
-        this.isShowAlert = true;
-        this.alertTitle = "Submission completed!";
-        this.alertMessage =
-          "Thank you for your feedback.We will get back to you within 1 day.";
-        this.istrue = false;
-      } else {
-        this.isShowAlert = true;
-        this.alertMessage = "Failed!";
-      }
-    },
+    
     //弹框组件回调
     getIsShowAlert(val) {
       this.isShowAlert = val;
@@ -1008,6 +995,17 @@ export default {
     },
     //contact回调
     contactCallBack(val) {
+      this.istrue=val?true:false;
+      if (this.istrue == true) {
+        this.isShowAlert = true;
+        this.alertTitle = "Submission completed!";
+        this.alertMessage =
+          "Thank you for your feedback.We will get back to you within 1 day.";
+        this.istrue = false;
+      } else {
+        this.isShowAlert = true;
+        this.alertMessage = "Failed!";
+      }
       this.ContactStatus = false;
     },
     //小数点取两位

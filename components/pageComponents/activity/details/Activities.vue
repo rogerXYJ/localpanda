@@ -447,8 +447,30 @@
 			</div>
 		</div>
 		<Pic :photoList="picList" :alertPicStatus="alertPicStatus" @alert-call-back="setCallBack"></Pic>
-		<Contact :ContactStatus="ContactStatus" v-on:isshowfn="isShowFn" v-on:contact-call-back="contactCallBack" :owner="detail.owner"  :objectType="objectType" :objectId="id"></Contact>
+		<Contact :ContactStatus="ContactStatus" v-on:contactCallback="contactCallBack" :owner="detail.owner"  :objectType="objectType" :objectId="id"></Contact>
 		<Alert   :isShowAlert="isShowAlert" :alertTitle="alertTitle" :alertMessage="alertMessage" v-on:setIsShowAlert="getIsShowAlert" :index="index"></Alert>
+
+		<!-- service弹窗 -->
+		<dialogBox v-model="dialogStatus" confirmShow="true" confirmText="Confirm" @confirmCallback="confirmCallback" width="900">
+			
+			<div class="tip_title"> Thank you. You have submitted your Inquiry successfully! <br>We will get back to you within 1 day.</div>
+
+			<div class="service_box">
+				<p class="tip_detail">A confirmation email has been sent to “{{inqueryEmailOld}}”,<br>Please check. If you have not received it, please check your junk mail folder. If you still do not see it,<br>please <a @click="showEmailBox=true">click here</a> to enter your correct or alternative email address.</p>
+				<div class="email_box" v-show="showEmailBox">
+					<input type="text" v-model="inqueryEmail">
+					<span class="btn_sendemail" @click="sendEmail">Resend email address</span>
+
+					<div class="email_tip red" v-show="emailTip">Please enter a valid email</div>
+					<div class="email_tip green" v-show="emailSendTip"><i class="iconfont">&#xe654;</i> Email address has been updated ,and We have sent an email to your new mailbox</div>
+				</div>
+
+				
+			</div>
+
+			<service></service>
+			
+		</dialogBox>
 	</div>
 
 </template>
@@ -463,6 +485,8 @@
 	} from "~/assets/js/plugin/utils";
 	import Contact from '~/components/Contact/Contact';
 	import Alert from '~/components/Prompt/Alert';
+	import service from '~/components/pageComponents/inquiry/service';
+	import dialogBox from '~/plugins/panda/dialogBox';
 	import Flatpickr from 'flatpickr';
 	require('~/assets/scss/G-ui/flatpickr.min.css')
 	import Pic from "~/components/pageComponents/activity/details/Pic"
@@ -553,7 +577,13 @@ import { setTimeout } from 'timers';
 				startingPrice:0,
 				selectExchange:'USD',
 				
-				
+				dialogStatus:false,
+				emailTip:false,
+				emailSendTip:false,
+				showEmailBox:false,
+				inqueryEmail:'',
+				inqueryEmailOld:'',
+				feedbackId: ''
 			};
 			
 		},
@@ -562,11 +592,46 @@ import { setTimeout } from 'timers';
 			Pic,
 			Contact,
 			Alert,
+			service,
+			dialogBox,
 			Timeline, 
 			TimelineItem, 
 			TimelineTitle
 		},
 		methods: {
+			confirmCallback(){
+				this.dialogStatus = false;
+			},
+			sendEmail(){
+				var that = this;
+				if(/^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/.test(this.inqueryEmail)){
+
+					//默认是修改feedback的邮箱
+					var postData = {
+						emailAddress: this.inqueryEmail,
+						id: this.feedbackId
+					};
+					var postUrl = "https://api.localpanda.com/api/user/feedback";
+
+					//修改邮箱请求
+					that.axios.post(postUrl, JSON.stringify(postData), {
+						headers: {
+							'Content-Type': 'application/json'
+						}
+					}).then(function(response) {
+						if(response.data.succeed) {
+							that.emailSendTip = true;
+							that.inqueryEmail = '';
+						};
+
+					}, function(response) {
+
+					})
+					this.emailTip = false;
+				}else{
+					this.emailTip = true;
+				}
+			},
 			getPrice(){
 				var picInfo=this.picInfo.details
 				for(var i=0;i<picInfo.length;i++){
@@ -813,23 +878,31 @@ import { setTimeout } from 'timers';
 					thisDetail[i].defaultPrice = thisPrice;
 				}
 			},
-			//inquery
-			isShowFn(val){
-				this.istrue=val
-				if(this.istrue==true){
-					this.isShowAlert=true
-					this.alertTitle="Submission completed!"
-					this.alertMessage="Thank you for your feedback.We will get back to you within 1 day."
-					this.istrue=false
-				}else{
-					this.isShowAlert=true
-					this.alertMessage="Failed!"
-				}
-			},
+			
 			getIsShowAlert(val){
 				this.isShowAlert=val
 			},
 			contactCallBack(val){
+				if(val){
+					var data = val.data;
+					this.feedbackId = data.response;
+					this.inqueryEmailOld = val.email;
+					this.dialogStatus = true;
+				}
+				
+
+				this.istrue=val?true:false;
+				if(this.istrue==true){
+					// this.isShowAlert=true
+					// this.alertTitle="Submission completed!"
+					// this.alertMessage="Thank you for your feedback.We will get back to you within 1 day."
+					// this.istrue=false
+				}else{
+					this.isShowAlert=true
+					this.alertMessage="Failed!"
+				};
+
+				//关闭弹窗
 				this.ContactStatus=false
 			},
 			showContact() {
@@ -841,6 +914,7 @@ import { setTimeout } from 'timers';
 					eventLabel: "activity_inquiry"
 				});
 				that.ContactStatus=true
+				
 			},
 			
 			
@@ -1200,7 +1274,12 @@ import { setTimeout } from 'timers';
 				this.selectExchange=val.code
 				this.changeCurrency(val.code)
 			},
-			
+			feedbackId:function(){
+				this.emailTip = false;
+				this.emailSendTip=false;
+				this.showEmailBox=false;
+				this.inqueryEmail='';
+			}
 
 //			isShowAdults(val,oldVal){
 //				let that=this
@@ -1406,103 +1485,7 @@ import { setTimeout } from 'timers';
 		}
 	};
 </script>
-<style lang="scss">
-	.newItem{
-		&:last-child{
-			.timeline-item{
-				padding-bottom: 0!important;
-				&:after{
-					width:0!important;
-				}
-			}
-			
-		}
-	}
-	.timeline-item{
-		padding: 0 0 20px 80px!important;
-			label{
-				position: absolute;
-				left: 0px;
-				top: -3px;
-				font-size: 16px;
-			}
-			h4{
-				font-size: 18px;
-				font-weight: bold;
-			}
-			p{
-				margin-top:20px;
-				font-size: 16px;
-				line-height: 24px;
-				
-			}
-			img{
-				width: 652px;
-				margin-top: 22px;
-			}
-		}
-	
-	
-	
 
-	
-	.el-table__row .cell {
-		text-align: center;
-		span {
-			font-size: 18px;
-			color: #353a3f;
-			line-height: 35px;
-		}
-	}
-	
-	.el-table th>.cell {
-		font-size: 16px;
-		font-weight: bold;
-		color: #353a3f;
-	}
-	
-	.el-table {
-		margin-top: 34px;
-	}
-	
-	.el-table--group::after,
-	.el-table--border::after,
-	.el-table::before {
-		height: 0;
-	}
-	
-	.el-table--striped .el-table__body tr.el-table__row--striped td {
-		background: rgba(27, 188, 157, 0.06)!important;
-	}
-	
-	.el-table th,
-	.el-table td {
-		padding: 6px 0;
-	}
-	
-	.el-table tr:hover {
-		background: #fff;
-	}
-	
-	.el-table--enable-row-hover .el-table__body tr:hover>td {
-		background: #fff;
-	}
-	
-	.el-table th.is-leaf,
-	.el-table td {
-		border: 0;
-	}
-
-.acitivity_detail{
-	.flatpickr-calendar{
-		
-	}
-	.price_detail_left{
-		text-align: left;
-		padding-left: 50px;
-	}
-}
-</style>
 <style lang="scss" scoped>
 	//@import '~/assets/font/iconfont.css';
 	.inputColor{
@@ -1569,7 +1552,7 @@ import { setTimeout } from 'timers';
 					width: 386px;
 					background: #fff;
 					position: relative;
-					z-index: 200;
+					z-index: 9;
 					box-shadow: 0px 2px 6px 0px rgba(53, 58, 63, 0.1);
 					.bookbox {
 						.picPp {
@@ -2524,5 +2507,149 @@ import { setTimeout } from 'timers';
 			}
 		}
 		
+		.tip_title{
+			padding-top: 20px;
+			text-align: center;
+			font-size: 22px;
+		}
+
+		.service_box{
+			font-size: 14px;
+			.tip_detail{ 
+				margin-top: 20px; font-size: 14px; line-height: 22px;
+				a{ color:#00B886; cursor: pointer;
+					&:hover{ text-decoration: underline;}
+				}
+			}
+			.email_box{
+				margin-top: 10px;
+				input{
+					width: 300px;
+					border: 1px solid #ddd;
+					height: 32px;
+					line-height: 32px;
+				}
+				.btn_sendemail{
+					display: inline-block;
+					height: 32px;
+					border-radius: 16px;
+					line-height: 30px;
+					padding: 0 20px;
+					font-size: 14px;
+					cursor: pointer;
+					background-image: -webkit-gradient(linear, right top, left top, from(#009efd), to(#1bbc9d));
+					background-image: linear-gradient(270deg, #009efd 0%, #1bbc9d 100%);
+					color: #fff;
+					margin-left: 10px;
+				}
+			}
+			.email_tip{
+				margin-top: 9px;
+				i{
+					font-size: 14px;
+				}
+			}
+			
+			
+		}
+	
 	}
+</style>
+
+<style lang="scss">
+	.newItem{
+		&:last-child{
+			.timeline-item{
+				padding-bottom: 0!important;
+				&:after{
+					width:0!important;
+				}
+			}
+			
+		}
+	}
+	.timeline-item{
+		padding: 0 0 20px 80px!important;
+			label{
+				position: absolute;
+				left: 0px;
+				top: -3px;
+				font-size: 16px;
+			}
+			h4{
+				font-size: 18px;
+				font-weight: bold;
+			}
+			p{
+				margin-top:20px;
+				font-size: 16px;
+				line-height: 24px;
+				
+			}
+			img{
+				width: 652px;
+				margin-top: 22px;
+			}
+		}
+	
+	
+	
+
+	
+	.el-table__row .cell {
+		text-align: center;
+		span {
+			font-size: 18px;
+			color: #353a3f;
+			line-height: 35px;
+		}
+	}
+	
+	.el-table th>.cell {
+		font-size: 16px;
+		font-weight: bold;
+		color: #353a3f;
+	}
+	
+	.el-table {
+		margin-top: 34px;
+	}
+	
+	.el-table--group::after,
+	.el-table--border::after,
+	.el-table::before {
+		height: 0;
+	}
+	
+	.el-table--striped .el-table__body tr.el-table__row--striped td {
+		background: rgba(27, 188, 157, 0.06)!important;
+	}
+	
+	.el-table th,
+	.el-table td {
+		padding: 6px 0;
+	}
+	
+	.el-table tr:hover {
+		background: #fff;
+	}
+	
+	.el-table--enable-row-hover .el-table__body tr:hover>td {
+		background: #fff;
+	}
+	
+	.el-table th.is-leaf,
+	.el-table td {
+		border: 0;
+	}
+
+.acitivity_detail{
+	.flatpickr-calendar{
+		
+	}
+	.price_detail_left{
+		text-align: left;
+		padding-left: 50px;
+	}
+}
 </style>

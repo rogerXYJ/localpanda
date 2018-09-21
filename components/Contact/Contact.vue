@@ -84,7 +84,7 @@
 			},
 
 			cancle() {
-				this.$emit('contact-call-back', true);
+				this.$emit('contactCallback', '');
 				this.contactActive = false;
 			},
 			gaFail(){
@@ -157,17 +157,18 @@
 					}
 					if(that.isclick==false){
 						that.isclick=true
-					that.axios.put("https://api.localpanda.com/api/user/feedback", JSON.stringify(obj), {
-						headers: {
-							'Content-Type': 'application/json; charset=UTF-8'
-						}
-					}).then(function(response) {
-						
-						
-						if(response.data.succeed) {
-							that.isclick=false
-							that.$emit("isshowfn", true);
-							that.$emit('contact-call-back', true);
+						that.axios.put("https://api.localpanda.com/api/user/feedback", JSON.stringify(obj), {
+							headers: {
+								'Content-Type': 'application/json'
+							}
+						}).then(function(response) {
+							
+							if(response.data.succeed) {
+								that.isclick=false
+							};
+
+							// that.$emit("isshowfn", true);
+							that.$emit('contactCallback', {'data':response.data,'email':that.email});
 							that.contactActive = false;
 							that.name = ""
 							that.email = ""
@@ -176,28 +177,10 @@
 							that.textInfo = ""
 							that.destination = ""
 							that.peopleNub=0
-							
-							
-							
-						} else {
-							that.$emit("isshowfn", true);
-							that.$emit('contact-call-back', true);
-							that.contactActive = false;
 
-							that.name = ""
-							that.email = ""
-							that.phone = ""
-							that.dateTime = ""
-							that.textInfo = ""
-							that.peopleNub=0
-							
-							
-							that.destination = ""
-						}
+						}, function(response) {
 
-					}, function(response) {
-
-					})
+						})
 					}
 					
 				}

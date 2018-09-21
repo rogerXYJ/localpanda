@@ -2,13 +2,13 @@
 	<div class="failed">
 		<HeaderCommon :logIn="logIn"></HeaderCommon>
 		<div class="failedInfo">
-			<div class="link">
+			<!-- <div class="link">
 					<a href="javascript:">1. Fill in your information</a>
 					<i class="iconfont">&#xe620;</i>
 					<a href="javascript:">2. Select payment method</a>
 					<i class="iconfont">&#xe620;</i>
 					<a href="javascript:">3. confirmation</a>
-				</div>
+				</div> -->
 				<h3>Confirmation</h3>
 				<div class="odermesg">
 					<div class="title">
@@ -20,9 +20,12 @@
 						
 					</div>
                     <P v-if="errMsg" style="margin-top: 47px;">Your payment did not go through. Here is the error that you can reference: {{errMsg}}</P>
-					<p style="margin-top: 30px;">If you want to proceed with payment, click "Try again." If your payment problems continue, we suggest you try using another card or talk to our online assistant at the bottom right of the webpage to get payment help. You can also email service@localpanda.com or call us at +86 (21) 8081-2090/+1 (888) 9390-8839 (US toll free).</p>
+					<p style="margin-top: 30px;">If you want to proceed with payment, click "Try again." If your payment problems continue, we suggest you try using another card or contact us via call, text, email or other messaging tools listed below.</p>
                     <button class="backorderbtn" @click="tryAgain(type)">Try again</button>
 				</div>
+
+				<service></service>
+
 			</div>
 		<FooterCommon></FooterCommon>
 	</div>
@@ -34,6 +37,7 @@
 	import { GetQueryString } from '~/assets/js/plugin/utils.js'
 	import HeaderCommon from '~/components/HeaderCommon/HeaderCommon'
 	import FooterCommon from '~/components/FooterCommon/FooterCommon';
+	import service from '~/components/pageComponents/inquiry/service';
 	export default {
 
 		name: 'failed',
@@ -76,7 +80,8 @@
 		},
 		components: {
 			HeaderCommon,
-			FooterCommon
+			FooterCommon,
+			service
 		},
 		methods: {
 			tryAgain(type){
@@ -139,7 +144,7 @@
 	.failedInfo{
 		width: 1170px;
 		margin:0 auto;
-		padding: 60px 0 100px;
+		padding: 0 0 100px;
 		position: relative;
 		.contact{
 			position:absolute;
@@ -174,8 +179,7 @@
 			
 		}
 			.odermesg{
-				padding:60px 68px 54px 84px;
-				box-shadow: 0px 2px 6px 0px rgba(53, 58, 63, 0.1);
+				padding:0 68px 54px 50px;
 				.title{
 					position: relative;
 					span{

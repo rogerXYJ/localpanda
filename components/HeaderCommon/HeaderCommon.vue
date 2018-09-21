@@ -160,7 +160,7 @@
 			<h3 slot="alertTitleLogin">{{alertTitleLogin}}</h3>
 			<p slot="alertTitleMessage">{{alertTitleMessage}}</p>
 		</AlertTitle>
-		<!--<Contact :ContactStatus="ContactStatus" v-on:isshowfn="isShowFn" v-on:contact-call-back="contactCallBack" :objectType="objectType"></Contact>-->
+		
 		<Alert :isShowAlert="isShowAlert" :alertTitle="alertTitle" :alertMessage="alertMessage" v-on:setIsShowAlert="getIsShowAlert"></Alert>
 		<Anonymity :AnonymityStatus="AnonymityStatus" v-on:anonymity-back="isAnonymityback"></Anonymity>
 
@@ -422,8 +422,15 @@
 				this.AnonymityStatus = val
 
 			},
-			isShowFn(val) {
-				this.istrue = val
+			
+			getIsShowAlert(val) {
+				this.isShowAlert = val
+			},
+			showContact() {
+				location.href = "/travel/customize/step1"
+			},
+			contactCallBack(val) {
+				this.istrue=val?true:false;
 				if(this.istrue == true) {
 					this.isShowAlert = true
 					this.alertTitle = "Submission completed!"
@@ -433,14 +440,6 @@
 					this.isShowAlert = true
 					this.alertMessage = "Failed!"
 				}
-			},
-			getIsShowAlert(val) {
-				this.isShowAlert = val
-			},
-			showContact() {
-				location.href = "/travel/customize/step1"
-			},
-			contactCallBack(val) {
 				this.ContactStatus = false
 			},
 			contshow() {

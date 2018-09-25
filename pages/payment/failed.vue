@@ -32,7 +32,7 @@
                     <button class="backorderbtn" @click="tryAgain(type)">Try again</button>
 				</div>
 
-				<service></service>
+				<service status="false"></service>
 
 			</div>
 		<FooterCommon></FooterCommon>

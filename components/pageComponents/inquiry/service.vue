@@ -2,7 +2,7 @@
 	
 
 	<div class="service_info">
-		<p>If you still do not receive a response, please check your junk mail folder. Additionally, you can contact us in the following ways:</p>
+		<p v-if="showTip && showTip!='false'">If you still do not receive a response, please check your junk mail folder. Additionally, you can contact us in the following ways:</p>
 		<div class="service_content">
 			<div class="service_left">
 				<dl>
@@ -35,9 +35,10 @@
 <script>
 	export default {
 		name: "service",
+		props:['status'],
 		data() {
 			return {
-				
+				showTip: this.status!=undefined?this.status:true
 			}
 		},
 		methods: {

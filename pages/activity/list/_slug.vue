@@ -58,6 +58,7 @@
 			</div>
 		</div>
 		<div class="slogn">
+      <div class="slogn_title">Authentic, Accountable and Accessible China Travel</div>
 			<div class="slogn_box">
 				<div class="slogn_item">
 					<span class="iconfont">&#xe687;</span>
@@ -1784,7 +1785,7 @@ export default {
         border-bottom-right-radius: 6px;
         position: absolute;
         top: 45px;
-        width: calc(100% - 30px);
+        width: 980px;
         background: #fff;
         z-index: 20;
         border-top: 1px solid #ebebeb;
@@ -1862,10 +1863,17 @@ export default {
     width: 100%;
     box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.1);
     margin-bottom: 5px;
+    .slogn_title{
+      padding-top: 20px;
+      text-align: center;
+      color: #353a3f;
+      font-weight: bold;
+      font-size:18px;
+    }
     .slogn_box {
       width: 1284px;
       margin: 0 auto;
-      padding: 25px 0;
+      padding: 15px 0 20px;
       display: flex;
       .slogn_item {
         flex: 1;

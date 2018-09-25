@@ -75,7 +75,7 @@
 			dd{
 				margin-top: 5px;
 				line-height: 22px;
-				font-size: 13px;
+				font-size: 14px;
 				img{
 					margin-top: 6px;
 				}

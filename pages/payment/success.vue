@@ -15,15 +15,23 @@
 					<span class="iconfont">&#xe61e;</span>
 					<b>Your booking is Complete! You made a great choice :)</b>
 				</div>
+
 				<div class="detail">
-					<span>Order ID: {{orderId}}</span><em>|</em><span>Payment amount: <b>{{symbol=='$'?currency+symbol:symbol}}{{amount}}</b></span>
+					<span>{{orderInfo.activityInfo.title}}</span>
 				</div>
+				<div class="detail">
+					<span><i>Order ID:</i> {{orderId}}</span><em>|</em><span><i>Payment amount:</i> <b>{{orderInfo.currency+' '+orderInfo.symbol}}{{orderInfo.amount}}</b></span>
+				</div>
+				<div class="detail">
+					<span><i>Number of travelers:</i> {{orderInfo.adultNum+orderInfo.childrenNum}}</span><em>|</em><span><i>Travel date:</i> {{orderInfo.startDate}}</span>
+				</div>
+				
 				<!-- <p style="margin-top: 10px;"> Our staff will confirm with you as soon as possible. We will reply you within one business day. You can know the details furthur by look at your order details.You can also email service@localpanda.com or call us at +86 (21) 8018-2090/ +1 (888) 930-8849 (US toll free).</p>				
 
 				<p class="c_666" v-if="showTipTxt && payType!='guide'">You ordered as a guest. You can click this button to view your order details.</p> -->
 
 				<div class="service_box">
-					<p class="tip_detail">In the meantime, a confirmation email has been sent to“{{email}}”, Please check. If you have not received it, please check your junk mail folder. If you still do <br>not see it, please <a @click="showEmailBox=true">click here</a> to enter your correct or alternative email address.</p>
+					<p class="tip_detail">In the meantime, a confirmation email has been sent to“{{orderInfo.contactInfo.emailAddress}}”, Please check. If you have not received it, please check your junk mail folder. If you still do <br>not see it, please <a @click="showEmailBox=true">click here</a> to enter your correct or alternative email address.</p>
 					<div class="email_box" v-show="showEmailBox">
 						<input type="text" v-model="inqueryEmail">
 						<span class="btn_sendemail" @click="sendEmail">Resend email address</span>
@@ -33,7 +41,7 @@
 					</div>
 				</div>
 
-				<a class="backorderbtn" v-if="payType!='guide'" :href="logIn ? '/user/myBookings' : '/user/myBookings?email='+(inqueryEmail?inqueryEmail:email)+'&orderid='+orderId">View My Order</a>
+				<a class="backorderbtn" v-if="payType!='guide'" :href="logIn ? '/user/myBookings' : '/user/myBookings?email='+orderInfo.contactInfo.emailAddress+'&orderid='+orderId">View My Order</a>
 			</div>
 
 			<service></service>
@@ -50,9 +58,32 @@
 	import HeaderCommon from '~/components/HeaderCommon/HeaderCommon'
 	import FooterCommon from '~/components/FooterCommon/FooterCommon';
 	import service from '~/components/pageComponents/inquiry/service';
+	import Vue from 'vue'
 	export default {
 
 		name: 'payNow',
+		async asyncData({
+			apiBasePath,
+			route,
+			error
+		}) {
+
+			let query = route.query;
+			var orderInfo = '';
+
+			try {
+				orderInfo = await Vue.axios.get(apiBasePath + "order/activity/" + query.orderId)
+			} catch(err) {
+				return error({
+					statusCode: 500,
+					message: JSON.stringify(err)
+				});
+			};
+
+			return {
+				orderInfo: orderInfo ? orderInfo.data : ''
+			}
+		},
 		data() {
 			var query = this.$route.query;
 			var payType = query.payType;
@@ -75,7 +106,7 @@
 				serviceData:{id:orderId,type:'payment'},
 
 
-				dialogStatus:false,
+				
 				emailTip:false,
 				emailSendTip:false,
 				showEmailBox:false,
@@ -130,7 +161,7 @@
 					}).then(function(response) {
 						if(response.data.succeed) {
 							that.emailSendTip = true;
-							that.email = that.inqueryEmail;
+							that.orderInfo.contactInfo.emailAddress = that.inqueryEmail;
 							that.inqueryEmail = '';
 						};
 
@@ -146,6 +177,8 @@
 		mounted: function() {
 //			this.orderId=GetQueryString("orderId")
 //			this.amount=GetQueryString("amount")
+
+console.log(this.orderInfo);
 			
 			this.logIn=window.localStorage.getItem("logstate")
 			this.userId=window.localStorage.getItem("userid")
@@ -261,6 +294,11 @@
 							color: #1bbc9d;
 							margin-left: 5px;
 						}	
+						i{
+							font-style:normal;
+							color: #666;
+							margin-right: 5px;
+						}
 					}
 					em{
 						vertical-align: top;

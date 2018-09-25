@@ -15,10 +15,18 @@
 						<span class="iconfont">&#xe606;</span>
 						<b>Oops! Something went wrong.</b>
 					</div>
+
 					<div class="detail">
-						<span>Order ID: {{orderId}}</span><em>|</em><span>Payment amount: <b>{{symbol=='$'?currency+symbol:symbol}}{{amount}}</b></span>
+						<span>{{orderInfo.activityInfo.title}}</span>
+					</div>
+					<div class="detail">
+						<span><i>Order ID:</i> {{orderId}}</span><em>|</em><span><i>Payment amount:</i> <b>{{orderInfo.currency+' '+orderInfo.symbol}}{{orderInfo.amount}}</b></span>
 						
 					</div>
+					<div class="detail">
+						<span><i>Number of travelers:</i> {{orderInfo.adultNum+orderInfo.childrenNum}}</span><em>|</em><span><i>Travel date:</i> {{orderInfo.startDate}}</span>
+					</div>
+
                     <P v-if="errMsg" style="margin-top: 47px;">Your payment did not go through. Here is the error that you can reference: {{errMsg}}</P>
 					<p style="margin-top: 30px;">If you want to proceed with payment, click "Try again." If your payment problems continue, we suggest you try using another card or contact us via call, text, email or other messaging tools listed below.</p>
                     <button class="backorderbtn" @click="tryAgain(type)">Try again</button>
@@ -38,9 +46,32 @@
 	import HeaderCommon from '~/components/HeaderCommon/HeaderCommon'
 	import FooterCommon from '~/components/FooterCommon/FooterCommon';
 	import service from '~/components/pageComponents/inquiry/service';
+	import Vue from 'vue'
 	export default {
 
 		name: 'failed',
+		async asyncData({
+			apiBasePath,
+			route,
+			error
+		}) {
+
+			let query = route.query;
+			var orderInfo = '';
+
+			try {
+				orderInfo = await Vue.axios.get(apiBasePath + "order/activity/" + query.orderId)
+			} catch(err) {
+				return error({
+					statusCode: 500,
+					message: JSON.stringify(err)
+				});
+			};
+
+			return {
+				orderInfo: orderInfo ? orderInfo.data : ''
+			}
+		},
 		data() {
 //			let orderId=this.$route.query.orderId;
 			var query = this.$route.query;
@@ -207,6 +238,11 @@
 							color: #1bbc9d;
 							margin-left: 5px;
 						}	
+						i{
+							font-style:normal;
+							color: #666;
+							margin-right: 5px;
+						}
 					}
 					em{
 						vertical-align: top;

@@ -5,7 +5,7 @@
 				<div class="log">
 					<a href="/">
 						<svg class="icon" aria-hidden="true">
-							<use xlink:href="#icon-logo1"></use>
+							<use xlink:href="#icon-logo2"></use>
 						</svg>
 					</a>
 	
@@ -429,19 +429,7 @@
 			showContact() {
 				location.href = "/travel/customize/step1"
 			},
-			contactCallBack(val) {
-				this.istrue=val?true:false;
-				if(this.istrue == true) {
-					this.isShowAlert = true
-					this.alertTitle = "Submission completed!"
-					this.alertMessage = "Thank you for your feedback.We will get back to you within 1 day."
-					this.istrue = false
-				} else {
-					this.isShowAlert = true
-					this.alertMessage = "Failed!"
-				}
-				this.ContactStatus = false
-			},
+			
 			contshow() {
 				// this.hiddenHead=false
 				this.iscontshow = !this.iscontshow
@@ -974,11 +962,17 @@
 				float: left;
 			}
 			.log {
-				margin-left: 38px;
-				width: 280px;
+				margin-left: 20px;
+				width: 300px;
 				height: 55px;
 				line-height: 60px;
 				display: inline-block;
+				a{
+					display: block;
+					svg{
+						width: 100%;
+					}
+				}
 				span {
 					font-size: 46px;
 					vertical-align: middle;

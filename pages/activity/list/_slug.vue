@@ -14,7 +14,8 @@
 				</div>
 				<!--seach bar -->
 				<div class="selectInfo">
-					<input type="text" v-model="seachContent" @click.stop="showHot" maxlength="60" @keyup.enter="seachFn" autocomplete="off" placeholder="Attraction, Activity, Destination" />
+          <span class="clear_search iconfont" v-show="seachContent" @click="clearSearch">&#xe629;</span>
+					<input type="text" id="search_input" v-model="seachContent" @click.stop="showHot" maxlength="60" @keyup.enter="seachFn" autocomplete="off" placeholder="Attraction, Activity, Destination" />
 					<div class="selectPeople">
 						<!-- <span>{{postData.participants}} People <i class="iconfont">&#xe60f;</i></span>
 						<input-number v-if="selectPeople" :participants="postData.participants" :selectNumber="selectNumber" @showSelectPeople="setSelectPeople" @getPeople="setPeople"></input-number> -->
@@ -59,29 +60,36 @@
 		<div class="slogn">
 			<div class="slogn_box">
 				<div class="slogn_item">
+					<span class="iconfont">&#xe687;</span>
+					<div class="slogn_cont">
+						<!-- <h4>Bridging East and West</h4> -->
+						<p>Government licensed <br>travel platform</p>
+					</div>
+				</div>
+				<div class="slogn_item">
 					<span class="iconfont">&#xe677;</span>
 					<div class="slogn_cont">
-						<h4>Bridging East and West</h4>
-						<p>Our multicultural team understands what China has to </br>offer and what you as a traveler are looking for</p>
+						<!-- <h4>Exceptional Trips</h4> -->
+						<p>High-quality certified <br>tour guides</p>
 					</div>
 				</div>
 				<div class="slogn_item">
-					<span class="iconfont">&#xe678;</span>
+					<span class="iconfont slogn_item_refund">&#xe685;</span>
 					<div class="slogn_cont">
-						<h4>Exceptional Trips</h4>
-						<p>We hand-pick our offerings to ensure excellence in </br> quality and competitive pricing</p>
+						<!-- <h4>Personalized Experiences</h4> -->
+						<p>100% refund if we don't <br>deliver satisfactory trips</p>
 					</div>
 				</div>
-				<div class="slogn_item">
-					<span class="iconfont">&#xe651;</span>
+        <div class="slogn_item">
+					<span class="iconfont">&#xe686;</span>
 					<div class="slogn_cont">
-						<h4>Personalized Experiences</h4>
-						<p>We work closely with you to deliver experiences </br> that fit your personality, interests, and travel style</p>
+						<!-- <h4>Personalized Experiences</h4> -->
+						<p>1 on 1 customer service <br>with quick responses</p>
 					</div>
 				</div>
 			</div>
 		</div>
-		<div class="page-content">
+		<div class="page-content" id="page-content">
 			<div class="page pageInfo clearfix">
 				<div class="pageLeft">
 					<div class="filterSeach" v-if="showSelected">
@@ -997,14 +1005,16 @@ export default {
     contactCallBack(val) {
       this.istrue=val?true:false;
       if (this.istrue == true) {
-        this.isShowAlert = true;
-        this.alertTitle = "Submission completed!";
-        this.alertMessage =
-          "Thank you for your feedback.We will get back to you within 1 day.";
-        this.istrue = false;
-      } else {
-        this.isShowAlert = true;
-        this.alertMessage = "Failed!";
+        if(val.data.succeed){
+          this.isShowAlert = true;
+          this.alertTitle = "Submission completed!";
+          this.alertMessage =
+            "Thank you for your feedback.We will get back to you within 1 day.";
+          this.istrue = false;
+        }else{
+          this.isShowAlert = true;
+          this.alertMessage = "Failed!";
+        }
       }
       this.ContactStatus = false;
     },
@@ -1087,6 +1097,10 @@ export default {
         this.Ga("search", "direct");
         location.href = this.getUrl(this.seachContent, "direct");
       }
+    },
+    clearSearch(){
+      this.seachContent = '';
+      document.querySelector('#search_input').focus();
     },
     getUrl(value, type) {
       return "/activity/list/China?keyword=" + value + "&type=" + type;
@@ -1308,8 +1322,10 @@ export default {
                   this.selectNumber.maxValue = item.value;
                 }
               });
-            }
-            window.scrollTo(0, 0);
+            };
+
+            //滚动到指定位置
+            window.scrollTo(0,document.querySelector('#page-content').offsetTop);
           },
           res => {}
         );
@@ -1662,7 +1678,7 @@ export default {
     .linerBackground {
       .covertitle {
         text-align: center;
-        padding-top: 72px;
+        padding-top: 50px;
         h3 {
           font-size: 44px;
           color: #fff;
@@ -1685,7 +1701,7 @@ export default {
     }
     .selectInfo {
       height: 48px;
-      width: 1040px;
+      width: 800px;
       border-radius: 6px;
       background: #fff;
       margin: 0 auto;
@@ -1694,9 +1710,27 @@ export default {
       a {
         display: block;
       }
+      .clear_search{
+        display: block;
+        position: absolute;
+        left: 437px;
+        top:14px;
+        width: 20px;
+        height: 20px;
+        line-height: 22px;
+        border-radius:50%;
+        color: #fff;
+        background-color:#ccc;
+        font-size:14px;
+        text-align: center;
+        cursor: pointer;
+        &:hover{
+          background-color:#999;
+        }
+      }
       input {
         border-radius: 6px;
-        width: 710px;
+        width: 470px;
         border: none;
         height: 100%;
         margin: 0;
@@ -1836,7 +1870,9 @@ export default {
       .slogn_item {
         flex: 1;
         span {
+          float: left;
           font-size: 34px;
+          margin-right: 10px;
           background-image: -webkit-linear-gradient(135deg, #009efd, #1bbc9d);
           -webkit-text-fill-color: transparent;
           -webkit-background-clip: text;
@@ -1853,16 +1889,18 @@ export default {
           -o-text-fill-color: transparent;
           -o-background-clip: text;
         }
+        .slogn_item_refund{
+          font-size:38px;
+        }
         .slogn_cont {
-          float: right;
-          width: 90%;
+          
           h4 {
             font-weight: bold;
             font-size: 16px;
           }
           p {
             font-size: 14px;
-            margin-top: 5px;
+            line-height: 19px;
           }
         }
       }

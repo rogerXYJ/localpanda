@@ -885,22 +885,16 @@ import { setTimeout } from 'timers';
 			contactCallBack(val){
 				if(val){
 					var data = val.data;
-					this.feedbackId = data.response;
-					this.inqueryEmailOld = val.email;
-					this.dialogStatus = true;
+					if(data && data.succeed){
+						this.feedbackId = data.response;
+						this.inqueryEmailOld = val.email;
+						this.dialogStatus = true;
+					}else{
+						this.isShowAlert=true
+						this.alertMessage="Failed!"
+					}
+					
 				}
-				
-
-				this.istrue=val?true:false;
-				if(this.istrue==true){
-					// this.isShowAlert=true
-					// this.alertTitle="Submission completed!"
-					// this.alertMessage="Thank you for your feedback.We will get back to you within 1 day."
-					// this.istrue=false
-				}else{
-					this.isShowAlert=true
-					this.alertMessage="Failed!"
-				};
 
 				//关闭弹窗
 				this.ContactStatus=false

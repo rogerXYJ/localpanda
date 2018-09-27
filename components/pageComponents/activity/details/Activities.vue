@@ -328,8 +328,8 @@
 											<div class="people" v-if="children>0">
 												<span v-if="adults==1">Adult x 1</span>
 												<span v-else>Adults x {{adults}}</span> 
-												<span v-if="children==1"> , child x 1</span>
-												<span v-if="children>1"> , children x  {{children}}</span>
+												<span v-if="children==1"> , Child x 1</span>
+												<span v-if="children>1"> , Children x  {{children}}</span>
 											</div> 
 											<i class="iconfont" v-if="!isShowAdults">&#xe60f;</i>
 											<i class="iconfont" v-else>&#xe63f;</i>
@@ -399,7 +399,7 @@
 											<div class="pic">{{nowExchange.symbol}}{{adultsPic}}</div>
 										</li>
 										<li class="clearfix" v-if="children>0&&picInfo.childDiscount">
-											<div class="formula"><b style="display: inline-block;">- {{nowExchange.symbol}}{{returnFloat(children*picInfo.childDiscount)}}</b> for child(ren)</div>
+											<div class="formula"><b style="display: inline-block;">- {{nowExchange.symbol}}{{returnFloat(children*picInfo.childDiscount)}}</b> for Child(ren)</div>
 										</li>
 									</ul>
 									<div class="total clearfix">

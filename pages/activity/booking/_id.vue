@@ -101,7 +101,7 @@
 						<div class="adult clearfix">
 							<div class="formula" v-if="opctions.childrenNum==0 && opctions.adultNum==1">{{nowExchange.symbol}}{{opctions.adultsPic}} x 1 Person</div>
 							<div class="formula" v-else>{{nowExchange.symbol}} {{opctions.averagePrice}} x {{opctions.peopleNum}} People </div>
-							<div class="adultPic">{{nowExchange.symbol}} {{opctions.adultsPic}}</div>
+							<div class="adultPic">{{nowExchange.symbol}} {{returnFloat(opctions.adultsPic)}}</div>
 						</div>
 						<div class="child" v-if="opctions.childrenNum>0&&opctions.childDiscount">
 							<b>- {{nowExchange.symbol}}{{opctions.childDiscount}}</b>(Children discount)
@@ -217,7 +217,7 @@
 			let data={
 					opctions: {
 					averagePrice: 0,
-					adultsPic: 10,
+					adultsPic: 0,
 					childrenNum: 0,
 					adultNum: 0,
 					amount: 0,
@@ -386,11 +386,11 @@
 				let self = this
 				if(!e.target.checked) {
 					self.hasCode = 100
-					self.opctions.amount=this.returnFloat(this.opctions.adultsPic - this.opctions.childDiscount)
+					self.opctions.amount = this.returnFloat(this.opctions.adultsPic - this.opctions.childDiscount)
 					self.couponRate = ''
 					self.couponCode = '';
 					self.couponType = ""
-					console.log(self.opctions.childDiscount)
+					console.log(self.opctions)
 				}
 			},
 			//验证couponCode
@@ -475,18 +475,16 @@
 					
 					})
 					Promise.all([p1,p2]).then(results=>{
-							if(options.childDiscount){
-								options.childDiscount=self.returnFloat(results[0].data.childDiscount)
-							}
-							options.details=results[1].data
-							console.log(options.details)
+							options.childDiscount= results[0].data.childDiscount;
+							options.details=results[1].data;
+
 							for(var i=0;i<results[1].data.length;i++){
 								if(options.adultNum+options.childrenNum==results[1].data[i].capacity){
 									options.adultsPic=self.returnFloat(results[1].data[i].price)
 									options.averagePrice=self.returnFloat(results[1].data[i].perPersonPrice)
 									options.amount=options.childrenNum > 0 && options.childDiscount ?
 							self.returnFloat(self.returnFloat(results[1].data[i].price) - self.returnFloat(options.childrenNum * results[0].data.childDiscount)- (options.couponDiscount?options.couponDiscount:0)):
-							self.returnFloat(results[1].data[i].price)
+							this.returnFloat(results[1].data[i].price)
 							
 							}
 
@@ -694,7 +692,7 @@
 						}
 						return (value+('0.'+zeroStr+'5')*1).toFixed(bit);
 					}
-					return value.toFixed(bit);
+					return (value*1).toFixed(bit);
 				}else{
 					return 0;
 				}
@@ -841,22 +839,28 @@
 			var self=this
 			var opctions = localStorage.getItem("orderInfo") ? JSON.parse(localStorage.getItem("orderInfo")) : ''
 
+			
+
 			if(opctions){
 				for(var key in opctions){
-					this.opctions[key]=opctions[key]
+					if(key!='childDiscount'){
+						this.opctions[key]=opctions[key]
+					}
+					
 				}
 			}
 			// this.opctions.adultsPic=this.getBasisPrice()
 			var details=this.opctions.picInfo.detail;
-			var opctions=this.opctions.picInfo
+			var opctions=this.opctions.picInfo;
+			
 		
-			this.opctions.childDiscount=opctions.childDiscount?details.childDiscount:0
+			this.opctions.childDiscount=opctions.childDiscount?opctions.childDiscount:0
 			for(var i = 0; i < details.length; i++) {
 				if(this.opctions.adultNum+this.opctions.childrenNum==details[i].capacity){
 					this.opctions.adultsPic=details[i].price
-					this.opctions.averagePrice=details[i].perPersonPrice
-					this.opctions.amount=opctions.childrenNum > 0 && opctions.childDiscount ?
-							self.returnFloat(self.returnFloat(details[i].price) - self.returnFloat(opctions.childrenNum * opctions.childDiscount)- (opctions.couponDiscount?opctions.couponDiscount:0)):
+					this.opctions.averagePrice=details[i].perPersonPrice;
+					this.opctions.amount= this.opctions.childrenNum > 0 && opctions.childDiscount ?
+							self.returnFloat(self.returnFloat(details[i].price) - self.returnFloat(this.opctions.childrenNum * opctions.childDiscount)- (this.opctions.couponDiscount?this.opctions.couponDiscount:0)):
 							self.returnFloat(details[i].price)
 				}
 			}
@@ -873,12 +877,16 @@
 
 
 			this.goBackFn()
-			console.log(this.opctions)
+			console.log(this.opctions);
+			console.log(this.amount);
 			var self = this;
+
+			self.opctions.symbol = self.currency.symbol;
+			self.opctions.currency = self.currency.code;
 			//设置默认币种
 			self.nowExchange = {
-				symbol: self.opctions.symbol,
-				currency: self.opctions.currency
+				symbol: self.currency.symbol,
+				currency: self.currency.code
 			};
 			//加载币种
 			// self.axios.get("https://api.localpanda.com/api/public/currency/all/"+self.opctions.currency).then(function(response) {

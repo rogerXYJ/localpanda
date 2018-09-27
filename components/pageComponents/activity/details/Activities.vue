@@ -1000,7 +1000,7 @@ import { setTimeout } from 'timers';
 						}
 						return (value+('0.'+zeroStr+'5')*1).toFixed(bit);
 					}
-					return value.toFixed(bit);
+					return (value*1).toFixed(bit);
 				}else{
 					return 0;
 				}

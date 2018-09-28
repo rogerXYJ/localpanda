@@ -86,25 +86,28 @@
 			<div class="oderdetial">
 				<div class="payfordetail">
 					<div class="head clearfix">
+						<h3>{{opctions.title}}</h3>
 						<div class="serviceform">
-							<h3>{{opctions.title}}</h3>
-							<p v-if="opctions.adultNum==1&&opctions.childrenNum==0">1 Person</p>
-							<p v-else>{{opctions.peopleNum}} People</p>
+							
+							<!-- <p v-if="opctions.adultNum==1&&opctions.childrenNum==0">1 Person</p>
+							<p v-else>{{opctions.peopleNum}} People</p> -->
+							<p>Number of {{opctions.adultNum>1?'Adults':'Adult'}} :  {{opctions.adultNum}}</p>
+							<p>Number of {{opctions.childrenNum>1?'Children':'Child'}} :  {{opctions.childrenNum}}</p>
 						</div>
 
 					</div>
 					<div class="date">
-						<p>{{opctions.startDate}}</p>
+						<p>Travel date :  {{formatDate(opctions.startDate)}}</p>
 						<p v-if="opctions.startTime">{{opctions.startTime}}</p>
 					</div>
 					<div class="pic">
 						<div class="adult clearfix">
-							<div class="formula" v-if="opctions.childrenNum==0 && opctions.adultNum==1">{{nowExchange.symbol}}{{opctions.adultsPic}} x 1 Person</div>
-							<div class="formula" v-else>{{nowExchange.symbol}} {{opctions.averagePrice}} x {{opctions.peopleNum}} People </div>
+							<!-- <div class="formula" v-if="opctions.childrenNum==0 && opctions.adultNum==1">{{nowExchange.symbol}}{{opctions.adultsPic}} x 1 Travelers</div> -->
+							<div class="formula">{{nowExchange.symbol}} {{returnFloat(opctions.averagePrice)}} x {{opctions.peopleNum}} Travelers</div>
 							<div class="adultPic">{{nowExchange.symbol}} {{returnFloat(opctions.adultsPic)}}</div>
 						</div>
 						<div class="child" v-if="opctions.childrenNum>0&&opctions.childDiscount">
-							<b>- {{nowExchange.symbol}}{{opctions.childDiscount}}</b>(Children discount)
+							<b>- {{nowExchange.symbol}}{{returnFloat(opctions.childrenNum * opctions.childDiscount)}}</b> for {{opctions.childrenNum}} {{opctions.childrenNum>1?'Children':'Child'}}
 						</div>
 						<div class="child" v-if="couponType">
 							<div>
@@ -113,7 +116,7 @@
 						</div>
 					</div>
 					<div class="total clearfix">
-						<div class="totle-title">Total ({{opctions.currency}})</div>
+						<div class="totle-title">Total</div>
 						<div class="totalPic">{{nowExchange.symbol}}{{opctions.amount}}</div>
 						<div class="picRate">
 							<select class="currency_type" @change="changeCurrency" v-model="opctions.currency">
@@ -1315,16 +1318,18 @@
 					padding: 15px 30px;
 					width: 376px;
 					.head {
-						padding-bottom: 15px;
-						border-bottom: 1px solid #dde0e0;
-						.serviceform {
-							h3 {
+						
+						h3 {
 								font-size: 18px;
-								margin-bottom: 0;
 								font-weight: bold;
 							}
+						.serviceform {
+							margin-top: 15px;
+							padding: 15px 0;
+							border-top: 1px solid #dde0e0;
+							border-bottom: 1px solid #dde0e0;
 							p {
-								margin-top: 12px;
+								line-height: 24px;
 								font-size: 18px
 							}
 						}

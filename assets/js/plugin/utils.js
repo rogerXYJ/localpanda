@@ -23,6 +23,7 @@ var GetDateStr = function(AddDayCount) {
 	return y + "-" + m + "-" + d;
 }
 var formatDate = function(millinSeconds){
+	if(!millinSeconds)return '';
 	var date = new Date(millinSeconds.replace(/\-/g,'/'));
 	var monthArr = new Array("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec");
 	var suffix = new Array("st","nd","rd","th");
@@ -417,7 +418,8 @@ var getParents = function(target,className){
 	  }
 	};
 	return false;
-  }
+	}
+	
 
 //return {
 //  GetQueryString,

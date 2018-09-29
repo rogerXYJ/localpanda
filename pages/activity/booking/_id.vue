@@ -388,7 +388,9 @@
 			changeFn(e) {
 				let self = this
 				if(!e.target.checked) {
-					self.hasCode = 100
+					self.hasCode = 100;
+					console.log(this.opctions.adultsPic);
+console.log(this.opctions.childDiscount);
 					self.opctions.amount = this.returnFloat(this.opctions.adultsPic - this.opctions.childDiscount*this.opctions.childrenNum)
 					self.couponRate = ''
 					self.couponCode = '';
@@ -477,7 +479,10 @@
 					
 					})
 					Promise.all([p1,p2]).then(results=>{
-						options.childDiscount= results[0].data.childDiscount;
+						var childDiscount = results[0].data.childDiscount;
+						options.childDiscount= childDiscount?childDiscount:0;
+
+						console.log(results[0].data);
 
 						var detailData = results[1].data;
 						options.details=detailData;

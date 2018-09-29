@@ -125,7 +125,7 @@
 						<div class="adult clearfix">
 							<!-- <div class="formula" v-if="opctions.childrenNum==0&&opctions.adultNum==1">{{opctions.symbol}}{{returnFloat(opctions.averagePrice)}} x 1 Person</div> -->
 							<div class="formula">{{opctions.symbol}} {{returnFloat(opctions.averagePrice)}} x {{opctions.adultNum+opctions.childrenNum}} {{(opctions.adultNum+opctions.childrenNum)>1?'Travelers':'Traveler'}}</div>
-							<div class="adultPic">{{opctions.symbol}} {{returnFloat(opctions.amount + (opctions.childDiscount?opctions.childDiscount*opctions.childrenNum:0) + (opctions.couponDiscount?opctions.couponDiscount:0))}}</div>
+							<div class="adultPic">{{opctions.symbol}} {{returnFloat(opctions.amount + (opctions.childDiscount?returnFloat(opctions.childDiscount*opctions.childrenNum):0) + (opctions.couponDiscount?opctions.couponDiscount:0))}}</div>
 						</div>
 						<div class="child" v-if="opctions.childDiscount">
 							<b>- {{opctions.symbol}}{{returnFloat(opctions.childDiscount*opctions.childrenNum)}}</b>  for {{opctions.childrenNum}} {{opctions.childrenNum>1?'Children':'Child'}}

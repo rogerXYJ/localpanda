@@ -7,11 +7,11 @@
 						<div class="item">
 							<h3>CITIES</h3>
 							<div class="city clearfix">
-								<a href="/activity/list/Shanghai">Activities in Shanghai</a>
-								<a href="/activity/list/Beijing">Activities in Beijing</a>
-								<a href="/activity/list/Chengdu">Activities in Chengdu</a>
-								<a href="/activity/list/Xian">Activities in Xi'an</a>
-								<a href="/activity/list/Guilin">Activities in Guilin</a>
+								<a href="/activity/list/Shanghai">Shanghai</a>
+								<a href="/activity/list/Beijing">Beijing</a>
+								<a href="/activity/list/Chengdu">Chengdu</a>
+								<a href="/activity/list/Xian">Xi'an</a>
+								<a href="/activity/list/Guilin">Guilin</a>
 							</div>
 						</div>
 					</li>
@@ -28,8 +28,8 @@
 						<div class="need-help">
 							<a href="/info/service-terms">Service Terms</a>
 							<a href="/info/privacy-policy">Privacy Policy</a>
-							<a class="run_stop">Legal</a>
-							<a class="run_stop">Terms of Use</a>
+							<!-- <a class="run_stop">Legal</a>
+							<a class="run_stop">Terms of Use</a> -->
 							
 						</div>
 						

@@ -14,7 +14,7 @@
 						</div>
 					</a>
 	      </div> -->
-				<div class="swiper-slide">
+				<!-- <div class="swiper-slide">
 	        <a href="/activity/details/11201">
 						<div class="imgBanner" :style="{background:'url(https://cloud.localpanda.com/static/homePage/banner4.jpg)'}">
 							<p class="banner_tit_s">Looking for adventure on a budget?</p>
@@ -23,7 +23,7 @@
 							<span class="banner_btn">Book Now</span>
 						</div>
 					</a>
-	      </div>
+	      </div> -->
 
 	      <div class="swiper-slide">
 	        <a href="/activity/list/Beijing">

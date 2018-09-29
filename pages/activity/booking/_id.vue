@@ -389,11 +389,10 @@
 				let self = this
 				if(!e.target.checked) {
 					self.hasCode = 100
-					self.opctions.amount = this.returnFloat(this.opctions.adultsPic - this.opctions.childDiscount)
+					self.opctions.amount = this.returnFloat(this.opctions.adultsPic - this.opctions.childDiscount*this.opctions.childrenNum)
 					self.couponRate = ''
 					self.couponCode = '';
 					self.couponType = ""
-					console.log(self.opctions)
 				}
 			},
 			//验证couponCode
@@ -478,16 +477,18 @@
 					
 					})
 					Promise.all([p1,p2]).then(results=>{
-							options.childDiscount= results[0].data.childDiscount;
-							options.details=results[1].data;
+						options.childDiscount= results[0].data.childDiscount;
 
-							for(var i=0;i<results[1].data.length;i++){
-								if(options.adultNum+options.childrenNum==results[1].data[i].capacity){
-									options.adultsPic=self.returnFloat(results[1].data[i].price)
-									options.averagePrice=self.returnFloat(results[1].data[i].perPersonPrice)
-									options.amount=options.childrenNum > 0 && options.childDiscount ?
-							self.returnFloat(self.returnFloat(results[1].data[i].price) - self.returnFloat(options.childrenNum * results[0].data.childDiscount)- (options.couponDiscount?options.couponDiscount:0)):
-							this.returnFloat(results[1].data[i].price)
+						var detailData = results[1].data;
+						options.details=detailData;
+
+						for(var i=0;i<detailData.length;i++){
+							if(options.adultNum+options.childrenNum==detailData[i].capacity){
+								options.adultsPic=self.returnFloat(detailData[i].price)
+								options.averagePrice=self.returnFloat(detailData[i].perPersonPrice)
+								options.amount=options.childrenNum > 0 && options.childDiscount ?
+								self.returnFloat(self.returnFloat(detailData[i].price) - self.returnFloat(options.childrenNum * results[0].data.childDiscount)- (options.couponDiscount?options.couponDiscount:0)):
+								this.returnFloat(detailData[i].price)
 							
 							}
 

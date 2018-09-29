@@ -481,7 +481,7 @@
 			}
 		},
 		mounted: function() {
-			console.log(bus)
+			
 			var self = this;
 			self.id!='undefined'?self.id:getUrlParams()
 			this.logIn = window.localStorage.getItem("logstate");

@@ -127,7 +127,7 @@
 							<div class="formula">{{opctions.symbol}} {{returnFloat(opctions.averagePrice)}} x {{opctions.adultNum+opctions.childrenNum}} {{(opctions.adultNum+opctions.childrenNum)>1?'Travelers':'Traveler'}}</div>
 							<div class="adultPic">{{opctions.symbol}} {{returnFloat(opctions.amount + (opctions.childDiscount?opctions.childDiscount*opctions.childrenNum:0) + (opctions.couponDiscount?opctions.couponDiscount:0))}}</div>
 						</div>
-						<div class="child" v-if="opctions.childDiscount">
+						<div class="child" v-if="opctions.childDiscount &&　opctions.childrenNum">
 							<b>- {{opctions.symbol}}{{returnFloat(opctions.childDiscount*opctions.childrenNum)}}</b>  for {{opctions.childrenNum}} {{opctions.childrenNum>1?'Children':'Child'}}
 						</div>
 						<div class="child" v-if="opctions.couponDiscount">

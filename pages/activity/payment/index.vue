@@ -108,24 +108,27 @@
 			<div class="detailsbox">
 				<div class="payfordetail">
 					<div class="head clearfix">
+						<h3>{{opctions.activityInfo?opctions.activityInfo.title:''}}</h3>
 						<div class="serviceform">
-							<h3>{{opctions.activityInfo?opctions.activityInfo.title:''}}</h3>
-							<p v-if="opctions.adultNum==1&&opctions.childrenNum==0">1 Person</p>
-							<p v-else>{{opctions.adultNum+opctions.childrenNum}} People</p>
+							
+							<!-- <p v-if="opctions.adultNum==1&&opctions.childrenNum==0">1 Person</p>
+							<p v-else>{{opctions.adultNum+opctions.childrenNum}} People</p> -->
+							<p>Number of {{opctions.adultNum>1?'Adults':'Adult'}} :  {{opctions.adultNum}}</p>
+							<p v-if="opctions.childrenNum">Number of {{opctions.childrenNum>1?'Children':'Child'}} :  {{opctions.childrenNum}}</p>
 						</div>
 					</div>
 					<div class="date">
-						<p>{{opctions.startDate}}</p>
+						<p>Travel date :  {{formatDate(opctions.startDate)}}</p>
 						<p v-if="opctions.startTime">{{opctions.startTime}}</p>
 					</div>
 					<div class="pic">
 						<div class="adult clearfix">
-							<div class="formula" v-if="opctions.childrenNum==0&&opctions.adultNum==1">{{opctions.symbol}}{{returnFloat(opctions.averagePrice)}} x 1 Person</div>
-							<div class="formula" v-else>{{opctions.symbol}} {{returnFloat(opctions.averagePrice)}} x {{opctions.adultNum+opctions.childrenNum}} People </div>
-							<div class="adultPic">{{opctions.symbol}} {{returnFloat(opctions.amount + (opctions.childDiscount?opctions.childDiscount:0) + (opctions.couponDiscount?opctions.couponDiscount:0))}}</div>
+							<!-- <div class="formula" v-if="opctions.childrenNum==0&&opctions.adultNum==1">{{opctions.symbol}}{{returnFloat(opctions.averagePrice)}} x 1 Person</div> -->
+							<div class="formula">{{opctions.symbol}} {{returnFloat(opctions.averagePrice)}} x {{opctions.adultNum+opctions.childrenNum}} {{(opctions.adultNum+opctions.childrenNum)>1?'Travelers':'Traveler'}}</div>
+							<div class="adultPic">{{opctions.symbol}} {{returnFloat(opctions.amount + (opctions.childDiscount?opctions.childDiscount*opctions.childrenNum:0) + (opctions.couponDiscount?opctions.couponDiscount:0))}}</div>
 						</div>
 						<div class="child" v-if="opctions.childDiscount">
-							<b>- {{opctions.symbol}}{{returnFloat(opctions.childDiscount)}}</b>  (Children discount)
+							<b>- {{opctions.symbol}}{{returnFloat(opctions.childDiscount*opctions.childrenNum)}}</b>  for {{opctions.childrenNum}} {{opctions.childrenNum>1?'Children':'Child'}}
 						</div>
 						<div class="child" v-if="opctions.couponDiscount">
 							<b>-{{opctions.symbol}}{{returnFloat(opctions.couponDiscount)}}</b> (Coupon discount)
@@ -1012,29 +1015,30 @@
 				background: #fff;
 				padding: 30px 30px 40px;
 				.head {
-					padding-bottom: 30px;
-					border-bottom: 1px solid #dde0e0;
+					h3 {
+						font-size: 18px;
+						font-weight: bold;
+					}
 					.serviceform {
-						h3 {
-							font-size: 18px;
-							margin-bottom: 0;
-							font-weight: bold;
-						}
+						margin-top: 15px;
+						padding: 25px 0;
+						border-top: 1px solid #dde0e0;
+						border-bottom: 1px solid #dde0e0;
 						p {
-							margin-top: 12px;
+							line-height: 24px;
 							font-size: 18px
 						}
 					}
 				}
 				.date {
-					padding: 30px 0;
+					padding: 25px 0;
 					border-bottom: 1px solid #dde0e0;
 					p {
 						font-size: 18px;
 					}
 				}
 				.pic {
-					padding: 30px 0;
+					padding: 25px 0;
 					border-bottom: 1px solid #dde0e0;
 					.adult {
 						.formula {
@@ -1052,7 +1056,7 @@
 					}
 				}
 				.total {
-					padding-top: 30px;
+					padding-top: 25px;
 					.totle-title {
 						float: left;
 						font-size: 18px;

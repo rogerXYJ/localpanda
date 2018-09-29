@@ -392,6 +392,7 @@ var getPriceMark = function(cur,str){
 }
 
 var hasClass = function(obj,name){
+	if(typeof obj.className!='string'){ return false;}
 	var classArr = obj.className.split(' ');
 	for(var i=0;i<classArr.length;i++){
 		var thisData = classArr[i];

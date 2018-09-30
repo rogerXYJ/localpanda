@@ -102,9 +102,8 @@ export default {
     window.addEventListener('scroll',function(){
 				that.showCurrency=false
 			})
-    window.currencyCallbackMeau = function(data) {
-      that.exchange = data;
-    };
+    
+    that.exchange = this.currencyData;
   
     //读取币种
     var nowCurrency = JSON.parse(Cookie.get("currency"));

@@ -62,25 +62,25 @@ if(!Cookie.get('userABtestID')){
 
 //获取币种
   
-  if(/\/details|list|booking\//.test(location.pathname)||location.pathname=="/"){
-    var xhr = new XMLHttpRequest();  // XMLHttpRequest对象用于在后台与服务器交换数据          
-    xhr.open('GET', 'https://api.localpanda.com/api/public/currency/all/USD', true);
-    xhr.send();
-    xhr.onreadystatechange = function() {
-      if (xhr.readyState == 4 && xhr.status == 200 || xhr.status == 304) { // readyState == 4说明请求已完成
-        var data = JSON.parse(xhr.responseText);
-        if(typeof window.currencyCallbackHeader == 'function'){
-          window.currencyCallbackHeader(data);
-        }
-        if(typeof window.currencyCallbackFooter == 'function'){
-          window.currencyCallbackFooter(data);
-        }
-        if(typeof window.currencyCallbackMeau == 'function'){
-          window.currencyCallbackMeau(data)
-        }
-      }
-    }
-  }
+  // if(/\/details|list|booking\//.test(location.pathname)||location.pathname=="/"){
+  //   var xhr = new XMLHttpRequest();  // XMLHttpRequest对象用于在后台与服务器交换数据          
+  //   xhr.open('GET', 'https://api.localpanda.com/api/public/currency/all/USD', true);
+  //   xhr.send();
+  //   xhr.onreadystatechange = function() {
+  //     if (xhr.readyState == 4 && xhr.status == 200 || xhr.status == 304) { // readyState == 4说明请求已完成
+  //       var data = JSON.parse(xhr.responseText);
+  //       if(typeof window.currencyCallbackHeader == 'function'){
+  //         window.currencyCallbackHeader(data);
+  //       }
+  //       if(typeof window.currencyCallbackFooter == 'function'){
+  //         window.currencyCallbackFooter(data);
+  //       }
+  //       if(typeof window.currencyCallbackMeau == 'function'){
+  //         window.currencyCallbackMeau(data)
+  //       }
+  //     }
+  //   }
+  // }
 
 
 

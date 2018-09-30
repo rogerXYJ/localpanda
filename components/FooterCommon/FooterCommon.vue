@@ -167,9 +167,7 @@ import { fail } from 'assert';
 			
 			//获取币种列表
 			var that = this;
-			window.currencyCallbackFooter = function(data){
-				that.exchange = data;
-			}
+			that.exchange = this.currencyData;
 
 			//读取币种
 			var nowCurrency = JSON.parse(Cookie.get('currency'));

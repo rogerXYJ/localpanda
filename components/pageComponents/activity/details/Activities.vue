@@ -402,7 +402,7 @@
 											<div class="pic">{{nowExchange.symbol}}{{adultsPic}}</div>
 										</li>
 										<li class="clearfix" v-if="children>0&&picInfo.childDiscount">
-											<div class="formula"><b style="display: inline-block;">- {{nowExchange.symbol}}{{returnFloat(children*picInfo.childDiscount)}}</b> for Child(ren)</div>
+											<div class="formula"><b style="display: inline-block;">- {{nowExchange.symbol}}{{returnFloat(children*picInfo.childDiscount)}}</b> for {{children}} {{children>1?'Children':'Child'}}</div>
 										</li>
 									</ul>
 									<div class="total clearfix">

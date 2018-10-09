@@ -273,9 +273,9 @@
 												<span style="font-size:12px;display:block;padding-left:70px" v-if="people=='Select' && !picInfo.unifiedPricing">Price based on group of {{minPeople}}</span>
 											</p>
 											 
-											<p v-if="people>1"><b style="font-size:22px" >{{nowExchange.symbol}} {{startingPrice}}  </b> {{!picInfo.unifiedPricing?'pp for party of '+people : 'per person'}}</p>
+											<p v-if="people>0"><b style="font-size:22px" >{{nowExchange.symbol}} {{startingPrice}}  </b> {{!picInfo.unifiedPricing?'pp for party of '+people : 'per person'}}</p>
 											
-											<p v-if="people==1"><b style="font-size:22px" >{{nowExchange.symbol}} {{startingPrice}}  </b> for 1 person</p>
+											<!-- <p v-if="people==1"><b style="font-size:22px" >{{nowExchange.symbol}} {{startingPrice}}  </b> for 1 person</p> -->
 											<!-- <span class="question" @mouseover="showNode" @mouseleave="hidden">?</span> -->
 											
 										</div>
@@ -297,6 +297,9 @@
 										<b>Available On</b>
 										<!--<flatPickr placeholder="Date" v-model="dateTime" :config="options"></flatPickr>-->
 										<input id="js_changetime" readonly v-model="dateTime" type="text" placeholder="Date">
+										<input class="time_box" :value="formatDate(dateTime)" readonly type="text" placeholder="Date">
+										<i class="iconfont" v-if="!isSelectDate">&#xe63f;</i>
+										<i class="iconfont" v-else>&#xe60f;</i>
 									</div>
 									<!--<div class="selectTime" v-if="picInfo.departureTime" >
 										<b></b>
@@ -478,6 +481,7 @@
 <script>
 	import {
 		GetDateStr,
+		formatDate,
 		addmulMonth,
 		getUrlParams,
 		getParents
@@ -599,6 +603,7 @@ import { setTimeout } from 'timers';
 			TimelineTitle
 		},
 		methods: {
+			formatDate:formatDate,
 			confirmCallback(){
 				this.dialogStatus = false;
 			},
@@ -1266,6 +1271,7 @@ import { setTimeout } from 'timers';
 					this.isSelectDate = false;
 					document.body.style.overflowY="hidden"
 				}else{
+					this.isSelectDate = true;
 					document.body.style.overflowY="visible"
 				}
 			},
@@ -1280,8 +1286,21 @@ import { setTimeout } from 'timers';
 				this.emailSendTip=false;
 				this.showEmailBox=false;
 				this.inqueryEmail='';
-			}
-
+			},
+			// isShowBookNow:function(val){
+			// 	var calendar = document.querySelector('.flatpickr-calendar.open');
+			// 	if(calendar){
+			// 		if(val){
+			// 			calendar.style.top = document.querySelector('#js_changetime').offsetTop+'px';
+			// 			calendar.style.position = 'fixed';
+			// 		}else{
+			// 			calendar.style.top = document.querySelector('#js_changetime').offsetTop+'px';
+			// 			calendar.style.position = 'absolute';
+			// 		}
+			// 	}
+				
+			// }
+	
 //			isShowAdults(val,oldVal){
 //				let that=this
 //				if(val){
@@ -1632,6 +1651,7 @@ import { setTimeout } from 'timers';
 							.select {
 								
 								.selectDate {
+									position: relative;
 									b {
 										font-size: 14px;
 										margin-bottom: 10px;
@@ -1639,16 +1659,41 @@ import { setTimeout } from 'timers';
 									}
 									width: 100%;
 									
-									.flatpickr-input {
+									.flatpickr-input ,input{
 										height: 40px !important;
 										padding-left: 10px !important;
 										width: 100%;
 										border-color: #e3e5e9;
 										border-right: none;
 										border-radius: 0px 3px 0px 3px !important;
+										color: #353a3f;
+										position: relative;
+										z-index: 2;
+										opacity: 0;
 										&:hover {
 											border-color: #e3e5e9 !important;
 										}
+									}
+									.time_box{
+										z-index: 1;
+										opacity: 1;
+										position: absolute;
+										left: 0;
+										top: 27px;
+										border: 1px solid #e3e5e9;
+										background: none;
+										width: 346px;
+										height: 40px;
+										line-height: 38px;
+										padding-left: 10px;
+										font-size: 16px;
+									}
+									i {
+										position: absolute;
+										right: 10px;
+										font-size: 8px;
+										top: 40px;
+										
 									}
 								}
 								

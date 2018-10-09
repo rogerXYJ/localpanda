@@ -222,7 +222,7 @@
 											<!--<div class="recommendedReason" v-if="item.recommendedReason">{{item.recommendedReason}}</div>-->
 											<div class="attractions clearfix" :title="item.attractions.join('  .  ')" style="color: #1bbc9d;" v-if="item.attractions && item.attractions.length>0"><b>{{item.attractions.length>1?'Interests: ':'Interest: '}}</b><span v-html="item.attractions.join('<b>  ·  </b>')"></span></div>
 											<div class="destinations "><b>{{item.destinations.length>1?'Destinations':'Destination'}}:</b> {{item.destinations.join(' , ')}}</div>
-											<div class="duration"><b>Duration:</b> {{item.duration}} {{item.durationUnit|firstUpperCase}}</div>
+											<div class="duration"><b>Duration:</b> {{item.duration}} {{setTimeStr(item.duration,item.durationUnit)}}</div>
 											
 											
 											
@@ -849,6 +849,13 @@ export default {
     closeFn(value) {
       this.showSeachList = value;
       this.isShowHot = value;
+    },
+    setTimeStr(num,str){
+      if(str.toLowerCase()=='hours'){
+        return num===1 ? 'Hour' : 'Hours'
+      }else if(str.toLowerCase()=='days'){
+        return num===1 ? 'Day' : 'Days'
+      }
     },
     //处理价格筛选显示500+
     format(e) {

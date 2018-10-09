@@ -230,8 +230,8 @@
 				//搜索
 				search: '',
 				//币种
-				currency:'USD',
-				symbol:'$',
+				currency:'',//USD
+				symbol:'',
 				exchange:'',
 				showCurrency:false,
 				seachContentList: [],
@@ -604,6 +604,9 @@
 			if(nowCurrency){
 				this.currency = nowCurrency.code;
 				this.symbol=nowCurrency.symbol;
+			}else{
+				this.currency = 'USD';
+				this.symbol= '$';
 			}
 		 	this.selectPeople=JSON.parse(Cookie.get('participants'))?JSON.parse(Cookie.get('participants')):0;
 

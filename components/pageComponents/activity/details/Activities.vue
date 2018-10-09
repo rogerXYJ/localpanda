@@ -20,7 +20,7 @@
 					<div class="service">
 						<span>
 							<label class="iconfont">&#xe624;</label>
-							<em>{{detail.duration}} {{detail.durationUnit|firstUpperCase}}</em>
+							<em>{{detail.duration}} {{setTimeStr(detail.duration,detail.durationUnit)}}</em>
 						</span>
 						<span>
 							<label class="iconfont">&#xe652;</label>
@@ -245,7 +245,7 @@
 
 								<h4 style="-moz-box-orient: vertical;
 							    -webkit-box-orient:vertical;">{{i.title}}</h4>
-								<div class="duration"><i class="iconfont">&#xe624;</i>{{i.duration}} {{i.durationUnit|firstUpperCase}}</div>
+								<div class="duration"><i class="iconfont">&#xe624;</i>{{i.duration}} {{setTimeStr(i.duration,i.durationUnit)}}</div>
 								<div class="pic">
 									<!-- <div class="old-pic" v-if="i.originalPrice">{{nowExchange.symbol}}{{returnFloat(i.originalPrice)}}</div> -->
 									<div class="current-price" >From <span>{{nowExchange.code}}</span><b>{{nowExchange.symbol}}{{returnFloat(i.bottomPrice)}}</b><span>  pp</span></div>
@@ -1003,6 +1003,13 @@ import { setTimeout } from 'timers';
 					return (value*1).toFixed(bit);
 				}else{
 					return 0;
+				}
+			},
+			setTimeStr(num,str){
+				if(str.toLowerCase()=='hours'){
+					return num===1 ? 'Hour' : 'Hours'
+				}else if(str.toLowerCase()=='days'){
+					return num===1 ? 'Day' : 'Days'
 				}
 			},
 			showTable() {

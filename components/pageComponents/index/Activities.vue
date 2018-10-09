@@ -66,7 +66,7 @@
 							    -webkit-box-orient:vertical;">
 										{{item.title}}
 									</div>
-									<div class="duration"><i class="iconfont">&#xe624;</i> {{item.duration}} {{item.durationUnit|firstUpperCase}}</div>
+									<div class="duration"><i class="iconfont">&#xe624;</i> {{item.duration}} {{setTimeStr(item.duration,item.durationUnit)}}</div>
 									<div class="totalPic">
 										
 										<div class="nowPic">From <span>{{currency.code}} </span> <b>{{currency.symbol}}{{returnFloat(item.bottomPrice)}}</b><span>  pp</span></div>
@@ -129,6 +129,13 @@
 					return value.toFixed(bit);
 				}else{
 					return 0;
+				}
+			},
+			setTimeStr(num,str){
+				if(str.toLowerCase()=='hours'){
+					return num===1 ? 'Hour' : 'Hours'
+				}else if(str.toLowerCase()=='days'){
+					return num===1 ? 'Day' : 'Days'
 				}
 			},
 		},

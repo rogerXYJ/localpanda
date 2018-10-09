@@ -20,7 +20,7 @@
 			</ul>
 			<ul class="init" v-if="(logIn==0||logIn==null)&&!isAnonymity">
 				<li class="selectCurrency">
-					<label @click="showSelectCurreney" class="selectCurrencyBtn"><i v-html="getSvg(currency)"></i> ( {{symbol}} ) <span class="iconfont">&#xe666;</span> </label>
+					<label @click="showSelectCurreney" class="selectCurrencyBtn"><i v-html="getSvg(currency)"></i> {{currency}} ( {{symbol}} ) <span class="iconfont">&#xe666;</span> </label>
 					<div class="currencyBox" v-if="showCurrency">
 						<div class="currencyItem" :class="{color:item.code==currency}"  v-for="(item,index) in exchange" @click.stop="setCurrency(item,index)">	
 							<span class="currencySvg" v-html="item.svg"></span>
@@ -43,7 +43,7 @@
 			<ul class="login" v-if="logIn==1">
 				<!-- <li @click="showContact">Customize Your Trip<em class="hot">HOT</em></li> -->
 				<li class="selectCurrency">
-					<label @click="showSelectCurreney" class="selectCurrencyBtn"><i v-html="getSvg(currency)"></i> ( {{symbol}} ) <span class="iconfont">&#xe666;</span> </label>
+					<label @click="showSelectCurreney" class="selectCurrencyBtn"><i v-html="getSvg(currency)"></i> {{currency}} ( {{symbol}} ) <span class="iconfont">&#xe666;</span> </label>
 					<div class="currencyBox" v-if="showCurrency">
 						<div class="currencyItem" :class="{color:item.code==currency}"  v-for="(item,index) in exchange" @click.stop="setCurrency(item,index)">	
 							<span class="currencySvg" v-html="item.svg"></span>

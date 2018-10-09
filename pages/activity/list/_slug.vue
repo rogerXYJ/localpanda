@@ -251,7 +251,7 @@
 					</div>
 					<div class="empty page" v-else>
 						<p>No offerings that match your interests are found.</p>
-						<p>You can try to modify your screening conditions or choose our "Customize Your Trip" option.</p>
+						<!-- <p>You can try to modify your screening conditions or choose our "Customize Your Trip" option.</p> -->
 						<p>We can collect your preferences and customize your ideal trip, free of charge.
 							<a href="javascript:;" @click="showContact">Click here to start!</a>
 						</p>

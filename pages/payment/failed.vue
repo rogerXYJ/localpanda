@@ -24,7 +24,7 @@
 						
 					</div>
 					<div class="detail">
-						<span><i>Number of travelers:</i> {{orderInfo.adultNum+orderInfo.childrenNum}}</span><em>|</em><span><i>Travel date:</i> {{orderInfo.startDate}}</span>
+						<span><i>Number of travelers:</i> {{orderInfo.adultNum+orderInfo.childrenNum}}</span><em>|</em><span><i>Travel Date:</i> {{formatDate(orderInfo.startDate)}}</span>
 					</div>
 
                     <P v-if="errMsg" style="margin-top: 47px;">Your payment did not go through. Here is the error that you can reference: {{errMsg}}</P>
@@ -42,7 +42,7 @@
 	if (process.browser) {
 	  require('~/assets/js/pages/talk.js')
 	}
-	import { GetQueryString } from '~/assets/js/plugin/utils.js'
+	import { GetQueryString,formatDate } from '~/assets/js/plugin/utils.js'
 	import HeaderCommon from '~/components/HeaderCommon/HeaderCommon'
 	import FooterCommon from '~/components/FooterCommon/FooterCommon';
 	import service from '~/components/pageComponents/inquiry/service';
@@ -115,6 +115,7 @@
 			service
 		},
 		methods: {
+			formatDate:formatDate,
 			tryAgain(type){
                 if(type==1){
                     window.location.href="/activity/payment?objectId="+this.orderId

@@ -298,8 +298,8 @@
 										<!--<flatPickr placeholder="Date" v-model="dateTime" :config="options"></flatPickr>-->
 										<input id="js_changetime" readonly v-model="dateTime" type="text" placeholder="Date">
 										<input class="time_box" :value="formatDate(dateTime)" readonly type="text" placeholder="Date">
-										<i class="iconfont" v-if="!isSelectDate">&#xe63f;</i>
-										<i class="iconfont" v-else>&#xe60f;</i>
+										<i class="iconfont" v-if="isSelectDate">&#xe60f;</i>
+										<i class="iconfont" v-else>&#xe63f;</i>
 									</div>
 									<!--<div class="selectTime" v-if="picInfo.departureTime" >
 										<b></b>
@@ -1147,7 +1147,7 @@ import { setTimeout } from 'timers';
 						eventLabel: "activity_book_succ"
 					});
 					that.error = false;
-					that.isSelectDate = false;
+					// that.isSelectDate = false;
 					
 					//that.dateErrText = "*Final headcount does not include babies.";
 					var orderInfo = {

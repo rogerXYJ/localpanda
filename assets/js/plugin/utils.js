@@ -32,7 +32,7 @@ var formatDate = function(millinSeconds){
 	var month = monthArr[date.getMonth()]; //月
 	var ddate = date.getDate(); //日
 	//ddate=ddate<10?"0"+ddate:ddat
-	return month + " "+ ddate + " , " + year;
+	return month + " "+ ddate + ", " + year;
 }
 var loadScript = function(url, callback) {
 	var script = document.createElement('script');

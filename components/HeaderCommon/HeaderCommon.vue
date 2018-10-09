@@ -590,16 +590,6 @@
 
 
 			//获取币种列表
-			
-			// window.currencyCallbackHeader = function(data){
-			// 	for(let i = 0;i<data.length;i++){
-			// 		data[i].sure=0
-			// 	}
-				
-			// 	that.exchange = data;
-			// 	that.$emit('getExchange',data)
-			// }
-			
 			that.exchange = this.currencyData;
 
 			//读取币种

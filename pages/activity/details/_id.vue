@@ -1,6 +1,6 @@
 <template>
 	<div id="activitiesDetail">
-		<HeaderCommon :logIn="logIn" :nowCurrency="currency" @headCurrency="headCurrencyFn" @getExchange="setExchange"></HeaderCommon>
+		<HeaderCommon :logIn="logIn" :nowCurrency="currency" @headCurrency="headCurrencyFn"></HeaderCommon>
 		<Meau  v-show="isShowMeau" :nowCurrency="currency" @headCurrency="headCurrencyFn" :inclusions="inclusions" :highlights="highlights" :notice="notice" :exclusions="exclusions" :picInfo="picInfo" :photoList="photoList" :recommed="recommed" :travelersReviews="travelersReviews" :userABtestID="userABtestID" :ABtest="ABtest" ></Meau>
 		<ActivityBanner :bannerPhotos="detail.bannerPhotos" ></ActivityBanner>
 		<Activities
@@ -472,10 +472,10 @@
 				this.recommed = data;
 				
 			},
-			setExchange(val){
-				this.exchange=val
+			// setExchange(val){
+			// 	this.exchange=val
 				
-			},
+			// },
 			headCurrencyFn(currency){
 				this.currency = currency;
 			}
@@ -491,6 +491,9 @@
 				if(this.currency!=currency){
 					this.currency=currency
 				}
+
+			//币种数据
+			this.exchange = this.currencyData;
     		
 			// setTimeout(function(){
 			// 	//获取ABtestID

@@ -1,6 +1,6 @@
 <template>
 	<div class="fillYourInfo">
-		<HeaderCommon :logIn="logIn" @getExchange="setExchange"></HeaderCommon>
+		<HeaderCommon :logIn="logIn"></HeaderCommon>
 		<div class="fill">
 			<h4 class="page_title">Secure booking — only takes 1 minute!</h4>
 			<div class="safeguard">
@@ -443,11 +443,6 @@ console.log(this.opctions.childDiscount);
 				
 			},
 			
-
-
-			setExchange(val){
-				this.exchange=val
-			},
 			//价格换算
 			 changeCurrency(e) {
 				var self = this; 
@@ -897,14 +892,10 @@ console.log(this.opctions.childDiscount);
 				symbol: self.currency.symbol,
 				currency: self.currency.code
 			};
+
 			//加载币种
-			// self.axios.get("https://api.localpanda.com/api/public/currency/all/"+self.opctions.currency).then(function(response) {
-			// 	// console.log(response);
-			// 	if(response.status == 200) {
-			// 		self.exchange = response.data;
-			// 		console.log(self.exchange )
-			// 	}
-			// }, function(response) {});
+			this.exchange = this.currencyData;
+			
 			self.codeList = self.countryCode
 			self.travelCodeList = self.countryCode
 			document.getElementsByTagName('body')[0].addEventListener("click", () => {

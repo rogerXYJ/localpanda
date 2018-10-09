@@ -394,7 +394,7 @@
 									<ul>
 										<li class="clearfix">
 											<div class="formula" v-if="children==0&&adults==1">{{nowExchange.symbol}}{{adultsPic}} x 1 Person</div>
-											<div class="formula" v-else>{{nowExchange.symbol}}{{returnFloat(adultsPic/people)}} x {{people}} People </div>
+											<div class="formula" v-else>{{nowExchange.symbol}}{{returnFloat(adultsPic/people)}} x {{people}} {{people>1?'Travelers':'Traveler'}} </div>
 
 											<div class="pic">{{nowExchange.symbol}}{{adultsPic}}</div>
 										</li>

@@ -97,7 +97,7 @@
 
 					</div>
 					<div class="date">
-						<p>Travel date :  {{formatDate(opctions.startDate)}}</p>
+						<p>Travel Date :  {{formatDate(opctions.startDate)}}</p>
 						<p v-if="opctions.startTime">{{opctions.startTime}}</p>
 					</div>
 					<div class="pic">

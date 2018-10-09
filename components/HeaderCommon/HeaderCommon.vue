@@ -555,10 +555,13 @@
 				}
 			},
 			getSvg(currency){
-				for(var i=0;i<this.currencyData.length;i++){
-					var thisData = this.currencyData[i];
-					if(thisData.code == currency){
-						return thisData.svg;
+				var currencyData = this.currencyData;
+				if(currencyData){
+					for(var i=0;i<currencyData.length;i++){
+						var thisData = currencyData[i];
+						if(thisData.code == currency){
+							return thisData.svg;
+						}
 					}
 				}
 				return '';

@@ -134,7 +134,7 @@
 			</div>
 
 			<div class="visitors">
-				<h3>What travellers are saying</h3>
+				<h3>What travelers are saying</h3>
 				<ul class="clearfix">
 					<li>
 						<p class="appraise">Local Panda had an incredible amount of attention and patience throughout my trip. My guide, Jamie, was intelligent and articulative. Thanks again!</p>

@@ -99,26 +99,30 @@
 						eventLabel: 'feedback_succ',
 	
 					});
-					if(window.localStorage.getItem("userid")){
-						var obj = {
-							userId:window.localStorage.getItem("userid"),
-							objectType:"GENERAL",
-							userName: that.name,
-							emailAddress: that.email,
-							message: that.textarea,
-							"utcOffset": new Date().getTimezoneOffset() / 60 * -1
-							
-						}
-					}else{
-						var obj = {
-							objectType:"GENERAL",
-							userName: that.name,
-							emailAddress: that.email,
-							message: that.textarea,
-							"utcOffset": new Date().getTimezoneOffset() / 60 * -1
-							
-						}
+
+					var obj = {
+						objectType:"GENERAL",
+						userName: that.name,
+						emailAddress: that.email,
+						message: that.textarea,
+						deviceType:'PC',
+						"utcOffset": new Date().getTimezoneOffset() / 60 * -1
 					}
+
+					if(window.localStorage.getItem("userid")){
+						obj.userId = window.localStorage.getItem("userid");
+					}
+					var href = location.pathname;
+					if(/\/activity\/list\//.test(href)){
+						obj.source = 'LIST';
+					}else if(/\/activity\/details\//.test(href)){
+						obj.source = 'DETAIL';
+					}else if(/contact-us/.test(href)){
+						obj.source = 'CONTACT';
+					}else if(href =='/'){
+						obj.source = 'HOME';
+					}
+					
 					if(that.isclick==false){
 						that.isclick=true
 						that.axios.put("https://api.localpanda.com/api/user/feedback", JSON.stringify(obj), {

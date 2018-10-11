@@ -142,26 +142,21 @@ export default {
 				} else if(that.textarea == "") {
 					that.textareaError = true
 				} else {
+
+
+                    var obj = {
+                        objectType:"GENERAL",
+                        userName: that.name,
+                        emailAddress: that.email,
+                        message: that.textarea,
+                        deviceType:/(iPhone|iPad|iPod|iOS|Android)/i.test(navigator.userAgent)?'MOBILE':'PC',
+                        source : 'CONTACT',
+                        "utcOffset": new Date().getTimezoneOffset() / 60 * -1
+                    }
 					if(window.localStorage.getItem("userid")){
-						var obj = {
-							userId:window.localStorage.getItem("userid"),
-							objectType:"GENERAL",
-							userName: that.name,
-							emailAddress: that.email,
-							message: that.textarea,
-							"utcOffset": new Date().getTimezoneOffset() / 60 * -1
-							
-						}
-					}else{
-						var obj = {
-							objectType:"GENERAL",
-							userName: that.name,
-							emailAddress: that.email,
-							message: that.textarea,
-							"utcOffset": new Date().getTimezoneOffset() / 60 * -1
-							
-						}
-					}
+						obj.userId = window.localStorage.getItem("userid");
+                    }
+                    
 					if(that.isclick==false){
 						that.isclick=true
 						that.axios.put("https://api.localpanda.com/api/user/feedback", JSON.stringify(obj), {

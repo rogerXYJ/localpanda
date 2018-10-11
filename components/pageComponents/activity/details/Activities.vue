@@ -141,7 +141,7 @@
 					<div class="reviewItem" v-for="(item,index) in travelersReviews.entities">
 						<div class="reviewInfo clearfix">
 							<div class="headPhoto">
-								<img v-if="item.userPortraitPhoto" :src="item.userPortraitPhoto.url"/>
+								<img v-if="item.userPortraitPhoto" v-lazy="item.userPortraitPhoto.url"/>
 								<span v-else>{{item.userName.substring(0,1).toUpperCase()}}</span>
 							</div>
 							<div class="visitor">

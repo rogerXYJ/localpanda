@@ -93,6 +93,7 @@
 			console.log('node start time:'+consoleTimeS);
 
 			let id = route.params.id;
+			let urlTravelers = route.query.travelers;
 			// 服务端渲染部分 这部分操作还没有页面实例，只是初始化页面数据
 			let data = {
 				detail: {}, //详情数据
@@ -135,9 +136,13 @@
 			if(userCookie.currency){
 				data.currency = JSON.parse(decodeURIComponent(userCookie.currency));
 			}
-			if(userCookie.participants){
-				data.participants=userCookie.participants
+
+			if(urlTravelers>0){
+				data.participants=urlTravelers;
+			}else if(userCookie.participants){
+				data.participants=userCookie.participants;
 			}
+			
 			//ABtest 点评
 			// if(id == '11280' || id =='11068'){
 			// 	data.ABtest = true;

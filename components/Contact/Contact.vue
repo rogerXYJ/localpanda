@@ -125,36 +125,37 @@
 						eventAction: "submit",
 						eventLabel: "activity_inquiry_succ"
 					});
-					if(window.localStorage.getItem("userid")) {
-						var obj = {
-							userId: window.localStorage.getItem("userid"),
-							objectType: that.objectType,
-							userName: that.name,
-							emailAddress: that.email,
-							message: that.textInfo,
-							//phoneNumber:that.phone?that.phone:null,
-							travelDate: that.dateTime ? that.dateTime : null,
-							participants: that.peopleNub,
-							objectId: that.objectId ? that.objectId : null,
-							destinations: that.destination ? that.destination : null,
-							"utcOffset": new Date().getTimezoneOffset() / 60 * -1,
-							owner:that.owner
-						}
-					} else {
-						var obj = {
-							objectType: that.objectType,
-							userName: that.name,
-							emailAddress: that.email,
-							message: that.textInfo,
-							//phoneNumber:that.phone?that.phone:null,
-							travelDate: that.dateTime ? that.dateTime : null,
-							participants: that.peopleNub,
-							objectId: that.objectId ? that.objectId : null,
-							destinations: that.destination ? that.destination : null,
-							"utcOffset": new Date().getTimezoneOffset() / 60 * -1,
-							owner:that.owner
-						}
+
+					var obj = {
+						objectType: that.objectType,
+						userName: that.name,
+						emailAddress: that.email,
+						message: that.textInfo,
+						//phoneNumber:that.phone?that.phone:null,
+						travelDate: that.dateTime ? that.dateTime : null,
+						participants: that.peopleNub,
+						objectId: that.objectId ? that.objectId : null,
+						destinations: that.destination ? that.destination : null,
+						"utcOffset": new Date().getTimezoneOffset() / 60 * -1,
+						owner:that.owner,
+						deviceType:'PC'
 					}
+
+					var href = location.pathname;
+					if(/\/activity\/list\//.test(href)){
+						obj.source = 'LIST';
+					}else if(/\/activity\/details\//.test(href)){
+						obj.source = 'DETAIL';
+					}else if(/contact-us/.test(href)){
+						obj.source = 'CONTACT';
+					}else if(href =='/'){
+						obj.source = 'HOME';
+					}
+
+					if(window.localStorage.getItem("userid")) {
+						obj.userId = window.localStorage.getItem("userid");
+					}
+
 					if(that.isclick==false){
 						that.isclick=true
 						that.axios.put("https://api.localpanda.com/api/user/feedback", JSON.stringify(obj), {

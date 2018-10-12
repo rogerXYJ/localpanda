@@ -650,7 +650,7 @@ import { setTimeout } from 'timers';
 				if(this.people < this.picInfo.minParticipants){
 					this.people='Select'
 					this.error = true;
-					this.dateErrText = "*Mimimum number of travelers:" + this.picInfo.minParticipants + ".";
+					this.dateErrText = "*Minimum number of travelers:" + this.picInfo.minParticipants + ".";
 					this.startingPrice=this.returnFloat(this.picInfo.bottomPrice)
 					this.isShowBook=false
 				
@@ -1125,7 +1125,7 @@ import { setTimeout } from 'timers';
 					isFail=true
 					that.error = true;
 					that.isShowAdults = true;
-					that.dateErrText = "*Mimimum number of travelers:" + that.picInfo.minParticipants + ".";
+					that.dateErrText = "*Minimum number of travelers:" + that.picInfo.minParticipants + ".";
 					//默认帮用户选一个游玩人
 					// if(that.people == "Select") {
 					// 	that.adults = that.adults + 1;
@@ -1784,7 +1784,7 @@ import { setTimeout } from 'timers';
 											.selectAdults {
 												float: right;
 												input {
-													width: 30px;
+													width: 50px;
 													height: 30px;
 													font-size: 18px;
 													font-weight: bold;

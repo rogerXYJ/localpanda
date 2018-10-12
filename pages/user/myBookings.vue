@@ -14,11 +14,11 @@
 							<div class="activitiesText">
 								<div class="dataId">
 									<span>Booking ID: {{item.orderId}}</span>
-									<span>Booking Time: {{item.createTime}} (EST)</span>
+									<span>Booking Time: {{formatDate(item.createTime.substring(0,10))}}{{item.createTime.substring(10)}} (EST)</span>
 								</div>
 								<p><b>Category:</b>{{item.activityInfo.category}} </p>
 								<p>
-									<b>Participants:</b> 
+									<b>{{(item.adultNum+item.childrenNum)>1?'Travelers':'Traveler'}}:</b> 
 									<span v-if="item.adultNum==1">1 Adult</span>
 									<span v-else>{{item.adultNum}} Adults</span>
 									<span v-if="item.childrenNum!=0">,</span>
@@ -35,7 +35,7 @@
 									
 								</p>
 								
-								<p><b>Date and Time: </b>{{item.startDate}}&nbsp;&nbsp;&nbsp;&nbsp;{{item.startTime}}</p>
+								<p><b>Travel Date: </b>{{formatDate(item.startDate)}}&nbsp;&nbsp;&nbsp;&nbsp;{{formatDate(item.startTime)}}</p>
 								<div class="tag">
 									<span  @click="goGuideDatil(0,index)">Book Again</span>
 									<!--<span @click="downLoad(index)" v-if="item.status!='PAYMENT_PENDING'&&item.status!='REFUNDING'&&item.status!='REFUNDED'&&item.status!='CANCELED'">Download Contract</span>-->
@@ -118,7 +118,7 @@
 </template>
 
 <script>
-	import{GetQueryString,getPriceMark} from '~/assets/js/plugin/utils';
+	import{GetQueryString,getPriceMark,formatDate} from '~/assets/js/plugin/utils';
 	import HeaderCommon from '~/components/HeaderCommon/HeaderCommon';
     import FooterCommon from '~/components/FooterCommon/FooterCommon';
     
@@ -178,6 +178,7 @@
 			};
 		},
 		methods: {
+			formatDate:formatDate,
 			getPriceMark:getPriceMark,
 			getShowConfirmFn(val) {
 				this.isShowAlertTitle = val;

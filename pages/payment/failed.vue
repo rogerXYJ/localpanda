@@ -20,11 +20,11 @@
 						<span>{{orderInfo.activityInfo.title}}</span>
 					</div>
 					<div class="detail">
-						<span><i>Order ID:</i> {{orderId}}</span><em>|</em><span><i>Payment amount:</i> <b>{{orderInfo.currency+' '+orderInfo.symbol}}{{orderInfo.amount}}</b></span>
+						<span><i>Order ID:</i> {{orderId}}</span><em>|</em><span><i>Payment Amount:</i> <b>{{orderInfo.currency+' '+orderInfo.symbol}}{{orderInfo.amount}}</b></span>
 						
 					</div>
 					<div class="detail">
-						<span><i>Number of travelers:</i> {{orderInfo.adultNum+orderInfo.childrenNum}}</span><em>|</em><span><i>Travel Date:</i> {{formatDate(orderInfo.startDate)}}</span>
+						<span><i>Number of {{(orderInfo.adultNum+orderInfo.childrenNum)>1?'Travelers':'Traveler'}}:</i> {{orderInfo.adultNum+orderInfo.childrenNum}}</span><em>|</em><span><i>Travel Date:</i> {{formatDate(orderInfo.startDate)}}</span>
 					</div>
 
                     <P v-if="errMsg" style="margin-top: 47px;">Your payment did not go through. Here is the error that you can reference: {{errMsg}}</P>

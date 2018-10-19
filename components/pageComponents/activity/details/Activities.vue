@@ -120,6 +120,9 @@
 									<h5>{{item.title}}</h5>
 									<p v-if="item.content" v-html="item.content"></p>
 								</li>
+								<li v-if="detail.pickup !== 0">
+									<h5>{{getPickupTitle(detail.pickup)}}</h5>
+								</li>
 							</ul>
 					</div>
 					<div class="exclusions" v-if="exclusions&&exclusions.length>0" id="exclusions">
@@ -604,6 +607,17 @@ import { setTimeout } from 'timers';
 		},
 		methods: {
 			formatDate:formatDate,
+			getPickupTitle(pickup){
+				if(pickup==1){
+					return 'Pick-up and drop-off included';
+				}else if(pickup==2){
+					return 'Pick-up included, drop-off excluded';
+				};
+				return '';
+			},
+			enterToBr(text){
+				return text ? text.replace(/\n/g,'<br>') : '';
+			},
 			confirmCallback(){
 				this.dialogStatus = false;
 			},

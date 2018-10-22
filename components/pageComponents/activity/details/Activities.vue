@@ -120,7 +120,7 @@
 									<h5>{{item.title}}</h5>
 									<p v-if="item.content" v-html="item.content"></p>
 								</li>
-								<li v-if="detail.pickup !== 0">
+								<li v-if="detail.pickup !== 0 && detail.category!='Ticket'">
 									<h5>{{getPickupTitle(detail.pickup)}}</h5>
 								</li>
 							</ul>

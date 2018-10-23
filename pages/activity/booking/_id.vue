@@ -815,7 +815,7 @@ console.log(this.opctions.childDiscount);
 					"utcOffset": new Date().getTimezoneOffset() / 60 * -1,
 					"deviceType": "PC",
 					//"fullRefund":that.opctions.fullRefund,
-					"finalRefundPeriod":that.opctions.fullRefund&&that.timeout?that.delmulDay(that.opctions.startDate,that.opctions.refundTimeLimit):null
+					"finalRefundPeriod":that.opctions.finalRefundPeriod
 				}
 				console.log(obj)
 				if(that.addOder == false) {

@@ -11,14 +11,102 @@
 						<img v-lazy="slide.url" lazy="error"  />
 					</div>
 				</div>
-				<div class="swiper-pagination" id="swiper_banner_pagination"></div>
+				<!-- <div class="swiper-pagination" id="swiper_banner_pagination"></div> -->
 			</div>
 		</div>
 
 		<div class="main_box clearfix">
 
 			<!-- 右侧 -->
-			<div class="main_r"></div>
+			<div class="main_r">
+				<div class="book_all">
+					<!-- 预定表单模块 -->
+					<div class="book_content">
+						<div class="book_head">
+							<div class="price_select_box">
+								<select v-model="selectCurrency" @change="changeCurrency">
+									<option :value="item.code" :key="index" v-for="(item,index) in exchange">{{item.code}}</option>
+								</select>
+								<i class="iconfont">&#xe666;</i>
+							</div>
+							<div class="price_info">
+								<b><span class="price_from" v-if="participants==0">From</span> {{nowExchange.symbol}}{{participants>0?returnFloat(getPeoplePrice(participants,true)):returnFloat(picInfo.bottomPrice)}}</b> {{returnText(participants)}} <i class="iconfont">&#xe659;</i>
+							</div>
+						</div>
+
+						<ul class="book_list">
+							<li>
+								<h4>Date</h4>
+								<div class="input_box" :class="{'holder':!startDate}">
+									{{startDate?formatDate(startDate):'Date'}}
+									<input v-model="startDate" id="js_changetime" type="text" readonly>
+									<i class="iconfont">&#xe666;</i>
+								</div>
+							</li>
+							<li>
+								<h4>Guests</h4>
+								<div class="input_box holder">
+									<input class="opacity1" type="text" readonly placeholder="Adults" :value="(bookAdults?bookAdults+' '+(bookAdults>1?'Adults':'Adult'):'')+(bookChildren?' , '+bookChildren+' '+(bookChildren>1?'Children':'Child'):'')" @click.stop="showChangeFn">
+									<i class="iconfont">&#xe666;</i>
+								</div>
+								<div class="change_travelers" v-if="showChangePeople">
+									<div class="change_list">
+										<div class="num_box">
+											<span class="num_btn iconfont" @click="minusNum($event,1)" :class="{'stop':changeAdults<=1 || (changeAdults+changeChildren)<=picInfo.minParticipants}">&#xe64d;</span>
+											<b>{{changeAdults}}</b>
+											<span class="num_btn iconfont" @click="addNum($event,1)" :class="{'stop':(changeAdults+changeChildren)>=picInfo.maxParticipants}">&#xe64b;</span>
+										</div>
+										Adults
+									</div>
+									<div class="change_list">
+										<div class="num_box">
+											<span class="num_btn iconfont" @click="minusNum($event,2)" :class="{'stop':changeChildren<=0 || (changeAdults+changeChildren)<=picInfo.minParticipants}">&#xe64d;</span>
+											<b>{{changeChildren}}</b>
+											<span class="num_btn iconfont" @click="addNum($event,2)" :class="{'stop':(changeAdults+changeChildren)>=picInfo.maxParticipants || changeAdults==0}">&#xe64b;</span>
+										</div>
+										Children<br><small>{{'≤ '+picInfo.childStandard+' years old'}}</small>
+									</div>
+									<div class="change_list">
+										<span class="btn" @click="setPeople">Submit</span>
+									</div>
+								</div>
+							</li>
+							<li v-if="bookPeople">
+								<h4>Price Breakdown</h4>
+								<dl class="book_price_info">
+									<dt>
+										<span>{{nowExchange.symbol}}{{returnFloat(perPersonPrice)}}×{{bookPeople}} {{bookPeople>1?'Travelers':'Traveler'}}</span>
+										<span v-if="picInfo.childDiscount && bookChildren">-{{nowExchange.symbol}}{{returnFloat(picInfo.childDiscount*bookChildren)}} for {{bookChildren}} {{bookChildren>1?'Children':'Child'}}</span>
+									</dt>
+									<dd>{{nowExchange.symbol}}{{returnFloat(price)}}</dd>
+								</dl>
+								<dl class="book_price_info">
+									<dt>Total Amount</dt>
+									<dd>
+										{{nowExchange.symbol}}{{amount}}</dd>
+								</dl>
+								
+							</li>
+							<li>
+								<span class="btn" @click="bookNow">Book Now</span>
+							</li>
+							<li>
+								<span class="btn_inquire" @click="ContactStatus=true">Inquire</span>
+							</li>
+							<li>
+								<p class="book_tip" v-if="picInfo.refundTimeLimit && picInfo.fullRefund===1">Free cancellation  up to {{(picInfo.refundTimeLimit>2?picInfo.refundTimeLimit+' days':24*picInfo.refundTimeLimit+' hours')}} before your trip</p>
+							</li>
+							<li>
+								<div class="hr"></div>
+								<div class="Booked_box">Booked {{detail.sales}} times (last 30 days)</div>
+							</li>
+						</ul>
+					</div>
+
+
+					<!-- 预定保障模块 -->
+				</div>
+			</div>
 
 
 			<!-- 左侧内容烂 -->
@@ -79,7 +167,7 @@
 						<h3 @click="otherFn"><span class="iconfont i_down">&#xe667;</span><span class="iconfont i_up">&#xe666;</span><i></i>Inclusions</h3>
 						<div class="other_content">
 							<ul class="detail_txt_list">
-								<li v-for="(item,index) in inclusions" :key="index">
+								<li v-for="(item,index) in inclusions" :key="index" v-if="item.content!=''">
 									<i class="iconfont">&#xe65c;</i>{{item.title}}
 									<p>{{item.content}}</p>
 								</li>
@@ -186,12 +274,55 @@
 
 			<div class="detail_box similar">
 				<h3><i></i>Similar Experiences</h3>
+				<ul class="similar_list">
+					<li :key="index" v-for="(i,index) in detail.recommend.entities">
+						<a :href="'/activity/details/'+i.activityId">
+							<div class="similar_img_box">
+								<div class="similar_img" v-lazy:background-image="i.coverPhotoUrl"></div>
+							</div>
+							<div class="similar_info">
+								<h4>{{i.title}}</h4>
+								<span class="tag">{{i.category}}{{i.groupType?' · '+i.groupType:''}}</span>
+								<p><b>Duration:</b>{{i.duration}} {{setTimeStr(i.duration,i.durationUnit)}}</p>
+							</div>
+							<div class="similar_list_foot">
+								<span class="price"><i class="gray">{{participants==0?'From':''}}</i><b>{{nowExchange.code}} {{nowExchange.symbol}}{{participants==0?returnFloat(i.bottomPrice):returnFloat(i.perPersonPrice)}}</b>{{returnText(participants)}}</span>
+								<!-- <div class="reviews_star" v-html="reviewsStarHtml(reviewsData.avgScore)"></div><span class="gray">(263)</span> -->
+							</div>
+						</a>
+					</li>
+				</ul>
 			</div>
 
 		</div>
 		
 		
 		<FooterCommon :nowCurrency="nowExchange" @headCurrency="headCurrencyFn"></FooterCommon>
+			
+		<Contact :ContactStatus="ContactStatus" v-on:contactCallback="contactCallBack" :owner="detail.owner"  :objectType="'ACTIVITY'" :objectId="id"></Contact>
+		<!-- service弹窗 -->
+		<dialogBox v-model="inquiryStatus" confirmShow="true" confirmText="Confirm" @confirmCallback="confirmCallback" width="900">
+			
+			<div class="tip_title"> Thank you. You have submitted your Inquiry successfully! <br>We will get back to you within 1 day.</div>
+
+			<div class="service_box">
+				<p class="tip_detail">A confirmation email has been sent to “{{inqueryEmailOld}}”,<br>Please check. If you have not received it, please check your junk mail folder. If you still do not see it,<br>please <a @click="showEmailBox=true">click here</a> to enter your correct or alternative email address.</p>
+				<div class="email_box" v-show="showEmailBox">
+					<input type="text" v-model="inqueryEmail">
+					<span class="btn_sendemail" @click="sendEmail">Resend email address</span>
+
+					<div class="email_tip red" v-show="emailTip">Please enter a valid email</div>
+					<div class="email_tip green" v-show="emailSendTip"><i class="iconfont">&#xe654;</i> Email address has been updated ,and We have sent an email to your new mailbox</div>
+				</div>
+
+				
+			</div>
+
+			<service></service>
+			
+		</dialogBox>
+
+
 	</div>
 </template>
 
@@ -199,7 +330,12 @@
 
 	import HeaderCommon from "~/components/HeaderCommon/HeaderCommon";
 	import FooterCommon from "~/components/FooterCommon/FooterCommon";
-	import { delNullArr,getUrlParams,getParents } from "~/assets/js/plugin/utils";
+	import Contact from '~/components/Contact/Contact';
+	import service from '~/components/pageComponents/inquiry/service';
+	import dialogBox from '~/plugins/panda/dialogBox';
+	import Flatpickr from 'flatpickr';
+	require('~/assets/scss/G-ui/flatpickr.min.css')
+	import { addmulMonth,delNullArr,getUrlParams,getParents,formatDate } from "~/assets/js/plugin/utils";
 	import Vue from 'vue';
 
 	export default {
@@ -279,7 +415,9 @@
 				data.selectCurrency = data.nowExchange.code;
 			}
 			//设置人数
-			if(userCookie.participants){
+			if(urlTravelers>0){
+				data.participants=urlTravelers;
+			}else if(userCookie.participants){
 				data.participants=JSON.parse(decodeURIComponent(userCookie.participants))
 			}
 
@@ -428,7 +566,6 @@
 
 						//基本信息
 						data.detail = detailData;
-						
 
 						//价格信息
 						data.picInfo = results[2].data;
@@ -526,7 +663,10 @@
 		},
 		components: {
 			HeaderCommon,
-			FooterCommon
+			FooterCommon,
+			Contact,
+			service,
+			dialogBox
 		},
 		data(options){
 			
@@ -571,17 +711,18 @@
 				pageNum:2,
 
 				//inquiry
-				dialogInquiryStatus:false,
-				dialogStatus:false,
+				ContactStatus:false,
+				inquiryStatus:false,
 				emailTip:false,
 				emailSendTip:false,
 				showEmailBox:false,
 				inqueryEmail:'',
 				inqueryEmailOld:'',
-				feedbackId: '',
+				feedbackId: ''
 			}
 		},
 		methods: {
+			formatDate:formatDate,
 			delEnter(text){
 				if(!text)return '';
 				return text.replace(/(^\s*)|(\s*$)/g, "").replace(/(^\r\n*)|(\r\n*$)/g, "");
@@ -679,6 +820,12 @@
 					return num===1 ? 'Day' : 'Days'
 				}
 			},
+			returnText(peopleNum){
+				if(this.picInfo.unifiedPricing){
+					return ' pp';
+				}
+				return peopleNum?(peopleNum==1?' for 1 person':' pp for party of '+ peopleNum):' pp '
+			},
 			itineraryFn(e){
 				var thisList = getParents(e.target,'itinerary_list');
 				if(/active/.test(thisList.className)){
@@ -727,6 +874,26 @@
 				
 				
 			},
+			getRecommend(){
+				var self = this;
+				//请求推荐信息
+				var recommendOptions = {
+					"id": self.id,
+					'currency':self.nowExchange.code,
+					'pageNum':1,
+					'pageSize':3
+				};
+				if(self.participants){
+					recommendOptions.participants = self.participants;
+				}
+				self.axios.post("https://api.localpanda.com/api/search/activity/recommend",JSON.stringify(recommendOptions),{
+					headers: {
+					'Content-Type': 'application/json'
+					}
+				}).then(function(res) {
+					self.detail.recommend = res.data;
+				}, function(res) {});
+			},
 			zeroLength(text){
 				var num = 0;
 				for(var i=0;i<text.length;i++){
@@ -753,12 +920,233 @@
 					return 0;
 				}
 			},
+			setPeople(){
+				this.bookAdults = this.changeAdults;
+				this.bookChildren = this.changeChildren;
+				this.bookPeople = this.bookAdults+this.bookChildren;
+				this.showChangePeople = false;
+			},
+			setPeoplePrice(){
+				var details = this.picInfo.details;
+				var bookPeople = this.bookPeople;
+				for(var i=0;i<details.length;i++){
+					var thisData = details[i];
+					if(thisData.capacity==bookPeople){
+						this.price = thisData.price;
+						this.perPersonPrice = thisData.perPersonPrice;
+						this.amount = this.returnFloat(this.price - (this.picInfo.childDiscount?this.returnFloat(this.picInfo.childDiscount*this.bookChildren):0));
+						break;
+					}
+				}
+			},
+			getPeoplePrice(peopleNum,pp){
+				var price = this.picInfo.details
+				for(var i =0;i<price.length;i++){
+					if(peopleNum==price[i].capacity){
+						return pp ? price[i].perPersonPrice : price[i].price;
+					}
+				}
+				return price[price.length-1].perPersonPrice;
+			},
+			showChangeFn(){
+				this.showChangePeople = true;
+				if(this.bookPeople==0){
+					this.changeAdults = this.picInfo.minParticipants;
+				}
+				
+			},
+			changeCurrency(e){
+				var self = this;
+				var value = e.target ? e.target.value : e;
+				var picInfo = this.picInfo;
+				var thisDetail = picInfo.details;
+				
+				var exchange = this.exchange;
+				
+				//换算折扣价
+				self.axios.get("https://api.localpanda.com/api/product/activity/"+this.id+"/price?currency="+value).then(function(res) {
+					if(self.picInfo.childDiscount){
+						self.picInfo.childDiscount=res.data.childDiscount
+					}
+					self.picInfo.bottomPrice=res.data.bottomPrice
+					self.picInfo.currency=res.data.currency
+					
+					//设置当前币种
+					for(var i=0;i<exchange.length;i++){
+						var thisEx = exchange[i];
+						//检测当前货币类型
+						if(thisEx.code==value){
+							self.nowExchange = thisEx;
+						}
+					}
+					//推荐产品
+					self.getRecommend();
+
+						
+				}, function(res) {
+					
+				});
+					
+				self.axios.get("https://api.localpanda.com/api/product/activity/"+this.id+"/price/detail?currency="+value+(self.participants?'&participants='+self.participants:'')).then(function(res) {
+						self.picInfo.details=res.data
+						
+						//重设book价格
+						self.setPeoplePrice();
+
+						self.sixArr=res.data
+						if(self.participants>0){
+							self.adultsPic =thisDetail[self.participants-1].price;	
+						}
+						if(res.data.length>6){
+							self.isShowTable=true
+							self.sixArr=res.data.concat().splice(0,6);
+						}else{
+							self.sixArr=res.data;
+						}
+				}, function(res) {
+					
+				});
+				
+				//切换币种
+				// self.$emit('input',this.nowExchange);
+
+				
+				
+			},
 			headCurrencyFn(currency){
 				this.currency = currency;
-			}
+			},
+			minusNum(e,type){
+				if(/stop/.test(e.target.className))return;
+				if(type===1){
+					this.changeAdults--;
+				}else{
+					this.changeChildren--;
+				}
+			},
+			addNum(e,type){
+				if(/stop/.test(e.target.className))return;
+				if(type===1){
+					this.changeAdults++;
+				}else{
+					this.changeChildren++;
+				}
+			},
+			addZero(num){
+				return num>9 ? num : '0'+num;
+			},
+			getRefundDate(dateStr,days){
+				var dt = new Date(dateStr.replace(/\-/g,'/'));
+				dt.setDate(dt.getDate()-days);
+				return dt.getFullYear() + "-" +this.addZero(dt.getMonth()+1) + "-" + this.addZero(dt.getDate());
+			},
+			bookNow(){
+				var self = this;
+				if(!self.startDate){
+					setTimeout(function(){
+						self.flatPickr.open();
+					},80);
+					self.showWinBg = true;
+					return false;
+				}
+
+				if(this.bookPeople==0){
+					self.showChangePeople = true;
+					return false;
+				}
+				
+				
+				var orderInfo = {
+		      activityId: this.id,
+		      amount: this.amount,
+					currency: this.picInfo.currency,
+					symbol: this.nowExchange.symbol,
+					adultNum: this.bookAdults,
+					refundTimeLimit: this.picInfo.refundTimeLimit,
+				  finalRefundPeriod:(this.picInfo.fullRefund?this.getRefundDate(this.startDate,this.picInfo.refundTimeLimit):null),  //最后退款日期
+					childrenNum: this.bookChildren,
+					infantNum: 0,
+					startDate: this.startDate, //出游时间
+					startTime: null,  //
+					adultsPic: this.price,
+					title: this.detail.title,
+					childDiscount: this.picInfo.childDiscount*this.bookChildren, //儿童优惠总价
+					childDiscountP: this.picInfo.childDiscount,  //儿童优惠平均价
+				  pickup: this.detail.pickup,
+				  owner:this.detail.owner,
+		      averagePrice: this.perPersonPrice, //人均价 
+		      guideId: this.checkGuideIndex!=='' ? this.detail.guide[this.checkGuideIndex].guideId : null
+				};
+				
+				
+				orderInfo = JSON.stringify(orderInfo);
+		    localStorage.setItem("orderInfo", orderInfo);
+				location.href="/activity/booking/"+this.id;
+			},
+			contactCallBack(val){
+				if(val){
+					var data = val.data;
+					if(data && data.succeed){
+						this.feedbackId = data.response;
+						this.inqueryEmailOld = val.email;
+						this.inquiryStatus = true;
+					}else{
+						this.isShowAlert=true
+						this.alertMessage="Failed!"
+					}
+					
+				}
+
+				//关闭弹窗
+				this.ContactStatus=false
+			},
+			showContact() {
+				let that = this;
+				window.ga && ga(gaSend, {
+					hitType: "event",
+					eventCategory: "activity_detail",
+					eventAction: "Click",
+					eventLabel: "activity_inquiry"
+				});
+				that.ContactStatus=true
+				
+			},
+			confirmCallback(){
+				this.inquiryStatus = false;
+			},
+			sendEmail(){
+				var that = this;
+				if(/^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/.test(this.inqueryEmail)){
+
+					//默认是修改feedback的邮箱
+					var postData = {
+						emailAddress: this.inqueryEmail,
+						id: this.feedbackId
+					};
+					var postUrl = "https://api.localpanda.com/api/user/feedback";
+
+					//修改邮箱请求
+					that.axios.post(postUrl, JSON.stringify(postData), {
+						headers: {
+							'Content-Type': 'application/json'
+						}
+					}).then(function(response) {
+						if(response.data.succeed) {
+							that.emailSendTip = true;
+							that.inqueryEmail = '';
+						};
+
+					}, function(response) {
+
+					})
+					this.emailTip = false;
+				}else{
+					this.emailTip = true;
+				}
+			},
 		},
 		mounted: function() {
-
+			var self = this;
 			//币种信息
 			this.exchange = this.currencyData;
 
@@ -769,16 +1157,63 @@
 			if(this.nowExchange.code!=currency.code){
 				this.nowExchange=currency;
 			}
+
+			console.log(this.detail);
+			console.log(this.picInfo);
+			console.log(this.$data);
+
+			
+			//选择默认处理
+			if(this.participants>this.picInfo.maxParticipants){
+				this.participants = this.picInfo.maxParticipants;
+			}else if(this.participants<this.picInfo.minParticipants){
+				this.participants = this.picInfo.minParticipants;
+			}
+			if(this.participants){
+				this.bookAdults = this.participants;
+				this.changeAdults = this.participants;
+			}
+			
 			
 			//等待渲染完毕后调用
 			this.$nextTick(function(){
 				
+				//日历可售
+				var saleDate=[]
+				for(var i=0;i<self.calendar.length;i++){
+					saleDate.push(self.calendar[i].saleDate)
+				}
+
+				self.flatPickr = new Flatpickr('#js_changetime', {
+					minDate: self.picInfo.earliestBookDate,
+					maxDate: addmulMonth(self.picInfo.earliestBookDate, 12),
+					enable:saleDate
+				});
 
 			});
+
+
+			//点击自动设为人数
+			document.addEventListener('click',function(e){
+				var target = e.target;
+				if(!getParents(target,'change_travelers') && self.showChangePeople && self.changeAdults){
+					self.setPeople();
+				}
+			},false);
     	
 		},
 		watch: {
-			
+			bookAdults:function(val){
+				this.bookPeople = val*1 + this.bookChildren;
+			},
+			bookChildren:function(val){
+				this.bookPeople = val*1 + this.bookAdults;
+			},
+			bookPeople:function(val){
+				//设置价格
+				this.setPeoplePrice();
+				this.participants = val;
+			},
 		}
 	};
 </script>
@@ -793,6 +1228,10 @@
 			}
 			.swiper-slide{
 				max-width:33.33vw;
+				max-height: 100%;
+				img[lazy="loading"]{
+					max-height: 200px;
+				}
 			}
 		}
 		.main_box{
@@ -802,10 +1241,216 @@
 			.main_l{
 				width: 735px;
 			}
+
+			/*右侧预定模块*/
 			.main_r{
 				float: right;
 				width: 376px;
+
+				.book_all{
+					.book_content{
+						box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+						border-radius: 8px 8px 0 0;
+						
+						.book_head{
+							width: 100%;
+							background-color: #353a3f;
+							height: 50px;
+							line-height: 50px;
+							border-radius: 8px 8px 0 0;
+							color: #fff;
+							.price_select_box{
+								position: relative;
+								font-size: 16px;
+								line-height: 22px;
+								float: left;
+								margin: 14px 15px 0 14px;
+								i{
+									position: absolute;
+									right: 0;
+									top: 0;
+									height: 22px;
+									line-height: 24px;
+									vertical-align: top;
+									font-size: 20px;
+									font-weight: normal;
+									color: #fff;
+									overflow: hidden;
+								}
+								select{
+									line-height: 22px;
+									padding: 0 20px 0 10px;
+									font-size: 16px;
+									color: #fff;
+									background: none;
+									border: none;
+									appearance:none;
+									-moz-appearance:none;
+									-webkit-appearance:none;
+									position: relative;
+									z-index: 2;
+									option{
+										background-color: #353a3f;
+									}
+								}
+							}
+							.price_info{
+								font-size: 16px;
+								b{
+									font-size: 24px;
+									vertical-align: top;
+								}
+								.iconfont{ color: #999;}
+								.price_from{
+									font-size: 14px;
+									color: #eee;
+									font-weight: normal;
+								}
+							}
+						}
+						.book_list{
+							color: #353a3f;
+							padding: 0 24px;
+							li{
+								margin-top: 14px;
+								position: relative;
+								h4{
+									font-size: 14px;
+									font-weight: bold;
+									margin-bottom: 6px;
+								}
+								.input_box{
+									border-radius: 3px;
+									border: solid 1px #e3e5e9;
+									position: relative;
+									height: 44px;
+									line-height: 42px;
+									padding-left: 15px;
+									font-size: 16px;
+									input{
+										position: absolute;
+										left: 0;
+										top: 0;
+										z-index: 2;
+										border: none;
+										display: block;
+										width: 100%;
+										height: 44px!important;
+										padding-left: 15px;
+										background: none;
+										cursor: pointer;
+										opacity: 0;
+										color: #353a3f;
+										&::-webkit-input-placeholder{ color: #878e95;}
+										&::-moz-placeholder { color: #878e95; }
+										&::-ms-input-placeholder { color: #878e95; }
+									}
+									.opacity1{
+										opacity: 1;
+									}
+									.iconfont{
+										position: absolute;
+										right: 12px;
+										top: 50%;
+										font-size: 22px;
+										color: #353a3f;
+										-webkit-transform: translateY(-50%);
+										transform: translateY(-50%);
+									}
+								}
+								.holder{
+									color: #878e95;
+								}
+								.change_travelers{
+									position: absolute;
+									background-color: #fff;
+									left: 0;
+									top: 67px;
+									z-index: 2;
+									width: 100%;
+									padding: 20px;
+									box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.3);
+									.change_list{
+										font-size: 22px;
+										line-height: 32px;
+										padding: 12px 0;
+										-webkit-user-select: none; 
+										-moz-user-select: none; 
+										-ms-user-select: none; 
+										-o-user-select: none; 
+										user-select: none;
+										.num_box{
+											float: right;
+											span{
+												display: inline-block;
+												width: 32px;
+												height: 32px;
+												line-height: 32px;
+												text-align: center;
+												font-size: 20px;
+												cursor: pointer;
+												color: #1bbc9d;
+												vertical-align: top;
+											}
+											b{
+												display: inline-block;
+												height: 32px;
+												line-height: 30px;
+												border: 1px solid #ccc;
+												width: 60px;
+												text-align: center;
+												vertical-align: top;
+												margin: 0 6px;
+												font-size: 18px;
+											}
+											.stop{
+												color: #878e95;
+											}
+										}
+										small{
+											display: block;
+											line-height: 18px;
+											font-size: 13px;
+											color: #878e95;
+										}
+									}
+								}
+							}
+						}
+						.book_price_info{
+							border-top: #ebebeb solid 1px;
+							overflow: hidden;
+							padding: 12px 0;
+							font-size: 16px;
+							dt{
+								float: left;
+								span{
+									display: block;
+									line-height: 26px;
+								}
+							}
+							dd{
+								float: right;
+								line-height: 26px;
+								
+							}
+						}
+						.hr{ height: 1px; background-color: #ebebeb;}
+						.book_tip{ margin-top: 10px; font-size: 14px;}
+						.Booked_box{
+							padding: 16px 0;
+							color: #878e95;
+							font-size: 14px; 
+						}
+					}
+					
+					
+					
+				}
+				
 			}
+
+			/*面包屑*/
 			.crumbs{
 				font-size: 14px;
 				background-color: #fff;
@@ -818,6 +1463,7 @@
 					color: #878e95;
 				}
 			}
+			/*顶部信息*/
 			.activity_top{
 				padding-top: 0.3rem;
 				h2{
@@ -840,6 +1486,7 @@
 				}
 			}
 
+			/*公共模块*/
 			.detail_box{
 				padding: 30px 0;
 				border-top: #dde0e0 solid 1px;
@@ -898,6 +1545,7 @@
 				}
 			}
 
+			/*亮点*/
 			.why{
 				.detail_p{
 					margin-top: 12px;
@@ -907,6 +1555,7 @@
 				}
 			}
 
+			/*行程*/
 			.itinerary{
 				padding-bottom: 0.2rem;
 				.btn_viewall{
@@ -990,6 +1639,7 @@
 				}
 			}
 
+			/*其他版块信息*/
 			.other_box{
 				padding-top: 15px;
 				.other_list{
@@ -1035,6 +1685,7 @@
 				}
 			}
 
+			/*点评*/
 			.reviews{
 				.reviews_title{
 					font-size: 24px;
@@ -1160,12 +1811,186 @@
 				}
 			}
 			
+			/*推荐*/
 			.similar{ 
 				clear: both;
 				margin-top: 30px;
+				.similar_list{
+					margin-top: 20px;
+					li{
+						float: left;
+						width: 379px;
+						height: 445px;
+						margin-left: 16px;
+						position: relative;
+						box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.1);
+						border-radius: 6px;
+						overflow: hidden;
+						-webkit-transition:all 0.2s linear 0s;
+						transition:all 0.2s linear 0s;
+						&:nth-child(1){
+							margin-left: 0;
+						}
+						&:hover{
+							box-shadow: 0px 2px 20px 0px rgba(0, 0, 0, 0.2);
+							.similar_img{
+								-webkit-transform: scale(1.06);
+								transform: scale(1.06);
+							}
+						}
+						.similar_img_box{
+							width: 100%;
+							height: 253px;
+							overflow: hidden;
+							.similar_img{
+								width:100%;
+								height:100%;
+								-webkit-transition:all 0.2s linear 0s;
+								transition:all 0.2s linear 0s;
+								background-size: cover;
+								background-position: center center;
+							}
+							
+						}
+						.similar_info{
+							padding: 0 15px;
+						}
+						h4{
+							font-size: 16px;
+							line-height: 21px;
+							max-height: 64px;
+							overflow: hidden;
+							margin-top: 15px;
+							margin-bottom: 12px;
+						}
+						.tag{
+							color: #fff;
+							display: inline-block;
+							height: 20px;
+							line-height: 20px;
+							border-radius: 3px;
+							padding: 0 10px;
+							background-color: #f4b33f;
+							font-size: 12px;
+							text-transform: uppercase;
+						}
+						p{
+							font-size: 14px;
+							color: #878e95;
+							margin-top: 10px;
+							b{
+								margin-right: 5px;
+							}
+						}
+						.similar_list_foot{
+							line-height: 30px;
+							font-size: 14px;
+							position: absolute;
+							left: 0;
+							bottom: 12px;
+							width: 100%;
+							padding: 0 15px;
+							box-sizing:border-box;
+							.price{
+								float: right;
+								b{
+									font-size: 20px;
+									margin: 0 3px;
+								}
+							}
+							.gray{
+								color: #878e95;
+							}
+							.reviews_star{
+								float: left;
+								margin-top: 8px;
+								margin-right: 6px;
+							}
+						}
+					}
+				}
+			}
+
+			.btn{
+				display: block;
+				height: 42px;
+				line-height: 42px;
+				text-align: center;
+				width: 100%;
+				background-image: -webkit-gradient(linear, right top, left top, from(#009efd), to(#1bbc9d));
+				background-image: linear-gradient(270deg, #009efd 0%, #1bbc9d 100%);
+				border-radius: 21px;
+				color: #fff;
+				font-size: 16px;
+				box-sizing: border-box;
+				cursor: pointer;
+			}
+			.btn_inquire{
+				display: block;
+				height: 42px;
+				line-height: 42px;
+				box-sizing: border-box;
+				text-align: center;
+				color: #FFF;
+				font-weight: bold;
+				border-radius: 21px;
+				border: solid 1px #1bbc9d;
+				background: #fff;
+				color: #1bbc9d;
+				font-size:16px;
+				cursor: pointer;
 			}
 
 		}
+
+
+		.tip_title{
+			padding-top: 20px;
+			text-align: center;
+			font-size: 22px;
+		}
+
+		.service_box{
+			font-size: 14px;
+			.tip_detail{ 
+				margin-top: 20px; font-size: 14px; line-height: 22px;
+				a{ color:#00B886; cursor: pointer;
+					&:hover{ text-decoration: underline;}
+				}
+			}
+			.email_box{
+				margin-top: 10px;
+				input{
+					width: 300px;
+					border: 1px solid #ddd;
+					height: 32px;
+					line-height: 32px;
+				}
+				.btn_sendemail{
+					display: inline-block;
+					height: 32px;
+					border-radius: 16px;
+					line-height: 30px;
+					padding: 0 20px;
+					font-size: 14px;
+					cursor: pointer;
+					background-image: -webkit-gradient(linear, right top, left top, from(#009efd), to(#1bbc9d));
+					background-image: linear-gradient(270deg, #009efd 0%, #1bbc9d 100%);
+					color: #fff;
+					margin-left: 10px;
+				}
+			}
+			.email_tip{
+				margin-top: 9px;
+				i{
+					font-size: 14px;
+				}
+			}
+			
+			
+		}
+
+
 	}
 </style>
 

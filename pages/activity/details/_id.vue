@@ -16,6 +16,11 @@
 		</div>
 
 		<div class="main_box clearfix">
+
+			<!-- 右侧 -->
+			<div class="main_r"></div>
+
+
 			<!-- 左侧内容烂 -->
 			<div class="main_l">
 				<!-- 面包屑 -->
@@ -143,10 +148,46 @@
 
 				</div>
 
+				<!-- 点评 -->
+				<div class="detail_box reviews" v-if="reviewsData &&　reviewsData.records">
+					<div class="reviews_title">
+						<i class="title_line"></i>
+						<span class="reviews_num">{{reviewsData.records==1 ? 'Review':'Reviews'}} ({{reviewsData.records}})</span>
+						<div class="reviews_star" v-html="reviewsStarHtml(reviewsData.avgScore)"></div>
+					</div>
+					<div class="reviews_list" v-for="(item,index) in reviews" :key="index">
+						<div class="reviews_list_top">
+							
+							<div class="reviews_photo">
+								<span class="reviews_photo_def" v-if="!item.userPortraitPhoto">{{item.userName.substring(0,1)}}</span>
+								<div class="reviews_photo_img" v-lazy:background-image="item.userPortraitPhoto.url" v-else></div>
+								<!-- <img v-else v-lazy="item.userPortraitPhoto?item.userPortraitPhoto.url:''" alt=""> -->
+							</div>
+							<div class="reviews_list_info">
+								<div class="reviews_list_title">
+									<b>{{item.userName}}</b>
+									<div class="reviews_star" v-html="reviewsStarHtml(item.score)"></div>
+								</div>
+								<p>{{item.createTime.substring(0,10)}}</p>
+								<!-- May 24,2018 -->
+							</div>
+						</div>
+						<div class="reviews_list_content" :content="item.content">{{item.content.length>200?item.content.substring(0,200)+'...':item.content}} <span class="reviews_text_more" v-if="item.content.length>200" @click="reviewsShowMore">View More</span> </div>
+						<ul class="reviews_img_s">
+							<li v-if="item.userCommentPhoto" v-for="(itemChild,index2) in item.userCommentPhoto" @click="showBigPic(index,index2)" :key="index2"><img v-lazy="itemChild.url" alt=""></li>
+						</ul>
+					</div>
+					<div class="reviews_more" @click="loadMoreReviews" v-if="reviewsData && reviewsData.records>3 && reviewsData.records>reviews.length">Browse more</div>
+				</div>
+
 			</div>
 
-			<!-- 右侧 -->
-			<div class="main_r"></div>
+			
+
+			<div class="detail_box similar">
+				<h3><i></i>Similar Experiences</h3>
+			</div>
+
 		</div>
 		
 		
@@ -593,6 +634,44 @@
 				}
 				return thisHtml;
 			},
+			loadMoreReviews(e){
+				var postData = {
+					"activityId": this.id,
+					'pageNum':this.pageNum,
+					'pageSize':3
+				};
+				var thisBtn = e.target;
+				var self = this;
+
+				if(self.reviewsLoading){
+					return false;
+				}
+
+				self.reviewsLoading = true;
+				self.axios.post("https://api.localpanda.com/api/user/comment/list",JSON.stringify(postData),{
+					headers: {
+					'Content-Type': 'application/json'
+					}
+				}).then(function(response) {
+					var entities = response.data.entities;
+					if(entities && entities.length){
+						if(entities.length<3){
+							thisBtn.style.display = 'none';
+						}else{
+							thisBtn.style.display = 'block';
+						};
+						self.reviews = self.reviews.concat(entities);
+						self.pageNum++;
+					}else if(entities && entities.length==0){
+						thisBtn.style.display = 'none';
+					}
+					//开启请求状态
+					self.reviewsLoading = false;
+					
+				}, function(response) {
+					self.reviewsLoading = false;
+				});
+			},
 			setTimeStr(num,str){
 				if(str.toLowerCase()=='hours'){
 					return num===1 ? 'Hour' : 'Hours'
@@ -719,8 +798,8 @@
 		.main_box{
 			width: 1170px;
 			margin: 30px auto 0;
+			padding-bottom: 100px;
 			.main_l{
-				float: left;
 				width: 735px;
 			}
 			.main_r{
@@ -839,11 +918,12 @@
 					border-radius: 16px;
 					font-weight: normal;
 					font-size: 16px;
+					cursor: pointer;
 				}
 				.itinerary_tip{
 					color: #666;
-					padding: 0.1rem 0 0.3rem;
-					font-size: 0.26rem;
+					padding: 15px 0 20px;
+					font-size: 16px;
 				}
 				.itinerary_list{
 					border-top: 1px solid #dde0e0;
@@ -954,14 +1034,236 @@
 					}
 				}
 			}
+
+			.reviews{
+				.reviews_title{
+					font-size: 24px;
+					font-weight: bold;
+					color: #353a3f;
+					overflow: hidden;
+					line-height:34px;
+					.title_line{
+						float: left;
+						margin-top: 7px;
+						margin-right: 12px;
+						width: 4px;
+						height: 20px;
+						background-color: #1bbc9d;
+						border-radius: 2px;
+					}
+					.reviews_num{
+						float: left;
+						display: inline-block;
+						font-weight: bold;
+					}
+					.reviews_star{
+						float: left;
+						vertical-align: top;
+						margin: 10px 0 0 10px;
+						line-height: 18px;
+					}
+				}
+				.reviews_list{
+					padding: 20px 0;
+					border-bottom: #ddd solid 1px;
+					// &:nth-child(2){
+					// 	border: none
+					// }
+					
+					.reviews_list_top{
+						overflow: hidden;
+						.reviews_photo{
+							float: left;
+							width: 44px;
+							height: 44px;
+							border-radius: 50%;
+							overflow: hidden;
+							margin-right: 18px;
+							background-size: cover;
+							img{
+								vertical-align: top;
+							}
+							.reviews_photo_img{ width: 100%; height: 100%; background-size: cover;}
+							.reviews_photo_def{
+								display: block;
+								width: 100%;
+								height: 100%;
+								line-height: 44px;
+								font-size: 22px;
+								color: #fff;
+								text-align: center;
+								background-image: -webkit-gradient(linear, right top, left top, from(#009efd), to(#1bbc9d));
+								background-image: linear-gradient(270deg, #009efd 0%, #1bbc9d 100%);
+							}
+						}
+						.reviews_list_info{
+							float: left;
+							.reviews_list_title{
+								margin-top: 2px;
+								font-size: 16px;
+								b{ float: left;}
+							}
+							p{
+								margin-top: 5px;
+								font-size: 14px;
+							}
+						}
+						.reviews_star{
+							margin-left: 20px;
+							margin-top: 3px;
+							line-height: 14px;
+						}
+					}
+					.reviews_list_content{
+						font-size: 16px;
+						margin-top: 15px;
+						word-wrap:break-word;
+						line-height: 24px;
+						.reviews_text_more{
+							color: #1bbc9d;
+							cursor: pointer;
+						}
+					}
+					.reviews_img_s{
+						overflow: hidden;
+						li{
+							float: left;
+							width: 109px;
+							margin-left: 15px;
+							margin-top: 10px;
+							overflow: hidden;
+							cursor: pointer;
+							&:nth-child(1){
+								margin-left: 0;
+							}
+							img{
+								width: 100%;
+								vertical-align: top;
+							}
+						}
+					}
+				}
+				
+				.reviews_more{
+					width: 154px;
+					height: 42px;
+					line-height: 40px;
+					margin: 50px auto 0;
+					border-radius: 0.44rem;
+					color: #fff;
+					text-align: center;
+					font-size: 16px;
+					background-image: linear-gradient(270deg, #009efd 0%, #1bbc9d 100%), linear-gradient(#1bbc9d, #1bbc9d);
+					background-blend-mode: normal,normal;
+					border-radius: 20px;
+					cursor: pointer;
+				}
+			}
 			
-			
+			.similar{ 
+				clear: both;
+				margin-top: 30px;
+			}
+
 		}
 	}
 </style>
 
 <style lang="scss">
-	.acitivity_detail{
+	#activitiesDetail{
 		min-width:1200px;
+
+
+		.reviews_star{
+			display: inline-block;
+			.star_list{
+				display: inline-block;
+				overflow: hidden;
+				position: relative;
+				vertical-align: top;
+				width: 14px;
+				height: 14px;
+				padding: 1px;
+				border-radius: 50%;
+				background-image: -webkit-gradient(linear, right top, left top, from(#009efd), to(#1bbc9d));
+				background-image: linear-gradient(270deg, #009efd 0%, #1bbc9d 100%);
+				i{
+					display: inline-block;
+					width: 100%;
+					height: 100%;
+					background-color: #fff;
+					border-radius: 50%;
+					position: relative;
+					overflow: hidden;
+					vertical-align: top;
+					&:after{
+						content: "";
+						display: block;
+						width: 50%;
+						height: 50%;
+						border-radius: 50%;
+						overflow: hidden;
+						position: absolute;
+						left: 50%;
+						top: 50%;
+						transform: translate(-50%,-50%);
+						-webkit-transform: translate(-50%,-50%);
+						background-image: -webkit-gradient(linear, right top, left top, from(#009efd), to(#1bbc9d));
+						background-image: linear-gradient(270deg, #009efd 0%, #1bbc9d 100%);
+					}
+				}
+			}
+			.star_half{
+				position: absolute;
+				right: 0;
+				top: 0;
+				width: 100%;
+				height: 100%;
+				overflow: hidden;
+				display: none;
+				.star_list{
+					position: absolute;
+					right: 0;
+					top: 0;
+					margin: 0!important;
+					background: #ddd;
+					i{
+						&:after{
+							background: #ddd;
+						}
+					}
+				}
+			}
+		}
+		.star_no{
+			.star_half{
+				width: 100%;
+				display: block;
+			}
+		}
+		.star_no{
+			.star_half{
+				width: 100%;
+				display: block;
+			}
+		}
+		.star_h{
+			.star_half{
+				width: 50%;
+				display: block;
+			}
+		}
+
+		.reviews{
+			.reviews_title{
+				.reviews_star{
+					.star_list{
+						width: 18px;
+						height: 18px;
+					}
+				}
+			}
+		}
+		
 	}
 </style>

@@ -30,13 +30,13 @@
 								<i class="iconfont">&#xe666;</i>
 							</div>
 							<div class="price_info">
-								<b><span class="price_from" v-if="participants==0">From</span> {{nowExchange.symbol}}{{participants>0?returnFloat(getPeoplePrice(participants,true)):returnFloat(picInfo.bottomPrice)}}</b> {{returnText(participants)}} 
+								<b><span class="price_from" v-if="participants==0">From</span> {{nowExchange.symbol}} {{participants>0?returnFloat(getPeoplePrice(participants,true)):returnFloat(picInfo.bottomPrice)}}</b>{{returnText(participants)}} 
 							</div>
 						</div>
 
 						<ul class="book_list">
 							<li>
-								<h4>Date</h4>
+								<h4>Available On</h4>
 								<div class="input_box" :class="{'holder':!startDate}">
 									{{startDate?formatDate(startDate):'Date'}}
 									<input v-model="startDate" id="js_changetime" type="text" readonly>
@@ -44,7 +44,7 @@
 								</div>
 							</li>
 							<li>
-								<h4>Guests</h4>
+								<h4>Number of Travelers</h4>
 								<div class="input_box holder">
 									<input class="opacity1" type="text" readonly placeholder="Adults" :value="(bookAdults?bookAdults+' '+(bookAdults>1?'Adults':'Adult'):'')+(bookChildren?' , '+bookChildren+' '+(bookChildren>1?'Children':'Child'):'')" @click.stop="showChangeFn">
 									<i class="iconfont">&#xe666;</i>
@@ -82,8 +82,7 @@
 								</dl>
 								<dl class="book_price_info">
 									<dt>Total Amount</dt>
-									<dd>
-										{{nowExchange.symbol}}{{amount}}</dd>
+									<dd>{{nowExchange.symbol}}<b> {{amount}}</b></dd>
 								</dl>
 								
 							</li>
@@ -135,8 +134,9 @@
 						<li v-if="detail.groupType=='Group'"><i class="iconfont">&#xe627;</i>Offered in English</li>
 						<li v-else-if="detail.category!='Ticket'"><i class="iconfont">&#xe627;</i>English(and other languages)-speaking guide <span class="iconfont" @click="showLanguagesInfo=true">&#xe689;</span></li>
 
-						<li v-if="detail.destinations.length>1"><i class="iconfont">&#xe610;</i>{{detail.destinations.join(', ')}}</li>
+						
 						<li v-if="picInfo.fullRefund===1"><i class="iconfont">&#xe688;</i>Free cancellation  up to {{(picInfo.refundTimeLimit>2?picInfo.refundTimeLimit+' days':24*picInfo.refundTimeLimit+' hours')}} before your trip</li>
+						<li v-if="detail.destinations.length>1"><i class="iconfont">&#xe610;</i>{{detail.destinations.join(', ')}}</li>
 						<li v-if="detail.limits"><i class="iconfont">&#xe68b;</i>{{detail.limits}}</li>
 					</ul>
 				</div>
@@ -167,10 +167,10 @@
 				<!-- 其他产品信息 -->
 				<div class="detail_box other_box">
 					
-					<div class="other_list" id="inclusions" v-if="inclusions.length">
+					<div class="other_list" id="inclusions" v-if="inclusions.length || exclusions.length">
 						<!--  || detail.pickup -->
 						<h3 @click="otherFn"><span class="iconfont i_down">&#xe667;</span><span class="iconfont i_up">&#xe666;</span><i></i>Inclusions & Exclusions</h3>
-						<div class="other_content">
+						<div class="other_content" v-if="inclusions.length">
 							<h4>Inclusions</h4>
 							<ul class="detail_txt_list">
 								<li v-for="(item,index) in inclusions" :key="index" v-if="item.content!=''">
@@ -185,7 +185,7 @@
 							
 						</div>
 
-						<div class="other_content mt10">
+						<div class="other_content mt10" v-if="exclusions.length">
 							<h4>Exclusions</h4>
 							<ul class="detail_txt_list">
 								<li v-for="(item,index) in exclusions" :key="index">
@@ -278,7 +278,7 @@
 						</div>
 						<div class="reviews_list_content" :content="item.content">{{item.content.length>200?item.content.substring(0,200)+'...':item.content}} <span class="reviews_text_more" v-if="item.content.length>200" @click="reviewsShowMore">View More</span> </div>
 						<ul class="reviews_img_s">
-							<li v-if="item.userCommentPhoto" v-for="(itemChild,index2) in item.userCommentPhoto" @click="showBigPic(index,index2)" :key="index2"><img v-lazy="itemChild.url" alt=""></li>
+							<li v-if="item.userCommentPhoto" v-for="(itemChild,index2) in item.userCommentPhoto" @click="showBigPic(item.userCommentPhoto,index2)" :key="index2"><img v-lazy="itemChild.url" alt=""></li>
 						</ul>
 					</div>
 					<div class="reviews_more" @click="loadMoreReviews" v-if="reviewsData && reviewsData.records>3 && reviewsData.records>reviews.length">Browse more</div>
@@ -315,7 +315,7 @@
 		</div>
 
 		<!-- 悬浮导航 -->
-		<div class="nav_box">
+		<div class="nav_box" v-show="bookFixed">
 			<ul id="nav_list">
 				<li toId="why">What to Expect</li>
 				<li toId="itinerary" v-if="detail.itinerary.length">Experience Details</li>
@@ -378,6 +378,34 @@ Price may vary depending on the language. If you need guides in other languages,
 		<dialogBox modalClose="true" title="Tips" v-model="showPickupInfo" width="90%" height="auto">
 			<div class="dialog_tip_info" v-html="enterToBr(detail.statement)"></div>
 		</dialogBox>
+
+
+		<!-- 点评查看大图 -->
+		<div id="pic" v-bind:class="['alertPicOuter',reviewsShowImg ? 'on' : 'off']">
+			<div class="false" @click="closeBigPic"><i class="iconfont">&#xe606;</i></div>
+				<div v-bind:class="{'boxshow animated zoomIn' : reviewsShowImg , 'boxshow animated zoomOut' : !reviewsShowImg}">
+					<div class="conter">
+						<div class="swiper-button-next swiper-button-white" slot="button-next"></div>
+								<div class="swiper-button-prev swiper-button-white" slot="button-prev"></div>
+						<div v-swiper:swiperTop="swiperOptionTop" class="gallery-top" ref="swiperTop">
+							<div class="swiper-wrapper">
+								<div class="swiper-slide" v-for="i in reviewsImgList">
+									<img v-lazy="i.url" />
+								</div>					
+							</div>
+						</div>
+					
+						<div v-swiper:swiperThumbs="swiperOptionThumbs" class="gallery-thumbs" ref="swiperThumbs">
+							<div class="swiper-wrapper">
+								<div class="swiper-slide" v-for="(i,index) in reviewsImgList" :class="index==0?'imgActive':''">
+									<img :src="i.url" />
+								</div>
+								
+							</div>
+						</div>
+				</div>
+			</div>
+		</div>
 
 	</div>
 </template>
@@ -724,7 +752,7 @@ Price may vary depending on the language. If you need guides in other languages,
 			dialogBox
 		},
 		data(options){
-			
+			var self = this;
 			return {
 				showDurationInfo:false,
 				showLanguagesInfo:false,
@@ -764,6 +792,56 @@ Price may vary depending on the language. If you need guides in other languages,
 				showReviewsPic:false,
 				reviewsIndex:1,
 				pageNum:2,
+				reviewsShowImg:false,
+				reviewsImgList:[],
+				swiperOptionTop: {
+					initialSlide:0,
+					navigation : {
+						nextEl: '.swiper-button-next',
+						prevEl: '.swiper-button-prev'
+					},
+					
+					 lazy: {
+						loadPrevNext: true,
+					},
+					on: {
+						slideChangeTransitionStart: function(){
+							var activeIndex = this.activeIndex;
+							//return
+							var list = self.swiperThumbs.$el[0].getElementsByClassName('swiper-slide');
+							for(var i=0;i<list.length;i++){
+								if(i==this.activeIndex){
+									list[i].className = 'swiper-slide swiper-slide-visible imgActive';
+								}else{
+									list[i].className = list[i].className.replace(/imgActive/,'');
+								}
+							}
+						}
+					}
+				},
+				swiperOptionThumbs: {
+					lazy: {
+						loadPrevNext: true,
+					},
+					initialSlide :0,
+					watchSlidesProgress : true,
+					watchSlidesVisibility : true,
+					slidesPerView : 5,
+					on:{
+						tap: function(e){
+							
+							var list = this.$el[0].getElementsByClassName('swiper-slide');
+							for(var i=0;i<list.length;i++){
+								if(i==this.clickedIndex){
+									list[i].className = 'swiper-slide swiper-slide-visible imgActive';
+								}else{
+									list[i].className = list[i].className.replace(/imgActive/,'');
+								}
+								
+							}
+						}
+					}
+				},
 
 				//inquiry
 				ContactStatus:false,
@@ -1212,7 +1290,16 @@ Price may vary depending on the language. If you need guides in other languages,
 					}
 				}
 			},
-			
+			closeBigPic(){
+				this.swiperTop.slideTo(0);
+				this.swiperThumbs.slideTo(0);
+				this.reviewsImgList = [];
+				this.reviewsShowImg=false;
+			},
+			showBigPic(data,index){
+				this.reviewsImgList = data;
+				this.reviewsShowImg = true;
+			}
 		},
 		mounted: function() {
 			var self = this;
@@ -1389,6 +1476,7 @@ Price may vary depending on the language. If you need guides in other languages,
 								font-size: 16px;
 								b{
 									font-size: 24px;
+									margin-right: 5px;
 									vertical-align: top;
 								}
 								.iconfont{ color: #999;}
@@ -1408,14 +1496,14 @@ Price may vary depending on the language. If you need guides in other languages,
 								h4{
 									font-size: 14px;
 									font-weight: bold;
-									margin-bottom: 6px;
+									margin-bottom: 8px;
 								}
 								.input_box{
 									border-radius: 3px;
 									border: solid 1px #e3e5e9;
 									position: relative;
-									height: 44px;
-									line-height: 42px;
+									height: 40px;
+									line-height: 38px;
 									padding-left: 15px;
 									font-size: 16px;
 									input{
@@ -1426,7 +1514,8 @@ Price may vary depending on the language. If you need guides in other languages,
 										border: none;
 										display: block;
 										width: 100%;
-										height: 44px!important;
+										height: 38px!important;
+										line-height: 38px!important;
 										padding-left: 15px;
 										background: none;
 										cursor: pointer;
@@ -1511,7 +1600,7 @@ Price may vary depending on the language. If you need guides in other languages,
 						.book_price_info{
 							border-top: #ebebeb solid 1px;
 							overflow: hidden;
-							padding: 12px 0;
+							padding: 8px 0;
 							font-size: 16px;
 							dt{
 								float: left;
@@ -2144,6 +2233,91 @@ Price may vary depending on the language. If you need guides in other languages,
 				}
 			}
 		}
+
+
+	.alertPicOuter {
+		background: rgba(0, 0, 0, 0.8);
+		height: 100%;
+		width: 100%;
+		position: fixed;
+		z-index: 999999999999999999;
+		top: 0;
+		left: 0;
+		&.on {
+			display: block;
+		}
+		&.off {
+			display: none;
+		}
+		.conter{
+			width: 860px;
+			overflow: hidden;
+			.swiper-button-next{
+				right: -60px;
+			}
+			.swiper-button-prev{
+				left: -60px;
+			}
+		}
+		.boxshow {
+			position: absolute;
+			height: 700px;
+			left: 50%;
+			top: 50%;
+			margin: -350px 0 0 -430px;
+				
+			 .swiper-container {
+			        width: 100%;
+			        height: 300px;
+			        margin-left: auto;
+			        margin-right: auto;
+			   }
+			    .gallery-top {
+			        height: 574px;
+			        width: 100%;
+			    	.swiper-slide{
+			    		height: 574px;
+			    		text-align: center;
+					    overflow: hidden;
+			    		img{
+			    			height: 100%;
+			    		}
+			    	}
+			    }
+			    .gallery-thumbs {
+			        height: 92px;
+			        box-sizing: border-box;
+			        margin-top: 26px;
+			    }
+			    .gallery-thumbs .swiper-slide {
+			        height: 100%;
+			        width: 138px;
+					opacity: 0.4; 
+					text-align: center;
+					overflow: hidden;
+			       img{
+					    height: 92px;	
+					    }
+			       
+			    }
+			    .gallery-thumbs .imgActive {
+			        opacity: 1;
+			    }
+			   
+		}
+		.false {
+			&:hover {
+				cursor: pointer;
+			}
+			i {
+				font-size: 36px;
+				color: #fff;
+			}
+			position: absolute;
+			right: 40px;
+			top: 31px;
+		}
+	}
 		
 	}
 </style>

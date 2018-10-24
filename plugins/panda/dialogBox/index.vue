@@ -37,7 +37,8 @@
       cancelShow: String,
       cancelText: String,
       value: Boolean,
-      width: String
+      width: String,
+      modalClose: String
     },
 		data() {
 			return {
@@ -59,9 +60,12 @@
       },
       close(){
         this.showDialog = false;
+        this.$emit('cancelCallback');
       },
       bgClick(){
-        //this.close();
+        if(this.modalClose){
+          this.close();
+        }
       },
       setTop(){
         var self = this;

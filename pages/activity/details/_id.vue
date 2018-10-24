@@ -19,7 +19,7 @@
 
 			<!-- 右侧 -->
 			<div class="main_r">
-				<div class="book_all">
+				<div class="book_all" :class="{'book_fixed':bookFixed}">
 					<!-- 预定表单模块 -->
 					<div class="book_content">
 						<div class="book_head">
@@ -30,7 +30,7 @@
 								<i class="iconfont">&#xe666;</i>
 							</div>
 							<div class="price_info">
-								<b><span class="price_from" v-if="participants==0">From</span> {{nowExchange.symbol}}{{participants>0?returnFloat(getPeoplePrice(participants,true)):returnFloat(picInfo.bottomPrice)}}</b> {{returnText(participants)}} <i class="iconfont">&#xe659;</i>
+								<b><span class="price_from" v-if="participants==0">From</span> {{nowExchange.symbol}}{{participants>0?returnFloat(getPeoplePrice(participants,true)):returnFloat(picInfo.bottomPrice)}}</b> {{returnText(participants)}} 
 							</div>
 						</div>
 
@@ -96,7 +96,7 @@
 							<li>
 								<p class="book_tip" v-if="picInfo.refundTimeLimit && picInfo.fullRefund===1">Free cancellation  up to {{(picInfo.refundTimeLimit>2?picInfo.refundTimeLimit+' days':24*picInfo.refundTimeLimit+' hours')}} before your trip</p>
 							</li>
-							<li>
+							<li v-if="detail.sales">
 								<div class="hr"></div>
 								<div class="Booked_box">Booked {{detail.sales}} times (last 30 days)</div>
 							</li>
@@ -105,6 +105,11 @@
 
 
 					<!-- 预定保障模块 -->
+					<ul class="book_ensure">
+						<li><i class="iconfont">&#xe654;</i>No hidden booking or credit card fees</li>
+						<li><i class="iconfont">&#xe654;</i>Instant confirmation after booking</li>
+						<li><i class="iconfont">&#xe654;</i>Best Price Guarantee</li>
+					</ul>
 				</div>
 			</div>
 
@@ -122,13 +127,13 @@
 					<ul class="info_list">
 						<!-- Duration -->
 						<li v-if="/DAY/.test(detail.durationUnit)"><i class="iconfont">&#xe624;</i>Duration {{detail.duration}} {{setTimeStr(detail.duration,detail.durationUnit)}}</li>
-						<li @click="showDurationInfo=true" v-else><i class="iconfont">&#xe624;</i>Duration {{detail.duration}} {{setTimeStr(detail.duration,detail.durationUnit)}} <span class="iconfont" v-if="!/DAY/.test(detail.durationUnit)">&#xe689;</span></li>
+						<li v-else><i class="iconfont">&#xe624;</i>Duration {{detail.duration}} {{setTimeStr(detail.duration,detail.durationUnit)}} <span class="iconfont" v-if="!/DAY/.test(detail.durationUnit)" @click="showDurationInfo=true">&#xe689;</span></li>
 						
-						<li v-if="getPickupTitle(detail.pickup) && detail.category!='Ticket'" @click="showPickupInfo=true"><i class="iconfont">&#xe68a;</i>{{getPickupTitle(detail.pickup)}} <span class="iconfont" v-if="detail.statement">&#xe689;</span></li>
+						<li v-if="getPickupTitle(detail.pickup) && detail.category!='Ticket'"><i class="iconfont">&#xe68a;</i>{{getPickupTitle(detail.pickup)}} <span class="iconfont" v-if="detail.statement" @click="showPickupInfo=true">&#xe689;</span></li>
 
 						<!-- 语言 -->
 						<li v-if="detail.groupType=='Group'"><i class="iconfont">&#xe627;</i>Offered in English</li>
-						<li @click="showLanguagesInfo=true" v-else-if="detail.category!='Ticket'"><i class="iconfont">&#xe627;</i>English(and other languages)-speaking guide <span class="iconfont">&#xe689;</span></li>
+						<li v-else-if="detail.category!='Ticket'"><i class="iconfont">&#xe627;</i>English(and other languages)-speaking guide <span class="iconfont" @click="showLanguagesInfo=true">&#xe689;</span></li>
 
 						<li v-if="detail.destinations.length>1"><i class="iconfont">&#xe610;</i>{{detail.destinations.join(', ')}}</li>
 						<li v-if="picInfo.fullRefund===1"><i class="iconfont">&#xe688;</i>Free cancellation  up to {{(picInfo.refundTimeLimit>2?picInfo.refundTimeLimit+' days':24*picInfo.refundTimeLimit+' hours')}} before your trip</li>
@@ -137,7 +142,7 @@
 				</div>
 
 				<!-- Why you’ll love this trip -->
-				<div class="detail_box why">
+				<div class="detail_box why" id="why">
 					<h3><i></i>Why you'll love this trip</h3>
 					<p class="detail_p">{{detail.recommendedReason}}</p>
 					
@@ -147,7 +152,7 @@
 				</div>
 
 				<!-- 行程板块 -->
-				<div class="detail_box itinerary" v-if="detail.itinerary.length">
+				<div class="detail_box itinerary" id="itinerary" v-if="detail.itinerary.length">
 					<h3><span class="btn_viewall" @click="itineraryViewall">View all</span><i></i>Experience Details</h3>
 					<div class="itinerary_tip" v-if="detail.groupType=='Private'">If you want to adjust your itinerary, feel free to contact us. Since the tour is private, our staff can help you make changes according to your needs.</div>
 					<dl class="itinerary_list" v-for="(items,index) in detail.itinerary" :key="index">
@@ -162,27 +167,26 @@
 				<!-- 其他产品信息 -->
 				<div class="detail_box other_box">
 					
-					<div class="other_list" v-if="inclusions.length">
+					<div class="other_list" id="inclusions" v-if="inclusions.length">
 						<!--  || detail.pickup -->
-						<h3 @click="otherFn"><span class="iconfont i_down">&#xe667;</span><span class="iconfont i_up">&#xe666;</span><i></i>Inclusions</h3>
+						<h3 @click="otherFn"><span class="iconfont i_down">&#xe667;</span><span class="iconfont i_up">&#xe666;</span><i></i>Inclusions & Exclusions</h3>
 						<div class="other_content">
+							<h4>Inclusions</h4>
 							<ul class="detail_txt_list">
 								<li v-for="(item,index) in inclusions" :key="index" v-if="item.content!=''">
-									<i class="iconfont">&#xe65c;</i>{{item.title}}
+									<i class="iconfont green">&#xe65c;</i>{{item.title}}
 									<p>{{item.content}}</p>
 								</li>
 								<li v-if="detail.pickup !== 0 && detail.category!='Ticket'">
-									<i class="iconfont">&#xe65c;</i>{{getPickupTitle(detail.pickup)}}
+									<i class="iconfont green">&#xe65c;</i>{{getPickupTitle(detail.pickup)=='Pick-up included, drop-off excluded'?'Pick-up included':getPickupTitle(detail.pickup)}}
 									<p v-html="enterToBr(detail.statement)"></p>
 								</li>
 							</ul>
 							
 						</div>
-					</div>
 
-					<div class="other_list" v-if="exclusions.length">
-						<h3 @click="otherFn"><span class="iconfont i_down">&#xe667;</span><span class="iconfont i_up">&#xe666;</span><i></i>Exclusions</h3>
-						<div class="other_content">
+						<div class="other_content mt10">
+							<h4>Exclusions</h4>
 							<ul class="detail_txt_list">
 								<li v-for="(item,index) in exclusions" :key="index">
 									<i class="iconfont red">&#xe606;</i>{{item.title}}
@@ -192,7 +196,19 @@
 						</div>
 					</div>
 
-					<div class="other_list" v-if="detail.pickup===0 && detail.category !== 'Ticket'">
+					<!-- <div class="other_list" v-if="exclusions.length">
+						<h3 @click="otherFn"><span class="iconfont i_down">&#xe667;</span><span class="iconfont i_up">&#xe666;</span><i></i>Exclusions</h3>
+						<div class="other_content">
+							<ul class="detail_txt_list">
+								<li v-for="(item,index) in exclusions" :key="index">
+									<i class="iconfont red">&#xe606;</i>{{item.title}}
+									<p>{{item.content}}</p>
+								</li>
+							</ul>
+						</div>
+					</div> -->
+
+					<div class="other_list" id="meeting" v-if="detail.pickup===0 && detail.category !== 'Ticket'">
 						<h3 @click="otherFn"><span class="iconfont i_down">&#xe667;</span><span class="iconfont i_up">&#xe666;</span><i></i>Meeting Point Info</h3>
 						<div class="other_content">
 							<ul class="detail_txt_list">
@@ -209,7 +225,7 @@
 						</div>
 					</div>
 
-					<div class="other_list" v-if="delEnter(detail.remark) || notice.length">
+					<div class="other_list" id="important" v-if="delEnter(detail.remark) || notice.length">
 						<h3 @click="otherFn"><span class="iconfont i_down">&#xe667;</span><span class="iconfont i_up">&#xe666;</span><i></i>{{delEnter(detail.remark)?'Important Info':'Additional Info'}}</h3>
 						<div class="other_content">
 							<ul class="detail_txt_list">
@@ -225,7 +241,7 @@
 						</div>
 					</div>
 
-					<div class="other_list" v-if="delEnter(picInfo.refundInstructions)">
+					<div class="other_list" id="rescheduling" v-if="delEnter(picInfo.refundInstructions)">
 						<h3 @click="otherFn"><span class="iconfont i_down">&#xe667;</span><span class="iconfont i_up">&#xe666;</span><i></i>Rescheduling & Cancellation Policy</h3>
 						<div class="other_content">
 							<ul class="detail_txt_list">
@@ -272,7 +288,7 @@
 
 			
 
-			<div class="detail_box similar">
+			<div class="detail_box similar" v-if="detail.recommend">
 				<h3><i></i>Similar Experiences</h3>
 				<ul class="similar_list">
 					<li :key="index" v-for="(i,index) in detail.recommend.entities">
@@ -294,11 +310,29 @@
 				</ul>
 			</div>
 
+			
+
+		</div>
+
+		<!-- 悬浮导航 -->
+		<div class="nav_box">
+			<ul id="nav_list">
+				<li toId="why">What to Expect</li>
+				<li toId="itinerary" v-if="detail.itinerary.length">Experience Details</li>
+				<li toId="inclusions" v-if="inclusions.length || exclusions.length">Inclusions & Exclusions</li>
+
+				<li toId="meeting" v-if="detail.pickup===0 && detail.category !== 'Ticket'">Meeting Point Info</li>
+				<li toId="meeting" v-else-if="detail.category == 'Ticket' &&　getTextArr(detail.statement).length">Usage Instructions</li>
+
+				<li toId="important" v-if="delEnter(detail.remark) || notice.length">Important Info</li>
+				<li toId="rescheduling" v-if="delEnter(picInfo.refundInstructions)">Rescheduling & Cancellation</li>
+			</ul>
 		</div>
 		
-		
+		<!-- 公共底部 -->
 		<FooterCommon :nowCurrency="nowExchange" @headCurrency="headCurrencyFn"></FooterCommon>
-			
+		
+		<!-- inquiry -->
 		<Contact :ContactStatus="ContactStatus" v-on:contactCallback="contactCallBack" :owner="detail.owner"  :objectType="'ACTIVITY'" :objectId="id"></Contact>
 		<!-- service弹窗 -->
 		<dialogBox v-model="inquiryStatus" confirmShow="true" confirmText="Confirm" @confirmCallback="confirmCallback" width="900">
@@ -322,6 +356,28 @@
 			
 		</dialogBox>
 
+
+		<!-- 顶部Duration信息弹层 -->
+		<dialogBox modalClose="true" title="Duration tips" v-model="showDurationInfo" width="90%" height="auto">
+			<div class="dialog_tip_info">All trips start when you meet your tour guide (or driver if the trip does not include a guide), and conclude when you depart from your tour guide (or driver).</div>
+		</dialogBox>
+
+		<!-- 顶部Languages信息弹层 -->
+		<dialogBox modalClose="true" title="Other languages" v-model="showLanguagesInfo" width="90%" height="auto">
+			<div class="dialog_tip_info">* Le français<br>
+* Deutsch<br>
+* Español<br>
+* Português<br>
+* русский язык<br>
+* 日本語<br>
+* 한국어<br><br>
+Price may vary depending on the language. If you need guides in other languages, feel free to contact us.</div>
+		</dialogBox>
+
+		<!-- 顶部Pickup信息弹层 -->
+		<dialogBox modalClose="true" title="Tips" v-model="showPickupInfo" width="90%" height="auto">
+			<div class="dialog_tip_info" v-html="enterToBr(detail.statement)"></div>
+		</dialogBox>
 
 	</div>
 </template>
@@ -387,7 +443,7 @@
 				reviewsData:[],
 
 				//选择日期和人数板块
-				showFixedBtn:true,
+				bookFixed:false,
 				showWinBg:false,
 				showChangePeople:false,
 				showPriceInfo:false,
@@ -418,7 +474,7 @@
 			if(urlTravelers>0){
 				data.participants=urlTravelers;
 			}else if(userCookie.participants){
-				data.participants=JSON.parse(decodeURIComponent(userCookie.participants))
+				data.participants=userCookie.participants;
 			}
 
 			
@@ -426,7 +482,6 @@
 				//基本信息
 				var Promise1 = new Promise(function(resolve, reject){
 					Vue.axios.get(apiBasePath + "product/activity/" + id).then(function(res) {
-						
 						//获取可售日期
 						if(!res.data.allAvailable){
 							Vue.axios.get(apiBasePath + "product/activity/"+id+"/sale/calendar").then(function(response) {
@@ -1144,6 +1199,20 @@
 					this.emailTip = true;
 				}
 			},
+			scrollFn(){
+				var self = this;
+				var $main_r = document.querySelector('.main_r');
+				window.onscroll = function(){
+					var Y = window.scrollY,
+					T = $main_r.offsetTop-60;
+					if(Y>T){
+						self.bookFixed = true;
+					}else{
+						self.bookFixed = false;
+					}
+				}
+			},
+			
 		},
 		mounted: function() {
 			var self = this;
@@ -1163,13 +1232,15 @@
 			console.log(this.$data);
 
 			
-			//选择默认处理
-			if(this.participants>this.picInfo.maxParticipants){
-				this.participants = this.picInfo.maxParticipants;
-			}else if(this.participants<this.picInfo.minParticipants){
-				this.participants = this.picInfo.minParticipants;
-			}
+			
 			if(this.participants){
+				//选择默认处理
+				if(this.participants>this.picInfo.maxParticipants){
+					this.participants = this.picInfo.maxParticipants;
+				}else if(this.participants<this.picInfo.minParticipants){
+					this.participants = this.picInfo.minParticipants;
+				}
+				//设置预定人数
 				this.bookAdults = this.participants;
 				this.changeAdults = this.participants;
 			}
@@ -1200,6 +1271,22 @@
 					self.setPeople();
 				}
 			},false);
+
+			//导航,预定悬浮
+			this.scrollFn();
+
+			//导航点击
+			document.querySelector('#nav_list').addEventListener('click',function(e){
+				var thisId = e.target.getAttribute('toId');
+				var thisDom = document.querySelector('#'+thisId);
+				var thisT = thisDom.offsetTop-54;
+				window.scrollTo(0,thisT);
+				if(!/active/.test(thisDom.className)){
+					thisDom.className = thisDom.className+' active';
+				}
+				
+			})
+			
     	
 		},
 		watch: {
@@ -1248,10 +1335,14 @@
 				width: 376px;
 
 				.book_all{
+					width: 376px;
+					position: relative;
+					z-index: 3;
+					
 					.book_content{
 						box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
 						border-radius: 8px 8px 0 0;
-						
+						background-color: #fff;
 						.book_head{
 							width: 100%;
 							background-color: #353a3f;
@@ -1310,7 +1401,7 @@
 						}
 						.book_list{
 							color: #353a3f;
-							padding: 0 24px;
+							padding: 0 24px 20px;
 							li{
 								margin-top: 14px;
 								position: relative;
@@ -1438,14 +1529,41 @@
 						.hr{ height: 1px; background-color: #ebebeb;}
 						.book_tip{ margin-top: 10px; font-size: 14px;}
 						.Booked_box{
-							padding: 16px 0;
+							padding: 16px 0 0;
 							color: #878e95;
 							font-size: 14px; 
 						}
 					}
 					
+					.book_ensure{
+						background-color: #f2fbf9;
+						border-radius: 8px;
+						padding: 15px 24px;
+						margin-top: 10px;
+						li{
+							padding-left: 25px;
+							color: #353a3f;
+							font-size: 16px;
+							padding: 4px 0 4px 25px;
+							i{
+								float: left;
+								margin-left: -25px;
+								margin-top: 4px;
+								color: #1bbc9d;
+								font-size: 12px;
+							}
+							
+						}
+					}
 					
 					
+				}
+				.book_fixed{
+					position: fixed;
+					top: 60px;
+					.book_ensure{
+						display: none;
+					}
 				}
 				
 			}
@@ -1481,7 +1599,11 @@
 						font-size: 16px;
 						padding: 6px 0 6px 20px;
 						i{font-size: 16px; float: left; margin-left: -20px; margin-top: 2px;}
-						span.iconfont{ vertical-align: top; margin-left:2px; position: relative; top: 3px;}
+						span.iconfont{ vertical-align: top; margin-left:2px; position: relative; top: 3px; cursor: pointer;
+							&:hover{
+								color: #1bbc9d;
+							}
+						}
 					}
 				}
 			}
@@ -1655,11 +1777,11 @@
 						
 					}
 					h4{
-						margin-top: 0.2rem;
-						padding: 0.2rem 0 0 0.45rem;
-						font-size: 0.3rem;
+						margin: 0 0 10px;
+						font-size: 20px;
 						font-weight: bold;
 					}
+					
 					.other_content{
 						margin-top: -0.2rem;
 						padding: 0 0 0.5rem;
@@ -1862,6 +1984,7 @@
 							overflow: hidden;
 							margin-top: 15px;
 							margin-bottom: 12px;
+							font-weight: bold;
 						}
 						.tag{
 							color: #fff;
@@ -1990,7 +2113,38 @@
 			
 		}
 
+		.dialog_tip_info{
+			font-size: 14px;
+			line-height: 22px;
+		}
 
+		.nav_box{
+			position: fixed;
+			top: 0;
+			left: 0;
+			z-index: 9;
+			box-shadow: 0 0 20px rgba(0,0,0,0.4);
+			background-color: #fff;
+			width: 100%;
+			height: 54px;
+			ul{
+				width: 1170px;
+				margin: 0 auto;
+				background-color: #fff;
+				height: 54px;
+				line-height: 54px;
+				li{
+					float: left;
+					padding: 0 20px;
+					font-size: 14px;
+					cursor: pointer;
+					&:hover{
+						color: #1bbc9d;
+					}
+				}
+			}
+		}
+		
 	}
 </style>
 

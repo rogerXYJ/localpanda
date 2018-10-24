@@ -18,7 +18,7 @@
     font-size: 20px;
   }
   .dialog_content{
-    padding: 30px;
+    padding: 10px 30px 30px;
   }
   .dialog_footer{
     padding: 0 30px 30px;
@@ -41,15 +41,15 @@
     position: absolute;
     right: 10px;
     top: 10px;
-    width: 34px;
-    height: 34px;
-    line-height: 34px;
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
     cursor: pointer;
     text-align: center;
     border-radius: 50%;
     background-color: #eee;
     color: #666;
-    font-size: 16px;
+    font-size: 14px;
     -webkit-transition:all 0.2s linear 0s;
     transition:all 0.2s linear 0s;
     &:hover{ color: #000; background-color: #ddd;}

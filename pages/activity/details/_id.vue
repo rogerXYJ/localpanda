@@ -97,7 +97,7 @@
 							</li>
 							<li v-if="detail.sales">
 								<div class="hr"></div>
-								<div class="Booked_box">Booked {{detail.sales}} times (last 30 days)</div>
+								<div class="Booked_box">Booked {{detail.sales}} {{detail.sales>1?'times':'time'}} (last 30 days)</div>
 							</li>
 						</ul>
 					</div>
@@ -128,7 +128,8 @@
 						<li v-if="/DAY/.test(detail.durationUnit)"><i class="iconfont">&#xe624;</i>Duration {{detail.duration}} {{setTimeStr(detail.duration,detail.durationUnit)}}</li>
 						<li v-else><i class="iconfont">&#xe624;</i>Duration {{detail.duration}} {{setTimeStr(detail.duration,detail.durationUnit)}} <span class="iconfont" v-if="!/DAY/.test(detail.durationUnit)" @click="showDurationInfo=true">&#xe689;</span></li>
 						
-						<li v-if="getPickupTitle(detail.pickup) && detail.category!='Ticket'"><i class="iconfont">&#xe68a;</i>{{getPickupTitle(detail.pickup)}} <span class="iconfont" v-if="detail.statement" @click="showPickupInfo=true">&#xe689;</span></li>
+						<!-- pickup -->
+						<li v-if="getPickupTitle(detail.pickup) && detail.category!='Ticket' && detail.statement"><i class="iconfont">&#xe68a;</i>{{getPickupTitle(detail.pickup)}} <span class="iconfont" @click="showPickupInfo=true">&#xe689;</span></li>
 
 						<!-- 语言 -->
 						<li v-if="detail.groupType=='Group'"><i class="iconfont">&#xe627;</i>Offered in English</li>
@@ -136,8 +137,9 @@
 
 						
 						<li v-if="picInfo.fullRefund===1"><i class="iconfont">&#xe688;</i>Free cancellation  up to {{(picInfo.refundTimeLimit>2?picInfo.refundTimeLimit+' days':24*picInfo.refundTimeLimit+' hours')}} before your trip</li>
-						<li v-if="detail.destinations.length>1"><i class="iconfont">&#xe610;</i>{{detail.destinations.join(', ')}}</li>
-						<li v-if="detail.limits"><i class="iconfont">&#xe68b;</i>{{detail.limits}}</li>
+
+						<li class="wmax" v-if="detail.destinations.length>1"><i class="iconfont">&#xe610;</i>{{detail.destinations.join(', ')}}</li>
+						<li class="wmax" v-if="detail.limits"><i class="iconfont">&#xe68b;</i>{{detail.limits}}</li>
 					</ul>
 				</div>
 
@@ -158,8 +160,9 @@
 					<dl class="itinerary_list" v-for="(items,index) in detail.itinerary" :key="index">
 						<dt @click="itineraryFn"><i class="iconfont i_down">&#xe667;</i><i class="iconfont i_up">&#xe666;</i><span></span>{{items.title}}</dt>
 						<dd>
+							<img class="oldStyle" v-if="items.photo && !detail.newType" v-lazy="items.photo.url" alt="">
 							<p>{{items.description}}</p>
-							<img v-if="items.photo" v-lazy="items.photo.url" alt="">
+							<img v-if="items.photo && detail.newType" width="100%" v-lazy="items.photo.url" alt="">
 						</dd>
 					</dl>
 				</div>
@@ -177,7 +180,7 @@
 									<i class="iconfont green">&#xe65c;</i>{{item.title}}
 									<p>{{item.content}}</p>
 								</li>
-								<li v-if="detail.pickup !== 0 && detail.category!='Ticket'">
+								<li v-if="detail.pickup !== 0 && detail.category!='Ticket' && detail.statement">
 									<i class="iconfont green">&#xe65c;</i>{{getPickupTitle(detail.pickup)=='Pick-up included, drop-off excluded'?'Pick-up included':getPickupTitle(detail.pickup)}}
 									<p v-html="enterToBr(detail.statement)"></p>
 								</li>
@@ -287,7 +290,7 @@
 			</div>
 
 			
-
+			<!-- 推荐板块 -->
 			<div class="detail_box similar" v-if="detail.recommend">
 				<h3><i></i>Similar Experiences</h3>
 				<ul class="similar_list">
@@ -297,8 +300,7 @@
 								<div class="similar_img" v-lazy:background-image="i.coverPhotoUrl"></div>
 							</div>
 							<div class="similar_info">
-								<h4>{{i.title}}</h4>
-								<span class="tag">{{i.category}}{{i.groupType?' · '+i.groupType:''}}</span>
+								<h4 :title="i.title"><span class="tag" :class="{'private':i.groupType=='Private'}" v-if="i.groupType">{{i.groupType}}</span>{{i.title}}</h4>
 								<p><b>Duration:</b>{{i.duration}} {{setTimeStr(i.duration,i.durationUnit)}}</p>
 							</div>
 							<div class="similar_list_foot">
@@ -1147,7 +1149,7 @@ Price may vary depending on the language. If you need guides in other languages,
 				
 			},
 			headCurrencyFn(currency){
-				this.currency = currency;
+				this.nowExchange = currency;
 			},
 			minusNum(e,type){
 				if(/stop/.test(e.target.className))return;
@@ -1280,14 +1282,23 @@ Price may vary depending on the language. If you need guides in other languages,
 			scrollFn(){
 				var self = this;
 				var $main_r = document.querySelector('.main_r');
+				var $similar = document.querySelector('.similar');
+				var $book_all = document.querySelector('.book_all');
 				window.onscroll = function(){
 					var Y = window.scrollY,
-					T = $main_r.offsetTop-60;
+					T = $main_r.offsetTop-60,
+					maxT = $similar.offsetTop-$book_all.clientHeight-60;
 					if(Y>T){
 						self.bookFixed = true;
+						if(Y>maxT){
+							$book_all.style = 'position: relative;top:0;'
+						}else{
+							$book_all.style = '';
+						}
 					}else{
 						self.bookFixed = false;
 					}
+					
 				}
 			},
 			closeBigPic(){
@@ -1328,8 +1339,7 @@ Price may vary depending on the language. If you need guides in other languages,
 					this.participants = this.picInfo.minParticipants;
 				}
 				//设置预定人数
-				this.bookAdults = this.participants;
-				this.changeAdults = this.participants;
+				this.bookAdults = this.changeAdults = parseInt(this.participants);
 			}
 			
 			
@@ -1373,6 +1383,10 @@ Price may vary depending on the language. If you need guides in other languages,
 				}
 				
 			})
+
+
+			//登录状态
+			this.logIn = window.localStorage.getItem("logstate");
 			
     	
 		},
@@ -1387,7 +1401,14 @@ Price may vary depending on the language. If you need guides in other languages,
 				//设置价格
 				this.setPeoplePrice();
 				this.participants = val;
+				//刷新推荐产品价格
+				this.getRecommend();
 			},
+			nowExchange:function(val){
+				//设置价格
+				this.selectCurrency = val.code;
+				this.changeCurrency(val.code);
+			}
 		}
 	};
 </script>
@@ -1676,7 +1697,7 @@ Price may vary depending on the language. If you need guides in other languages,
 				h2{
 					font-size: 32px;
 					font-weight: bold;
-					span{ color: #fff; background-color: #f4b33f; font-size: 18px; line-height: 28px; display: inline-block; padding: 0 10px; border-radius: 5px; vertical-align: middle; margin-right: 10px; font-weight: normal; float: left; margin-top: 6px;}
+					span{ color: #fff; background-color: #efae99; font-size: 18px; line-height: 28px; display: inline-block; padding: 0 10px; border-radius: 5px; vertical-align: middle; margin-right: 10px; font-weight: normal; float: left; margin-top: 6px;}
 					.private{ background-color: #1bbc9d;}
 				}
 				.info_list{
@@ -1796,6 +1817,7 @@ Price may vary depending on the language. If you need guides in other languages,
 						cursor: pointer;
 						position: relative;
 						z-index: 2;
+						overflow: hidden;
 						i{
 							float: right;
 							font-size: 20px;
@@ -1820,10 +1842,16 @@ Price may vary depending on the language. If you need guides in other languages,
 						padding-bottom: 20px;
 						margin-top: -10px;
 						display: none;
+						overflow: hidden;
 						p{
 							line-height: 23px;
 							font-size: 16px;
 							margin-top: 10px;
+						}
+						.oldStyle{
+							float: right;
+							width: 49%;
+							margin-left: 10px;
 						}
 						img{
 							display: block;
@@ -2031,7 +2059,7 @@ Price may vary depending on the language. If you need guides in other languages,
 					li{
 						float: left;
 						width: 379px;
-						height: 445px;
+						height: 390px;
 						margin-left: 16px;
 						position: relative;
 						box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.1);
@@ -2074,6 +2102,11 @@ Price may vary depending on the language. If you need guides in other languages,
 							margin-top: 15px;
 							margin-bottom: 12px;
 							font-weight: bold;
+							overflow:hidden;
+							-webkit-line-clamp: 2;   //要设置的行数
+							-webkit-box-orient: vertical;
+							display: -webkit-box;
+							text-overflow: ellipsis;
 						}
 						.tag{
 							color: #fff;
@@ -2081,11 +2114,15 @@ Price may vary depending on the language. If you need guides in other languages,
 							height: 20px;
 							line-height: 20px;
 							border-radius: 3px;
-							padding: 0 10px;
-							background-color: #f4b33f;
+							padding: 0 8px;
+							background-color: #efae99;
 							font-size: 12px;
-							text-transform: uppercase;
+							font-weight: normal;
+							vertical-align: top;
+							margin-right: 5px;
+							// text-transform: uppercase;
 						}
+						.private{ background-color: #1bbc9d;}
 						p{
 							font-size: 14px;
 							color: #878e95;

@@ -30,7 +30,7 @@
 								<i class="iconfont">&#xe666;</i>
 							</div>
 							<div class="price_info">
-								<b><span class="price_from" v-if="participants==0">From</span> {{nowExchange.symbol}} {{participants>0?returnFloat(getPeoplePrice(participants,true)):returnFloat(picInfo.bottomPrice)}}</b>{{returnText(participants)}} 
+								<b><span class="price_from" v-if="participants==0 && !picInfo.unifiedPricing">From</span> {{nowExchange.symbol}} {{participants>0?returnFloat(getPeoplePrice(participants,true)):returnFloat(picInfo.bottomPrice)}}</b>{{returnText(participants)}} 
 							</div>
 						</div>
 
@@ -118,7 +118,8 @@
 				<!-- 面包屑 -->
 				<div class="crumbs">
 					<a href="/">Home</a> <i class="iconfont">&#xe64a;</i>
-					<a :href="'/activity/list/'+detail.destinations[0]">{{detail.destinations[0]}} Activities</a>
+					<a :href="'/activity/list/'+detail.destinations[0]">{{detail.destinations[0]}} Activities</a> <i class="iconfont">&#xe64a;</i>
+					<span class="c_999">Activity Details</span>
 				</div>
 				
 				<div class="activity_top">
@@ -235,7 +236,7 @@
 								<li v-for="item in getTextArr(detail.remark)" :key="item">
 									<i class="dian"></i>{{item}}
 								</li>
-								<h4 v-if="notice.length && delEnter(detail.remark)">Additional Info</h4>
+								<h4 class="mt10" v-if="notice.length && delEnter(detail.remark)">Additional Info</h4>
 								<li v-for="(item,index) in notice" :key="index">
 									<i class="dian"></i>{{item.title}}
 									<p>{{item.content}}</p>
@@ -262,7 +263,7 @@
 						<span class="reviews_num">{{reviewsData.records==1 ? 'Review':'Reviews'}} ({{reviewsData.records}})</span>
 						<div class="reviews_star" v-html="reviewsStarHtml(reviewsData.avgScore)"></div>
 					</div>
-					<div class="reviews_list" v-for="(item,index) in reviews" :key="index">
+					<div class="reviews_list" :class="{'bdnone':reviewsData.records<4 && index==reviewsData.records-1}" v-for="(item,index) in reviews" :key="index">
 						<div class="reviews_list_top">
 							
 							<div class="reviews_photo">
@@ -1690,10 +1691,14 @@ Price may vary depending on the language. If you need guides in other languages,
 					line-height: 20px;
 					color: #878e95;
 				}
+				a:hover{
+					text-decoration: underline;
+					color: #1bbc9d;
+				}
 			}
 			/*顶部信息*/
 			.activity_top{
-				padding-top: 0.3rem;
+				padding-top: 20px;
 				h2{
 					font-size: 32px;
 					font-weight: bold;
@@ -2173,6 +2178,7 @@ Price may vary depending on the language. If you need guides in other languages,
 				font-size: 16px;
 				box-sizing: border-box;
 				cursor: pointer;
+				font-weight: bold;
 			}
 			.btn_inquire{
 				display: block;

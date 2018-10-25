@@ -257,7 +257,7 @@
 				</div>
 
 				<!-- 点评 -->
-				<div class="detail_box reviews" v-if="reviewsData &&　reviewsData.records">
+				<div class="detail_box reviews mt20" v-if="reviewsData &&　reviewsData.records">
 					<div class="reviews_title">
 						<i class="title_line"></i>
 						<span class="reviews_num">{{reviewsData.records==1 ? 'Review':'Reviews'}} ({{reviewsData.records}})</span>
@@ -1809,8 +1809,8 @@ Price may vary depending on the language. If you need guides in other languages,
 						background-color: #353a3f;
 					}
 					.iconfont{
-						font-size: 0.22rem;
-						margin-top: 0.02rem;
+						font-size: 12px;
+						margin-top: 1px;
 					}
 					p{
 						color: #878e95;
@@ -1897,7 +1897,6 @@ Price may vary depending on the language. If you need guides in other languages,
 						img{
 							display: block;
 							max-width: 100%;
-							min-height: 3rem;
 							margin-top: 18px;
 							border-radius: 5px;
 						}
@@ -1924,7 +1923,7 @@ Price may vary depending on the language. If you need guides in other languages,
 				padding-top: 15px;
 				.other_list{
 					border-top: 1px solid #ddd;
-					&:nth-child(1){ border: none; margin-top: -0.2rem;}
+					&:nth-child(1){ border: none; margin-top: -5px;}
 					h3{
 						height: 80px;
 						line-height: 80px;
@@ -1941,8 +1940,8 @@ Price may vary depending on the language. If you need guides in other languages,
 					}
 					
 					.other_content{
-						margin-top: -0.2rem;
-						padding: 0 0 0.5rem;
+						margin-top: -5px;
+						padding: 0 0 20px;
 						display: none;
 					}
 					.i_up{

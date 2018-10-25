@@ -88,9 +88,6 @@
 					<div class="head clearfix">
 						<h3>{{opctions.title}}</h3>
 						<div class="serviceform">
-							
-							<!-- <p v-if="opctions.adultNum==1&&opctions.childrenNum==0">1 Person</p>
-							<p v-else>{{opctions.peopleNum}} People</p> -->
 							<p>Number of {{opctions.adultNum>1?'Adults':'Adult'}} :  {{opctions.adultNum}}</p>
 							<p v-if="opctions.childrenNum">Number of {{opctions.childrenNum>1?'Children':'Child'}} :  {{opctions.childrenNum}}</p>
 						</div>
@@ -102,9 +99,8 @@
 					</div>
 					<div class="pic">
 						<div class="adult clearfix">
-							
 							<!-- <div class="formula" v-if="opctions.childrenNum==0 && opctions.adultNum==1">{{nowExchange.symbol}}{{opctions.adultsPic}} x 1 Travelers</div> -->
-							<div class="formula">{{nowExchange.symbol}} {{returnFloat(opctions.averagePrice)}} x {{opctions.adultNum*1+opctions.childrenNum*1}} {{(opctions.peopleNum*1+opctions.childrenNum*1)>1?'Travelers':'Traveler'}}</div>
+							<div class="formula">{{nowExchange.symbol}} {{returnFloat(opctions.averagePrice)}} x {{opctions.adultNum*1+opctions.childrenNum*1}} {{(opctions.adultNum*1+opctions.childrenNum*1)>1?'Travelers':'Traveler'}}</div>
 							<div class="adultPic">{{nowExchange.symbol}} {{returnFloat(opctions.adultsPic)}}</div>
 						</div>
 						<div class="child" v-if="opctions.childrenNum>0&&opctions.childDiscount">

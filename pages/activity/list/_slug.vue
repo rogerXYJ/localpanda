@@ -57,7 +57,7 @@
 				
 			</div>
 		</div>
-		<div class="slogn">
+		<div class="slogn" id="slogn">
       <div class="slogn_title">Authentic, Accountable and Accessible China Travel</div>
 			<div class="slogn_box">
 				<div class="slogn_item">
@@ -884,7 +884,8 @@ export default {
         path: "/",
         expires: 30
       });
-      this.jumpUrl();
+      this.getData();
+      // this.jumpUrl();
     },
     //搜索显示推荐
     showHot() {
@@ -1135,6 +1136,8 @@ export default {
       let that = this;
       that.postData.pageNum = val;
       that.getData();
+      //返回顶部位置
+      this.goTop();
     },
     jumpUrl() {
       //获取当前路径
@@ -1332,8 +1335,7 @@ export default {
               });
             };
 
-            //滚动到指定位置
-            window.scrollTo(0,document.querySelector('#page-content').offsetTop);
+            
           },
           res => {}
         );
@@ -1370,8 +1372,12 @@ export default {
         }
       }
 
-      this.jumpUrl();
-      //this.getData();
+      // this.jumpUrl();
+      this.getData();
+    },
+    goTop(){
+      //滚动到指定位置
+      window.scrollTo(0,document.querySelector('#slogn').offsetTop);
     }
   },
   watch: {
@@ -1495,6 +1501,9 @@ export default {
         var url = "/activity/list/China" + (urlQuery ? "?" + urlQuery : "");
         history.pushState(null, null, url);
         console.log(options);
+        
+        //返回顶部位置
+        this.goTop();
       },
       deep: true
     },

@@ -1190,6 +1190,14 @@ Price may vary depending on the language. If you need guides in other languages,
 					self.showChangePeople = true;
 					return false;
 				}
+
+
+				ga(gaSend, {
+					hitType: "event",
+					eventCategory: "activity_detail",
+					eventAction: "click",
+					eventLabel:"book_succeed"
+				});
 				
 				
 				var orderInfo = {
@@ -1394,6 +1402,19 @@ Price may vary depending on the language. If you need guides in other languages,
 		watch: {
 			bookAdults:function(val){
 				this.bookPeople = val*1 + this.bookChildren;
+				ga(gaSend, {
+					hitType: "event",
+					eventCategory: "activity_detail",
+					eventAction: "select",
+					eventLabel:"guests"
+				});
+
+				ga(gaSend, {
+					hitType: "event",
+					eventCategory: "activity_detail",
+					eventAction: "select",
+					eventLabel:"detail_select"
+				});
 			},
 			bookChildren:function(val){
 				this.bookPeople = val*1 + this.bookAdults;
@@ -1409,6 +1430,21 @@ Price may vary depending on the language. If you need guides in other languages,
 				//设置价格
 				this.selectCurrency = val.code;
 				this.changeCurrency(val.code);
+			},
+			startDate:function(){
+				ga(gaSend, {
+					hitType: "event",
+					eventCategory: "activity_detail",
+					eventAction: "select",
+					eventLabel:"date"
+				});
+
+				ga(gaSend, {
+					hitType: "event",
+					eventCategory: "activity_detail",
+					eventAction: "select",
+					eventLabel:"detail_select"
+				});
 			}
 		}
 	};

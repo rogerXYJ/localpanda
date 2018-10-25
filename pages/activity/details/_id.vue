@@ -1057,8 +1057,8 @@ Price may vary depending on the language. If you need guides in other languages,
 				}
 			},
 			setPeople(){
-				this.bookAdults = this.changeAdults;
-				this.bookChildren = this.changeChildren;
+				this.bookAdults = this.changeAdults*1;
+				this.bookChildren = this.changeChildren*1;
 				this.bookPeople = this.bookAdults+this.bookChildren;
 				this.showChangePeople = false;
 			},
@@ -1486,7 +1486,7 @@ Price may vary depending on the language. If you need guides in other languages,
 					
 					.book_content{
 						box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
-						border-radius: 8px 8px 0 0;
+						border-radius: 8px;
 						background-color: #fff;
 						.book_head{
 							width: 100%;
@@ -1761,7 +1761,7 @@ Price may vary depending on the language. If you need guides in other languages,
 
 			/*公共模块*/
 			.detail_box{
-				padding: 30px 0;
+				padding: 30px 0 0;
 				border-top: #dde0e0 solid 1px;
 				margin-top: 30px;
 				h3{

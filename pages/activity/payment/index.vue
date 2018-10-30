@@ -99,8 +99,21 @@
 						<p style="margin-top: 20px; font-size: 18px;color:red" v-if="payStatus">{{payErrMsg}}</p>
 					</div>
 				</div>
+				<!-- panda Phone -->
+				<div class="panda_phone">
+					<p>A $150 USD deposit is required to use the Panda Phone, which will be returned to you upon returning the phone at the end of your trip. Please choose a deposit payment method below.</p>
+					<radio-group v-model="ppDeposit" class="deposit_list">
+						<radio :label="1">Pay deposit upon recieving the phone in China (cash and paypal accepted).*</radio><br>
+						<radio :label="0">Pay deposit now online using a debit/credit card.</radio>
+					</radio-group>
+					<p class="mt10">*deposit will be returned in the same method you paid: paypal or in cash (RMB only)</p>
+				</div>
+
 				<p class="refundPolicy" style=" font-size:14px;margin-top: 30px; color: red;" v-if="opctions.finalRefundPeriod">You can reschedule or cancel your trip at zero cost before {{formatDate(opctions.finalRefundPeriod)}}.</p>
 			<!--	<p style="width: 600px;margin-top: 20px; color: red;" v-if="logInHide">You ordered as a guest. To view your order details, you can click "My Bookings" on the top bar then type in the reservee's email address and name you entered before to access that information.</p>-->
+
+				
+
 				<button class="btnlinner paybtn" @click="getToken" v-show="id!=2">Pay Now</button>
 				<div class="paypalBtn" id="paypal-button-container" v-show="id==2"></div>
 				
@@ -175,6 +188,8 @@
 						</span>
 					</div>
 				</div>-->
+
+				
 			</div>
 
 		</div>
@@ -207,6 +222,7 @@
 	import HeaderCommon from '~/components/HeaderCommon/HeaderCommon'
 	import FooterCommon from '~/components/FooterCommon/FooterCommon';
 	import Loading from '~/components/Loading/Loading'
+	import {radioGroup,radio} from "~/plugins/panda/radio/";
 	//	import api from '~/assets/js/plugin/api.js'
 	//import QRCode from '~/assets/js/plugin/wx/qrcode.min.js'
 	import Vue from 'vue'
@@ -297,7 +313,10 @@
 				id: 1, //切换支付方式
 				payStatus: false,
 				payErrMsg: '',
-				isPay: false
+				isPay: false,
+
+				//押金
+				ppDeposit:1
 		
 		};
 			
@@ -328,7 +347,9 @@
 		components: {
 			HeaderCommon,
 			FooterCommon,
-			Loading
+			Loading,
+			radioGroup,
+    	radio
 		},
 		methods: {
 			cutXiaoNum(num, len) {
@@ -815,74 +836,7 @@
 		}
 	}
 </script>
-<style lang="scss">
-	//@import '~/assets/scss/_main.scss';
-	//@import '~/assets/font/iconfont.css';
-	.payNow{
-		
-		body {
-			min-width: 1200px;
-		}
-		
-		.ewmLogo {
-			position: absolute;
-			width: 30px;
-			height: 30px;
-			left: 50%;
-			top: 50%;
-			-webkit-transform: translate(-50%, -50%);
-			transform: translate(-50%, -50%);
-			border-radius: 5px;
-		}
-		
-		.refresh_code {
-			color: #00B886;
-			cursor: pointer;
-			&:hover {
-				color: #00B886;
-			}
-		}
 
-
-		#header {
-			box-shadow: 0px 2px 6px 0px rgba(53, 58, 63, 0.1);
-			.init{
-				li{
-					&:nth-child(0){
-						display: none;
-					}
-					&:nth-child(1){
-						display: none;
-					}
-					&:nth-child(3){
-						display: none;
-					}
-					
-				}
-			}
-			.login{
-				.selectCurrency{
-					display: none;
-				}
-			}
-			.search{ 
-				display: none!important;
-			}
-			
-		}
-		.footerInfo{
-			li:nth-child(5){
-				display: none!important;
-			}
-		}
-
-		.paypal-button,.xcomponent-outlet{
-			width: 100%!important;
-			height: 100%!important;
-		}
-
-	}
-</style>
 <style lang="scss" scoped>
 	//@import '~/assets/scss/base/_setting.scss';
 	.icon {
@@ -916,6 +870,27 @@
 			position: relative;
 			.select {
 				float: left;
+				width: 750px;
+
+				.panda_phone{
+					margin-top: 30px;
+					font-size:16px;
+					padding: 20px;
+					background-color:rgba(0, 0, 0, 0.03);
+					.deposit_list{
+						margin-top: 10px;
+						.radio_label{
+							overflow: hidden;
+							line-height: 20px;
+							margin-top: 5px;
+							margin-left: 0;
+							
+						}
+						
+					}
+					p{ color: #878787;}
+				}
+				
 				.link {
 					a {
 						font-size: 16px;
@@ -1194,5 +1169,74 @@
 				cursor: pointer;
 			}
 		}
+	}
+</style>
+
+<style lang="scss">
+	//@import '~/assets/scss/_main.scss';
+	//@import '~/assets/font/iconfont.css';
+	.payNow{
+		
+		body {
+			min-width: 1200px;
+		}
+		
+		.ewmLogo {
+			position: absolute;
+			width: 30px;
+			height: 30px;
+			left: 50%;
+			top: 50%;
+			-webkit-transform: translate(-50%, -50%);
+			transform: translate(-50%, -50%);
+			border-radius: 5px;
+		}
+		
+		.refresh_code {
+			color: #00B886;
+			cursor: pointer;
+			&:hover {
+				color: #00B886;
+			}
+		}
+
+
+		#header {
+			box-shadow: 0px 2px 6px 0px rgba(53, 58, 63, 0.1);
+			.init{
+				li{
+					&:nth-child(0){
+						display: none;
+					}
+					&:nth-child(1){
+						display: none;
+					}
+					&:nth-child(3){
+						display: none;
+					}
+					
+				}
+			}
+			.login{
+				.selectCurrency{
+					display: none;
+				}
+			}
+			.search{ 
+				display: none!important;
+			}
+			
+		}
+		.footerInfo{
+			li:nth-child(5){
+				display: none!important;
+			}
+		}
+
+		.paypal-button,.xcomponent-outlet{
+			width: 100%!important;
+			height: 100%!important;
+		}
+
 	}
 </style>

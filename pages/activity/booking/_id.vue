@@ -68,7 +68,7 @@
 
 				<!-- 手机业务 -->
 				<div class="panda_phone">
-					<checkbox v-model="opctions.pandaPhoneCheck">Add Panda Phone to this trip for $1 </checkbox>
+					<checkbox v-model="opctions.pandaPhoneCheck">Add Panda Phone to this trip for $1 {{nowExchange.code!='USD'?'('+nowExchange.symbol+opctions.phoneHirePrice+')':''}}</checkbox>
 					<a @click="showPPDialog = true">What's this</a>
 				</div>
 
@@ -945,7 +945,7 @@
 			//设置默认币种
 			self.nowExchange = {
 				symbol: self.currency.symbol,
-				currency: self.currency.code
+				code: self.currency.code
 			};
 
 			//加载币种

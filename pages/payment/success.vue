@@ -31,8 +31,9 @@
 				<p class="c_666" v-if="showTipTxt && payType!='guide'">You ordered as a guest. You can click this button to view your order details.</p> -->
 
 				<div class="panda_phone">
+					<h4>Panda Phone Service - 5 days (deposit included)</h4>
 					<p>You've selected The Panda Phone: All-in-one Mobile Travel Assistant. We will deliver your phone to the hotel or airport of your choice along with English-language assistance to get you set up.</p>
-					<h4>Please provide your delivery info below:</h4>
+					<h5>Please provide your delivery info below:</h5>
 					<div class="panda_phone_check">
 						<radio-group v-model="ppType" class="deposit_list" v-if="orderInfo.phoneHire">
 							<radio :label="2">Airport</radio>
@@ -367,7 +368,13 @@ console.log(this.orderInfo);
 					padding: 20px;
 					background-color: rgba(0,0,0,0.04);
 					font-size: 16px;
-					h4{ margin-top: 10px;}
+					h4{
+						font-size: 18px;
+						color: #333;
+						margin-bottom: 15px;
+						font-weight: bold;
+					}
+					h5{ margin-top: 10px;font-size: 16px;}
 					p{margin: 0;}
 					.panda_phone_check{
 						margin-top: 10px;

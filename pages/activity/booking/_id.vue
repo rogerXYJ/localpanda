@@ -68,7 +68,7 @@
 
 				<!-- 手机业务 -->
 				<div class="panda_phone">
-					<checkbox v-model="opctions.pandaPhoneCheck">Add Panda Phone to this trip for $1 {{nowExchange.code!='USD'?'('+nowExchange.symbol+opctions.phoneHirePrice+')':''}}</checkbox>
+					<checkbox v-model="opctions.pandaPhoneCheck">Add Panda Phone to this trip for $1</checkbox>
 					<a @click="showPPDialog = true">What's this</a>
 				</div>
 

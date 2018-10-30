@@ -79,7 +79,8 @@
 							You can get a 100% refund up to {{opctions.refundTimeLimit}} hours before your trip.
 						</p>-->
 						<span class="iconfont" v-if="opctions.fullRefund&&timeout||!logIn">&#xe617;</span>
-						<p class="refundPolicy" style="font-size: 14px;" v-if="opctions.fullRefund&&timeout">You can reschedule or cancel your trip at zero cost before {{formatDate(delmulDay(opctions.startDate,opctions.refundTimeLimit))}}.</p>
+						<!-- <p class="refundPolicy" style="font-size: 14px;" v-if="opctions.fullRefund&&timeout">You can reschedule or cancel your trip at zero cost before {{formatDate(delmulDay(opctions.startDate,opctions.refundTimeLimit))}}.</p> -->
+						<p class="refundPolicy" style="font-size: 14px;" v-if="opctions.picInfo.fullRefund && opctions.picInfo.refundTimeLimit">Free cancellation  up to {{(opctions.picInfo.refundTimeLimit>2?opctions.picInfo.refundTimeLimit+' days':24*opctions.picInfo.refundTimeLimit+' hours')}} before your trip</p>
 						<h5 v-if="!logIn">As a guest user, you can access your order details through your name and email</h5>
 						
 						<!--<p class="text" style="font-size: 14px;margin-top: 20px;" v-if="logIn!=1">You ordered as a guest. To view your order details, you can click "My Bookings" on the top bar then type in the reservee's email address and name you entered before to access that information.</p>-->
@@ -111,7 +112,7 @@
 							<div class="adultPic">{{nowExchange.symbol}}{{returnFloat(opctions.adultsPic)}}</div>
 						</div>
 						<div class="child" v-if="opctions.pandaPhoneCheck">
-							<b><span>+</span>{{nowExchange.symbol}}{{opctions.phoneHirePrice}}</b> (Panda Phone)
+							<b><span>+</span>{{nowExchange.symbol}}{{returnFloat(opctions.phoneHirePrice)}}</b> Panda Phone
 						</div>
 						<div class="child" v-if="opctions.childrenNum>0&&opctions.childDiscount">
 							<b><span>-</span>{{nowExchange.symbol}}{{returnFloat(opctions.childrenNum * opctions.childDiscount)}}</b> for {{opctions.childrenNum}} {{opctions.childrenNum>1?'Children':'Child'}}
@@ -119,7 +120,7 @@
 						
 						<div class="child" v-if="couponType">
 							<div>
-								<b>- {{nowExchange.symbol}}{{opctions.couponDiscount}}</b>(Coupon discount)
+								<b><span>-</span>{{nowExchange.symbol}}{{opctions.couponDiscount}}</b>(Coupon discount)
 							</div>
 						</div>
 					</div>

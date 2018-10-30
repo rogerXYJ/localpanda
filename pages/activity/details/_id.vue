@@ -76,7 +76,7 @@
 								<dl class="book_price_info">
 									<dt>
 										<span>{{nowExchange.symbol}}{{returnFloat(perPersonPrice)}}×{{bookPeople}} {{bookPeople>1?'Travelers':'Traveler'}}</span>
-										<span v-if="pandaPhoneCheck">{{nowExchange.symbol}}{{picInfo.phoneHirePrice}} Panda Phone</span>
+										<span v-if="pandaPhoneCheck">{{nowExchange.symbol}}{{returnFloat(picInfo.phoneHirePrice)}} Panda Phone</span>
 										<span v-if="picInfo.childDiscount && bookChildren">-{{nowExchange.symbol}}{{returnFloat(picInfo.childDiscount*bookChildren)}} for {{bookChildren}} {{bookChildren>1?'Children':'Child'}}</span>
 										
 									</dt>

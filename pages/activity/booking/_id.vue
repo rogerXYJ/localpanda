@@ -61,10 +61,17 @@
 					<div class="couponInput" v-if="checkedAll">
 						<input placeholder="Enter a gift card or promotional code" @input="couponCodeChange" id="coupon" @keyup.enter="validateCode" v-model="couponCode" />
 						<button @click="validateCode">Enter</button>
-						<p v-if="hasCode==0"><i class="iconfont">&#xe654;</i>- {{couponType=="RATE"?"":nowExchange.symbol}}{{couponType=="RATE"?couponRate*100:opctions.couponDiscount}}{{couponType=="RATE"?"%":""}} {{couponType=="RATE"?"off":""}} (Coupon discount)</p>
-						<p v-if="hasCode==1" style="color: red;">The Coupon code you entered is invalid. Please try again.</p>
+						<p v-if="hasCode===1"><i class="iconfont">&#xe654;</i>- {{couponType=="RATE"?"":nowExchange.symbol}}{{couponType=="RATE"?couponRate*100:opctions.couponDiscount}}{{couponType=="RATE"?"%":""}} {{couponType=="RATE"?"off":""}} (Coupon discount)</p>
+						<p v-if="hasCode===0" style="color: red;">The Coupon code you entered is invalid. Please try again.</p>
 					</div>
 				</div>
+
+				<!-- 手机业务 -->
+				<div class="panda_phone">
+					<checkbox v-model="opctions.pandaPhoneCheck">Add Panda Phone to this trip for $1 </checkbox>
+					<a @click="showPPDialog = true">What's this</a>
+				</div>
+
 				<div class="Comments">
 					<div class="information">
 						<!--<p class="refundPolicy" style="font-size: 14px;">
@@ -100,12 +107,16 @@
 					<div class="pic">
 						<div class="adult clearfix">
 							<!-- <div class="formula" v-if="opctions.childrenNum==0 && opctions.adultNum==1">{{nowExchange.symbol}}{{opctions.adultsPic}} x 1 Travelers</div> -->
-							<div class="formula">{{nowExchange.symbol}} {{returnFloat(opctions.averagePrice)}} x {{opctions.adultNum*1+opctions.childrenNum*1}} {{(opctions.adultNum*1+opctions.childrenNum*1)>1?'Travelers':'Traveler'}}</div>
-							<div class="adultPic">{{nowExchange.symbol}} {{returnFloat(opctions.adultsPic)}}</div>
+							<div class="formula">{{nowExchange.symbol}}{{returnFloat(opctions.averagePrice)}} x {{opctions.adultNum*1+opctions.childrenNum*1}} {{(opctions.adultNum*1+opctions.childrenNum*1)>1?'Travelers':'Traveler'}}</div>
+							<div class="adultPic">{{nowExchange.symbol}}{{returnFloat(opctions.adultsPic)}}</div>
+						</div>
+						<div class="child" v-if="opctions.pandaPhoneCheck">
+							<b>+ {{nowExchange.symbol}}{{opctions.phoneHirePrice}}</b> (Panda Phone)
 						</div>
 						<div class="child" v-if="opctions.childrenNum>0&&opctions.childDiscount">
 							<b>- {{nowExchange.symbol}}{{returnFloat(opctions.childrenNum * opctions.childDiscount)}}</b> for {{opctions.childrenNum}} {{opctions.childrenNum>1?'Children':'Child'}}
 						</div>
+						
 						<div class="child" v-if="couponType">
 							<div>
 								<b>- {{nowExchange.symbol}}{{opctions.couponDiscount}}</b>(Coupon discount)
@@ -147,7 +158,6 @@
 					</li>
 					<li>
 						<p class="appraise">I have to say a huge thank you to Local Panda for putting together this memorable trip we will Cheris forever. Thetours have been par excellence.</p>
-</p>
 						<div class="travellers clearfix">
 							<div class="travellersPhoto">
 								<img v-lazy="'https://cloud.localpanda.com/static/content/reviews/SamMorgan.jpg'">
@@ -186,6 +196,42 @@
 			</div>
 
 		</div>
+
+
+
+		<!-- panda phone弹窗 -->
+		<div class="pp_dialog_bg" v-show="showPPDialog" @click="showPPDialog=false"></div>
+		<div class="pp_dialog" v-show="showPPDialog">
+			
+			<div class="pp_congtent">
+				<div class="pp_box">
+					<h3>Did You Know that in China…</h3>
+					<ul class="detail_txt_list">
+						<li><i class="dian"></i>Uber and other popular ride-sharing apps aren’t present</li>
+						<li><i class="dian"></i>Most major websites including google and all its services are blocked</li>
+						<li><i class="dian"></i>Debit and credit cards are NOT widely accepted</li>
+						<li><i class="dian"></i>In Shanghai alone there are 5 different streets named Zhongxing Road</li>
+						<li><i class="dian"></i>Most shops & cafes require a China phone number to connect to wifi</li>
+					</ul>
+					<p>China can be very challenging to navigate without a little help. That’s why we’ve created the ultimate device to make your life easy so youcan enjoy your vacation. Introducing…</p>
+				</div>
+				<div class="pp_box mt20">
+					<h3>The Panda Phone - All-in-one Mobile Travel Assistant</h3>
+					<img class="mt5" src="https://cloud.localpanda.com/static/icon/pandaphone.jpg" alt="">
+				</div>
+				<div class="pp_box mt10">
+					<h3>The Panda Phone - All-in-one Mobile Travel Assistant</h3>
+					<p class="mt10">For more information or requests before booking, email us at service@localpanda.com Pick-up and drop-off are only available at city center hotels and airports in Shanghai & Beijing.</p>
+					<p class="c_999 mt15">*In order to take advantage of our special offer price you must book at least 1 tour or activity with Local Panda. Please contact us for updated pricing if you are interested in the Pocket Panda a la carte.</p>
+				</div>
+			</div>
+			
+			<checkbox class="pp_checkbox green mt20" v-model="opctions.pandaPhoneCheck">Add Panda Phone to My Trip</checkbox>
+			
+			<div class="pp_close iconfont" @click="showPPDialog=false">&#xe606;</div>
+		</div>
+
+
 	</div>
 </template>
 
@@ -223,10 +269,10 @@
 					amount: 0,
 					childDiscountP: 0,
 					childDiscountPP: 0, //默认儿童优惠价
-					couponDiscount: 0,
 					currency: '',
 					symbol: '',
-					couponDiscount: 0 //优惠价格
+					couponDiscount: 0, //优惠价格
+					pandaPhoneCheck:false
 
 				},
 				test:{
@@ -288,12 +334,14 @@
 				couponRate: '', //优惠率
 				orderHasCouponRate: false, //下单 判断是否含有优惠券
 				couponType: '', //优惠券类型
+				discount:0,//优惠券金额或折扣比例
 				standard: 0, //切换优惠价格的基准价格
 				total:0,
 				timeout:false,
 				clickCountryCode:false,
 				country:'',
-				currency:{code: "USD", symbol: "$"}
+				currency:{code: "USD", symbol: "$"},
+				showPPDialog:false
 			};
 
 			var userCookie = {};
@@ -336,6 +384,7 @@
 			Promise.all([Promise1,Promise2]).then(results=>{
 				
 				data.opctions.picInfo=results[0].data;
+				data.opctions.phoneHirePrice = results[0].data.phoneHirePrice;
 				
 				data.opctions.picInfo.detail=results[1].data
 				callback(null,data);
@@ -386,12 +435,12 @@
 				let self = this
 				if(!e.target.checked) {
 					self.hasCode = 100;
-					console.log(this.opctions.adultsPic);
-console.log(this.opctions.childDiscount);
-					self.opctions.amount = this.returnFloat(this.opctions.adultsPic - this.opctions.childDiscount*this.opctions.childrenNum)
+					//self.opctions.amount = this.returnFloat(this.opctions.adultsPic*1 + (this.opctions.pandaPhoneCheck?this.opctions.phoneHirePrice:0)*1 - this.opctions.childDiscount*this.opctions.childrenNum)
 					self.couponRate = ''
 					self.couponCode = '';
-					self.couponType = ""
+					self.couponType = "";
+					//计算价格
+					this.setPrice();
 				}
 			},
 			//验证couponCode
@@ -400,39 +449,30 @@ console.log(this.opctions.childDiscount);
 				var opctions = self.opctions,
 					details = opctions.details;
 				var people = opctions.adultNum + opctions.childrenNum;
-				var price = details[people - 1].price;
+				// var price = details[people - 1].price;
 				if(self.couponCode){
 					self.axios.get("https://api.localpanda.com/api/order/coupon/" + self.couponCode).then(res => {
 						if(res.status == 200 && res.data) {
-							self.hasCode = 0
-							if(res.data.type) {
-								self.couponType = res.data.type
-								if(res.data.type == "RATE") {
-									self.couponRate = res.data.discount
-									self.opctions.couponDiscount =
-										self.returnFloat(self.returnFloat(self.opctions.adultsPic - self.opctions.childDiscount) * self.couponRate)
-									// console.log(self.opctions.adultsPic)
-									// console.log(self.opctions.childDiscount)
-								} else if(res.data.type == "FIXED") {
-									self.standard = res.data.discount
-									self.opctions.couponDiscount = self.standard
-								}
-								
-								// for(var i=0;i<self.exchange.length;i++){
-								// 	if(self.opctions.currency==self.exchange[i].code){
-								// 		self.opctions.couponDiscount=self.returnFloat(self.opctions.couponDiscount*self.exchange[i].exchangeRate)
-								// 		console.log(self.exchange[i].exchangeRate)
-								// 		console.log(self.exchange[i].code)
-								// 		console.log(self.opctions.currency)
-								// 		break
-								// 	}
-								// }
-								self.opctions.amount=self.returnFloat(self.opctions.adultsPic - self.opctions.childDiscount -self.opctions.couponDiscount)
-								
-							}
+							self.hasCode = 1;
+							self.couponType = res.data.type;
+							self.discount = res.data.discount;
+							self.couponRate = res.data.discount;
+							//折扣优惠券
+							// if(self.couponType == "RATE") {
+							// 	self.couponRate = res.data.discount;
+							// 	self.opctions.discount = res.data.discount
+							// 	//self.opctions.couponDiscount = self.returnFloat(self.returnFloat(self.opctions.adultsPic - self.opctions.childDiscount) * self.couponRate)
+							// } else if(self.couponType == "FIXED") {
+							// 	//固定价格的优惠券
+							// 	self.opctions.couponDiscount = res.data.discount
+							// }
+							
+							//计算价格
+							self.setPrice();
+							//self.opctions.amount=self.returnFloat(self.opctions.adultsPic + (this.opctions.pandaPhoneCheck?this.opctions.phoneHirePrice:0)*1 - self.opctions.childDiscount -self.opctions.couponDiscount)
 							
 						} else {
-							self.hasCode = 1
+							self.hasCode = 0;
 
 						}
 					}, res => {})
@@ -454,6 +494,7 @@ console.log(this.opctions.childDiscount);
 						
 					}
 				}
+				
 				const p1 = new Promise(function (resolve, reject) {
 						self.axios.get("https://api.localpanda.com/api/product/activity/"+options.activityId+"/price?currency="+value).then(function(res) {
 							resolve(res)
@@ -482,10 +523,11 @@ console.log(this.opctions.childDiscount);
 						for(var i=0;i<detailData.length;i++){
 							if(options.adultNum+options.childrenNum==detailData[i].capacity){
 								options.adultsPic=self.returnFloat(detailData[i].price)
-								options.averagePrice=self.returnFloat(detailData[i].perPersonPrice)
-								options.amount=options.childrenNum > 0 && options.childDiscount ?
-								self.returnFloat(self.returnFloat(detailData[i].price) - self.returnFloat(options.childrenNum * results[0].data.childDiscount)- (options.couponDiscount?options.couponDiscount:0)):
-								this.returnFloat(detailData[i].price)
+								options.averagePrice=self.returnFloat(detailData[i].perPersonPrice);
+								options.phoneHirePrice=results[0].data.phoneHirePrice;
+								//计算价格
+								this.setPrice();
+								//options.amount=options.childrenNum > 0 && options.childDiscount ? self.returnFloat(detailData[i].price*1 + (this.opctions.pandaPhoneCheck?this.opctions.phoneHirePrice:0)*1 - options.childrenNum * results[0].data.childDiscount*1- (options.couponDiscount?options.couponDiscount:0)): this.returnFloat(detailData[i].price + (this.opctions.pandaPhoneCheck?this.opctions.phoneHirePrice:0)*1 - (options.couponDiscount?options.couponDiscount:0))
 							
 							}
 
@@ -768,8 +810,22 @@ console.log(this.opctions.childDiscount);
 			couponCodeChange(){
 				
 				this.hasCode = 100
-				this.opctions.amount=this.returnFloat(this.opctions.adultsPic - this.opctions.childDiscount)
-				this.couponType = ""
+				this.couponType = "";
+				
+			},
+			setPrice(){
+				//减去儿童差价和加上pandaphone的总价
+				var allPrice = this.returnFloat(this.opctions.adultsPic*1 + (this.opctions.pandaPhoneCheck?this.opctions.phoneHirePrice:0)*1 - this.opctions.childDiscount*this.opctions.childrenNum);
+
+				//优惠券
+				if(this.couponType == 'RATE'){
+					this.opctions.couponDiscount = this.returnFloat(allPrice*this.discount);
+				}else if(this.couponType == 'FIXED'){
+					this.opctions.couponDiscount = this.returnFloat(this.discount);
+				}
+
+				//优惠后的金额
+				this.opctions.amount = this.returnFloat(allPrice - (this.checkedAll?this.opctions.couponDiscount:0));
 			},
 			errorFn(dom){
 				let errDom=document.getElementById(dom)
@@ -812,7 +868,9 @@ console.log(this.opctions.childDiscount);
 					"utcOffset": new Date().getTimezoneOffset() / 60 * -1,
 					"deviceType": "PC",
 					//"fullRefund":that.opctions.fullRefund,
-					"finalRefundPeriod":that.opctions.finalRefundPeriod
+					"finalRefundPeriod":that.opctions.finalRefundPeriod,
+					"phoneHirePrice":that.opctions.phoneHirePrice,
+					"phoneHire":that.opctions.pandaPhoneCheck
 				}
 				console.log(obj)
 				if(that.addOder == false) {
@@ -860,9 +918,9 @@ console.log(this.opctions.childDiscount);
 				if(this.opctions.adultNum+this.opctions.childrenNum==details[i].capacity){
 					this.opctions.adultsPic=details[i].price
 					this.opctions.averagePrice=details[i].perPersonPrice;
-					this.opctions.amount= this.opctions.childrenNum > 0 && opctions.childDiscount ?
-							self.returnFloat(self.returnFloat(details[i].price) - self.returnFloat(this.opctions.childrenNum * opctions.childDiscount)- (this.opctions.couponDiscount?this.opctions.couponDiscount:0)):
-							self.returnFloat(details[i].price)
+					//计算价格
+					this.setPrice();
+					//this.opctions.amount= this.opctions.childrenNum > 0 && opctions.childDiscount ? self.returnFloat(self.returnFloat(details[i].price) + (this.opctions.pandaPhoneCheck?this.opctions.phoneHirePrice:0)*1 - self.returnFloat(this.opctions.childrenNum * opctions.childDiscount)- (this.opctions.couponDiscount?this.opctions.couponDiscount:0)):	self.returnFloat(details[i].price)
 				}
 			}
 			
@@ -1015,80 +1073,20 @@ console.log(this.opctions.childDiscount);
 			},
 			thisEx:function(){
 
+			},
+			'opctions.pandaPhoneCheck':function(val){
+				//计算价格
+				this.setPrice();
+				if(val){
+					this.showPPDialog=false;
+				}
+				//this.opctions.amount=this.returnFloat(this.opctions.adultsPic + (this.opctions.pandaPhoneCheck?this.opctions.phoneHirePrice:0)*1 - this.opctions.childDiscount*this.opctions.childrenNum - (this.opctions.couponDiscount?this.opctions.couponDiscount:0));
 			}
 
 		}
 	}
 </script>
-<style lang="scss">
-	//@import '~/assets/scss/_main.scss';
-	//@import '~/assets/font/iconfont.css';
-	.fillYourInfo{
-		background:#fff;
-		#header{
-			box-shadow: 0px 2px 6px 0px rgba(53, 58, 63, 0.1);
-		}
-		input::-webkit-input-placeholder,textarea::-webkit-input-placeholder { /* WebKit, Blink, Edge */
-	    	color:   #878e95;
-	    	font-size:14px ;
-		}
-		input:-moz-placeholder,textarea:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
-		   color:    #878e95;
-		   font-size:14px ;
-		}
-		input::-moz-placeholder,textarea::-moz-placeholder { /* Mozilla Firefox 19+ */
-		   color:    #878e95;
-		   font-size:14px ;
-		}
-		input:-ms-input-placeholder,textarea:-ms-input-placeholder { /* Internet Explorer 10-11 */
-		   color:   #878e95;
-		   font-size:14px ;
-		}
-		body {
-			min-width: 1200px;
-		}
-		
-		.checkbox_label .checkbox_content {
-			white-space: normal!important;
-		}	
 
-		// #header .heder-cont{
-		// 	.init,.headleft .search{ display: none;}
-		// }
-		#header {
-			.init{
-				li{
-					&:nth-child(0){
-						display: none;
-					}
-					&:nth-child(1){
-						display: none;
-					}
-					&:nth-child(3){
-						display: none;
-					}
-					
-				}
-			}
-			.login{
-				.selectCurrency{
-					display: none;
-				}
-			}
-			
-			.search{ 
-				display: none!important;
-			}
-			
-		}
-		.footerInfo{
-			li:nth-child(5){
-				display: none!important;
-			}
-		}
-	}
-
-</style>
 <style lang="scss" scoped>
 	//@import '~/assets/scss/base/_setting.scss';
 	.visitors{
@@ -1686,6 +1684,24 @@ console.log(this.opctions.childDiscount);
 						}
 					}
 				}
+				.panda_phone{
+					background: #faf9f8;
+					margin-top: 15px;
+					font-size: 14px;
+					box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.1);
+					padding: 10px;
+					width:704px;
+					a{
+						color: #1bbc9d;
+						cursor: pointer;
+						vertical-align: top;
+						line-height: 22px;
+						margin-left: 30px;
+						&:hover{
+							text-decoration: underline;
+						}
+					}
+				}
 			}
 		}
 		.empty {
@@ -1698,9 +1714,182 @@ console.log(this.opctions.childDiscount);
 			color: red!important;
 		}
 
+		.pp_dialog_bg{
+			width: 100%;
+			height: 100%;
+			position: fixed;
+			left: 0;
+			top: 0;
+			z-index: 99;
+			background-color: rgba(0, 0, 0, 0.6);
+		}
+		.pp_dialog{
+			position: fixed;
+			left: 50%;
+			top: 50%;
+			margin-left: -370px;
+			// margin-top: 19px;
+			width: 740px;
+			padding: 45px 10px 40px 40px;
+			background-color: #fff;
+			box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+			transform: translateY(-50%);
+			border-radius: 5px;
+			z-index: 99;
+			h3{
+				font-size: 24px;
+				font-weight: bold;
+			}
+			.pp_congtent{
+				padding-right: 30px;
+				max-height: calc(100vh - 210px);
+				overflow-y: auto;
+				&::-webkit-scrollbar { width: 8px;  }
+				&::-webkit-scrollbar-track { background-color: #eeeeee;  border-radius: 4px; }
+				&::-webkit-scrollbar-thumb { border-radius: 4px;  background-color: #d3d3d3; }
+			}
+			.detail_txt_list{
+				margin-top: 10px;
+				.dian{
+					background-image: -webkit-gradient(linear, right top, left top, from(#009efd), to(#1bbc9d));
+					background-image: linear-gradient(270deg, #009efd 0%, #1bbc9d 100%);
+				}
+			}
+			p{
+				margin-top: 6px;
+				line-height: 24px;
+				font-size: 16px;
+			}
+			.pp_close{
+				position: absolute;
+				top: 10px;
+				right: 10px;
+				font-size: 20px;
+				padding: 10px;
+				cursor: pointer;
+				&:hover{
+					color: #000;
+				}
+			}
+			.pp_checkbox{
+				font-size:16px;
+				line-height: 16px;
+				.checkbox_box{
+					width: 16px;
+					height: 16px;
+					.iconfont{
+						font-size:15px;
+					}
+					
+				}
+				.checkbox_content{
+					padding: 0 0 0 6px;
+				}
+				dfn{
+					color: #fe483e;
+					font-style: normal;
+				}
+			}
+		}
 
-		
+		.detail_txt_list{
+			li{
+				padding:2px 0 2px 20px;
+				font-size: 16px;
+				line-height: 24px;
+				i{
+					float: left;
+					margin-left: -20px;
+					margin-top: 5px;
+				}
+				.dian{
+					margin-left: -15px;
+					width: 5px;
+					height: 5px;
+					margin-top: 10px;
+					border-radius: 50%;
+					background-color: #353a3f;
+				}
+				.iconfont{
+					font-size: 12px;
+					margin-top: 1px;
+				}
+				p{
+					color: #878e95;
+				}
+			}
+		}
 		
 		
 	}
+</style>
+
+<style lang="scss">
+	//@import '~/assets/scss/_main.scss';
+	//@import '~/assets/font/iconfont.css';
+	.fillYourInfo{
+		background:#fff;
+		#header{
+			box-shadow: 0px 2px 6px 0px rgba(53, 58, 63, 0.1);
+		}
+		input::-webkit-input-placeholder,textarea::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+	    	color:   #878e95;
+	    	font-size:14px ;
+		}
+		input:-moz-placeholder,textarea:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+		   color:    #878e95;
+		   font-size:14px ;
+		}
+		input::-moz-placeholder,textarea::-moz-placeholder { /* Mozilla Firefox 19+ */
+		   color:    #878e95;
+		   font-size:14px ;
+		}
+		input:-ms-input-placeholder,textarea:-ms-input-placeholder { /* Internet Explorer 10-11 */
+		   color:   #878e95;
+		   font-size:14px ;
+		}
+		body {
+			min-width: 1200px;
+		}
+		
+		.checkbox_label .checkbox_content {
+			white-space: normal!important;
+		}	
+
+		// #header .heder-cont{
+		// 	.init,.headleft .search{ display: none;}
+		// }
+		#header {
+			.init{
+				li{
+					&:nth-child(0){
+						display: none;
+					}
+					&:nth-child(1){
+						display: none;
+					}
+					&:nth-child(3){
+						display: none;
+					}
+					
+				}
+			}
+			.login{
+				.selectCurrency{
+					display: none;
+				}
+			}
+			
+			.search{ 
+				display: none!important;
+			}
+			
+		}
+		.footerInfo{
+			li:nth-child(5){
+				display: none!important;
+			}
+		}
+	}
+
 </style>

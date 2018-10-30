@@ -76,7 +76,9 @@
 								<dl class="book_price_info">
 									<dt>
 										<span>{{nowExchange.symbol}}{{returnFloat(perPersonPrice)}}×{{bookPeople}} {{bookPeople>1?'Travelers':'Traveler'}}</span>
+										<span v-if="pandaPhoneCheck">{{nowExchange.symbol}}{{picInfo.phoneHirePrice}} (Panda Phone)</span>
 										<span v-if="picInfo.childDiscount && bookChildren">-{{nowExchange.symbol}}{{returnFloat(picInfo.childDiscount*bookChildren)}} for {{bookChildren}} {{bookChildren>1?'Children':'Child'}}</span>
+										
 									</dt>
 									<dd>{{nowExchange.symbol}}{{returnFloat(price)}}</dd>
 								</dl>
@@ -87,11 +89,14 @@
 								
 							</li>
 							<li>
-								<span class="btn" @click="bookNow">Book Now</span>
+								<checkbox class="pp_checkbox" v-model="pandaPhoneCheck">Add Panda Phone to my trip for only <dfn>$1.00</dfn></checkbox>
+								<p class="pp_tip">All-in-one Mobile Travel Assistant <span @click="showPPDialog=true">Show details</span></p>
 							</li>
-							<li>
-								<span class="btn_inquire" @click="ContactStatus=true">Inquire</span>
+							<li class="clearfix">
+								<span class="btn fl" @click="bookNow">Book Now</span>
+								<span class="btn_inquire fl" @click="ContactStatus=true">Inquire</span>
 							</li>
+							
 							<li>
 								<p class="book_tip" v-if="picInfo.refundTimeLimit && picInfo.fullRefund===1">Free cancellation  up to {{(picInfo.refundTimeLimit>2?picInfo.refundTimeLimit+' days':24*picInfo.refundTimeLimit+' hours')}} before your trip</p>
 							</li>
@@ -411,6 +416,37 @@ Price may vary depending on the language. If you need guides in other languages,
 			</div>
 		</div>
 
+		<!-- panda phone弹窗 -->
+		<div class="pp_dialog" v-show="showPPDialog">
+			
+			<div class="pp_congtent">
+				<div class="pp_box">
+					<h3>Did You Know that in China…</h3>
+					<ul class="detail_txt_list">
+						<li><i class="dian"></i>Uber and other popular ride-sharing apps aren’t present</li>
+						<li><i class="dian"></i>Most major websites including google and all its services are blocked</li>
+						<li><i class="dian"></i>Debit and credit cards are NOT widely accepted</li>
+						<li><i class="dian"></i>In Shanghai alone there are 5 different streets named Zhongxing Road</li>
+						<li><i class="dian"></i>Most shops & cafes require a China phone number to connect to wifi</li>
+					</ul>
+					<p>China can be very challenging to navigate without a little help. That’s why we’ve created the ultimate device to make your life easy so youcan enjoy your vacation. Introducing…</p>
+				</div>
+				<div class="pp_box mt20">
+					<h3>The Panda Phone - All-in-one Mobile Travel Assistant</h3>
+					<img class="mt5" src="https://cloud.localpanda.com/static/icon/pandaphone.jpg" alt="">
+				</div>
+				<div class="pp_box mt10">
+					<h3>The Panda Phone - All-in-one Mobile Travel Assistant</h3>
+					<p class="mt10">For more information or requests before booking, email us at service@localpanda.com Pick-up and drop-off are only available at city center hotels and airports in Shanghai & Beijing.</p>
+					<p class="c_999 mt15">*In order to take advantage of our special offer price you must book at least 1 tour or activity with Local Panda. Please contact us for updated pricing if you are interested in the Pocket Panda a la carte.</p>
+				</div>
+			</div>
+			
+			<checkbox class="pp_checkbox green mt20" v-model="pandaPhoneCheck">Add Panda Phone to My Trip</checkbox>
+			
+			<div class="pp_close iconfont" @click="showPPDialog=false">&#xe606;</div>
+		</div>
+
 	</div>
 </template>
 
@@ -421,10 +457,12 @@ Price may vary depending on the language. If you need guides in other languages,
 	import Contact from '~/components/Contact/Contact';
 	import service from '~/components/pageComponents/inquiry/service';
 	import dialogBox from '~/plugins/panda/dialogBox';
+	import { checkbox } from "~/plugins/panda/checkbox/";
 	import Flatpickr from 'flatpickr';
 	require('~/assets/scss/G-ui/flatpickr.min.css')
 	import { addmulMonth,delNullArr,getUrlParams,getParents,formatDate } from "~/assets/js/plugin/utils";
 	import Vue from 'vue';
+import { sep } from 'path';
 
 	export default {
 		name: "activitiesDetail",
@@ -491,6 +529,8 @@ Price may vary depending on the language. If you need guides in other languages,
 				price:0,
 				perPersonPrice:0,
 				amount:0,
+				pandaPhoneCheck:false,
+				showPPDialog:false,
 
 				// 币种
 				nowExchange:{code: "USD", symbol: "$"},
@@ -753,7 +793,8 @@ Price may vary depending on the language. If you need guides in other languages,
 			FooterCommon,
 			Contact,
 			service,
-			dialogBox
+			dialogBox,
+			checkbox
 		},
 		data(options){
 			var self = this;
@@ -1071,7 +1112,7 @@ Price may vary depending on the language. If you need guides in other languages,
 					if(thisData.capacity==bookPeople){
 						this.price = thisData.price;
 						this.perPersonPrice = thisData.perPersonPrice;
-						this.amount = this.returnFloat(this.price - (this.picInfo.childDiscount?this.returnFloat(this.picInfo.childDiscount*this.bookChildren):0));
+						this.amount = this.returnFloat(this.price + (this.pandaPhoneCheck?this.picInfo.phoneHirePrice:0) - (this.picInfo.childDiscount?this.returnFloat(this.picInfo.childDiscount*this.bookChildren):0));
 						break;
 					}
 				}
@@ -1220,7 +1261,9 @@ Price may vary depending on the language. If you need guides in other languages,
 				  pickup: this.detail.pickup,
 				  owner:this.detail.owner,
 		      averagePrice: this.perPersonPrice, //人均价 
-		      guideId: this.checkGuideIndex!=='' ? this.detail.guide[this.checkGuideIndex].guideId : null
+					guideId: this.checkGuideIndex!=='' ? this.detail.guide[this.checkGuideIndex].guideId : null,
+					// phoneHirePrice: this.picInfo.phoneHirePrice,
+					pandaPhoneCheck:this.pandaPhoneCheck
 				};
 				
 				
@@ -1376,7 +1419,12 @@ Price may vary depending on the language. If you need guides in other languages,
 				var target = e.target;
 				if(!getParents(target,'change_travelers') && self.showChangePeople && self.changeAdults){
 					self.setPeople();
+				};
+
+				if(self.showPPDialog && !getParents(target,'pp_tip')){
+					self.showPPDialog = false;
 				}
+				
 			},false);
 
 			//导航,预定悬浮
@@ -1446,6 +1494,12 @@ Price may vary depending on the language. If you need guides in other languages,
 					eventAction: "select",
 					eventLabel:"detail_select"
 				});
+			},
+			pandaPhoneCheck:function(val){
+				this.setPeoplePrice();
+				if(val){
+					this.showPPDialog=false;
+				}
 			}
 		}
 	};
@@ -1464,6 +1518,33 @@ Price may vary depending on the language. If you need guides in other languages,
 				max-height: 100%;
 				img[lazy="loading"]{
 					max-height: 200px;
+				}
+			}
+		}
+		.detail_txt_list{
+			li{
+				padding:2px 0 2px 20px;
+				font-size: 16px;
+				line-height: 24px;
+				i{
+					float: left;
+					margin-left: -20px;
+					margin-top: 5px;
+				}
+				.dian{
+					margin-left: -15px;
+					width: 5px;
+					height: 5px;
+					margin-top: 10px;
+					border-radius: 50%;
+					background-color: #353a3f;
+				}
+				.iconfont{
+					font-size: 12px;
+					margin-top: 1px;
+				}
+				p{
+					color: #878e95;
 				}
 			}
 		}
@@ -1581,7 +1662,7 @@ Price may vary depending on the language. If you need guides in other languages,
 										opacity: 0;
 										color: #353a3f;
 										&::-webkit-input-placeholder{ color: #878e95;}
-										&::-moz-placeholder { color: #878e95; }
+										&::-moz-placeholder { color: #878e95; opacity: 1; }
 										&::-ms-input-placeholder { color: #878e95; }
 									}
 									.opacity1{
@@ -1652,6 +1733,17 @@ Price may vary depending on the language. If you need guides in other languages,
 											font-size: 13px;
 											color: #878e95;
 										}
+									}
+								}
+								.pp_tip{
+									color: #878e95;
+									font-size: 14px;
+									margin-top: 5px;
+									span{
+										color: #1bbc9d;
+										text-decoration: underline;
+										margin-left: 4px;
+										cursor: pointer;
 									}
 								}
 							}
@@ -1791,33 +1883,7 @@ Price may vary depending on the language. If you need guides in other languages,
 				}
 			}
 
-			.detail_txt_list{
-				li{
-					padding:2px 0 2px 20px;
-					font-size: 16px;
-					line-height: 24px;
-					i{
-						float: left;
-						margin-left: -20px;
-						margin-top: 5px;
-					}
-					.dian{
-						margin-left: -15px;
-						width: 5px;
-						height: 5px;
-						margin-top: 10px;
-						border-radius: 50%;
-						background-color: #353a3f;
-					}
-					.iconfont{
-						font-size: 12px;
-						margin-top: 1px;
-					}
-					p{
-						color: #878e95;
-					}
-				}
-			}
+			
 
 			/*亮点*/
 			.why{
@@ -2206,7 +2272,7 @@ Price may vary depending on the language. If you need guides in other languages,
 				height: 42px;
 				line-height: 42px;
 				text-align: center;
-				width: 100%;
+				width: 48%;
 				background-image: -webkit-gradient(linear, right top, left top, from(#009efd), to(#1bbc9d));
 				background-image: linear-gradient(270deg, #009efd 0%, #1bbc9d 100%);
 				border-radius: 21px;
@@ -2218,6 +2284,8 @@ Price may vary depending on the language. If you need guides in other languages,
 			}
 			.btn_inquire{
 				display: block;
+				width: 48%;
+				margin-left: 4%;
 				height: 42px;
 				line-height: 42px;
 				box-sizing: border-box;
@@ -2309,6 +2377,56 @@ Price may vary depending on the language. If you need guides in other languages,
 					&:hover{
 						color: #1bbc9d;
 					}
+				}
+			}
+		}
+
+		.pp_dialog{
+			position: fixed;
+			left: 50%;
+			top: 60px;
+			margin-left: -540px;
+			// margin-top: 19px;
+			width: 740px;
+			padding: 45px 10px 40px 40px;
+			background-color: #fff;
+			box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+			// transform: translateY(-50%);
+			border-radius: 5px;
+			z-index: 99;
+			h3{
+				font-size: 24px;
+				font-weight: bold;
+			}
+			.pp_congtent{
+				padding-right: 30px;
+				max-height: calc(100vh - 210px);
+				overflow-y: auto;
+				&::-webkit-scrollbar { width: 8px;  }
+				&::-webkit-scrollbar-track { background-color: #eeeeee;  border-radius: 4px; }
+				&::-webkit-scrollbar-thumb { border-radius: 4px;  background-color: #d3d3d3; }
+			}
+			.detail_txt_list{
+				margin-top: 10px;
+				.dian{
+					background-image: -webkit-gradient(linear, right top, left top, from(#009efd), to(#1bbc9d));
+					background-image: linear-gradient(270deg, #009efd 0%, #1bbc9d 100%);
+				}
+			}
+			p{
+				margin-top: 6px;
+				line-height: 24px;
+				font-size: 16px;
+			}
+			.pp_close{
+				position: absolute;
+				top: 10px;
+				right: 10px;
+				font-size: 20px;
+				padding: 10px;
+				cursor: pointer;
+				&:hover{
+					color: #000;
 				}
 			}
 		}
@@ -2494,6 +2612,26 @@ Price may vary depending on the language. If you need guides in other languages,
 						height: 18px;
 					}
 				}
+			}
+		}
+
+		.pp_checkbox{
+			font-size:16px;
+			line-height: 16px;
+			.checkbox_box{
+				width: 16px;
+				height: 16px;
+				.iconfont{
+					font-size:15px;
+				}
+				
+			}
+			.checkbox_content{
+				padding: 0 0 0 6px;
+			}
+			dfn{
+				color: #fe483e;
+				font-style: normal;
 			}
 		}
 		

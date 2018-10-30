@@ -76,7 +76,7 @@
 								<dl class="book_price_info">
 									<dt>
 										<span>{{nowExchange.symbol}}{{returnFloat(perPersonPrice)}}×{{bookPeople}} {{bookPeople>1?'Travelers':'Traveler'}}</span>
-										<span v-if="pandaPhoneCheck">{{nowExchange.symbol}}{{picInfo.phoneHirePrice}} (Panda Phone)</span>
+										<span v-if="pandaPhoneCheck">{{nowExchange.symbol}}{{picInfo.phoneHirePrice}} Panda Phone</span>
 										<span v-if="picInfo.childDiscount && bookChildren">-{{nowExchange.symbol}}{{returnFloat(picInfo.childDiscount*bookChildren)}} for {{bookChildren}} {{bookChildren>1?'Children':'Child'}}</span>
 										
 									</dt>
@@ -110,9 +110,13 @@
 
 					<!-- 预定保障模块 -->
 					<ul class="book_ensure">
-						<li><i class="iconfont">&#xe654;</i>No hidden booking or credit card fees</li>
-						<li><i class="iconfont">&#xe654;</i>Instant confirmation after booking</li>
-						<li><i class="iconfont">&#xe654;</i>Best Price Guarantee</li>
+						<li>
+							<h4>Introducing Panda Phone for Only $1.00</h4>
+						</li>
+						<li><i class="iconfont">&#xe654;</i>Smart Phone with Mainland China Number</li>
+						<li><i class="iconfont">&#xe654;</i>4G Wireless Data, Unlimited Calling & Texts</li>
+						<li><i class="iconfont">&#xe654;</i>Travel & Emergency Help at Your Fingertips</li>
+						<li><i class="iconfont">&#xe654;</i>VPN-Access Blocked Websites Like Google</li>
 					</ul>
 				</div>
 			</div>
@@ -1148,7 +1152,7 @@ import { sep } from 'path';
 					}
 					self.picInfo.bottomPrice=res.data.bottomPrice
 					self.picInfo.currency=res.data.currency
-					
+					self.picInfo.phoneHirePrice = res.data.phoneHirePrice;
 					//设置当前币种
 					for(var i=0;i<exchange.length;i++){
 						var thisEx = exchange[i];
@@ -1778,7 +1782,7 @@ import { sep } from 'path';
 					.book_ensure{
 						background-color: #f2fbf9;
 						border-radius: 8px;
-						padding: 15px 24px;
+						padding: 15px 20px;
 						margin-top: 10px;
 						li{
 							padding-left: 25px;
@@ -1792,7 +1796,11 @@ import { sep } from 'path';
 								color: #1bbc9d;
 								font-size: 12px;
 							}
-							
+							h4{
+								font-weight: bold;
+								padding-bottom: 6px;
+								margin-left: -25px;
+							}
 						}
 					}
 					

@@ -47,7 +47,7 @@
         }
 
         //group组操作
-        if(this.$parent.value == this.label){
+        if(this.$parent.value == this.label || this.$parent.value == this.label+''){
           return true;
         }else{
           return false;

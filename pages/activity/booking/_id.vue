@@ -111,10 +111,10 @@
 							<div class="adultPic">{{nowExchange.symbol}}{{returnFloat(opctions.adultsPic)}}</div>
 						</div>
 						<div class="child" v-if="opctions.pandaPhoneCheck">
-							<b>+ {{nowExchange.symbol}}{{opctions.phoneHirePrice}}</b> (Panda Phone)
+							<b><span>+</span>{{nowExchange.symbol}}{{opctions.phoneHirePrice}}</b> (Panda Phone)
 						</div>
 						<div class="child" v-if="opctions.childrenNum>0&&opctions.childDiscount">
-							<b>- {{nowExchange.symbol}}{{returnFloat(opctions.childrenNum * opctions.childDiscount)}}</b> for {{opctions.childrenNum}} {{opctions.childrenNum>1?'Children':'Child'}}
+							<b><span>-</span>{{nowExchange.symbol}}{{returnFloat(opctions.childrenNum * opctions.childDiscount)}}</b> for {{opctions.childrenNum}} {{opctions.childrenNum>1?'Children':'Child'}}
 						</div>
 						
 						<div class="child" v-if="couponType">
@@ -220,9 +220,9 @@
 					<img class="mt5" src="https://cloud.localpanda.com/static/icon/pandaphone.jpg" alt="">
 				</div>
 				<div class="pp_box mt10">
-					<h3>The Panda Phone - All-in-one Mobile Travel Assistant</h3>
-					<p class="mt10">For more information or requests before booking, email us at service@localpanda.com Pick-up and drop-off are only available at city center hotels and airports in Shanghai & Beijing.</p>
-					<p class="c_999 mt15">*In order to take advantage of our special offer price you must book at least 1 tour or activity with Local Panda. Please contact us for updated pricing if you are interested in the Pocket Panda a la carte.</p>
+					<h3>All for the insane price of $1</h3>
+					<p class="mt10">Pick-up and drop-off are only available at city center hotels and airports in Shanghai & Beijing.<br>For more information or requests before booking, email us at at service@localpanda.com</p>
+					<p class="c_999 mt15">*For $1 you get up to 5 days of use. Each additional day after the first 5 days will cost an additional $1. In order to take advantage of our special offer price you must book at least 1 tour or activity with Local Panda. Please contact us for updated pricing if you are interested in the Pocket Panda a la carte.</p>
 				</div>
 			</div>
 			
@@ -1349,6 +1349,11 @@
 						.child {
 							margin-top: 15px;
 							font-size: 18px;
+							span{
+								float: left;
+								width: 18px;
+								text-align: center;
+							}
 						}
 					}
 					.total {
@@ -1727,9 +1732,9 @@
 			position: fixed;
 			left: 50%;
 			top: 50%;
-			margin-left: -370px;
+			margin-left: -380px;
 			// margin-top: 19px;
-			width: 740px;
+			width: 760px;
 			padding: 45px 10px 40px 40px;
 			background-color: #fff;
 			box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);

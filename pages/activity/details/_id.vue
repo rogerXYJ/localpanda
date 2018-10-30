@@ -436,9 +436,9 @@ Price may vary depending on the language. If you need guides in other languages,
 					<img class="mt5" src="https://cloud.localpanda.com/static/icon/pandaphone.jpg" alt="">
 				</div>
 				<div class="pp_box mt10">
-					<h3>The Panda Phone - All-in-one Mobile Travel Assistant</h3>
-					<p class="mt10">For more information or requests before booking, email us at service@localpanda.com Pick-up and drop-off are only available at city center hotels and airports in Shanghai & Beijing.</p>
-					<p class="c_999 mt15">*In order to take advantage of our special offer price you must book at least 1 tour or activity with Local Panda. Please contact us for updated pricing if you are interested in the Pocket Panda a la carte.</p>
+					<h3>All for the insane price of $1</h3>
+					<p class="mt10">Pick-up and drop-off are only available at city center hotels and airports in Shanghai & Beijing.<br>For more information or requests before booking, email us at at service@localpanda.com</p>
+					<p class="c_999 mt15">*For $1 you get up to 5 days of use. Each additional day after the first 5 days will cost an additional $1. In order to take advantage of our special offer price you must book at least 1 tour or activity with Local Panda. Please contact us for updated pricing if you are interested in the Pocket Panda a la carte.</p>
 				</div>
 			</div>
 			
@@ -1421,7 +1421,7 @@ import { sep } from 'path';
 					self.setPeople();
 				};
 
-				if(self.showPPDialog && !getParents(target,'pp_tip')){
+				if(self.showPPDialog && !getParents(target,'pp_tip') && !getParents(target,'pp_dialog')){
 					self.showPPDialog = false;
 				}
 				
@@ -2350,7 +2350,7 @@ import { sep } from 'path';
 		}
 
 		.dialog_tip_info{
-			font-size: 14px;
+			font-size: 16px;
 			line-height: 22px;
 		}
 
@@ -2385,9 +2385,9 @@ import { sep } from 'path';
 			position: fixed;
 			left: 50%;
 			top: 60px;
-			margin-left: -540px;
+			margin-left: -550px;
 			// margin-top: 19px;
-			width: 740px;
+			width: 760px;
 			padding: 45px 10px 40px 40px;
 			background-color: #fff;
 			box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);

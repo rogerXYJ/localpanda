@@ -102,9 +102,9 @@
 				<!-- panda Phone -->
 				<div class="panda_phone">
 					<p>A $150 USD deposit is required to use the Panda Phone, which will be returned to you upon returning the phone at the end of your trip. Please choose a deposit payment method below.</p>
-					<radio-group v-model="ppDeposit" class="deposit_list">
-						<radio :label="1">Pay deposit upon recieving the phone in China (cash and paypal accepted).*</radio><br>
-						<radio :label="0">Pay deposit now online using a debit/credit card.</radio>
+					<radio-group v-model="opctions.phoneDepositPayOnline" class="deposit_list" v-if="opctions.phoneHire">
+						<radio :label="false">Pay deposit upon recieving the phone in China (cash and paypal accepted).*</radio><br>
+						<radio :label="true">Pay deposit now online using a debit/credit card.</radio>
 					</radio-group>
 					<p class="mt10">*deposit will be returned in the same method you paid: paypal or in cash (RMB only)</p>
 				</div>
@@ -138,12 +138,17 @@
 						<div class="adult clearfix">
 							<!-- <div class="formula" v-if="opctions.childrenNum==0&&opctions.adultNum==1">{{opctions.symbol}}{{returnFloat(opctions.averagePrice)}} x 1 Person</div> -->
 							<div class="formula">{{opctions.symbol}} {{returnFloat(opctions.averagePrice)}} x {{opctions.adultNum+opctions.childrenNum}} {{(opctions.adultNum+opctions.childrenNum)>1?'Travelers':'Traveler'}}</div>
-							<div class="adultPic">{{opctions.symbol}} {{returnFloat(opctions.amount + (opctions.childDiscount?opctions.childDiscount*opctions.childrenNum:0) - (opctions.phoneHire?opctions.phoneHirePrice:0) + (opctions.couponDiscount?opctions.couponDiscount:0))}}</div>
+							<!-- <div class="adultPic">{{opctions.symbol}} {{returnFloat(opctions.averagePrice*(opctions.adultNum+opctions.childrenNum))}}</div> -->
+							<div class="adultPic">{{opctions.symbol}} {{returnFloat(opctions.amount*1 + (opctions.childDiscount?opctions.childDiscount*opctions.childrenNum:0) - (opctions.phoneHire?opctions.phoneHirePrice:0)-((opctions.phoneDepositPayOnline == 'true' || opctions.phoneDepositPayOnline===true)?opctions.phoneDeposit:0) + (opctions.couponDiscount?opctions.couponDiscount:0))}}</div>
 						</div>
 						<!-- panda Phone -->
 						<div class="child" v-if="opctions.phoneHire">
 							<b>+ {{opctions.symbol}}{{opctions.phoneHirePrice}}</b> (Panda Phone)
 						</div>
+						<div class="child" v-if="opctions.phoneDepositPayOnline === 'true' || opctions.phoneDepositPayOnline===true">
+							<b>+ {{opctions.symbol}}{{opctions.phoneDeposit}}</b> (Panda Phone deposit)
+						</div>
+						
 						<div class="child" v-if="opctions.childDiscount &&　opctions.childrenNum">
 							<b>- {{opctions.symbol}}{{returnFloat(opctions.childDiscount*opctions.childrenNum)}}</b>  for {{opctions.childrenNum}} {{opctions.childrenNum>1?'Children':'Child'}}
 						</div>
@@ -314,26 +319,24 @@
 				payStatus: false,
 				payErrMsg: '',
 				isPay: false,
-
-				//押金
-				ppDeposit:1
 		
 		};
 			
 		var dataInfo={}
 		try {
-		        dataInfo = await Vue.axios.get(apiBasePath+"order/activity/" + id);
-		        data.opctions = dataInfo.data
-				data.email = dataInfo.data.contactInfo.emailAddress;
-				data.refundTimeLimit = dataInfo.data.activityPrice.refundTimeLimit 
-				if(data.opctions.currency == "CNY") {
-					data.id = 0
-				}
+			dataInfo = await Vue.axios.get(apiBasePath+"order/activity/" + id);
+			data.opctions = dataInfo.data;
+			data.opctions.amountDefault = dataInfo.data.amount;
+			data.email = dataInfo.data.contactInfo.emailAddress;
+			data.refundTimeLimit = dataInfo.data.activityPrice.refundTimeLimit 
+			if(data.opctions.currency == "CNY") {
+				data.id = 0
+			}
 		       	
 			 	
-		      } catch (err) {
-		      	//return error(JSON.stringify(err));
-		    }
+		} catch (err) {
+				//return error(JSON.stringify(err));
+			}
 			var consoleTimeS2 = new Date().getTime();
 			console.log('node end time:'+consoleTimeS2);
 			console.log('在node端渲染，请求所有接口花费时间：'+(consoleTimeS2-consoleTimeS)+' ms');
@@ -809,6 +812,34 @@
 				}, function(response) {
 					
 				})
+			},
+			orderUpdate(){
+				var that = this;
+				var newPrice = 0;
+				//检测是否押金价格，从总价减去/加上押金
+				if(that.opctions.phoneDepositPayOnline=='true'){
+					newPrice = this.returnFloat(that.opctions.amount*1 + that.opctions.phoneDeposit);
+				}else{
+					newPrice = this.returnFloat(that.opctions.amount*1 - that.opctions.phoneDeposit);
+				}
+				that.opctions.amount = newPrice;
+				//改变订单信息
+				var postData = {
+					orderId: that.opctions.orderId,
+					phoneDepositPayOnline: that.opctions.phoneDepositPayOnline,
+					amount: newPrice
+				};
+				that.loadingStatus = true;
+				that.axios.post( "https://api.localpanda.com/api/order/activity", JSON.stringify(postData), {
+					headers: {
+						'Content-Type': 'application/json'
+					}
+				}).then(function(response) {
+					that.loadingStatus = false;
+				},function(response) {
+					that.opctions.amount = that.opctions.amountDefault;
+					that.loadingStatus = false;
+				});
 			}
 		},
 		created: function() {
@@ -833,6 +864,11 @@
 				this.logInHide = true;
 			}
 
+		},
+		watch:{
+			'opctions.phoneDepositPayOnline':function(val){
+				this.orderUpdate();
+			}
 		}
 	}
 </script>

@@ -103,8 +103,8 @@
 				<div class="panda_phone">
 					<p>A $150 USD deposit is required to use the Panda Phone, which will be returned to you upon returning the phone at the end of your trip. Please choose a deposit payment method below.</p>
 					<radio-group v-model="opctions.phoneDepositPayOnline" class="deposit_list" v-if="opctions.phoneHire">
-						<radio :label="false">Pay deposit upon recieving the phone in China (cash and paypal accepted).*</radio><br>
-						<radio :label="true">Pay deposit now online using a debit/credit card.</radio>
+						<radio :label="false">Pay deposit upon recieving the phone in China with cash (RMB only) or paypal .*</radio><br>
+						<radio :label="true">Pay deposit now online</radio>
 					</radio-group>
 					<p class="mt10">*deposit will be returned in the same method you paid: paypal or in cash (RMB only)</p>
 				</div>

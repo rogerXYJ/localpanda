@@ -30,6 +30,37 @@
 
 				<p class="c_666" v-if="showTipTxt && payType!='guide'">You ordered as a guest. You can click this button to view your order details.</p> -->
 
+				<div class="panda_phone">
+					<p>You've selected The Panda Phone: All-in-one Mobile Travel Assistant. We will deliver your phone to the hotel or airport of your choice along with English-language assistance to get you set up.</p>
+					<h4>Please provide your delivery info below:</h4>
+					<div class="panda_phone_check">
+						<radio-group v-model="ppType" class="deposit_list" v-if="orderInfo.phoneHire">
+							<radio :label="2">Airport</radio>
+							<radio :label="3">Hotel</radio>
+							<radio :label="1">I haven't decided yet. I'll contact you later</radio>
+						</radio-group>
+						<div class="phone_check_list" v-if="ppType==2">
+							<div>&nbsp;&nbsp;&nbsp;&nbsp;Arrival Date: <input v-model="arrivalDate" type="text"></div>
+							<div class="mt10">Flight Number: <input v-model="flightNumber" type="text"></div>
+						</div>
+						<div class="phone_check_list" v-else-if="ppType==3 && orderInfo.pickup">
+							Hotel Name & Address: <input class="w500" v-model="hotel" type="text">
+							<p class="mt10">Your Panda Phone will be delivered by your guide at the start of your trip. </p>
+						</div>
+						<div class="phone_check_list" v-else-if="ppType==3 && !orderInfo.pickup">
+							<div>
+								Hotel Name & Address: <input class="w500" v-model="hotel" type="text">
+							</div>
+							<div class="mt10">
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+								Arrival Date: <input v-model="arrivalDate" style="margin-left:13px;" type="text">
+							</div>
+							<p class="mt10">One of our travel assistants will hand-deliver the Panda phone to you. We will confirm your delivery location, date, and time with you via email prior to your trip. Please check your email prior to departure for updates. </p>
+						</div>
+					</div>
+					<div class="btn" @click="submitPandaPhone" v-if="ppType && ppType!=1">Submit</div>
+				</div>
+
 				<div class="service_box">
 					<p class="tip_detail">In the meantime, a confirmation email has been sent to“{{orderInfo.contactInfo.emailAddress}}”, Please check. If you have not received it, please check your junk mail folder. If you still do <br>not see it, please <a @click="showEmailBox=true">click here</a> to enter your correct or alternative email address.</p>
 					<div class="email_box" v-show="showEmailBox">
@@ -52,12 +83,13 @@
 </template>
 <script>
 	if (process.browser) {
-	  require('~/assets/js/pages/talk.js')
+	  // require('~/assets/js/pages/talk.js')
 	}
 	import {getPriceMark,formatDate} from '~/assets/js/plugin/utils.js'
 	import HeaderCommon from '~/components/HeaderCommon/HeaderCommon'
 	import FooterCommon from '~/components/FooterCommon/FooterCommon';
 	import service from '~/components/pageComponents/inquiry/service';
+	import {radioGroup,radio} from "~/plugins/panda/radio/";
 	import Vue from 'vue'
 	export default {
 
@@ -111,6 +143,12 @@
 				emailSendTip:false,
 				showEmailBox:false,
 				inqueryEmail:'',
+
+				//手机送达方式
+				ppType:'',
+				arrivalDate:'',
+				flightNumber:'',
+				hotel:''
 				
 			}
 		},
@@ -136,7 +174,9 @@
 		components: {
 			HeaderCommon,
 			FooterCommon,
-			service
+			service,
+			radioGroup,
+			radio
 		},
 		methods: {
 			// getPriceMark:getPriceMark,
@@ -174,6 +214,32 @@
 					this.emailTip = true;
 				}
 			},
+			
+			submitPandaPhone(){
+				var that = this;
+				var putData = {
+					"arrivalDate": this.arrivalDate,
+					"flightNumber": this.flightNumber,
+					"hotel": this.hotel,
+					"orderId": this.orderId,
+					"id": this.orderInfo.activityId
+				};
+				if(this.ppType==2){
+					delete putData.hotel;
+				}
+				that.axios.put('https://api.localpanda.com/api/order/phone/info', JSON.stringify(putData), {
+					headers: {
+						'Content-Type': 'application/json'
+					}
+				}).then(function(response) {
+					if(response.data.succeed) {
+						console.log(response.data);
+					};
+
+				}, function(response) {
+
+				});
+			}
 		},
 		mounted: function() {
 //			this.orderId=GetQueryString("orderId")
@@ -190,43 +256,7 @@ console.log(this.orderInfo);
 		}
 	}
 </script>
-<style lang="scss">
-	//@import '~/assets/scss/_main.scss';
-	//@import '~/assets/font/iconfont.css';
-.success{
-	#header {
-		box-shadow: 0px 2px 6px 0px rgba(53, 58, 63, 0.1);
-	}
-	#header {
-		.init{
-			li{
-			&:nth-child(0){
-						display: none;
-					}
-					&:nth-child(1){
-						display: none;
-					}
-					&:nth-child(3){
-						display: none;
-					}
-			}
-		}
-		.login{
-				.selectCurrency{
-					display: none;
-				}
-			}
-		.search{ 
-			display: none!important;
-		}
-	}
-	.footerInfo{
-			li:nth-child(5){
-				display: none!important;
-			}
-		}
-}
-</style>
+
 <style lang="scss" scoped>
 //@import '~/assets/scss/base/_setting.scss';
 	.successInfo{
@@ -331,6 +361,48 @@ console.log(this.orderInfo);
 					font-weight: bold;
 					cursor: pointer;
 				}
+
+				.panda_phone{
+					margin-top: 20px;
+					padding: 20px;
+					background-color: rgba(0,0,0,0.04);
+					font-size: 16px;
+					h4{ margin-top: 10px;}
+					p{margin: 0;}
+					.panda_phone_check{
+						margin-top: 10px;
+						.phone_check_list{
+							margin-top: 10px;
+							padding: 10px 0;
+							input{
+								padding: 0 10px;
+								height: 32px;
+								line-height: 32px;
+								margin:0 50px 0 10px;
+							}
+							.w500{
+								width: 500px;
+							}
+						}
+					}
+					.btn{
+						display: inline-block;;
+						height: 42px;
+						line-height: 42px;
+						text-align: center;
+						width: 160px;
+						margin-top: 20px;
+						background-image: -webkit-gradient(linear, right top, left top, from(#009efd), to(#1bbc9d));
+						background-image: linear-gradient(270deg, #009efd 0%, #1bbc9d 100%);
+						border-radius: 21px;
+						color: #fff;
+						font-size: 16px;
+						box-sizing: border-box;
+						cursor: pointer;
+						font-weight: bold;
+					}
+				}
+				
 			}
 
 		.service_box{
@@ -373,4 +445,43 @@ console.log(this.orderInfo);
 			
 		}
 	}
+</style>
+
+
+<style lang="scss">
+	//@import '~/assets/scss/_main.scss';
+	//@import '~/assets/font/iconfont.css';
+.success{
+	#header {
+		box-shadow: 0px 2px 6px 0px rgba(53, 58, 63, 0.1);
+	}
+	#header {
+		.init{
+			li{
+			&:nth-child(0){
+						display: none;
+					}
+					&:nth-child(1){
+						display: none;
+					}
+					&:nth-child(3){
+						display: none;
+					}
+			}
+		}
+		.login{
+				.selectCurrency{
+					display: none;
+				}
+			}
+		.search{ 
+			display: none!important;
+		}
+	}
+	.footerInfo{
+			li:nth-child(5){
+				display: none!important;
+			}
+		}
+}
 </style>

@@ -74,7 +74,7 @@
 				<div class="panda_phone_tip" v-if="ppType==3 && showPhoneTip">
 					<p>Your Panda Phone delivery info has been successfully submitted. Please ensure your phone number and email are correct so we can reach you in case any issues arise. We will contact you via email prior to your departure to confirm the delivery location, date, and time.<br><br>
 Your Delivery Info:<br>
-<span>location：</span>Hotel<br>
+<span>Location：</span>Hotel<br>
 <span>Pick-up Date：</span>{{arrivalDate}}<br>
 <span>Hotel Name & Address：</span>{{hotel}}<br><br>
 Thank you for choosing Local Panda, we hope you have a great trip!<br>
@@ -278,7 +278,9 @@ If you have any questions or concerns, feel free to contact us using the info at
 		mounted: function() {
 
 			this.$nextTick(()=>{
-				new Flatpickr('.js_changetime');
+				new Flatpickr('.js_changetime',{
+					minDate: new Date(),
+				});
 				//var aaa = new Flatpickr('#js_changetime1');
 				// new Flatpickr('#js_changetime2');
 				this.fromValidate = new Validate({

@@ -125,7 +125,7 @@
 						</div>
 					</div>
 					<div class="total clearfix">
-						<div class="totle-title">Total</div>
+						<div class="totle-title">Total Amount</div>
 						<div class="totalPic">{{nowExchange.symbol}}{{opctions.amount}}</div>
 						<div class="picRate">
 							<select class="currency_type" @change="changeCurrency" v-model="opctions.currency">
@@ -223,7 +223,7 @@
 				<div class="pp_box mt10">
 					<h3>All for the insane price of USD $1</h3>
 					<p class="mt10">Pick-up and drop-off are only available at city center hotels in Shanghai & Beijing.<br>For more information or requests before booking, email us at at service@localpanda.com</p>
-					<p class="c_999 mt15">*For $1 you get up to 5 days of use. Each additional day after the first 5 days will cost an additional $1. In order to take advantage of our special offer price you must book at least 1 tour or activity with Local Panda. Please contact us for updated pricing if you are interested in the Pocket Panda a la carte.</p>
+					<p class="c_999 mt15">*For $1 you get up to 5 days of use. Each additional day after the first 5 days will cost an additional $1. In order to take advantage of our special offer price you must book at least 1 tour or activity with Local Panda. </p>
 				</div>
 			</div>
 			

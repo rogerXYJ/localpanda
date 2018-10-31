@@ -90,18 +90,18 @@
 							</li>
 							<li>
 								<checkbox class="pp_checkbox" v-model="pandaPhoneCheck">Add Panda Phone to my trip for only <dfn>USD $1</dfn></checkbox>
-								<p class="pp_tip">All-in-one Mobile Travel Assistant <span @click="showPPDialog=true">Show details</span></p>
+								<p class="pp_tip">All-in-one Mobile Travel Assistant <span @click="showPandaPhone">Show details</span></p>
 							</li>
 							<li class="clearfix">
 								<span class="btn fl" @click="bookNow">Book Now</span>
 								<span class="btn_inquire fl" @click="ContactStatus=true">Inquire</span>
 							</li>
 							
-							<li>
+							<!-- <li>
 								<p class="book_tip" v-if="picInfo.refundTimeLimit && picInfo.fullRefund===1">Free cancellation  up to {{(picInfo.refundTimeLimit>2?picInfo.refundTimeLimit+' days':24*picInfo.refundTimeLimit+' hours')}} before your trip</p>
-							</li>
+							</li> -->
 							<li v-if="detail.sales">
-								<div class="hr"></div>
+								<!-- <div class="hr"></div> -->
 								<div class="Booked_box">Booked {{detail.sales}} {{detail.sales>1?'times':'time'}} (last 30 days)</div>
 							</li>
 						</ul>
@@ -109,9 +109,9 @@
 
 
 					<!-- 预定保障模块 -->
-					<ul class="book_ensure">
+					<ul class="book_ensure" v-if="!bookPeople" @click="showPPDialog=true">
 						<li>
-							<h4>Introducing Panda Phone for Only $1.00</h4>
+							<h4>Introducing Panda Phone for Only $1.00<span class="iconfont">&#xe689;</span></h4>
 						</li>
 						<li><i class="iconfont">&#xe654;</i>Smart Phone with Mainland China Number</li>
 						<li><i class="iconfont">&#xe654;</i>4G Wireless Data, Unlimited Calling & Texts</li>
@@ -442,7 +442,7 @@ Price may vary depending on the language. If you need guides in other languages,
 				<div class="pp_box mt10">
 					<h3>All for the insane price of USD $1</h3>
 					<p class="mt10">Pick-up and drop-off are only available at city center hotels in Shanghai & Beijing.<br>For more information or requests before booking, email us at at service@localpanda.com</p>
-					<p class="c_999 mt15">*For $1 you get up to 5 days of use. Each additional day after the first 5 days will cost an additional $1. In order to take advantage of our special offer price you must book at least 1 tour or activity with Local Panda. Please contact us for updated pricing if you are interested in the Pocket Panda a la carte.</p>
+					<p class="c_999 mt15">*For $1 you get up to 5 days of use. Each additional day after the first 5 days will cost an additional $1. In order to take advantage of our special offer price you must book at least 1 tour or activity with Local Panda. </p>
 				</div>
 			</div>
 			
@@ -1137,6 +1137,15 @@ import { sep } from 'path';
 				}
 				
 			},
+			showPandaPhone(){
+				this.showPPDialog=true;
+				ga(gaSend, {
+					hitType: "event",
+					eventCategory: "activity_detail",
+					eventAction: "click",
+					eventLabel:"phone_layer"
+				});
+			},
 			changeCurrency(e){
 				var self = this;
 				var value = e.target ? e.target.value : e;
@@ -1172,8 +1181,7 @@ import { sep } from 'path';
 				self.axios.get("https://api.localpanda.com/api/product/activity/"+this.id+"/price/detail?currency="+value+(self.participants?'&participants='+self.participants:'')).then(function(res) {
 						self.picInfo.details=res.data
 						
-						//重设book价格
-						self.setPeoplePrice();
+						
 
 						self.sixArr=res.data
 						if(self.participants>0){
@@ -1185,6 +1193,9 @@ import { sep } from 'path';
 						}else{
 							self.sixArr=res.data;
 						}
+
+						//重设book价格
+						self.setPeoplePrice();
 				}, function(res) {
 					
 				});
@@ -1425,7 +1436,7 @@ import { sep } from 'path';
 					self.setPeople();
 				};
 
-				if(self.showPPDialog && !getParents(target,'pp_tip') && !getParents(target,'pp_dialog')){
+				if(self.showPPDialog && !getParents(target,'pp_tip') && !getParents(target,'pp_dialog') && !getParents(target,'book_ensure')){
 					self.showPPDialog = false;
 				}
 				
@@ -1502,7 +1513,24 @@ import { sep } from 'path';
 			pandaPhoneCheck:function(val){
 				this.setPeoplePrice();
 				if(val){
-					this.showPPDialog=false;
+					//弹层勾选
+					if(this.showPPDialog){
+						ga(gaSend, {
+							hitType: "event",
+							eventCategory: "activity_detail",
+							eventAction: "select",
+							eventLabel:"phone_select_layer"
+						});
+						this.showPPDialog=false;
+					}else{
+						//页面勾选
+						ga(gaSend, {
+							hitType: "event",
+							eventCategory: "activity_detail",
+							eventAction: "select",
+							eventLabel:"phone_select"
+						});
+					}
 				}
 			}
 		}
@@ -1737,6 +1765,9 @@ import { sep } from 'path';
 											font-size: 13px;
 											color: #878e95;
 										}
+										.btn{
+											width: 100%;
+										}
 									}
 								}
 								.pp_tip{
@@ -1773,7 +1804,7 @@ import { sep } from 'path';
 						.hr{ height: 1px; background-color: #ebebeb;}
 						.book_tip{ margin-top: 10px; font-size: 14px;}
 						.Booked_box{
-							padding: 16px 0 0;
+							padding: 5px 0 0;
 							color: #878e95;
 							font-size: 14px; 
 						}
@@ -1781,9 +1812,12 @@ import { sep } from 'path';
 					
 					.book_ensure{
 						background-color: #f2fbf9;
+						cursor: pointer;
 						border-radius: 8px;
 						padding: 15px 20px;
 						margin-top: 10px;
+						-webkit-transition:all 0.3s linear 0s;
+						transition:all 0.3s linear 0s;
 						li{
 							padding-left: 25px;
 							color: #353a3f;
@@ -1800,7 +1834,11 @@ import { sep } from 'path';
 								font-weight: bold;
 								padding-bottom: 6px;
 								margin-left: -25px;
+								span{ margin-left: 10px;}
 							}
+						}
+						&:hover{
+							background-color: #e4f5f1;
 						}
 					}
 					
@@ -1809,9 +1847,9 @@ import { sep } from 'path';
 				.book_fixed{
 					position: fixed;
 					top: 60px;
-					.book_ensure{
-						display: none;
-					}
+					// .book_ensure{
+					// 	display: none;
+					// }
 				}
 				
 			}
@@ -2393,7 +2431,7 @@ import { sep } from 'path';
 			position: fixed;
 			left: 50%;
 			top: 60px;
-			margin-left: -550px;
+			margin-left: -560px;
 			// margin-top: 19px;
 			width: 760px;
 			padding: 45px 10px 40px 40px;

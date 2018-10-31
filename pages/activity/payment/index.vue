@@ -137,7 +137,7 @@
 					<div class="pic">
 						<div class="adult clearfix">
 							<!-- <div class="formula" v-if="opctions.childrenNum==0&&opctions.adultNum==1">{{opctions.symbol}}{{returnFloat(opctions.averagePrice)}} x 1 Person</div> -->
-							<div class="formula">{{opctions.symbol}} {{returnFloat(opctions.averagePrice)}} x {{opctions.adultNum+opctions.childrenNum}} {{(opctions.adultNum+opctions.childrenNum)>1?'Travelers':'Traveler'}}</div>
+							<div class="formula">{{opctions.symbol}}{{returnFloat(opctions.averagePrice)}} x {{opctions.adultNum+opctions.childrenNum}} {{(opctions.adultNum+opctions.childrenNum)>1?'Travelers':'Traveler'}}</div>
 							<!-- <div class="adultPic">{{opctions.symbol}} {{returnFloat(opctions.averagePrice*(opctions.adultNum+opctions.childrenNum))}}</div> -->
 							<div class="adultPic">{{opctions.symbol}} {{returnFloat(opctions.amount*1 + (opctions.childDiscount?opctions.childDiscount*opctions.childrenNum:0) - (opctions.phoneHire?opctions.phoneHirePrice:0)-((opctions.phoneDepositPayOnline == 'true' || opctions.phoneDepositPayOnline===true)?opctions.phoneDeposit:0) + (opctions.couponDiscount?opctions.couponDiscount:0))}}</div>
 						</div>
@@ -159,7 +159,7 @@
 					</div>
 					<div class="total clearfix">
 						<div class="totle-title">Total Amount</div>
-						<div class="totalPic">{{opctions.symbol}}{{returnFloat(opctions.amount)}}</div>
+						<div class="totalPic">{{opctions.currency}} {{opctions.symbol}}{{returnFloat(opctions.amount)}}</div>
 					</div>
 				</div>
 				<!--<div class="payWidth">

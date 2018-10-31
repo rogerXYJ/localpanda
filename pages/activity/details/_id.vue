@@ -75,8 +75,8 @@
 								<h4>Price Breakdown</h4>
 								<dl class="book_price_info">
 									<dt>
-										<span>{{nowExchange.symbol}}{{returnFloat(perPersonPrice)}}×{{bookPeople}} {{bookPeople>1?'Travelers':'Traveler'}}</span>
-										<span v-if="pandaPhoneCheck">+{{nowExchange.symbol}}{{returnFloat(picInfo.phoneHirePrice)}} Panda Phone</span>
+										<span>{{nowExchange.symbol}}{{returnFloat(perPersonPrice)}} × {{bookPeople}} {{bookPeople>1?'Travelers':'Traveler'}}</span>
+										<span v-if="pandaPhoneCheck">+{{nowExchange.symbol}}{{returnFloat(picInfo.phoneHirePrice)}} for Panda Phone</span>
 										<span v-if="picInfo.childDiscount && bookChildren">-{{nowExchange.symbol}}{{returnFloat(picInfo.childDiscount*bookChildren)}} for {{bookChildren}} {{bookChildren>1?'Children':'Child'}}</span>
 										
 									</dt>
@@ -84,7 +84,7 @@
 								</dl>
 								<dl class="book_price_info">
 									<dt>Total Amount</dt>
-									<dd>{{nowExchange.symbol}}<b> {{amount}}</b></dd>
+									<dd>{{nowExchange.symbol}}<b>{{amount}}</b></dd>
 								</dl>
 								
 							</li>
@@ -440,8 +440,8 @@ Price may vary depending on the language. If you need guides in other languages,
 					<img class="mt5" src="https://cloud.localpanda.com/static/icon/pandaphone.png" alt="">
 				</div>
 				<div class="pp_box mt10">
-					<h3>All for the insane price of $1</h3>
-					<p class="mt10">Pick-up and drop-off are only available at city center hotels and airports in Shanghai & Beijing.<br>For more information or requests before booking, email us at at service@localpanda.com</p>
+					<h3>All for the insane price of USD $1</h3>
+					<p class="mt10">Pick-up and drop-off are only available at city center hotels in Shanghai & Beijing.<br>For more information or requests before booking, email us at at service@localpanda.com</p>
 					<p class="c_999 mt15">*For $1 you get up to 5 days of use. Each additional day after the first 5 days will cost an additional $1. In order to take advantage of our special offer price you must book at least 1 tour or activity with Local Panda. Please contact us for updated pricing if you are interested in the Pocket Panda a la carte.</p>
 				</div>
 			</div>

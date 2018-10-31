@@ -30,7 +30,7 @@
 
 				<p class="c_666" v-if="showTipTxt && payType!='guide'">You ordered as a guest. You can click this button to view your order details.</p> -->
 
-				<div class="panda_phone" v-if="orderInfo.phoneHire">
+				<div class="panda_phone" v-if="orderInfo.phoneHire && !showPhoneTip">
 					<h4>Panda Phone Service - 5 days (deposit included)</h4>
 					<p>You've selected The Panda Phone: All-in-one Mobile Travel Assistant. We will deliver your phone to the hotel or airport of your choice along with English-language assistance to get you set up.</p>
 					<h5>Please provide your delivery info below:</h5>
@@ -58,9 +58,29 @@
 							</div>
 							<p class="mt10">One of our travel assistants will hand-deliver the Panda phone to you. We will confirm your delivery location, date, and time with you via email prior to your trip. Please check your email prior to departure for updates. </p>
 						</div>
+
+						<!-- I haven't decided yet -->
+						<div class="panda_phone_no" v-if="ppType==1">
+							<p>You chose: “I haven't decided yet. I'll contact you later” for your delivery information, so we will still need to confirm this prior to your departure.</p>
+							<p>You will receive a booking email from service@localpanda.com. Once you've confirmed your travel plans please reply to our email and provide us with your delivery date and location.  Please provide this information at least 24 hours prior to your departure so we can ensure delivery of your Panda Phone.</p>
+							<p>Thank you for choosing Local Panda, we hope you have a great trip!</p>
+							<p>If you have any questions or concerns, feel free to contact us using the info at the bottom of the page.</p>
+						</div>
+
 					</div>
 					<div class="btn" @click="submitPandaPhone" v-if="ppType && ppType!=1">Submit</div>
 				</div>
+
+				<div class="panda_phone_tip" v-if="ppType==3 && showPhoneTip">
+					<p>Your Panda Phone delivery info has been successfully submitted. Please ensure your phone number and email are correct so we can reach you in case any issues arise. We will contact you via email prior to your departure to confirm the delivery location, date, and time.<br><br>
+Your Delivery Info:<br>
+<span>location：</span>Hotel<br>
+<span>Pick-up Date：</span>{{arrivalDate}}<br>
+<span>Hotel Name & Address：</span>{{hotel}}<br><br>
+Thank you for choosing Local Panda, we hope you have a great trip!<br>
+If you have any questions or concerns, feel free to contact us using the info at the bottom of the page.</p>
+				</div>
+				
 
 				<div class="service_box">
 					<p class="tip_detail">In the meantime, a confirmation email has been sent to“{{orderInfo.contactInfo.emailAddress}}”, Please check. If you have not received it, please check your junk mail folder. If you still do <br>not see it, please <a @click="showEmailBox=true">click here</a> to enter your correct or alternative email address.</p>
@@ -152,7 +172,8 @@
 				ppType:3,
 				arrivalDate:'',
 				flightNumber:'',
-				hotel:''
+				hotel:'',
+				showPhoneTip:false
 				
 			}
 		},
@@ -244,7 +265,7 @@
 						}
 					}).then(function(response) {
 						if(response.data.succeed) {
-							console.log(response.data);
+							that.showPhoneTip = true;
 						};
 
 					}, function(response) {
@@ -394,7 +415,7 @@
 					font-size: 16px;
 					h4{
 						font-size: 18px;
-						color: #333;
+						color: #353a3f;
 						margin-bottom: 15px;
 						font-weight: bold;
 					}
@@ -435,7 +456,24 @@
 						font-weight: bold;
 					}
 				}
-				
+				.panda_phone_tip{
+					margin-top: 20px;
+					padding: 20px;
+					background-color: rgba(0,0,0,0.04);
+					font-size: 16px;
+					p{
+						color: #353a3f;
+						span{ color: #878e95; margin-right: 5px;}
+					}
+				}
+				.panda_phone_no{
+					margin-top: 20px;
+					p{
+						// color: #353a3f;
+						margin-top: 10px;
+						span{ color: #878e95; margin-right: 5px;}
+					}
+				}
 			}
 
 		.service_box{

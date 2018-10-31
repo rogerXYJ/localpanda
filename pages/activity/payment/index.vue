@@ -143,10 +143,10 @@
 						</div>
 						<!-- panda Phone -->
 						<div class="child" v-if="opctions.phoneHire">
-							<b>+ {{opctions.symbol}}{{opctions.phoneHirePrice}}</b> Panda Phone
+							<b>+ {{opctions.symbol}}{{opctions.phoneHirePrice}}</b> for Panda Phone
 						</div>
 						<div class="child" v-if="opctions.phoneDepositPayOnline === 'true' || opctions.phoneDepositPayOnline===true">
-							<b>+ {{opctions.symbol}}{{opctions.phoneDeposit}}</b> Panda Phone deposit
+							<b>+ {{opctions.symbol}}{{opctions.phoneDeposit}}</b> for Panda Phone deposit
 						</div>
 						
 						<div class="child" v-if="opctions.childDiscount &&　opctions.childrenNum">
@@ -837,6 +837,10 @@
 					}
 				}).then(function(response) {
 					that.loadingStatus = false;
+					if(that.opctions.currency !='CNY'){
+						document.querySelector('#paypal-button-container').innerHTML = '';
+						that.paypal();
+					}
 				},function(response) {
 					that.opctions.amount = that.opctions.amountDefault;
 					that.loadingStatus = false;
@@ -1146,7 +1150,16 @@
 			width: 200px;
 			height: 42px;
 			margin-top: 30px;
+			position: relative;
+			overflow: hidden;
+			.paypal-button{
+				display: none;
+				&:last-child(){
+					display: block;
+				}
+			}
 		}
+		
 		.win_bg {
 			width: 100%;
 			height: 100%;
@@ -1273,6 +1286,14 @@
 		.paypal-button,.xcomponent-outlet{
 			width: 100%!important;
 			height: 100%!important;
+		}
+		.paypalBtn{
+			.paypal-button{
+				display: none!important;
+				&:nth-last-child(1){
+					display: block!important;
+				}
+			}
 		}
 
 	}

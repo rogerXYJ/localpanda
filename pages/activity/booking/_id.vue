@@ -68,7 +68,7 @@
 
 				<!-- 手机业务 -->
 				<div class="panda_phone">
-					<checkbox v-model="opctions.pandaPhoneCheck">Add Panda Phone to this trip for $1</checkbox>
+					<checkbox v-model="opctions.pandaPhoneCheck">Add Panda Phone to this trip for USD $1</checkbox>
 					<a @click="showPPDialog = true">What's this</a>
 				</div>
 
@@ -112,7 +112,7 @@
 							<div class="adultPic">{{nowExchange.symbol}}{{returnFloat(opctions.adultsPic)}}</div>
 						</div>
 						<div class="child" v-if="opctions.pandaPhoneCheck">
-							<b><span>+</span>{{nowExchange.symbol}}{{returnFloat(opctions.phoneHirePrice)}}</b> Panda Phone
+							<b><span>+</span>{{nowExchange.symbol}}{{returnFloat(opctions.phoneHirePrice)}}</b> for Panda Phone
 						</div>
 						<div class="child" v-if="opctions.childrenNum>0&&opctions.childDiscount">
 							<b><span>-</span>{{nowExchange.symbol}}{{returnFloat(opctions.childrenNum * opctions.childDiscount)}}</b> for {{opctions.childrenNum}} {{opctions.childrenNum>1?'Children':'Child'}}
@@ -120,7 +120,7 @@
 						
 						<div class="child" v-if="couponType">
 							<div>
-								<b><span>-</span>{{nowExchange.symbol}}{{opctions.couponDiscount}}</b>(Coupon discount)
+								<b><span>-</span>{{nowExchange.symbol}}{{opctions.couponDiscount}}</b>Coupon discount
 							</div>
 						</div>
 					</div>
@@ -221,8 +221,8 @@
 					<img class="mt5" src="https://cloud.localpanda.com/static/icon/pandaphone.png" alt="">
 				</div>
 				<div class="pp_box mt10">
-					<h3>All for the insane price of $1</h3>
-					<p class="mt10">Pick-up and drop-off are only available at city center hotels and airports in Shanghai & Beijing.<br>For more information or requests before booking, email us at at service@localpanda.com</p>
+					<h3>All for the insane price of USD $1</h3>
+					<p class="mt10">Pick-up and drop-off are only available at city center hotels in Shanghai & Beijing.<br>For more information or requests before booking, email us at at service@localpanda.com</p>
 					<p class="c_999 mt15">*For $1 you get up to 5 days of use. Each additional day after the first 5 days will cost an additional $1. In order to take advantage of our special offer price you must book at least 1 tour or activity with Local Panda. Please contact us for updated pricing if you are interested in the Pocket Panda a la carte.</p>
 				</div>
 			</div>
@@ -734,6 +734,11 @@
 						for(var i=0;i<bit;i++){
 							zeroStr+='0';
 						}
+						//解决浮点数bug
+						if(numberArr[1][bit] && numberArr[1][bit+1] && numberArr[1][bit+2]){
+							return numberArr[0]+'.'+numberArr[1].substring(0,bit);
+						}
+						
 						return (value+('0.'+zeroStr+'5')*1).toFixed(bit);
 					}
 					return (value*1).toFixed(bit);
@@ -816,6 +821,7 @@
 			},
 			setPrice(){
 				//减去儿童差价和加上pandaphone的总价
+				console.log(this.opctions.adultsPic,111111111);
 				var allPrice = this.returnFloat(this.opctions.adultsPic*1 + (this.opctions.pandaPhoneCheck?this.opctions.phoneHirePrice:0)*1 - this.opctions.childDiscount*this.opctions.childrenNum);
 
 				//优惠券

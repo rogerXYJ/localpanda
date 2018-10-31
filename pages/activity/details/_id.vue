@@ -110,8 +110,8 @@
 
 					<!-- 预定保障模块 -->
 					<ul class="book_ensure" v-if="!bookPeople" @click="showPPDialog=true">
-						<li>
-							<h4>Introducing Panda Phone for Only $1.00<span class="iconfont">&#xe689;</span></h4>
+						<li class="pd0">
+							<h4>Introducing Panda Phone for Only USD $1</h4>
 						</li>
 						<li><i class="iconfont">&#xe654;</i>Smart Phone with Mainland China Number</li>
 						<li><i class="iconfont">&#xe654;</i>4G Wireless Data, Unlimited Calling & Texts</li>
@@ -1833,9 +1833,12 @@ import { sep } from 'path';
 							h4{
 								font-weight: bold;
 								padding-bottom: 6px;
-								margin-left: -25px;
-								span{ margin-left: 10px;}
+								font-size: 16px;
+								span{ margin-left: 5px;}
 							}
+						}
+						.pd0{
+							padding: 0;
 						}
 						&:hover{
 							background-color: #e4f5f1;
@@ -2675,6 +2678,7 @@ import { sep } from 'path';
 			.checkbox_content{
 				padding: 0 0 0 6px;
 				font-size:15px;
+				white-space: nowrap;
 			}
 			dfn{
 				color: #fe483e;

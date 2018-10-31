@@ -40,21 +40,21 @@
 							<radio :label="3">Hotel</radio>
 							<radio :label="1">I haven't decided yet. I'll contact you later</radio>
 						</radio-group>
-						<div class="phone_check_list" v-if="ppType==2">
-							<div>&nbsp;&nbsp;&nbsp;&nbsp;Arrival Date: <input v-model="arrivalDate" type="text"></div>
-							<div class="mt10">Flight Number: <input v-model="flightNumber" type="text"></div>
+						<div class="phone_check_list" v-show="ppType==2">
+							<div>&nbsp;&nbsp;&nbsp;&nbsp;Arrival Date: <input class="js_changetime js_validate" vType="text" readonly v-model="arrivalDate" type="text"></div>
+							<div class="mt10">Flight Number: <input class="js_validate" vType="text" v-model="flightNumber" type="text"></div>
 						</div>
-						<div class="phone_check_list" v-else-if="ppType==3 && orderInfo.pickup">
+						<!-- <div class="phone_check_list" v-else-if="ppType==3 && orderInfo.pickup">
 							Hotel Name & Address: <input class="w500" v-model="hotel" type="text">
 							<p class="mt10">Your Panda Phone will be delivered by your guide at the start of your trip. </p>
-						</div>
-						<div class="phone_check_list" v-else-if="ppType==3 && !orderInfo.pickup">
+						</div> -->
+						<div class="phone_check_list" v-show="ppType==3">
 							<div>
-								Hotel Name & Address: <input class="w500" v-model="hotel" type="text">
+								Hotel Name & Address: <input class="w500 js_validate" vType="text" v-model="hotel" type="text">
 							</div>
 							<div class="mt10">
 								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-								Arrival Date: <input v-model="arrivalDate" style="margin-left:13px;" type="text">
+								Arrival Date: <input class="js_changetime js_validate" vType="text" readonly v-model="arrivalDate" style="margin-left:13px;" type="text">
 							</div>
 							<p class="mt10">One of our travel assistants will hand-deliver the Panda phone to you. We will confirm your delivery location, date, and time with you via email prior to your trip. Please check your email prior to departure for updates. </p>
 						</div>
@@ -91,6 +91,9 @@
 	import FooterCommon from '~/components/FooterCommon/FooterCommon';
 	import service from '~/components/pageComponents/inquiry/service';
 	import {radioGroup,radio} from "~/plugins/panda/radio/";
+	import Validate from "~/plugins/panda/validate/";
+	import Flatpickr from 'flatpickr';
+	require('~/assets/scss/G-ui/flatpickr.min.css')
 	import Vue from 'vue'
 	export default {
 
@@ -218,35 +221,52 @@
 			
 			submitPandaPhone(){
 				var that = this;
-				var putData = {
-					"arrivalDate": this.arrivalDate,
-					"flightNumber": this.flightNumber,
-					"hotel": this.hotel,
-					"orderId": this.orderId,
-					"id": this.orderInfo.activityId
-				};
-				if(this.ppType==2){
-					delete putData.hotel;
-				}
-				that.axios.put('https://api.localpanda.com/api/order/phone/info', JSON.stringify(putData), {
-					headers: {
-						'Content-Type': 'application/json'
-					}
-				}).then(function(response) {
-					if(response.data.succeed) {
-						console.log(response.data);
+				
+				var validate = this.fromValidate.validate();
+				console.log(validate);
+				if(validate){
+
+					var putData = {
+						"arrivalDate": this.arrivalDate,
+						"flightNumber": this.flightNumber,
+						"hotel": this.hotel,
+						"orderId": this.orderId,
+						"id": this.orderInfo.activityId
 					};
+					if(this.ppType==2){
+						delete putData.hotel;
+					}else if(this.ppType==3){
+						delete putData.flightNumber;
+					}
+					that.axios.put('https://api.localpanda.com/api/order/phone/info', JSON.stringify(putData), {
+						headers: {
+							'Content-Type': 'application/json'
+						}
+					}).then(function(response) {
+						if(response.data.succeed) {
+							console.log(response.data);
+						};
 
-				}, function(response) {
+					}, function(response) {
 
-				});
+					});
+
+				}
 			}
 		},
 		mounted: function() {
-//			this.orderId=GetQueryString("orderId")
-//			this.amount=GetQueryString("amount")
 
-console.log(this.orderInfo);
+			this.$nextTick(()=>{
+				new Flatpickr('.js_changetime');
+				//var aaa = new Flatpickr('#js_changetime1');
+				// new Flatpickr('#js_changetime2');
+				this.fromValidate = new Validate({
+					inputClassName:'js_validate', //需要校验的input的className
+					errorClassName:'valError'  //报错时，会自动在input上添加的className
+				});
+			});
+
+			console.log(this.orderInfo);
 			
 			this.logIn=window.localStorage.getItem("logstate")
 			this.userId=window.localStorage.getItem("userid")
@@ -254,6 +274,10 @@ console.log(this.orderInfo);
 			if(!this.logIn){
 				this.showTipTxt = true;
 			}
+
+
+			
+
 		}
 	}
 </script>
@@ -386,6 +410,8 @@ console.log(this.orderInfo);
 								height: 32px;
 								line-height: 32px;
 								margin:0 50px 0 10px;
+								border: 1px solid #ccc;
+								font-size:16px;
 							}
 							.w500{
 								width: 500px;
@@ -486,9 +512,21 @@ console.log(this.orderInfo);
 		}
 	}
 	.footerInfo{
-			li:nth-child(5){
-				display: none!important;
-			}
+		li:nth-child(5){
+			display: none!important;
 		}
+	}
+	.flatpickr-input{
+		padding: 0 10px!important;
+		width: 200px!important;
+		height: 32px!important;
+		line-height: 32px!important;
+		margin:0 50px 0 10px!important;
+		border: 1px solid #ccc!important;
+		font-size:16px!important;
+	}
+	.valError{
+		border: 1px solid #e14f3f!important;
+	}
 }
 </style>

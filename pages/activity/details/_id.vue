@@ -1834,6 +1834,7 @@ import { sep } from 'path';
 								font-weight: bold;
 								padding-bottom: 6px;
 								font-size: 16px;
+								width: 350px;
 								span{ margin-left: 5px;}
 							}
 						}

@@ -100,9 +100,9 @@
 					</div>
 				</div>
 				<!-- panda Phone -->
-				<div class="panda_phone">
+				<div class="panda_phone" v-if="opctions.phoneHire">
 					<p>A $150 USD deposit is required to use the Panda Phone, which will be returned to you upon returning the phone at the end of your trip. Please choose a deposit payment method below.</p>
-					<radio-group v-model="opctions.phoneDepositPayOnline" class="deposit_list" v-if="opctions.phoneHire">
+					<radio-group v-model="opctions.phoneDepositPayOnline" class="deposit_list">
 						<radio :label="false">Pay deposit upon recieving the phone in China with cash (RMB only) or paypal .*</radio><br>
 						<radio :label="true">Pay deposit now online</radio>
 					</radio-group>
@@ -143,22 +143,22 @@
 						</div>
 						<!-- panda Phone -->
 						<div class="child" v-if="opctions.phoneHire">
-							<b>+ {{opctions.symbol}}{{opctions.phoneHirePrice}}</b> (Panda Phone)
+							<b>+ {{opctions.symbol}}{{opctions.phoneHirePrice}}</b> Panda Phone
 						</div>
 						<div class="child" v-if="opctions.phoneDepositPayOnline === 'true' || opctions.phoneDepositPayOnline===true">
-							<b>+ {{opctions.symbol}}{{opctions.phoneDeposit}}</b> (Panda Phone deposit)
+							<b>+ {{opctions.symbol}}{{opctions.phoneDeposit}}</b> Panda Phone deposit
 						</div>
 						
 						<div class="child" v-if="opctions.childDiscount &&　opctions.childrenNum">
 							<b>- {{opctions.symbol}}{{returnFloat(opctions.childDiscount*opctions.childrenNum)}}</b>  for {{opctions.childrenNum}} {{opctions.childrenNum>1?'Children':'Child'}}
 						</div>
 						<div class="child" v-if="opctions.couponDiscount">
-							<b>-{{opctions.symbol}}{{returnFloat(opctions.couponDiscount)}}</b> (Coupon discount)
+							<b>-{{opctions.symbol}}{{returnFloat(opctions.couponDiscount)}}</b> Coupon discount
 						</div>
 
 					</div>
 					<div class="total clearfix">
-						<div class="totle-title">Total ({{opctions.currency}})</div>
+						<div class="totle-title">Total Amount</div>
 						<div class="totalPic">{{opctions.symbol}}{{returnFloat(opctions.amount)}}</div>
 					</div>
 				</div>
@@ -618,7 +618,8 @@
 					objectId: this.opctions.orderId,
 					amount: this.opctions.amount,
 					objectType: 'ACTIVITY',
-					deviceType:self.device()
+					deviceType:self.device(),
+					phoneDepositPayOnline: this.opctions.phoneDepositPayOnline
 				};
 				this.axios.post("https://api.localpanda.com/api/payment/pay/wechat", JSON.stringify(obj), {
 					headers: {

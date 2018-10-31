@@ -79,8 +79,8 @@
 							You can get a 100% refund up to {{opctions.refundTimeLimit}} hours before your trip.
 						</p>-->
 						<span class="iconfont" v-if="opctions.fullRefund&&timeout||!logIn">&#xe617;</span>
-						<!-- <p class="refundPolicy" style="font-size: 14px;" v-if="opctions.fullRefund&&timeout">You can reschedule or cancel your trip at zero cost before {{formatDate(delmulDay(opctions.startDate,opctions.refundTimeLimit))}}.</p> -->
-						<p class="refundPolicy" style="font-size: 14px;" v-if="opctions.picInfo.fullRefund && timeout">Free cancellation  up to {{(opctions.picInfo.refundTimeLimit>2?opctions.picInfo.refundTimeLimit+' days':24*opctions.picInfo.refundTimeLimit+' hours')}} before your trip</p>
+						<p class="refundPolicy" style="font-size: 14px;" v-if="opctions.picInfo.fullRefund&&timeout">You can reschedule or cancel your trip at zero cost before {{formatDate(delmulDay(opctions.startDate,opctions.picInfo.refundTimeLimit))}}.</p>
+						<!-- <p class="refundPolicy" style="font-size: 14px;" v-if="opctions.picInfo.fullRefund && timeout">Free cancellation  up to {{(opctions.picInfo.refundTimeLimit>2?opctions.picInfo.refundTimeLimit+' days':24*opctions.picInfo.refundTimeLimit+' hours')}} before your trip</p> -->
 						<h5 v-if="!logIn">As a guest user, you can access your order details through your name and email</h5>
 						
 						<!--<p class="text" style="font-size: 14px;margin-top: 20px;" v-if="logIn!=1">You ordered as a guest. To view your order details, you can click "My Bookings" on the top bar then type in the reservee's email address and name you entered before to access that information.</p>-->
@@ -218,7 +218,7 @@
 				</div>
 				<div class="pp_box mt20">
 					<h3>The Panda Phone - All-in-one Mobile Travel Assistant</h3>
-					<img class="mt5" src="https://cloud.localpanda.com/static/icon/pandaphone.jpg" alt="">
+					<img class="mt5" src="https://cloud.localpanda.com/static/icon/pandaphone.png" alt="">
 				</div>
 				<div class="pp_box mt10">
 					<h3>All for the insane price of $1</h3>

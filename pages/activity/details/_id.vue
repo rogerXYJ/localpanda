@@ -76,7 +76,7 @@
 								<dl class="book_price_info">
 									<dt>
 										<span>{{nowExchange.symbol}}{{returnFloat(perPersonPrice)}}×{{bookPeople}} {{bookPeople>1?'Travelers':'Traveler'}}</span>
-										<span v-if="pandaPhoneCheck">{{nowExchange.symbol}}{{returnFloat(picInfo.phoneHirePrice)}} Panda Phone</span>
+										<span v-if="pandaPhoneCheck">+{{nowExchange.symbol}}{{returnFloat(picInfo.phoneHirePrice)}} Panda Phone</span>
 										<span v-if="picInfo.childDiscount && bookChildren">-{{nowExchange.symbol}}{{returnFloat(picInfo.childDiscount*bookChildren)}} for {{bookChildren}} {{bookChildren>1?'Children':'Child'}}</span>
 										
 									</dt>
@@ -89,7 +89,7 @@
 								
 							</li>
 							<li>
-								<checkbox class="pp_checkbox" v-model="pandaPhoneCheck">Add Panda Phone to my trip for only <dfn>$1.00</dfn></checkbox>
+								<checkbox class="pp_checkbox" v-model="pandaPhoneCheck">Add Panda Phone to my trip for only <dfn>USD $1</dfn></checkbox>
 								<p class="pp_tip">All-in-one Mobile Travel Assistant <span @click="showPPDialog=true">Show details</span></p>
 							</li>
 							<li class="clearfix">
@@ -437,7 +437,7 @@ Price may vary depending on the language. If you need guides in other languages,
 				</div>
 				<div class="pp_box mt20">
 					<h3>The Panda Phone - All-in-one Mobile Travel Assistant</h3>
-					<img class="mt5" src="https://cloud.localpanda.com/static/icon/pandaphone.jpg" alt="">
+					<img class="mt5" src="https://cloud.localpanda.com/static/icon/pandaphone.png" alt="">
 				</div>
 				<div class="pp_box mt10">
 					<h3>All for the insane price of $1</h3>
@@ -2636,6 +2636,7 @@ import { sep } from 'path';
 			}
 			.checkbox_content{
 				padding: 0 0 0 6px;
+				font-size:15px;
 			}
 			dfn{
 				color: #fe483e;

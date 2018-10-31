@@ -30,13 +30,13 @@
 
 				<p class="c_666" v-if="showTipTxt && payType!='guide'">You ordered as a guest. You can click this button to view your order details.</p> -->
 
-				<div class="panda_phone">
+				<div class="panda_phone" v-if="orderInfo.phoneHire">
 					<h4>Panda Phone Service - 5 days (deposit included)</h4>
 					<p>You've selected The Panda Phone: All-in-one Mobile Travel Assistant. We will deliver your phone to the hotel or airport of your choice along with English-language assistance to get you set up.</p>
 					<h5>Please provide your delivery info below:</h5>
 					<div class="panda_phone_check">
-						<radio-group v-model="ppType" class="deposit_list" v-if="orderInfo.phoneHire">
-							<radio :label="2">Airport</radio>
+						<radio-group v-model="ppType" class="deposit_list">
+							<!-- <radio :label="2">Airport</radio> -->
 							<radio :label="3">Hotel</radio>
 							<radio :label="1">I haven't decided yet. I'll contact you later</radio>
 						</radio-group>
@@ -53,8 +53,8 @@
 								Hotel Name & Address: <input class="w500 js_validate" vType="text" v-model="hotel" type="text">
 							</div>
 							<div class="mt10">
-								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-								Arrival Date: <input class="js_changetime js_validate" vType="text" readonly v-model="arrivalDate" style="margin-left:13px;" type="text">
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+								Pick-up Date: <input class="js_changetime js_validate" vType="text" readonly v-model="arrivalDate" style="margin-left:13px;" type="text">
 							</div>
 							<p class="mt10">One of our travel assistants will hand-deliver the Panda phone to you. We will confirm your delivery location, date, and time with you via email prior to your trip. Please check your email prior to departure for updates. </p>
 						</div>
@@ -149,7 +149,7 @@
 				inqueryEmail:'',
 
 				//手机送达方式
-				ppType:'',
+				ppType:3,
 				arrivalDate:'',
 				flightNumber:'',
 				hotel:''
@@ -424,7 +424,7 @@
 						line-height: 42px;
 						text-align: center;
 						width: 160px;
-						margin-top: 20px;
+						margin-top: 10px;
 						background-image: -webkit-gradient(linear, right top, left top, from(#009efd), to(#1bbc9d));
 						background-image: linear-gradient(270deg, #009efd 0%, #1bbc9d 100%);
 						border-radius: 21px;

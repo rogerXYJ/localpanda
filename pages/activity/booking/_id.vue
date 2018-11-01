@@ -239,7 +239,7 @@
 <script>
 	if(process.browser) {
 		//require('~/assets/js/pages/talk.js')
-		//require('~/assets/js/pages/ga.js')
+		require('~/assets/js/pages/ga.js');
 	}
 	import Vue from 'vue'
 	import { regExp ,formatDate} from '~/assets/js/plugin/utils'
@@ -260,7 +260,6 @@
 			req
 		},callback) {
 			let id =route.params.id;
-			console.log(id)
 			let data={
 					opctions: {
 					averagePrice: 0,
@@ -516,8 +515,6 @@
 						var childDiscount = results[0].data.childDiscount;
 						options.childDiscount= childDiscount?childDiscount:0;
 
-						console.log(results[0].data);
-
 						var detailData = results[1].data;
 						options.details=detailData;
 
@@ -547,7 +544,6 @@
 			//退款时间计算
 			 delmulDay(dtstr, n) {
 				var dt = new Date(dtstr.replace(/\-/g,'/'));
-				console.log(dt)
 				dt.setDate(dt.getDate()-n);
 				return dt.getFullYear() + "-" +parseInt(dt.getMonth()+1) + "-" + dt.getDate();
 			},
@@ -777,7 +773,6 @@
 					that.errorFn("code")
 					that.codeErr = true
 					that.showCode=true
-					console.log(that.showCode)
 				
 				} else if(that.phone == "" || !regExp.isMobil(that.phone)) {
 					next = false
@@ -821,7 +816,6 @@
 			},
 			setPrice(){
 				//减去儿童差价和加上pandaphone的总价
-				console.log(this.opctions.adultsPic,111111111);
 				var allPrice = this.returnFloat(this.opctions.adultsPic*1 + (this.opctions.pandaPhoneCheck?this.opctions.phoneHirePrice:0)*1 - this.opctions.childDiscount*this.opctions.childrenNum);
 
 				//优惠券
@@ -879,7 +873,7 @@
 					"phoneHirePrice":that.opctions.phoneHirePrice,
 					"phoneHire":that.opctions.pandaPhoneCheck
 				}
-				console.log(obj)
+				
 				if(that.addOder == false) {
 					that.addOder = true
 					that.axios.put( "https://api.localpanda.com/api/order/activity", JSON.stringify(obj), {
@@ -887,8 +881,6 @@
 							'Content-Type': 'application/json; charset=UTF-8'
 						}
 					}).then(function(response) {
-
-						console.log(response)
 						//var hostUrl = obj.currency=='CNY' ? 'https://www.localpanda.cn' : 'https://www.localpanda.com';
 						var loginState = (that.logIn ? that.logIn : 0);
 						window.location.href = "/activity/payment?objectId=" + response.data.response + '&login=' + loginState;
@@ -943,8 +935,7 @@
 
 
 			this.goBackFn()
-			console.log(this.opctions);
-			console.log(this.amount);
+			
 			var self = this;
 
 			self.opctions.symbol = self.currency.symbol;
@@ -970,7 +961,6 @@
 			oderFirstName(val){
 				if(val){
 					this.test.test1=true
-					console.log(this.test.test1)
 				}else{
 					this.test.test1=false
 				}

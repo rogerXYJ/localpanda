@@ -239,7 +239,7 @@
 <script>
 	if(process.browser) {
 		//require('~/assets/js/pages/talk.js')
-		require('~/assets/js/pages/ga.js');
+		// require('~/assets/js/ga/booking.js');
 	}
 	import Vue from 'vue'
 	import { regExp ,formatDate} from '~/assets/js/plugin/utils'
@@ -416,6 +416,12 @@
 						hid: "description",
 						name: "description",
 						content: description
+					}
+				],
+				script: [
+					{
+						src: 'https://www.google-analytics.com/analytics.js',
+						type: 'text/javascript'
 					}
 				]
 			};
@@ -843,6 +849,11 @@
 					eventAction: 'submit',
 					eventLabel: 'activity_order_succ',
 				});
+
+
+				
+
+
 				obj = {
 					userId: localStorage.getItem("userid") ?
 					localStorage.getItem("userid") : null,
@@ -872,7 +883,17 @@
 					"finalRefundPeriod":that.opctions.finalRefundPeriod,
 					"phoneHirePrice":that.opctions.phoneHirePrice,
 					"phoneHire":that.opctions.pandaPhoneCheck
-				}
+				};
+
+				ga('ecommerce:addItem', {
+					'id': obj.activityId,                     // Transaction ID. Required.
+					'name': that.opctions.title,    // Product name. Required.
+					'category': 'Activity',         // Category or variation.
+					'price': obj.amount,                 // Unit price.
+					'quantity': obj.adultNum*1 + obj.adultNum*1,                  // Quantity.
+					'currency': obj.currency
+				});
+				ga('ecommerce:send');
 				
 				if(that.addOder == false) {
 					that.addOder = true
@@ -955,6 +976,11 @@
 				self.showCode = false
 				self.showTravellCode = false
 			})
+
+
+			//电商ga
+			ga('require', 'ecommerce');
+			
 
 		},
 		watch: {

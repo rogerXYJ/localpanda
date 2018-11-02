@@ -139,7 +139,7 @@
 							<!-- <div class="formula" v-if="opctions.childrenNum==0&&opctions.adultNum==1">{{opctions.symbol}}{{returnFloat(opctions.averagePrice)}} x 1 Person</div> -->
 							<div class="formula">{{opctions.symbol}}{{returnFloat(opctions.averagePrice)}} x {{opctions.adultNum+opctions.childrenNum}} {{(opctions.adultNum+opctions.childrenNum)>1?'Travelers':'Traveler'}}</div>
 							<!-- <div class="adultPic">{{opctions.symbol}} {{returnFloat(opctions.averagePrice*(opctions.adultNum+opctions.childrenNum))}}</div> -->
-							<div class="adultPic">{{opctions.symbol}} {{returnFloat(opctions.amount*1 + (opctions.childDiscount?opctions.childDiscount*opctions.childrenNum:0) - (opctions.phoneHire?opctions.phoneHirePrice:0)-((opctions.phoneDepositPayOnline == 'true' || opctions.phoneDepositPayOnline===true)?opctions.phoneDeposit:0) + (opctions.couponDiscount?opctions.couponDiscount:0))}}</div>
+							<div class="adultPic">{{opctions.symbol}}{{returnFloat(opctions.amount*1 + (opctions.childDiscount?opctions.childDiscount*opctions.childrenNum:0) - (opctions.phoneHire?opctions.phoneHirePrice:0)-((opctions.phoneDepositPayOnline == 'true' || opctions.phoneDepositPayOnline===true)?opctions.phoneDeposit:0) + (opctions.couponDiscount?opctions.couponDiscount:0))}}</div>
 						</div>
 						<!-- panda Phone -->
 						<div class="child" v-if="opctions.phoneHire">
@@ -586,10 +586,21 @@
 					} else {
 						if(response.data.succeed && !response.data.errorMessage) {
 							that.loadingStatus = true
-							var pageTracker = _gat._getTracker("UA-107010673-1");
-							pageTracker._addTrans(that.orderId, "", that.opctions.amount, "", "", "", "", "");
-							pageTracker._addItem(that.orderId, that.opctions.activityId, "", "", that.opctions.amount, "1");
-							pageTracker._trackTrans();
+							// var pageTracker = _gat._getTracker("UA-107010673-1");
+							// pageTracker._addTrans(that.orderId, "", that.opctions.amount, "", "", "", "", "");
+							// pageTracker._addItem(that.orderId, that.opctions.activityId, "", "", that.opctions.amount, "1");
+							// pageTracker._trackTrans();
+							
+							//ga统计
+							that.analyticsGa({
+								orderId: that.orderId,
+								activityId: that.opctions.activityId,
+								title: that.opctions.activityInfo.title,
+								travelers: that.opctions.childrenNum*1 + that.opctions.adultNum*1,
+								currency: that.opctions.currency,
+								amount: that.opctions.amount,
+								payType: 'Stripe'
+							});
 
 							window.location.href = "/payment/success?email=" + that.email + "&orderId=" + that.orderId + '&amount=' + that.opctions.amount + "&succeed=true" + "&currency=" + that.opctions.currency + "&symbol=" + that.opctions.symbol
 						} else {
@@ -686,10 +697,21 @@
 				}).then(function(response) {
 					if(response.status == 200 && response.data.succeed) {
 
-						var pageTracker = _gat._getTracker("UA-107010673-1");
-						pageTracker._addTrans(that.orderId, "", that.opctions.amount, "", "", "", "", "");
-						pageTracker._addItem(that.orderId, that.opctions.activityId, "", "", that.opctions.amount, "1");
-						pageTracker._trackTrans();
+						// var pageTracker = _gat._getTracker("UA-107010673-1");
+						// pageTracker._addTrans(that.orderId, "", that.opctions.amount, "", "", "", "", "");
+						// pageTracker._addItem(that.orderId, that.opctions.activityId, "", "", that.opctions.amount, "1");
+						// pageTracker._trackTrans();
+
+						//ga统计
+						that.analyticsGa({
+							orderId: that.orderId,
+							activityId: that.opctions.activityId,
+							title: that.opctions.activityInfo.title,
+							travelers: that.opctions.childrenNum*1 + that.opctions.adultNum*1,
+							currency: that.opctions.currency,
+							amount: that.opctions.amount,
+							payType: 'Wechat'
+						});
 
 						window.location.href = "/payment/success?email=" + that.email + "&orderId=" + that.orderId + '&amount=' + that.opctions.amount + "&succeed=true" + '&symbol=' + that.opctions.symbol + "&currency=" + that.opctions.currency;
 
@@ -805,6 +827,18 @@
 				}).then(function(response) {
 					that.loadingStatus = false;
 					if(putData.status == 'SUCCESSFUL') {
+
+						//ga统计
+						that.analyticsGa({
+							orderId: that.orderId,
+							activityId: that.opctions.activityId,
+							title: that.opctions.activityInfo.title,
+							travelers: that.opctions.childrenNum*1 + that.opctions.adultNum*1,
+							currency: that.opctions.currency,
+							amount: that.opctions.amount,
+							payType: 'Paypal'
+						});
+
 						//跳转
 						window.location.href = "/payment/success?email=" + that.email + "&orderId=" + that.orderId + '&amount=' + that.opctions.amount + "&succeed=true" + "&currency=" + that.opctions.currency + "&symbol=" + that.opctions.symbol
 					} else {
@@ -845,6 +879,27 @@
 					that.opctions.amount = that.opctions.amountDefault;
 					that.loadingStatus = false;
 				});
+			},
+			analyticsGa(data){
+				//电商ga
+				ga('ecommerce:addTransaction', {
+					'id': data.orderId,  // Transaction ID. Required.
+					'affiliation': data.payType,   // Affiliation or store name.
+					'revenue': data.amount,               // Grand Total.
+					'currency': data.currency
+					// 'shipping': '',                  // Shipping.
+					// 'tax': ''                     // Tax.
+				});
+				ga('ecommerce:addItem', {
+					'id': data.orderId,    // Transaction ID. Required.
+					'name': data.title,    // Product name. Required.
+					'sku': data.activityId,                 // SKU/code.
+					'category': 'ACTIVITY',         // Category or variation.
+					'price': data.amount,                 // Unit price.
+					'currency': data.currency,
+					'quantity': '1'             // Quantity.
+				});
+				ga('ecommerce:send');
 			}
 		},
 		created: function() {

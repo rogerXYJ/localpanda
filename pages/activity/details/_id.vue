@@ -93,16 +93,18 @@
 								<p class="pp_tip">All-in-one Mobile Travel Assistant <span @click="showPandaPhone">Show details</span></p>
 							</li>
 							<li class="clearfix">
-								<span class="btn fl" @click="bookNow">Book Now</span>
-								<span class="btn_inquire fl" @click="ContactStatus=true">Inquire</span>
+								<span class="btn" @click="bookNow">Book Now</span>
+								<!-- <span class="btn_inquire fl" @click="ContactStatus=true">Inquire</span> -->
 							</li>
 							
 							<!-- <li>
 								<p class="book_tip" v-if="picInfo.refundTimeLimit && picInfo.fullRefund===1">Free cancellation  up to {{(picInfo.refundTimeLimit>2?picInfo.refundTimeLimit+' days':24*picInfo.refundTimeLimit+' hours')}} before your trip</p>
 							</li> -->
-							<li v-if="detail.sales">
+							<li class="clearfix" v-if="detail.sales">
 								<!-- <div class="hr"></div> -->
 								<div class="Booked_box">Booked {{detail.sales}} {{detail.sales>1?'times':'time'}} (last 30 days)</div>
+								<div class="inquire_text" @click="ContactStatus=true"><i class="iconfont">&#xe649;</i><b>Inquire</b></div>
+								<div class="middle_line"></div>
 							</li>
 						</ul>
 					</div>
@@ -166,7 +168,7 @@
 				<!-- 行程板块 -->
 				<div class="detail_box itinerary" id="itinerary" v-if="detail.itinerary.length">
 					<h3><span class="btn_viewall" @click="itineraryViewall">View all</span><i></i>Experience Details</h3>
-					<div class="itinerary_tip" v-if="detail.groupType=='Private'">If you want to adjust your itinerary, feel free to contact us. Since the tour is private, our staff can help you make changes according to your needs.</div>
+					<div class="itinerary_tip" v-if="detail.groupType=='Private'">Our staff can help you make changes to your itinerary since this is a private tour.</div>
 					<dl class="itinerary_list" v-for="(items,index) in detail.itinerary" :key="index">
 						<dt @click="itineraryFn" v-if="items.description"><i class="iconfont i_down">&#xe667;</i><i class="iconfont i_up">&#xe666;</i><span></span>{{items.title}}</dt>
 						<dt v-else><span></span>{{items.title}}</dt>
@@ -1804,9 +1806,31 @@ import { sep } from 'path';
 						.hr{ height: 1px; background-color: #ebebeb;}
 						.book_tip{ margin-top: 10px; font-size: 14px;}
 						.Booked_box{
-							padding: 5px 0 0;
+							float: right;
+							line-height: 28px;
 							color: #878e95;
 							font-size: 14px; 
+						}
+						.inquire_text{
+							line-height: 26px;
+							font-size: 18px;
+							color: #1bbc9d;
+							cursor: pointer;
+							float: left;
+							// font-weight: bold;
+							i{margin-right: 5px; font-size: 20px; position: relative; top: 2px; vertical-align: top;}
+							b{
+								text-decoration: underline;
+								vertical-align: top;
+							}
+						}
+						.middle_line{
+							float: left;
+							margin-left: 30px;
+							width: 1px;
+							background-color: #bbb;
+							height: 18px;
+							margin-top: 6px;
 						}
 					}
 					
@@ -2322,7 +2346,6 @@ import { sep } from 'path';
 				height: 42px;
 				line-height: 42px;
 				text-align: center;
-				width: 48%;
 				background-image: -webkit-gradient(linear, right top, left top, from(#009efd), to(#1bbc9d));
 				background-image: linear-gradient(270deg, #009efd 0%, #1bbc9d 100%);
 				border-radius: 21px;

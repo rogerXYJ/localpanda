@@ -6,11 +6,16 @@
 		<!-- banner -->
 		<div class="banner">
 			<div class="swiper-container" id="swiper_bannerbox" v-swiper:mySwiper="bannerSwiper">
+				
 				<div class="swiper-wrapper">
 					<div class="swiper-slide" :key="index" v-for="(slide, index) in detail.bannerPhotos">
 						<img v-lazy="slide.url" lazy="error"  />
 					</div>
 				</div>
+
+				<div class="swiper-button-prev swiper-button-white"></div>
+    		<div class="swiper-button-next swiper-button-white"></div>
+				
 				<!-- <div class="swiper-pagination" id="swiper_banner_pagination"></div> -->
 			</div>
 		</div>
@@ -24,7 +29,7 @@
 					<div class="book_content">
 						<div class="book_head">
 							<div class="price_select_box">
-								<select v-model="selectCurrency" @change="changeCurrency">
+								<select v-model="selectCurrency">
 									<option :value="item.code" :key="index" v-for="(item,index) in exchange">{{item.code}}</option>
 								</select>
 								<i class="iconfont">&#xe666;</i>
@@ -541,6 +546,28 @@ import { sep } from 'path';
 				// 币种
 				nowExchange:{code: "USD", symbol: "$"},
 				selectCurrency:'USD',
+
+
+				bannerSwiper: {
+					lazy: true,
+					autoplay: 3000,
+					delay: 1000,
+					autoplayDisableOnInteraction: false,
+					slidesPerView: 3,
+					initialSlide: 0,
+					// prevButton:'.swiper-button-prev',
+					// nextButton:'.swiper-button-next',
+					// speed: 1000,
+					// loop: true,
+					slidesPerGroup: 3,
+    			// loopedSlides: 8,
+					navigation: {
+						nextEl: '.swiper-button-next',
+						prevEl: '.swiper-button-prev',
+					},
+					// setWrapperSize: true,
+					
+				},
 			};
 
 			//设置币种
@@ -811,22 +838,7 @@ import { sep } from 'path';
 
 				isShowMeau:false,
 
-				bannerSwiper: {
-					lazy: true,
-					autoplay: true,
-					delay: 1000,
-					autoplayDisableOnInteraction: false,
-					slidesPerView: 3,
-					initialSlide: 0,
-					// speed: 1000,
-					// loop: true,
-					// navigation: {
-					// 	nextEl: '.swiper-button-next',
-					// 	prevEl: '.swiper-button-prev',
-					// },
-					// setWrapperSize: true,
-					
-				},
+				
 
 
 				//导游
@@ -1148,22 +1160,61 @@ import { sep } from 'path';
 					eventLabel:"phone_layer"
 				});
 			},
-			changeCurrency(e){
+			getPriceData(options,callback){
 				var self = this;
-				var value = e.target ? e.target.value : e;
+				//价格信息
+				var promisePrice = new Promise(function(resolve, reject){
+					self.axios.get("https://api.localpanda.com/api/product/activity/"+options.activityId+"/price?currency="+options.currency).then(function(res) {
+						resolve(res);
+					}, function(res) {
+						resolve(res);
+					});
+				});
+				var promisePriceDetail = new Promise(function(resolve, reject){
+					self.axios.get("https://api.localpanda.com/api/product/activity/"+options.activityId+"/price/detail?currency="+options.currency+(options.participants?'&participants='+options.participants:'')).then(function(res) {
+						resolve(res);
+					}, function(res) {
+						resolve(res);
+					});
+				});
+
+				Promise.all([promisePrice,promisePriceDetail]).then(function(results){
+					var priceData = results[0].data,
+						priceDetailData = results[1].data;
+						if(typeof callback === 'function'){
+							callback({
+								priceData:priceData,
+								priceDetailData:priceDetailData
+							});
+						}
+				});
+
+			},
+			changeCurrency(){
+				var self = this;
+				var value = this.selectCurrency;
 				var picInfo = this.picInfo;
 				var thisDetail = picInfo.details;
 				
 				var exchange = this.exchange;
-				
-				//换算折扣价
-				self.axios.get("https://api.localpanda.com/api/product/activity/"+this.id+"/price?currency="+value).then(function(res) {
-					if(self.picInfo.childDiscount){
-						self.picInfo.childDiscount=res.data.childDiscount
+
+				//获取最新价格信息
+				this.getPriceData({
+					activityId: this.id,
+					currency: value,
+					participants: this.participants
+				},function(data){
+					var priceData = data.priceData,
+						priceDetailData = data.priceDetailData;
+					
+					//更新价格信息
+					if(priceData.childDiscount){
+						self.picInfo.childDiscount = priceData.childDiscount;
 					}
-					self.picInfo.bottomPrice=res.data.bottomPrice
-					self.picInfo.currency=res.data.currency
-					self.picInfo.phoneHirePrice = res.data.phoneHirePrice;
+					self.picInfo.bottomPrice = priceData.bottomPrice;
+					self.picInfo.currency= priceData.currency;
+					self.picInfo.phoneHirePrice = priceData.phoneHirePrice;
+
 					//设置当前币种
 					for(var i=0;i<exchange.length;i++){
 						var thisEx = exchange[i];
@@ -1172,40 +1223,21 @@ import { sep } from 'path';
 							self.nowExchange = thisEx;
 						}
 					}
-					//推荐产品
+
+					//更新价格详情
+					self.picInfo.details = priceDetailData;
+					//获取该人数的最新总价
+					if(self.participants>0){
+						self.adultsPic = self.getPeoplePrice(self.participants);
+					}
+
+					//重设book价格，计算儿童差价和pandaPhone之后得价格
+					self.setPeoplePrice();
+
+					//更新推荐产品价格
 					self.getRecommend();
 
-						
-				}, function(res) {
-					
 				});
-					
-				self.axios.get("https://api.localpanda.com/api/product/activity/"+this.id+"/price/detail?currency="+value+(self.participants?'&participants='+self.participants:'')).then(function(res) {
-						self.picInfo.details=res.data
-						
-						
-
-						self.sixArr=res.data
-						if(self.participants>0){
-							self.adultsPic =thisDetail[self.participants-1].price;	
-						}
-						if(res.data.length>6){
-							self.isShowTable=true
-							self.sixArr=res.data.concat().splice(0,6);
-						}else{
-							self.sixArr=res.data;
-						}
-
-						//重设book价格
-						self.setPeoplePrice();
-				}, function(res) {
-					
-				});
-				
-				//切换币种
-				// self.$emit('input',this.nowExchange);
-
-				
 				
 			},
 			headCurrencyFn(currency){
@@ -1354,6 +1386,8 @@ import { sep } from 'path';
 				var $main_r = document.querySelector('.main_r');
 				var $similar = document.querySelector('.similar');
 				var $book_all = document.querySelector('.book_all');
+				var $itinerary = document.querySelector('#itinerary');
+
 				window.onscroll = function(){
 					var Y = window.scrollY,
 					T = $main_r.offsetTop-60,
@@ -1367,6 +1401,17 @@ import { sep } from 'path';
 						}
 					}else{
 						self.bookFixed = false;
+					}
+
+					//行程图片预加载，触发提前加载
+					if(!$itinerary.getAttribute('imgLoad') && Y>$itinerary.offsetTop - window.innerHeight){
+						var allImg = $itinerary.querySelectorAll('img');
+						for(var i=0;i<allImg.length;i++){
+							var thisData = allImg[i];
+							var src = thisData.getAttribute('data-src');
+							thisData.src = src;
+						}
+						$itinerary.setAttribute('imgLoad','true');
 					}
 					
 				}
@@ -1495,7 +1540,7 @@ import { sep } from 'path';
 			nowExchange:function(val){
 				//设置价格
 				this.selectCurrency = val.code;
-				this.changeCurrency(val.code);
+				// this.changeCurrency(val.code);
 			},
 			startDate:function(){
 				ga(gaSend, {
@@ -1511,6 +1556,9 @@ import { sep } from 'path';
 					eventAction: "select",
 					eventLabel:"detail_select"
 				});
+			},
+			selectCurrency:function(){
+				this.changeCurrency();
 			},
 			pandaPhoneCheck:function(val){
 				this.setPeoplePrice();

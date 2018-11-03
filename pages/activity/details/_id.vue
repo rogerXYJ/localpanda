@@ -1192,18 +1192,15 @@ import { sep } from 'path';
 			},
 			changeCurrency(){
 				var self = this;
-				var value = this.selectCurrency;
-				var picInfo = this.picInfo;
-				var thisDetail = picInfo.details;
-				
+				var selectCurrency = this.selectCurrency;
 				var exchange = this.exchange;
 
 				//获取最新价格信息
 				this.getPriceData({
-					activityId: this.id,
-					currency: value,
-					participants: this.participants
-				},function(data){
+					activityId: this.id,  //产品id
+					currency: selectCurrency,  //当前币种
+					participants: this.participants   //人数
+				},function(data){  //data包含价格基本信息，价格详情
 					var priceData = data.priceData,
 						priceDetailData = data.priceDetailData;
 					
@@ -1212,20 +1209,21 @@ import { sep } from 'path';
 						self.picInfo.childDiscount = priceData.childDiscount;
 					}
 					self.picInfo.bottomPrice = priceData.bottomPrice;
-					self.picInfo.currency= priceData.currency;
+					self.picInfo.currency = priceData.currency;
 					self.picInfo.phoneHirePrice = priceData.phoneHirePrice;
 
 					//设置当前币种
 					for(var i=0;i<exchange.length;i++){
 						var thisEx = exchange[i];
 						//检测当前货币类型
-						if(thisEx.code==value){
+						if(thisEx.code==selectCurrency){
 							self.nowExchange = thisEx;
 						}
 					}
 
 					//更新价格详情
 					self.picInfo.details = priceDetailData;
+
 					//获取该人数的最新总价
 					if(self.participants>0){
 						self.adultsPic = self.getPeoplePrice(self.participants);

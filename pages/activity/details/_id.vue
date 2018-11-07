@@ -450,10 +450,17 @@ Price may vary depending on the language. If you need guides in other languages,
 					<h3>All for the insane price of USD $1</h3>
 					<p class="mt10">Pick-up and drop-off are only available at city center hotels in Shanghai & Beijing.<br>For more information or requests before booking, email us at at service@localpanda.com</p>
 					<p class="c_999 mt15">*For $1 you get up to 5 days of use. Each additional day after the first 5 days will cost an additional $1 (7 RMB). In order to take advantage of our special offer price you must book at least 1 tour or activity with Local Panda.</p>
+					<p class="c_999 mt15">*A $150 USD deposit is required to use the Panda Phone, which will be refunded upon returning the phone when your trip ends. You can pay deposit upon receiving the phone in China (cash/PayPal), or paying online with a debit/credit card.</p>
+					<br>
 				</div>
 			</div>
 			
-			<checkbox class="pp_checkbox green mt20" v-model="pandaPhoneCheck">Add Panda Phone to My Trip</checkbox>
+			<div class="add_panda">
+				<span class="btn" @click="addPanda">Add Panda Phone to My Trip</span>
+				<!-- <checkbox class="pp_checkbox green mt20" v-model="pandaPhoneCheck">Add Panda Phone to My Trip</checkbox> -->
+			</div>
+			
+			
 			
 			<div class="pp_close iconfont" @click="showPPDialog=false">&#xe606;</div>
 		</div>
@@ -1426,6 +1433,10 @@ import { sep } from 'path';
 			showBigPic(data,index){
 				this.reviewsImgList = data;
 				this.reviewsShowImg = true;
+			},
+			addPanda(){
+				this.pandaPhoneCheck=true;
+				this.showPPDialog=false;
 			}
 		},
 		mounted: function() {
@@ -2550,6 +2561,22 @@ import { sep } from 'path';
 				&:hover{
 					color: #000;
 				}
+			}
+			.btn{
+				display: inline-block;
+				margin-top: 10px;
+				padding: 0 30px;
+				height: 36px;
+				line-height: 36px;
+				border-radius: 18px;
+				cursor: pointer;
+				color: #fff;
+				font-size: 14px;
+				background-image: -webkit-gradient(linear, right top, left top, from(#009efd), to(#1bbc9d));
+				background-image: linear-gradient(270deg, #009efd 0%, #1bbc9d 100%);
+			}
+			.add_panda{
+				text-align: center;
 			}
 		}
 

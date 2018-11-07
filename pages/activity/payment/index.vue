@@ -212,6 +212,17 @@
 			<span class="iconfont pay_close" @click="closePay">&#xe629;</span>
 		</div>
 
+
+		<!-- 提示订单状态 -->
+		<dialogBox title="Tips" v-model="dialogStatus" :bgNoClick="true" :hideClose="true" width="80%" height="auto">
+			<div class="order_status">
+				<p>{{dialogStatusText}}</p>
+				<a class="btn" :href="'https://www.localpanda.com/activity/details/'+opctions.activityId" v-if="opctions.status=='CANCELED'">Book Again</a>
+				<a class="btn" :href="'/user/myBookings?email='+opctions.contactInfo.emailAddress+'&orderid='+orderId" v-else>View Order Detail</a>
+				<a class="btn" href="/">Back to Home</a>
+			</div>
+		</dialogBox>
+
 	</div>
 
 </template>
@@ -228,6 +239,7 @@
 	import FooterCommon from '~/components/FooterCommon/FooterCommon';
 	import Loading from '~/components/Loading/Loading'
 	import {radioGroup,radio} from "~/plugins/panda/radio/";
+	import dialogBox from '~/plugins/panda/dialogBox';
 	//	import api from '~/assets/js/plugin/api.js'
 	//import QRCode from '~/assets/js/plugin/wx/qrcode.min.js'
 	import Vue from 'vue'
@@ -319,6 +331,10 @@
 				payStatus: false,
 				payErrMsg: '',
 				isPay: false,
+
+				//订单状态提醒
+				dialogStatus:false,
+				dialogStatusText:''
 		
 		};
 			
@@ -352,7 +368,8 @@
 			FooterCommon,
 			Loading,
 			radioGroup,
-    	radio
+			radio,
+			dialogBox
 		},
 		methods: {
 			cutXiaoNum(num, len) {
@@ -910,11 +927,30 @@
 			this.orderId = GetQueryString("objectId")
 			console.log(this.opctions)
 //			this.getInfo()
-			this.stripeFn()
+			// this.stripeFn()
 
-			//paypal支付
-			if(this.opctions.currency !='CNY'){
-				this.paypal();
+			// //paypal支付
+			// if(this.opctions.currency !='CNY'){
+			// 	this.paypal();
+			// }
+
+			//检测支付状态
+			if(this.opctions.status=='PAYMENT_PENDING'){
+
+				//paypal支付
+				if(this.opctions.currency !='CNY'){
+					this.paypal();
+				}
+				
+				//stripe支付
+				this.stripeFn();
+
+			}else if(this.opctions.status=='CANCELED'){
+				this.dialogStatus = true;
+				this.dialogStatusText = 'The order has expired. ';
+			}else{
+				this.dialogStatus = true;
+				this.dialogStatusText = 'The order has been paid.';
 			}
 
 			//this.getToken()
@@ -1274,6 +1310,30 @@
 				cursor: pointer;
 			}
 		}
+
+		.order_status{
+			text-align: center;
+			p{
+				text-align: center;
+				font-size: 24px;
+				padding: 20px 0 40px;
+				font-weight: bold;
+			}
+			.btn{
+				display: inline-block;
+				height: 38px;
+				padding: 0 30px;
+				line-height: 36px;
+				margin-top: 0.3rem;
+				border-radius: 19px;
+				font-size: 16px;
+				text-align: center;
+				color: #fff;
+				margin: 0 20px;
+				background-image: -webkit-gradient(linear, right top, left top, from(#009efd), to(#1bbc9d)), -webkit-gradient(linear, left top, left bottom, from(#1bbc9d), to(#1bbc9d));
+    		background-image: linear-gradient(270deg, #009efd 0%, #1bbc9d 100%), linear-gradient(#1bbc9d, #1bbc9d);
+			}
+		}
 	}
 </style>
 
@@ -1350,6 +1410,8 @@
 				}
 			}
 		}
+
+		
 
 	}
 </style>

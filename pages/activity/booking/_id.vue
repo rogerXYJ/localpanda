@@ -78,8 +78,8 @@
 							You can reschedule or cancel your trip at zero cost before Aug 31st, 2018.
 							You can get a 100% refund up to {{opctions.refundTimeLimit}} hours before your trip.
 						</p>-->
-						<span class="iconfont" v-if="opctions.fullRefund&&timeout||!logIn">&#xe617;</span>
-						<p class="refundPolicy" style="font-size: 14px;" v-if="opctions.picInfo.fullRefund&&timeout">You can reschedule or cancel your trip at zero cost before {{formatDate(delmulDay(opctions.startDate,opctions.picInfo.refundTimeLimit))}}.</p>
+						<span class="iconfont" v-if="opctions.picInfo&&opctions.picInfo.fullRefund&&timeout||!logIn">&#xe617;</span>
+						<p class="refundPolicy" style="font-size: 14px;" v-if="opctions.picInfo&&opctions.picInfo.fullRefund&&timeout">You can reschedule or cancel your trip at zero cost before {{formatDate(delmulDay(opctions.startDate,opctions.picInfo.refundTimeLimit))}}.</p>
 						<!-- <p class="refundPolicy" style="font-size: 14px;" v-if="opctions.picInfo.fullRefund && timeout">Free cancellation  up to {{(opctions.picInfo.refundTimeLimit>2?opctions.picInfo.refundTimeLimit+' days':24*opctions.picInfo.refundTimeLimit+' hours')}} before your trip</p> -->
 						<h5 v-if="!logIn">As a guest user, you can access your order details through your name and email</h5>
 						
@@ -359,46 +359,52 @@
 				data.currency = JSON.parse(decodeURIComponent(userCookie.currency));
 				
 			}
+
+
+
+			callback(null,data);
 			
-			try{
-				var Promise1 = new Promise(function(resolve, reject){
-					Vue.axios.get(apiBasePath + "product/activity/"+id+"/price?currency="+data.currency.code).then(function(res) {
-						// var consoleTimeS2 = new Date().getTime();
-						// 	console.log('价格接口花费时间：'+(consoleTimeS2-consoleTimeS)+' ms');
-						resolve(res);
-					}, function(res) {
-						resolve(res);
-					});
-				});
+			// try{
+			// 	var Promise1 = new Promise(function(resolve, reject){
+			// 		Vue.axios.get(apiBasePath + "product/activity/"+id+"/price?currency="+data.currency.code).then(function(res) {
+			// 			// var consoleTimeS2 = new Date().getTime();
+			// 			// 	console.log('价格接口花费时间：'+(consoleTimeS2-consoleTimeS)+' ms');
+			// 			resolve(res);
+			// 		}, function(res) {
+			// 			resolve(res);
+			// 		});
+			// 	});
 
-			//价格明细
-			var Promise2 = new Promise(function(resolve, reject){
-				Vue.axios.get(apiBasePath + "product/activity/"+id+"/price/detail?currency="+data.currency.code).then(function(res) {
-					// var consoleTimeS2 = new Date().getTime();
-					// 	console.log('价格接口花费时间：'+(consoleTimeS2-consoleTimeS)+' ms');
-					resolve(res);
-				}, function(res) {
-					resolve(res);
-				});
-			});
-			Promise.all([Promise1,Promise2]).then(results=>{
-				
-				data.opctions.picInfo=results[0].data;
-				data.opctions.phoneHirePrice = results[0].data.phoneHirePrice;
-				
-				data.opctions.picInfo.detail=results[1].data
-				callback(null,data);
+			// 	//价格明细
+			// 	var Promise2 = new Promise(function(resolve, reject){
+			// 		Vue.axios.get(apiBasePath + "product/activity/"+id+"/price/detail?currency="+data.currency.code).then(function(res) {
+			// 			// var consoleTimeS2 = new Date().getTime();
+			// 			// 	console.log('价格接口花费时间：'+(consoleTimeS2-consoleTimeS)+' ms');
+			// 			resolve(res);
+			// 		}, function(res) {
+			// 			resolve(res);
+			// 		});
+			// 	});
+			// 	Promise.all([Promise1,Promise2]).then(results=>{
+					
+			// 		data.opctions.picInfo=results[0].data;
+			// 		data.opctions.phoneHirePrice = results[0].data.phoneHirePrice;
+					
+			// 		data.opctions.picInfo.detail=results[1].data
+			// 		callback(null,data);
 
-			})
+			// 	})
 		
 
-		}catch(err) {
-				console.log(err);
-				return error({
-					statusCode: 500,
-					message: JSON.stringify(err)
-				});
-		}
+			// }catch(err) {
+			// 		console.log(err);
+			// 		return error({
+			// 			statusCode: 500,
+			// 			message: JSON.stringify(err)
+			// 		});
+			// }
+
+
 		},
 		name: 'fillYourInfo',
 		 head() {
@@ -918,8 +924,6 @@
 			var self=this
 			var opctions = localStorage.getItem("orderInfo") ? JSON.parse(localStorage.getItem("orderInfo")) : ''
 
-			
-
 			if(opctions){
 				for(var key in opctions){
 					if(key!='childDiscount'){
@@ -929,7 +933,7 @@
 				}
 			}
 			// this.opctions.adultsPic=this.getBasisPrice()
-			var details=this.opctions.picInfo.detail;
+			var details=this.opctions.picInfo.details;
 			var opctions=this.opctions.picInfo;
 			
 		

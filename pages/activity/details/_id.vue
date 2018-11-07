@@ -105,11 +105,11 @@
 							<!-- <li>
 								<p class="book_tip" v-if="picInfo.refundTimeLimit && picInfo.fullRefund===1">Free cancellation  up to {{(picInfo.refundTimeLimit>2?picInfo.refundTimeLimit+' days':24*picInfo.refundTimeLimit+' hours')}} before your trip</p>
 							</li> -->
-							<li class="clearfix" v-if="detail.sales">
+							<li class="clearfix">
 								<!-- <div class="hr"></div> -->
-								<div class="Booked_box">Booked {{detail.sales}} {{detail.sales>1?'times':'time'}} (last 30 days)</div>
+								<div class="Booked_box" v-if="detail.sales">Booked {{detail.sales}} {{detail.sales>1?'times':'time'}} (last 30 days)</div>
 								<div class="inquire_text" @click="ContactStatus=true"><i class="iconfont">&#xe649;</i><b>Inquire</b></div>
-								<div class="middle_line"></div>
+								<div class="middle_line" v-if="detail.sales"></div>
 							</li>
 						</ul>
 					</div>
@@ -751,6 +751,7 @@ import { sep } from 'path';
 
 						//包含
 						data.inclusions = results[7].data || [];
+
 						//不包含
 						data.exclusions = results[8].data || [];
 						//注意事项
@@ -1296,6 +1297,7 @@ import { sep } from 'path';
 					symbol: this.nowExchange.symbol,
 					adultNum: this.bookAdults,
 					refundTimeLimit: this.picInfo.refundTimeLimit,
+					fullRefund: this.picInfo.fullRefund,
 				  finalRefundPeriod:(this.picInfo.fullRefund?this.getRefundDate(this.startDate,this.picInfo.refundTimeLimit):null),  //最后退款日期
 					childrenNum: this.bookChildren,
 					infantNum: 0,
@@ -1309,8 +1311,9 @@ import { sep } from 'path';
 				  owner:this.detail.owner,
 		      averagePrice: this.perPersonPrice, //人均价 
 					guideId: this.checkGuideIndex!=='' ? this.detail.guide[this.checkGuideIndex].guideId : null,
-					// phoneHirePrice: this.picInfo.phoneHirePrice,
-					pandaPhoneCheck:this.pandaPhoneCheck
+					phoneHirePrice: this.picInfo.phoneHirePrice,
+					pandaPhoneCheck:this.pandaPhoneCheck,
+					picInfo: this.picInfo
 				};
 				
 				

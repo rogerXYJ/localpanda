@@ -2088,6 +2088,7 @@ export default {
           margin-top: 15px;
 
           .activity-item {
+            min-height: 195px;
             &:hover {
               box-shadow: 0px 2px 10px 0px rgba(0, 0, 0, 0.24);
               .titleText {
@@ -2111,11 +2112,11 @@ export default {
               position: absolute;
               width: 309px;
               height: 100%;
-              min-height: 135px;
+              min-height: 195px;
               .activity-photo {
                 width: 309px;
                 height: 100%;
-                min-height: 135px;
+                min-height: 195px;
                 background-repeat: no-repeat !important;
                 background-size: cover !important;
                 position: relative;

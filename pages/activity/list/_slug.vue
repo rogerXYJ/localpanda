@@ -1395,6 +1395,7 @@ export default {
           //participants:this.postData.participants,
           //type:this.postData.type
         };
+
         for (var key in val) {
           if (Array.isArray(val[key])) {
             var thisVal = val[key].concat();
@@ -1413,54 +1414,51 @@ export default {
           } else if (key == "price" && !Array.isArray(val[key])) {
 			  if(this.postData.currency=="CNY"){
 				  if (val[key].maxValue <= 3000 || val[key].minValue > 0) {
-					options[key] = val[key];
-					}
-					if (val[key].maxValue > 3000) {
-					postFilters.push({
-						type: key.toUpperCase(),
-						minValue: val[key].minValue
-					});
-					} else {
-					postFilters.push({
-						type: key.toUpperCase(),
-						maxValue: val[key].maxValue,
-						minValue: val[key].minValue
-					});
-				}
+            options[key] = val[key];
+            }
+            if (val[key].maxValue > 3000) {
+            postFilters.push({
+              type: key.toUpperCase(),
+              minValue: val[key].minValue
+            });
+            } else {
+            postFilters.push({
+              type: key.toUpperCase(),
+              maxValue: val[key].maxValue,
+              minValue: val[key].minValue
+            });
+          }
 			  }else if(this.postData.currency=="JPY"){
 				  if (val[key].maxValue <= 50000 || val[key].minValue > 0) {
-					options[key] = val[key];
-					}
-					if (val[key].maxValue > 50000) {
-					postFilters.push({
-						type: key.toUpperCase(),
-						minValue: val[key].minValue
-					});
-					} else {
-					postFilters.push({
-						type: key.toUpperCase(),
-						maxValue: val[key].maxValue,
-						minValue: val[key].minValue
-					});
-				}
+            options[key] = val[key];
+            }
+          if (val[key].maxValue > 50000) {
+            postFilters.push({
+              type: key.toUpperCase(),
+              minValue: val[key].minValue
+            });
+          } else {
+            postFilters.push({
+              type: key.toUpperCase(),
+              maxValue: val[key].maxValue,
+              minValue: val[key].minValue
+            });
+          }
 			  }else{
-				  if(this.postData.currency=="CNY"){
-					if (val[key].maxValue <= 500 || val[key].minValue > 0) {
-						options[key] = val[key];
-						}
-						if (val[key].maxValue > 500) {
-						postFilters.push({
-							type: key.toUpperCase(),
-							minValue: val[key].minValue
-						});
-						} else {
-						postFilters.push({
-							type: key.toUpperCase(),
-							maxValue: val[key].maxValue,
-							minValue: val[key].minValue
-						});
-					}
-				}
+				  if (val[key].maxValue <= 500 || val[key].minValue > 0) {
+            options[key] = val[key];
+            }if (val[key].maxValue > 500) {
+            postFilters.push({
+              type: key.toUpperCase(),
+              minValue: val[key].minValue
+            });
+          } else {
+            postFilters.push({
+              type: key.toUpperCase(),
+              maxValue: val[key].maxValue,
+              minValue: val[key].minValue
+            });
+          }
 			  }
             
           }

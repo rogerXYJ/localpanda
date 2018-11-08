@@ -13,8 +13,8 @@
 					</div>
 				</div>
 
-				<div class="swiper-button-prev swiper-button-white"></div>
-    		<div class="swiper-button-next swiper-button-white"></div>
+				<div class="swiper-button-prev swiper-button-white" v-if="detail.bannerPhotos.length>3"></div>
+    		<div class="swiper-button-next swiper-button-white" v-if="detail.bannerPhotos.length>3"></div>
 				
 				<!-- <div class="swiper-pagination" id="swiper_banner_pagination"></div> -->
 			</div>

@@ -194,7 +194,7 @@
 						<div class="other_content" v-if="inclusions.length">
 							<h4>Inclusions</h4>
 							<ul class="detail_txt_list">
-								<li v-for="(item,index) in inclusions" :key="index" v-if="item.title">
+								<li v-for="(item,index) in inclusions" :key="index" v-if="item.title!=''">
 									<i class="iconfont green">&#xe65c;</i>{{item.title}}
 									<p>{{item.content}}</p>
 								</li>

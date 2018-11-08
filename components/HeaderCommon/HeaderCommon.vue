@@ -41,7 +41,7 @@
 				<li @click="goUrlContact" @mouseenter="showContactUs=true" @mouseleave="showContactUs=false">Contact Us</li>
 			</ul>
 			<ul class="login" v-if="logIn==1">
-				<li @click="showContact">Customize Your Trip<em class="hot">HOT</em></li>
+				
 				<li class="selectCurrency">
 					<label @click="showSelectCurreney" class="selectCurrencyBtn"><i v-html="getSvg(currency)"></i> {{currency}} ( {{symbol}} ) <span class="iconfont">&#xe666;</span> </label>
 					<div class="currencyBox" v-if="showCurrency">
@@ -58,6 +58,7 @@
 					
 					
 				</li>
+				<li @click="showContact">Customize Your Trip<em class="hot">HOT</em></li>
 				<li @click="goBook" style="margin-right: 33px;">My Bookings</li>
 				<!--<li @click="goAboutUs" style="margin-right: 40px;">About Us</li>-->
 				<li @click="goUrlContact" @mouseenter="showContactUs=true" @mouseleave="showContactUs=false">Contact Us</li>

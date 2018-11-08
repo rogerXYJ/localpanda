@@ -35,13 +35,13 @@
 					
 					
 				</li>
-				<!-- <li @click="showContact">Customize Your Trip<em class="hot">HOT</em></li> -->
+				<li @click="showContact">Customize Your Trip<em class="hot">HOT</em></li>
 				<li @click="isShowAnonymityback">My Bookings</li>
 				<li @click="show">Log In</li>
 				<li @click="goUrlContact" @mouseenter="showContactUs=true" @mouseleave="showContactUs=false">Contact Us</li>
 			</ul>
 			<ul class="login" v-if="logIn==1">
-				<!-- <li @click="showContact">Customize Your Trip<em class="hot">HOT</em></li> -->
+				<li @click="showContact">Customize Your Trip<em class="hot">HOT</em></li>
 				<li class="selectCurrency">
 					<label @click="showSelectCurreney" class="selectCurrencyBtn"><i v-html="getSvg(currency)"></i> {{currency}} ( {{symbol}} ) <span class="iconfont">&#xe666;</span> </label>
 					<div class="currencyBox" v-if="showCurrency">
@@ -938,7 +938,8 @@
 			}
 			.log {
 				margin-left: 20px;
-				width: 300px;
+				margin-top: 2px;
+				width: 280px;
 				height: 55px;
 				line-height: 60px;
 				display: inline-block;
@@ -964,7 +965,7 @@
 				position: relative;
 				height: 36px;
 				line-height: 36px;
-				width: 330px;
+				width: 300px;
 				border-radius: 6px;
 				background-color: #edf0f0;
 				i {
@@ -1024,7 +1025,7 @@
 					position: relative;
 					float: left;
 					font-size: 16px;
-					margin-left: 33px;
+					margin-left: 30px;
 					line-height: 60px;
 					height: 60px;
 					.hot {
@@ -1035,6 +1036,7 @@
 						color: #fff;
 						font-weight: bold;
 						margin-left: 8px;
+						display: none;
 					}
 					a{
 						display: block;
@@ -1114,6 +1116,7 @@
 						color: #fff;
 						font-weight: bold;
 						margin-left: 8px;
+						display: none;
 					}
 					line-height: 55px;
 					float: left;

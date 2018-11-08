@@ -1,7 +1,7 @@
 <template>
 	<div class="page-banner">
 		<div class="mask"></div>
-        <h2>Customize My Trip</h2>
+        <h2>Customize Your Trip</h2>
         <h3>Create your own free China Itinerary, personalized to your schedule and interests.</h3>
         <div class="banner-bar" id="banner-bar">
             <ul>

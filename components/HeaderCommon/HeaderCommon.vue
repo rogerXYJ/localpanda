@@ -35,7 +35,7 @@
 					
 					
 				</li>
-				<li @click="showContact">Customize Your Trip<em class="hot">HOT</em></li>
+				<li @click="showContact">Customize My Trip<em class="hot">HOT</em></li>
 				<li @click="isShowAnonymityback">My Bookings</li>
 				<li @click="show">Log In</li>
 				<li @click="goUrlContact" @mouseenter="showContactUs=true" @mouseleave="showContactUs=false">Contact Us</li>
@@ -58,7 +58,7 @@
 					
 					
 				</li>
-				<li @click="showContact" style="margin-right: 33px;">Customize Your Trip<em class="hot">HOT</em></li>
+				<li @click="showContact" style="margin-right: 33px;">Customize My Trip<em class="hot">HOT</em></li>
 				<li @click="goBook" style="margin-right: 33px;">My Bookings</li>
 				<!--<li @click="goAboutUs" style="margin-right: 40px;">About Us</li>-->
 				<li @click="goUrlContact" @mouseenter="showContactUs=true" @mouseleave="showContactUs=false">Contact Us</li>

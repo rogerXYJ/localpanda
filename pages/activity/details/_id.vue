@@ -2586,7 +2586,7 @@ import { sep } from 'path';
 		height: 100%;
 		width: 100%;
 		position: fixed;
-		z-index: 999999999999999999;
+		z-index: 999;
 		top: 0;
 		left: 0;
 		&.on {

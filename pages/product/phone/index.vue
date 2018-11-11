@@ -35,8 +35,8 @@
 							<li>
 								<h4>Duration</h4>
 								<div class="input_box">
-									<div class="start_date" :class="{'holder':!changeDate}">{{changeDate?changeDate[0]:'Pick-up Date'}}</div>
-									<div class="end_date" :class="{'holder':!changeDate}">{{changeDate?changeDate[1]:'Return Date'}}</div>
+									<div class="start_date" :class="{'holder':!changeDate.length}">{{changeDate.length?formatDate(changeDate[0]):'Pick-up Date'}}</div>
+									<div class="end_date" :class="{'holder':!changeDate.length}">{{changeDate.length?formatDate(changeDate[1]):'Return Date'}}</div>
 									<!-- formatDate(changeDate[1]) -->
 									<div class="data_line"></div>
 									<input v-model="duration" class="js_changetime" @focus="showCalendar=true" type="text" readonly>
@@ -55,7 +55,7 @@
 									<i class="iconfont">&#xe666;</i>
 								</div>
 							</li>
-							<li v-if="changeDate">
+							<li v-if="changeDate.length">
 								<h4>Price Breakdown</h4>
 								<dl class="book_price_info">
 									<dt>
@@ -255,7 +255,7 @@ Renting the Panda Phone without booking a tour costs $5 for the first day and an
 				showWinBg:false,
 				showCalendar:false,
 				duration:'',
-				changeDate:['2018-11-11','2018-11-25'],
+				changeDate:[],
 				adultsText:'Adults',
 				bookPeople:1,
 				dayPrice:1,

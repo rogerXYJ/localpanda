@@ -27,7 +27,7 @@
 								<i class="iconfont">&#xe666;</i>
 							</div>
 							<div class="price_info">
-								<b><span class="price_from" v-if="!participants">From</span> {{nowExchange.symbol}} {{returnFloat(participants?participants*5:bottomPrice)}}</b>
+								<b><span class="price_from" v-if="!devicesNum">From</span> {{nowExchange.symbol}} {{returnFloat(startingPrice)}}</b>
 							</div>
 						</div>
 
@@ -39,7 +39,7 @@
 									<div class="end_date" :class="{'holder':!changeDate.length}">{{changeDate.length?formatDate(changeDate[1]):'Return Date'}}</div>
 									<!-- formatDate(changeDate[1]) -->
 									<div class="data_line"></div>
-									<input v-model="duration" class="js_changetime" @focus="showCalendar=true" type="text" readonly>
+									<input @focus="showCalendar=true" type="text" readonly>
 									<!-- 日历 -->
 									<div class="date_dialog" v-show="showCalendar">
 										<calendar v-model="changeDate" type="multi3" size="mini" showDouble="true" maxMonths="12" @change="selectDate" :loading="isLoading"></calendar>
@@ -49,28 +49,28 @@
 							<li>
 								<h4>Number of devices</h4>
 								<div class="input_box holder">
-									<select v-model="bookPeople" class="book_select" placeholder="Adults">
+									<select v-model="devicesNum" class="book_select" placeholder="Adults">
 										<option :value="item" v-for="item in 10" :key="item">{{item}}</option>
 									</select>
 									<i class="iconfont">&#xe666;</i>
 								</div>
 							</li>
 							<li v-if="changeDate.length">
-								<h4>Price Breakdown</h4>
+								<h4>Pricing Details</h4>
 								<dl class="book_price_info">
 									<dt>
-										<span>{{nowExchange.symbol}}{{returnFloat(bottomPrice)}} × {{bookPeople}} {{bookPeople>1?'Travelers':'Traveler'}}</span>
+										<span>{{days}} Days × {{devicesNum}} {{devicesNum>1?'Devices':'Device'}}</span>
 										
 									</dt>
-									<dd>{{nowExchange.symbol}}{{returnFloat(amount)}}</dd>
+									<dd>{{nowExchange.symbol}}{{totalPrice}}</dd>
 								</dl>
 								<dl class="book_price_info">
 									<dt>Total Amount</dt>
-									<dd>{{nowExchange.symbol}}<b>{{amount}}</b></dd>
+									<dd>{{nowExchange.symbol}}<b>{{totalPrice}}</b></dd>
 								</dl>
 							</li>
 							<li class="clearfix">
-								<span class="btn" @click="bookNow">Book Now</span>
+								<span class="btn" @click.stop="bookNow">Book Now</span>
 								<!-- <span class="btn_inquire fl" @click="ContactStatus=true">Inquire</span> -->
 							</li>
 						</ul>
@@ -256,11 +256,13 @@ Renting the Panda Phone without booking a tour costs $5 for the first day and an
 				showCalendar:false,
 				duration:'',
 				changeDate:[],
+				days:1,
 				adultsText:'Adults',
-				bookPeople:1,
+				devicesNum:1,
 				dayPrice:1,
-				bottomPrice:5,
-				amount:0,
+				incrementalPrice:1, //超出每天加价1美元
+				startingPrice:5, //起始价格5美元
+				totalPrice:5,
 
 				// 币种
 				nowExchange:{code: "USD", symbol: "$"},
@@ -276,44 +278,19 @@ Renting the Panda Phone without booking a tour costs $5 for the first day and an
 			}
 			//设置人数
 			if(userCookie.participants){
-				data.participants=userCookie.participants;
+				data.devicesNum=userCookie.participants;
 			}
 
-			callback(null,data);
+			Vue.axios.get("https://api.localpanda.com/api/product/phone/price?currency="+data.nowExchange.code+"&days=1&deviceNum="+data.devicesNum).then(function(res) {
+					
+					data.incrementalPrice = res.data.incrementalPrice;
+					data.startingPrice = res.data.startingPrice;
+					data.totalPrice = res.data.totalPrice;
 
-			//基本信息
-			// var Promise1 = new Promise(function(resolve, reject){
-			// 	Vue.axios.get(apiBasePath + "product/activity/" + id).then(function(res) {
-			// 		//获取可售日期
-			// 		if(!res.data.allAvailable){
-			// 			Vue.axios.get(apiBasePath + "product/activity/"+id+"/sale/calendar").then(function(response) {
-			// 				data.calendar = response.data?response.data:[];
-			// 				resolve(res);
-			// 			}, function() {
-			// 				resolve(res);
-			// 			});
-			// 		}else{
-			// 			resolve(res);
-			// 		}
-			// 	}, function(res) {
-			// 		resolve(res);
-			// 	});
-			// });
-			
-			
-			// Promise.all([Promise1]).then(function(results){
+					callback(null,data);
 
-			// 	//基本信息
-			// 	var detailData = results[0].data;
+				}, function(res) {});
 
-			// 	//同步回调
-			// 	callback(null,data);
-			// }).catch(function(err){
-			// 	return error({
-			// 		statusCode: 500,
-			// 		message: JSON.stringify(err)
-			// 	});
-			// });
 			
 		},
 		head() {
@@ -419,6 +396,27 @@ Renting the Panda Phone without booking a tour costs $5 for the first day and an
 				var self = this;
 				var selectCurrency = this.selectCurrency;
 				var exchange = this.exchange;
+				
+
+				this.axios.get("https://api.localpanda.com/api/product/phone/price?currency="+selectCurrency+"&days="+self.days+"&deviceNum="+self.devicesNum).then(function(res) {
+
+					for(var i = 0; i < exchange.length; i++) {
+						var thisEx = exchange[i];
+						if(thisEx.code == selectCurrency) {
+							self.nowExchange = thisEx;
+						}
+					};
+					
+					self.incrementalPrice = res.data.totalPrice;
+					self.startingPrice = res.data.startingPrice;
+					self.totalPrice = res.data.totalPrice;
+
+					Cookie.set('currency',JSON.stringify({
+						code: self.nowExchange.code,
+						symbol: self.nowExchange.symbol,
+					}),{path:'/','expires':30});
+
+				}, function(res) {});
 
 				
 			},
@@ -450,20 +448,20 @@ Renting the Panda Phone without booking a tour costs $5 for the first day and an
 				return dt.getFullYear() + "-" +this.addZero(dt.getMonth()+1) + "-" + this.addZero(dt.getDate());
 			},
 			setPeoplePrice(){
-
+				this.totalPrice = this.returnFloat((5+this.days-1)*this.devicesNum);
+			},
+			getDays(startDate,endDate){
+				var startArr = startDate.split('-'),
+					endArr = endDate.split('-');
+				var dateS = new Date(startArr[0],startArr[1]-1,startArr[2]).getTime(),
+          dateE = new Date(endArr[0],endArr[1]-1,endArr[2]).getTime();
+				var days = (dateE - dateS)/1000/60/60/24+1;
+				return days;
 			},
 			bookNow(){
 				var self = this;
-				if(!self.duration){
-					setTimeout(function(){
-						self.flatPickr.open();
-					},80);
-					self.showWinBg = true;
-					return false;
-				}
-
-				if(this.bookPeople==0){
-					
+				if(!self.changeDate.length){
+					self.showCalendar = true;
 					return false;
 				}
 
@@ -475,15 +473,23 @@ Renting the Panda Phone without booking a tour costs $5 for the first day and an
 					eventLabel:"book_succeed"
 				});
 				
-				
+				var dateArr = this.changeDate;
 				var orderInfo = {
-		      
+					startDate: dateArr[0],
+					endDate: dateArr[1],
+					days: this.getDays(dateArr[0],dateArr[1]),
+					devicesNum: this.devicesNum,
+					currency: this.nowExchange.code,
+					symbol: this.nowExchange.symbol,
+					incrementalPrice: this.incrementalPrice,
+					startingPrice: this.startingPrice,
+					totalPrice: this.totalPrice,
 				};
 				
 				
 				orderInfo = JSON.stringify(orderInfo);
-		    localStorage.setItem("orderInfo", orderInfo);
-				location.href="/product/phone/booking/"+this.id;
+		    localStorage.setItem("phoneOrderInfo", orderInfo);
+				location.href="/product/phone/booking/";
 			},
 			contactCallBack(val){
 				if(val){
@@ -627,9 +633,9 @@ Renting the Panda Phone without booking a tour costs $5 for the first day and an
     	
 		},
 		watch: {
-			bookPeople:function(val){
+			devicesNum:function(val){
 				//设置价格
-				this.setPeoplePrice();
+				this.changeCurrency();
 				this.participants = val;
 				
 				ga(gaSend, {
@@ -646,15 +652,17 @@ Renting the Panda Phone without booking a tour costs $5 for the first day and an
 					eventLabel:"detail_select"
 				});
 
-				//刷新推荐产品价格
-				this.getRecommend();
+			},
+			days:function(){
+				//设置价格
+				this.changeCurrency();
 			},
 			nowExchange:function(val){
 				//设置价格
 				this.selectCurrency = val.code;
 				// this.changeCurrency(val.code);
 			},
-			changeDate:function(){
+			changeDate:function(val,old){
 				ga(gaSend, {
 					hitType: "event",
 					eventCategory: "activity_detail",
@@ -669,33 +677,16 @@ Renting the Panda Phone without booking a tour costs $5 for the first day and an
 					eventLabel:"detail_select"
 				});
 
+				if(val.join('~') !== old.join('~')){
+					this.days = this.getDays(val[0],val[1]);
+					this.changeCurrency();
+				}
+
+				
 				
 			},
-			selectCurrency:function(){
+			selectCurrency:function(val){
 				this.changeCurrency();
-			},
-			pandaPhoneCheck:function(val){
-				this.setPeoplePrice();
-				if(val){
-					//弹层勾选
-					if(this.showPPDialog){
-						ga(gaSend, {
-							hitType: "event",
-							eventCategory: "activity_detail",
-							eventAction: "select",
-							eventLabel:"phone_select_layer"
-						});
-						this.showPPDialog=false;
-					}else{
-						//页面勾选
-						ga(gaSend, {
-							hitType: "event",
-							eventCategory: "activity_detail",
-							eventAction: "select",
-							eventLabel:"phone_select"
-						});
-					}
-				}
 			}
 		}
 	};
@@ -857,7 +848,7 @@ Renting the Panda Phone without booking a tour costs $5 for the first day and an
 										width: 100%;
 										height: 38px!important;
 										line-height: 38px!important;
-										
+										font-weight: bold;
 										background: none;
 										cursor: pointer;
 										opacity: 0;

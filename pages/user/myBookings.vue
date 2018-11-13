@@ -4,7 +4,7 @@
 		<div class="MyBookingslist" >
 			<MenuTab :menu="menu=0" :logIn="logIn"></MenuTab>
 			<div class="bookingsCont">
-				<ul v-if="activityList.length>0||bookList.length>0">
+				<ul v-if="activityList.length>0||phoneList.length>0||bookList.length>0">
 					<li :key="index" v-for="(item,index) in activityList" v-if="activityList.length>0">
 						<h3>{{item.activityInfo.title}}</h3>
 						<div class="info clearfix">
@@ -40,7 +40,7 @@
 									<span  @click="goGuideDatil(0,index)">Book Again</span>
 									<!--<span @click="downLoad(index)" v-if="item.status!='PAYMENT_PENDING'&&item.status!='REFUNDING'&&item.status!='REFUNDED'&&item.status!='CANCELED'">Download Contract</span>-->
 
-									<span v-if="item.status=='PAYMENT_PENDING'" @click="goPay(0,index)">To Pay</span>
+									<span v-if="item.status=='PAYMENT_PENDING'" @click="goPay('ACTIVITY',item.orderId)">To Pay</span>
 									<!--<span v-if="(item.status=='PAYMENT_SUCCESS'||item.status=='CONFIRM_WAITING'||item.status=='BOOKING_SUCCESS')&&item.allowRefund==1" @click="Refund(0,index)">Refund</span>-->
 								</div>
 							</div>
@@ -58,6 +58,40 @@
 							</div>
 						</div>
 					</li>
+
+					<li :key="index" v-for="(item,index) in phoneList" v-if="phoneList.length>0">
+						<h3>Panda Phone Service</h3>
+						<div class="info clearfix">
+							<div class="activitiesText">
+								<div class="dataId">
+									<span>Booking ID: {{item.orderId}}</span>
+									<span>Booking Time: {{formatDate(item.startTime)}}{{item.endTime}} (EST)</span>
+								</div>
+								<p><b>Category:</b>PandaPhone</p>
+								<p><b>Duration : </b> 9 Days <span class="ml10">({{formatDate(item.startDate)}} - {{formatDate(item.endDate)}})</span></p>
+								<div class="tag">
+									<span  @click="goDetail('PHONE')">Book Again</span>
+									<!--<span @click="downLoad(index)" v-if="item.status!='PAYMENT_PENDING'&&item.status!='REFUNDING'&&item.status!='REFUNDED'&&item.status!='CANCELED'">Download Contract</span>-->
+
+									<span v-if="item.status=='PAYMENT_PENDING'" @click="goPay('PHONE',item.orderId)">To Pay</span>
+									<!--<span v-if="(item.status=='PAYMENT_SUCCESS'||item.status=='CONFIRM_WAITING'||item.status=='BOOKING_SUCCESS')&&item.allowRefund==1" @click="Refund(0,index)">Refund</span>-->
+								</div>
+							</div>
+							<div class="bookagain">
+								<b class="font-color" v-if="item.status=='PAYMENT_PENDING'">Payment pending</b>
+								<b class="font-color" v-if="item.status=='PAYMENT_SUCCESS'||item.status=='CONFIRM_WAITING'">To be confirmed</b>
+								<b class="font-color1" v-if="item.status=='BOOKING_SUCCESS'">Confirmed</b>
+								<b class="font-color1" v-if="item.status=='COMPLETED'">Tour completed</b>
+								<b class="font-color" v-if="item.status=='REFUNDING'">Refund in progress</b>
+								<b class="font-color1" v-if="item.status=='REFUNDED'">Refund completed</b>
+								<b class="font-color1" v-if="item.status=='CANCELED'">Canceled</b>
+								<p>{{getPriceMark(item.currency)}}{{item.amount}}</p>
+								<!--<button class="btnlinner margin">VIEW DETAILS</button>-->
+
+							</div>
+						</div>
+					</li>
+
 					<li :key="index" v-for="(item,index) in bookList" v-if="bookList.length>0">
 						<h3 v-if="item.guideInfo.enName">{{item.guideInfo.enName}}</h3>
 						<div class="info clearfix">
@@ -78,7 +112,7 @@
 									<span  @click="goGuideDatil(1,index)">Book Again</span>
 									<span @click="downLoad(index)" v-if="item.status!='PAYMENT_PENDING'&&item.status!='REFUNDING'&&item.status!='REFUNDED'&&item.status!='CANCELED'">Download Contract</span>
 
-									<span v-if="item.status=='PAYMENT_PENDING'" @click="goPay(1,index)">To Pay</span>
+									<span v-if="item.status=='PAYMENT_PENDING'" @click="goPay('GUIDE_SERVICE',item.orderId)">To Pay</span>
 									<!--<span v-if="(item.status=='PAYMENT_SUCCESS'||item.status=='CONFIRM_WAITING'||item.status=='BOOKING_SUCCESS')&&item.allowRefund==1" @click="Refund(1,index)">Refund</span>-->
 								</div>
 							</div>
@@ -98,7 +132,7 @@
 					</li>
 				</ul>
 
-				 <div class="empty" v-show="!bookList.length && !activityList.length && nobooking">
+				 <div class="empty" v-show="!bookList.length && !activityList.length && !phoneList.length && nobooking">
 
 					<span>
 						<svg class="icon" aria-hidden="true">
@@ -136,6 +170,7 @@
 
 			let data = {
 				activityList:'',
+				phoneList:'',
 				logIn: '',
 				bookList: '',
 				isShowAlertTitle: '',
@@ -186,11 +221,21 @@
 			getIsShowAlertFn(val) {
 				this.isShowAlertTitle = val;
 			},
-			goPay(id,index) {
-				if(id==0){
-					window.location.href = "/activity/payment?objectId=" + this.activityList[index].orderId
-				}else{
-					window.location.href = "/guide/payment?orderId=" + this.bookList[index].orderId
+			// goPay(type,orderId) {
+			// 	if(type=='PHONE'){
+			// 		window.location.href = "/activity/payment?objectId=" + orderId;
+			// 	}else if(type=='ACTIVITY'){
+			// 		window.location.href = "/guide/payment?orderId=" + orderId;
+			// 	}
+				
+			// },
+			goPay(type,orderId) {
+				if(type=='PHONE'){
+					window.location.href = "/product/phone/payment/?orderId=" + orderId;
+				}else if(type=='ACTIVITY'){
+					window.location.href = "/activity/payment/?objectId=" + orderId;
+				}else if(type == 'GUIDE_SERVICE'){
+					window.location.href = "/guide/payment?orderId=" + orderId;
 				}
 				
 			},
@@ -199,6 +244,16 @@
 					window.location.href = "/activity/details/" + this.activityList[index].activityId
 				}else{
 					window.location.href = "/guide/detail/" + this.bookList[index].guideId
+				}
+				
+			},
+			goDetail(type,id){
+				if(type=='PHONE'){
+					window.location.href = 'https://www.localpanda.com/product/phone/details/';
+				}else if(type=='ACTIVITY'){
+					window.location.href = "/activity/details/" + id;
+				}else if(type == 'GUIDE_SERVICE'){
+					window.location.href = "/guide/detail/" + id;
 				}
 				
 			},
@@ -235,6 +290,26 @@
 				}).then(function(response) {
 					if(response.status==200 || response.status == 304){
 						that.activityList = response.data
+						that.nobooking = false;
+						if(response.data.length<=0){
+							that.nobooking = true
+						}
+					}else{
+						that.nobooking = true;
+					}
+				}, function(response) {
+					that.nobooking = true;
+				})
+			},
+			getPhoneOrders(obj){
+				var that = this;
+				that.axios.post(this.apiBasePath + "order/phone/list", JSON.stringify(obj), {
+					headers: {
+						'Content-Type': 'application/json;'
+					}
+				}).then(function(response) {
+					if(response.status==200 || response.status == 304){
+						that.phoneList = response.data
 						that.nobooking = false;
 						if(response.data.length<=0){
 							that.nobooking = true
@@ -303,6 +378,7 @@
 			//微信code和openId查询，不走这个查询
 			if(!this.urlCode){
 				this.getActivityOrders(obj);
+				this.getPhoneOrders(obj);
 			}
 			
 			

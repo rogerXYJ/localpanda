@@ -15,15 +15,29 @@
 					<span class="iconfont">&#xe61e;</span>
 					<b>Your booking is Complete! You made a great choice :)</b>
 				</div>
+				<div v-if="payType!='PHONE'">
+					<div class="detail">
+						<span>{{orderInfo.activityInfo.title}}</span>
+					</div>
+					<div class="detail">
+						<span><i>Order ID:</i> {{orderId}}</span><em>|</em><span><i>Payment Amount:</i> <b>{{orderInfo.currency+' '+orderInfo.symbol}}{{orderInfo.amount}}</b></span>
+					</div>
+					<div class="detail">
+						<span><i>Number of {{(orderInfo.adultNum+orderInfo.childrenNum)>1?'Travelers':'Traveler'}}:</i> {{orderInfo.adultNum+orderInfo.childrenNum}}</span><em>|</em><span><i>Travel Date:</i> {{formatDate(orderInfo.startDate)}}</span>
+					</div>
 
-				<div class="detail">
-					<span>{{orderInfo.activityInfo.title}}</span>
 				</div>
-				<div class="detail">
-					<span><i>Order ID:</i> {{orderId}}</span><em>|</em><span><i>Payment Amount:</i> <b>{{orderInfo.currency+' '+orderInfo.symbol}}{{orderInfo.amount}}</b></span>
-				</div>
-				<div class="detail">
-					<span><i>Number of {{(orderInfo.adultNum+orderInfo.childrenNum)>1?'Travelers':'Traveler'}}:</i> {{orderInfo.adultNum+orderInfo.childrenNum}}</span><em>|</em><span><i>Travel Date:</i> {{formatDate(orderInfo.startDate)}}</span>
+
+				<div class="" v-else>
+					<div class="detail">
+						<span>Panda Phone Service</span>
+					</div>
+					<div class="detail">
+						<span><i>Order ID:</i> {{orderId}}</span><em>|</em><span><i>Payment Amount:</i> <b>{{orderInfo.currency+' '+symbol}}{{orderInfo.amount}}</b></span>
+					</div>
+					<div class="detail">
+						<span><i>Duration :</i> {{orderInfo.deviceNum}} Days <dfn>({{formatDate(orderInfo.startDate)}} - {{formatDate(orderInfo.endDate)}})</dfn></span>
+					</div>
 				</div>
 				
 				<!-- <p style="margin-top: 10px;"> Our staff will confirm with you as soon as possible. We will reply you within one business day. You can know the details furthur by look at your order details.You can also email service@localpanda.com or call us at +86 (21) 8018-2090/ +1 (888) 930-8849 (US toll free).</p>				
@@ -128,7 +142,7 @@ If you have any questions or concerns, feel free to contact us using the info at
 			var orderInfo = '';
 
 			try {
-				orderInfo = await Vue.axios.get(apiBasePath + "order/activity/" + query.orderId)
+				orderInfo = await Vue.axios.get(apiBasePath + "product/phone/" + query.orderId)
 			} catch(err) {
 				return error({
 					statusCode: 500,
@@ -148,15 +162,15 @@ If you have any questions or concerns, feel free to contact us using the info at
 			let currency=query.currency;
 			return {
 				orderId:orderId,
-				amount:amount,
+				amount:'',
 				logIn:'',
 				date:"",
 				userId:'',
-				email: this.$route.query.email,
+				email: '',
 				showTipTxt: false,
-				payType: payType?payType.toLowerCase():false,
-				symbol: query.symbol?query.symbol:'$',
-				currency:currency ? currency : '',
+				payType: query.category,
+				symbol: '',
+				currency:'',
 
 
 				serviceData:{id:orderId,type:'payment'},
@@ -289,6 +303,14 @@ If you have any questions or concerns, feel free to contact us using the info at
 				});
 			});
 
+			//设置货币符号
+			for(var i=0;i<this.currencyData.length;i++){
+				var thisData = this.currencyData[i];
+				if(thisData.code == this.orderInfo.currency){
+					this.symbol = thisData.symbol;
+				}
+			}
+
 			console.log(this.orderInfo);
 			
 			this.logIn=window.localStorage.getItem("logstate")
@@ -384,6 +406,11 @@ If you have any questions or concerns, feel free to contact us using the info at
 						color:#878e95;
 						margin:3px 22px 0px;
 						display: inline-block;
+					}
+					dfn{
+						margin-left: 10px;
+						font-size: 16px;
+						font-style: normal;
 					}
 				}
 				p{

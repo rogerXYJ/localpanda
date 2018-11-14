@@ -15,74 +15,59 @@
 					<span class="iconfont">&#xe61e;</span>
 					<b>Your booking is Complete! You made a great choice :)</b>
 				</div>
+				<div v-if="payType!='PHONE'">
+					<div class="detail">
+						<span v-if="orderInfo.activityInfo">{{orderInfo.activityInfo.title}}</span>
+					</div>
+					<div class="detail">
+						<span><i>Order ID:</i> {{orderId}}</span><em>|</em><span><i>Payment Amount:</i> <b>{{orderInfo.currency+' '+orderInfo.symbol}}{{orderInfo.amount}}</b></span>
+					</div>
+					<div class="detail">
+						<span><i>Number of {{(orderInfo.adultNum+orderInfo.childrenNum)>1?'Travelers':'Traveler'}}:</i> {{orderInfo.adultNum+orderInfo.childrenNum}}</span><em>|</em><span><i>Travel Date:</i> {{formatDate(orderInfo.startDate)}}</span>
+					</div>
 
-				<div class="detail">
-					<span>{{orderInfo.activityInfo.title}}</span>
 				</div>
-				<div class="detail">
-					<span><i>Order ID:</i> {{orderId}}</span><em>|</em><span><i>Payment Amount:</i> <b>{{orderInfo.currency+' '+orderInfo.symbol}}{{orderInfo.amount}}</b></span>
-				</div>
-				<div class="detail">
-					<span><i>Number of {{(orderInfo.adultNum+orderInfo.childrenNum)>1?'Travelers':'Traveler'}}:</i> {{orderInfo.adultNum+orderInfo.childrenNum}}</span><em>|</em><span><i>Travel Date:</i> {{formatDate(orderInfo.startDate)}}</span>
+
+				<div class="" v-else>
+					<div class="detail">
+						<span>Panda Phone Service</span>
+					</div>
+					<div class="detail">
+						<span><i>Order ID:</i> {{orderId}}</span><em>|</em>
+						<span><i>Payment Amount:</i> <b>{{orderInfo.currency+' '+symbol}}{{orderInfo.amount}}</b></span>
+						
+					</div>
+					<div class="detail">
+						<span><i>Number of devices:</i> {{orderInfo.deviceNum}}</span><em>|</em>
+						<span><i>Duration :</i> {{getDays(orderInfo.startDate,orderInfo.endDate)}} Days <dfn>({{formatDate(orderInfo.startDate)}} - {{formatDate(orderInfo.endDate)}})</dfn></span>
+					</div>
 				</div>
 				
 				<!-- <p style="margin-top: 10px;"> Our staff will confirm with you as soon as possible. We will reply you within one business day. You can know the details furthur by look at your order details.You can also email service@localpanda.com or call us at +86 (21) 8018-2090/ +1 (888) 930-8849 (US toll free).</p>				
 
 				<p class="c_666" v-if="showTipTxt && payType!='guide'">You ordered as a guest. You can click this button to view your order details.</p> -->
 
-				<div class="panda_phone" v-if="orderInfo.phoneHire && !showPhoneTip">
-					<h4>Panda Phone Service - 5 days (deposit included)</h4>
-					<p>You've selected The Panda Phone: All-in-one Mobile Travel Assistant. We will deliver your phone to the hotel or airport of your choice along with English-language assistance to get you set up.</p>
-					<h5>Please provide your delivery info below:</h5>
-					<div class="panda_phone_check">
-						<radio-group v-model="ppType" class="deposit_list">
-							<!-- <radio :label="2">Airport</radio> -->
-							<radio :label="3">Hotel</radio>
-							<radio :label="1">I haven't decided yet. I'll contact you later</radio>
-						</radio-group>
-						<div class="phone_check_list" v-show="ppType==2">
-							<div>&nbsp;&nbsp;&nbsp;&nbsp;Arrival Date: <input class="js_changetime js_validate" vType="text" readonly v-model="arrivalDate" type="text"></div>
-							<div class="mt10">Flight Number: <input class="js_validate" vType="text" v-model="flightNumber" type="text"></div>
-						</div>
-						<!-- <div class="phone_check_list" v-else-if="ppType==3 && orderInfo.pickup">
-							Hotel Name & Address: <input class="w500" v-model="hotel" type="text">
-							<p class="mt10">Your Panda Phone will be delivered by your guide at the start of your trip. </p>
-						</div> -->
-						<div class="phone_check_list" v-show="ppType==3">
-							<div>
-								Hotel Name & Address: <input class="w500 js_validate" vType="text" v-model="hotel" type="text">
-							</div>
-							<div class="mt10">
-								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-								Pick-up Date: <input class="js_changetime js_validate" vType="text" readonly v-model="arrivalDate" style="margin-left:13px;" type="text">
-							</div>
-							<p class="mt10">One of our travel assistants will hand-deliver the Panda phone to you. We will confirm your delivery location, date, and time with you via email prior to your trip. Please check your email prior to departure for updates. </p>
-						</div>
-
-						<!-- I haven't decided yet -->
-						<div class="panda_phone_no" v-if="ppType==1">
-							<p>You chose: “I haven't decided yet. I'll contact you later” for your delivery information, so we will still need to confirm this prior to your departure.</p>
-							<p>You will receive a booking email from service@localpanda.com. Once you've confirmed your travel plans please reply to our email and provide us with your delivery date and location.  Please provide this information at least 24 hours prior to your departure so we can ensure delivery of your Panda Phone.</p>
-							<p>Thank you for choosing Local Panda, we hope you have a great trip!</p>
-							<p>If you have any questions or concerns, feel free to contact us using the info at the bottom of the page.</p>
-						</div>
-
-					</div>
-					<div class="btn" @click="submitPandaPhone" v-if="ppType && ppType!=1">Submit</div>
-				</div>
 
 				<div class="panda_phone_tip" v-if="ppType==3 && showPhoneTip">
 					<p>Your Panda Phone delivery info has been successfully submitted. Please ensure your phone number and email are correct so we can reach you in case any issues arise. We will contact you via email prior to your departure to confirm the delivery location, date, and time.<br><br>
 Your Delivery Info:<br>
 <span>Location：</span>Hotel<br>
-<span>Pick-up Date：</span>{{arrivalDate}}<br>
+<span>Pick-up Date：</span>{{formatDate(orderInfo.startDate)}} {{pickUpTime}}<br>
 <span>Hotel Name & Address：</span>{{hotel}}<br><br>
 Thank you for choosing Local Panda, we hope you have a great trip!<br>
-If you have any questions or concerns, feel free to contact us using the info at the bottom of the page.</p>
+If you have any questions or concerns, feel free to contact us.</p>
+				</div>
+
+				<div class="panda_phone_tip" v-if="ppType==1">
+					<p>You chose: “I haven't decided yet. I'll contact you later” for your delivery information, so we will still need to confirm this prior to your departure.</p>
+					<p>You will receive a booking email from service@localpanda.com. Once you've confirmed your travel plans please reply to our email and provide us with your delivery date and location.  Please provide this information at least 24 hours prior to your departure so we can ensure delivery of your Panda Phone.</p>
+					<p>Thank you for choosing Local Panda, we hope you have a great trip!</p>
+					<p>If you have any questions or concerns, feel free to contact us.</p>
+					<!-- <p>If you have any questions or concerns, feel free to contact us using the info at the bottom of the page.</p> -->
 				</div>
 				
 
-				<div class="service_box">
+				<!-- <div class="service_box" v-if="orderInfo.contactInfo">
 					<p class="tip_detail">In the meantime, a confirmation email has been sent to“{{orderInfo.contactInfo.emailAddress}}”, Please check. If you have not received it, please check your junk mail folder. If you still do <br>not see it, please <a @click="showEmailBox=true">click here</a> to enter your correct or alternative email address.</p>
 					<div class="email_box" v-show="showEmailBox">
 						<input type="text" v-model="inqueryEmail">
@@ -91,9 +76,9 @@ If you have any questions or concerns, feel free to contact us using the info at
 						<div class="email_tip red" v-show="emailTip">Please enter a valid email</div>
 						<div class="email_tip green" v-show="emailSendTip"><i class="iconfont">&#xe654;</i> Email address has been updated ,and We have sent an email to your new mailbox</div>
 					</div>
-				</div>
+				</div> -->
 
-				<a class="backorderbtn" v-if="payType!='guide'" :href="logIn ? '/user/myBookings' : '/user/myBookings?email='+orderInfo.contactInfo.emailAddress+'&orderid='+orderId">View My Order</a>
+				<a class="backorderbtn" v-if="payType!='guide' && orderInfo.contactInfo" :href="logIn ? '/user/myBookings' : '/user/myBookings?email='+orderInfo.contactInfo.emailAddress+'&orderid='+orderId">View My Order</a>
 			</div>
 
 			<service></service>
@@ -128,7 +113,7 @@ If you have any questions or concerns, feel free to contact us using the info at
 			var orderInfo = '';
 
 			try {
-				orderInfo = await Vue.axios.get(apiBasePath + "order/activity/" + query.orderId)
+				orderInfo = await Vue.axios.get(apiBasePath + "product/phone/" + query.orderId);
 			} catch(err) {
 				return error({
 					statusCode: 500,
@@ -148,15 +133,15 @@ If you have any questions or concerns, feel free to contact us using the info at
 			let currency=query.currency;
 			return {
 				orderId:orderId,
-				amount:amount,
+				amount:'',
 				logIn:'',
 				date:"",
 				userId:'',
-				email: this.$route.query.email,
+				email: '',
 				showTipTxt: false,
-				payType: payType?payType.toLowerCase():false,
-				symbol: query.symbol?query.symbol:'$',
-				currency:currency ? currency : '',
+				payType: query.category,
+				symbol: '',
+				currency:'',
 
 
 				serviceData:{id:orderId,type:'payment'},
@@ -173,6 +158,7 @@ If you have any questions or concerns, feel free to contact us using the info at
 				arrivalDate:'',
 				flightNumber:'',
 				hotel:'',
+				pickUpTime:'',
 				showPhoneTip:false
 				
 			}
@@ -206,6 +192,14 @@ If you have any questions or concerns, feel free to contact us using the info at
 		methods: {
 			// getPriceMark:getPriceMark,
 			formatDate:formatDate,
+			getDays(startDate,endDate){
+				var startArr = startDate.split('-'),
+					endArr = endDate.split('-');
+				var dateS = new Date(startArr[0],startArr[1]-1,startArr[2]).getTime(),
+          dateE = new Date(endArr[0],endArr[1]-1,endArr[2]).getTime();
+				var days = (dateE - dateS)/1000/60/60/24+1;
+				return days;
+			},
 			sendEmail(){
 				var that = this;
 				if(/^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/.test(this.inqueryEmail)){
@@ -240,40 +234,7 @@ If you have any questions or concerns, feel free to contact us using the info at
 				}
 			},
 			
-			submitPandaPhone(){
-				var that = this;
-				
-				var validate = this.fromValidate.validate();
-				console.log(validate);
-				if(validate){
-
-					var putData = {
-						"arrivalDate": this.arrivalDate,
-						"flightNumber": this.flightNumber,
-						"hotel": this.hotel,
-						"orderId": this.orderId,
-						"id": this.orderInfo.activityId
-					};
-					if(this.ppType==2){
-						delete putData.hotel;
-					}else if(this.ppType==3){
-						delete putData.flightNumber;
-					}
-					that.axios.put('https://api.localpanda.com/api/order/phone/info', JSON.stringify(putData), {
-						headers: {
-							'Content-Type': 'application/json'
-						}
-					}).then(function(response) {
-						if(response.data.succeed) {
-							that.showPhoneTip = true;
-						};
-
-					}, function(response) {
-
-					});
-
-				}
-			}
+			
 		},
 		mounted: function() {
 
@@ -288,6 +249,26 @@ If you have any questions or concerns, feel free to contact us using the info at
 					errorClassName:'valError'  //报错时，会自动在input上添加的className
 				});
 			});
+
+			//设置货币符号
+			for(var i=0;i<this.currencyData.length;i++){
+				var thisData = this.currencyData[i];
+				if(thisData.code == this.orderInfo.currency){
+					this.symbol = thisData.symbol;
+				}
+			}
+
+			//显示panda phone提示
+			if(this.payType =='PHONE'){
+				this.showPhoneTip = true;
+				if(this.orderInfo.phoneHireInfo && this.orderInfo.phoneHireInfo.hotel){
+					this.hotel = this.orderInfo.phoneHireInfo.hotel;
+					this.pickUpTime = this.orderInfo.phoneHireInfo.pickUpTime;
+				}else{
+					this.ppType = 1;
+				}
+				
+			}
 
 			console.log(this.orderInfo);
 			
@@ -384,6 +365,11 @@ If you have any questions or concerns, feel free to contact us using the info at
 						color:#878e95;
 						margin:3px 22px 0px;
 						display: inline-block;
+					}
+					dfn{
+						margin-left: 10px;
+						font-size: 16px;
+						font-style: normal;
 					}
 				}
 				p{

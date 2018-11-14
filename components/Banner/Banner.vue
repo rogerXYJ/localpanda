@@ -4,7 +4,7 @@
 		<div v-swiper:mySwiper="swiperOptionBannerPc">
 	    <div class="swiper-wrapper">
 
-				<!-- <div class="swiper-slide">
+				<div class="swiper-slide">
 	        <a href="/travel/customize/step1">
 						<div class="imgBanner" :style="{background:'url(https://cloud.localpanda.com/static/homePage/banner3.jpg)'}">
 							<p class="banner_tit_s">With Local Panda</p>
@@ -13,7 +13,7 @@
 							<span class="banner_btn">Build Your Adventure</span>
 						</div>
 					</a>
-	      </div> -->
+	      </div>
 				<!-- <div class="swiper-slide">
 	        <a href="/activity/details/11201">
 						<div class="imgBanner" :style="{background:'url(https://cloud.localpanda.com/static/homePage/banner4.jpg)'}">

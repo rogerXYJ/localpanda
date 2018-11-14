@@ -8,7 +8,7 @@
 			<h1>Panda Phone Service</h1>
 			<p>Booked 19 times (last 30 days)</p>
 			<div class="banner">
-
+				<img src="https://cloud.localpanda.com/pandaphone/banner.jpg" width="1170" height="430" alt="">
 			</div>
 		</div>
 
@@ -27,7 +27,7 @@
 								<i class="iconfont">&#xe666;</i>
 							</div>
 							<div class="price_info">
-								<b><span class="price_from" v-if="!devicesNum">From</span> {{nowExchange.symbol}} {{returnFloat(startingPrice)}}</b>
+								<b><span class="price_from">From</span> {{nowExchange.symbol}} {{returnFloat(startingPrice)}}</b>
 							</div>
 						</div>
 
@@ -59,7 +59,7 @@
 								<h4>Pricing Details</h4>
 								<dl class="book_price_info">
 									<dt>
-										<span>{{days}} Days × {{devicesNum}} {{devicesNum>1?'Devices':'Device'}}</span>
+										<span>{{days}} {{days>1?'Days':'Day'}} × {{devicesNum}} {{devicesNum>1?'Devices':'Device'}}</span>
 										
 									</dt>
 									<dd>{{nowExchange.symbol}}{{totalPrice}}</dd>
@@ -77,7 +77,7 @@
 					</div>
 
 
-					<p class="book_tip">Questions before booking? <a href="">Contact us</a></p>
+					<p class="book_tip">Questions before booking? <a @click="ContactStatus=true">Contact us</a></p>
 
 				</div>
 			</div>
@@ -105,15 +105,7 @@
 				<!-- The Panda Phone -->
 				<div class="detail_box">
 					<h3>The Panda Phone - All-in-one Mobile Travel Assistant</h3>
-					<ul class="detail_txt_list">
-						<li><i class="dian"></i>Uber and other popular ride-sharing apps aren’t present</li>
-						<li><i class="dian"></i>Most major websites including google and all its services are blocked</li>
-						<li><i class="dian"></i>Debit and credit cards are NOT widely accepted</li>
-						<li><i class="dian"></i>In Shanghai alone there are 5 different streets named Zhongxing Road</li>
-						<li><i class="dian"></i>Most shops & cafes require a China phone number to connect to wifi</li>
-						<!-- <li v-for="item in getTextArr(detail.highlights)" :key="item"><i class="dian"></i>{{item}}</li> -->
-					</ul>
-					<p class="detail_p">China can be very challenging to navigate without a little help. <br>That’s why we’ve created the ultimate device to make your life easy so you can enjoy your vacation. Introducing…</p>
+					<img class="mt10" v-lazy="'https://cloud.localpanda.com/pandaphone/assistant.png'" alt="">
 				</div>
 
 				<!-- The Panda Phone -->
@@ -122,13 +114,20 @@
 					<p class="detail_p"><b>OPTION 1</b>: Purchase only the Panda Phone  Service <br>
 First day = $5<br>
 Day 2 and onward = $1 per day<br>
-Renting the Panda Phone without booking a tour costs $5 for the first day and an additional $1 for each day after. (e.g. if you use for 15 days the price will be $5 (first day) + $14 (following 14 days) …<span>+ More</span></p>
+Renting the Panda Phone without booking a tour costs $5 for the first day and an additional $1 for each day after. (e.g. if you use for 15 days the price will be $5 (first day) + $14 (following 14 days) = $19 total).</p>
+					<p class="detail_p mt15"><b>OPTION 2</b>: Purchase the Panda Phone with a Local Panda Trip<br>
+First 5 days = $1<br>
+Day 6 and onward = $1 per day<br>
+By paying $1 along with your Local Panda trip you’ll receive the Panda Phone, which you can use during the duration of your vacation in China. The first 5 days of use are included with the initial $1, but each additional day after the first 5 days will cost an additional $1 (7 RMB) per day. (e.g. Using the Panda Phone for 15 days would cost $1 (first 5 days) + $10 (following 10 days) = $11 total).<br><br>
+You will only pay $1 up front for the first 5 days of use. If you decide to use the Panda Phone for more than 5 days, the additional $1 (7 RMB)-per-day fee will be taken directly from your deposit. (e.g. If you use the Panda Phone for 15 days, the unpaid $10 will be taken from your $150 USD deposit, so you will receive $140 back). <br><br>
+For billing purposes, the day in which you receive your Panda Phone is considered the first day of service and the day in which you return the device to our Local Panda staff is the last day of service. 
+</p>
 				</div>
 
 				<!-- Pick-up -->
 				<div class="detail_box">
 					<h3>Pick-up details</h3>
-					<p class="detail_p">Pick-up and drop-off are only available at city center accommodations in Shanghai & Beijing. For instance, if you choose to pick up your Panda Phone at your hotel in Shanghai, one of our staff will be waiting for you in the lobby at your estimated check-in time. Please present the confirmation email of …<span>+ More</span></p>
+					<p class="detail_p">Pick-up and drop-off are only available at city center accommodations in Shanghai & Beijing. For instance, if you choose to pick up your Panda Phone at your hotel in Shanghai, one of our staff will be waiting for you in the lobby at your estimated check-in time. Please present the confirmation email of your Panda Phone order to our staff during pickup.</p>
 				</div>
 
 				<!-- How it works -->
@@ -137,29 +136,45 @@ Renting the Panda Phone without booking a tour costs $5 for the first day and an
 					<h4>Step 1</h4>
 					<p class="detail_p">While booking, please fill out your pickup info so we know where and when to deliver your Panda Phone.</p>
 					<h4>Step 2</h4>
-					<p class="detail_p">Pay the deposit and receive the Panda Phone at your pre-determined pick-up location. See “Your Deposit” for more info. Open the WeChat app to communicate with our customer service …<span>+ More</span></p>
+					<p class="detail_p">Pay the deposit and receive the Panda Phone at your pre-determined pick-up location. See “Your Deposit” for more info. Open the WeChat app to communicate with our customer service at any time.</p>
+					<h4>Step 3</h4>
+					<p class="detail_p">Return the Panda Phone at the Hotel of your choice and receive your deposit back.</p>
 				</div>
 
 				<!-- Your deposit -->
 				<div class="detail_box">
 					<h3>Your deposit</h3>
-					<p class="detail_p">We require a $150 USD (1000 RMB)  deposit that will be securely held while you are in possession of the Panda Phone. Your deposit will be returned once you have completed your trip and handed it back to our staff.</p>
-					<h4>There are 2 options for paying your deposit:</h4>
-					<p class="detail_p">1. Via credit/debit card simultaneously with your tour booking. Your deposit will be returned directly to minor damage that does not impede the phoneʼs functionality …<span>+ More</span></p>
+					<p class="detail_p">We require a $150 USD deposit that will be securely held while you are in possession of the Panda Phone. Your deposit will be returned once you have completed your trip and handed it back to our staff.</p>
+					<h4>There are 2 options for paying your deposit: </h4>
+					<p class="detail_p">1. Via credit/debit card simultaneously with your tour booking. Your deposit will be returned directly to the card you used to book within 1 week of the tripʼs conclusion.</p>
+					<p class="detail_p">2.  Via Cash / PayPal upon arriving in China and receiving your Panda Phone (NOTE: Only RMB is accepted for the cash option. Deposit amounts to Y1000.). We will return your deposit via the method you used immediately upon receiving the phone at the end of your trip.</p>
+
+					<h4>In case of loss</h4>
+					<p class="detail_p">Losing or causing severe damage to the Panda Phone while it is in your possession necessitates the forfeiture of some or all of your deposit in accordance with fair business practices. We will not charge you for any minor damage that does not impede the phoneʼs functionality.</p>
 				</div>
 
 				<!-- WeChat -->
 				<div class="detail_box">
 					<h3>WeChat Mobile Pay(Optional)</h3>
-					<p class="detail_p">
-						<img src="http://placehold.it/210x316/dddddd" width="210" height="316" alt="">
-						In recent years, mobile apps like WeChat and Alipay have become the most widely used and accepted forms of payment in China by a wide margin. Each Panda Phone comes with a pre-registered WeChat mobile wallet which we can help you fill up. All you have to do is send us the amount youʼd like to add via cash (rmb only) or PayPal and we will transfer the money into your WeChat Wallet.Setting up WeChat Mobile Pay is highly recommended as it will allow you to take advantage of local apps such as Didi ride sharing (Chinese Uber) and Mobike bike sharing. Since the WeChat Wallet on your phone has already been set up by our staff you DO NOT need to input any personal information such as your passport or credit card into your Panda Phone device in order to take advantage of WeChat Mobile Pay. See the WeChat Mobile Pay section below for payment details. Any money you have left over on the phone at the end of the trip we can give back to you in Cash when you return your Panda Phone. Please let us know in advance on WeChat the amount remaining in your wallet that youʼd like returned so we can have exact change on hand.If you require using a credit or debit card to charge your WeChat Wallet and do not have a PayPal account, please contact our customer service on payment options.</p>
+					<div class="wechat_pay">
+						<img v-lazy="'https://cloud.localpanda.com/pandaphone/details.jpg'" width="210" height="316" alt="">
+						<p class="detail_p">In recent years, mobile apps like WeChat and Alipay have become the most widely used and accepted forms of payment in China by a wide margin. Each Panda Phone comes with a pre-registered WeChat mobile wallet which we can help you fill up. All you have to do is send us the amount youʼd like to add via cash (rmb only) or PayPal and we will transfer the money into your WeChat Wallet.</p>
+						<p class="detail_p">Setting up WeChat Mobile Pay is highly recommended as it will allow you to take advantage of local apps such as Didi ride sharing (Chinese Uber) and Mobike bike sharing.</p>
+						<p class="detail_p">Since the WeChat Wallet on your phone has already been set up by our staff you DO NOT need to input any personal information such as your passport or credit card into your Panda Phone device in order to take advantage of WeChat Mobile Pay. See the WeChat Mobile Pay section below for payment details.</p>
+						<p class="detail_p">Any money you have left over on the phone at the end of the trip we can give back to you in Cash when you return your Panda Phone. Please let us know in advance on WeChat the amount remaining in your wallet that youʼd like returned so we can have exact change on hand.</p>
+						<p class="detail_p">If you require using a credit or debit card to charge your WeChat Wallet and do not have a PayPal account, please contact our customer service on payment options.</p>
+					</div>
+					
 				</div>
 
 				<!-- Pick-up -->
 				<div class="detail_box">
 					<h3>Using the Phone & Our Service</h3>
-					<p class="detail_p">Upon receiving the phone, we will send you some tutorials on the various apps and features on the phone as well as how to use them. If you are having trouble using the phone at any time, please reach out to our customer service team through WeChat or email us at service@localpanda.com.…<span>+ More</span></p>
+					<p class="detail_p">Upon receiving the phone, we will send you some tutorials on the various apps and features on the phone as well as how to use them. If you are having trouble using the phone at any time, please reach out to our customer service team through WeChat or email us at service@localpanda.com</p>
+					<p class="detail_p">While calling and texting are unlimited and there is more than enough data for daily-use, please try to connect to wifi before casting or streaming to prevent the network from slowing data speeds. </p>
+					<p class="detail_p">Our travel assistants are available on WeChat to assist you. Feel free to send them a message at any time for help or advice. If you are sending a message far outside the range of normal business hours we may not reply immediately. If you are in an emergency, please use WeChat to call our travel assistants directly.</p>
+					<p class="detail_p">Looking for things to do while in China or want to book more trips or experiences with Local Panda? Just message our customer service on WeChat and we’ll be happy to help!</p>
+					<p class="detail_p">NOTE: The Panda Phone is refundable up to 24 hours in advance of pick-up. If you paid your deposit in advance and need to cancel last-minute, we will still refund you the deposit but not the rental fee.</p>
 				</div>
 
 
@@ -175,7 +190,7 @@ Renting the Panda Phone without booking a tour costs $5 for the first day and an
 		<FooterCommon :nowCurrency="nowExchange" @headCurrency="headCurrencyFn"></FooterCommon>
 		
 		<!-- inquiry -->
-		<Contact :ContactStatus="ContactStatus" v-on:contactCallback="contactCallBack" :owner="'detail.owner'"  :objectType="'ACTIVITY'" :objectId="'pandaPhone'"></Contact>
+		<Contact :ContactStatus="ContactStatus" v-on:contactCallback="contactCallBack" :owner="'detail.owner'"  :objectType="'PANDA_PHONE'" :objectId="null"></Contact>
 		<!-- service弹窗 -->
 		<dialogBox v-model="inquiryStatus" confirmShow="true" confirmText="Confirm" @confirmCallback="confirmCallback" width="900">
 			
@@ -251,6 +266,7 @@ Renting the Panda Phone without booking a tour costs $5 for the first day and an
 
 
 				//选择日期和人数板块
+				isChange:false,
 				bookFixed:false,
 				showWinBg:false,
 				showCalendar:false,
@@ -277,9 +293,9 @@ Renting the Panda Phone without booking a tour costs $5 for the first day and an
 				data.selectCurrency = data.nowExchange.code;
 			}
 			//设置人数
-			if(userCookie.participants){
-				data.devicesNum=userCookie.participants;
-			}
+			// if(userCookie.participants){
+			// 	data.devicesNum=userCookie.participants;
+			// }
 
 			Vue.axios.get("https://api.localpanda.com/api/product/phone/price?currency="+data.nowExchange.code+"&days=1&deviceNum="+data.devicesNum).then(function(res) {
 					
@@ -294,9 +310,9 @@ Renting the Panda Phone without booking a tour costs $5 for the first day and an
 			
 		},
 		head() {
-			let title = '';
-			let description = '';
-			let keywords = '';
+			let title = 'Panda Phone | China Mobile Travel Assistant';
+			let description = 'China Rental Phone, China SIM card, China mobile phone, travel smartphone, China Phone, China Device';
+			let keywords = 'All-in-one Mobile Device with unlimited Calling, Texts, and 4G data included.';
 			return {
 				title: title,
 				meta: [{
@@ -468,7 +484,7 @@ Renting the Panda Phone without booking a tour costs $5 for the first day and an
 
 				ga(gaSend, {
 					hitType: "event",
-					eventCategory: "activity_detail",
+					eventCategory: "pandaPhone_detail",
 					eventAction: "click",
 					eventLabel:"book_succeed"
 				});
@@ -512,9 +528,9 @@ Renting the Panda Phone without booking a tour costs $5 for the first day and an
 				let that = this;
 				window.ga && ga(gaSend, {
 					hitType: "event",
-					eventCategory: "activity_detail",
+					eventCategory: "pandaPhone_detail",
 					eventAction: "Click",
-					eventLabel: "activity_inquiry"
+					eventLabel: "pandaPhone_inquiry"
 				});
 				that.ContactStatus=true
 				
@@ -556,18 +572,19 @@ Renting the Panda Phone without booking a tour costs $5 for the first day and an
 				var self = this;
 				var $main_r = document.querySelector('.main_r');
 				var $book_all = document.querySelector('.book_all');
+				var $footer = document.querySelector('#footer');
 
 				window.onscroll = function(){
 					var Y = window.scrollY,
-					T = $main_r.offsetTop-60;
-					// maxT = $similar.offsetTop-$book_all.clientHeight-60;
+					T = $main_r.offsetTop;
+					var maxT = $footer.offsetTop-$book_all.clientHeight;
 					if(Y>T){
 						self.bookFixed = true;
-						// if(Y>maxT){
-						// 	$book_all.style = 'position: relative;top:0;'
-						// }else{
-						// 	$book_all.style = '';
-						// }
+						if(Y>maxT){
+							$book_all.style = 'position: relative;top:0;'
+						}else{
+							$book_all.style = '';
+						}
 					}else{
 						self.bookFixed = false;
 					}
@@ -592,14 +609,14 @@ Renting the Panda Phone without booking a tour costs $5 for the first day and an
 			}
 			
 			//人数处理
-			if(this.participants){
-				//选择默认处理
-				if(this.participants>10){
-					this.participants = 10;
-				}else if(this.participants<1){
-					this.participants = 1;
-				}
-			}
+			// if(this.participants){
+			// 	//选择默认处理
+			// 	if(this.participants>10){
+			// 		this.participants = 10;
+			// 	}else if(this.participants<1){
+			// 		this.participants = 1;
+			// 	}
+			// }
 			
 			
 			//等待渲染完毕后调用
@@ -634,26 +651,28 @@ Renting the Panda Phone without booking a tour costs $5 for the first day and an
 		},
 		watch: {
 			devicesNum:function(val){
+				this.isChange = true;
 				//设置价格
 				this.changeCurrency();
-				this.participants = val;
+				// this.participants = val;
 				
 				ga(gaSend, {
 					hitType: "event",
-					eventCategory: "activity_detail",
+					eventCategory: "pandaPhone_detail",
 					eventAction: "select",
-					eventLabel:"guests"
+					eventLabel:"devices"
 				});
 
 				ga(gaSend, {
 					hitType: "event",
-					eventCategory: "activity_detail",
+					eventCategory: "pandaPhone_detail",
 					eventAction: "select",
 					eventLabel:"detail_select"
 				});
 
 			},
 			days:function(){
+				
 				//设置价格
 				this.changeCurrency();
 			},
@@ -665,14 +684,14 @@ Renting the Panda Phone without booking a tour costs $5 for the first day and an
 			changeDate:function(val,old){
 				ga(gaSend, {
 					hitType: "event",
-					eventCategory: "activity_detail",
+					eventCategory: "pandaPhone_detail",
 					eventAction: "select",
 					eventLabel:"date"
 				});
 
 				ga(gaSend, {
 					hitType: "event",
-					eventCategory: "activity_detail",
+					eventCategory: "pandaPhone_detail",
 					eventAction: "select",
 					eventLabel:"detail_select"
 				});
@@ -999,6 +1018,7 @@ Renting the Panda Phone without booking a tour costs $5 for the first day and an
 						a{
 							color: #1bbc9d;
 							text-decoration: underline;
+							cursor: pointer;
 						}
 					}
 					
@@ -1042,7 +1062,7 @@ Renting the Panda Phone without booking a tour costs $5 for the first day and an
 				}
 				.book_fixed{
 					position: fixed;
-					top: 60px;
+					top: 0;
 					// .book_ensure{
 					// 	display: none;
 					// }
@@ -1070,15 +1090,20 @@ Renting the Panda Phone without booking a tour costs $5 for the first day and an
 					font-weight: bold;
 					font-size: 16px;
 					line-height: 24px;
+					margin-top: 10px;
 				}
 				.detail_p{
 					font-size: 16px;
 					line-height: 24px;
-					img{
-						float: right;
-						margin-left: 20px;
-						// margin-top: 60px;
-					}
+					margin-top: 10px;
+					
+				}
+			}
+
+			.wechat_pay{
+				img{
+					float: right;
+					margin-left: 10px;
 				}
 			}
 
@@ -1191,6 +1216,20 @@ Renting the Panda Phone without booking a tour costs $5 for the first day and an
 
 
 
-
+		
 	}
+</style>
+
+<style lang="scss">
+#phone_detail{
+	.alertTitleOuter{
+		.boxshow{
+			.con{
+				.fillDate{
+					display: none;
+				}
+			}
+		}
+	}
+}
 </style>

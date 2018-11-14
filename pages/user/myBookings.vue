@@ -62,13 +62,18 @@
 					<li :key="index" v-for="(item,index) in phoneList" v-if="phoneList.length>0">
 						<h3>Panda Phone Service</h3>
 						<div class="info clearfix">
+							<div class="activitiesImg">
+								<img v-lazy="'https://cloud.localpanda.com/pandaphone/list.jpg'">
+							</div>
 							<div class="activitiesText">
 								<div class="dataId">
 									<span>Booking ID: {{item.orderId}}</span>
-									<span>Booking Time: {{formatDate(item.startTime)}}{{item.endTime}} (EST)</span>
+									<span>Booking Time: {{formatDate(item.createTime.substring(0,10))}}{{item.createTime.substring(10)}} (EST)</span>
 								</div>
-								<p><b>Category:</b>PandaPhone</p>
+								
 								<p><b>Duration : </b> 9 Days <span class="ml10">({{formatDate(item.startDate)}} - {{formatDate(item.endDate)}})</span></p>
+								<p><b>Number of devices:</b>{{item.deviceNum}} Panda Phone</p>
+								<p><b>Deposit payment options:</b>{{item.phoneDepositPayOnline?'Online':'Offline'}}</p>
 								<div class="tag">
 									<span  @click="goDetail('PHONE')">Book Again</span>
 									<!--<span @click="downLoad(index)" v-if="item.status!='PAYMENT_PENDING'&&item.status!='REFUNDING'&&item.status!='REFUNDED'&&item.status!='CANCELED'">Download Contract</span>-->
@@ -510,9 +515,11 @@
 								p {
 									margin-bottom: 8px;
 									font-size: 18px;
+									color: #666;
 									b {
 										font-size: 18px;
-										margin-right: 5px;
+										margin-right: 15px;
+										color: #333;
 									}
 								}
 								.tag {

@@ -327,7 +327,7 @@
 					data.id = 0
 				}
 			} catch (err) {
-			//return error(JSON.stringify(err));
+				return error(JSON.stringify(err));
 			}
 
 			var consoleTimeS2 = new Date().getTime();
@@ -832,7 +832,7 @@
 					amount: newPrice
 				};
 				that.loadingStatus = true;
-				that.axios.post( "https://api.localpanda.com/api/order/activity", JSON.stringify(postData), {
+				that.axios.post( "https://api.localpanda.com/api/order/phone/amount", JSON.stringify(postData), {
 					headers: {
 						'Content-Type': 'application/json'
 					}
@@ -880,9 +880,9 @@
 			},
 			jumpStatusPage(status,msg){
 				if(status==true){
-					window.location.href = "/payment/success?category=PHONE&orderId=" + this.orderId;
+					window.location.href = "/product/phone/payment/success?category=PHONE&orderId=" + this.orderId;
 				}else{
-					window.location.href = "/payment/failed?category=PHONE&orderId=" + this.orderId + (msg ? '&errMsg='+msg : '');
+					window.location.href = "/product/phone/payment/failed?category=PHONE&orderId=" + this.orderId + (msg ? '&errMsg='+msg : '');
 				}
 			}
 		},

@@ -24,7 +24,7 @@
 					</div>
 					<div class="emalAddress">
 						<p>Email Address<b>*</b></p>
-						<input id="email" :class="{err:emailAddressErr}" @focus="fousEmal" @blur="gabulr(2)" v-model="emailAddress"  placeholder="We'll send your confirmation here" :style="{backgroundColor:test.test3?'rgb(250, 255, 189)':'rgb(255, 255, 255)'}"/>
+						<input id="email" :class="{err:emailAddressErr}" @focus="fousEmal" @blur="gabulr(2)" v-model="emailAddress"  placeholder="" :style="{backgroundColor:test.test3?'rgb(250, 255, 189)':'rgb(255, 255, 255)'}"/>
 					</div>
 					<div class="cont">
 						<div class="cont-item">
@@ -42,13 +42,13 @@
 						</div>
 						<div class="cont-item">
 							<p>Mobile Phone<b>*</b></p>
-							<input id="mobilePhone" :class="{err:phoneErr}" @focus="fousPhone" @blur="gabulr(4)" v-model="phone" placeholder="For our guide to contact you" :style="{backgroundColor:test.test5?'rgb(250, 255, 189)':'rgb(255, 255, 255)'}"/>
+							<input id="mobilePhone" :class="{err:phoneErr}" @focus="fousPhone" @blur="gabulr(4)" v-model="phone" placeholder="For our delivery person to contact you" :style="{backgroundColor:test.test5?'rgb(250, 255, 189)':'rgb(255, 255, 255)'}"/>
 						</div>
 					</div>
-					<div class="comments">
+					<!-- <div class="comments">
 						<h4>Other Information</h4>
 						<textarea rows="3" @blur="gabulr(5)" placeholder="You can fill out your travel preferences here for us to personalize your trip" v-model="comments"></textarea>
-					</div>
+					</div> -->
 				</div>
 				
 
@@ -107,15 +107,14 @@
 									<option value="8:00 PM Beijing Time">8:00 PM Beijing Time</option>
 								</select>
 							</div>
-							<p class="mt10">One of our travel assistants will hand-deliver the Panda phone to you. We will confirm your delivery location, date, and time with you via email prior to your trip. Please check your email prior to departure for updates. </p>
+							<!-- <p class="mt10">One of our travel assistants will hand-deliver the Panda phone to you. We will confirm your delivery location, date, and time with you via email prior to your trip. Please check your email prior to departure for updates. </p> -->
 						</div>
 
 						<!-- I haven't decided yet -->
 						<div class="panda_phone_no" v-if="ppType==1">
-							<p>You chose: “I haven't decided yet. I'll contact you later” for your delivery information, so we will still need to confirm this prior to your departure.</p>
-							<p>You will receive a booking email from service@localpanda.com. Once you've confirmed your travel plans please reply to our email and provide us with your delivery date and location.  Please provide this information at least 24 hours prior to your departure so we can ensure delivery of your Panda Phone.</p>
-							<p>Thank you for choosing Local Panda, we hope you have a great trip!</p>
-							<p>If you have any questions or concerns, feel free to contact us using the info at the bottom of the page.</p>
+							<p>You chose: "I haven't decided yet. I'll contact you later" for your delivery information, so we will still need to confirm this prior to your departure. </p>
+							<p>Once you've confirmed your travel plans please email service@localpanda.com with your delivery date and location. Please provide this information at least 24 hours prior to your departure so we can ensure delivery of your Panda Phone.</p>
+							<p>If you have any questions or concerns, feel free to contact us.</p>
 						</div>
 
 					</div>
@@ -687,7 +686,7 @@
 			},
 			pandaPhoneInfo(orderId){
 				var putData = {
-					"pickUpDate": this.pickUpDate,
+					"pickUpTime": this.pickUpDate,
 					"flightNumber": this.flightNumber,
 					"hotel": this.hotel,
 					"orderId": orderId

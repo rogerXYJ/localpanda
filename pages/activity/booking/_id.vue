@@ -221,7 +221,7 @@
 					<img class="mt5" src="https://cloud.localpanda.com/static/icon/pandaphone.png" alt="">
 				</div>
 				<div class="pp_box mt10">
-					<h3>All for the insane price of USD $1</h3>
+					<h3>All for the insane price for 5-day usage: $1</h3>
 					<p class="mt10">Pick-up and drop-off are only available at city center hotels in Shanghai & Beijing.<br>For more information or requests before booking, email us at at service@localpanda.com</p>
 					<p class="c_999 mt15">*For $1 you get up to 5 days of use. Each additional day after the first 5 days will cost an additional $1 (7 RMB). In order to take advantage of our special offer price you must book at least 1 tour or activity with Local Panda.</p>
 					<p class="c_999 mt15">*A $150 USD deposit is required to use the Panda Phone, which will be refunded upon returning the phone when your trip ends. You can pay deposit upon receiving the phone in China (cash/PayPal), or paying online with a debit/credit card.</p>

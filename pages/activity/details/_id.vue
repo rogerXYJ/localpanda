@@ -37,6 +37,8 @@
 							<div class="price_info">
 								<b><span class="price_from" v-if="participants==0 && !picInfo.unifiedPricing">From</span> {{nowExchange.symbol}} {{participants>0?returnFloat(getPeoplePrice(participants,true)):returnFloat(picInfo.bottomPrice)}}</b>{{returnText(participants)}} 
 							</div>
+
+							<div class="price_tip" v-if="!participants && !picInfo.unifiedPricing">Price based on group of {{picInfo.minParticipants}}</div>
 						</div>
 
 						<ul class="book_list">
@@ -447,7 +449,7 @@ Price may vary depending on the language. If you need guides in other languages,
 					<img class="mt5" src="https://cloud.localpanda.com/static/icon/pandaphone.png" alt="">
 				</div>
 				<div class="pp_box mt10">
-					<h3>All for the insane price of USD $1</h3>
+					<h3>All for the insane price for 5-day usage: $1</h3>
 					<p class="mt10">Pick-up and drop-off are only available at city center hotels in Shanghai & Beijing.<br>For more information or requests before booking, email us at at service@localpanda.com</p>
 					<p class="c_999 mt15">*For $1 you get up to 5 days of use. Each additional day after the first 5 days will cost an additional $1 (7 RMB). In order to take advantage of our special offer price you must book at least 1 tour or activity with Local Panda.</p>
 					<p class="c_999 mt15">*A $150 USD deposit is required to use the Panda Phone, which will be refunded upon returning the phone when your trip ends. You can pay deposit upon receiving the phone in China (cash/PayPal), or paying online with a debit/credit card.</p>
@@ -1667,8 +1669,8 @@ import { sep } from 'path';
 						.book_head{
 							width: 100%;
 							background-color: #353a3f;
-							height: 50px;
-							line-height: 50px;
+							// height: 50px;
+							padding: 10px 0;
 							border-radius: 8px 8px 0 0;
 							color: #fff;
 							.price_select_box{
@@ -1676,7 +1678,7 @@ import { sep } from 'path';
 								font-size: 16px;
 								line-height: 22px;
 								float: left;
-								margin: 14px 15px 0 14px;
+								margin: 4px 15px 0 14px;
 								i{
 									position: absolute;
 									right: 0;
@@ -1707,6 +1709,7 @@ import { sep } from 'path';
 								}
 							}
 							.price_info{
+								line-height: 30px;
 								font-size: 16px;
 								b{
 									font-size: 24px;
@@ -1719,6 +1722,9 @@ import { sep } from 'path';
 									color: #eee;
 									font-weight: normal;
 								}
+							}
+							.price_tip{
+								padding: 0px 0 0 95px;
 							}
 						}
 						.book_list{

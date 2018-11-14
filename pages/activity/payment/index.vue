@@ -820,6 +820,7 @@
 						putData.response = err;
 						putData.status = 'FAILED';
 						self.paypalCreate(putData);
+						
 					},
 
 					onCancel: function(data, actions) {
@@ -827,6 +828,7 @@
 						// putData.response = err;
 						// putData.status = 'FAILED';
 						// self.paypalCreate(putData);
+						self.loadingStatus = false;
 						console.log(data);
 					}
 
@@ -862,7 +864,7 @@
 							window.location.href = "/payment/failed?email=" + that.email + "&orderId=" + that.orderId + '&amount=' + that.opctions.amount + "&type=1" + "&errMsg=fail&succeed=false" + "&currency=" + that.opctions.currency + "&symbol=" + that.opctions.symbol
 					}
 				}, function(response) {
-					
+					that.loadingStatus = false;
 				})
 			},
 			orderUpdate(){

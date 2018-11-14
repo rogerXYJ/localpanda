@@ -6,7 +6,7 @@
 		<!-- banner -->
 		<div class="phone_top">
 			<h1>Panda Phone Service</h1>
-			<p>Booked 19 times (last 30 days)</p>
+			<!-- <p>Booked 19 times (last 30 days)</p> -->
 			<div class="banner">
 				<img src="https://cloud.localpanda.com/pandaphone/banner.jpg" width="1170" height="430" alt="">
 			</div>
@@ -728,6 +728,7 @@ For billing purposes, the day in which you receive your Panda Phone is considere
 				font-size: 16px;
 			}
 			.banner{ 
+				margin-top: 15px;
 				background-color: #eee;
 				height: 430px;
 			}
@@ -1230,6 +1231,15 @@ For billing purposes, the day in which you receive your Panda Phone is considere
 				}
 			}
 		}
+		.other{
+			//chrome浏览器
+			textarea::-webkit-input-placeholder { color: #fff; }
+			//Mozilla Firefox 浏览器
+			textarea::-moz-placeholder { color: #fff; opacity: 1;}
+			//IE9以上浏览器
+			textarea:-ms-input-placeholder { color: #fff;}
+		}
 	}
+	
 }
 </style>

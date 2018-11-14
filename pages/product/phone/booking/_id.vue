@@ -72,39 +72,39 @@
 						</div> -->
 						<div class="phone_check_list" v-show="ppType==3">
 							<div>
-								Hotel Name & Address: <input class="w500" :class="{err:hotelErr}" @focus="hotelErr=false" v-model="hotel" type="text">
+								Hotel Name & Address: <br>
+								<input :class="{err:hotelErr}" @focus="hotelErr=false" v-model="hotel" type="text">
 							</div>
 							<div class="mt10">
-								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-								Pick-up Date: 
+								Pick-up Time (Beijing Time): <br>
 								<select class="pickup_date" :class="{err:pickUpDateErr}" v-model="pickUpDate" @focus="pickUpDateErr=false">
 									<option value="I haven't decided yet">I haven't decided yet. I'll contact you later</option>
-									<option value="7:30 AM Beijing Time">7:30 AM Beijing Time</option>
-									<option value="8:00 AM Beijing Time">8:00 AM Beijing Time</option>
-									<option value="8:30 AM Beijing Time">8:30 AM Beijing Time</option>
-									<option value="9:00 AM Beijing Time">9:00 AM Beijing Time</option>
-									<option value="9:30 AM Beijing Time">9:30 AM Beijing Time</option>
-									<option value="10:00 AM Beijing Time">10:00 AM Beijing Time</option>
-									<option value="10:30 AM Beijing Time">10:30 AM Beijing Time</option>
-									<option value="11:00 AM Beijing Time">11:00 AM Beijing Time</option>
-									<option value="11:30 AM Beijing Time">11:30 AM Beijing Time</option>
-									<option value="12:00 PM Beijing Time">12:00 PM Beijing Time</option>
-									<option value="12:30 PM Beijing Time">12:30 PM Beijing Time</option>
-									<option value="1:00 PM Beijing Time">1:00 PM Beijing Time</option>
-									<option value="1:30 PM Beijing Time">1:30 PM Beijing Time</option>
-									<option value="2:00 PM Beijing Time">2:00 PM Beijing Time</option>
-									<option value="2:30 PM Beijing Time">2:30 PM Beijing Time</option>
-									<option value="3:00 PM Beijing Time">3:00 PM Beijing Time</option>
-									<option value="3:30 PM Beijing Time">3:30 PM Beijing Time</option>
-									<option value="4:00 PM Beijing Time">4:00 PM Beijing Time</option>
-									<option value="4:30 PM Beijing Time">4:30 PM Beijing Time</option>
-									<option value="5:00 PM Beijing Time">5:00 PM Beijing Time</option>
-									<option value="5:30 PM Beijing Time">5:30 PM Beijing Time</option>
-									<option value="6:00 PM Beijing Time">6:00 PM Beijing Time</option>
-									<option value="6:30 PM Beijing Time">6:30 PM Beijing Time</option>
-									<option value="7:00 PM Beijing Time">7:00 PM Beijing Time</option>
-									<option value="7:30 PM Beijing Time">7:30 PM Beijing Time</option>
-									<option value="8:00 PM Beijing Time">8:00 PM Beijing Time</option>
+									<option value="7:30 AM">7:30 AM</option>
+									<option value="8:00 AM">8:00 AM</option>
+									<option value="8:30 AM">8:30 AM</option>
+									<option value="9:00 AM">9:00 AM</option>
+									<option value="9:30 AM">9:30 AM</option>
+									<option value="10:00 AM">10:00 AM</option>
+									<option value="10:30 AM">10:30 AM</option>
+									<option value="11:00 AM">11:00 AM</option>
+									<option value="11:30 AM">11:30 AM</option>
+									<option value="12:00 PM">12:00 PM</option>
+									<option value="12:30 PM">12:30 PM</option>
+									<option value="1:00 PM">1:00 PM</option>
+									<option value="1:30 PM">1:30 PM</option>
+									<option value="2:00 PM">2:00 PM</option>
+									<option value="2:30 PM">2:30 PM</option>
+									<option value="3:00 PM">3:00 PM</option>
+									<option value="3:30 PM">3:30 PM</option>
+									<option value="4:00 PM">4:00 PM</option>
+									<option value="4:30 PM">4:30 PM</option>
+									<option value="5:00 PM">5:00 PM</option>
+									<option value="5:30 PM">5:30 PM</option>
+									<option value="6:00 PM">6:00 PM</option>
+									<option value="6:30 PM">6:30 PM</option>
+									<option value="7:00 PM">7:00 PM</option>
+									<option value="7:30 PM">7:30 PM</option>
+									<option value="8:00 PM">8:00 PM</option>
 								</select>
 							</div>
 							<!-- <p class="mt10">One of our travel assistants will hand-deliver the Panda phone to you. We will confirm your delivery location, date, and time with you via email prior to your trip. Please check your email prior to departure for updates. </p> -->
@@ -113,7 +113,7 @@
 						<!-- I haven't decided yet -->
 						<div class="panda_phone_no" v-if="ppType==1">
 							<p>You chose: "I haven't decided yet. I'll contact you later" for your delivery information, so we will still need to confirm this prior to your departure. </p>
-							<p>Once you've confirmed your travel plans please email service@localpanda.com with your delivery date and location. Please provide this information at least 24 hours prior to your departure so we can ensure delivery of your Panda Phone.</p>
+							<p>Once you've confirmed your travel plans please email "<b>service@localpanda.com</b>" with your delivery date and location. Please provide this information at least 24 hours prior to your departure so we can ensure delivery of your Panda Phone.</p>
 							<p>If you have any questions or concerns, feel free to contact us.</p>
 						</div>
 
@@ -207,7 +207,8 @@
 		<!--<Alert :isShowAlert="isShowAlert" :alertTitle='alertTitle' :alertMessage="alertMessage" v-on:setIsShowAlert="getIsShowAlert"></Alert>-->
 		<FooterCommon></FooterCommon>
 
-
+		
+		<Loading :loadingStatus="loadingStatus"></Loading>
 
 	</div>
 </template>
@@ -222,6 +223,7 @@
 	import HeaderCommon from '~/components/HeaderCommon/HeaderCommon';
 	import FooterCommon from '~/components/FooterCommon/FooterCommon';
 	import AlertGoBack from '~/components/Prompt/AlertGoBack';
+	import Loading from '~/components/Loading/Loading'
 	import Alert from '~/components/Prompt/Alert'
 	import countryCode from '~/assets/js/countryCode.js'
 	import { radioGroup, radio } from "~/plugins/panda/radio/";
@@ -291,6 +293,8 @@
 				phoneErr: false,
 				mobileCode: '',
 				codeErr: '',
+				
+				loadingStatus:false,
 
 				//出游联系人
 				// TravellerFirstName: '',
@@ -346,7 +350,7 @@
 				pandaPhoneErr: false,
 				hotelErr:false,
 				pickUpDateErr:false,
-				ppType:'',
+				ppType:3,
 				arrivalDate:'',
 				flightNumber:'',
 				hotel:'',
@@ -385,7 +389,8 @@
 			AlertGoBack,
 			Alert,
 			radioGroup,
-			radio
+			radio,
+			Loading
 
 		},
 		methods: {
@@ -685,6 +690,7 @@
 				htmlBody.scrollTop=errDom.offsetTop
 			},
 			pandaPhoneInfo(orderId){
+				var self = this;
 				var putData = {
 					"pickUpTime": this.pickUpDate,
 					"flightNumber": this.flightNumber,
@@ -707,8 +713,10 @@
 						window.location.href = href;
 					};
 
-				}, function(response) {
+					self.loadingStatus = false;
 
+				}, function(response) {
+					self.loadingStatus = false;
 				});
 			},
 			//下单
@@ -757,6 +765,7 @@
 				ga('ecommerce:send');
 				
 				if(self.addOder == false) {
+					self.loadingStatus = true;
 					self.addOder = true
 					self.axios.put( "https://api.localpanda.com/api/order/phone", JSON.stringify(obj), {
 						headers: {
@@ -765,7 +774,9 @@
 					}).then(function(response) {
 						
 						self.pandaPhoneInfo(response.data.response);
-					}, function(response) {})
+					}, function(response) {
+						self.loadingStatus = false;
+					})
 				}
 			}
 
@@ -1544,24 +1555,29 @@
 						margin-top: 10px;
 						padding: 10px 0;
 						font-size: 16px;
+						text-align: left;
 						input{
+							width: 705px;
+							box-sizing: border-box;
 							padding: 0 10px;
-							height: 32px;
-							line-height: 32px;
-							margin:0 50px 0 10px;
+							height: 36px;
+							line-height: 36px;
+							margin:8px 50px 0 0;
 							border: 1px solid #ccc;
 							font-size:16px;
+							border-radius: 3px;
 						}
 						.w500{
 							width: 500px;
 						}
 					}
 					.pickup_date{
+						width: 345px;
 						padding: 0 10px;
-						margin-left: 10px;
-						height: 32px;
-						line-height: 32px;
-						width: 500px;
+						margin-top: 8px;
+						height: 36px;
+						line-height: 36px;
+						border-radius: 3px;
 					}
 					.panda_phone_no{
 						font-size: 16px;
@@ -1708,6 +1724,8 @@
 				}
 			}
 		}
+
+		
 		
 		
 	}
@@ -1779,6 +1797,8 @@
 				display: none!important;
 			}
 		}
+
+		.customize{ display: none;}
 	}
 
 </style>

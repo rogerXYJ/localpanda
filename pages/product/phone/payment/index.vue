@@ -777,6 +777,7 @@
 						// putData.response = err;
 						// putData.status = 'FAILED';
 						// self.paypalCreate(putData);
+						self.loadingStatus = false;
 						console.log(data);
 					}
 
@@ -812,7 +813,7 @@
 						that.jumpStatusPage(false,'fail');
 					}
 				}, function(response) {
-					
+					that.loadingStatus = false;
 				})
 			},
 			orderUpdate(){
@@ -1373,7 +1374,7 @@
 			}
 		}
 
-		
+		.customize{ display: none;}
 
 	}
 </style>

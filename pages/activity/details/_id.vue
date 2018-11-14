@@ -38,7 +38,7 @@
 								<b><span class="price_from" v-if="participants==0 && !picInfo.unifiedPricing">From</span> {{nowExchange.symbol}} {{participants>0?returnFloat(getPeoplePrice(participants,true)):returnFloat(picInfo.bottomPrice)}}</b>{{returnText(participants)}} 
 							</div>
 
-							<div class="price_tip" v-if="!participants && !picInfo.unifiedPricing">Price based on group of {{picInfo.minParticipants}}</div>
+							<div class="price_tip" v-if="!participants && !picInfo.unifiedPricing">Price based on group of {{picInfo.maxParticipants}}</div>
 						</div>
 
 						<ul class="book_list">
@@ -109,7 +109,7 @@
 							</li> -->
 							<li class="clearfix">
 								<!-- <div class="hr"></div> -->
-								<div class="Booked_box" v-if="detail.sales">Booked {{detail.sales}} {{detail.sales>1?'times':'time'}} (last 30 days)</div>
+								<div class="Booked_box" v-if="detail.sales">Booked {{detail.sales}} {{detail.sales>1?'times':'time'}}</div>
 								<div class="inquire_text" @click="ContactStatus=true"><i class="iconfont">&#xe649;</i><b>Inquire</b></div>
 								<div class="middle_line" v-if="detail.sales"></div>
 							</li>
@@ -446,7 +446,7 @@ Price may vary depending on the language. If you need guides in other languages,
 				</div>
 				<div class="pp_box mt20">
 					<h3>The Panda Phone - All-in-one Mobile Travel Assistant</h3>
-					<img class="mt5" src="https://cloud.localpanda.com/static/icon/pandaphone.png" alt="">
+					<img class="mt10" src="https://cloud.localpanda.com/pandaphone/assistant.png" alt="">
 				</div>
 				<div class="pp_box mt10">
 					<h3>All for the insane price for 5-day usage: $1</h3>
@@ -1892,7 +1892,7 @@ import { sep } from 'path';
 						}
 						.middle_line{
 							float: left;
-							margin-left: 30px;
+							margin-left: 65px;
 							width: 1px;
 							background-color: #bbb;
 							height: 18px;

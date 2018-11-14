@@ -218,7 +218,7 @@
 				</div>
 				<div class="pp_box mt20">
 					<h3>The Panda Phone - All-in-one Mobile Travel Assistant</h3>
-					<img class="mt5" src="https://cloud.localpanda.com/static/icon/pandaphone.png" alt="">
+					<img class="mt10" src="https://cloud.localpanda.com/pandaphone/assistant.png" alt="">
 				</div>
 				<div class="pp_box mt10">
 					<h3>All for the insane price for 5-day usage: $1</h3>

@@ -205,7 +205,7 @@
 					</div>
 					<div class="list-cont" v-if="records>0">
 						<ul>
-							<li class="activity-item" v-for="item in activityList">
+							<li class="activity-item" v-for="item in activityList" v-if="item.activityId">
 
 								<a :href="'/activity/details/'+item.activityId" target="_blank">
 									<div class="activity">
@@ -243,6 +243,19 @@
 									</div>
 								</a>
 							</li>
+              <li class="activity-item ADpandaPhone" v-else>
+                <img src="https://cloud.localpanda.com/pandaphone/advertise.jpg" width="100%" alt="">
+                <a class="pandaPhone_box" href="https://www.localpanda.com/product/phone/details/" target="_blank">
+                  <h2>Unlock China with the Panda Phone</h2>
+                  <p>All-in-one Mobile Travel Assistant</p>
+                  <ul>
+                    <li><i class="iconfont">&#xe654;</i>Smart Phone with Mainland China Number</li>
+                    <li><i class="iconfont">&#xe654;</i>Travel & Emergency Help at Your Fingertips  </li>
+                    <li><i class="iconfont">&#xe654;</i>4G Wireless Data, Unlimited Calling & Texts</li>
+                    <li><i class="iconfont">&#xe654;</i>VPN - Access Blocked Websites Like Google</li>
+                  </ul>
+                </a>
+              </li>
 						</ul>
 						<div class="pagination-page" v-if="isdisabled">
 							<el-pagination background layout="prev, pager, next"  :current-page="postData.pageNum" :total="records" class="el-pagination is-background" @current-change="handleCurrentChange" :page-size="16">
@@ -1309,7 +1322,18 @@ export default {
         .then(
           res => {
             this.loadingStatus = false;
-            this.activityList = res.data.entities;
+
+            var listData = res.data.entities;
+            var seachContent = this.seachContent.toLowerCase();
+            if(seachContent!="xi'an" && seachContent!="guilin" && seachContent!="chengdu"){
+              if(listData.length>2){
+                listData.splice(3,0,{'type':'PandaPhone'});
+              }else{
+                listData.push({'type':'PandaPhone'});
+              }
+            }
+            
+            this.activityList = listData;
             this.listdata.aggregations = res.data.aggregations;
             this.records = res.data.records;
             if (res.data.records < this.postData.pageSize) {
@@ -1551,7 +1575,7 @@ export default {
         maxValue: val[1]
       };
       console.log(this.filterCheck.price);
-    }
+    },
   },
   filters: {
     firstUpperCase(val) {
@@ -1598,55 +1622,7 @@ export default {
   }
 };
 </script>
-<style lang="scss">
-//@import '~/assets/scss/_main.scss';
-//@import '~/assets/font/iconfont.css';
-.activityList {
-  .checkbox_label {
-    padding: 0;
-    padding-left: 20px;
-  }
-  .checkbox_content {
-    font-size: 16px;
-    padding-right: 0 !important;
-    padding-left: 0 !important;
-    line-height: 22px;
-    white-space: inherit !important;
-  }
-  .checkbox_label {
-    .checkbox_box {
-      float: left;
-      margin-left: -20px;
-      margin-top: 3px;
-      border-color: #666;
-      margin-top: 5px;
-    }
-  }
-  .isChecked .checkbox_box {
-    border-color: #1bbc9d;
-  }
-  .el-slider__button-wrapper {
-    z-index: 10 !important;
-  }
-  .el-pagination.is-background .el-pager li:not(.disabled).active {
-    background-image: linear-gradient(-90deg, #009efd 0%, #1bbc9d 100%);
-  }
 
-  .el-pagination.is-background .btn-next,
-  .el-pagination.is-background .btn-prev,
-  .el-pagination.is-background .el-pager li {
-    background: #fff;
-    color: #353a3f;
-  }
-
-  #footercommon {
-    border-top: 1px solid #e6e6e6;
-    .footInfo {
-      width: 1284px !important;
-    }
-  }
-}
-</style>
 <style lang="scss" scoped>
 //@import '~/assets/scss/base/_setting.scss';
 .page {
@@ -2260,6 +2236,48 @@ export default {
               }
             }
           }
+          .ADpandaPhone{
+            img{
+              vertical-align: top;
+            }
+            .pandaPhone_box{
+              position: absolute;
+              left: 0;
+              top: 0;
+              width: 100%;
+              height: 100%;
+              color: #fff;
+              text-shadow:0 5px 10px rgba(0,0,0,0.3);
+              background-color: rgba(0, 0, 0, 0.3);
+              h2{
+                margin-top: 45px;
+                font-size: 38px;
+                font-weight: bold;
+                text-align: center;
+              }
+              p{
+                margin-top: 10px;
+                font-size: 20px;
+                text-align: center;
+              }
+              ul{
+                margin-top: 5px;
+                padding-left: 110px;
+                li{
+                  font-size: 16px;
+                  width: 50%;
+                  float: left;
+                  margin-top: 12px;
+                  i{
+                    font-size: 12px;
+                    float: left;
+                    margin-top: 4px;
+                    margin-right: 10px;
+                  }
+                }
+              }
+            }
+          }
           .more {
             width: 232px;
             height: 42px;
@@ -2401,6 +2419,56 @@ export default {
   .padding {
     padding-right: 20px !important;
     padding-bottom: 22px !important;
+  }
+}
+</style>
+
+<style lang="scss">
+//@import '~/assets/scss/_main.scss';
+//@import '~/assets/font/iconfont.css';
+.activityList {
+  .checkbox_label {
+    padding: 0;
+    padding-left: 20px;
+  }
+  .checkbox_content {
+    font-size: 16px;
+    padding-right: 0 !important;
+    padding-left: 0 !important;
+    line-height: 22px;
+    white-space: inherit !important;
+  }
+  .checkbox_label {
+    .checkbox_box {
+      float: left;
+      margin-left: -20px;
+      margin-top: 3px;
+      border-color: #666;
+      margin-top: 5px;
+    }
+  }
+  .isChecked .checkbox_box {
+    border-color: #1bbc9d;
+  }
+  .el-slider__button-wrapper {
+    z-index: 10 !important;
+  }
+  .el-pagination.is-background .el-pager li:not(.disabled).active {
+    background-image: linear-gradient(-90deg, #009efd 0%, #1bbc9d 100%);
+  }
+
+  .el-pagination.is-background .btn-next,
+  .el-pagination.is-background .btn-prev,
+  .el-pagination.is-background .el-pager li {
+    background: #fff;
+    color: #353a3f;
+  }
+
+  #footercommon {
+    border-top: 1px solid #e6e6e6;
+    .footInfo {
+      width: 1284px !important;
+    }
   }
 }
 </style>

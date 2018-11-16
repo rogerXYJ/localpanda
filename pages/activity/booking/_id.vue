@@ -22,10 +22,7 @@
 							<input id="lastName" :class="{err:oderlastNameErr}" @focus="fousoderlastName" @blur="gabulr(1)" v-model="oderlastName" :style="{backgroundColor:test.test2?'rgb(250, 255, 189)':'rgb(255, 255, 255)'}"/>
 						</div>
 					</div>
-					<div class="emalAddress">
-						<p>Email Address<b>*</b></p>
-						<input id="email" :class="{err:emailAddressErr}" @focus="fousEmal" @blur="gabulr(2)" v-model="emailAddress"  placeholder="We'll send your confirmation here" :style="{backgroundColor:test.test3?'rgb(250, 255, 189)':'rgb(255, 255, 255)'}"/>
-					</div>
+					
 					<div class="cont">
 						<div class="cont-item">
 							<p>Country or Territory Code<b>*</b></p>
@@ -34,6 +31,7 @@
 								<div class="countryCode" v-show="showCode" :class="codeList.length>0?'width100':''">
 									<ul v-if="codeList.length>0">
 										<li v-for="item in codeListHot" @click.stop="selectCode(item.country_name,item.prefix,0)"  v-if="codeListHot.length>0 && !mobileCode">{{item.country_name}} (+{{item.prefix}})</li>
+										<li class="line" v-if="!mobileCode"></li>
 										<li v-for="item in codeList" @click.stop="selectCode(item.country_name,item.prefix,0)">{{item.country_name}} (+{{item.prefix}})</li>
 									</ul>
 									<div class="empty" v-else>There are no results that match your search.</div>
@@ -46,6 +44,12 @@
 							<input id="mobilePhone" :class="{err:phoneErr}" @focus="fousPhone" @blur="gabulr(4)" v-model="phone" placeholder="For our guide to contact you" :style="{backgroundColor:test.test5?'rgb(250, 255, 189)':'rgb(255, 255, 255)'}"/>
 						</div>
 					</div>
+
+					<div class="emalAddress">
+						<p>Email Address<b>*</b></p>
+						<input id="email" :class="{err:emailAddressErr}" @focus="fousEmal" @blur="gabulr(2)" v-model="emailAddress"  placeholder="We'll send your confirmation here" :style="{backgroundColor:test.test3?'rgb(250, 255, 189)':'rgb(255, 255, 255)'}"/>
+					</div>
+
 					<div class="comments">
 						<h4>Other Information</h4>
 						<textarea rows="3" v-if="opctions.pickup==1" @blur="gabulr(5)" placeholder="You can fill out your travel preferences here for us to personalize your trip" v-model="comments"></textarea>
@@ -1299,7 +1303,7 @@
 		background: #fff;
 		z-index: 2;
 		ul {
-			max-height: 240px;
+			max-height: 320px;
 			overflow-y: auto;
 			li {
 				padding: 0 10px 0 30px;
@@ -1312,6 +1316,13 @@
 					height: 40px;
 					background-image: linear-gradient(-90deg, #009efd 0%, #1bbc9d 100%);
 				}
+			}
+			.line{
+				height: 1px;
+				background-color: #ddd;
+				overflow: hidden;
+				width: calc(100% - 30px);
+				margin: 0 auto;
 			}
 		}
 	}

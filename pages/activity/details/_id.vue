@@ -53,7 +53,7 @@
 							<li>
 								<h4>Number of Travelers</h4>
 								<div class="input_box holder">
-									<input class="opacity1" type="text" readonly placeholder="Adults" :value="(bookAdults?bookAdults+' '+(bookAdults>1?'Adults':'Adult'):'')+(bookChildren?' , '+bookChildren+' '+(bookChildren>1?'Children':'Child'):'')" @click.stop="showChangeFn">
+									<input class="opacity1" type="text" readonly placeholder="Select" :value="(bookAdults?bookAdults+' '+(bookAdults>1?'Adults':'Adult'):'')+(bookChildren?' , '+bookChildren+' '+(bookChildren>1?'Children':'Child'):'')" @click.stop="showChangeFn">
 									<i class="iconfont">&#xe666;</i>
 								</div>
 								<div class="change_travelers" v-if="showChangePeople">

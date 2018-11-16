@@ -1549,16 +1549,19 @@
 							input {
 								width: 345px;
 								height: 36px;
+								line-height: 34px;
 								font-size: 18px;
-								border: 1px solid;
-								border-radius: 3px;
-								border-color:#858585 #c2c2c2 #c2c2c2;
-								box-shadow:inset 0 1px 0 rgba(0,0,0,.1), inset 0 1px 1px rgba(0,0,0,.05);
 								&:hover {
 									border-color: #1bbc9d;
 								}
 							}
 						}
+					}
+					input{
+						border: 1px solid;
+						border-radius: 3px;
+						border-color:#858585 #c2c2c2 #c2c2c2;
+						box-shadow:inset 0 1px 0 rgba(0,0,0,.1), inset 0 1px 1px rgba(0,0,0,.05);
 					}
 					.comments {
 						margin-top: 15px;
@@ -1570,10 +1573,12 @@
 						textarea {
 							width: calc(100% - 30px);
 							
+							border: 1px solid;
 							border-radius: 3px;
-							border: solid 1px #dde0e0;
+							border-color:#858585 #c2c2c2 #c2c2c2;
+							box-shadow:inset 0 1px 0 rgba(0,0,0,.1), inset 0 1px 1px rgba(0,0,0,.05);
 							resize: none;
-							padding:0 10px;
+							padding:6px 10px 10px;
 							font-size: 18px;
 						}
 					}
@@ -1733,8 +1738,10 @@
 						input {
 							width: 60%;
 							height: 42px;
-							border-radius: 5px;
-							border: solid 1px #dde0e0;
+							border: 1px solid;
+							border-radius: 3px;
+							border-color:#858585 #c2c2c2 #c2c2c2;
+							box-shadow:inset 0 1px 0 rgba(0,0,0,.1), inset 0 1px 1px rgba(0,0,0,.05);
 						}
 						button {
 							display: inline-block;

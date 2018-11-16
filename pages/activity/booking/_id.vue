@@ -32,7 +32,10 @@
 							<div class="code-box">
 								<input id="code" :class="{err:codeErr}" @click.stop="focusCode(0)" @focus="focusCode(0)" @blur="gabulr(3)" @change="changeCode" autocomplete="off" v-model="mobileCode" :style="{backgroundColor:test.test4?'rgb(250, 255, 189)':'rgb(255, 255, 255)'}"/>
 								<div class="countryCode" v-show="showCode" :class="codeList.length>0?'width100':''">
-									<ul v-if="codeList.length>0">
+									<ul v-if="codeListHot.length>0 && !mobileCode">
+										<li v-for="item in codeListHot" @click.stop="selectCode(item.country_name,item.prefix,0)">{{item.country_name}} (+{{item.prefix}})</li>
+									</ul>
+									<ul v-else-if="codeList.length>0">
 										<li v-for="item in codeList" @click.stop="selectCode(item.country_name,item.prefix,0)">{{item.country_name}} (+{{item.prefix}})</li>
 									</ul>
 									<div class="empty" v-else>There are no results that match your search.</div>
@@ -331,6 +334,7 @@
 				countryCode: countryCode.phone_countries,
 				codeList: [], //联系人国家选择列表
 				travelCodeList: [], //游玩人国家选择列表
+				codeListHot:[],
 				//显示code列表
 				showCode: false,
 				code: '', //区号
@@ -990,6 +994,34 @@
 				self.showCode = false
 				self.showTravellCode = false
 			})
+
+
+			self.codeListHot = [
+				{
+					"country_name": "United States",
+					"prefix": "1"
+				},
+				{
+					"country_name": "United Kingdom",
+					"prefix": "44"
+				},
+				{
+					"country_name": "China Mainland",
+					"prefix": "86"
+				},
+				{
+					"country_name": "Canada",
+					"prefix": "1"
+				},
+				{
+					"country_name": "Australia",
+					"prefix": "61"
+				},
+				{
+					"country_name": "New Zealand",
+					"prefix": "64"
+				}
+			]
 
 
 			//电商ga

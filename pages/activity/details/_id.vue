@@ -110,7 +110,8 @@
 							<li class="clearfix">
 								<!-- <div class="hr"></div> -->
 								<div class="Booked_box" v-if="detail.sales">Booked {{detail.sales}} {{detail.sales>1?'times':'time'}}</div>
-								<div class="inquire_text" @click="ContactStatus=true"><i class="iconfont">&#xe649;</i><b>Inquire</b></div>
+								<p class="book_tip" v-if="!detail.sales">Questions before booking? <a @click="ContactStatus=true">Contact us</a></p>
+								<div class="inquire_text" @click="ContactStatus=true" v-if="detail.sales"><i class="iconfont">&#xe649;</i><b>Inquire</b></div>
 								<div class="middle_line" v-if="detail.sales"></div>
 							</li>
 						</ul>
@@ -1870,7 +1871,14 @@ import { sep } from 'path';
 							}
 						}
 						.hr{ height: 1px; background-color: #ebebeb;}
-						.book_tip{ margin-top: 10px; font-size: 14px;}
+						// .book_tip{ margin-top: 10px; font-size: 14px;}
+						.book_tip{ margin-top: 10px; font-size: 16px; color: #878e95; text-align: center;
+							a{
+								color: #1bbc9d;
+								text-decoration: underline;
+								cursor: pointer;
+							}
+						}
 						.Booked_box{
 							float: right;
 							line-height: 28px;

@@ -177,6 +177,12 @@ For billing purposes, the day in which you receive your Panda Phone is considere
 					<p class="detail_p">NOTE: The Panda Phone is refundable up to 24 hours in advance of pick-up. If you paid your deposit in advance and need to cancel last-minute, we will still refund you the deposit but not the rental fee.</p>
 				</div>
 
+				<!-- Pick-up -->
+				<div class="detail_box">
+					<h3>Rescheduling & Cancellation Policy</h3>
+					<p class="detail_p">You can reschedule or cancel your Panda Phone service at zero cost up to 24 hours before your Pick-up date.</p>
+				</div>
+
 
 			</div>
 

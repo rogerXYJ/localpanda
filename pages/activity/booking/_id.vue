@@ -32,10 +32,8 @@
 							<div class="code-box">
 								<input id="code" :class="{err:codeErr}" @click.stop="focusCode(0)" @focus="focusCode(0)" @blur="gabulr(3)" @change="changeCode" autocomplete="off" v-model="mobileCode" :style="{backgroundColor:test.test4?'rgb(250, 255, 189)':'rgb(255, 255, 255)'}"/>
 								<div class="countryCode" v-show="showCode" :class="codeList.length>0?'width100':''">
-									<ul v-if="codeListHot.length>0 && !mobileCode">
-										<li v-for="item in codeListHot" @click.stop="selectCode(item.country_name,item.prefix,0)">{{item.country_name}} (+{{item.prefix}})</li>
-									</ul>
-									<ul v-else-if="codeList.length>0">
+									<ul v-if="codeList.length>0">
+										<li v-for="item in codeListHot" @click.stop="selectCode(item.country_name,item.prefix,0)"  v-if="codeListHot.length>0 && !mobileCode">{{item.country_name}} (+{{item.prefix}})</li>
 										<li v-for="item in codeList" @click.stop="selectCode(item.country_name,item.prefix,0)">{{item.country_name}} (+{{item.prefix}})</li>
 									</ul>
 									<div class="empty" v-else>There are no results that match your search.</div>
@@ -1302,7 +1300,7 @@
 		z-index: 2;
 		ul {
 			max-height: 240px;
-			overflow: auto;
+			overflow-y: auto;
 			li {
 				padding: 0 10px 0 30px;
 				height: 40px;

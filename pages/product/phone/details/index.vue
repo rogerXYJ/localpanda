@@ -77,7 +77,7 @@
 					</div>
 
 
-					<p class="book_tip">Questions before booking? <a @click="ContactStatus=true">Contact us</a></p>
+					<p class="book_tip">Got questions before booking? <a @click="ContactStatus=true">Contact us</a></p>
 
 				</div>
 			</div>

@@ -280,8 +280,8 @@
 						text:'9 people & more'
 					}
 				],
-				options: ['Shanghai', 'Beijing', "Xi'an", "Guilin", 'Chengdu',"Tibet","Suzhou","Hangzhou"],
-				thems: ["Bund", "Watertown", "Great Wall", "Terra-Cotta Warriors", "Forbidden City", "Li River", "Layover Tour", "Day trips", "Local Food", "Dumplings", "Landmarks", "Short Excursions", "Family Friendly","Panda","Everest Base Camp"],
+				options: ['Shanghai', 'Beijing', "Xi'an", "Guilin", 'Chengdu',"Suzhou","Hangzhou"],
+				thems: ["Bund", "Watertown", "Great Wall", "Terra-Cotta Warriors", "Forbidden City", "Li River", "Layover Tour", "Day trips", "Local Food", "Dumplings", "Landmarks", "Short Excursions", "Family Friendly","Panda"],
 				showRecommend: true,
 				input_highlight:false,
 				aa:false

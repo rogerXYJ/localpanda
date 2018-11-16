@@ -670,7 +670,6 @@ export default {
         "Xi'an",
         "Guilin",
         "Chengdu",
-        "Tibet",
         "Suzhou",
         "Hangzhou"
       ],
@@ -689,7 +688,6 @@ export default {
         "Short Excursions",
         "Family Friendly",
         "Panda",
-        "Everest Base Camp"
       ],
       loc: slug,
       activityList: listData,

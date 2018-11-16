@@ -164,7 +164,7 @@
 						</div>
 					</div>
 
-					<div class="filterBox" v-for="(item,index) in aggregations" v-if="getObjLength(item.items)>1">
+					<div class="filterBox" v-for="(item,index) in aggregations" v-if="Object.getOwnPropertyNames(item.items).length" :key="index">
 						<div class="title">
 							<h3>{{getFilterType(item.type)}}</h3>
 						</div>

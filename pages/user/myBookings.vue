@@ -71,7 +71,7 @@
 									<span>Booking Time: {{formatDate(item.createTime.substring(0,10))}}{{item.createTime.substring(10)}} (EST)</span>
 								</div>
 								
-								<p><b>Duration : </b> 9 Days <span class="ml10">({{formatDate(item.startDate)}} - {{formatDate(item.endDate)}})</span></p>
+								<p><b>Duration : </b> {{getDays(item.startDate,item.endDate)}} {{getDays(item.startDate,item.endDate)>1?'Days':'Day'}} <span class="ml10">({{formatDate(item.startDate)}} - {{formatDate(item.endDate)}})</span></p>
 								<p><b>Number of devices:</b>{{item.deviceNum}} Panda Phone</p>
 								<p><b>Deposit payment options:</b>{{item.phoneDepositPayOnline?'Online':'Offline'}}</p>
 								<div class="tag">
@@ -225,6 +225,14 @@
 			},
 			getIsShowAlertFn(val) {
 				this.isShowAlertTitle = val;
+			},
+			getDays(startDate,endDate){
+				var startArr = startDate.split('-'),
+					endArr = endDate.split('-');
+				var dateS = new Date(startArr[0],startArr[1]-1,startArr[2]).getTime(),
+          dateE = new Date(endArr[0],endArr[1]-1,endArr[2]).getTime();
+				var days = (dateE - dateS)/1000/60/60/24+1;
+				return days;
 			},
 			// goPay(type,orderId) {
 			// 	if(type=='PHONE'){

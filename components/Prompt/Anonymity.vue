@@ -65,12 +65,12 @@
 					    "firstName":"lulu",
 					    "emailAddress":"luluyao@localpanda.com"*/
 					}
-					that.axios.post("https://api.localpanda.com/api/order/activity/list", JSON.stringify(obj), {
+					that.axios.post("https://api.localpanda.com/api/order/list", JSON.stringify(obj), {
 						headers: {
 							'Content-Type': 'application/json; charset=UTF-8'
 						}
 						}).then(function(response) {
-							obj=JSON.stringify(obj)
+							obj=JSON.stringify(obj);
 							if(response.data.length>0){
 								window.localStorage.setItem("obj",obj)
 								window.location.href="/user/myBookings?menu=0&flag=1"

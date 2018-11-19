@@ -4,7 +4,97 @@
 		<div class="MyBookingslist" >
 			<MenuTab :menu="menu=0" :logIn="logIn"></MenuTab>
 			<div class="bookingsCont">
-				<ul v-if="activityList.length>0||phoneList.length>0||bookList.length>0">
+				<ul v-if="listData.length>0">
+					<li :key="index" v-for="(item,index) in listData">
+						<h3>{{item.title}}</h3>
+						<div class="info clearfix">
+							<div class="activitiesImg">
+								<img v-lazy="'https://cloud.localpanda.com/pandaphone/list.jpg'" v-if="item.businessType == 'PHONE'">
+								<img v-lazy="item.photoUrl" v-else>
+							</div>
+
+							<!-- 活动订单明细 -->
+							<div class="activitiesText" v-if="item.businessType=='ACTIVITY'">
+								<div class="dataId">
+									<span>Booking ID: {{item.orderId}}</span>
+									<span>Booking Time: {{formatDate(item.createTime.substring(0,10))}}{{item.createTime.substring(10)}} (EST)</span>
+								</div>
+								<p><b>Category:</b>{{item.category?item.category:'Panda Phone'}} </p>
+								<p>
+									<b>{{(item.adultNum+item.childrenNum)>1?'Travelers':'Traveler'}}:</b> 
+									<span v-if="item.adultNum==1">1 Adult</span>
+									<span v-else>{{item.adultNum}} Adults</span>
+									<span v-if="item.childrenNum!=0">,</span>
+									<span v-if="item.childrenNum!=0">
+										<span v-if="item.childrenNum==1">1 Child</span>
+										<span v-else>{{item.childrenNum}} Children</span>
+									</span>
+									
+									
+								</p>
+								
+								<p><b>Travel Date: </b>{{formatDate(item.startDate)}}&nbsp;&nbsp;&nbsp;&nbsp;{{formatDate(item.startTime)}}</p>
+								<div class="tag">
+									<span  @click="goGuideDatil(0,index)">Book Again</span>
+
+									<span v-if="item.status=='PAYMENT_PENDING'" @click="goPay('ACTIVITY',item.orderId)">To Pay</span>
+								</div>
+							</div>
+
+							<!-- panda phone 明细 -->
+							<div class="activitiesText" v-else-if="item.businessType=='PHONE'">
+								<div class="dataId">
+									<span>Booking ID: {{item.orderId}}</span>
+									<span>Booking Time: {{formatDate(item.createTime.substring(0,10))}}{{item.createTime.substring(10)}} (EST)</span>
+								</div>
+								
+								<p><b>Duration : </b> {{getDays(item.startDate,item.endDate)}} {{getDays(item.startDate,item.endDate)>1?'Days':'Day'}} <span class="ml10">({{formatDate(item.startDate)}} - {{formatDate(item.endDate)}})</span></p>
+								<p><b>Number of devices:</b>{{item.deviceNum}} Panda Phone</p>
+								<p><b>Deposit payment options:</b>{{item.phoneDepositPayOnline?'Online':'Offline'}}</p>
+								<div class="tag">
+									<span  @click="goDetail('PHONE')">Book Again</span>
+
+									<span v-if="item.status=='PAYMENT_PENDING'" @click="goPay('PHONE',item.orderId)">To Pay</span>
+								</div>
+							</div>
+
+							<!-- 导游订单明细 -->
+							<div class="activitiesText" v-else>
+								<div class="dataId">
+									<span>Booking ID: {{item.orderId}}</span>
+									<span>Booking Time: {{item.createTime}} (EST)</span>
+								</div>
+								<p v-if="item.serviceType=='HIKING'"><b>Service Type:</b> Tour guide</p>
+								<p v-else><b>Service Type:</b>Tour guide with a car</p>
+								<p><b>Participants:</b> {{item.participants}}</p>
+								<p v-if="item.fullDates"><b>Full day date:</b>{{item.fullDates.join(",")}}</p>
+								<p v-if="item.halfDates"><b>Half day date:</b>{{item.halfDates.join(",")}}</p>
+								<div class="tag">
+									<span  @click="goGuideDatil(1,index)">Book Again</span>
+									<span @click="downLoad(index)" v-if="item.status!='PAYMENT_PENDING'&&item.status!='REFUNDING'&&item.status!='REFUNDED'&&item.status!='CANCELED'">Download Contract</span>
+
+									<span v-if="item.status=='PAYMENT_PENDING'" @click="goPay('GUIDE_SERVICE',item.orderId)">To Pay</span>
+								</div>
+							</div>
+
+
+
+							<div class="bookagain">
+								<b class="font-color" v-if="item.status=='PAYMENT_PENDING'">Payment pending</b>
+								<b class="font-color" v-if="item.status=='PAYMENT_SUCCESS'||item.status=='CONFIRM_WAITING'">To be confirmed</b>
+								<b class="font-color1" v-if="item.status=='BOOKING_SUCCESS'">Confirmed</b>
+								<b class="font-color1" v-if="item.status=='COMPLETED'">Tour completed</b>
+								<b class="font-color" v-if="item.status=='REFUNDING'">Refund in progress</b>
+								<b class="font-color1" v-if="item.status=='REFUNDED'">Refund completed</b>
+								<b class="font-color1" v-if="item.status=='CANCELED'">Canceled</b>
+								<p>{{getPriceMark(item.currency)}}{{item.amount}}</p>
+
+							</div>
+						</div>
+					</li>
+				</ul>
+				
+				<!-- <ul v-if="activityList.length>0||phoneList.length>0||bookList.length>0">
 					<li :key="index" v-for="(item,index) in activityList" v-if="activityList.length>0">
 						<h3>{{item.activityInfo.title}}</h3>
 						<div class="info clearfix">
@@ -26,11 +116,6 @@
 										<span v-if="item.childrenNum==1">1 Child</span>
 										<span v-else>{{item.childrenNum}} Children</span>
 									</span>
-									<!--<span v-if="item.infantNum!=0">,</span>
-									<span v-if="item.infantNum!=0">
-										<span v-if="item.infantNum==1">1 Baby</span>
-										<span v-else>{{item.infantNum}} Babies</span>
-									</span>-->
 									
 									
 								</p>
@@ -38,10 +123,8 @@
 								<p><b>Travel Date: </b>{{formatDate(item.startDate)}}&nbsp;&nbsp;&nbsp;&nbsp;{{formatDate(item.startTime)}}</p>
 								<div class="tag">
 									<span  @click="goGuideDatil(0,index)">Book Again</span>
-									<!--<span @click="downLoad(index)" v-if="item.status!='PAYMENT_PENDING'&&item.status!='REFUNDING'&&item.status!='REFUNDED'&&item.status!='CANCELED'">Download Contract</span>-->
 
 									<span v-if="item.status=='PAYMENT_PENDING'" @click="goPay('ACTIVITY',item.orderId)">To Pay</span>
-									<!--<span v-if="(item.status=='PAYMENT_SUCCESS'||item.status=='CONFIRM_WAITING'||item.status=='BOOKING_SUCCESS')&&item.allowRefund==1" @click="Refund(0,index)">Refund</span>-->
 								</div>
 							</div>
 							<div class="bookagain">
@@ -53,7 +136,6 @@
 								<b class="font-color1" v-if="item.status=='REFUNDED'">Refund completed</b>
 								<b class="font-color1" v-if="item.status=='CANCELED'">Canceled</b>
 								<p>{{getPriceMark(item.currency)}}{{item.amount}}</p>
-								<!--<button class="btnlinner margin">VIEW DETAILS</button>-->
 
 							</div>
 						</div>
@@ -76,10 +158,8 @@
 								<p><b>Deposit payment options:</b>{{item.phoneDepositPayOnline?'Online':'Offline'}}</p>
 								<div class="tag">
 									<span  @click="goDetail('PHONE')">Book Again</span>
-									<!--<span @click="downLoad(index)" v-if="item.status!='PAYMENT_PENDING'&&item.status!='REFUNDING'&&item.status!='REFUNDED'&&item.status!='CANCELED'">Download Contract</span>-->
 
 									<span v-if="item.status=='PAYMENT_PENDING'" @click="goPay('PHONE',item.orderId)">To Pay</span>
-									<!--<span v-if="(item.status=='PAYMENT_SUCCESS'||item.status=='CONFIRM_WAITING'||item.status=='BOOKING_SUCCESS')&&item.allowRefund==1" @click="Refund(0,index)">Refund</span>-->
 								</div>
 							</div>
 							<div class="bookagain">
@@ -91,7 +171,6 @@
 								<b class="font-color1" v-if="item.status=='REFUNDED'">Refund completed</b>
 								<b class="font-color1" v-if="item.status=='CANCELED'">Canceled</b>
 								<p>{{getPriceMark(item.currency)}}{{item.amount}}</p>
-								<!--<button class="btnlinner margin">VIEW DETAILS</button>-->
 
 							</div>
 						</div>
@@ -118,7 +197,6 @@
 									<span @click="downLoad(index)" v-if="item.status!='PAYMENT_PENDING'&&item.status!='REFUNDING'&&item.status!='REFUNDED'&&item.status!='CANCELED'">Download Contract</span>
 
 									<span v-if="item.status=='PAYMENT_PENDING'" @click="goPay('GUIDE_SERVICE',item.orderId)">To Pay</span>
-									<!--<span v-if="(item.status=='PAYMENT_SUCCESS'||item.status=='CONFIRM_WAITING'||item.status=='BOOKING_SUCCESS')&&item.allowRefund==1" @click="Refund(1,index)">Refund</span>-->
 								</div>
 							</div>
 							<div class="bookagain">
@@ -130,12 +208,11 @@
 								<b class="font-color1" v-if="item.status=='REFUNDED'">Refund completed</b>
 								<b class="font-color1" v-if="item.status=='CANCELED'">Canceled</b>
 								<p>{{getPriceMark(item.currency)}}{{item.amount}}</p>
-								<!--<button class="btnlinner margin">VIEW DETAILS</button>-->
 
 							</div>
 						</div>
 					</li>
-				</ul>
+				</ul> -->
 
 				 <div class="empty" v-show="!bookList.length && !activityList.length && !phoneList.length && nobooking">
 
@@ -178,6 +255,7 @@
 				phoneList:'',
 				logIn: '',
 				bookList: '',
+				listData:'',
 				isShowAlertTitle: '',
 				alertMessage: '',
 				alertTitle: '',
@@ -360,6 +438,26 @@
 					self.getActivityOrders(obj);
 
 				}, function(response) {});
+			},
+			getOrders(obj){
+				var that = this;
+				that.axios.post(this.apiBasePath + "order/list", JSON.stringify(obj), {
+					headers: {
+						'Content-Type': 'application/json;'
+					}
+				}).then(function(response) {
+					if(response.status==200 || response.status == 304){
+						that.listData = response.data;
+						that.nobooking = false;
+						if(response.data.length<=0){
+							that.nobooking = true;
+						}
+					}else{
+						that.nobooking = true;
+					}
+				}, function(response) {
+					that.nobooking = true;
+				})
 			}
 		},
 		mounted: function() {
@@ -390,8 +488,9 @@
 			
 			//微信code和openId查询，不走这个查询
 			if(!this.urlCode){
-				this.getActivityOrders(obj);
-				this.getPhoneOrders(obj);
+				// this.getActivityOrders(obj);
+				// this.getPhoneOrders(obj);
+				this.getOrders(obj);
 			}
 			
 			
@@ -401,24 +500,24 @@
 			}
 
 			//查导游订单
-			that.axios.post(this.apiBasePath + "order/guide/list", JSON.stringify(obj), {
-				headers: {
-					'Content-Type': 'application/json; charset=UTF-8'
-				}
-			}).then(function(response) {
-				if(response.status==200 || response.status == 304){
-					that.bookList = response.data
-					that.nobooking = false;
-					if(response.data.length<=0){
-						that.nobooking = true
-					}
-				}else{
-					that.nobooking = true;
-				}
+			// that.axios.post(this.apiBasePath + "order/guide/list", JSON.stringify(obj), {
+			// 	headers: {
+			// 		'Content-Type': 'application/json; charset=UTF-8'
+			// 	}
+			// }).then(function(response) {
+			// 	if(response.status==200 || response.status == 304){
+			// 		that.bookList = response.data
+			// 		that.nobooking = false;
+			// 		if(response.data.length<=0){
+			// 			that.nobooking = true
+			// 		}
+			// 	}else{
+			// 		that.nobooking = true;
+			// 	}
 				
-			}, function(response) {
-				that.nobooking = true;
-			})
+			// }, function(response) {
+			// 	that.nobooking = true;
+			// })
 
 
 		}

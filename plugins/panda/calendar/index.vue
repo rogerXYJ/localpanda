@@ -104,7 +104,7 @@
         nowYear = year;
       
       var thisValue = this.value;
-      if(!Array.isArray(thisValue)){
+      if(thisValue && !Array.isArray(thisValue)){
         var valueArr = thisValue.split('-');
         if(valueArr.length==3 && valueArr[0]==year && valueArr[1]==month){}else{
           year = parseInt(valueArr[0]);
@@ -339,6 +339,8 @@
         this.clickStart = true;
         //设置开始日期
         this.clickStartDate = dateStr;
+        
+        this.$emit('change',{'el':this.$el,'changeDate':[dateStr]});
 
         //设置当前选中状态
         this.addClass(thisPath,'active');

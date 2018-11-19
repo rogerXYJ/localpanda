@@ -34,6 +34,8 @@
 								</p>
 								
 								<p><b>Travel Date: </b>{{formatDate(item.startDate)}}&nbsp;&nbsp;&nbsp;&nbsp;{{formatDate(item.startTime)}}</p>
+								<p>Panda Phone Service {{item.phoneDepositPayOnline?'(deposit included)':''}}</p>
+
 								<div class="tag">
 									<span  @click="goGuideDatil(0,index)">Book Again</span>
 

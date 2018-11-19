@@ -111,10 +111,10 @@
 				<!-- The Panda Phone -->
 				<div class="detail_box">
 					<h3>Pricing details</h3>
-					<p class="detail_p"><b>OPTION 1</b>: Purchase only the Panda Phone  Service <br>
-First day = $5<br>
-Day 2 and onward = $1 per day<br>
-Renting the Panda Phone without booking a tour costs $5 for the first day and an additional $1 for each day after. (e.g. if you use for 15 days the price will be $5 (first day) + $14 (following 14 days) = $19 total).</p>
+					<p class="detail_p"><b>OPTION 1</b>: Purchase only the Panda Phone Service <br>
+First day = $10<br>
+Day 2 and onward = $3 per day<br>
+Renting the Panda Phone without booking a tour costs $10 for the first day and an additional $3 for each day after. (e.g. if you use for 10 days the price will be $10 (first day) + $27 (following 9 days) = $37 total).</p>
 					<p class="detail_p mt15"><b>OPTION 2</b>: Purchase the Panda Phone with a Local Panda Trip<br>
 First 5 days = $1<br>
 Day 6 and onward = $1 per day<br>
@@ -281,10 +281,10 @@ For billing purposes, the day in which you receive your Panda Phone is considere
 				days:1,
 				adultsText:'Adults',
 				devicesNum:1,
-				dayPrice:1,
-				incrementalPrice:1, //超出每天加价1美元
-				startingPrice:5, //起始价格5美元
-				totalPrice:5,
+				dayPrice:3,
+				incrementalPrice:3, //超出每天加价1美元
+				startingPrice:10, //起始价格10美元
+				totalPrice:10,
 
 				// 币种
 				nowExchange:{code: "USD", symbol: "$"},
@@ -384,8 +384,11 @@ For billing purposes, the day in which you receive your Panda Phone is considere
 		},
 		methods: {
 			formatDate:formatDate,
-			selectDate(){
-				this.showCalendar = false;
+			selectDate(data){
+				if(data.changeDate.length>1){
+					this.showCalendar = false;
+				}
+				
 			},
 			zeroLength(text){
 				var num = 0;

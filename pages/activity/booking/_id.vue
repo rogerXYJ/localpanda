@@ -1026,15 +1026,26 @@
 			]
 
 
-			//电商ga
-			ga('require', 'ecommerce');
+			
 
-			ga(gaSend, {
-				hitType: 'event',
-				eventCategory: 'activity_booking',
-				eventAction: 'load',
-				eventLabel: 'js',
-			});
+			//Ga检测
+			var gaTimer = setInterval(function(){
+        if(ga){
+					
+					//电商ga
+					ga('require', 'ecommerce');
+
+					//加载ga
+          ga(gaSend, {
+						hitType: 'event',
+						eventCategory: 'activity_booking',
+						eventAction: 'load',
+						eventLabel: 'js',
+					});
+          //停止检测
+          window.clearInterval(gaTimer);
+        }
+      },300);
 			
 
 		},

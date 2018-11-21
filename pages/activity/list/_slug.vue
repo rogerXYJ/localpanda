@@ -746,7 +746,8 @@ export default {
 	  isfilter: false,
 	  hiddenHead:false,
 
-      bannerInfo: setBanner()
+      bannerInfo: setBanner(),
+      showPandaPhone:true
     };
   },
   head() {
@@ -1323,12 +1324,13 @@ export default {
 
             var listData = res.data.entities;
             var seachContent = this.seachContent.toLowerCase();
-            if(seachContent!="xi'an" && seachContent!="guilin" && seachContent!="chengdu"){
+            if(seachContent!="xi'an" && seachContent!="guilin" && seachContent!="chengdu" && listData && this.showPandaPhone){
               if(listData.length>2){
                 listData.splice(3,0,{'type':'PandaPhone'});
               }else{
                 listData.push({'type':'PandaPhone'});
               }
+              this.showPandaPhone = false;
             }
             
             this.activityList = listData;

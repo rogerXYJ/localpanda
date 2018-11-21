@@ -1028,6 +1028,13 @@
 
 			//电商ga
 			ga('require', 'ecommerce');
+
+			ga(gaSend, {
+				hitType: 'event',
+				eventCategory: 'activity_booking',
+				eventAction: 'load',
+				eventLabel: 'js',
+			});
 			
 
 		},

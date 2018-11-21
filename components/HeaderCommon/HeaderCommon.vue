@@ -416,7 +416,16 @@
 			show() {
 				this.alertTitleStatus = true
 				this.alertTitleLogin = "Log in to Local Panda",
-					this.alertTitleMessage = "Log in to add things to your wishlist and access your bookings from any device."
+				this.alertTitleMessage = "Log in to add things to your wishlist and access your bookings from any device.";
+
+				//登录ga
+				ga(gaSend, {
+					hitType: 'event',
+					eventCategory: 'public',
+					eventAction: 'click',
+					eventLabel: 'login',
+				});
+				
 			},
 			alertTitleCallBack(val) {
 				//回调后关闭弹框

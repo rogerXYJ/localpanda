@@ -1285,7 +1285,7 @@ export default {
     showBodyScroll() {
       document.body.style.overflowY = "inherit";
     },
-    getData() {
+    getData(isCheck) {
       if (this.selected == "Price :Low to High") {
         this.postData.sort = {
           type: "PRICE",
@@ -1324,13 +1324,18 @@ export default {
 
             var listData = res.data.entities;
             var seachContent = this.seachContent.toLowerCase();
+
+            //筛选之后隐藏pandaphone广告
+            if(isCheck){
+              this.showPandaPhone = false;
+            };
+
             if(seachContent!="xi'an" && seachContent!="guilin" && seachContent!="chengdu" && listData && this.showPandaPhone){
               if(listData.length>2){
                 listData.splice(3,0,{'type':'PandaPhone'});
               }else{
                 listData.push({'type':'PandaPhone'});
               }
-              this.showPandaPhone = false;
             }
             
             this.activityList = listData;
@@ -1506,7 +1511,7 @@ export default {
         this.postData.filters = postFilters;
         console.log(this.postData.filters);
         this.postData.pageNum = 1;
-        this.getData();
+        this.getData(true);
 
         var urlQuery = "";
         for (var key in jumpData) {

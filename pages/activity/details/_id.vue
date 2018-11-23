@@ -101,7 +101,7 @@
 							</li>
 							<li class="clearfix">
 								<span class="btn" @click="bookNow">Book Now</span>
-								<!-- <span class="btn_inquire fl" @click="ContactStatus=true">Inquire</span> -->
+								<span class="btn_inquire fl" @click="ContactStatus=true">Inquire</span>
 							</li>
 							
 							<!-- <li>
@@ -110,9 +110,9 @@
 							<li class="clearfix">
 								<!-- <div class="hr"></div> -->
 								<div class="Booked_box" v-if="detail.sales">Booked {{detail.sales}} {{detail.sales>1?'times':'time'}}</div>
-								<p class="book_tip" v-if="!detail.sales">Got questions before booking? <a @click="ContactStatus=true">Contact us</a></p>
-								<div class="inquire_text" @click="ContactStatus=true" v-if="detail.sales"><i class="iconfont">&#xe649;</i><b>Inquire</b></div>
-								<div class="middle_line" v-if="detail.sales"></div>
+								<!-- <p class="book_tip" v-if="!detail.sales">Got questions before booking? <a @click="ContactStatus=true">Contact us</a></p> -->
+								<!-- <div class="inquire_text" @click="ContactStatus=true" v-if="detail.sales"><i class="iconfont">&#xe649;</i><b>Inquire</b></div> -->
+								<!-- <div class="middle_line" v-if="detail.sales"></div> -->
 							</li>
 						</ul>
 					</div>
@@ -1317,7 +1317,8 @@ import { sep } from 'path';
 					title: this.detail.title,
 					childDiscount: this.picInfo.childDiscount*this.bookChildren, //儿童优惠总价
 					childDiscountP: this.picInfo.childDiscount,  //儿童优惠平均价
-				  pickup: this.detail.pickup,
+					pickup: this.detail.pickup,
+					venues: this.detail.venues,
 				  owner:this.detail.owner,
 		      averagePrice: this.perPersonPrice, //人均价 
 					guideId: this.checkGuideIndex!=='' ? this.detail.guide[this.checkGuideIndex].guideId : null,
@@ -1880,7 +1881,7 @@ import { sep } from 'path';
 							}
 						}
 						.Booked_box{
-							float: right;
+							// float: right;
 							line-height: 28px;
 							color: #878e95;
 							font-size: 14px; 
@@ -2428,6 +2429,8 @@ import { sep } from 'path';
 				box-sizing: border-box;
 				cursor: pointer;
 				font-weight: bold;
+				width: 48%;
+				float: left;
 			}
 			.btn_inquire{
 				display: block;

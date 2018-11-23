@@ -95,6 +95,7 @@ input {
 
 .wmax{ width: 100%!important;}
 
+.ml0{ margin-left: 0!important;}
 .mt5{ margin-top: 5px!important;}
 .mt10{ margin-top: 10px!important;}
 .mt15{ margin-top: 15px!important;}
@@ -104,10 +105,14 @@ input {
 .ml10{ margin-left: 10px!important;}
 .ml15{ margin-left: 15px!important;}
 .ml20{ margin-left: 20px!important;}
+.ml30{ margin-left: 30px!important;}
+.ml50{ margin-left: 50px!important;}
 
 .flnone{ float: none!important;}
 .fl{ float: left;}
 .fr{ float: right;}
+
+.hr{ height: 1px; background-color: #ddd;}
 
 .bdnone{ border: none!important;}
 
@@ -196,20 +201,20 @@ input {
         bottom: inherit!important;
         border-bottom-color:#fff!important;
     }
-    .flatpickr-input {
-        border: 1px solid #e3e5e9!important;
-        border-radius: 3px;
-        width: 100%!important;
-        height: 50px!important;
-        padding-left: 57px!important;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        font-size: 18px!important;
-        &:hover{
-            border-color: #1bbc9d!important;
-        }
-    }
+    // .flatpickr-input {
+    //     border: 1px solid #e3e5e9!important;
+    //     border-radius: 3px;
+    //     width: 100%!important;
+    //     height: 50px!important;
+    //     padding-left: 57px!important;
+    //     overflow: hidden;
+    //     text-overflow: ellipsis;
+    //     white-space: nowrap;
+    //     font-size: 18px!important;
+    //     &:hover{
+    //         border-color: #1bbc9d!important;
+    //     }
+    // }
     .flatpickr-current-month {
         padding: 0!important;
     }

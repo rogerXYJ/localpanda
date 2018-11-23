@@ -56,6 +56,139 @@
 						<textarea rows="3" v-else v-model="comments" @blur="gabulr(5)" placeholder="You can fill out your travel preferences here for us to personalize your trip"></textarea>
 					</div>
 				</div>
+
+				<!-- 补填信息板块 -->
+				<div class="pickup_info">
+					<div class="pickup_detail" v-if="opctions.pickup>0">
+						<h3 v-if="opctions.pickup">Pick-up & Panda Phone Device delivery  InformationInformation <br><span class="ml0">If you haven't decided on the details, you can provide us with the info later. </span></h3>
+						<h3 v-else>Pick-up Information <span>If you haven't decided on the details, you can provide us with the info later. </span></h3>
+						<checkbox class="pickup_info_check" v-model="showPickupInfo" :change="pickupInfoChange">I have the info now</checkbox>
+						
+						<div class="hr mt15"></div>
+
+						<div class="pickup_info_list">
+							<h4>Pick-up Location</h4>
+							<ul class="pickup_info_location">
+								<li><radio v-model="pickupLocation" label="Hotel">Hotel</radio></li>
+								<li><radio v-model="pickupLocation" label="Airport">Airport</radio></li>
+								<li><radio v-model="pickupLocation" label="Cruise Port">Cruise Port</radio></li>
+								<li><radio v-model="pickupLocation" label="Railway Station">Railway Station</radio></li>
+								<li><radio v-model="pickupLocation" label="Address or Intersection">Address or Intersection</radio></li>
+							</ul>
+
+							<!-- 酒店 -->
+							<div class="pickup_location_content" v-if="pickupLocation=='Hotel'">
+								<h5><span class="red">*</span>Hotel Name & Address: </h5>
+								<textarea class="textarea" rows="5"></textarea>
+							</div>
+							<!-- Airport -->
+							<div class="pickup_location_content" v-if="pickupLocation=='Airport'">
+								<ul class="location_list">
+									<li><span><i class="red">*</i> Arrival Time</span> <input type="text"></li>
+									<li><span><i class="red">*</i> Flight Number</span> <input type="text"></li>
+									<li class="w_max"><span><i class="red">*</i> Airport</span> <input type="text"></li>
+								</ul>
+							</div>
+							<!-- Cruise Port -->
+							<div class="pickup_location_content" v-if="pickupLocation=='Cruise Port'">
+								<ul class="location_list">
+									<li><span><i class="red">*</i> Arrival Time</span> <input type="text"></li>
+									<li><span><i class="red">*</i> Cruise Number</span> <input type="text"></li>
+									<li class="w_max"><span><i class="red">*</i> Cruise Port</span> <input type="text"></li>
+								</ul>
+							</div>
+
+							<!-- Railway Station -->
+							<div class="pickup_location_content" v-if="pickupLocation=='Railway Station'">
+								<ul class="location_list">
+									<li><span><i class="red">*</i> Arrival Time</span> <input type="text"></li>
+									<li><span><i class="red">*</i> Train Number</span> <input type="text"></li>
+									<li class="w_max"><span><i class="red">*</i> Railway station</span> <input type="text"></li>
+								</ul>
+							</div>
+
+							<!-- Railway Station -->
+							<div class="pickup_location_content" v-if="pickupLocation=='Address or Intersection'">
+								<ul class="location_list location_list_address">
+									<li><span><i class="red">*</i> Pick-up Time</span> <input type="text"></li>
+									<li class="w_max"><span><i class="red">*</i> Address or Intersection</span> <input type="text"></li>
+								</ul>
+							</div>
+
+
+
+
+						</div>
+					</div>
+
+					<div class="venue_detail" v-else>
+						<h3>Please select a Venue<span class="red">*</span></h3>
+						<div class="venue_check" v-for="item in opctions.venues" :key="item">
+							<radio v-model="venueAddress" :label="item">{{item}}</radio>
+						</div>
+					</div>
+
+					<div class="pickup_info_list">
+						<h4>Panda Phone Device delivery Location</h4>
+						<div class="pandaPhone_location">
+							<div class="pandaPhone_location_check mt5">
+								<radio v-model="pandaPhoneLocation" :label="1">I want my device to be delivered upon my pickup</radio>
+							</div>
+							<div class="pandaPhone_location_check">
+								<radio v-model="pandaPhoneLocation" :label="0">I want to receive my device at a time/venue different from my pickup venue/time</radio>
+							</div>
+						</div>
+
+						<div class="pandaPhone_info" v-show="!pandaPhoneLocation">
+							<h5><span class="red">*</span> Panda Phone delivery address （ Hotel Only ）</h5>
+							<div class="pandaPhone_info_list">
+								<input class="w_max js_validate" vType="text" type="text" placeholder="">
+							</div>
+						</div>
+						<div class="pandaPhone_info" v-show="!pandaPhoneLocation">
+							<h5><span class="red">*</span> Panda Phone delivery address （ Hotel Only ）</h5>
+							<div class="pandaPhone_info_list">
+								<input class="js_changetime js_validate" vType="text" v-model="arrivalDate" type="text" readonly placeholder="Please Select Date">
+								<!-- <input class="ml50 js_validate" vType="text" v-model="arrivalTime" type="text" placeholder="Please Select Time"> -->
+								<select class="pickup_time js_validate" vType="text" v-model="arrivalTime">
+									<option value="I haven't decided yet">I haven't decided yet. I'll contact you later</option>
+									<option value="7:30 AM">7:30 AM</option>
+									<option value="8:00 AM">8:00 AM</option>
+									<option value="8:30 AM">8:30 AM</option>
+									<option value="9:00 AM">9:00 AM</option>
+									<option value="9:30 AM">9:30 AM</option>
+									<option value="10:00 AM">10:00 AM</option>
+									<option value="10:30 AM">10:30 AM</option>
+									<option value="11:00 AM">11:00 AM</option>
+									<option value="11:30 AM">11:30 AM</option>
+									<option value="12:00 PM">12:00 PM</option>
+									<option value="12:30 PM">12:30 PM</option>
+									<option value="1:00 PM">1:00 PM</option>
+									<option value="1:30 PM">1:30 PM</option>
+									<option value="2:00 PM">2:00 PM</option>
+									<option value="2:30 PM">2:30 PM</option>
+									<option value="3:00 PM">3:00 PM</option>
+									<option value="3:30 PM">3:30 PM</option>
+									<option value="4:00 PM">4:00 PM</option>
+									<option value="4:30 PM">4:30 PM</option>
+									<option value="5:00 PM">5:00 PM</option>
+									<option value="5:30 PM">5:30 PM</option>
+									<option value="6:00 PM">6:00 PM</option>
+									<option value="6:30 PM">6:30 PM</option>
+									<option value="7:00 PM">7:00 PM</option>
+									<option value="7:30 PM">7:30 PM</option>
+									<option value="8:00 PM">8:00 PM</option>
+								</select>
+							</div>
+						</div>
+						
+					</div>
+					
+					
+				</div>
+
+
+
 				<div class="coupon">
 					<checkbox v-model="checkedAll" :change="changeFn">
 						Have a Gift Card or Coupon Code? Proceed to checkout to redeem it.
@@ -243,7 +376,8 @@
 			<div class="pp_close iconfont" @click="showPPDialog=false">&#xe606;</div>
 		</div>
 
-
+		<!-- <calendar v-model="arrivalDate" bindDom="js_changetime" size="mini"></calendar> -->
+		
 	</div>
 </template>
 
@@ -259,7 +393,12 @@
 	import AlertGoBack from '~/components/Prompt/AlertGoBack';
 	import Alert from '~/components/Prompt/Alert'
 	import countryCode from '~/assets/js/countryCode.js'
+	import { radioGroup, radio } from "~/plugins/panda/radio/";
 	import { checkboxGroup, checkbox } from "~/plugins/panda/checkbox/";
+	import Flatpickr from 'flatpickr';
+	require('~/assets/scss/G-ui/flatpickr.min.css')
+	import Validate from "~/plugins/panda/validate/";
+	
 
 	export default {
 		async asyncData({
@@ -353,7 +492,15 @@
 				clickCountryCode:false,
 				country:'',
 				currency:{code: "USD", symbol: "$"},
-				showPPDialog:false
+				showPPDialog:false,
+
+				//pick-up信息
+				showPickupInfo: false,
+				pickupLocation: 'Hotel',
+				pandaPhoneLocation: 1,
+				venueAddress: '',
+				arrivalDate: '',
+				arrivalTime: ''
 			};
 
 			var userCookie = {};
@@ -372,51 +519,7 @@
 				
 			}
 
-
-
 			callback(null,data);
-			
-			// try{
-			// 	var Promise1 = new Promise(function(resolve, reject){
-			// 		Vue.axios.get(apiBasePath + "product/activity/"+id+"/price?currency="+data.currency.code).then(function(res) {
-			// 			// var consoleTimeS2 = new Date().getTime();
-			// 			// 	console.log('价格接口花费时间：'+(consoleTimeS2-consoleTimeS)+' ms');
-			// 			resolve(res);
-			// 		}, function(res) {
-			// 			resolve(res);
-			// 		});
-			// 	});
-
-			// 	//价格明细
-			// 	var Promise2 = new Promise(function(resolve, reject){
-			// 		Vue.axios.get(apiBasePath + "product/activity/"+id+"/price/detail?currency="+data.currency.code).then(function(res) {
-			// 			// var consoleTimeS2 = new Date().getTime();
-			// 			// 	console.log('价格接口花费时间：'+(consoleTimeS2-consoleTimeS)+' ms');
-			// 			resolve(res);
-			// 		}, function(res) {
-			// 			resolve(res);
-			// 		});
-			// 	});
-			// 	Promise.all([Promise1,Promise2]).then(results=>{
-					
-			// 		data.opctions.picInfo=results[0].data;
-			// 		data.opctions.phoneHirePrice = results[0].data.phoneHirePrice;
-					
-			// 		data.opctions.picInfo.detail=results[1].data
-			// 		callback(null,data);
-
-			// 	})
-		
-
-			// }catch(err) {
-			// 		console.log(err);
-			// 		return error({
-			// 			statusCode: 500,
-			// 			message: JSON.stringify(err)
-			// 		});
-			// }
-
-
 		},
 		name: 'fillYourInfo',
 		 head() {
@@ -450,7 +553,9 @@
 			AlertGoBack,
 			Alert,
 			checkboxGroup,
-			checkbox
+			checkbox,
+			radioGroup,
+			radio,
 
 		},
 		methods: {
@@ -466,6 +571,10 @@
 					//计算价格
 					this.setPrice();
 				}
+			},
+			//选中补填信息
+			pickupInfoChange(){
+
 			},
 			//验证couponCode
 			validateCode() {
@@ -755,10 +864,13 @@
 							zeroStr+='0';
 						}
 						//解决浮点数bug
-						if(numberArr[1][bit] && numberArr[1][bit+1] && numberArr[1][bit+2]){
-							return numberArr[0]+'.'+numberArr[1].substring(0,bit);
+						if(numberArr[1][bit] === numberArr[1][bit+1] && numberArr[1][bit+1] === numberArr[1][bit+2]){
+							if(numberArr[1][bit]==9){
+								return (value*1).toFixed(bit);
+							}else{
+								return numberArr[0]+'.'+numberArr[1].substring(0,bit);
+							}
 						}
-						
 						return (value+('0.'+zeroStr+'5')*1).toFixed(bit);
 					}
 					return (value*1).toFixed(bit);
@@ -860,6 +972,41 @@
 			addPanda(){
 				this.opctions.pandaPhoneCheck=true;
 				this.showPPDialog=false;
+			},
+			
+			submitPandaPhone(){
+				var that = this;
+				
+				var validate = this.fromValidate.validate();
+				console.log(validate);
+				if(validate){
+
+					var putData = {
+						"arrivalDate": this.arrivalDate,
+						"flightNumber": this.flightNumber,
+						"hotel": this.hotel,
+						"orderId": this.orderId,
+						"id": this.orderInfo.activityId
+					};
+					if(this.ppType==2){
+						delete putData.hotel;
+					}else if(this.ppType==3){
+						delete putData.flightNumber;
+					}
+					that.axios.put('https://api.localpanda.com/api/order/phone/info', JSON.stringify(putData), {
+						headers: {
+							'Content-Type': 'application/json'
+						}
+					}).then(function(response) {
+						if(response.data.succeed) {
+							that.showPhoneTip = true;
+						};
+
+					}, function(response) {
+
+					});
+
+				}
 			},
 			//下单
 			next() {
@@ -963,6 +1110,25 @@
 					//this.opctions.amount= this.opctions.childrenNum > 0 && opctions.childDiscount ? self.returnFloat(self.returnFloat(details[i].price) + (this.opctions.pandaPhoneCheck?this.opctions.phoneHirePrice:0)*1 - self.returnFloat(this.opctions.childrenNum * opctions.childDiscount)- (this.opctions.couponDiscount?this.opctions.couponDiscount:0)):	self.returnFloat(details[i].price)
 				}
 			}
+
+			console.log(this.opctions);
+			var venues = this.opctions.venues;
+			if(venues.length==1){
+				this.venueAddress = venues[0];
+			};
+
+			this.$nextTick(()=>{
+
+				new Flatpickr('.js_changetime',{
+					minDate: new Date(),
+				});
+				
+				this.fromValidate = new Validate({
+					inputClassName:'js_validate', //需要校验的input的className
+					errorClassName:'valError'  //报错时，会自动在input上添加的className
+				});
+			});
+
 			
 			this.logIn = window.localStorage.getItem("logstate")
 			
@@ -999,31 +1165,13 @@
 
 
 			self.codeListHot = [
-				{
-					"country_name": "United States",
-					"prefix": "1"
-				},
-				{
-					"country_name": "United Kingdom",
-					"prefix": "44"
-				},
-				{
-					"country_name": "China Mainland",
-					"prefix": "86"
-				},
-				{
-					"country_name": "Canada",
-					"prefix": "1"
-				},
-				{
-					"country_name": "Australia",
-					"prefix": "61"
-				},
-				{
-					"country_name": "New Zealand",
-					"prefix": "64"
-				}
-			]
+				{"country_name": "United States","prefix": "1"},
+				{"country_name": "United Kingdom","prefix": "44"},
+				{"country_name": "China Mainland","prefix": "86"},
+				{"country_name": "Canada","prefix": "1"},
+				{"country_name": "Australia",	"prefix": "61"},
+				{"country_name": "New Zealand","prefix": "64"}
+			];
 
 
 			
@@ -1810,6 +1958,155 @@
 						}
 					}
 				}
+
+				.pickup_info{
+					margin-top: 15px;
+					padding: 15px 10px 20px;
+					box-shadow: 0px 2px 6px 0px rgba(0, 0, 0,.1);
+					width: 704px;
+					background: #faf9f8;
+					h3{
+						font-size: 18px;
+    				font-weight: bold;
+						margin-top: 0;
+						span{ font-size: 14px; font-weight: normal; margin-left: 10px; color: #666;}
+					}
+					.pickup_info_check{
+						font-size: 16px;
+						margin-top: 6px;
+					}
+
+					.pickup_info_list{
+						h4{
+							font-size: 16px;
+							font-weight: bold;
+							margin-top: 15px;
+						}
+						.pickup_info_location{
+							overflow: hidden;
+							margin-top: 10px;
+							li{
+								float: left;
+								margin-right: 20px;
+								font-size: 14px;
+							}
+						}
+						.pickup_location_content{
+							margin-top: 15px;
+							h5{
+								font-size: 16px;
+							}
+							.textarea{
+								margin-top: 8px;
+								width: 100%;
+								box-shadow: inset 0 1px 0 rgba(0, 0, 0, .1), inset 0 1px 1px rgba(0, 0, 0, .05);
+								padding: 6px 10px 10px;
+								resize: none;
+								border-radius: 3px;
+							}
+							.location_list{
+								overflow: hidden;
+								margin-top: 20px;
+								li{
+									float: left;
+									width: 50%;
+									line-height: 32px;
+									font-size: 14px;
+									margin-bottom: 15px;
+									span{
+										float: left;
+										width: 110px;
+										text-align: right;
+										white-space: nowrap;
+										margin-right: 10px;
+									}
+									input{
+										height: 32px;
+										line-height: 30px;
+										font-size: 16px;
+										vertical-align: top;
+										border: 1px solid;
+										border-color: #858585 #c2c2c2 #c2c2c2;
+										border-radius: 3px;
+										box-shadow: inset 0 1px 0 rgba(0, 0, 0, .1), inset 0 1px 1px rgba(0, 0, 0, .05);
+									}
+								}
+								.w_max{
+									width: 100%;
+									input{
+										width: 530px;
+									}
+								}
+							}
+							.location_list_address{
+								li{
+									width: 100%;
+									span{
+										width: 150px;
+									}
+								}
+								.w_max{
+									input{
+										width: 430px;
+									}
+								}
+							}
+						}
+						.pandaPhone_location_check{
+							font-size: 16px;
+							.radio_label{
+								padding: 5px 0 5px 20px;
+							}
+						}
+						.pandaPhone_info{
+							margin-top: 10px;
+							
+							h5{
+								
+							}
+							.pandaPhone_info_list{
+								margin-top: 8px;
+								padding-right: 36px;
+								input,.pickup_time{
+									height: 32px;
+									line-height: 30px;
+									font-size: 16px;
+									vertical-align: top;
+									border: 1px solid;
+									border-color: #858585 #c2c2c2 #c2c2c2;
+    							border-radius: 3px;
+									box-shadow: inset 0 1px 0 rgba(0, 0, 0, .1), inset 0 1px 1px rgba(0, 0, 0, .05);
+									width: 46%;
+								}
+								.pickup_time{
+									margin-left: 50px;
+								}
+								.w_max{
+									width: 100%;
+								}
+							}
+						}
+					}
+
+					.venue_detail{
+						h3{
+							span{
+								color: red;
+								font-size: 18px;
+							}
+							margin-bottom: 5px;
+						}
+						.venue_check{
+							font-size: 16px;
+							.radio_label{
+								padding: 5px 0 5px 20px;
+							}
+						}
+					}
+					
+				}
+				
+
 			}
 		}
 		.empty {
@@ -2014,6 +2311,13 @@
 				display: none!important;
 			}
 		}
+		.today{
+			border-color:#ddd!important;
+		}
+		.valError{
+			border: 1px solid #e14f3f!important;
+		}
+		.vTip{ display: none!important;}
 	}
 
 </style>

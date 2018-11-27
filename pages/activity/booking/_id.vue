@@ -60,7 +60,7 @@
 				<!-- 补填信息板块 -->
 				<div class="pickup_info" v-show="opctions.pickup>0 || opctions.pickup==0 && opctions.venues && opctions.venues.length>1">
 					<div class="pickup_detail" v-if="opctions.pickup>0">
-						<h3 v-if="opctions.pickup && opctions.pandaPhoneCheck">Pick-up & Panda Phone Device delivery  InformationInformation <br><span class="ml0">If you haven't decided on the details, you can provide us with the info later. </span></h3>
+						<h3 v-if="opctions.pickup && opctions.pandaPhoneCheck">Pick-up & Panda Phone Device delivery  Information <br><span class="ml0">If you haven't decided on the details, you can provide us with the info later. </span></h3>
 						<h3 v-else>Pick-up Information <span>If you haven't decided on the details, you can provide us with the info later. </span></h3>
 						<checkbox class="pickup_info_check" v-model="showPickupInfo" :change="pickupInfoChange">I have the info now</checkbox>
 						
@@ -78,17 +78,12 @@
 
 							<!-- 酒店 -->
 							<div class="pickup_location_content" v-show="pickupLocation=='Hotel'">
-								<h5><span class="red">*</span>Hotel Name & Address: </h5>
-								<textarea v-model="pickupData.hotel" class="textarea js_validate" vType="text" rows="5"></textarea>
-							</div>
-
-							<!-- Airport -->
-							<div class="pickup_location_content" v-show="pickupLocation=='Airport'">
-								<ul class="location_list">
-									<li><span><i class="red">*</i> Arrival Time</span> 
-										<!-- <input class="js_validate js_changetime" vType="text" type="text" v-model="pickupData.arrivalTime"> selectableRange: '00:00:00 - 23:59:00',-->
+								<ul class="location_list location_list_address">
+									<li><span><i class="red">*</i> Pick-up Time</span> 
+										<!-- <input class="js_validate" vType="text" type="text" v-model="pickupData.pickupTime"> -->
 										<el-time-picker 
 											:class="{'arrivalTimeError':arrivalTimeError}" 
+											@focus="arrivalTimeError=false" 
 											v-model="pickupData.arrivalTime" 
 											:picker-options="{
 												format: 'HH:mm'
@@ -98,17 +93,43 @@
 											placeholder="">
 										</el-time-picker>
 									</li>
+									<li class="w_max"><span><i class="red">*</i> Hotel Name & Address</span> <textarea class="textarea js_validate" vType="text" type="text" v-model="pickupData.hotel" rows="2"></textarea></li>
+								</ul>
+								<!-- <h5><span class="red">*</span>Hotel Name & Address: </h5>
+								<textarea v-model="pickupData.hotel" class="textarea js_validate" vType="text" rows="5"></textarea> -->
+							</div>
+
+							<!-- Airport -->
+							<div class="pickup_location_content" v-show="pickupLocation=='Airport'">
+								<ul class="location_list">
 									<li><span><i class="red">*</i> Flight Number</span> <input class="js_validate" vType="text" type="text" v-model="pickupData.flightNumber"></li>
+									<li><span><i class="red">*</i> Arrival Time</span> 
+										<!-- <input class="js_validate js_changetime" vType="text" type="text" v-model="pickupData.arrivalTime"> selectableRange: '00:00:00 - 23:59:00',-->
+										<el-time-picker 
+											:class="{'arrivalTimeError':arrivalTimeError}" 
+											@focus="arrivalTimeError=false" 
+											v-model="pickupData.arrivalTime" 
+											:picker-options="{
+												format: 'HH:mm'
+											}"
+											value-format="HH:mm" 
+											:default-value="new Date(opctions.startDate.split('-')[0], opctions.startDate.split('-')[1]-1, opctions.startDate.split('-')[2], 8, 0)"  
+											placeholder="">
+										</el-time-picker>
+									</li>
+									
 									<li class="w_max"><span><i class="red">*</i> Airport</span> <input class="js_validate" vType="text" type="text" v-model="pickupData.airport"></li>
 								</ul>
 							</div>
 							<!-- Cruise Port -->
 							<div class="pickup_location_content" v-show="pickupLocation=='Cruise Port'">
 								<ul class="location_list">
+									<li><span><i class="red">*</i> Cruise Number</span> <input class="js_validate" vType="text" type="text" v-model="pickupData.cruiseNumber"></li>
 									<li><span><i class="red">*</i> Arrival Time</span> 
 									<!-- <input class="js_validate js_changetime" vType="text" type="text" v-model="pickupData.arrivalTime"> -->
 										<el-time-picker 
 											:class="{'arrivalTimeError':arrivalTimeError}" 
+											@focus="arrivalTimeError=false" 
 											v-model="pickupData.arrivalTime" 
 											:picker-options="{
 												format: 'HH:mm'
@@ -118,7 +139,7 @@
 											placeholder="">
 										</el-time-picker>
 									</li>
-									<li><span><i class="red">*</i> Cruise Number</span> <input class="js_validate" vType="text" type="text" v-model="pickupData.cruiseNumber"></li>
+									
 									<li class="w_max"><span><i class="red">*</i> Cruise Port</span> <input class="js_validate" vType="text" type="text" v-model="pickupData.cruisePort"></li>
 								</ul>
 							</div>
@@ -126,9 +147,11 @@
 							<!-- Railway Station -->
 							<div class="pickup_location_content" v-show="pickupLocation=='Railway Station'">
 								<ul class="location_list">
+									<li><span><i class="red">*</i> Train Number</span> <input class="js_validate" vType="text" type="text" v-model="pickupData.trainNumber"></li>
 									<li><span><i class="red">*</i> Arrival Time</span> 
 										<el-time-picker 
 											:class="{'arrivalTimeError':arrivalTimeError}" 
+											@focus="arrivalTimeError=false" 
 											v-model="pickupData.arrivalTime" 
 											:picker-options="{
 												format: 'HH:mm'
@@ -138,7 +161,7 @@
 											placeholder="">
 										</el-time-picker>
 									</li>
-									<li><span><i class="red">*</i> Train Number</span> <input class="js_validate" vType="text" type="text" v-model="pickupData.trainNumber"></li>
+									
 									<li class="w_max"><span><i class="red">*</i> Railway Station</span> <input class="js_validate" vType="text" type="text" v-model="pickupData.railwayStation"></li>
 								</ul>
 							</div>
@@ -150,6 +173,7 @@
 										<!-- <input class="js_validate" vType="text" type="text" v-model="pickupData.pickupTime"> -->
 										<el-time-picker 
 											:class="{'arrivalTimeError':arrivalTimeError}" 
+											@focus="arrivalTimeError=false" 
 											v-model="pickupData.arrivalTime" 
 											:picker-options="{
 												format: 'HH:mm'
@@ -190,13 +214,13 @@
 						</div>
 
 						<div class="pandaPhone_info" v-show="!pandaPhoneLocation">
-							<h5><span class="red">*</span> Panda Phone delivery address （ Hotel Only ）</h5>
+							<h5><span class="red">*</span> Panda Phone delivery address ( Hotel Only )</h5>
 							<div class="pandaPhone_info_list">
 								<input class="w_max js_validate" vType="text" v-model="pandaPhoneAddress" type="text" placeholder="">
 							</div>
 						</div>
 						<div class="pandaPhone_info" v-show="!pandaPhoneLocation">
-							<h5><span class="red">*</span> Panda Phone delivery address （ Hotel Only ）</h5>
+							<h5><span class="red">*</span> Delivery Date & Time ( Beijing Time )</h5>
 							<div class="pandaPhone_info_list">
 								<input class="js_deliverytime js_validate" vType="text" v-model="arrivalDate" type="text" readonly placeholder="Please Select Date">
 								<!-- <input class="ml50 js_validate" vType="text" v-model="arrivalTime" type="text" placeholder="Please Select Time"> -->
@@ -1031,21 +1055,26 @@
 					next = false;
 					that.showCode=false;
 					that.orderHasCouponRate = true;
-				}else if(this.pickupLocation !='Hotel' && !this.pickupData.arrivalTime || !this.fromValidate.validate()){
-					if(this.pickupLocation !='Hotel' && !this.pickupData.arrivalTime){
+				}else if(this.showPickupInfo && !this.pickupData.arrivalTime || this.opctions.pickup>0 && !this.fromValidate.validate()){
+					if(!this.pickupData.arrivalTime){
 						this.fromValidate.validate();
 						this.arrivalTimeError = true;
-						document.querySelector('.pickup_info_location').scrollIntoViewIfNeeded();
+						if(document.querySelector('.pickup_info_location')){
+							document.querySelector('.pickup_info_location').scrollIntoViewIfNeeded();
+						}
+						
 					}
 					
-				}else if(this.venueAddress=='' && this.opctions.pickup==0){
+				}else if(this.venueAddress=='' && this.opctions.pickup==0 && this.opctions.venues && this.opctions.venues.length>1){
+					
 					this.venueTip = true;
 					// this.showNextTip = true;
+					
 
 					//设置提示
 					// this.setNextTipStr();
 					
-				}else{
+				}else if(this.fromValidate.validate()){
 					next=true;
 					that.next();
 				}
@@ -1112,22 +1141,22 @@
 				}else if(pickupLocation == 'Airport'){
 					return {
 						type: 'Airport',
-						arrivalTime: pickupData.arrivalTime,
 						flightNumber: pickupData.flightNumber,
+						arrivalTime: pickupData.arrivalTime,
 						airport: pickupData.airport
 					};
 				}else if(pickupLocation == 'Cruise Port'){
 					return {
 						type: 'Cruise Port',
-						arrivalTime: pickupData.arrivalTime,
 						cruiseNumber: pickupData.cruiseNumber,
+						arrivalTime: pickupData.arrivalTime,
 						cruisePort: pickupData.cruisePort
 					};
 				}else if(pickupLocation == 'Railway Station'){
 					return {
 						type: 'Railway Station',
-						arrivalTime: pickupData.arrivalTime,
 						trainNumber: pickupData.trainNumber,
+						arrivalTime: pickupData.arrivalTime,
 						railwayStation: pickupData.railwayStation
 					};
 				}else if(pickupLocation == 'Address or Intersection'){
@@ -1139,7 +1168,7 @@
 				}
 			},
 			getPhoneDelivery(){
-				if(this.opctions.pickup==0 || this.pandaPhoneLocation){
+				if(this.opctions.pickup==0 && this.opctions.venues && this.opctions.venues.length<2 || this.pandaPhoneLocation){
 					return null;
 				};
 
@@ -1188,7 +1217,7 @@
 						"meetingPoint": that.opctions.pickup==0? (that.venueAddress?that.venueAddress:null) : null,
 						"phoneDelivery": that.getPhoneDelivery(),
 						"pickup": that.showPickupInfo ? JSON.stringify(this.getPickupData()) : null,
-						"phoneDeliverySameAsPickup": that.showPickupInfo ? that.pandaPhoneLocation : true
+						"phoneDeliverySameAsPickup": that.pandaPhoneLocation
 						// "passport": "string",
 					},
 					"couponDiscount": that.couponType ? that.opctions.couponDiscount : null,
@@ -1211,6 +1240,11 @@
 					'currency': putData.currency
 				});
 				ga('ecommerce:send');
+
+				
+				// console.log('成功！');
+				// console.log(putData);
+				// return;
 				
 				if(that.addOder == false) {
 					that.addOder = true;
@@ -1262,10 +1296,10 @@
 			}
 
 			console.log(this.opctions);
-			var venues = this.opctions.venues;
-			if(venues){
-				this.venueAddress = venues[0];
-			};
+			// var venues = this.opctions.venues;
+			// if(venues){
+			// 	this.venueAddress = venues[0];
+			// };
 
 			this.$nextTick(()=>{
 
@@ -1275,7 +1309,7 @@
 				// });
 
 				new Flatpickr('.js_deliverytime',{
-					minDate: new Date(),
+					minDate: new Date(new Date()*1+24*60*60*1000),
 					disable:[this.opctions.startDate]
 				});
 				
@@ -2133,7 +2167,7 @@
 							}
 							.textarea{
 								margin-top: 8px;
-								width: 100%;
+								width: 430px;
 								box-shadow: inset 0 1px 0 rgba(0, 0, 0, .1), inset 0 1px 1px rgba(0, 0, 0, .05);
 								padding: 6px 10px 10px;
 								resize: none;
@@ -2516,6 +2550,18 @@
 				input{
 					border: 1px solid #f00!important;
 				}
+			}
+
+			
+		}
+
+		.pickup_info_location{
+			.radio_label {
+				.radio_box {
+					margin-top: 0!important;
+					margin-left: -17px;
+				}
+				
 			}
 		}
 	}

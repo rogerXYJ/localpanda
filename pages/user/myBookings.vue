@@ -34,10 +34,10 @@
 								</p>
 								
 								<p><b>Travel Date: </b>{{formatDate(item.startDate)}}&nbsp;&nbsp;&nbsp;&nbsp;{{formatDate(item.startTime)}}</p>
-								<p>Panda Phone Service {{item.phoneDepositPayOnline?'(deposit included)':''}}</p>
+								<p v-if="item.phoneDepositPayOnline">Panda Phone Service (deposit included)</p>
 
 								<div class="tag">
-									<span  @click="goGuideDatil(0,index)">Book Again</span>
+									<span  @click="goDetail('ACTIVITY',item.objectId)">Book Again</span>
 
 									<span v-if="item.status=='PAYMENT_PENDING'" @click="goPay('ACTIVITY',item.orderId)">To Pay</span>
 								</div>
@@ -61,7 +61,7 @@
 							</div>
 
 							<!-- 导游订单明细 -->
-							<div class="activitiesText" v-else>
+							<!-- <div class="activitiesText" v-else>
 								<div class="dataId">
 									<span>Booking ID: {{item.orderId}}</span>
 									<span>Booking Time: {{item.createTime}} (EST)</span>
@@ -77,7 +77,7 @@
 
 									<span v-if="item.status=='PAYMENT_PENDING'" @click="goPay('GUIDE_SERVICE',item.orderId)">To Pay</span>
 								</div>
-							</div>
+							</div> -->
 
 
 

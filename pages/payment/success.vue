@@ -30,7 +30,7 @@
 
 				<p class="c_666" v-if="showTipTxt && payType!='guide'">You ordered as a guest. You can click this button to view your order details.</p> -->
 
-				<div class="panda_phone" v-if="orderInfo.phoneHire && !showPhoneTip">
+				<div class="panda_phone" v-if="orderInfo.phoneHire && !showPhoneTip && orderInfo.activityInfo.pickup==0 && orderInfo.activityInfo.venues && orderInfo.activityInfo.venues.length<2 || orderInfo.phoneHire && !showPhoneTip && orderInfo.activityInfo.pickup==0 && !orderInfo.activityInfo.venues">
 					<h4>Panda Phone Service - 5 days (deposit included)</h4>
 					<p>You've selected The Panda Phone: All-in-one Mobile Travel Assistant. We will deliver your phone to the hotel or airport of your choice along with English-language assistance to get you set up.</p>
 					<h5>Please provide your delivery info below:</h5>
@@ -279,7 +279,8 @@ If you have any questions or concerns, feel free to contact us using the info at
 
 			this.$nextTick(()=>{
 				new Flatpickr('.js_changetime',{
-					minDate: new Date(),
+					minDate: new Date(new Date()*1+24*60*60*1000),
+					disable:[this.orderInfo.startDate]
 				});
 				//var aaa = new Flatpickr('#js_changetime1');
 				// new Flatpickr('#js_changetime2');

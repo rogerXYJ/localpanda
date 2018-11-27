@@ -109,7 +109,7 @@
 							</li> -->
 							<li class="clearfix">
 								<!-- <div class="hr"></div> -->
-								<div class="Booked_box" v-if="detail.sales">Booked {{detail.sales}} {{detail.sales>1?'times':'time'}}</div>
+								<div class="Booked_box" v-if="detail.sales">Booked {{detail.sales}} {{detail.sales>1?'times':'time'}} (last 30 days)</div>
 								<!-- <p class="book_tip" v-if="!detail.sales">Got questions before booking? <a @click="ContactStatus=true">Contact us</a></p> -->
 								<!-- <div class="inquire_text" @click="ContactStatus=true" v-if="detail.sales"><i class="iconfont">&#xe649;</i><b>Inquire</b></div> -->
 								<!-- <div class="middle_line" v-if="detail.sales"></div> -->

@@ -4,7 +4,8 @@ var Validate = (function(){
 	//默认参数
 	var defaultOpt = {
 		inputClassName:'validate',
-		errorClassName:'error'
+		errorClassName:'error',
+		stopFocus: false
 	};
 	function Validate(options){
 		//合并自定义参数
@@ -143,7 +144,7 @@ var Validate = (function(){
 						thisInput.className = thisClass + ' ' + options.errorClassName;
 					}
 					//PC端获取焦点，移动端不做
-					if(focus && !this.isMobile && vType!='data'){
+					if(focus && !this.isMobile && vType!='data' && !options.stopFocus){
 						thisInput.focus();
 						focus = false;
 					}else if(focus){

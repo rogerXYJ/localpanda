@@ -58,15 +58,15 @@
 				</div>
 
 				<!-- 补填信息板块 -->
-				<div class="pickup_info">
+				<div class="pickup_info" v-show="opctions.pickup>0 || opctions.pickup==0 && opctions.venues && opctions.venues.length>1">
 					<div class="pickup_detail" v-if="opctions.pickup>0">
-						<h3 v-if="opctions.pickup">Pick-up & Panda Phone Device delivery  InformationInformation <br><span class="ml0">If you haven't decided on the details, you can provide us with the info later. </span></h3>
+						<h3 v-if="opctions.pickup && opctions.pandaPhoneCheck">Pick-up & Panda Phone Device delivery  InformationInformation <br><span class="ml0">If you haven't decided on the details, you can provide us with the info later. </span></h3>
 						<h3 v-else>Pick-up Information <span>If you haven't decided on the details, you can provide us with the info later. </span></h3>
 						<checkbox class="pickup_info_check" v-model="showPickupInfo" :change="pickupInfoChange">I have the info now</checkbox>
 						
-						<div class="hr mt15"></div>
+						<div class="hr mt15" v-show="showPickupInfo"></div>
 
-						<div class="pickup_info_list">
+						<div class="pickup_info_list" v-show="showPickupInfo">
 							<h4>Pick-up Location</h4>
 							<ul class="pickup_info_location">
 								<li><radio v-model="pickupLocation" label="Hotel">Hotel</radio></li>
@@ -77,41 +77,89 @@
 							</ul>
 
 							<!-- 酒店 -->
-							<div class="pickup_location_content" v-if="pickupLocation=='Hotel'">
+							<div class="pickup_location_content" v-show="pickupLocation=='Hotel'">
 								<h5><span class="red">*</span>Hotel Name & Address: </h5>
-								<textarea class="textarea" rows="5"></textarea>
+								<textarea v-model="pickupData.hotel" class="textarea js_validate" vType="text" rows="5"></textarea>
 							</div>
+
 							<!-- Airport -->
-							<div class="pickup_location_content" v-if="pickupLocation=='Airport'">
+							<div class="pickup_location_content" v-show="pickupLocation=='Airport'">
 								<ul class="location_list">
-									<li><span><i class="red">*</i> Arrival Time</span> <input type="text"></li>
-									<li><span><i class="red">*</i> Flight Number</span> <input type="text"></li>
-									<li class="w_max"><span><i class="red">*</i> Airport</span> <input type="text"></li>
+									<li><span><i class="red">*</i> Arrival Time</span> 
+										<!-- <input class="js_validate js_changetime" vType="text" type="text" v-model="pickupData.arrivalTime"> selectableRange: '00:00:00 - 23:59:00',-->
+										<el-time-picker 
+											:class="{'arrivalTimeError':arrivalTimeError}" 
+											v-model="pickupData.arrivalTime" 
+											:picker-options="{
+												format: 'HH:mm'
+											}"
+											value-format="HH:mm" 
+											:default-value="new Date(opctions.startDate.split('-')[0], opctions.startDate.split('-')[1]-1, opctions.startDate.split('-')[2], 8, 0)"  
+											placeholder="">
+										</el-time-picker>
+									</li>
+									<li><span><i class="red">*</i> Flight Number</span> <input class="js_validate" vType="text" type="text" v-model="pickupData.flightNumber"></li>
+									<li class="w_max"><span><i class="red">*</i> Airport</span> <input class="js_validate" vType="text" type="text" v-model="pickupData.airport"></li>
 								</ul>
 							</div>
 							<!-- Cruise Port -->
-							<div class="pickup_location_content" v-if="pickupLocation=='Cruise Port'">
+							<div class="pickup_location_content" v-show="pickupLocation=='Cruise Port'">
 								<ul class="location_list">
-									<li><span><i class="red">*</i> Arrival Time</span> <input type="text"></li>
-									<li><span><i class="red">*</i> Cruise Number</span> <input type="text"></li>
-									<li class="w_max"><span><i class="red">*</i> Cruise Port</span> <input type="text"></li>
+									<li><span><i class="red">*</i> Arrival Time</span> 
+									<!-- <input class="js_validate js_changetime" vType="text" type="text" v-model="pickupData.arrivalTime"> -->
+										<el-time-picker 
+											:class="{'arrivalTimeError':arrivalTimeError}" 
+											v-model="pickupData.arrivalTime" 
+											:picker-options="{
+												format: 'HH:mm'
+											}"
+											value-format="HH:mm" 
+											:default-value="new Date(opctions.startDate.split('-')[0], opctions.startDate.split('-')[1]-1, opctions.startDate.split('-')[2], 8, 0)"  
+											placeholder="">
+										</el-time-picker>
+									</li>
+									<li><span><i class="red">*</i> Cruise Number</span> <input class="js_validate" vType="text" type="text" v-model="pickupData.cruiseNumber"></li>
+									<li class="w_max"><span><i class="red">*</i> Cruise Port</span> <input class="js_validate" vType="text" type="text" v-model="pickupData.cruisePort"></li>
 								</ul>
 							</div>
 
 							<!-- Railway Station -->
-							<div class="pickup_location_content" v-if="pickupLocation=='Railway Station'">
+							<div class="pickup_location_content" v-show="pickupLocation=='Railway Station'">
 								<ul class="location_list">
-									<li><span><i class="red">*</i> Arrival Time</span> <input type="text"></li>
-									<li><span><i class="red">*</i> Train Number</span> <input type="text"></li>
-									<li class="w_max"><span><i class="red">*</i> Railway station</span> <input type="text"></li>
+									<li><span><i class="red">*</i> Arrival Time</span> 
+										<el-time-picker 
+											:class="{'arrivalTimeError':arrivalTimeError}" 
+											v-model="pickupData.arrivalTime" 
+											:picker-options="{
+												format: 'HH:mm'
+											}"
+											value-format="HH:mm" 
+											:default-value="new Date(opctions.startDate.split('-')[0], opctions.startDate.split('-')[1]-1, opctions.startDate.split('-')[2], 8, 0)"  
+											placeholder="">
+										</el-time-picker>
+									</li>
+									<li><span><i class="red">*</i> Train Number</span> <input class="js_validate" vType="text" type="text" v-model="pickupData.trainNumber"></li>
+									<li class="w_max"><span><i class="red">*</i> Railway Station</span> <input class="js_validate" vType="text" type="text" v-model="pickupData.railwayStation"></li>
 								</ul>
 							</div>
 
 							<!-- Railway Station -->
-							<div class="pickup_location_content" v-if="pickupLocation=='Address or Intersection'">
+							<div class="pickup_location_content" v-show="pickupLocation=='Address or Intersection'">
 								<ul class="location_list location_list_address">
-									<li><span><i class="red">*</i> Pick-up Time</span> <input type="text"></li>
-									<li class="w_max"><span><i class="red">*</i> Address or Intersection</span> <input type="text"></li>
+									<li><span><i class="red">*</i> Pick-up Time</span> 
+										<!-- <input class="js_validate" vType="text" type="text" v-model="pickupData.pickupTime"> -->
+										<el-time-picker 
+											:class="{'arrivalTimeError':arrivalTimeError}" 
+											v-model="pickupData.arrivalTime" 
+											:picker-options="{
+												format: 'HH:mm'
+											}"
+											value-format="HH:mm" 
+											:default-value="new Date(opctions.startDate.split('-')[0], opctions.startDate.split('-')[1]-1, opctions.startDate.split('-')[2], 8, 0)"  
+											placeholder="">
+										</el-time-picker>
+									</li>
+									<li class="w_max"><span><i class="red">*</i> Address or Intersection</span> <input class="js_validate" vType="text" type="text" v-model="pickupData.address"></li>
 								</ul>
 							</div>
 
@@ -123,32 +171,34 @@
 
 					<div class="venue_detail" v-else>
 						<h3>Please select a Venue<span class="red">*</span></h3>
+						<div class="red venue_tip" v-if="venueTip">Field is required</div>
 						<div class="venue_check" v-for="item in opctions.venues" :key="item">
 							<radio v-model="venueAddress" :label="item">{{item}}</radio>
 						</div>
+						
 					</div>
 
-					<div class="pickup_info_list">
+					<div class="pickup_info_list" v-show="showPickupInfo && opctions.pandaPhoneCheck && opctions.pickup>0 || opctions.pickup==0 && opctions.pandaPhoneCheck">
 						<h4>Panda Phone Device delivery Location</h4>
 						<div class="pandaPhone_location">
 							<div class="pandaPhone_location_check mt5">
-								<radio v-model="pandaPhoneLocation" :label="1">I want my device to be delivered upon my pickup</radio>
+								<radio v-model="pandaPhoneLocation" :label="true">I want my device to be delivered upon my pickup</radio>
 							</div>
 							<div class="pandaPhone_location_check">
-								<radio v-model="pandaPhoneLocation" :label="0">I want to receive my device at a time/venue different from my pickup venue/time</radio>
+								<radio v-model="pandaPhoneLocation" :label="false">I want to receive my device at a time/venue different from my pickup venue/time</radio>
 							</div>
 						</div>
 
 						<div class="pandaPhone_info" v-show="!pandaPhoneLocation">
 							<h5><span class="red">*</span> Panda Phone delivery address （ Hotel Only ）</h5>
 							<div class="pandaPhone_info_list">
-								<input class="w_max js_validate" vType="text" type="text" placeholder="">
+								<input class="w_max js_validate" vType="text" v-model="pandaPhoneAddress" type="text" placeholder="">
 							</div>
 						</div>
 						<div class="pandaPhone_info" v-show="!pandaPhoneLocation">
 							<h5><span class="red">*</span> Panda Phone delivery address （ Hotel Only ）</h5>
 							<div class="pandaPhone_info_list">
-								<input class="js_changetime js_validate" vType="text" v-model="arrivalDate" type="text" readonly placeholder="Please Select Date">
+								<input class="js_deliverytime js_validate" vType="text" v-model="arrivalDate" type="text" readonly placeholder="Please Select Date">
 								<!-- <input class="ml50 js_validate" vType="text" v-model="arrivalTime" type="text" placeholder="Please Select Time"> -->
 								<select class="pickup_time js_validate" vType="text" v-model="arrivalTime">
 									<option value="I haven't decided yet">I haven't decided yet. I'll contact you later</option>
@@ -189,7 +239,8 @@
 
 
 
-				<div class="coupon">
+				<!-- 优惠券 -->
+				<!-- <div class="coupon">
 					<checkbox v-model="checkedAll" :change="changeFn">
 						Have a Gift Card or Coupon Code? Proceed to checkout to redeem it.
 						<a>Enter Coupon Code <i class="iconfont" v-if="checkedAll">&#xe667;</i>
@@ -202,7 +253,7 @@
 						<p v-if="hasCode===1"><i class="iconfont">&#xe654;</i>- {{couponType=="RATE"?"":nowExchange.symbol}}{{couponType=="RATE"?couponRate*100:opctions.couponDiscount}}{{couponType=="RATE"?"%":""}} {{couponType=="RATE"?"off":""}} (Coupon discount)</p>
 						<p v-if="hasCode===0" style="color: red;">The Coupon code you entered is invalid. Please try again.</p>
 					</div>
-				</div>
+				</div> -->
 
 				<!-- 手机业务 -->
 				<div class="panda_phone">
@@ -335,6 +386,16 @@
 			</div>
 
 		</div>
+		
+
+		<div class="next_info_tip_bg" v-show="showNextTip"></div>
+		<div class="next_info_tip" v-show="showNextTip">
+			<p>Your <b>{{nextTipStr}}</b> is still incomplete. You can complete the info after you finish your booking or continue to update now.</p>
+			<div class="next_info_btn">
+				<span @click="next">Update my info later</span>
+				<span @click="showNextTip=false">Continue to update</span>
+			</div>
+		</div>
 
 
 
@@ -376,7 +437,8 @@
 			<div class="pp_close iconfont" @click="showPPDialog=false">&#xe606;</div>
 		</div>
 
-		<!-- <calendar v-model="arrivalDate" bindDom="js_changetime" size="mini"></calendar> -->
+
+		<Loading :loadingStatus="loadingStatus"></Loading>
 		
 	</div>
 </template>
@@ -395,9 +457,12 @@
 	import countryCode from '~/assets/js/countryCode.js'
 	import { radioGroup, radio } from "~/plugins/panda/radio/";
 	import { checkboxGroup, checkbox } from "~/plugins/panda/checkbox/";
+	import Loading from '~/components/Loading/Loading'
 	import Flatpickr from 'flatpickr';
 	require('~/assets/scss/G-ui/flatpickr.min.css')
 	import Validate from "~/plugins/panda/validate/";
+
+	
 	
 
 	export default {
@@ -495,12 +560,30 @@
 				showPPDialog:false,
 
 				//pick-up信息
+				pickupData:{
+					hotel: '',
+					arrivalTime: '',
+					flightNumber: '',
+					airport: '',
+					cruiseNumber: '',
+					cruisePort: '',
+					trainNumber: '',
+					railwayStation: '',
+					pickupTime: '',
+					address: ''
+				},
 				showPickupInfo: false,
+				venueTip:false,
 				pickupLocation: 'Hotel',
-				pandaPhoneLocation: 1,
+				pandaPhoneLocation: true,
 				venueAddress: '',
+				pandaPhoneAddress: '',
 				arrivalDate: '',
-				arrivalTime: ''
+				arrivalTime: '',
+				showNextTip: false,
+				nextTipStr:'',
+				loadingStatus:false,
+				arrivalTimeError:false
 			};
 
 			var userCookie = {};
@@ -556,6 +639,7 @@
 			checkbox,
 			radioGroup,
 			radio,
+			Loading
 
 		},
 		methods: {
@@ -886,6 +970,34 @@
 					eventLabel: 'activity_order_fail',
 				});
 			},
+			setNextTipStr(){
+				//提示没有填写集合信息
+					var str = '';
+					var pandaPhoneCheck = this.opctions.pandaPhoneCheck;
+					if(!this.venueAddress){
+						str+=',Meeting Point Info';
+					}
+					
+					//Pickup信息没有填写
+					var pickupData = this.getPickupData();
+					var hasNull = false;
+					for(var key in pickupData){
+						if(pickupData[key]){
+							hasNull = true;
+						}
+					}
+					if(hasNull && this.showPickupInfo){
+						str+=',Pick-up Info'
+					}
+
+					//提示没有填写手机接送地
+					if(pandaPhoneCheck){
+						if(!this.arrivalDate || !this.arrivalTime || !this.pandaPhoneAddress){
+							str+=',Panda Phone Device delivery Location  Info';
+						};
+					}
+					this.nextTipStr = str.substring(1);
+			},
 			//判断是否使用优惠券下单
 			placeOrder() {
 				let that=this
@@ -915,22 +1027,34 @@
 					that.errorFn("mobilePhone")
 					that.phoneErr = true
 					
-				} else {
-						next=true
-						that.showCode=false
-						 if(that.checkedAll) {
-						 	if(that.couponType) {
-						 		that.next()
-						 	} else {
-						 		that.orderHasCouponRate = true
-						 	}
-						 } else {
-						 	that.next()
-						 }
-					if(next == false) {
-						that.gaFail()
+				}else if(that.checkedAll && !that.couponType){
+					next = false;
+					that.showCode=false;
+					that.orderHasCouponRate = true;
+				}else if(this.pickupLocation !='Hotel' && !this.pickupData.arrivalTime || !this.fromValidate.validate()){
+					if(this.pickupLocation !='Hotel' && !this.pickupData.arrivalTime){
+						this.fromValidate.validate();
+						this.arrivalTimeError = true;
+						document.querySelector('.pickup_info_location').scrollIntoViewIfNeeded();
 					}
+					
+				}else if(this.venueAddress=='' && this.opctions.pickup==0){
+					this.venueTip = true;
+					// this.showNextTip = true;
+
+					//设置提示
+					// this.setNextTipStr();
+					
+				}else{
+					next=true;
+					that.next();
 				}
+
+				//失败ga统计
+				if(next == false) {
+					that.gaFail()
+				}
+
 			},
 			continueFn() {
 				let self = this
@@ -973,45 +1097,63 @@
 				this.opctions.pandaPhoneCheck=true;
 				this.showPPDialog=false;
 			},
-			
-			submitPandaPhone(){
-				var that = this;
-				
-				var validate = this.fromValidate.validate();
-				console.log(validate);
-				if(validate){
 
-					var putData = {
-						"arrivalDate": this.arrivalDate,
-						"flightNumber": this.flightNumber,
-						"hotel": this.hotel,
-						"orderId": this.orderId,
-						"id": this.orderInfo.activityId
+			getPickupData(){
+				var pickupLocation = this.pickupLocation;
+				var pickupData = this.pickupData;
+
+				if(this.opctions.pickup==0){
+					return null;
+				}else if(pickupLocation == 'Hotel'){
+					return {
+						type: 'Hotel',
+						hotel: pickupData.hotel
 					};
-					if(this.ppType==2){
-						delete putData.hotel;
-					}else if(this.ppType==3){
-						delete putData.flightNumber;
-					}
-					that.axios.put('https://api.localpanda.com/api/order/phone/info', JSON.stringify(putData), {
-						headers: {
-							'Content-Type': 'application/json'
-						}
-					}).then(function(response) {
-						if(response.data.succeed) {
-							that.showPhoneTip = true;
-						};
-
-					}, function(response) {
-
-					});
-
+				}else if(pickupLocation == 'Airport'){
+					return {
+						type: 'Airport',
+						arrivalTime: pickupData.arrivalTime,
+						flightNumber: pickupData.flightNumber,
+						airport: pickupData.airport
+					};
+				}else if(pickupLocation == 'Cruise Port'){
+					return {
+						type: 'Cruise Port',
+						arrivalTime: pickupData.arrivalTime,
+						cruiseNumber: pickupData.cruiseNumber,
+						cruisePort: pickupData.cruisePort
+					};
+				}else if(pickupLocation == 'Railway Station'){
+					return {
+						type: 'Railway Station',
+						arrivalTime: pickupData.arrivalTime,
+						trainNumber: pickupData.trainNumber,
+						railwayStation: pickupData.railwayStation
+					};
+				}else if(pickupLocation == 'Address or Intersection'){
+					return {
+						type: 'Address or Intersection',
+						pickupTime: pickupData.arrivalTime,
+						address: pickupData.address
+					};
 				}
+			},
+			getPhoneDelivery(){
+				if(this.opctions.pickup==0 || this.pandaPhoneLocation){
+					return null;
+				};
+
+				var data = {
+					address: this.pandaPhoneAddress,
+					arrivalDate: this.arrivalDate,
+					arrivalTime: this.arrivalTime
+				};
+				return JSON.stringify(data);
 			},
 			//下单
 			next() {
-				const that = this
-				var obj; //that.addOder = true
+				const that = this;
+
 				ga(gaSend, {
 					hitType: 'event',
 					eventCategory: 'activity_booking',
@@ -1023,7 +1165,7 @@
 				
 
 
-				obj = {
+				var putData = {
 					userId: localStorage.getItem("userid") ?
 					localStorage.getItem("userid") : null,
 					"activityId": that.opctions.activityId,
@@ -1042,7 +1184,12 @@
 						"lastName": that.oderlastName,
 						"phoneNumber": that.code + that.phone,
 						"emailAddress": that.emailAddress,
-						'nationality':that.country
+						'nationality': that.country,
+						"meetingPoint": that.opctions.pickup==0? (that.venueAddress?that.venueAddress:null) : null,
+						"phoneDelivery": that.getPhoneDelivery(),
+						"pickup": that.showPickupInfo ? JSON.stringify(this.getPickupData()) : null,
+						"phoneDeliverySameAsPickup": that.showPickupInfo ? that.pandaPhoneLocation : true
+						// "passport": "string",
 					},
 					"couponDiscount": that.couponType ? that.opctions.couponDiscount : null,
 					"couponCode": that.couponType ? that.couponCode : null,
@@ -1054,28 +1201,31 @@
 					"phoneHire":that.opctions.pandaPhoneCheck
 				};
 
+
 				ga('ecommerce:addItem', {
-					'id': obj.activityId,                     // Transaction ID. Required.
+					'id': putData.activityId,                     // Transaction ID. Required.
 					'name': that.opctions.title,    // Product name. Required.
 					'category': 'Activity',         // Category or variation.
-					'price': obj.amount,                 // Unit price.
-					'quantity': obj.adultNum*1 + obj.adultNum*1,                  // Quantity.
-					'currency': obj.currency
+					'price': putData.amount,                 // Unit price.
+					'quantity': putData.adultNum*1 + putData.adultNum*1,                  // Quantity.
+					'currency': putData.currency
 				});
 				ga('ecommerce:send');
 				
 				if(that.addOder == false) {
-					that.addOder = true
-					that.axios.put( "https://api.localpanda.com/api/order/activity", JSON.stringify(obj), {
+					that.addOder = true;
+					that.loadingStatus = true;
+					that.axios.put( "https://api.localpanda.com/api/order/activity", JSON.stringify(putData), {
 						headers: {
 							'Content-Type': 'application/json; charset=UTF-8'
 						}
 					}).then(function(response) {
-						//var hostUrl = obj.currency=='CNY' ? 'https://www.localpanda.cn' : 'https://www.localpanda.com';
 						var loginState = (that.logIn ? that.logIn : 0);
 						window.location.href = "/activity/payment?objectId=" + response.data.response + '&login=' + loginState;
-
-					}, function(response) {})
+						
+					}, function(response) {
+						that.loadingStatus = false;
+					})
 				}
 			}
 
@@ -1113,19 +1263,27 @@
 
 			console.log(this.opctions);
 			var venues = this.opctions.venues;
-			if(venues.length==1){
+			if(venues){
 				this.venueAddress = venues[0];
 			};
 
 			this.$nextTick(()=>{
 
-				new Flatpickr('.js_changetime',{
+				// new Flatpickr('.js_changetime',{
+				// 	minDate: new Date(),
+				// 	dateFormat:'Y-m-d H:i'
+				// });
+
+				new Flatpickr('.js_deliverytime',{
 					minDate: new Date(),
+					disable:[this.opctions.startDate]
 				});
+				
 				
 				this.fromValidate = new Validate({
 					inputClassName:'js_validate', //需要校验的input的className
-					errorClassName:'valError'  //报错时，会自动在input上添加的className
+					errorClassName:'valError',  //报错时，会自动在input上添加的className
+					stopFocus: true
 				});
 			});
 
@@ -1241,32 +1399,6 @@
 						});
 					}
 					self.codeList = [];
-					// var other = [];
-					// var other1=[]
-					// var str = val.replace(/\(/, "\\\(").replace(/\)/, "\\\)").replace(/\+/, '\\\+').replace(/\-/,'\\\-');
-					// for(let i = 0; i < this.countryCode.length; i++) {
-					// 	var str1=self.countryCode[i].country_name + "(+" + self.countryCode[i].prefix + ")"
-					// 	if(new RegExp(str,"i").test(str1)){
-					// 		if(val[0].toLowerCase()==str1[0].toLowerCase()){
-					// 			var json = {
-					// 				country_name: self.countryCode[i].country_name,
-					// 				prefix: self.countryCode[i].prefix
-					// 			}
-					// 			other.push(json)
-					// 		}else{
-					// 			var json={
-					// 				country_name: self.countryCode[i].country_name,
-					// 				prefix: self.countryCode[i].prefix
-					// 			}
-					// 			other1.push(json)
-					// 		}
-							
-							
-					// 	}
-					// }
-					
-					// self.codeList = other.concat(other1)
-					//this.countryCode=arr
 					var newVal = val.replace('(','\\(').replace(')','\\)').replace('+','\\+').replace('-','\\-');
 					var thisKey = [],
 						otherKey = [];
@@ -1310,6 +1442,9 @@
 			},
 			thisEx:function(){
 
+			},
+			venueAddress:function(val){
+				this.venueTip = false;
 			},
 			'opctions.pandaPhoneCheck':function(val){
 				//计算价格
@@ -2030,6 +2165,7 @@
 										border-radius: 3px;
 										box-shadow: inset 0 1px 0 rgba(0, 0, 0, .1), inset 0 1px 1px rgba(0, 0, 0, .05);
 									}
+									
 								}
 								.w_max{
 									width: 100%;
@@ -2102,6 +2238,10 @@
 								padding: 5px 0 5px 20px;
 							}
 						}
+						.venue_tip{
+							font-size: 14px;
+							padding: 5px 0 5px 28px;
+						}
 					}
 					
 				}
@@ -2119,7 +2259,7 @@
 			color: red!important;
 		}
 
-		.pp_dialog_bg{
+		.pp_dialog_bg,.next_info_tip_bg{
 			width: 100%;
 			height: 100%;
 			position: fixed;
@@ -2209,6 +2349,40 @@
 					font-size: 14px;
 					background-image: -webkit-gradient(linear, right top, left top, from(#009efd), to(#1bbc9d));
 					background-image: linear-gradient(270deg, #009efd 0%, #1bbc9d 100%);
+				}
+			}
+		}
+		
+		.next_info_tip{
+			position: fixed;
+			left: 50%;
+			top: 50%;
+			width: 800px;
+			margin: -100px 0 0 -400px;
+			padding: 30px 50px;
+			background-color: #fff;
+			z-index: 99;
+			border: 1px solid #eee;
+			box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+			p{
+				font-size: 20px;
+				b{
+					color: #666;
+				}
+			}
+			.next_info_btn{
+				text-align: center;
+				margin-top: 30px;
+				span{
+					margin: 0 20px;
+					display: inline-block; width: 200px; height: 38px; line-height: 36px; text-align: center; color: #1bbc9d; border-radius:19px; color: #fff; font-size: 16px; cursor: pointer;
+					background-image: -webkit-gradient(linear, right top, left top, from(#009efd), to(#1bbc9d));
+					background-image: linear-gradient(270deg, #009efd 0%, #1bbc9d 100%);
+					&:nth-child(1){
+						color: #1bbc9d;
+						background: #fff;
+						border: 1px solid #1bbc9d;
+					}
 				}
 			}
 		}
@@ -2318,6 +2492,32 @@
 			border: 1px solid #e14f3f!important;
 		}
 		.vTip{ display: none!important;}
+
+		.location_list{
+			.el-input__inner{
+				width: 185px;
+				height: 32px;
+				line-height: 30px;
+				font-size: 16px;
+				vertical-align: top;
+				border: 1px solid;
+				border-color: #858585 #c2c2c2 #c2c2c2;
+				border-radius: 3px;
+				box-shadow: inset 0 1px 0 rgba(0, 0, 0, .1), inset 0 1px 1px rgba(0, 0, 0, .05);
+				padding: 0 0 0 10px;
+			}
+			.el-input__icon{
+				display: none;
+			}
+			.el-popper{
+				margin: 8px;
+			}
+			.arrivalTimeError{
+				input{
+					border: 1px solid #f00!important;
+				}
+			}
+		}
 	}
 
 </style>

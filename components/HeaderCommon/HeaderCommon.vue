@@ -939,6 +939,7 @@
 		height: 60px;
 		background: #fff;
 		min-width: 1400px;
+		box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
 		.heder-cont {
 			width: 100%;
 			min-width: 1170px;

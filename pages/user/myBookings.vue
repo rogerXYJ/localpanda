@@ -34,9 +34,11 @@
 								</p>
 								
 								<p><b>Travel Date: </b>{{formatDate(item.startDate)}}&nbsp;&nbsp;&nbsp;&nbsp;{{formatDate(item.startTime)}}</p>
-								<p v-if="item.phoneDepositPayOnline">Panda Phone Service (deposit included)</p>
+								<p>Panda Phone Service {{item.phoneDepositPayOnline?'(deposit included)':''}}</p>
 
 								<div class="tag">
+									<a target="_blank" :href="'/user/order/details?orderId='+item.orderId+'&email='+urlEmail+'&type=ACTIVITY'">Order Details</a>
+
 									<span  @click="goDetail('ACTIVITY',item.objectId)">Book Again</span>
 
 									<span v-if="item.status=='PAYMENT_PENDING'" @click="goPay('ACTIVITY',item.orderId)">To Pay</span>
@@ -634,7 +636,7 @@
 								.tag {
 									font-size: 16px;
 									margin-top: 15px;
-									span {
+									span,a {
 										color: #353a3f;
 										position: relative;
 										padding-right: 16px;

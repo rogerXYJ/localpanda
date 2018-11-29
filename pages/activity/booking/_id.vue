@@ -1135,35 +1135,36 @@
 					return null;
 				}else if(pickupLocation == 'Hotel'){
 					return {
-						type: 'Hotel',
-						hotel: pickupData.hotel
+						"Pick-up Location": 'Hotel',
+						"Arrival Time": pickupData.arrivalTime,
+						"Hotel Name & Address": pickupData.hotel
 					};
 				}else if(pickupLocation == 'Airport'){
 					return {
-						type: 'Airport',
-						flightNumber: pickupData.flightNumber,
-						arrivalTime: pickupData.arrivalTime,
-						airport: pickupData.airport
+						"Pick-up Location": 'Airport',
+						"flight Number": pickupData.flightNumber,
+						"Arrival Time": pickupData.arrivalTime,
+						"Airport": pickupData.airport
 					};
 				}else if(pickupLocation == 'Cruise Port'){
 					return {
-						type: 'Cruise Port',
-						cruiseNumber: pickupData.cruiseNumber,
-						arrivalTime: pickupData.arrivalTime,
-						cruisePort: pickupData.cruisePort
+						"Pick-up Location": 'Cruise Port',
+						"cruise Number": pickupData.cruiseNumber,
+						"Arrival Time": pickupData.arrivalTime,
+						"Cruise Port": pickupData.cruisePort
 					};
 				}else if(pickupLocation == 'Railway Station'){
 					return {
-						type: 'Railway Station',
-						trainNumber: pickupData.trainNumber,
-						arrivalTime: pickupData.arrivalTime,
-						railwayStation: pickupData.railwayStation
+						"Pick-up Location": 'Railway Station',
+						"Train Number": pickupData.trainNumber,
+						"Arrival Time": pickupData.arrivalTime,
+						"Railway station": pickupData.railwayStation
 					};
 				}else if(pickupLocation == 'Address or Intersection'){
 					return {
-						type: 'Address or Intersection',
-						pickupTime: pickupData.arrivalTime,
-						address: pickupData.address
+						"Pick-up Location": 'Address or Intersection',
+						"Pick-up Time": pickupData.arrivalTime,
+						"Address or Intersection": pickupData.address
 					};
 				}
 			},
@@ -1173,9 +1174,9 @@
 				};
 
 				var data = {
-					address: this.pandaPhoneAddress,
-					arrivalDate: this.arrivalDate,
-					arrivalTime: this.arrivalTime
+					"Delivery Date ( Beijing Time )": this.arrivalDate,
+					"Delivery Time ( Beijing Time )": this.arrivalTime,
+					"Panda Phone delivery address ( Hotel Only )": this.pandaPhoneAddress
 				};
 				return JSON.stringify(data);
 			},

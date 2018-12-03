@@ -244,7 +244,7 @@
 								</a>
 							</li>
               <li class="activity-item ADpandaPhone" v-else>
-                <img src="https://cloud.localpanda.com/pandaphone/advertise.jpg" width="100%" alt="">
+                <img src="https://cloud.localpanda.com/pandaphone/ad_list.jpg" width="100%" alt="">
                 <a class="pandaPhone_box" href="https://www.localpanda.com/product/phone/details/" target="_blank">
                   <h2>Unlock China with the Panda Phone</h2>
                   <p>All-in-one Mobile Travel Assistant</p>

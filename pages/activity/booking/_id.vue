@@ -58,7 +58,7 @@
 				</div>
 
 				<!-- 补填信息板块 -->
-				<div class="pickup_info" v-show="opctions.pickup>0 || opctions.pickup==0 && opctions.venues && opctions.venues.length>1">
+				<div class="pickup_info" v-show="opctions.pickup>0 || opctions.pickup==0 && opctions.venues">
 					<div class="pickup_detail" v-if="opctions.pickup>0">
 						<h3 v-if="opctions.pickup && opctions.pandaPhoneCheck">Pick-up & Panda Phone Device delivery  Information <br><span class="ml0">If you haven't decided on the details, you can provide us with the info later. </span></h3>
 						<h3 v-else>Pick-up Information <span>If you haven't decided on the details, you can provide us with the info later. </span></h3>
@@ -199,10 +199,12 @@
 						<div class="venue_check" v-for="item in opctions.venues" :key="item">
 							<radio v-model="venueAddress" :label="item">{{item}}</radio>
 						</div>
-						
+						<div class="venue_check">
+							<radio v-model="venueAddress" :label="null">I haven't decided yet.</radio>
+						</div>
 					</div>
 
-					<div class="pickup_info_list" v-show="showPickupInfo && opctions.pandaPhoneCheck && opctions.pickup>0 || opctions.pickup==0 && opctions.pandaPhoneCheck">
+					<div class="pickup_info_list" v-show="showPickupInfo && opctions.pandaPhoneCheck && opctions.pickup>0 || opctions.pickup==0 && opctions.pandaPhoneCheck && venueAddress!=null">
 						<h4>Panda Phone Device delivery Location</h4>
 						<div class="pandaPhone_location">
 							<div class="pandaPhone_location_check mt5">
@@ -280,10 +282,10 @@
 				</div> -->
 
 				<!-- 手机业务 -->
-				<div class="panda_phone">
+				<!-- <div class="panda_phone">
 					<checkbox v-model="opctions.pandaPhoneCheck">Add Panda Phone to this trip for USD $1</checkbox>
 					<a @click="showPPDialog = true">What's this</a>
-				</div>
+				</div> -->
 
 				<div class="Comments">
 					<div class="information">
@@ -499,7 +501,9 @@
 			req
 		},callback) {
 			let id =route.params.id;
+			let query = route.query;
 			let data={
+					page: query.page?'B':null,
 					opctions: {
 					averagePrice: 0,
 					adultsPic: 0,
@@ -1142,14 +1146,14 @@
 				}else if(pickupLocation == 'Airport'){
 					return {
 						"Pick-up Location": 'Airport',
-						"flight Number": pickupData.flightNumber,
+						"Flight Number": pickupData.flightNumber,
 						"Arrival Time": pickupData.arrivalTime,
 						"Airport": pickupData.airport
 					};
 				}else if(pickupLocation == 'Cruise Port'){
 					return {
 						"Pick-up Location": 'Cruise Port',
-						"cruise Number": pickupData.cruiseNumber,
+						"Cruise Number": pickupData.cruiseNumber,
 						"Arrival Time": pickupData.arrivalTime,
 						"Cruise Port": pickupData.cruisePort
 					};
@@ -1158,7 +1162,7 @@
 						"Pick-up Location": 'Railway Station',
 						"Train Number": pickupData.trainNumber,
 						"Arrival Time": pickupData.arrivalTime,
-						"Railway station": pickupData.railwayStation
+						"Railway Station": pickupData.railwayStation
 					};
 				}else if(pickupLocation == 'Address or Intersection'){
 					return {
@@ -1169,7 +1173,7 @@
 				}
 			},
 			getPhoneDelivery(){
-				if(this.opctions.pickup==0 && this.opctions.venues && this.opctions.venues.length<2 || this.pandaPhoneLocation){
+				if(this.opctions.pickup==0 && this.opctions.venues && this.opctions.venues.length<1 || this.pandaPhoneLocation){
 					return null;
 				};
 
@@ -1218,11 +1222,12 @@
 						"meetingPoint": that.opctions.pickup==0? (that.venueAddress?that.venueAddress:null) : null,
 						"phoneDelivery": that.getPhoneDelivery(),
 						"pickup": that.showPickupInfo ? JSON.stringify(this.getPickupData()) : null,
-						"phoneDeliverySameAsPickup": that.pandaPhoneLocation
+						"phoneDeliverySameAsPickup": that.opctions.pickup==0 && !that.opctions.venues ? false : that.pandaPhoneLocation
 						// "passport": "string",
 					},
 					"couponDiscount": that.couponType ? that.opctions.couponDiscount : null,
-					"couponCode": that.couponType ? that.couponCode : null,
+					// "couponCode": that.couponType ? that.couponCode : null,
+					"couponCode": that.page,
 					"utcOffset": new Date().getTimezoneOffset() / 60 * -1,
 					"deviceType": "PC",
 					//"fullRefund":that.opctions.fullRefund,
@@ -1244,8 +1249,8 @@
 
 				
 				// console.log('成功！');
-				// console.log(putData);
-				// return;
+				console.log(putData);
+				return;
 				
 				if(that.addOder == false) {
 					that.addOder = true;
@@ -1296,9 +1301,9 @@
 				}
 			}
 
-			console.log(this.opctions);
+			// console.log(this.opctions);
 			// var venues = this.opctions.venues;
-			// if(venues){
+			// if(venues && venues.length==1){
 			// 	this.venueAddress = venues[0];
 			// };
 

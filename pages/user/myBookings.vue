@@ -34,10 +34,10 @@
 								</p>
 								
 								<p><b>Travel Date: </b>{{formatDate(item.startDate)}}&nbsp;&nbsp;&nbsp;&nbsp;{{formatDate(item.startTime)}}</p>
-								<p>Panda Phone Service {{item.phoneDepositPayOnline?'(deposit included)':''}}</p>
+								<p v-if="item.phoneHire">Panda Phone Service {{item.phoneDepositPayOnline?'(deposit included)':''}}</p>
 
 								<div class="tag">
-									<a target="_blank" :href="'/user/order/details?orderId='+item.orderId+'&email='+urlEmail+'&type=ACTIVITY'">Order Details</a>
+									<a :href="'/user/order/details?orderId='+item.orderId+'&email='+item.email+'&type=ACTIVITY'">Order Details</a>
 
 									<span  @click="goDetail('ACTIVITY',item.objectId)">Book Again</span>
 
@@ -487,7 +487,8 @@
 					emailAddress:GetQueryString("emailAddress")
 				}
 			}else{
-				 obj=JSON.parse(localStorage.getItem("obj"))
+				 obj=JSON.parse(localStorage.getItem("obj"));
+				 this.urlEmail = obj.emailAddress;
 			}
 			
 			//微信code和openId查询，不走这个查询

@@ -6,7 +6,8 @@
 			<!-- 面包屑 -->
 			<div class="crumbs">
 				<a href="/">Home</a> <i class="iconfont">&#xe64a;</i>
-				<a :href="'/user/myBookings'">My Bookings</a> <i class="iconfont">&#xe64a;</i>
+				<!-- <a :href="'/user/myBookings?email='+email+'&orderid='+details.orderId">My Bookings</a> <i class="iconfont">&#xe64a;</i> -->
+				<a :href="'/user/myBookings?menu=0&flag=1'">My Bookings</a> <i class="iconfont">&#xe64a;</i>
 				<span class="c_999">Order Details</span>
 			</div>
 
@@ -16,7 +17,7 @@
 				<div class="content_detail clearfix">
 					<div class="img_box">
 						<img :src="details.activityInfo.coverPhotoUrl" alt="">
-						<a :href="'https://www.localpanda.com/activity/details/'+details.activityInfo.activityId" target="_blank">Book Again</a>
+						<a :href="'/activity/details/'+details.activityInfo.activityId" target="_blank">Book Again</a>
 					</div>
 					<ul class="content_list list_float">
 						<li><b>Booking ID :</b>{{details.orderId}}</li>
@@ -25,11 +26,11 @@
 						<li><b>Amount :</b>{{details.currency}} {{details.symbol}} {{details.amount}}</li>
 						<li><b>Number of Travelers :</b>{{details.adultNum+(details.adultNum>1?'Adults':'Adult')}} , {{details.childrenNum+(details.childrenNum>1?'Children':'Child')}}</li>
 						<li><b>Travel Date :</b>{{formatDate(details.startDate)}}</li>
-						<li class="wmax"><b>Product :</b>{{details.activityInfo.title}}</li>
+						<li class="wmax"><b>Product :</b><a :href="'/activity/details/'+details.activityInfo.activityId" target="_blank">{{details.activityInfo.title}}</a></li>
 						<li><b>Duration :</b>{{details.activityInfo.duration}}{{getDurationUnit(details.activityInfo.duration,details.activityInfo.durationUnit)}}</li>
 						<li><b>Category :</b>{{details.activityInfo.category?details.activityInfo.category:'Panda Phone'}}</li>
 						<li v-if="details.phoneHire"><b>Panda Phone Service </b>{{details.phoneDepositPayOnline?'(deposit included)':''}}</li>
-						<li><b>Deposit payment options :</b>{{details.phoneDepositPayOnline?'Online':'Offline'}}</li>
+						<li v-if="details.phoneHire"><b>Deposit payment options :</b>{{details.phoneDepositPayOnline?'Online':'Offline'}}</li>
 					</ul>
 				</div>
 			</div>
@@ -47,7 +48,7 @@
 				</div>
 			</div>
 
-			<div class="content_box" v-if="details.activityInfo.pickup==0">
+			<div class="content_box" v-if="details.activityInfo.pickup==0 && details.activityInfo.venues">
 				<h3 v-if="details.contactInfo.phoneDeliverySameAsPickup && details.phoneHire && !details.contactInfo.phoneDelivery">Meeting Point & Panda Phone Device delivery Information</h3>
 				<h3 v-else>Meeting Point Information</h3>
 				<div class="content_detail">
@@ -62,10 +63,31 @@
 				<h3 v-if="details.contactInfo.phoneDeliverySameAsPickup && details.phoneHire && !details.contactInfo.phoneDelivery">Pick-up & Panda Phone Device delivery  Information</h3>
 				<h3 v-else>Pick-up Information</h3>
 				<div class="content_detail">
-					<ul class="content_list" v-if="details.contactInfo.pickup">
-						<li><b>Pick-up Location :</b>Hotel</li>
-						<li><b>Hotel Name & Address : </b>{{getValue(getParse(details.contactInfo.pickup),'Hotel Name & Address')}}</li>
-					</ul>
+					<div v-if="details.contactInfo.pickup">
+						<ul class="content_list" v-if="getValue(details.contactInfo.pickup,'Pick-up Location')=='Hotel'">
+							<li><b>Pick-up Location :</b>{{getValue(details.contactInfo.pickup,'Pick-up Location')}}</li>
+							<li><b>Hotel Name & Address : </b>{{getValue(details.contactInfo.pickup,'Hotel Name & Address')}}</li>
+						</ul>
+						<ul class="content_list" v-else-if="getValue(details.contactInfo.pickup,'Pick-up Location')=='Airport'">
+							<li><b>Flight Number :</b>{{getValue(details.contactInfo.pickup,'Flight Number')}}</li>
+							<li><b>Arrival Time : </b>{{getValue(details.contactInfo.pickup,'Arrival Time')}}</li>
+							<li><b>Airport : </b>{{getValue(details.contactInfo.pickup,'Airport')}}</li>
+						</ul>
+						<ul class="content_list" v-else-if="getValue(details.contactInfo.pickup,'Pick-up Location')=='Cruise Port'">
+							<li><b>Cruise Number :</b>{{getValue(details.contactInfo.pickup,'Cruise Number')}}</li>
+							<li><b>Arrival Time : </b>{{getValue(details.contactInfo.pickup,'Arrival Time')}}</li>
+							<li><b>Cruise Port : </b>{{getValue(details.contactInfo.pickup,'Cruise Port')}}</li>
+						</ul>
+						<ul class="content_list" v-else-if="getValue(details.contactInfo.pickup,'Pick-up Location')=='Railway Station'">
+							<li><b>Train Number :</b>{{getValue(details.contactInfo.pickup,'Train Number')}}</li>
+							<li><b>Arrival Time : </b>{{getValue(details.contactInfo.pickup,'Arrival Time')}}</li>
+							<li><b>Railway Station : </b>{{getValue(details.contactInfo.pickup,'Railway Station')}}</li>
+						</ul>
+						<ul class="content_list" v-else-if="getValue(details.contactInfo.pickup,'Pick-up Location')=='Address or Intersection'">
+							<li><b>Pick-up Time :</b>{{getValue(details.contactInfo.pickup,'Pick-up Time')}}</li>
+							<li><b>Address or Intersection : </b>{{getValue(details.contactInfo.pickup,'Address or Intersection')}}</li>
+						</ul>
+					</div>
 					<div class="content_btn" @click="pickupDialog=true" v-else>The field is empty. Please enter your info</div>
 				</div>
 			</div>
@@ -82,7 +104,7 @@
 			</div>
 
 
-			<div class="content_box">
+			<div class="content_box" v-if="details.activityInfo.passportRequired">
 				<h3>Passport Informaiton</h3>
 				<div class="content_detail">
 					<div class="content_passport" v-if="details.contactInfo.passport">
@@ -244,7 +266,7 @@
 					</div>
 				</div>
 
-				<div class="venue_detail" v-if="!details.contactInfo.meetingPoint && details.activityInfo.venues && details.activityInfo.venues[0]!=''">
+				<div class="venue_detail" v-else-if="!details.contactInfo.meetingPoint && details.activityInfo.venues && details.activityInfo.venues[0]!=''">
 					<h3>Please select a Venue<span class="red">*</span></h3>
 					<div class="red venue_tip" v-if="venueTip">Field is required</div>
 					<div class="venue_check" v-for="item in details.activityInfo.venues" :key="item">
@@ -253,9 +275,9 @@
 					
 				</div>
 
-				<div class="pickup_info_list">
-					<h4>Panda Phone Device delivery Location</h4>
-					<div class="pandaPhone_location">
+				<div class="pickup_info_list" v-if="details.phoneHire">
+					<h4 v-if="details.activityInfo.venues && details.activityInfo.pickup==0 || details.activityInfo.pickup>0">Panda Phone Device delivery Location</h4>
+					<div class="pandaPhone_location" v-if="details.activityInfo.venues && details.activityInfo.pickup==0 || details.activityInfo.pickup>0">
 						<div class="pandaPhone_location_check mt5">
 							<radio v-model="pandaPhoneLocation" :label="true">I want my device to be delivered upon my pickup</radio>
 						</div>
@@ -264,13 +286,13 @@
 						</div>
 					</div>
 
-					<div class="pandaPhone_info" v-show="!pandaPhoneLocation">
+					<div class="pandaPhone_info" v-show="!pandaPhoneLocation || !details.activityInfo.venues && details.activityInfo.pickup==0">
 						<h5><span class="red">*</span> Panda Phone delivery address ( Hotel Only )</h5>
 						<div class="pandaPhone_info_list">
 							<input class="w_max js_validate" vType="text" v-model="pandaPhoneAddress" type="text" placeholder="">
 						</div>
 					</div>
-					<div class="pandaPhone_info" v-show="!pandaPhoneLocation">
+					<div class="pandaPhone_info" v-show="!pandaPhoneLocation || !details.activityInfo.venues && details.activityInfo.pickup==0">
 						<h5><span class="red">*</span> Delivery Date & Time ( Beijing Time )</h5>
 						<div class="pandaPhone_info_list">
 							<input class="js_deliverytime js_validate" vType="text" v-model="arrivalDate" type="text" readonly placeholder="Please Select Date">
@@ -393,7 +415,7 @@
 			
 			let data = {
 				logIn:'',
-				email: '',
+				email: email,
 				apiBasePath: apiBasePath,
 
 				details:{},
@@ -541,14 +563,14 @@
 				}else if(pickupLocation == 'Airport'){
 					return {
 						"Pick-up Location": 'Airport',
-						"flight Number": pickupData.flightNumber,
+						"Flight Number": pickupData.flightNumber,
 						"Arrival Time": pickupData.arrivalTime,
 						"Airport": pickupData.airport
 					};
 				}else if(pickupLocation == 'Cruise Port'){
 					return {
 						"Pick-up Location": 'Cruise Port',
-						"cruise Number": pickupData.cruiseNumber,
+						"Cruise Number": pickupData.cruiseNumber,
 						"Arrival Time": pickupData.arrivalTime,
 						"Cruise Port": pickupData.cruisePort
 					};
@@ -557,7 +579,7 @@
 						"Pick-up Location": 'Railway Station',
 						"Train Number": pickupData.trainNumber,
 						"Arrival Time": pickupData.arrivalTime,
-						"Railway station": pickupData.railwayStation
+						"Railway Station": pickupData.railwayStation
 					};
 				}else if(pickupLocation == 'Address or Intersection'){
 					return {
@@ -615,13 +637,20 @@
 			},
 			nationalityChange(e,index){
 				this.hideCode();
+				e.target.className = e.target.className.replace(' valError','');
 				var parent = e.target.parentNode.querySelector('.countryCode');
 				parent.style.display = 'block';
 				this.complete(e.target.value);
 				this.focusPassIndex = index;
 			},
 			pickupDialogCallback(){
-				if(!this.pickupData.arrivalTime){
+				this.fromValidate = new Validate({
+					inputClassName:'js_validate', //需要校验的input的className
+					errorClassName:'valError',  //报错时，会自动在input上添加的className
+					stopFocus: true
+				});
+				
+				if(this.details.activityInfo.pickup && !this.pickupData.arrivalTime){
 					this.fromValidate.validate();
 					this.arrivalTimeError = true;
 					if(document.querySelector('.pickup_info_location')){
@@ -635,9 +664,9 @@
 					var postData = {
 						orderId: this.details.orderId,
 						contactInfo:{
-							pickup: JSON.stringify(self.getPickupData()),
-							phoneDeliverySameAsPickup: this.pandaPhoneLocation,
-							phoneDelivery: self.getPhoneDelivery()?JSON.stringify(self.getPhoneDelivery()):null
+							pickup: self.getPickupData() ? JSON.stringify(self.getPickupData()) : null,
+							phoneDeliverySameAsPickup: self.pandaPhoneLocation,
+							phoneDelivery: self.getPhoneDelivery() ? JSON.stringify(self.getPhoneDelivery()) : null
 						}
 					};
 					self.axios.post( "https://api.localpanda.com/api/order/activity/extra/info", JSON.stringify(postData), {
@@ -731,17 +760,24 @@
 			console.log(this.details);
 			console.log(this.$data);
 
+			this.logIn = window.localStorage.getItem("logstate");
+
+			// if(this.logIn){
+			// 	var userInfo = window.localStorage.getItem("obj");
+			// 	this.email = userInfo ? (JSON.parse(userInfo)).emailAddress : '';
+			// }
+
+			var contactInfo = this.details.contactInfo;
+			var obj = {"lastName":contactInfo.lastName,"firstName":contactInfo.firstName,"emailAddress":contactInfo.emailAddress};
+			localStorage.setItem('obj',JSON.stringify(obj));
+
 			this.$nextTick(()=>{
 				new Flatpickr('.js_deliverytime',{
 					minDate: new Date(new Date()*1+24*60*60*1000),
 					disable:[this.details.startDate]
 				});
 				
-				this.fromValidate = new Validate({
-					inputClassName:'js_validate', //需要校验的input的className
-					errorClassName:'valError',  //报错时，会自动在input上添加的className
-					stopFocus: true
-				});
+				
 
 				this.fromValidatePassport = new Validate({
 					inputClassName:'js_validate_passport', //需要校验的input的className
@@ -762,7 +798,9 @@
 
 
 			
-			
+			if(this.details.activityInfo.pickup==0 && !this.details.activityInfo.venues){
+				this.pandaPhoneLocation = false;
+			}
 
 
 		},
@@ -863,6 +901,12 @@
 					font-size: 16px;
 					b{
 						margin-right: 10px;
+					}
+					a{
+						color: #1bbc9d;
+						&:hover{
+							text-decoration: underline;
+						}
 					}
 				}
 			}

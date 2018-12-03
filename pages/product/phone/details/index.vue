@@ -8,7 +8,7 @@
 			<h1>Panda Phone Service</h1>
 			<!-- <p>Booked 19 times (last 30 days)</p> -->
 			<div class="banner">
-				<img src="https://cloud.localpanda.com/pandaphone/banner.jpg" width="1170" height="430" alt="">
+				<img src="https://cloud.localpanda.com/pandaphone/ad_banner.jpg" width="1170" height="430" alt="">
 			</div>
 		</div>
 

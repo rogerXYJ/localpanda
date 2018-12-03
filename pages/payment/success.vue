@@ -25,18 +25,25 @@
 				<div class="detail">
 					<span><i>Number of {{(orderInfo.adultNum+orderInfo.childrenNum)>1?'Travelers':'Traveler'}}:</i> {{orderInfo.adultNum+orderInfo.childrenNum}}</span><em>|</em><span><i>Travel Date:</i> {{formatDate(orderInfo.startDate)}}</span>
 				</div>
+
+
+
+				<div class="panda_phone" v-if="orderInfo.missingInfo || orderInfo.phoneHire">
+					<h4 v-if="orderInfo.phoneHire">Panda Phone Service - 5 days (deposit included)</h4>
+					<p v-if="orderInfo.missingInfo">You haven't provided us with your "{{orderInfo.missingInfo}}" during your booking, so we will still need to confirm this before your departure. You will receive a confirmation email from service@localpanda.com.<br><br>
+Once you've confirmed your travel plans, please provide us with the required info in the email or click “View My Order” to update your info. Please do so at least 24 hours prior to your departure so we can ensure delivery of your Panda Phone.</p>
+				</div>
 				
 				<!-- <p style="margin-top: 10px;"> Our staff will confirm with you as soon as possible. We will reply you within one business day. You can know the details furthur by look at your order details.You can also email service@localpanda.com or call us at +86 (21) 8018-2090/ +1 (888) 930-8849 (US toll free).</p>				
 
 				<p class="c_666" v-if="showTipTxt && payType!='guide'">You ordered as a guest. You can click this button to view your order details.</p> -->
 
-				<div class="panda_phone" v-if="orderInfo.phoneHire && !showPhoneTip && orderInfo.activityInfo.pickup==0 && orderInfo.activityInfo.venues && orderInfo.activityInfo.venues.length<2 || orderInfo.phoneHire && !showPhoneTip && orderInfo.activityInfo.pickup==0 && !orderInfo.activityInfo.venues">
+				<!-- <div class="panda_phone" v-if="orderInfo.phoneHire && !showPhoneTip && orderInfo.activityInfo.pickup==0 && orderInfo.activityInfo.venues && orderInfo.activityInfo.venues.length<2 || orderInfo.phoneHire && !showPhoneTip && orderInfo.activityInfo.pickup==0 && !orderInfo.activityInfo.venues">
 					<h4>Panda Phone Service - 5 days (deposit included)</h4>
 					<p>You've selected The Panda Phone: All-in-one Mobile Travel Assistant. We will deliver your phone to the hotel or airport of your choice along with English-language assistance to get you set up.</p>
 					<h5>Please provide your delivery info below:</h5>
 					<div class="panda_phone_check">
 						<radio-group v-model="ppType" class="deposit_list">
-							<!-- <radio :label="2">Airport</radio> -->
 							<radio :label="3">Hotel</radio>
 							<radio :label="1">I haven't decided yet. I'll contact you later</radio>
 						</radio-group>
@@ -44,10 +51,6 @@
 							<div>&nbsp;&nbsp;&nbsp;&nbsp;Arrival Date: <input class="js_changetime js_validate" vType="text" readonly v-model="arrivalDate" type="text"></div>
 							<div class="mt10">Flight Number: <input class="js_validate" vType="text" v-model="flightNumber" type="text"></div>
 						</div>
-						<!-- <div class="phone_check_list" v-else-if="ppType==3 && orderInfo.pickup">
-							Hotel Name & Address: <input class="w500" v-model="hotel" type="text">
-							<p class="mt10">Your Panda Phone will be delivered by your guide at the start of your trip. </p>
-						</div> -->
 						<div class="phone_check_list" v-show="ppType==3">
 							<div>
 								Hotel Name & Address: <input class="w500 js_validate" vType="text" v-model="hotel" type="text">
@@ -59,7 +62,7 @@
 							<p class="mt10">One of our travel assistants will hand-deliver the Panda phone to you. We will confirm your delivery location, date, and time with you via email prior to your trip. Please check your email prior to departure for updates. </p>
 						</div>
 
-						<!-- I haven't decided yet -->
+						
 						<div class="panda_phone_no" v-if="ppType==1">
 							<p>You chose: “I haven't decided yet. I'll contact you later” for your delivery information, so we will still need to confirm this prior to your departure.</p>
 							<p>You will receive a booking email from service@localpanda.com. Once you've confirmed your travel plans please reply to our email and provide us with your delivery date and location.  Please provide this information at least 24 hours prior to your departure so we can ensure delivery of your Panda Phone.</p>
@@ -69,9 +72,9 @@
 
 					</div>
 					<div class="btn" @click="submitPandaPhone" v-if="ppType && ppType!=1">Submit</div>
-				</div>
+				</div> -->
 
-				<div class="panda_phone_tip" v-if="ppType==3 && showPhoneTip">
+				<!-- <div class="panda_phone_tip" v-if="ppType==3 && showPhoneTip">
 					<p>Your Panda Phone delivery info has been successfully submitted. Please ensure your phone number and email are correct so we can reach you in case any issues arise. We will contact you via email prior to your departure to confirm the delivery location, date, and time.<br><br>
 Your Delivery Info:<br>
 <span>Location：</span>Hotel<br>
@@ -79,7 +82,7 @@ Your Delivery Info:<br>
 <span>Hotel Name & Address：</span>{{hotel}}<br><br>
 Thank you for choosing Local Panda, we hope you have a great trip!<br>
 If you have any questions or concerns, feel free to contact us using the info at the bottom of the page.</p>
-				</div>
+				</div> -->
 				
 
 				<div class="service_box">
@@ -128,7 +131,7 @@ If you have any questions or concerns, feel free to contact us using the info at
 			var orderInfo = '';
 
 			try {
-				orderInfo = await Vue.axios.get(apiBasePath + "order/activity/" + query.orderId)
+				orderInfo = await Vue.axios.get(apiBasePath + "order/activity/" + query.orderId+'?missInfoRequired=true')
 			} catch(err) {
 				return error({
 					statusCode: 500,

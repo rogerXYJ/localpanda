@@ -95,10 +95,10 @@
 								</dl>
 								
 							</li>
-							<li>
+							<!-- <li>
 								<checkbox class="pp_checkbox" v-model="pandaPhoneCheck">Add Panda Phone to my trip for only <dfn>USD $1</dfn></checkbox>
 								<p class="pp_tip">All-in-one Mobile Travel Assistant <span @click="showPandaPhone">Show details</span></p>
-							</li>
+							</li> -->
 							<li class="clearfix">
 								<span class="btn" @click="bookNow">Book Now</span>
 								<span class="btn_inquire fl" @click="showContact">Inquire</span>
@@ -119,7 +119,7 @@
 
 
 					<!-- 预定保障模块 -->
-					<ul class="book_ensure" v-if="!bookPeople" @click="showPPDialog=true">
+					<!-- <ul class="book_ensure" v-if="!bookPeople" @click="showPPDialog=true">
 						<li class="pd0">
 							<h4>Introducing Panda Phone for Only USD $1</h4>
 						</li>
@@ -127,7 +127,7 @@
 						<li><i class="iconfont">&#xe654;</i>4G Wireless Data, Unlimited Calling & Texts</li>
 						<li><i class="iconfont">&#xe654;</i>Travel & Emergency Help at Your Fingertips</li>
 						<li><i class="iconfont">&#xe654;</i>VPN-Access Blocked Websites Like Google</li>
-					</ul>
+					</ul> -->
 				</div>
 			</div>
 
@@ -177,7 +177,7 @@
 				<div class="detail_box itinerary" id="itinerary" v-if="detail.itinerary.length">
 					<h3><span class="btn_viewall" @click="itineraryViewall">View all</span><i></i>Experience Details</h3>
 					<div class="itinerary_tip" v-if="detail.groupType=='Private'">Our staff can help you make changes to your itinerary since this is a private tour.</div>
-					<dl class="itinerary_list" v-for="(items,index) in detail.itinerary" :key="index">
+					<dl class="itinerary_list" :class="{'active':index<3}" v-for="(items,index) in detail.itinerary" :key="index">
 						<dt @click="itineraryFn" v-if="items.description"><i class="iconfont i_down">&#xe667;</i><i class="iconfont i_up">&#xe666;</i><span></span>{{items.title}}</dt>
 						<dt v-else><span></span>{{items.title}}</dt>
 						<dd>
@@ -186,23 +186,6 @@
 							<img v-if="items.photo && detail.newType" width="100%" v-lazy="items.photo.url" alt="">
 						</dd>
 					</dl>
-				</div>
-
-				<!-- <div class="detail_box pandaphone_ad" @click.stop="showPandaPhone">
-					<img v-lazy="'https://cloud.localpanda.com/pandaphone/phone.jpg'" alt="">
-				</div> -->
-				<div class="ADpandaPhone" @click.stop="showPandaPhone">
-					<img v-lazy="'https://cloud.localpanda.com/pandaphone/ad_detail.jpg'" width="100%" alt="">
-					<a class="pandaPhone_box" href="https://www.localpanda.com/product/phone/details/" target="_blank">
-						<h2>Unlock China with the Panda Phone</h2>
-						<p>All-in-one Mobile Travel Assistant</p>
-						<ul>
-							<li><i class="iconfont">&#xe654;</i>Smart Phone with Mainland China Number</li>
-							<li><i class="iconfont">&#xe654;</i>Travel & Emergency Help at Your Fingertips  </li>
-							<li><i class="iconfont">&#xe654;</i>4G Wireless Data, Unlimited Calling & Texts</li>
-							<li><i class="iconfont">&#xe654;</i>VPN - Access Blocked Websites Like Google</li>
-						</ul>
-					</a>
 				</div>
 
 				<!-- 其他产品信息 -->
@@ -293,8 +276,6 @@
 
 				</div>
 
-				
-
 				<!-- 点评 -->
 				<div class="detail_box reviews mt20" v-if="reviewsData &&　reviewsData.records">
 					<div class="reviews_title">
@@ -335,7 +316,7 @@
 				<h3><i></i>Similar Experiences</h3>
 				<ul class="similar_list">
 					<li :key="index" v-for="(i,index) in detail.recommend.entities">
-						<a :href="'/activity/details/'+i.activityId">
+						<a :href="'/activity/details/'+(path?path+'/':'')+i.activityId">
 							<div class="similar_img_box">
 								<div class="similar_img" v-lazy:background-image="i.coverPhotoUrl"></div>
 							</div>
@@ -536,8 +517,12 @@ import { sep } from 'path';
 			let id = route.params.id;
 			let urlTravelers = route.query.travelers; //用于默认填入游玩人数
 
+
+			
+
 			// 服务端渲染部分 这部分操作还没有页面实例，只是初始化页面数据
 			let data = {
+				path: /sale/.test(route.path)?'sale':'',
 				id: id,
 				detail: {}, //详情数据
 				logIn: "",
@@ -1349,7 +1334,7 @@ import { sep } from 'path';
 				
 				orderInfo = JSON.stringify(orderInfo);
 		    localStorage.setItem("orderInfo", orderInfo);
-				location.href="/activity/booking/"+this.id;
+				location.href="/activity/booking/"+this.id+'?page=local';
 			},
 			contactCallBack(val){
 				if(val){
@@ -2050,50 +2035,6 @@ import { sep } from 'path';
 					line-height: 24px;
 				}
 			}
-			
-			.ADpandaPhone{
-				position: relative;
-				img{
-					vertical-align: top;
-				}
-				.pandaPhone_box{
-					position: absolute;
-					left: 0;
-					top: 0;
-					width: 100%;
-					height: 100%;
-					color: #fff;
-					text-shadow:0 5px 10px rgba(0,0,0,0.3);
-					background-color: rgba(0, 0, 0, 0.3);
-					h2{
-						margin-top: 18px;
-						font-size: 30px;
-						font-weight: bold;
-						text-align: center;
-					}
-					p{
-						margin-top: 10px;
-						font-size: 20px;
-						text-align: center;
-					}
-					ul{
-						margin-top: 5px;
-						padding-left: 20px;
-						li{
-							font-size: 16px;
-							width: 50%;
-							float: left;
-							margin-top: 10px;
-							i{
-								font-size: 12px;
-								float: left;
-								margin-top: 4px;
-								margin-right: 10px;
-							}
-						}
-					}
-				}
-			}
 
 			
 
@@ -2109,7 +2050,7 @@ import { sep } from 'path';
 
 			/*行程*/
 			.itinerary{
-				border-bottom: 1px solid #dde0e0;
+				padding-bottom: 0.2rem;
 				.btn_viewall{
 					float: right;
 					color: #1bbc9d;
@@ -2199,10 +2140,7 @@ import { sep } from 'path';
 
 			/*其他版块信息*/
 			.other_box{
-				// padding-top: 15px;
-				border: none;
-				margin-top: 0;
-				padding-top: 10px;
+				padding-top: 15px;
 				.other_list{
 					border-top: 1px solid #ddd;
 					&:nth-child(1){ border: none; margin-top: -5px;}

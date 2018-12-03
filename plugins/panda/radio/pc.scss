@@ -37,11 +37,13 @@
     }
     input{
       opacity: 0;
-      z-index: -1;
       vertical-align: top;
       position: absolute;
       left: 0;
       top: 0;
+      width: 100%;
+      height: 100%;
+      cursor: pointer;
     }
   }
   .radio_content{

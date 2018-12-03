@@ -4,6 +4,15 @@
 		<div v-swiper:mySwiper="swiperOptionBannerPc">
 	    <div class="swiper-wrapper">
 
+				
+				<div class="swiper-slide">
+	        <a href="/product/phone/details/">
+						<div class="imgBanner" :style="{background:'url(https://cloud.localpanda.com/pandaphone/phonebanner.jpg)'}">
+							
+						</div>
+					</a>
+	      </div>
+
 				<div class="swiper-slide">
 	        <a href="/travel/customize/step1">
 						<div class="imgBanner" :style="{background:'url(https://cloud.localpanda.com/static/homePage/banner3.jpg)'}">
@@ -52,6 +61,8 @@
 				
 	    </div>
 	    <div class="swiper-pagination"></div>
+			<div class="swiper-button-prev swiper-button-white"></div><!--左箭头-->
+    	<div class="swiper-button-next swiper-button-white"></div><!--右箭头-->
 	  </div>
 		
 	</div>
@@ -80,9 +91,13 @@
 					speed:1000,
 					loop:true,
 					pagination: {
-						el:'.swiper-pagination',
+					el:'.swiper-pagination',
 						clickable :true,
-						},
+					},
+					navigation: {
+						nextEl: '.swiper-button-next',
+						prevEl: '.swiper-button-prev',
+					},
 					effect : 'fade',
 					paginationClickable :true,
 					

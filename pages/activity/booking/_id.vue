@@ -199,7 +199,7 @@
 						<div class="venue_check" v-for="item in opctions.venues" :key="item">
 							<radio v-model="venueAddress" :label="item">{{item}}</radio>
 						</div>
-						<div class="venue_check">
+						<div class="venue_check" v-if="opctions.venues.length>1">
 							<radio v-model="venueAddress" :label="null">I haven't decided yet.</radio>
 						</div>
 					</div>
@@ -1249,8 +1249,8 @@
 
 				
 				// console.log('成功！');
-				console.log(putData);
-				return;
+				// console.log(putData);
+				// return;
 				
 				if(that.addOder == false) {
 					that.addOder = true;
@@ -1302,10 +1302,10 @@
 			}
 
 			// console.log(this.opctions);
-			// var venues = this.opctions.venues;
-			// if(venues && venues.length==1){
-			// 	this.venueAddress = venues[0];
-			// };
+			var venues = this.opctions.venues;
+			if(venues && venues.length==1){
+				this.venueAddress = venues[0];
+			};
 
 			this.$nextTick(()=>{
 

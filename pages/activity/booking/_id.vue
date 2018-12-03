@@ -194,7 +194,7 @@
 					</div>
 
 					<div class="venue_detail" v-else>
-						<h3>Please select a Venue<span class="red">*</span></h3>
+						<h3>Please Select a Venue<span class="red">*</span></h3>
 						<div class="red venue_tip" v-if="venueTip">Field is required</div>
 						<div class="venue_check" v-for="item in opctions.venues" :key="item">
 							<radio v-model="venueAddress" :label="item">{{item}}</radio>

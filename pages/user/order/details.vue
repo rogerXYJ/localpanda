@@ -96,7 +96,7 @@
 				<h3>Panda Phone Device delivery  Information</h3>
 				<div class="content_detail">
 					<ul class="content_list" v-if="details.contactInfo.phoneDelivery">
-						<li><b>Delivery Address :</b>{{getValue(details.contactInfo.phoneDelivery,'Panda Phone delivery address ( Hotel Only )')}}</li>
+						<li><b>Delivery Address :</b>{{getValue(details.contactInfo.phoneDelivery,'Panda Phone Delivery Address ( Hotel Only )')}}</li>
 						<li><b>Delivery Date & Time : </b>{{formatDate(getValue(details.contactInfo.phoneDelivery,'Delivery Date ( Beijing Time )')) + ' ' +getValue(details.contactInfo.phoneDelivery,'Delivery Time ( Beijing Time )')}}</li>
 					</ul>
 					<div class="content_btn" @click="pickupDialog=true" v-else>The field is empty. Please enter your info</div>
@@ -287,7 +287,7 @@
 					</div>
 
 					<div class="pandaPhone_info" v-show="!pandaPhoneLocation || !details.activityInfo.venues && details.activityInfo.pickup==0">
-						<h5><span class="red">*</span> Panda Phone delivery address ( Hotel Only )</h5>
+						<h5><span class="red">*</span> Panda Phone Delivery Address ( Hotel Only )</h5>
 						<div class="pandaPhone_info_list">
 							<input class="w_max js_validate" vType="text" v-model="pandaPhoneAddress" type="text" placeholder="">
 						</div>
@@ -596,7 +596,7 @@
 				var data = {
 					"Delivery Date ( Beijing Time )": this.arrivalDate,
 					"Delivery Time ( Beijing Time )": this.arrivalTime,
-					"Panda Phone delivery address ( Hotel Only )": this.pandaPhoneAddress
+					"Panda Phone Delivery Address ( Hotel Only )": this.pandaPhoneAddress
 				};
 				return data;
 			},
@@ -657,6 +657,8 @@
 						document.querySelector('.pickup_info_location').scrollIntoViewIfNeeded();
 					}
 					
+				}else if(!this.venueAddress && this.details.activityInfo.pickup==0){
+					this.venueTip = true;
 				}else if(this.fromValidate.validate()){
 					var self = this;
 					self.loadingStatus = true;
@@ -669,6 +671,12 @@
 							phoneDelivery: self.getPhoneDelivery() ? JSON.stringify(self.getPhoneDelivery()) : null
 						}
 					};
+
+					if(self.details.activityInfo.venues && self.details.activityInfo.pickup==0){
+						postData.contactInfo.meetingPoint = self.venueAddress;
+					}
+
+
 					self.axios.post( "https://api.localpanda.com/api/order/activity/extra/info", JSON.stringify(postData), {
 						headers: {
 							'Content-Type': 'application/json'
@@ -679,6 +687,7 @@
 
 						self.details.contactInfo.pickup = postData.contactInfo.pickup;
 						self.details.contactInfo.phoneDelivery = postData.contactInfo.phoneDelivery;
+						self.details.contactInfo.meetingPoint = postData.contactInfo.meetingPoint;
 						
 					}, function(response) {
 						self.loadingStatus = false;
@@ -814,7 +823,9 @@
 				},
 				deep: true
 			},
-			
+			venueAddress:function(){
+				this.venueTip  = false;
+			}
 		}
 	}
 </script>

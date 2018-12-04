@@ -193,7 +193,7 @@
 				</div> -->
 				<div class="ADpandaPhone" @click.stop="showPandaPhone">
 					<img v-lazy="'https://cloud.localpanda.com/pandaphone/ad_detail.jpg'" width="100%" alt="">
-					<a class="pandaPhone_box" href="https://www.localpanda.com/product/phone/details/" target="_blank">
+					<div class="pandaPhone_box">
 						<h2>Unlock China with the Panda Phone</h2>
 						<p>All-in-one Mobile Travel Assistant</p>
 						<ul>
@@ -202,7 +202,7 @@
 							<li><i class="iconfont">&#xe654;</i>4G Wireless Data, Unlimited Calling & Texts</li>
 							<li><i class="iconfont">&#xe654;</i>VPN - Access Blocked Websites Like Google</li>
 						</ul>
-					</a>
+					</div>
 				</div>
 
 				<!-- 其他产品信息 -->

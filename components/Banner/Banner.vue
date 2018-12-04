@@ -8,7 +8,20 @@
 				<div class="swiper-slide">
 	        <a href="/product/phone/details/">
 						<div class="imgBanner" :style="{background:'url(https://cloud.localpanda.com/pandaphone/phonebanner.jpg)'}">
-							
+							<div class="ADpandaPhone" @click.stop="showPandaPhone">
+								<!-- <img v-lazy="'https://cloud.localpanda.com/pandaphone/ad_detail.jpg'" width="100%" alt=""> -->
+								<div class="pandaPhone_box">
+									<h2>Unlock China with the Panda Phone</h2>
+									<p>All-in-one Mobile Travel Assistant</p>
+									<ul>
+										<li><i class="iconfont">&#xe654;</i>Smart Phone with Mainland China Number</li>
+										<li><i class="iconfont">&#xe654;</i>Travel & Emergency Help at Your Fingertips  </li>
+										<li><i class="iconfont">&#xe654;</i>4G Wireless Data, Unlimited Calling & Texts</li>
+										<li><i class="iconfont">&#xe654;</i>VPN - Access Blocked Websites Like Google</li>
+									</ul>
+									<p class="p2">Rental starting at $10</p>
+								</div>
+							</div>
 						</div>
 					</a>
 	      </div>
@@ -242,6 +255,55 @@
 				}
 			}
 		}
+
+		.ADpandaPhone{
+			position: relative;
+			img{
+				vertical-align: top;
+			}
+			.pandaPhone_box{
+				width: 850px;
+				margin: 0 auto;
+				color: #fff;
+				text-shadow:0 5px 10px rgba(0,0,0,0.3);
+				// background-color: rgba(0, 0, 0, 0.3);
+				padding-top: 125px;
+				h2{
+					
+					font-size: 50px;
+					font-weight: bold;
+					text-align: center;
+				}
+				p{
+					margin-top: 15px;
+					font-size: 30px;
+					text-align: center;
+				}
+				ul{
+					margin-top: 10px;
+					padding-left: 20px;
+					overflow: hidden;
+					li{
+						font-size: 16px;
+						width: 50%;
+						float: left;
+						margin-top: 10px;
+						text-align: left;
+						i{
+							font-size: 12px;
+							float: left;
+							margin-top: 4px;
+							margin-right: 10px;
+						}
+					}
+				}
+				.p2{
+					font-size:26px;
+					margin-top: 26px;
+				}
+			}
+		}
+
 	}
 	
 </style>

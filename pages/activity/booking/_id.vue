@@ -199,7 +199,7 @@
 						<div class="venue_check" v-for="item in opctions.venues" :key="item">
 							<radio v-model="venueAddress" :label="item">{{item}}</radio>
 						</div>
-						<div class="venue_check" v-if="opctions.venues.length>1">
+						<div class="venue_check" v-if="opctions.venues && opctions.venues.length>1">
 							<radio v-model="venueAddress" :label="null">I haven't decided yet.</radio>
 						</div>
 					</div>
@@ -216,7 +216,7 @@
 						</div>
 
 						<div class="pandaPhone_info" v-show="!pandaPhoneLocation">
-							<h5><span class="red">*</span> Panda Phone delivery address ( Hotel Only )</h5>
+							<h5><span class="red">*</span> Panda Phone Delivery Address ( Hotel Only )</h5>
 							<div class="pandaPhone_info_list">
 								<input class="w_max js_validate" vType="text" v-model="pandaPhoneAddress" type="text" placeholder="">
 							</div>
@@ -1140,7 +1140,7 @@
 				}else if(pickupLocation == 'Hotel'){
 					return {
 						"Pick-up Location": 'Hotel',
-						"Arrival Time": pickupData.arrivalTime,
+						"Pick-up Time": pickupData.arrivalTime,
 						"Hotel Name & Address": pickupData.hotel
 					};
 				}else if(pickupLocation == 'Airport'){
@@ -1180,7 +1180,7 @@
 				var data = {
 					"Delivery Date ( Beijing Time )": this.arrivalDate,
 					"Delivery Time ( Beijing Time )": this.arrivalTime,
-					"Panda Phone delivery address ( Hotel Only )": this.pandaPhoneAddress
+					"Panda Phone Delivery Address ( Hotel Only )": this.pandaPhoneAddress
 				};
 				return JSON.stringify(data);
 			},

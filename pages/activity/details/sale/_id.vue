@@ -38,7 +38,7 @@
 								<b><span class="price_from" v-if="participants==0 && !picInfo.unifiedPricing">From</span> {{nowExchange.symbol}} {{participants>0?returnFloat(getPeoplePrice(participants,true)):returnFloat(picInfo.bottomPrice)}}</b>{{returnText(participants)}} 
 							</div>
 
-							<div class="price_tip" v-if="!participants && !picInfo.unifiedPricing">Price based on group of {{picInfo.maxParticipants}}</div>
+							<div class="price_tip" v-if="!participants && !picInfo.unifiedPricing">Price based on group of {{getBottomCapacity()}}</div>
 						</div>
 
 						<ul class="book_list">
@@ -100,7 +100,7 @@
 								<p class="pp_tip">All-in-one Mobile Travel Assistant <span @click="showPandaPhone">Show details</span></p>
 							</li> -->
 							<li class="clearfix">
-								<span class="btn" @click="bookNow">Book Now</span>
+								<span class="btn js_bookNow" @click="bookNow">Book Now</span>
 								<span class="btn_inquire fl" @click="showContact">Inquire</span>
 							</li>
 							
@@ -145,8 +145,8 @@
 					<h2><span :class="{'private':detail.groupType=='Private'}" v-if="detail.groupType">{{detail.groupType}}</span>{{detail.title}}</h2>
 					<ul class="info_list">
 						<!-- Duration -->
-						<li v-if="/DAY/.test(detail.durationUnit)"><i class="iconfont">&#xe624;</i>Duration {{detail.duration}} {{setTimeStr(detail.duration,detail.durationUnit)}}</li>
-						<li v-else><i class="iconfont">&#xe624;</i>Duration {{detail.duration}} {{setTimeStr(detail.duration,detail.durationUnit)}} <span class="iconfont" v-if="!/DAY/.test(detail.durationUnit)" @click="showDurationInfo=true">&#xe689;</span></li>
+						<li v-if="/DAY/.test(detail.durationUnit)"><i class="iconfont">&#xe624;</i>Duration : {{detail.duration}} {{setTimeStr(detail.duration,detail.durationUnit)}}</li>
+						<li v-else><i class="iconfont">&#xe624;</i>Duration : {{detail.duration}} {{setTimeStr(detail.duration,detail.durationUnit)}} <span class="iconfont" v-if="!/DAY/.test(detail.durationUnit)" @click="showDurationInfo=true">&#xe689;</span></li>
 
 						<!-- 语言 -->
 						<li v-if="detail.groupType=='Group'"><i class="iconfont">&#xe627;</i>Offered in English</li>
@@ -175,11 +175,13 @@
 
 				<!-- 行程板块 -->
 				<div class="detail_box itinerary" id="itinerary" v-if="detail.itinerary.length">
+					<!-- <h3><i></i>Experience Details</h3> -->
 					<h3><span class="btn_viewall" @click="itineraryViewall">View all</span><i></i>Experience Details</h3>
 					<div class="itinerary_tip" v-if="detail.groupType=='Private'">Our staff can help you make changes to your itinerary since this is a private tour.</div>
 					<dl class="itinerary_list" :class="{'active':index<3}" v-for="(items,index) in detail.itinerary" :key="index">
 						<dt @click="itineraryFn" v-if="items.description"><i class="iconfont i_down">&#xe667;</i><i class="iconfont i_up">&#xe666;</i><span></span>{{items.title}}</dt>
 						<dt v-else><span></span>{{items.title}}</dt>
+						<!-- <dt><span></span>{{items.title}}</dt> -->
 						<dd>
 							<img class="oldStyle" v-if="items.photo && !detail.newType" v-lazy="items.photo.url" alt="">
 							<p>{{items.description}}</p>
@@ -193,7 +195,8 @@
 					
 					<div class="other_list" id="inclusions" v-if="inclusions.length || exclusions.length">
 						<!--  || detail.pickup -->
-						<h3 @click="otherFn"><span class="iconfont i_down">&#xe667;</span><span class="iconfont i_up">&#xe666;</span><i></i>Inclusions & Exclusions</h3>
+						<!-- <h3 @click="otherFn"><span class="iconfont i_down">&#xe667;</span><span class="iconfont i_up">&#xe666;</span><i></i>Inclusions & Exclusions</h3> -->
+						<h3><i></i>Inclusions & Exclusions</h3>
 						<div class="other_content" v-if="inclusions.length">
 							<h4>Inclusions</h4>
 							<ul class="detail_txt_list">
@@ -233,7 +236,8 @@
 					</div> -->
 
 					<div class="other_list" id="meeting" v-if="detail.pickup===0 && detail.category !== 'Ticket'">
-						<h3 @click="otherFn"><span class="iconfont i_down">&#xe667;</span><span class="iconfont i_up">&#xe666;</span><i></i>Meeting Point Info</h3>
+						<h3><i></i>Meeting Point Info</h3>
+						<!-- <h3 @click="otherFn"><span class="iconfont i_down">&#xe667;</span><span class="iconfont i_up">&#xe666;</span><i></i>Meeting Point Info</h3> -->
 						<div class="other_content">
 							<ul class="detail_txt_list">
 								<li v-for="(item,index) in detail.venues" :key="index"><i class="dian"></i>{{item}}</li>
@@ -241,7 +245,7 @@
 						</div>
 					</div>
 					<div class="other_list" v-else-if="detail.category == 'Ticket' &&　getTextArr(detail.statement).length">
-						<h3 @click="otherFn"><span class="iconfont i_down">&#xe667;</span><span class="iconfont i_up">&#xe666;</span><i></i>Usage Instructions</h3>
+						<h3><i></i>Usage Instructions</h3>
 						<div class="other_content">
 							<ul class="detail_txt_list">
 								<li v-for="(item,index) in getTextArr(detail.statement)" :key="index"><i class="dian"></i>{{item}}</li>
@@ -250,7 +254,7 @@
 					</div>
 
 					<div class="other_list" id="important" v-if="delEnter(detail.remark) || notice.length">
-						<h3 @click="otherFn"><span class="iconfont i_down">&#xe667;</span><span class="iconfont i_up">&#xe666;</span><i></i>{{delEnter(detail.remark)?'Important Info':'Additional Info'}}</h3>
+						<h3><i></i>{{delEnter(detail.remark)?'Important Info':'Additional Info'}}</h3>
 						<div class="other_content">
 							<ul class="detail_txt_list">
 								<li v-for="item in getTextArr(detail.remark)" :key="item">
@@ -266,7 +270,7 @@
 					</div>
 
 					<div class="other_list" id="rescheduling" v-if="delEnter(picInfo.refundInstructions)">
-						<h3 @click="otherFn"><span class="iconfont i_down">&#xe667;</span><span class="iconfont i_up">&#xe666;</span><i></i>Rescheduling & Cancellation Policy</h3>
+						<h3><i></i>Rescheduling & Cancellation Policy</h3>
 						<div class="other_content">
 							<ul class="detail_txt_list">
 								<li v-for="(item,index) in getTextArr(picInfo.refundInstructions)" :key="index"><i class="dian"></i>{{item}}</li>
@@ -382,7 +386,9 @@
 
 		<!-- 顶部Duration信息弹层 -->
 		<dialogBox modalClose="true" title="Duration tips" v-model="showDurationInfo" width="90%" height="auto">
-			<div class="dialog_tip_info">All trips start when you meet your tour guide (or driver if the trip does not include a guide), and conclude when you depart from your tour guide (or driver).</div>
+			<div class="dialog_tip_info">All trips start when you meet your tour guide (or driver if the trip does not include a guide), and conclude when you depart from your tour guide (or driver).
+				<p class="mt10" v-if="detail.groupType=='Private'">Since this is a private trip, you can appoint the starting time of your trip when booking.</p>
+			</div>
 		</dialogBox>
 
 		<!-- 顶部Languages信息弹层 -->
@@ -1292,6 +1298,7 @@ import { sep } from 'path';
 
 				if(this.bookPeople==0){
 					self.showChangePeople = true;
+					self.changeAdults = this.picInfo.minParticipants;
 					return false;
 				}
 
@@ -1445,6 +1452,13 @@ import { sep } from 'path';
 			addPanda(){
 				this.pandaPhoneCheck=true;
 				this.showPPDialog=false;
+			},
+			getBottomCapacity(){
+				var details = Object.assign([],this.picInfo.details);
+				details.sort(function(a,b){
+					return a.perPersonPrice - b.perPersonPrice;
+				});
+				return details[0].capacity;
 			}
 		},
 		mounted: function() {
@@ -1499,7 +1513,7 @@ import { sep } from 'path';
 			//点击自动设为人数
 			document.addEventListener('click',function(e){
 				var target = e.target;
-				if(!getParents(target,'change_travelers') && self.showChangePeople && self.changeAdults){
+				if(!getParents(target,'change_travelers') && self.showChangePeople && self.changeAdults && !getParents(target,'js_bookNow')){
 					self.setPeople();
 				};
 
@@ -2147,7 +2161,7 @@ import { sep } from 'path';
 					h3{
 						height: 80px;
 						line-height: 80px;
-						cursor: pointer;
+						// cursor: pointer;
 						i{
 							margin-top: 30px;
 						}
@@ -2162,7 +2176,7 @@ import { sep } from 'path';
 					.other_content{
 						margin-top: -5px;
 						padding: 0 0 20px;
-						display: none;
+						// display: none;
 					}
 					.i_up{
 						display: block;

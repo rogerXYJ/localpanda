@@ -251,8 +251,8 @@
 					<div class="date">
 						<b>Date of Arrival</b>
 						<div class="datetime">
-							<i class="iconfont font-blue" v-if="!dateTime">&#xe60d;</i>
-							<i class="iconfont cancelDate" v-else @click.stop="dateClear(dateTime)">&#xe647;</i>
+							<i class="iconfont font-blue">&#xe60d;</i>
+							<i class="iconfont cancelDate"  v-if="dateTime" @click.stop="dateClear(dateTime)">&#xe647;</i>
 							<flatPickr  v-model="dateTime" :config="options"></flatPickr>
 						</div>
 					</div>
@@ -482,6 +482,7 @@
 						.datetime {
 							position: relative;
 							line-height: 30px;
+							font-size:14px;
 							i {
 								position: absolute;
 								left: 21px;
@@ -493,7 +494,12 @@
 								&.cancelDate {
 									cursor: pointer;
 									color: #dde0e0;
+									left: auto;
+									right: 21px;
 								}
+							}
+							.flatpickr-input{
+								padding-left: 55px!important;
 							}
 						}
 					}

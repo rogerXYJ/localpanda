@@ -60,7 +60,7 @@
 				<!-- 补填信息板块 -->
 				<div class="pickup_info" v-show="opctions.pickup>0 || opctions.pickup==0 && opctions.venues">
 					<div class="pickup_detail" v-if="opctions.pickup>0">
-						<h3 v-if="opctions.pickup && opctions.pandaPhoneCheck">Pick-up & Panda Phone Device delivery  Information <br><span class="ml0">If you haven't decided on the details, you can provide us with the info later. </span></h3>
+						<h3 v-if="opctions.pickup && opctions.pandaPhoneCheck">Pick-up & Panda Phone Device Delivery  Information <br><span class="ml0">If you haven't decided on the details, you can provide us with the info later. </span></h3>
 						<h3 v-else>Pick-up Information <span>If you haven't decided on the details, you can provide us with the info later. </span></h3>
 						<checkbox class="pickup_info_check" v-model="showPickupInfo" :change="pickupInfoChange">I have the info now</checkbox>
 						
@@ -183,7 +183,9 @@
 											placeholder="">
 										</el-time-picker>
 									</li>
-									<li class="w_max"><span><i class="red">*</i> Address or Intersection</span> <input class="js_validate" vType="text" type="text" v-model="pickupData.address"></li>
+									<li class="w_max"><span><i class="red">*</i> Address or Intersection</span> 
+										<textarea class="textarea js_validate" vType="text" type="text" v-model="pickupData.address" rows="2"></textarea>
+									</li>
 								</ul>
 							</div>
 
@@ -194,7 +196,7 @@
 					</div>
 
 					<div class="venue_detail" v-else>
-						<h3>Please Select a Venue<span class="red">*</span></h3>
+						<h3>{{(opctions.venues && opctions.venues.length>1)?'Please Select a Venue':'Meeting Point'}}<span class="red">*</span></h3>
 						<div class="red venue_tip" v-if="venueTip">Field is required</div>
 						<div class="venue_check" v-for="item in opctions.venues" :key="item">
 							<radio v-model="venueAddress" :label="item">{{item}}</radio>
@@ -205,28 +207,29 @@
 					</div>
 
 					<div class="pickup_info_list" v-show="showPickupInfo && opctions.pandaPhoneCheck && opctions.pickup>0 || opctions.pickup==0 && opctions.pandaPhoneCheck && venueAddress!=null">
-						<h4>Panda Phone Device delivery Location</h4>
+						<h4>Panda Phone Device Delivery Information</h4>
 						<div class="pandaPhone_location">
 							<div class="pandaPhone_location_check mt5">
 								<radio v-model="pandaPhoneLocation" :label="true">I want my device to be delivered upon my pickup</radio>
 							</div>
 							<div class="pandaPhone_location_check">
-								<radio v-model="pandaPhoneLocation" :label="false">I want to receive my device at a time/venue different from my pickup venue/time</radio>
+								<radio v-model="pandaPhoneLocation" :label="false">I want to receive my device at a venue/time different from my pickup venue/time</radio>
 							</div>
 						</div>
 
 						<div class="pandaPhone_info" v-show="!pandaPhoneLocation">
-							<h5><span class="red">*</span> Panda Phone Delivery Address ( Hotel Only )</h5>
+							<h5>Panda Phone Delivery Address ( Hotel Only )<span class="red">*</span> </h5>
 							<div class="pandaPhone_info_list">
 								<input class="w_max js_validate" vType="text" v-model="pandaPhoneAddress" type="text" placeholder="">
 							</div>
 						</div>
 						<div class="pandaPhone_info" v-show="!pandaPhoneLocation">
-							<h5><span class="red">*</span> Delivery Date & Time ( Beijing Time )</h5>
+							<h5>Delivery Date & Time ( Beijing Time )<span class="red">*</span> </h5>
 							<div class="pandaPhone_info_list">
 								<input class="js_deliverytime js_validate" vType="text" v-model="arrivalDate" type="text" readonly placeholder="Please Select Date">
 								<!-- <input class="ml50 js_validate" vType="text" v-model="arrivalTime" type="text" placeholder="Please Select Time"> -->
-								<select class="pickup_time js_validate" vType="text" v-model="arrivalTime">
+								<select class="pickup_time js_validate" :class="{'c_999':!arrivalTime}" vType="text" v-model="arrivalTime">
+									<option value="" disabled selected class="disabled">Please Select Time</option>
 									<option value="I haven't decided yet">I haven't decided yet. I'll contact you later</option>
 									<option value="7:30 AM">7:30 AM</option>
 									<option value="8:00 AM">8:00 AM</option>
@@ -1426,7 +1429,7 @@
 			},
 			mobileCode: function(val, oldVal) {
 				let self = this
-				val=val.replace(/(^\s+)|(\s+$)/g, "")
+				val=val.replace(/(^\s+)|(\s+$)/g, "").toLowerCase();
 				
 				if(val) {
 					this.test.test4=true
@@ -2172,7 +2175,6 @@
 								font-size: 16px;
 							}
 							.textarea{
-								margin-top: 8px;
 								width: 430px;
 								box-shadow: inset 0 1px 0 rgba(0, 0, 0, .1), inset 0 1px 1px rgba(0, 0, 0, .05);
 								padding: 6px 10px 10px;
@@ -2256,6 +2258,12 @@
 								}
 								.pickup_time{
 									margin-left: 50px;
+									option{
+										color: #353a3f;
+									}
+									.disabled{
+										color: #aaa;
+									}
 								}
 								.w_max{
 									width: 100%;
@@ -2290,7 +2298,7 @@
 			}
 		}
 		.empty {
-			padding: 30px 50px;
+			padding: 30px 10px;
 			text-align: center;
 			font-size: 16px;
 		}

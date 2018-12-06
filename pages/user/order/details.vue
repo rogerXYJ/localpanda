@@ -276,13 +276,13 @@
 				</div>
 
 				<div class="pickup_info_list" v-if="details.phoneHire">
-					<h4 v-if="details.activityInfo.venues && details.activityInfo.pickup==0 || details.activityInfo.pickup>0">Panda Phone Device delivery Location</h4>
+					<h4 v-if="details.activityInfo.venues && details.activityInfo.pickup==0 || details.activityInfo.pickup>0">Panda Phone Device Delivery Information</h4>
 					<div class="pandaPhone_location" v-if="details.activityInfo.venues && details.activityInfo.pickup==0 || details.activityInfo.pickup>0">
 						<div class="pandaPhone_location_check mt5">
 							<radio v-model="pandaPhoneLocation" :label="true">I want my device to be delivered upon my pickup</radio>
 						</div>
 						<div class="pandaPhone_location_check">
-							<radio v-model="pandaPhoneLocation" :label="false">I want to receive my device at a time/venue different from my pickup venue/time</radio>
+							<radio v-model="pandaPhoneLocation" :label="false">I want to receive my device at a venue/time different from my pickup venue/time</radio>
 						</div>
 					</div>
 

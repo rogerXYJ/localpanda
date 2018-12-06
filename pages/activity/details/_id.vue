@@ -38,7 +38,7 @@
 								<b><span class="price_from" v-if="participants==0 && !picInfo.unifiedPricing">From</span> {{nowExchange.symbol}} {{participants>0?returnFloat(getPeoplePrice(participants,true)):returnFloat(picInfo.bottomPrice)}}</b>{{returnText(participants)}} 
 							</div>
 
-							<div class="price_tip" v-if="!participants && !picInfo.unifiedPricing">Price based on group of {{picInfo.maxParticipants}}</div>
+							<div class="price_tip" v-if="!participants && !picInfo.unifiedPricing">Price based on group of {{getBottomCapacity()}}</div>
 						</div>
 
 						<ul class="book_list">
@@ -100,7 +100,7 @@
 								<p class="pp_tip">All-in-one Mobile Travel Assistant <span @click="showPandaPhone">Show details</span></p>
 							</li>
 							<li class="clearfix">
-								<span class="btn" @click="bookNow">Book Now</span>
+								<span class="btn js_bookNow" @click="bookNow">Book Now</span>
 								<span class="btn_inquire fl" @click="showContact">Inquire</span>
 							</li>
 							
@@ -145,8 +145,8 @@
 					<h2><span :class="{'private':detail.groupType=='Private'}" v-if="detail.groupType">{{detail.groupType}}</span>{{detail.title}}</h2>
 					<ul class="info_list">
 						<!-- Duration -->
-						<li v-if="/DAY/.test(detail.durationUnit)"><i class="iconfont">&#xe624;</i>Duration {{detail.duration}} {{setTimeStr(detail.duration,detail.durationUnit)}}</li>
-						<li v-else><i class="iconfont">&#xe624;</i>Duration {{detail.duration}} {{setTimeStr(detail.duration,detail.durationUnit)}} <span class="iconfont" v-if="!/DAY/.test(detail.durationUnit)" @click="showDurationInfo=true">&#xe689;</span></li>
+						<li v-if="/DAY/.test(detail.durationUnit)"><i class="iconfont">&#xe624;</i>Duration : {{detail.duration}} {{setTimeStr(detail.duration,detail.durationUnit)}}</li>
+						<li v-else><i class="iconfont">&#xe624;</i>Duration : {{detail.duration}} {{setTimeStr(detail.duration,detail.durationUnit)}} <span class="iconfont" v-if="!/DAY/.test(detail.durationUnit)" @click="showDurationInfo=true">&#xe689;</span></li>
 
 						<!-- 语言 -->
 						<li v-if="detail.groupType=='Group'"><i class="iconfont">&#xe627;</i>Offered in English</li>
@@ -195,7 +195,7 @@
 					<img v-lazy="'https://cloud.localpanda.com/pandaphone/ad_detail.jpg'" width="100%" alt="">
 					<div class="pandaPhone_box">
 						<h2>Unlock China with the Panda Phone</h2>
-						<p>All-in-one Mobile Travel Assistant</p>
+						<p>All-in-one Rental Mobile Travel Assistant</p>
 						<ul>
 							<li><i class="iconfont">&#xe654;</i>Smart Phone with Mainland China Number</li>
 							<li><i class="iconfont">&#xe654;</i>Travel & Emergency Help at Your Fingertips  </li>
@@ -401,7 +401,9 @@
 
 		<!-- 顶部Duration信息弹层 -->
 		<dialogBox modalClose="true" title="Duration tips" v-model="showDurationInfo" width="90%" height="auto">
-			<div class="dialog_tip_info">All trips start when you meet your tour guide (or driver if the trip does not include a guide), and conclude when you depart from your tour guide (or driver).</div>
+			<div class="dialog_tip_info">All trips start when you meet your tour guide (or driver if the trip does not include a guide), and conclude when you depart from your tour guide (or driver).
+				<p class="mt10" v-if="detail.groupType=='Private'">Since this is a private trip, you can appoint the starting time of your trip when booking.</p>
+			</div>
 		</dialogBox>
 
 		<!-- 顶部Languages信息弹层 -->
@@ -479,6 +481,7 @@ Price may vary depending on the language. If you need guides in other languages,
 			
 			<div class="add_panda">
 				<span class="btn" @click="addPanda">Add Panda Phone to My Trip</span>
+				<a class="btn_a" href="https://www.localpanda.com/product/phone/details/" target="_blank">Panda Phone Only</a>
 				<!-- <checkbox class="pp_checkbox green mt20" v-model="pandaPhoneCheck">Add Panda Phone to My Trip</checkbox> -->
 			</div>
 			
@@ -1307,6 +1310,7 @@ import { sep } from 'path';
 
 				if(this.bookPeople==0){
 					self.showChangePeople = true;
+					this.changeAdults = this.picInfo.minParticipants;
 					return false;
 				}
 
@@ -1460,6 +1464,13 @@ import { sep } from 'path';
 			addPanda(){
 				this.pandaPhoneCheck=true;
 				this.showPPDialog=false;
+			},
+			getBottomCapacity(){
+				var details = Object.assign([],this.picInfo.details);
+				details.sort(function(a,b){
+					return a.perPersonPrice - b.perPersonPrice;
+				});
+				return details[0].capacity;
 			}
 		},
 		mounted: function() {
@@ -1514,7 +1525,7 @@ import { sep } from 'path';
 			//点击自动设为人数
 			document.addEventListener('click',function(e){
 				var target = e.target;
-				if(!getParents(target,'change_travelers') && self.showChangePeople && self.changeAdults){
+				if(!getParents(target,'change_travelers') && self.showChangePeople && self.changeAdults && !getParents(target,'js_bookNow')){
 					self.setPeople();
 				};
 
@@ -2053,6 +2064,7 @@ import { sep } from 'path';
 			
 			.ADpandaPhone{
 				position: relative;
+				margin-top: 30px;
 				img{
 					vertical-align: top;
 				}
@@ -2065,6 +2077,7 @@ import { sep } from 'path';
 					color: #fff;
 					text-shadow:0 5px 10px rgba(0,0,0,0.3);
 					background-color: rgba(0, 0, 0, 0.3);
+					cursor: pointer;
 					h2{
 						margin-top: 18px;
 						font-size: 30px;
@@ -2660,6 +2673,20 @@ import { sep } from 'path';
 			}
 			.add_panda{
 				text-align: center;
+				padding-top: 10px;
+				.btn_a{
+					margin-left: 50px;
+					display: inline-block;
+					margin-top: 10px;
+					padding: 0 30px;
+					height: 36px;
+					line-height: 36px;
+					border-radius: 18px;
+					cursor: pointer;
+					color: #1bbc9d;
+					border: 1px solid #1bbc9d;
+					font-size: 14px;
+				}
 			}
 		}
 

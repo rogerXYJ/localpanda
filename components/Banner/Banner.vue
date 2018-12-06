@@ -12,7 +12,7 @@
 								<!-- <img v-lazy="'https://cloud.localpanda.com/pandaphone/ad_detail.jpg'" width="100%" alt=""> -->
 								<div class="pandaPhone_box">
 									<h2>Unlock China with the Panda Phone</h2>
-									<p>All-in-one Mobile Travel Assistant</p>
+									<p>All-in-one Rental Mobile Travel Assistant</p>
 									<ul>
 										<li><i class="iconfont">&#xe654;</i>Smart Phone with Mainland China Number</li>
 										<li><i class="iconfont">&#xe654;</i>Travel & Emergency Help at Your Fingertips  </li>

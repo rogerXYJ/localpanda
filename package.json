@@ -2,7 +2,10 @@
   "name": "local-panda",
   "scripts": {
     "dev": "nuxt",
-    "nuxt-dev": "nuxt-debug/bin/run.js"
+    "nuxt-dev": "nuxt-debug/bin/run.js",
+    "build": "nuxt build",
+    "start": "nuxt start",
+    "generate": "nuxt generate"
   },
   "dependencies": {
     "axios": "^0.18.0",

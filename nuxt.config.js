@@ -1,17 +1,13 @@
-module.exports = {
+//加载build配置信息，用于服务器端自动打包发布区分测试和线上环境。
+const nuxtBuild = require('./nuxt.build');
+
+const config = {
   router: {
     middleware: [
       'page-init',
     ]
   },
   build: {
-
-      // publicPath: 'https://cloud.localpanda.com/static/js/',
-      // testGa: true,
-      // payCode: 'pk_live_mRSdUvgwE4pZo2IVofL4cVch',
-      // paypalCode: 'production',
-
-    
     extractCSS: {
       allChunks: true 
     },
@@ -48,6 +44,13 @@ module.exports = {
   performance: {
     prefetch: false
   }
+};
+
+//加入build配置信息
+if(nuxtBuild){
+  for(var key in nuxtBuild){
+    config.build[key] = nuxtBuild[key];
+  }
 }
 
-//{ src: '~/plugins/vue-infinite-loading.js'}
+module.exports = config;

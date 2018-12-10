@@ -285,9 +285,10 @@
 					<div class="other_list" id="rescheduling" v-if="delEnter(picInfo.refundInstructions)">
 						<h3 @click="otherFn"><span class="iconfont i_down">&#xe667;</span><span class="iconfont i_up">&#xe666;</span><i></i>Rescheduling & Cancellation Policy</h3>
 						<div class="other_content">
-							<ul class="detail_txt_list">
+							<p class="detail_p" v-for="(item,index) in getTextArr(picInfo.refundInstructions)" :key="index">{{item}}</p>	
+							<!-- <ul class="detail_txt_list">
 								<li v-for="(item,index) in getTextArr(picInfo.refundInstructions)" :key="index"><i class="dian"></i>{{item}}</li>
-							</ul>
+							</ul> -->
 						</div>
 					</div>
 

@@ -304,7 +304,7 @@
 						<!--<p class="text" style="font-size: 14px;margin-top: 20px;" v-if="logIn!=1">You ordered as a guest. To view your order details, you can click "My Bookings" on the top bar then type in the reservee's email address and name you entered before to access that information.</p>-->
 						
 						<div class="nextBtn">
-							<div class="next" @click.stop="placeOrder">NEXT</div>
+							<div class="next" @click.stop="placeOrder">Next</div>
 						</div>
 					</div>
 				</div>

@@ -121,12 +121,13 @@
                             </div>
                         </div>
                         <div class="GUI-form-block GUI-form-block__inline">
-                            <div class="GUI-form-block__title">How many days do you want to travel?</div>
+                            <div class="GUI-form-block__title mb0">How many days do you want to travel?</div>
                             <div class="GUI-form-block__content">
                                 <div class="GUI-form-item">
                                     <el-input-number v-model="form.duration" controls-position="right" :min="0"></el-input-number>
                                 </div>
                             </div>
+                            <div class="travel_tip"><span>*</span> Please only count the days that you want us to plan activities for you.</div>
                         </div>
                     </div>
                 </div>
@@ -403,7 +404,18 @@
         }
         .flatpickr-months .flatpickr-prev-month svg, .flatpickr-months .flatpickr-next-month svg{ margin-top: 0;}
 
+        .el-form-item__error{
+            top:0;
+            position: relative;
+        }
+
     }
+
+    .page__container .GUI-form .el-form-item.is-error .el-form-item__content{
+    padding-top: 0;
+}
+
+    
     
 </style>
 <style lang="scss" scoped>
@@ -514,11 +526,22 @@
         color:#e14f3f;
         font-size:16px;
     }
+
+    .el-form-item__error{
+        top:100%;
+    }
+    .travel_tip{
+        text-align: left;
+        clear: both;
+        font-size:14px;
+        padding-top: 10px;
+        span{
+            color: red;
+        }
+    }
+    .mb0{
+        margin-bottom: 0;
+    }
     
-}
-</style>
-<style lang="scss">
-.page__container .GUI-form .el-form-item.is-error .el-form-item__content{
-    padding-top: 0;
 }
 </style>

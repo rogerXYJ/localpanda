@@ -66,24 +66,29 @@
 					<div v-if="details.contactInfo.pickup">
 						<ul class="content_list" v-if="getValue(details.contactInfo.pickup,'Pick-up Location')=='Hotel'">
 							<li><b>Pick-up Location :</b>{{getValue(details.contactInfo.pickup,'Pick-up Location')}}</li>
+							<li><b>Pick-up Time :</b>{{getValue(details.contactInfo.pickup,'Pick-up Time')}}</li>
 							<li><b>Hotel Name & Address : </b>{{getValue(details.contactInfo.pickup,'Hotel Name & Address')}}</li>
 						</ul>
 						<ul class="content_list" v-else-if="getValue(details.contactInfo.pickup,'Pick-up Location')=='Airport'">
+							<li><b>Pick-up Location :</b>{{getValue(details.contactInfo.pickup,'Pick-up Location')}}</li>
 							<li><b>Flight Number :</b>{{getValue(details.contactInfo.pickup,'Flight Number')}}</li>
 							<li><b>Arrival Time : </b>{{getValue(details.contactInfo.pickup,'Arrival Time')}}</li>
 							<li><b>Airport : </b>{{getValue(details.contactInfo.pickup,'Airport')}}</li>
 						</ul>
 						<ul class="content_list" v-else-if="getValue(details.contactInfo.pickup,'Pick-up Location')=='Cruise Port'">
+							<li><b>Pick-up Location :</b>{{getValue(details.contactInfo.pickup,'Pick-up Location')}}</li>
 							<li><b>Cruise Number :</b>{{getValue(details.contactInfo.pickup,'Cruise Number')}}</li>
 							<li><b>Arrival Time : </b>{{getValue(details.contactInfo.pickup,'Arrival Time')}}</li>
 							<li><b>Cruise Port : </b>{{getValue(details.contactInfo.pickup,'Cruise Port')}}</li>
 						</ul>
 						<ul class="content_list" v-else-if="getValue(details.contactInfo.pickup,'Pick-up Location')=='Railway Station'">
+							<li><b>Pick-up Location :</b>{{getValue(details.contactInfo.pickup,'Pick-up Location')}}</li>
 							<li><b>Train Number :</b>{{getValue(details.contactInfo.pickup,'Train Number')}}</li>
 							<li><b>Arrival Time : </b>{{getValue(details.contactInfo.pickup,'Arrival Time')}}</li>
 							<li><b>Railway Station : </b>{{getValue(details.contactInfo.pickup,'Railway Station')}}</li>
 						</ul>
 						<ul class="content_list" v-else-if="getValue(details.contactInfo.pickup,'Pick-up Location')=='Address or Intersection'">
+							<li><b>Pick-up Location :</b>{{getValue(details.contactInfo.pickup,'Pick-up Location')}}</li>
 							<li><b>Pick-up Time :</b>{{getValue(details.contactInfo.pickup,'Pick-up Time')}}</li>
 							<li><b>Address or Intersection : </b>{{getValue(details.contactInfo.pickup,'Address or Intersection')}}</li>
 						</ul>
@@ -557,7 +562,7 @@
 				}else if(pickupLocation == 'Hotel'){
 					return {
 						"Pick-up Location": 'Hotel',
-						"Arrival Time": pickupData.arrivalTime,
+						"Pick-up Time": pickupData.arrivalTime,
 						"Hotel Name & Address": pickupData.hotel
 					};
 				}else if(pickupLocation == 'Airport'){

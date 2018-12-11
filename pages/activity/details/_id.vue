@@ -119,7 +119,7 @@
 
 
 					<!-- 预定保障模块 -->
-					<ul class="book_ensure" v-if="!bookPeople" @click="showPPDialog=true">
+					<ul class="book_ensure" v-if="!bookPeople" @click="phoneIntroducing">
 						<li class="pd0">
 							<h4>Introducing Panda Phone for Only USD $1</h4>
 						</li>
@@ -146,14 +146,14 @@
 					<ul class="info_list">
 						<!-- Duration -->
 						<li v-if="/DAY/.test(detail.durationUnit)"><i class="iconfont">&#xe624;</i>Duration : {{detail.duration}} {{setTimeStr(detail.duration,detail.durationUnit)}}</li>
-						<li v-else><i class="iconfont">&#xe624;</i>Duration : {{detail.duration}} {{setTimeStr(detail.duration,detail.durationUnit)}} <span class="iconfont" v-if="!/DAY/.test(detail.durationUnit)" @click="showDurationInfo=true">&#xe689;</span></li>
+						<li v-else><i class="iconfont">&#xe624;</i>Duration : {{detail.duration}} {{setTimeStr(detail.duration,detail.durationUnit)}} <span class="iconfont" v-if="!/DAY/.test(detail.durationUnit)" @click="durationInfoGa">&#xe689;</span></li>
 
 						<!-- 语言 -->
 						<li v-if="detail.groupType=='Group'"><i class="iconfont">&#xe627;</i>Offered in English</li>
-						<li v-else-if="detail.category!='Ticket'"><i class="iconfont">&#xe627;</i>English (and other languages)-speaking guide <span class="iconfont" @click="showLanguagesInfo=true">&#xe689;</span></li>
+						<li v-else-if="detail.category!='Ticket'"><i class="iconfont">&#xe627;</i>English (and other languages)-speaking guide <span class="iconfont" @click="languageGa">&#xe689;</span></li>
 						
 						<!-- pickup -->
-						<li v-if="getPickupTitle(detail.pickup) && detail.category!='Ticket' && detail.statement"><i class="iconfont">&#xe68a;</i>{{getPickupTitle(detail.pickup)}} <span class="iconfont" @click="showPickupInfo=true">&#xe689;</span></li>
+						<li v-if="getPickupTitle(detail.pickup) && detail.category!='Ticket' && detail.statement"><i class="iconfont">&#xe68a;</i>{{getPickupTitle(detail.pickup)}} <span class="iconfont" @click="pickupGa">&#xe689;</span></li>
 
 						
 						<li v-if="picInfo.fullRefund===1"><i class="iconfont">&#xe688;</i>Free cancellation  up to {{(picInfo.refundTimeLimit>2?picInfo.refundTimeLimit+' days':24*picInfo.refundTimeLimit+' hours')}} before your trip</li>
@@ -188,10 +188,7 @@
 					</dl>
 				</div>
 
-				<!-- <div class="detail_box pandaphone_ad" @click.stop="showPandaPhone">
-					<img v-lazy="'https://cloud.localpanda.com/pandaphone/phone.jpg'" alt="">
-				</div> -->
-				<div class="ADpandaPhone" @click.stop="showPandaPhone">
+				<div class="ADpandaPhone" @click.stop="showPandaPhone('img')">
 					<img v-lazy="'https://cloud.localpanda.com/pandaphone/ad_detail.jpg'" width="100%" alt="">
 					<div class="pandaPhone_box">
 						<h2>Unlock China with the Panda Phone</h2>
@@ -1077,6 +1074,13 @@ import { sep } from 'path';
 				}else{
 					document.querySelector('.btn_viewall').innerHTML = 'View all';
 				}
+
+				ga(gaSend, {
+					hitType: "event",
+					eventCategory: "activity_detail",
+					eventAction: "click",
+					eventLabel: "expand"
+				});
 				
 			},
 			itineraryViewall(e){
@@ -1101,6 +1105,14 @@ import { sep } from 'path';
 						thisData.className = 'itinerary_list';
 					}
 				}
+
+
+				ga(gaSend, {
+					hitType: "event",
+					eventCategory: "activity_detail",
+					eventAction: "click",
+					eventLabel: "expand_all"
+				});
 				
 				
 			},
@@ -1185,13 +1197,13 @@ import { sep } from 'path';
 				}
 				
 			},
-			showPandaPhone(){
+			showPandaPhone(type){
 				this.showPPDialog=true;
 				ga(gaSend, {
 					hitType: "event",
 					eventCategory: "activity_detail",
 					eventAction: "click",
-					eventLabel:"phone_layer"
+					eventLabel: type=='img' ? "phone_layer_image" : "phone_layer"
 				});
 			},
 			getPriceData(options,callback){
@@ -1320,7 +1332,7 @@ import { sep } from 'path';
 					hitType: "event",
 					eventCategory: "activity_detail",
 					eventAction: "click",
-					eventLabel:"book_succeed"
+					eventLabel:"activity_book_succ"
 				});
 				
 				
@@ -1363,9 +1375,25 @@ import { sep } from 'path';
 						this.feedbackId = data.response;
 						this.inqueryEmailOld = val.email;
 						this.inquiryStatus = true;
+
+						ga(gaSend, {
+							hitType: "event",
+							eventCategory: "activity_detail",
+							eventAction: "click",
+							eventLabel:"activity_inquiry_succ"
+						});
+
 					}else{
 						this.isShowAlert=true
 						this.alertMessage="Failed!"
+
+						ga(gaSend, {
+							hitType: "event",
+							eventCategory: "activity_detail",
+							eventAction: "click",
+							eventLabel:"activity_inquiry_fail"
+						});
+
 					}
 					
 				}
@@ -1472,6 +1500,42 @@ import { sep } from 'path';
 					return a.perPersonPrice - b.perPersonPrice;
 				});
 				return details[0].capacity;
+			},
+			phoneIntroducing(){
+				this.showPPDialog=true;
+				ga(gaSend, {
+					hitType: "event",
+					eventCategory: "activity_detail",
+					eventAction: "click",
+					eventLabel:"phone_layer_text"
+				});
+			},
+			languageGa(){
+				this.showLanguagesInfo=true;
+				ga(gaSend, {
+					hitType: "event",
+					eventCategory: "activity_detail",
+					eventAction: "click",
+					eventLabel:"language"
+				});
+			},
+			durationInfoGa(){
+				this.showDurationInfo=true;
+				ga(gaSend, {
+					hitType: "event",
+					eventCategory: "activity_detail",
+					eventAction: "click",
+					eventLabel:"duration"
+				});
+			},
+			pickupGa(){
+				this.showPickupInfo=true;
+				ga(gaSend, {
+					hitType: "event",
+					eventCategory: "activity_detail",
+					eventAction: "click",
+					eventLabel:"pickup"
+				});
 			}
 		},
 		mounted: function() {

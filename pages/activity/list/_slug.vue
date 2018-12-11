@@ -897,6 +897,13 @@ export default {
         expires: 30
       });
       this.getData();
+
+      ga(gaSend, {
+        hitType: "event",
+        eventCategory: "activity_list",
+        eventAction: "filter",
+        eventLabel: "travelers"
+      });
       // this.jumpUrl();
     },
     //搜索显示推荐
@@ -1138,7 +1145,7 @@ export default {
         gaLabel = "popularity";
       }
       this.Ga("sort", gaLabel);
-      this.Ga("sort", "sort");
+      // this.Ga("sort", "sort");
       this.postData.pageNum = 1;
 
       this.jumpUrl();
@@ -1254,6 +1261,13 @@ export default {
               });
             }
           }
+
+          ga(gaSend, {
+            hitType: "event",
+            eventCategory: "activity_list",
+            eventAction: "filter",
+            eventLabel: "price"
+          });
         }
       }
       this.postData.filters = postFilters;
@@ -1433,7 +1447,7 @@ export default {
               options[key] = thisVal.sort();
               if (thisVal.length == 1) {
                 this.Ga("filter", key);
-                this.Ga("filter", "filter_apply");
+                // this.Ga("filter", "filter_apply");
               }
               postFilters.push({
                 type: key.toUpperCase(),
@@ -1441,54 +1455,55 @@ export default {
               });
             }
           } else if (key == "price" && !Array.isArray(val[key])) {
-			  if(this.postData.currency=="CNY"){
-				  if (val[key].maxValue <= 3000 || val[key].minValue > 0) {
-            options[key] = val[key];
+            if(this.postData.currency=="CNY"){
+              if (val[key].maxValue <= 3000 || val[key].minValue > 0) {
+                options[key] = val[key];
+                }
+                if (val[key].maxValue > 3000) {
+                postFilters.push({
+                  type: key.toUpperCase(),
+                  minValue: val[key].minValue
+                });
+                } else {
+                postFilters.push({
+                  type: key.toUpperCase(),
+                  maxValue: val[key].maxValue,
+                  minValue: val[key].minValue
+                });
+              }
+            }else if(this.postData.currency=="JPY"){
+              if (val[key].maxValue <= 50000 || val[key].minValue > 0) {
+                options[key] = val[key];
+                }
+              if (val[key].maxValue > 50000) {
+                postFilters.push({
+                  type: key.toUpperCase(),
+                  minValue: val[key].minValue
+                });
+              } else {
+                postFilters.push({
+                  type: key.toUpperCase(),
+                  maxValue: val[key].maxValue,
+                  minValue: val[key].minValue
+                });
+              }
+            }else{
+              if (val[key].maxValue <= 500 || val[key].minValue > 0) {
+                options[key] = val[key];
+                }if (val[key].maxValue > 500) {
+                postFilters.push({
+                  type: key.toUpperCase(),
+                  minValue: val[key].minValue
+                });
+              } else {
+                postFilters.push({
+                  type: key.toUpperCase(),
+                  maxValue: val[key].maxValue,
+                  minValue: val[key].minValue
+                });
+              }
             }
-            if (val[key].maxValue > 3000) {
-            postFilters.push({
-              type: key.toUpperCase(),
-              minValue: val[key].minValue
-            });
-            } else {
-            postFilters.push({
-              type: key.toUpperCase(),
-              maxValue: val[key].maxValue,
-              minValue: val[key].minValue
-            });
-          }
-			  }else if(this.postData.currency=="JPY"){
-				  if (val[key].maxValue <= 50000 || val[key].minValue > 0) {
-            options[key] = val[key];
-            }
-          if (val[key].maxValue > 50000) {
-            postFilters.push({
-              type: key.toUpperCase(),
-              minValue: val[key].minValue
-            });
-          } else {
-            postFilters.push({
-              type: key.toUpperCase(),
-              maxValue: val[key].maxValue,
-              minValue: val[key].minValue
-            });
-          }
-			  }else{
-				  if (val[key].maxValue <= 500 || val[key].minValue > 0) {
-            options[key] = val[key];
-            }if (val[key].maxValue > 500) {
-            postFilters.push({
-              type: key.toUpperCase(),
-              minValue: val[key].minValue
-            });
-          } else {
-            postFilters.push({
-              type: key.toUpperCase(),
-              maxValue: val[key].maxValue,
-              minValue: val[key].minValue
-            });
-          }
-			  }
+
             
           }
         }
@@ -1579,6 +1594,7 @@ export default {
         minValue: val[0],
         maxValue: val[1]
       };
+
       console.log(this.filterCheck.price);
     },
   },

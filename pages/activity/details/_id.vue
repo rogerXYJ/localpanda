@@ -1376,23 +1376,23 @@ import { sep } from 'path';
 						this.inqueryEmailOld = val.email;
 						this.inquiryStatus = true;
 
-						ga(gaSend, {
-							hitType: "event",
-							eventCategory: "activity_detail",
-							eventAction: "click",
-							eventLabel:"activity_inquiry_succ"
-						});
+						// ga(gaSend, {
+						// 	hitType: "event",
+						// 	eventCategory: "activity_detail",
+						// 	eventAction: "click",
+						// 	eventLabel:"activity_inquiry_succ"
+						// });
 
 					}else{
 						this.isShowAlert=true
 						this.alertMessage="Failed!"
 
-						ga(gaSend, {
-							hitType: "event",
-							eventCategory: "activity_detail",
-							eventAction: "click",
-							eventLabel:"activity_inquiry_fail"
-						});
+						// ga(gaSend, {
+						// 	hitType: "event",
+						// 	eventCategory: "activity_detail",
+						// 	eventAction: "click",
+						// 	eventLabel:"activity_inquiry_fail"
+						// });
 
 					}
 					

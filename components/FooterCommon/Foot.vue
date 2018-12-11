@@ -71,12 +71,11 @@
 			},
 			gaFail(){
 				ga(gaSend, {
-						hitType: 'event',
-						eventCategory: 'public',
-						eventAction: 'submit',
-						eventLabel: 'feedback_fail',
-	
-					});
+					hitType: 'event',
+					eventCategory: 'public_footer',
+					eventAction: 'submit',
+					eventLabel: 'feedback_fail',
+				});
 			},
 			submit() {
 				let status=false
@@ -94,7 +93,7 @@
 					status=true
 					ga(gaSend, {
 						hitType: 'event',
-						eventCategory: 'public',
+						eventCategory: 'public_footer',
 						eventAction: 'submit',
 						eventLabel: 'feedback_succ',
 	

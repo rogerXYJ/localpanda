@@ -421,7 +421,7 @@
 				//登录ga
 				ga(gaSend, {
 					hitType: 'event',
-					eventCategory: 'public',
+					eventCategory: 'public_header',
 					eventAction: 'click',
 					eventLabel: 'login',
 				});
@@ -525,7 +525,7 @@
 			Ga(action,label){
 				ga(gaSend, {
 					hitType: 'event',
-					eventCategory: 'activity_list',
+					eventCategory: 'public_header',
 					eventAction: action,
 					eventLabel: label,
 

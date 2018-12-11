@@ -146,14 +146,14 @@
 					<ul class="info_list">
 						<!-- Duration -->
 						<li v-if="/DAY/.test(detail.durationUnit)"><i class="iconfont">&#xe624;</i>Duration : {{detail.duration}} {{setTimeStr(detail.duration,detail.durationUnit)}}</li>
-						<li v-else><i class="iconfont">&#xe624;</i>Duration : {{detail.duration}} {{setTimeStr(detail.duration,detail.durationUnit)}} <span class="iconfont" v-if="!/DAY/.test(detail.durationUnit)" @click="showDurationInfo=true">&#xe689;</span></li>
+						<li v-else><i class="iconfont">&#xe624;</i>Duration : {{detail.duration}} {{setTimeStr(detail.duration,detail.durationUnit)}} <span class="iconfont" v-if="!/DAY/.test(detail.durationUnit)" @click="durationInfoGa">&#xe689;</span></li>
 
 						<!-- 语言 -->
 						<li v-if="detail.groupType=='Group'"><i class="iconfont">&#xe627;</i>Offered in English</li>
-						<li v-else-if="detail.category!='Ticket'"><i class="iconfont">&#xe627;</i>English (and other languages)-speaking guide <span class="iconfont" @click="showLanguagesInfo=true">&#xe689;</span></li>
+						<li v-else-if="detail.category!='Ticket'"><i class="iconfont">&#xe627;</i>English (and other languages)-speaking guide <span class="iconfont" @click="languageGa">&#xe689;</span></li>
 						
 						<!-- pickup -->
-						<li v-if="getPickupTitle(detail.pickup) && detail.category!='Ticket' && detail.statement"><i class="iconfont">&#xe68a;</i>{{getPickupTitle(detail.pickup)}} <span class="iconfont" @click="showPickupInfo=true">&#xe689;</span></li>
+						<li v-if="getPickupTitle(detail.pickup) && detail.category!='Ticket' && detail.statement"><i class="iconfont">&#xe68a;</i>{{getPickupTitle(detail.pickup)}} <span class="iconfont" @click="pickupGa">&#xe689;</span></li>
 
 						
 						<li v-if="picInfo.fullRefund===1"><i class="iconfont">&#xe688;</i>Free cancellation  up to {{(picInfo.refundTimeLimit>2?picInfo.refundTimeLimit+' days':24*picInfo.refundTimeLimit+' hours')}} before your trip</li>
@@ -1308,7 +1308,7 @@ import { sep } from 'path';
 					hitType: "event",
 					eventCategory: "activity_detail",
 					eventAction: "click",
-					eventLabel:"book_succeed"
+					eventLabel:"activity_book_succ"
 				});
 				
 				
@@ -1460,6 +1460,33 @@ import { sep } from 'path';
 					return a.perPersonPrice - b.perPersonPrice;
 				});
 				return details[0].capacity;
+			},
+			languageGa(){
+				this.showLanguagesInfo=true;
+				ga(gaSend, {
+					hitType: "event",
+					eventCategory: "activity_detail",
+					eventAction: "click",
+					eventLabel:"language"
+				});
+			},
+			durationInfoGa(){
+				this.showDurationInfo=true;
+				ga(gaSend, {
+					hitType: "event",
+					eventCategory: "activity_detail",
+					eventAction: "click",
+					eventLabel:"duration"
+				});
+			},
+			pickupGa(){
+				this.showPickupInfo=true;
+				ga(gaSend, {
+					hitType: "event",
+					eventCategory: "activity_detail",
+					eventAction: "click",
+					eventLabel:"pickup"
+				});
 			}
 		},
 		mounted: function() {

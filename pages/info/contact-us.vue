@@ -171,13 +171,27 @@ export default {
 								that.alertMessage="Thank you for your feedback.We will get back to you within 1 day."
 								that.name=""
 								that.email=""
-								that.textarea=""
+                                that.textarea=""
+                                
+                                ga(gaSend, {
+                                    hitType: 'event',
+                                    eventCategory: 'contact_us',
+                                    eventAction: 'submit',
+                                    eventLabel: 'feedback_succ',
+                                });
 							}else{
 								that.isShowAlert=true
 								that.alertMessage="Failed!"
 								that.name=""
 								that.email=""
-								that.textarea=""
+                                that.textarea="";
+                                
+                                ga(gaSend, {
+                                    hitType: 'event',
+                                    eventCategory: 'contact_us',
+                                    eventAction: 'submit',
+                                    eventLabel: 'feedback_fail',
+                                });
 							}
 							
 						}, function(response) {

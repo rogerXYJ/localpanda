@@ -27,7 +27,8 @@
 						<div class="cont-item">
 							<p>Country or Territory Code<b>*</b></p>
 							<div class="code-box">
-								<input id="code" :class="{err:codeErr}" @click.stop="focusCode(0)" @focus="focusCode(0)" @blur="gabulr(3)" @change="changeCode" autocomplete="off" v-model="mobileCode" :style="{backgroundColor:test.test4?'rgb(250, 255, 189)':'rgb(255, 255, 255)'}"/>
+								<input id="code" :class="{err:codeErr}" @focus="focusCode(0)" @blur="gabulr(3)" @change="changeCode" autocomplete="off" v-model="mobileCode" :style="{backgroundColor:test.test4?'rgb(250, 255, 189)':'rgb(255, 255, 255)'}"/>
+								<!--  @click.stop="focusCode(0)" -->
 								<div class="countryCode" v-show="showCode" :class="codeList.length>0?'width100':''">
 									<ul v-if="codeList.length>0">
 										<li v-for="item in codeListHot" @click.stop="selectCode(item.country_name,item.prefix,0)"  v-if="codeListHot.length>0 && !mobileCode">{{item.country_name}} (+{{item.prefix}})</li>
@@ -967,6 +968,13 @@
 					this.TravellerCodeErr = false
 
 				}
+
+				ga(gaSend, {
+					hitType: 'event',
+					eventCategory: 'activity_booking',
+					eventAction: 'input',
+					eventLabel: 'country_code',
+				});
 
 			},
 			returnFloat(value) {

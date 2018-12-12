@@ -177,13 +177,12 @@ export default {
                         this.isSubmiting = false;
                     })
                 } else {
-                	ga(gaSend, {
-						hitType: 'event',
-						eventCategory: 'customization',
-						eventAction: 'submit',
-						eventLabel: 'customize_fail',
-	
-					});
+                	// ga(gaSend, {
+					// 	hitType: 'event',
+					// 	eventCategory: 'customization',
+					// 	eventAction: 'submit',
+					// 	eventLabel: 'customize_fail',
+					// });
                     console.log('error submit!!');
                     var errorDom = document.getElementsByClassName('page-section');
                     var htmlBody = document.documentElement;

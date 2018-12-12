@@ -1492,7 +1492,7 @@ import { sep } from 'path';
 			},
 			addPanda(){
 				this.pandaPhoneCheck=true;
-				this.showPPDialog=false;
+				// this.showPPDialog=false;
 			},
 			getBottomCapacity(){
 				var details = Object.assign([],this.picInfo.details);

@@ -527,13 +527,13 @@
 						name:that.email
 					}).then(function(result) {
 						if(result.error) {
-							ga(gaSend, {
-								hitType: 'event',
-								eventCategory: 'activity_payment',
-								eventAction: 'click',
-								eventLabel: 'activity_pay_fail',
+							// ga(gaSend, {
+							// 	hitType: 'event',
+							// 	eventCategory: 'activity_payment',
+							// 	eventAction: 'click',
+							// 	eventLabel: 'activity_pay_fail',
 			
-							});
+							// });
 							// Inform the user if there was an error.
 							//console.log(that.loadingStatus)
 							that.loadingStatus = false
@@ -541,13 +541,13 @@
 							that.payStatus = true
 							that.payErrMsg = result.error.message
 						} else {
-							ga(gaSend, {
-								hitType: 'event',
-								eventCategory: 'activity_payment',
-								eventAction: 'click',
-								eventLabel: 'activity_pay_succ',
+							// ga(gaSend, {
+							// 	hitType: 'event',
+							// 	eventCategory: 'activity_payment',
+							// 	eventAction: 'click',
+							// 	eventLabel: 'activity_pay_succ',
 			
-							});
+							// });
 							// Send the token to your server.
 							//stripeTokenHandler(result.token);
 							that.payStatus = false

@@ -27,8 +27,8 @@
 						<div class="cont-item">
 							<p>Country or Territory Code<b>*</b></p>
 							<div class="code-box">
-								<input id="code" :class="{err:codeErr}" @focus="focusCode(0)" @blur="gabulr(3)" @change="changeCode" autocomplete="off" v-model="mobileCode" :style="{backgroundColor:test.test4?'rgb(250, 255, 189)':'rgb(255, 255, 255)'}"/>
-								<!--  @click.stop="focusCode(0)" -->
+								<input id="code" :class="{err:codeErr}" @click.stop="focusCode(0)" @focus="focusCode(0)" @blur="gabulr(3)" @change="changeCode" autocomplete="off" v-model="mobileCode" :style="{backgroundColor:test.test4?'rgb(250, 255, 189)':'rgb(255, 255, 255)'}"/>
+								<!--  -->
 								<div class="countryCode" v-show="showCode" :class="codeList.length>0?'width100':''">
 									<ul v-if="codeList.length>0">
 										<li v-for="item in codeListHot" @click.stop="selectCode(item.country_name,item.prefix,0)"  v-if="codeListHot.length>0 && !mobileCode">{{item.country_name}} (+{{item.prefix}})</li>
@@ -832,12 +832,12 @@
 							eventAction: 'input',
 							eventLabel: 'first_name',
 						});
-						ga(gaSend, {
-							hitType: 'event',
-							eventCategory: 'activity_booking',
-							eventAction: 'input',
-							eventLabel: 'booking_input',
-						});
+						// ga(gaSend, {
+						// 	hitType: 'event',
+						// 	eventCategory: 'activity_booking',
+						// 	eventAction: 'input',
+						// 	eventLabel: 'booking_input',
+						// });
 					}
 
 				} else if(id == 1) {
@@ -848,12 +848,12 @@
 							eventAction: 'input',
 							eventLabel: 'last_name',
 						});
-						ga(gaSend, {
-							hitType: 'event',
-							eventCategory: 'activity_booking',
-							eventAction: 'input',
-							eventLabel: 'booking_input',
-						});
+						// ga(gaSend, {
+						// 	hitType: 'event',
+						// 	eventCategory: 'activity_booking',
+						// 	eventAction: 'input',
+						// 	eventLabel: 'booking_input',
+						// });
 					}
 
 				} else if(id == 2) {
@@ -864,12 +864,12 @@
 							eventAction: 'input',
 							eventLabel: 'email_address',
 						});
-						ga(gaSend, {
-							hitType: 'event',
-							eventCategory: 'activity_booking',
-							eventAction: 'input',
-							eventLabel: 'booking_input',
-						});
+						// ga(gaSend, {
+						// 	hitType: 'event',
+						// 	eventCategory: 'activity_booking',
+						// 	eventAction: 'input',
+						// 	eventLabel: 'booking_input',
+						// });
 					}
 
 				} else if(id == 3) {
@@ -884,27 +884,27 @@
 							eventAction: 'input',
 							eventLabel: 'phone_number',
 						});
-						ga(gaSend, {
-							hitType: 'event',
-							eventCategory: 'activity_booking',
-							eventAction: 'input',
-							eventLabel: 'booking_input',
-						});
+						// ga(gaSend, {
+						// 	hitType: 'event',
+						// 	eventCategory: 'activity_booking',
+						// 	eventAction: 'input',
+						// 	eventLabel: 'booking_input',
+						// });
 					}
 				} else {
 					if(this.comments) {
-						ga(gaSend, {
-							hitType: 'event',
-							eventCategory: 'activity_booking',
-							eventAction: 'input',
-							eventLabel: 'comment',
-						});
-						ga(gaSend, {
-							hitType: 'event',
-							eventCategory: 'activity_booking',
-							eventAction: 'input',
-							eventLabel: 'booking_input',
-						});
+						// ga(gaSend, {
+						// 	hitType: 'event',
+						// 	eventCategory: 'activity_booking',
+						// 	eventAction: 'input',
+						// 	eventLabel: 'comment',
+						// });
+						// ga(gaSend, {
+						// 	hitType: 'event',
+						// 	eventCategory: 'activity_booking',
+						// 	eventAction: 'input',
+						// 	eventLabel: 'booking_input',
+						// });
 					}
 
 				}
@@ -919,7 +919,7 @@
 					hitType: 'event',
 					eventCategory: 'activity_booking',
 					eventAction: 'select',
-					eventLabel: 'country_code_select',
+					eventLabel: 'country_code',
 				});
 				if(index == 0) {
 					this.country=country
@@ -969,12 +969,12 @@
 
 				}
 
-				ga(gaSend, {
-					hitType: 'event',
-					eventCategory: 'activity_booking',
-					eventAction: 'input',
-					eventLabel: 'country_code',
-				});
+				// ga(gaSend, {
+				// 	hitType: 'event',
+				// 	eventCategory: 'activity_booking',
+				// 	eventAction: 'input',
+				// 	eventLabel: 'country_code',
+				// });
 
 			},
 			returnFloat(value) {
@@ -1442,12 +1442,12 @@
 				if(val) {
 					this.test.test4=true
 					if(val.length == 1) {
-						ga(gaSend, {
-							hitType: 'event',
-							eventCategory: 'activity_booking',
-							eventAction: 'input',
-							eventLabel: 'country_code_input',
-						});
+						// ga(gaSend, {
+						// 	hitType: 'event',
+						// 	eventCategory: 'activity_booking',
+						// 	eventAction: 'input',
+						// 	eventLabel: 'country_code_input',
+						// });
 					}
 					self.codeList = [];
 					var newVal = val.replace('(','\\(').replace(')','\\)').replace('+','\\+').replace('-','\\-');
@@ -1481,14 +1481,14 @@
 				}
 			},
 			showCode: function(val, oldVal) {
-				if(val) {
-					ga(gaSend, {
-						hitType: 'event',
-						eventCategory: 'activity_booking',
-						eventAction: 'click',
-						eventLabel: 'country_code_open',
-					});
-				}
+				// if(val) {
+				// 	ga(gaSend, {
+				// 		hitType: 'event',
+				// 		eventCategory: 'activity_booking',
+				// 		eventAction: 'click',
+				// 		eventLabel: 'country_code_open',
+				// 	});
+				// }
 
 			},
 			thisEx:function(){

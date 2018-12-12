@@ -1499,7 +1499,6 @@ export default {
               }
             }
 
-
             ga(gaSend, {
               hitType: "event",
               eventCategory: "activity_list",

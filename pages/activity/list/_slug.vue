@@ -1190,6 +1190,15 @@ export default {
         jumpData.sort = JSON.stringify({ type: "SCORE" });
       }
 
+      if(rankCheck!='Recommended'){
+        ga(gaSend, {
+          hitType: "event",
+          eventCategory: "activity_list",
+          eventAction: "filter",
+          eventLabel: "price"
+        });
+      }
+
       //去掉空数据,并对跳转的数据排序，把需要的数据放在新的options里
       var options = {};
       for (var key in filterCheck) {
@@ -1262,12 +1271,7 @@ export default {
             }
           }
 
-          ga(gaSend, {
-            hitType: "event",
-            eventCategory: "activity_list",
-            eventAction: "filter",
-            eventLabel: "price"
-          });
+          
         }
       }
       this.postData.filters = postFilters;

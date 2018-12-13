@@ -208,7 +208,7 @@
 					<ul class="similar_list_manual">
 						<li :key="index" v-for="(i,index) in detail.manual.entities">
 							<a :href="'/activity/details/'+i.activityId">
-								<h4><span class="tag" :class="{'private':i.groupType=='Private'}" v-if="i.groupType">{{i.groupType}}</span> {{i.title}} <span class="tag_time">{{i.duration}} {{setTimeStr(i.duration,i.durationUnit)}}</span>	</h4>
+								<h4><span class="tag" :class="{'private':i.groupType=='Private'}" v-if="i.groupType">{{i.groupType}}</span> {{i.shortTitle?i.shortTitle:i.title}} <span class="tag_time">{{i.duration}} {{setTimeStr(i.duration,i.durationUnit)}}</span>	</h4>
 								<div class="similar_list_foot">
 									<span class="price"><i class="gray">{{participants==0?'From':''}}</i><b>{{nowExchange.code}} {{nowExchange.symbol}}{{participants==0?returnFloat(i.bottomPrice):returnFloat(i.perPersonPrice)}}</b>{{returnText(participants)}}</span>
 								</div>
@@ -347,7 +347,7 @@
 			
 			<!-- 推荐板块 -->
 			<div class="detail_box similar" v-if="detail.recommend">
-				<h3><i></i>Similar Experiences</h3>
+				<h3><i></i>Other people also choose</h3>
 				<ul class="similar_list">
 					<li :key="index" v-for="(i,index) in detail.recommend.entities">
 						<a :href="'/activity/details/'+i.activityId">
@@ -2517,7 +2517,7 @@ import { sep } from 'path';
 						h4{
 							font-size: 16px;
 							line-height: 24px;
-							min-height: 46px;
+							max-height: 46px;
 							overflow: hidden;
 							margin-bottom: 5px;
 							font-weight: bold;

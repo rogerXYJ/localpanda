@@ -202,6 +202,23 @@
 					</div>
 				</div>
 
+				<!-- 人工推荐板块 -->
+				<div class="detail_box similar" v-if="detail.manual.records">
+					<h3><i></i>Similar Experiences</h3>
+					<ul class="similar_list_manual">
+						<li :key="index" v-for="(i,index) in detail.manual.entities">
+							<a :href="'/activity/details/'+i.activityId">
+								<h4><span class="tag" :class="{'private':i.groupType=='Private'}" v-if="i.groupType">{{i.groupType}}</span> {{i.title}} <span class="tag_time">{{i.duration}} {{setTimeStr(i.duration,i.durationUnit)}}</span>	</h4>
+								<div class="similar_list_foot">
+									<span class="price"><i class="gray">{{participants==0?'From':''}}</i><b>{{nowExchange.code}} {{nowExchange.symbol}}{{participants==0?returnFloat(i.bottomPrice):returnFloat(i.perPersonPrice)}}</b>{{returnText(participants)}}</span>
+								</div>
+
+								<i class="iconfont similar_arrow">&#xe64a;</i>
+							</a>
+						</li>
+					</ul>
+				</div>
+
 				<!-- 其他产品信息 -->
 				<div class="detail_box other_box">
 					
@@ -746,8 +763,30 @@ import { sep } from 'path';
 					});
 				});
 
+				//人工推荐
+				var manualOptions = {
+					"id": id,
+					'currency':data.nowExchange.code,
+					'pageNum':1,
+					'pageSize':3
+				};
+				if(data.participants){
+					manualOptions.participants = data.participants;
+				}
+				var Promise12 = new Promise(function(resolve, reject){
+					Vue.axios.post(apiBasePath+"search/activity/recommend/manual",JSON.stringify(manualOptions),{
+							headers: {
+							'Content-Type': 'application/json'
+							}
+						}).then(function(res) {
+						resolve(res);
+					}, function(res) {
+						resolve(res);
+					});
+				});
+
 				
-				Promise.all([Promise1,Promise2,Promise3,Promise4,Promise5,Promise6,Promise7,Promise8,Promise9,Promise10,Promise11]).then(function(results){
+				Promise.all([Promise1,Promise2,Promise3,Promise4,Promise5,Promise6,Promise7,Promise8,Promise9,Promise10,Promise11,Promise12]).then(function(results){
 
 					//基本信息
 					var detailData = results[0].data;
@@ -791,6 +830,9 @@ import { sep } from 'path';
 
 						//推荐信息
 						data.detail.recommend = results[1].data;
+
+						//人工推荐信息
+						data.detail.manual = results[11].data;
 
 
 						if(detailData.latestBooking < 1) {
@@ -2129,7 +2171,7 @@ import { sep } from 'path';
 			
 			.ADpandaPhone{
 				position: relative;
-				margin-top: 30px;
+				margin-top: 40px;
 				img{
 					vertical-align: top;
 				}
@@ -2278,8 +2320,8 @@ import { sep } from 'path';
 			/*其他版块信息*/
 			.other_box{
 				// padding-top: 15px;
-				border: none;
-				margin-top: 0;
+				// border: none;
+				margin-top: 40px;
 				padding-top: 10px;
 				.other_list{
 					border-top: 1px solid #ddd;
@@ -2449,11 +2491,108 @@ import { sep } from 'path';
 					cursor: pointer;
 				}
 			}
+
+			
 			
 			/*推荐*/
 			.similar{ 
 				clear: both;
-				margin-top: 30px;
+				margin-top: 40px;
+				
+				// 人工推荐
+				.similar_list_manual{
+					li{
+						background-color: #fff;
+						box-shadow: 0px 2px 30px 0px rgba(0, 0, 0, 0.08);
+						border-radius: 5px;
+						margin-top: 10px;
+						position: relative;
+						&:hover{
+							box-shadow: 0px 2px 30px 0px rgba(0, 0, 0, 0.12);
+						}
+						a{
+							display: block;
+							padding:15px 80px 15px 20px;
+						}
+						h4{
+							font-size: 16px;
+							line-height: 24px;
+							min-height: 46px;
+							overflow: hidden;
+							margin-bottom: 5px;
+							font-weight: bold;
+							overflow:hidden;
+							-webkit-line-clamp: 2;   //要设置的行数
+							-webkit-box-orient: vertical;
+							display: -webkit-box;
+							text-overflow: ellipsis;
+						}
+						.tag{
+							color: #fff;
+							display: inline-block;
+							height: 20px;
+							line-height: 20px;
+							border-radius: 3px;
+							padding: 0 8px;
+							background-color: #efae99;
+							font-size: 12px;
+							font-weight: normal;
+							vertical-align: top;
+							margin-right: 5px;
+							position: relative;
+							top: 2px;
+							// text-transform: uppercase;
+						}
+						.private{ background-color: #1bbc9d;}
+						.tag_time{
+							display: inline-block;
+							font-size: 12px;
+							height: 18px;
+							line-height: 16px;
+							padding: 0 10px;
+							border-radius:5px;
+							border: 1px solid #878e95;
+							vertical-align: top;
+							position: relative;
+							top: 3px;
+							margin-left: 5px;
+							color: #878e95;
+							font-weight: normal;
+						}
+						
+						.similar_list_foot{
+							line-height: 30px;
+							font-size: 14px;
+							width: 100%;
+							box-sizing:border-box;
+							overflow: hidden;
+							.price{
+								b{
+									font-size: 18px;
+									margin: 0 3px;
+								}
+							}
+							.gray{
+								color: #878e95;
+							}
+							.reviews_star{
+								float: left;
+								margin-top: 8px;
+								margin-right: 6px;
+							}
+						}
+
+						.similar_arrow{
+							font-size: 24px;
+							position: absolute;
+							right: 10px;
+							top: 50%;
+							margin-top: -14px;
+							color: #878e95;
+						}
+					}
+				}
+				
 				.similar_list{
 					margin-top: 20px;
 					li{
@@ -2558,6 +2697,8 @@ import { sep } from 'path';
 						}
 					}
 				}
+
+				
 			}
 
 			.btn{

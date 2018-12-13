@@ -207,12 +207,12 @@
 					<h3><i></i>Similar Experiences</h3>
 					<ul class="similar_list_manual">
 						<li :key="index" v-for="(i,index) in detail.manual.entities">
+							<!--  v-show="participants==0 || participants && i.perPersonPrice" -->
 							<a :href="'/activity/details/'+i.activityId">
 								<h4><span class="tag" :class="{'private':i.groupType=='Private'}" v-if="i.groupType">{{i.groupType}}</span> {{i.shortTitle?i.shortTitle:i.title}} <span class="tag_time">{{i.duration}} {{setTimeStr(i.duration,i.durationUnit)}}</span>	</h4>
 								<div class="similar_list_foot">
 									<span class="price"><i class="gray">{{participants==0?'From':''}}</i><b>{{nowExchange.code}} {{nowExchange.symbol}}{{participants==0?returnFloat(i.bottomPrice):returnFloat(i.perPersonPrice)}}</b>{{returnText(participants)}}</span>
 								</div>
-
 								<i class="iconfont similar_arrow">&#xe64a;</i>
 							</a>
 						</li>
@@ -346,7 +346,7 @@
 
 			
 			<!-- 推荐板块 -->
-			<div class="detail_box similar" v-if="detail.recommend">
+			<div class="detail_box similar" id="similar2" v-if="detail.recommend">
 				<h3><i></i>Other people also choose</h3>
 				<ul class="similar_list">
 					<li :key="index" v-for="(i,index) in detail.recommend.entities">
@@ -768,7 +768,7 @@ import { sep } from 'path';
 					"id": id,
 					'currency':data.nowExchange.code,
 					'pageNum':1,
-					'pageSize':3
+					'pageSize':10
 				};
 				if(data.participants){
 					manualOptions.participants = data.participants;
@@ -1158,6 +1158,26 @@ import { sep } from 'path';
 				
 				
 			},
+			getManual(){
+				var self = this;
+				//人工推荐
+				var manualOptions = {
+					"id": self.id,
+					'currency':self.nowExchange.code,
+					'pageNum':1,
+					'pageSize':10
+				};
+				if(self.participants){
+					manualOptions.participants = self.participants;
+				}
+				self.axios.post("https://api.localpanda.com/api/search/activity/recommend/manual",JSON.stringify(manualOptions),{
+					headers: {
+					'Content-Type': 'application/json'
+					}
+				}).then(function(res) {
+					self.detail.manual = res.data;
+				}, function(res) {});
+			},
 			getRecommend(){
 				var self = this;
 				//请求推荐信息
@@ -1319,6 +1339,9 @@ import { sep } from 'path';
 
 					//重设book价格，计算儿童差价和pandaPhone之后得价格
 					self.setPeoplePrice();
+
+					//更新人工推荐产品价格
+					self.getManual();
 
 					//更新推荐产品价格
 					self.getRecommend();
@@ -1490,7 +1513,7 @@ import { sep } from 'path';
 			scrollFn(){
 				var self = this;
 				var $main_r = document.querySelector('.main_r');
-				var $similar = document.querySelector('.similar');
+				var $similar = document.querySelector('#similar2');
 				var $book_all = document.querySelector('.book_all');
 				var $itinerary = document.querySelector('#itinerary');
 
@@ -1687,6 +1710,9 @@ import { sep } from 'path';
 				//设置价格
 				this.setPeoplePrice();
 				this.participants = val;
+
+				//更新人工推荐产品价格
+				this.getManual();
 				//刷新推荐产品价格
 				this.getRecommend();
 			},

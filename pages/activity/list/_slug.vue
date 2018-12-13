@@ -205,18 +205,29 @@
 					</div>
 					<div class="list-cont" v-if="records>0">
 						<ul>
-							<li class="activity-item" v-for="item in activityList" v-if="item.activityId">
+							<li class="activity-item clearfix" v-for="item in activityList" v-if="item.activityId" :key="item.activityId">
 
 								<a :href="'/activity/details/'+item.activityId" target="_blank">
 									<div class="activity">
 										<div class="activity-photo" v-lazy:background-image="item.coverPhotoUrl">
-											<p class="type">{{item.category}}</p>
+											<!-- <p class="type">{{item.category}}</p> -->
+                      <div v-if="item.pal">
+                        <span class="tag_pal" @mouseover="palIn" @mouseout="palOut">Panda Pal Trip</span>
+                        <div class="pandapal_tips">
+                          <h4>Select your favorite Pal</h4>
+                          <p><i class="iconfont">&#xe654;</i>This trip is led by an English-speaking local instead of a certified guide</p>
+                          <p><i class="iconfont">&#xe654;</i>Get a raw, insiders perspective on life in China</p>
+                          <p><i class="iconfont">&#xe654;</i>Personalize your trip by choosing the perfect pal</p>
+                        </div>
+                      </div>
 										</div>
 									</div>
 									<div class="activitDe">
 										<div class="info">
 											<div class="titleText" :title="item.title" style="-moz-box-orient: vertical;
 										    -webkit-box-orient:vertical;">
+                        <label class="tag_private" v-if="item.groupType=='Private'">{{item.groupType}}</label>
+                        <label class="tag_group" v-else-if="item.groupType=='Group'">{{item.groupType}}</label>
 												<span>{{item.title}}</span>
 											</div>
 											<!--<div class="recommendedReason" v-if="item.recommendedReason">{{item.recommendedReason}}</div>-->
@@ -227,9 +238,9 @@
 											
 											
 											<div class="activeType">
-												<label class="tag_private" v-if="item.groupType=='Private'">{{item.groupType}}</label>
-												<label class="tag_group" v-if="item.groupType=='Group'">{{item.groupType}}</label>
-												
+                        <span class="tag_category">{{item.category}}</span>
+												<!-- <label class="tag_private" v-if="item.groupType=='Private'">{{item.groupType}}</label>
+												<label class="tag_group" v-if="item.groupType=='Group'">{{item.groupType}}</label> -->
 											</div>
 											<div class="totalPic">
 												<div class="nowPic">
@@ -275,6 +286,9 @@
 
 		</div>
 
+
+    
+
 		<Foot></Foot>
 		<FooterCommon :nowCurrency="currency" @headCurrency="headCurrencyFn"></FooterCommon>
 		<Loading :loadingStatus="loadingStatus"></Loading>
@@ -299,7 +313,7 @@ import Alert from "~/components/Prompt/Alert";
 import Foot from "~/components/FooterCommon/Foot";
 import { checkboxGroup, checkbox } from "~/plugins/panda/checkbox/";
 import filterModel from "~/components/pageComponents/activity/list/filterModel";
-import { createECDH } from "crypto";
+// import { createECDH } from "crypto";
 //import inputNumber from '~/components/pageComponents/activity/list/input-number'
 export default {
   name: "activityList",
@@ -1416,6 +1430,18 @@ export default {
     goTop(){
       //滚动到指定位置
       window.scrollTo(0,document.querySelector('#slogn').offsetTop);
+    },
+    palIn(e){
+      var $this = e.target.parentNode.querySelector('.pandapal_tips');
+      $this.style.display = 'block';
+      // var $tipBox = document.querySelector('.pandapal_tips');
+      // var tagT = $this.offsetTop,
+      //   tagL = $this.offsetLeft;
+      // $tipBox.style = 'left:'+tagL+'px;top:'+tagT+'px;display: block;';
+    },
+    palOut(e){
+      var $this = e.target.parentNode.querySelector('.pandapal_tips');
+      $this.style.display = 'none';
     }
   },
   watch: {
@@ -1639,9 +1665,9 @@ export default {
     if (this.currency != currency) {
       this.currency = currency;
     }
-    that.logIn = localStorage.getItem("logstate")
-      ? localStorage.getItem("logstate")
-      : null;
+    that.logIn = localStorage.getItem("logstate") ? localStorage.getItem("logstate") : null;
+
+    //pal提示
   }
 };
 </script>
@@ -2100,9 +2126,9 @@ export default {
               display: block;
             }
             position: relative;
-            float: left;
+            // float: left;
             box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
+            // overflow: hidden;
             background: #fff;
             width: 976px;
             margin-top: 15px;
@@ -2131,6 +2157,18 @@ export default {
                   line-height: 34px;
                   padding-left: 20px;
                 }
+                .tag_pal{
+                  display: inline-block;
+                  height: 20px;
+                  line-height: 20px;
+                  padding: 0 10px;
+                  color: #fff;
+                  background-color: #fe483e;
+                  border-radius: 4px;
+                  position: absolute;
+                  left: -5px;
+                  top: 5px;
+                }
               }
             }
             .activitDe {
@@ -2153,6 +2191,15 @@ export default {
                     background-color: #1bbc9d;
                   }
                 }
+                .tag_category{
+                  padding: 0 10px;
+                  display: inline-block;
+                  height: 20px;
+                  line-height: 20px;
+                  color: #fff;
+                  background-color: #f4b33f;
+                  border-radius: 4px;
+                }
               }
               .titleText {
                 line-height: 21px;
@@ -2171,13 +2218,25 @@ export default {
                 overflow: hidden;
                 label {
                   font-weight: normal;
-                  padding: 1px 8px;
+                  height: 16px;
+                  line-height: 16px;
+                  padding: 0 8px;
                   border-radius: 10px;
                   display: inline-block;
                   color: #fff;
                   font-size: 12px;
                   margin-right: 5px;
-                  vertical-align: baseline;
+                  vertical-align: top;
+                  position: relative;
+                  cursor: pointer;
+                  top: 3px;
+                  &.tag_group {
+                    background-color: #efae99;
+                  }
+                  &.tag_private {
+                    background-color: #1bbc9d;
+                  }
+                  
                 }
                 span {
                   font-weight: bold;
@@ -2443,6 +2502,41 @@ export default {
   .padding {
     padding-right: 20px !important;
     padding-bottom: 22px !important;
+  }
+
+  .pandapal_tips{
+    position: absolute;
+    left: 110px;
+    top: -20px;
+    display: none;
+    z-index: 99;
+    width: 275px;
+    background-color: #ffffff;
+    box-shadow: 0px 2px 30px 0px rgba(0, 0, 0, 0.3);
+    border-radius: 16px;
+    overflow: hidden;
+    padding-bottom: 20px;
+    h4{
+      background-color: rgb(27,188,157);
+      height: 76px;
+      line-height: 76px;
+      font-size: 22px;
+      text-align: center;
+      color: #fff;
+      margin-bottom: 15px;
+    }
+    p{
+      padding: 8px 30px 8px 45px;
+      line-height: 24px;
+      font-size: 16px;
+      color: #353a3f;
+      i{
+        float: left;
+        margin-left: -20px;
+        color: #1bbc9d;
+        font-size: 12px;
+      }
+    }
   }
 }
 </style>

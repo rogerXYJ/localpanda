@@ -244,7 +244,7 @@
 								</a>
 							</li>
               <li class="activity-item ADpandaPhone" v-else>
-                <img src="https://cloud.localpanda.com/pandaphone/ad_list.jpg" width="100%" alt="">
+                <img v-lazy="'https://cloud.localpanda.com/pandaphone/ad_list.jpg'" width="100%" alt="">
                 <a class="pandaPhone_box" href="https://www.localpanda.com/product/phone/details/" target="_blank">
                   <h2>Unlock China with the Panda Phone</h2>
                   <p>All-in-one Rental Mobile Travel Assistant</p>
@@ -2262,6 +2262,7 @@ export default {
           .ADpandaPhone{
             img{
               vertical-align: top;
+              max-height: 240px;
             }
             .pandaPhone_box{
               position: absolute;

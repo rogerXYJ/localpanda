@@ -347,7 +347,7 @@
 			
 			<!-- 推荐板块 -->
 			<div class="detail_box similar" id="similar2" v-if="detail.recommend">
-				<h3><i></i>Other people also choose</h3>
+				<h3><i></i>Other People Also Choose</h3>
 				<ul class="similar_list">
 					<li :key="index" v-for="(i,index) in detail.recommend.entities">
 						<a :href="'/activity/details/'+i.activityId">
@@ -2200,6 +2200,7 @@ import { sep } from 'path';
 				margin-top: 40px;
 				img{
 					vertical-align: top;
+					height: 181px;
 				}
 				.pandaPhone_box{
 					position: absolute;

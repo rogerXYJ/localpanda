@@ -98,7 +98,7 @@
 							<h3>My Search</h3>
 							<span @click="clearAll">Clear All</span>
 						</div>
-						<div class="seachCont" v-for="(i,key,index) in filterCheck" v-if="filterCheck[key].length>0">
+						<div class="seachCont" v-for="(i,key,index) in filterCheck" v-if="filterCheck[key].length>0 && key!='panda_pal'">
 							<div class="seachTitle clearfix" >
 								<h3>{{getFilterType(key.toUpperCase())}}</h3>
 							</div>
@@ -191,16 +191,20 @@
 
 				<div class="pageRight">
 					<div class="selectType clearfix" v-if="records>0">
-						<div class="recommended">
+						<div class="top_filter">
 							<select class="selectSort" @change="sortFn(selected)" v-model="selected">
 								<option v-for="(item,index) in select" v-model="item.selectText">{{item.selectText}}</option>
 							</select>
-							<i class="iconfont">&#xe60f;</i>
+							<i class="iconfont select_arrow">&#xe60f;</i>
 						</div>
+
+            <div class="top_filter" v-if="hasPandaPal">
+              <checkbox v-model="pandaPal" label="Panda Pal Experience">Panda Pal Experience</checkbox>
+            </div>
+
 						<div class="all">
-							<span class="pageSizeInfo" v-if="records==1">1 activity in total</span>
-							<span class="pageSizeInfo" v-if="records==0">0 activity in total</span>
 							<span class="pageSizeInfo" v-if="records>1"><b>{{records}}</b> activities in total</span>
+              <span class="pageSizeInfo" v-else>{{records}} activity in total</span>
 						</div>
 					</div>
 					<div class="list-cont" v-if="records>0">
@@ -211,13 +215,13 @@
 									<div class="activity">
 										<div class="activity-photo" v-lazy:background-image="item.coverPhotoUrl">
 											<!-- <p class="type">{{item.category}}</p> -->
-                      <div v-if="item.pal">
-                        <span class="tag_pal" @mouseover="palIn" @mouseout="palOut">Panda Pal Trip</span>
+                      <div v-if="item.pandaPal">
+                        <span class="tag_pal" @mouseover="palIn" @mouseout="palOut">Panda Pal Experience</span>
                         <div class="pandapal_tips">
-                          <h4>Select your favorite Pal</h4>
+                          <h4>Panda Pal Experience</h4>
                           <p><i class="iconfont">&#xe654;</i>This trip is led by an English-speaking local instead of a certified guide</p>
                           <p><i class="iconfont">&#xe654;</i>Get a raw, insiders perspective on life in China</p>
-                          <p><i class="iconfont">&#xe654;</i>Personalize your trip by choosing the perfect pal</p>
+                          <!-- <p><i class="iconfont">&#xe654;</i>Personalize your trip by choosing the perfect pal</p> -->
                         </div>
                       </div>
 										</div>
@@ -518,7 +522,8 @@ export default {
       "ATTRACTION",
       "DURATION",
       "TOUR_TYPE",
-      "CITY"
+      "CITY",
+      "PANDA_PAL"
     ];
     //给数据添加排序的序号
     var newfilterCheck = {};
@@ -633,6 +638,21 @@ export default {
 
       return "";
     }; ///设置banner---结束
+
+
+    var pandaPal = newfilterCheck.panda_pal.length?newfilterCheck.panda_pal[0]:0;
+
+
+    //检测是否有潘大炮
+    var hasPandaPal = false;
+    var aggregations = data.aggregations; //设置自定义顺序
+    for(var i=0;i<aggregations.length;i++){
+      var thisData = aggregations[i];
+      if(thisData.type =='PANDA_PAL' && thisData.items && thisData.items['1']){
+        hasPandaPal = true;
+      }
+    }
+
 
     return {
       listdata: data,
@@ -757,11 +777,14 @@ export default {
       showSeachList: false, //显示搜索列表
       selectPeople: false, //显示选择人数
       selectNumber: selectNumber, //人数最大最小值
-	  isfilter: false,
-	  hiddenHead:false,
+      isfilter: false,
+      hiddenHead:false,
 
       bannerInfo: setBanner(),
-      showPandaPhone:true
+      showPandaPhone:true,
+
+      pandaPal: pandaPal,
+      hasPandaPal: hasPandaPal
     };
   },
   head() {
@@ -1082,7 +1105,10 @@ export default {
       this.showSelected = false;
       this.postData.pageNum = 1;
       for (var key in filterCheck) {
-        filterCheck[key] = [];
+        if(key!='panda_pal'){
+          filterCheck[key] = [];
+        }
+        
       }
 
       var price = [0, 505];
@@ -1165,7 +1191,7 @@ export default {
       this.jumpUrl();
     },
     handleCurrentChange(val) {
-      console.log(val);
+      // console.log(val);
       let that = this;
       that.postData.pageNum = val;
       that.getData();
@@ -1297,7 +1323,7 @@ export default {
         }
       }
       urlQuery = urlQuery.substring(1); //去掉第一个&
-      console.log(decodeURIComponent(urlQuery));
+      // console.log(decodeURIComponent(urlQuery));
       var url = "/activity/list/China" + (urlQuery ? "?" + urlQuery : "");
       history.pushState(null, null, url);
       //location.href =url
@@ -1333,7 +1359,7 @@ export default {
       if (this.postData.participants == 0) {
         delete postData.participants;
       }
-      console.log(postData.filters);
+      // console.log(postData.filters);
       //return
       Vue.axios
         .post(this.apiBasePath + "search/activity", JSON.stringify(postData), {
@@ -1360,17 +1386,29 @@ export default {
                 listData.push({'type':'PandaPhone'});
               }
             }
+
+            var aggregations = res.data.aggregations;
+
+            //检测是否有潘大炮
+            var hasPandaPal = false;
+            for(var i=0;i<aggregations.length;i++){
+              var thisData = aggregations[i];
+              if(thisData.type =='PANDA_PAL' && thisData.items && thisData.items['1']){
+                hasPandaPal = true;
+              }
+            }
+            this.hasPandaPal = hasPandaPal;
             
             this.activityList = listData;
-            this.listdata.aggregations = res.data.aggregations;
+            this.listdata.aggregations = aggregations;
             this.records = res.data.records;
             if (res.data.records < this.postData.pageSize) {
               this.isdisabled = false;
             } else {
               this.isdisabled = true;
             }
-            if (res.data.aggregations) {
-              res.data.aggregations.forEach(item => {
+            if (aggregations) {
+              aggregations.forEach(item => {
                 var thisFilter = [];
                 for (var key in item.items) {
                   thisFilter.push(key);
@@ -1434,15 +1472,12 @@ export default {
     palIn(e){
       var $this = e.target.parentNode.querySelector('.pandapal_tips');
       $this.style.display = 'block';
-      // var $tipBox = document.querySelector('.pandapal_tips');
-      // var tagT = $this.offsetTop,
-      //   tagL = $this.offsetLeft;
-      // $tipBox.style = 'left:'+tagL+'px;top:'+tagT+'px;display: block;';
     },
     palOut(e){
       var $this = e.target.parentNode.querySelector('.pandapal_tips');
       $this.style.display = 'none';
-    }
+    },
+    
   },
   watch: {
     filterCheck: {
@@ -1460,11 +1495,17 @@ export default {
           //type:this.postData.type
         };
 
+        // console.log(val,444444444444);
+
         for (var key in val) {
           if (Array.isArray(val[key])) {
             var thisVal = val[key].concat();
             if (val[key].length > 0) {
-              this.showSelected = true;
+              //潘大炮不显示在左侧筛选项
+              if(key!='panda_pal'){
+                this.showSelected = true;
+              }
+              
               options[key] = thisVal.sort();
               if (thisVal.length == 1) {
                 this.Ga("filter", key);
@@ -1475,6 +1516,10 @@ export default {
                 filterValues: val[key]
               });
             }
+
+            // if(key=='panda_pal' && val[key].length==0){
+            //   this.pandaPal = 0;
+            // }
           } else if (key == "price" && !Array.isArray(val[key])) {
             if(this.postData.currency=="CNY"){
               if (val[key].maxValue <= 3000 || val[key].minValue > 0) {
@@ -1551,8 +1596,11 @@ export default {
         jumpData.options = encodeURIComponent(JSON.stringify(options));
         //检测是否有筛选项
 
+        
+        // console.log(postFilters,33333333333333);
+
         this.postData.filters = postFilters;
-        console.log(this.postData.filters);
+        // console.log(this.postData.filters,3333);
         this.postData.pageNum = 1;
         this.getData(true);
 
@@ -1622,9 +1670,15 @@ export default {
         minValue: val[0],
         maxValue: val[1]
       };
-
-      console.log(this.filterCheck.price);
     },
+    //筛选panda pal
+    pandaPal(val){
+      if(val){
+        this.filterCheck.panda_pal = [1];
+      }else{
+        this.filterCheck.panda_pal = [];
+      }
+    }
   },
   filters: {
     firstUpperCase(val) {
@@ -1640,7 +1694,7 @@ export default {
     console.log(this.listdata);
     const that = this;
     for (var key in that.filterCheck) {
-      if (that.filterCheck[key].length > 0) {
+      if (that.filterCheck[key].length > 0 && key !='panda_pal') {
         that.showSelected = true;
       }
     }
@@ -1652,6 +1706,9 @@ export default {
       that.showSeachList = false;
       that.selectPeople = false;
     });
+
+
+    // console.log(that.filterCheck,11111);
 
     // if(window.name != "bencalie"){
     // 	location.reload();
@@ -2066,10 +2123,15 @@ export default {
         width: 975px;
         float: left;
         margin-left: 30px;
-        .recommended {
+        .top_filter{
           float: left;
           position: relative;
           font-size: 16px;
+          margin-right: 30px;
+          .checkbox_label{
+            padding: 8px 0 8px 20px;
+          }
+
           .selectSort {
             border: solid 1px #dde0e0;
             width: 244px;
@@ -2084,7 +2146,7 @@ export default {
             position: relative;
             z-index: 1;
           }
-          i {
+          .select_arrow{
             position: absolute;
             right: 14px;
             top: 12px;
@@ -2110,7 +2172,7 @@ export default {
           }
         }
         .list-cont {
-          margin-top: 15px;
+          margin-top: 30px;
 
           .activity-item {
             min-height: 195px;
@@ -2506,28 +2568,28 @@ export default {
 
   .pandapal_tips{
     position: absolute;
-    left: 110px;
-    top: -20px;
+    left: 130px;
+    top: 0;
     display: none;
     z-index: 99;
     width: 275px;
     background-color: #ffffff;
     box-shadow: 0px 2px 30px 0px rgba(0, 0, 0, 0.3);
-    border-radius: 16px;
+    border-radius: 10px;
     overflow: hidden;
-    padding-bottom: 20px;
+    padding-bottom: 10px;
     h4{
       background-color: rgb(27,188,157);
-      height: 76px;
-      line-height: 76px;
-      font-size: 22px;
+      height: 36px;
+      line-height: 36px;
+      font-size: 18px;
       text-align: center;
       color: #fff;
-      margin-bottom: 15px;
+      margin-bottom: 10px;
     }
     p{
-      padding: 8px 30px 8px 45px;
-      line-height: 24px;
+      padding: 5px 20px 5px 35px;
+      line-height: 20px;
       font-size: 16px;
       color: #353a3f;
       i{

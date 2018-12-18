@@ -173,6 +173,24 @@
 					</ul>
 				</div>
 
+				<!-- Panda Pals -->
+				<!-- <div class="detail_box pandaPal" id="pandaPal">
+					<h3><i></i>Meet the Panda Pals for this tour. Pick your favorite!</h3>
+					<p class="detail_p mt10">This tour is led by a Panda Pal: an English-speaking local who loves their city and wants to show you around. Although they don’t have the knowledge of experience of a professional guide, Panda Pals still meet our standards of excellence and provide an authentic way to experience China through 
+the eyes of an ordinary local. </p>
+					<div class="pandaPal_box mt20">
+						<div v-swiper:swiper="swiperPandaPal">
+							<div class="swiper-wrapper">
+								<div class="swiper-slide" :key="index" v-for="(slide, index) in detail.bannerPhotos">
+									<img :src="slide.url"  />
+								</div>
+							</div>
+							<div class="swiper-button-prev swiper-button-white"></div>
+							<div class="swiper-button-next swiper-button-white"></div>
+						</div>
+					</div>
+				</div> -->
+
 				<!-- 行程板块 -->
 				<div class="detail_box itinerary" id="itinerary" v-if="detail.itinerary.length">
 					<h3><span class="btn_viewall" @click="itineraryViewall">View all</span><i></i>Experience Details</h3>
@@ -614,6 +632,24 @@ import { sep } from 'path';
 					},
 					// setWrapperSize: true,
 					
+				},
+				swiperPandaPal: {
+					lazy: true,
+					autoplay: false,
+					// delay: 3000,
+					// autoplayDisableOnInteraction: false,
+					// speed: 1000,
+					// loop: true,
+					// slidesOffsetAfter : 60,
+					spaceBetween:20,
+					slidesPerView: 3,
+					slidesPerGroup: 3,
+					navigation: {
+						nextEl: '.swiper-button-next',
+						prevEl: '.swiper-button-prev',
+					},
+					// setWrapperSize: true,
+					initialSlide: 0,
 				},
 			};
 
@@ -2253,6 +2289,20 @@ import { sep } from 'path';
 					margin-top: 10px;
 				}
 			}
+			
+			//潘大炮
+			.pandaPal{
+				.pandaPal_box{
+					.swiper-slide{
+						// width: 220px;
+						margin-right: 20px;
+						img{
+							width: 100%;
+						}
+					}
+				}
+			}
+			
 
 			/*行程*/
 			.itinerary{

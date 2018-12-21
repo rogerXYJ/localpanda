@@ -1145,7 +1145,7 @@ import { sep } from 'path';
 				if(this.picInfo.unifiedPricing){
 					return ' pp';
 				}
-				return peopleNum?(peopleNum==1?' for 1 person':' pp based on group of '+ peopleNum):' pp '
+				return peopleNum?(peopleNum==1?' for 1 person':' pp for party of '+ peopleNum):' pp '
 			},
 			itineraryFn(e){
 				var thisList = getParents(e.target,'itinerary_list');

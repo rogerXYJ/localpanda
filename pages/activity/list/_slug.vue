@@ -249,7 +249,7 @@
 											<div class="totalPic">
 												<div class="nowPic">
 													{{postData.participants==0?'From  ':''}}
-													<b><span class="currency_code">{{currency.code}}</span>  {{currency.symbol}}{{postData.participants!=0?returnFloat(item.perPersonPrice):returnFloat(item.bottomPrice)}}</b><span>{{postData.participants!=0?(postData.participants>1?' based on group of '+ postData.participants:' for 1 preson'):' pp'}}</span>
+													<b><span class="currency_code">{{currency.code}}</span>  {{currency.symbol}}{{postData.participants!=0?returnFloat(item.perPersonPrice):returnFloat(item.bottomPrice)}}</b><span>{{postData.participants!=0?(postData.participants>1?' pp based on group of '+ postData.participants:' for 1 preson'):' pp'}}</span>
 												</div>
 												<p v-if="item.sales&&item.sales>0">Booked {{item.sales}} {{item.sales==1?'time':'times'}} (last 30 days)</p>
 											</div>
@@ -258,7 +258,7 @@
 									</div>
 								</a>
 							</li>
-              <li class="activity-item ADpandaPhone" v-else>
+              <!-- <li class="activity-item ADpandaPhone" v-else>
                 <img v-lazy="'https://cloud.localpanda.com/pandaphone/ad_list.jpg'" width="100%" alt="">
                 <a class="pandaPhone_box" href="https://www.localpanda.com/product/phone/details/" target="_blank">
                   <h2>Unlock China with the Panda Phone</h2>
@@ -270,7 +270,7 @@
                     <li><i class="iconfont">&#xe654;</i>VPN - Access Blocked Websites Like Google</li>
                   </ul>
                 </a>
-              </li>
+              </li> -->
 						</ul>
 						<div class="pagination-page" v-if="isdisabled">
 							<el-pagination background layout="prev, pager, next"  :current-page="postData.pageNum" :total="records" class="el-pagination is-background" @current-change="handleCurrentChange" :page-size="16">

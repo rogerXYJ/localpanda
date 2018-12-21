@@ -242,7 +242,7 @@ the eyes of an ordinary local. </p>
 					
 					<div class="other_list" id="inclusions" v-if="inclusions.length || exclusions.length">
 						<!--  || detail.pickup -->
-						<h3 @click="otherFn"><span class="iconfont i_down">&#xe667;</span><span class="iconfont i_up">&#xe666;</span><i></i>Inclusions & Exclusions</h3>
+						<h3 @click="otherFn($event,'inclusions')"><span class="iconfont i_down">&#xe667;</span><span class="iconfont i_up">&#xe666;</span><i></i>Inclusions & Exclusions</h3>
 						<div class="other_content" v-if="inclusions.length">
 							<h4>Inclusions</h4>
 							<ul class="detail_txt_list">
@@ -299,7 +299,7 @@ the eyes of an ordinary local. </p>
 					</div>
 
 					<div class="other_list" id="important" v-if="delEnter(detail.remark) || notice.length">
-						<h3 @click="otherFn"><span class="iconfont i_down">&#xe667;</span><span class="iconfont i_up">&#xe666;</span><i></i>{{delEnter(detail.remark)?'Important Info':'Additional Info'}}</h3>
+						<h3 @click="otherFn($event,'important_info')"><span class="iconfont i_down">&#xe667;</span><span class="iconfont i_up">&#xe666;</span><i></i>{{delEnter(detail.remark)?'Important Info':'Additional Info'}}</h3>
 						<div class="other_content">
 							<ul class="detail_txt_list">
 								<li v-for="item in getTextArr(detail.remark)" :key="item">
@@ -315,7 +315,7 @@ the eyes of an ordinary local. </p>
 					</div>
 
 					<div class="other_list" id="rescheduling" v-if="delEnter(picInfo.refundInstructions)">
-						<h3 @click="otherFn"><span class="iconfont i_down">&#xe667;</span><span class="iconfont i_up">&#xe666;</span><i></i>Rescheduling & Cancellation Policy</h3>
+						<h3 @click="otherFn($event,'cancellation_policy')"><span class="iconfont i_down">&#xe667;</span><span class="iconfont i_up">&#xe666;</span><i></i>Rescheduling & Cancellation Policy</h3>
 						<div class="other_content">
 							<p class="detail_p" v-for="(item,index) in getTextArr(picInfo.refundInstructions)" :key="index">{{item}}</p>	
 							<!-- <ul class="detail_txt_list">
@@ -1060,13 +1060,24 @@ import { sep } from 'path';
 			enterToBr(text){
 				return text ? text.replace(/\n/g,'<br>') : '';
 			},
-			otherFn(e){
+			otherFn(e,eventLabel){
 				var thisList = getParents(e.target,'other_list');
 				if(/active/.test(thisList.className)){
 					thisList.className = 'other_list';
 				}else{
 					thisList.className = 'other_list active';
+				};
+
+				if(eventLabel){
+					ga(gaSend, {
+						hitType: "event",
+						eventCategory: "activity_detail",
+						eventAction: "click",
+						eventLabel: eventLabel
+					});
 				}
+				
+
 			},
 			reviewsShowMore(e){
 				var parent = e.target.parentNode;
@@ -1134,7 +1145,7 @@ import { sep } from 'path';
 				if(this.picInfo.unifiedPricing){
 					return ' pp';
 				}
-				return peopleNum?(peopleNum==1?' for 1 person':' based on group of '+ peopleNum):' pp '
+				return peopleNum?(peopleNum==1?' for 1 person':' pp based on group of '+ peopleNum):' pp '
 			},
 			itineraryFn(e){
 				var thisList = getParents(e.target,'itinerary_list');
@@ -1162,7 +1173,7 @@ import { sep } from 'path';
 					hitType: "event",
 					eventCategory: "activity_detail",
 					eventAction: "click",
-					eventLabel: "expand"
+					eventLabel: "itinerary"
 				});
 				
 			},
@@ -1270,6 +1281,11 @@ import { sep } from 'path';
 				this.bookChildren = this.changeChildren*1;
 				this.bookPeople = this.bookAdults+this.bookChildren;
 				this.showChangePeople = false;
+
+				Cookie.set("participants", this.bookPeople, {
+					path: "/",
+					expires: 30
+				});
 			},
 			setPeoplePrice(){
 				var details = this.picInfo.details;

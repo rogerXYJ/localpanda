@@ -121,7 +121,7 @@
 				<div class="contact_cont">
 					<h3><b>WhatsApp</b></h3>
 					<h4>We respond within one hour during opening hours.</h4>
-					<p>+86 166 2018 3842</p>
+					<p>+86 186 2175 2105</p>
 				</div>
 			</div>
 			<div class="contact_item pad20 clearfix">

@@ -71,7 +71,7 @@
 											<b>{{changeChildren}}</b>
 											<span class="num_btn iconfont" @click="addNum($event,2)" :class="{'stop':(changeAdults+changeChildren)>=picInfo.maxParticipants || changeAdults==0}">&#xe64b;</span>
 										</div>
-										Children<br><small>{{'≤ '+picInfo.childStandard+' years old'}}</small>
+										Children<br><small>Children (age 3-{{picInfo.childStandard}}),<br>Free for infants under 3 years old</small>
 									</div>
 									<div class="change_list">
 										<span class="btn" @click="setPeople">Submit</span>
@@ -195,7 +195,7 @@ the eyes of an ordinary local. </p>
 				<div class="detail_box itinerary" id="itinerary" v-if="detail.itinerary.length">
 					<h3><span class="btn_viewall" @click="itineraryViewall">View all</span><i></i>Experience Details</h3>
 					<div class="itinerary_tip" v-if="detail.groupType=='Private'">Our staff can help you make changes to your itinerary since this is a private tour.</div>
-					<dl class="itinerary_list" v-for="(items,index) in detail.itinerary" :key="index">
+					<dl class="itinerary_list" :class="{'active':index<3}" v-for="(items,index) in detail.itinerary" :key="index">
 						<dt @click="itineraryFn" v-if="items.description"><i class="iconfont i_down">&#xe667;</i><i class="iconfont i_up">&#xe666;</i><span></span>{{items.title}}</dt>
 						<dt v-else><span></span>{{items.title}}</dt>
 						<dd>
@@ -206,7 +206,7 @@ the eyes of an ordinary local. </p>
 					</dl>
 				</div>
 
-				<div class="ADpandaPhone" @click.stop="showPandaPhone('img')">
+				<div class="ADpandaPhone" @click.stop="showPandaPhone('img')" v-if="!detail.manual.records">
 					<img v-lazy="'https://cloud.localpanda.com/pandaphone/ad_detail.jpg'" width="100%" alt="">
 					<div class="pandaPhone_box">
 						<h2>Unlock China with the Panda Phone</h2>
@@ -221,12 +221,12 @@ the eyes of an ordinary local. </p>
 				</div>
 
 				<!-- 人工推荐板块 -->
-				<div class="detail_box similar" v-if="detail.manual.records">
+				<div class="detail_box similar" id="similar" v-if="detail.manual.records">
 					<h3><i></i>Similar Experiences</h3>
 					<ul class="similar_list_manual">
 						<li :key="index" v-for="(i,index) in detail.manual.entities">
 							<!--  v-show="participants==0 || participants && i.perPersonPrice" -->
-							<a :href="'/activity/details/'+i.activityId">
+							<a @click="similarFn(i.activityId)">
 								<h4><span class="tag" :class="{'private':i.groupType=='Private'}" v-if="i.groupType">{{i.groupType}}</span> {{i.shortTitle?i.shortTitle:i.title}} <span class="tag_time">{{i.duration}} {{setTimeStr(i.duration,i.durationUnit)}}</span>	</h4>
 								<div class="similar_list_foot">
 									<span class="price"><i class="gray">{{participants==0?'From':''}}</i><b>{{nowExchange.code}} {{nowExchange.symbol}}{{participants==0?returnFloat(i.bottomPrice):returnFloat(i.perPersonPrice)}}</b>{{returnText(participants)}}</span>
@@ -329,7 +329,7 @@ the eyes of an ordinary local. </p>
 				
 
 				<!-- 点评 -->
-				<div class="detail_box reviews mt20" v-if="reviewsData &&　reviewsData.records">
+				<div class="detail_box reviews mt20" id="reviews" v-if="reviewsData &&　reviewsData.records">
 					<div class="reviews_title">
 						<i class="title_line"></i>
 						<span class="reviews_num">{{reviewsData.records==1 ? 'Review':'Reviews'}} ({{reviewsData.records}})</span>
@@ -354,7 +354,9 @@ the eyes of an ordinary local. </p>
 						</div>
 						<div class="reviews_list_content" :content="item.content">{{item.content.length>200?item.content.substring(0,200)+'...':item.content}} <span class="reviews_text_more" v-if="item.content.length>200" @click="reviewsShowMore">View More</span> </div>
 						<ul class="reviews_img_s">
-							<li v-if="item.userCommentPhoto" v-for="(itemChild,index2) in item.userCommentPhoto" @click="showBigPic(item.userCommentPhoto,index2)" :key="index2"><img v-lazy="itemChild.url" alt=""></li>
+							<li v-if="item.userCommentPhoto" v-for="(itemChild,index2) in item.userCommentPhoto" @click="showBigPic(item.userCommentPhoto,index2)" :key="index2" v-lazy:background-image="itemChild.url">
+								<!-- <img v-lazy="itemChild.url" alt=""> -->
+							</li>
 						</ul>
 					</div>
 					<div class="reviews_more" @click="loadMoreReviews" v-if="reviewsData && reviewsData.records>3 && reviewsData.records>reviews.length">Browse more</div>
@@ -368,7 +370,7 @@ the eyes of an ordinary local. </p>
 				<h3><i></i>Other People Also Choose</h3>
 				<ul class="similar_list">
 					<li :key="index" v-for="(i,index) in detail.recommend.entities">
-						<a :href="'/activity/details/'+i.activityId">
+						<a @click="alsoFn(i.activityId)">
 							<div class="similar_img_box">
 								<div class="similar_img" v-lazy:background-image="i.coverPhotoUrl"></div>
 							</div>
@@ -394,6 +396,7 @@ the eyes of an ordinary local. </p>
 			<ul id="nav_list">
 				<li toId="why">What to Expect</li>
 				<li toId="itinerary" v-if="detail.itinerary.length">Experience Details</li>
+				<li toId="similar" v-if="detail.manual.records">Similar Experiences</li>
 				<li toId="inclusions" v-if="inclusions.length || exclusions.length">Inclusions & Exclusions</li>
 
 				<li toId="meeting" v-if="detail.pickup===0 && detail.category !== 'Ticket'">Meeting Point Info</li>
@@ -401,6 +404,8 @@ the eyes of an ordinary local. </p>
 
 				<li toId="important" v-if="delEnter(detail.remark) || notice.length">Important Info</li>
 				<li toId="rescheduling" v-if="delEnter(picInfo.refundInstructions)">Rescheduling & Cancellation</li>
+				<li toId="reviews" v-if="reviewsData &&　reviewsData.records">Reviews</li>
+				
 			</ul>
 		</div>
 		
@@ -474,8 +479,8 @@ Price may vary depending on the language. If you need guides in other languages,
 					
 						<div v-swiper:swiperThumbs="swiperOptionThumbs" class="gallery-thumbs" ref="swiperThumbs">
 							<div class="swiper-wrapper">
-								<div class="swiper-slide" v-for="(i,index) in reviewsImgList" :class="index==0?'imgActive':''">
-									<img :src="i.url" />
+								<div class="swiper-slide" v-for="(i,index) in reviewsImgList" :class="index==0?'imgActive':''" v-lazy:background-image="i.url">
+									<!-- <img :src="i.url" /> -->
 								</div>
 								
 							</div>
@@ -1129,7 +1134,7 @@ import { sep } from 'path';
 				if(this.picInfo.unifiedPricing){
 					return ' pp';
 				}
-				return peopleNum?(peopleNum==1?' for 1 person':' pp for party of '+ peopleNum):' pp '
+				return peopleNum?(peopleNum==1?' for 1 person':' based on group of '+ peopleNum):' pp '
 			},
 			itineraryFn(e){
 				var thisList = getParents(e.target,'itinerary_list');
@@ -1428,6 +1433,10 @@ import { sep } from 'path';
 					return false;
 				}
 
+				if(this.showChangePeople){
+					return false;
+				}
+
 
 				ga(gaSend, {
 					hitType: "event",
@@ -1637,6 +1646,26 @@ import { sep } from 'path';
 					eventAction: "click",
 					eventLabel:"pickup"
 				});
+			},
+			similarFn(activityId){
+				ga(gaSend, {
+					hitType: "event",
+					eventCategory: "activity_detail",
+					eventAction: "click",
+					eventLabel:"recommend_manual"
+				});
+
+				location.href =  '/activity/details/'+activityId;
+			},
+			alsoFn(activityId){
+				ga(gaSend, {
+					hitType: "event",
+					eventCategory: "activity_detail",
+					eventAction: "click",
+					eventLabel:"recommend_system"
+				});
+
+				location.href =  '/activity/details/'+activityId;
 			}
 		},
 		mounted: function() {
@@ -1691,8 +1720,10 @@ import { sep } from 'path';
 			//点击自动设为人数
 			document.addEventListener('click',function(e){
 				var target = e.target;
-				if(!getParents(target,'change_travelers') && self.showChangePeople && self.changeAdults && !getParents(target,'js_bookNow')){
-					self.setPeople();
+				if(!getParents(target,'change_travelers') && self.showChangePeople && self.changeAdults){  // && !getParents(target,'js_bookNow')
+					setTimeout(function(){
+						self.setPeople();
+					},200);
 				};
 
 				if(self.showPPDialog && !getParents(target,'pp_tip') && !getParents(target,'pp_dialog') && !getParents(target,'book_ensure')){
@@ -2538,6 +2569,8 @@ import { sep } from 'path';
 						li{
 							float: left;
 							width: 109px;
+							height: 73px;
+							background-size: cover;
 							margin-left: 15px;
 							margin-top: 10px;
 							overflow: hidden;
@@ -2589,6 +2622,7 @@ import { sep } from 'path';
 						}
 						a{
 							display: block;
+							cursor: pointer;
 							padding:15px 80px 15px 20px;
 						}
 						h4{
@@ -2692,6 +2726,9 @@ import { sep } from 'path';
 								-webkit-transform: scale(1.06);
 								transform: scale(1.06);
 							}
+						}
+						a{
+							cursor: pointer;
 						}
 						.similar_img_box{
 							width: 100%;
@@ -3000,7 +3037,7 @@ import { sep } from 'path';
 		}
 		.boxshow {
 			position: absolute;
-			height: 700px;
+			// height: 700px;
 			left: 50%;
 			top: 50%;
 			margin: -350px 0 0 -430px;
@@ -3024,23 +3061,25 @@ import { sep } from 'path';
 			    	}
 			    }
 			    .gallery-thumbs {
-			        height: 92px;
-			        box-sizing: border-box;
-			        margin-top: 26px;
+						height: 100px;
+						box-sizing: border-box;
+						margin-top: 26px;
 			    }
 			    .gallery-thumbs .swiper-slide {
-			        height: 100%;
-			        width: 138px;
-					opacity: 0.4; 
-					text-align: center;
-					overflow: hidden;
-			       img{
-					    height: 92px;	
-					    }
+						height: 100%;
+						width: 138px;
+						
+						background-size: cover;
+						opacity: 0.4; 
+						text-align: center;
+						overflow: hidden;
+						img{
+							height: 92px;	
+						}
 			       
 			    }
 			    .gallery-thumbs .imgActive {
-			        opacity: 1;
+			      opacity: 1;
 			    }
 			   
 		}
@@ -3075,7 +3114,7 @@ import { sep } from 'path';
 				vertical-align: top;
 				width: 14px;
 				height: 14px;
-				padding: 1px;
+				padding: 2px;
 				border-radius: 50%;
 				background-image: -webkit-gradient(linear, right top, left top, from(#009efd), to(#1bbc9d));
 				background-image: linear-gradient(270deg, #009efd 0%, #1bbc9d 100%);

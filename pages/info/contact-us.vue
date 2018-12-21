@@ -31,7 +31,7 @@
                 <dl>
                     <dt>General Enquiries</dt>
                     <dd>
-                        <div class="info_list"><span class="iconfont">&#xe662;</span>+86 (21) 8018-2090<br>+1 (888) 930-8849 (US toll free)</div>
+                        <div class="info_list"><span class="iconfont">&#xe662;</span>+1 (888) 930-8849 (Toll Free)<br>+86 (21) 8018-2090<br>+44 7479-270518<br>+61 488-849-818</div>
                         <div class="info_list"><span class="iconfont">&#xe60e;</span>service@localpanda.com</div>
                     </dd>
                 </dl>

@@ -1,5 +1,6 @@
 <script>
 	import { regExp, GetDateStr, addmulMonth } from '~/assets/js/plugin/utils'
+	import countryCode from '~/assets/js/countryCode.js'
 	import flatPickr from 'vue-flatpickr-component';
 	import 'flatpickr/dist/flatpickr.css';
 	export default {
@@ -9,7 +10,7 @@
 				contactActive: false,
 				name: '',
 				nameErr: false,
-				phone: '',
+				phoneNumber: '',
 				phoneErr: false,
 				email: '',
 				emailErr: false,
@@ -30,6 +31,17 @@
 				istrue: false,
 				destination: '',
 				isclick:false,
+
+				//国家
+				nationality: '',
+				countryCode: countryCode.phone_countries,
+				codeList: [], //联系人国家选择列表
+				travelCodeList: [], //游玩人国家选择列表
+				codeListHot:[],
+				mobileCode: '',
+				//显示code列表
+				showCode: false,
+				code: '', //区号
 				
 			}
 		},
@@ -130,6 +142,7 @@
 						objectType: that.objectType,
 						userName: that.name,
 						emailAddress: that.email,
+						phoneNumber: that.mobileCode + ' ' + that.phoneNumber,
 						message: that.textInfo,
 						//phoneNumber:that.phone?that.phone:null,
 						travelDate: that.dateTime ? that.dateTime : null,
@@ -148,6 +161,8 @@
 						obj.source = 'DETAIL';
 					}else if(/contact-us/.test(href)){
 						obj.source = 'CONTACT';
+					}else if(/product\/phone/.test(href)){
+						obj.source = 'DETAIL';
 					}else if(href =='/'){
 						obj.source = 'HOME';
 					}
@@ -173,7 +188,7 @@
 							that.contactActive = false;
 							that.name = ""
 							that.email = ""
-							that.phone = ""
+							that.phoneNumber = ""
 							that.dateTime = ""
 							that.textInfo = ""
 							that.destination = ""
@@ -195,6 +210,54 @@
 			 * Actions for self-defined button
 			 */
 
+			changeNationality(value){
+				this.mobileCode = value.country_name + ' (+' + value.prefix + ')';
+				this.showCode = false;
+			},
+			focusFn(){
+				this.showCode=true;
+
+				var mobileCode=this.mobileCode.replace(/(^\s+)|(\s+$)/g, "")
+				this.complete(mobileCode);
+			},
+			complete(val){
+				let self = this;
+				val=val.replace(/(^\s+)|(\s+$)/g, "")
+				
+				if(val) {
+					
+					self.codeList = [];
+					var newVal = val.replace('(','\\(').replace(')','\\)').replace('+','\\+').replace('-','\\-');
+					var thisKey = [],
+						otherKey = [];
+					var countryCode = this.countryCode;
+					for(var i=0;i<this.countryCode.length;i++){
+						var thisData = this.countryCode[i];
+						var regStr = thisData.country_name;
+						if(/(^-?[0-9]\d*$)/.test(newVal)){
+							regStr = thisData.prefix;
+						}
+						if((new RegExp(newVal,'i')).test(regStr)){
+							thisKey.push(thisData);
+						}else{
+							otherKey.push(thisData);
+						}
+					}
+					thisKey.sort(function(a,b){
+						if(/(^-?[0-9]\d*$)/.test(newVal)){
+							return a.prefix.indexOf(newVal)-b.prefix.indexOf(newVal);
+						}
+						return a.country_name.toLowerCase().indexOf(newVal)-b.country_name.toLowerCase().indexOf(newVal);
+					})
+					self.codeList = thisKey;
+
+				} else {
+					self.codeList = self.countryCode
+
+				}
+
+				
+			}
 		},
 		watch: {
 			ContactStatus: function(val, oldVal) {
@@ -205,16 +268,33 @@
 					this.contactActive = false;
 					document.documentElement.style.overflow = "auto";
 				}
+			},
+			mobileCode(val){
+				this.complete(val);
 			}
 		},
 		mounted() {
 
 			
 			var that = this
-			document.getElementsByTagName("body")[0].addEventListener('click', function() {
-				that.isshowchoose = false
-				
+			document.getElementsByTagName("body")[0].addEventListener('click', function(e) {
+				that.isshowchoose = false;
+				// if(that.showCode){
+				// 	that.showCode = false;
+				// }
+				that.showCode = false
 			})
+
+
+			that.codeListHot = [
+				{"country_name": "United States","prefix": "1"},
+				{"country_name": "United Kingdom","prefix": "44"},
+				{"country_name": "China Mainland","prefix": "86"},
+				{"country_name": "Canada","prefix": "1"},
+				{"country_name": "Australia",	"prefix": "61"},
+				{"country_name": "New Zealand","prefix": "64"}
+			];
+
 		},
 		props: ['ContactStatus', "guideId", "enName", "objectType", "objectId","owner"]
 	}
@@ -233,6 +313,18 @@
 
 				</ul>
 				<p v-if="objectType=='GUIDE'">Hi, I'm {{enName}}! Contact me if you want to know more about me or if you have anything you want to inquire from me. I'll reply you within one business day. </p>
+
+
+				<!-- <div class="call_box">
+					<p>You can also call us for faster communication:</p>
+					<ul class="call_list">
+						<li>+1 (888) 930-8849 (Toll Free)</li>
+						<li>+86 (21) 8018-2090</li>
+						<li>+44 7479-270518</li>
+						<li>+61 488-849-818</li>
+					</ul>
+				</div> -->
+				
 
 
 
@@ -296,6 +388,26 @@
 						<b>Email Address<span>*</span></b>
 
 						<input :class="{err:emailErr}" v-model="email" @focus="emailfocus" />
+					</div>
+				</div>
+
+				<div class="fill clearfix">
+					<div class="name">
+						<b>Country or Territory Code</b>
+						<input v-model="mobileCode" @click.stop="focusFn">
+						<div class="countryCode" v-show="showCode">
+							<ul v-if="codeList.length>0">
+								<li v-for="(item,index2) in codeListHot" @click.stop="changeNationality(item)"  v-if="codeListHot.length>0 && !mobileCode">{{item.country_name}} +({{item.prefix}})</li>
+								<li class="line" v-if="!mobileCode"></li>
+								<li v-for="(item,index2) in codeList" @click.stop="changeNationality(item)">{{item.country_name}} +({{item.prefix}})</li>
+							</ul>
+							<div class="empty" v-else-if="mobileCode">There are no results that match your search.</div>
+						</div>
+					</div>
+					<div class="phone">
+						<b>Phone Number</b>
+						<input v-model="phoneNumber" />
+						
 					</div>
 				</div>
 
@@ -367,7 +479,7 @@
 			width: 854px;
 			/*height: 4.4rem;*/
 			background: #fff;
-			overflow: hidden;
+			// overflow: hidden;
 			position: absolute;
 			top: 0;
 			left: 50%;
@@ -380,8 +492,7 @@
 					margin-top: 15px;
 					li {
 						font-size: 16px;
-						line-height: 20px;
-						margin-top: 10px;
+						line-height: 26px;
 						&:first-child {
 							margin-top: 0;
 						}
@@ -414,6 +525,7 @@
 					margin-top: 15px;
 					.name {
 						float: left;
+						position: relative;
 						input {
 							width: 347px;
 							height: 30px;
@@ -427,6 +539,7 @@
 					.phone {
 						float: left;
 						margin-left: 30px;
+						position: relative;
 						input {
 							width: 347px;
 							height: 30px;
@@ -435,6 +548,44 @@
 							margin-top: 10px;
 							font-size: 16px;
 							box-sizing: border-box;
+						}
+						
+					}
+					.countryCode {
+						position: absolute;
+						top: 60px;
+						left: 0px;
+						box-shadow: 0px 2px 10px 0px rgba(53, 58, 63, 0.2);
+						background: #fff;
+						z-index: 2;
+						width: 350px;
+						// display: none;
+						ul {
+							max-height: 320px;
+							overflow-y: auto;
+							li {
+								padding: 0 10px 0 30px!important;
+								height: 36px;
+								line-height: 36px;
+								font-size: 14px;
+								width: 100%!important;
+								cursor: pointer;
+								&:hover {
+									color: #fff;
+									height: 36px;
+									background-image: linear-gradient(-90deg, #009efd 0%, #1bbc9d 100%);
+								}
+							}
+							.line{
+								height: 1px;
+								background-color: #ddd;
+								overflow: hidden;
+								width: calc(100% - 30px);
+								margin: 0 auto;
+							}
+						}
+						.empty{
+							padding: 10px 5px;
 						}
 					}
 				}
@@ -620,6 +771,10 @@
 		}
 		.noBottom {
 			border-bottom: none!important;
+		}
+
+		.call_box{
+
 		}
 	}
 </style>

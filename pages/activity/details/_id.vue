@@ -95,10 +95,10 @@
 								</dl>
 								
 							</li>
-							<li>
+							<!-- <li>
 								<checkbox class="pp_checkbox" v-model="pandaPhoneCheck">Add Panda Phone to my trip for only <dfn>USD $1</dfn></checkbox>
 								<p class="pp_tip">All-in-one Mobile Travel Assistant <span @click="showPandaPhone">Show details</span></p>
-							</li>
+							</li> -->
 							<li class="clearfix">
 								<span class="btn js_bookNow" @click="bookNow">Book Now</span>
 								<span class="btn_inquire fl" @click="showContact">Inquire</span>
@@ -119,7 +119,13 @@
 
 
 					<!-- 预定保障模块 -->
-					<ul class="book_ensure" v-if="!bookPeople" @click="phoneIntroducing">
+					
+					<ul class="book_ensure">
+						<li><i class="iconfont">&#xe654;</i>No hidden booking or credit card fees</li>
+						<li><i class="iconfont">&#xe654;</i>Instant confirmation after booking</li>
+						<li><i class="iconfont">&#xe654;</i>Best Price Guarantee</li>
+					</ul>
+					<!-- <ul class="book_ensure" v-if="!bookPeople" @click="phoneIntroducing">
 						<li class="pd0">
 							<h4>Introducing Panda Phone for Only USD $1</h4>
 						</li>
@@ -127,8 +133,8 @@
 						<li><i class="iconfont">&#xe654;</i>4G Wireless Data, Unlimited Calling & Texts</li>
 						<li><i class="iconfont">&#xe654;</i>Travel & Emergency Help at Your Fingertips</li>
 						<li><i class="iconfont">&#xe654;</i>VPN-Access Blocked Websites Like Google</li>
-					</ul>
-				</div>
+					</ul>-->
+				</div> 
 			</div>
 
 
@@ -206,19 +212,7 @@ the eyes of an ordinary local. </p>
 					</dl>
 				</div>
 
-				<div class="ADpandaPhone" @click.stop="showPandaPhone('img')" v-if="!detail.manual.records">
-					<img v-lazy="'https://cloud.localpanda.com/pandaphone/ad_detail.jpg'" width="100%" alt="">
-					<div class="pandaPhone_box">
-						<h2>Unlock China with the Panda Phone</h2>
-						<p>All-in-one Rental Mobile Travel Assistant</p>
-						<ul>
-							<li><i class="iconfont">&#xe654;</i>Smart Phone with Mainland China Number</li>
-							<li><i class="iconfont">&#xe654;</i>Travel & Emergency Help at Your Fingertips  </li>
-							<li><i class="iconfont">&#xe654;</i>4G Wireless Data, Unlimited Calling & Texts</li>
-							<li><i class="iconfont">&#xe654;</i>VPN - Access Blocked Websites Like Google</li>
-						</ul>
-					</div>
-				</div>
+				
 
 				<!-- 人工推荐板块 -->
 				<div class="detail_box similar" id="similar" v-if="detail.manual.records">
@@ -326,10 +320,26 @@ the eyes of an ordinary local. </p>
 
 				</div>
 
+
+				<!-- pandaphone广告  @click.stop="showPandaPhone('img')"-->
+				<a class="ADpandaPhone" href="https://www.localpanda.com/product/phone/details/" v-if="!detail.manual.records">
+					<img v-lazy="'https://cloud.localpanda.com/pandaphone/ad_detail.jpg'" width="100%" alt="">
+					<div class="pandaPhone_box">
+						<h2>Unlock China with the Panda Phone</h2>
+						<p>All-in-one Rental Mobile Travel Assistant</p>
+						<ul>
+							<li><i class="iconfont">&#xe654;</i>Smart Phone with Mainland China Number</li>
+							<li><i class="iconfont">&#xe654;</i>Travel & Emergency Help at Your Fingertips  </li>
+							<li><i class="iconfont">&#xe654;</i>4G Wireless Data, Unlimited Calling & Texts</li>
+							<li><i class="iconfont">&#xe654;</i>VPN - Access Blocked Websites Like Google</li>
+						</ul>
+					</div>
+				</a>
+
 				
 
 				<!-- 点评 -->
-				<div class="detail_box reviews mt20" id="reviews" v-if="reviewsData &&　reviewsData.records">
+				<div class="detail_box reviews" id="reviews" v-if="reviewsData &&　reviewsData.records">
 					<div class="reviews_title">
 						<i class="title_line"></i>
 						<span class="reviews_num">{{reviewsData.records==1 ? 'Review':'Reviews'}} ({{reviewsData.records}})</span>
@@ -2157,7 +2167,7 @@ import { sep } from 'path';
 					
 					.book_ensure{
 						background-color: #f2fbf9;
-						cursor: pointer;
+						// cursor: pointer;
 						border-radius: 8px;
 						padding: 15px 20px;
 						margin-top: 10px;
@@ -2279,8 +2289,10 @@ import { sep } from 'path';
 			}
 			
 			.ADpandaPhone{
+				display: block;
 				position: relative;
-				margin-top: 40px;
+				margin-top: 10px;
+				margin-bottom: 40px;
 				img{
 					vertical-align: top;
 					height: 181px;
@@ -2353,7 +2365,7 @@ import { sep } from 'path';
 
 			/*行程*/
 			.itinerary{
-				border-bottom: 1px solid #dde0e0;
+				// border-bottom: 1px solid #dde0e0;
 				.btn_viewall{
 					float: right;
 					color: #1bbc9d;
@@ -2443,9 +2455,9 @@ import { sep } from 'path';
 
 			/*其他版块信息*/
 			.other_box{
-				// padding-top: 15px;
+				margin-top: 15px;
 				// border: none;
-				margin-top: 40px;
+				// margin-top: 40px;
 				padding-top: 10px;
 				.other_list{
 					border-top: 1px solid #ddd;
@@ -2492,6 +2504,7 @@ import { sep } from 'path';
 
 			/*点评*/
 			.reviews{
+				margin-top: 20px;
 				.reviews_title{
 					font-size: 24px;
 					font-weight: bold;

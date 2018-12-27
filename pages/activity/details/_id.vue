@@ -5,7 +5,7 @@
 
 		<!-- banner -->
 		<div class="banner">
-			<div class="swiper-container" id="swiper_bannerbox" v-swiper:mySwiper="bannerSwiper">
+			<div class="swiper-container" id="swiper_bannerbox" v-swiper:mySwiper="bannerSwiper" ref="mySwiper">
 				
 				<div class="swiper-wrapper">
 					<div class="swiper-slide" :key="index" v-for="(slide, index) in detail.bannerPhotos">
@@ -99,6 +99,25 @@
 								<checkbox class="pp_checkbox" v-model="pandaPhoneCheck">Add Panda Phone to my trip for only <dfn>USD $1</dfn></checkbox>
 								<p class="pp_tip">All-in-one Mobile Travel Assistant <span @click="showPandaPhone">Show details</span></p>
 							</li> -->
+							<li>
+								<h4>Pick Your Panda Pal or let us choose for you</h4>
+								<div class="pandaPal_book_tab_all">
+									<div class="pandaPal_book_tab" v-swiper:swiperBook="swiperPandaPalBook" ref="swiperBook">
+										<div class="swiper-wrapper">
+											<div class="swiper-slide" @click="showPandapal = true" :class="{'active':pandapalIndex==index}" :key="index" v-for="(slide, index) in detail.bannerPhotos">
+												<img :src="slide.url">
+												<div class="active_box iconfont">&#xe654;</div>
+											</div>
+										</div>
+										<div class="swiper-button-prev iconfont">&#xe669;</div>
+										<div class="swiper-button-next iconfont">&#xe64a;</div>
+									</div>
+									
+									
+								</div>
+								<p class="pandapal_change_tip">You’ve selected Supergladys!</p>
+								
+							</li>
 							<li class="clearfix">
 								<span class="btn js_bookNow" @click="bookNow">Book Now</span>
 								<span class="btn_inquire fl" @click="showContact">Inquire</span>
@@ -180,22 +199,28 @@
 				</div>
 
 				<!-- Panda Pals -->
-				<!-- <div class="detail_box pandaPal" id="pandaPal">
+				<div class="detail_box pandaPal" id="pandaPal">
 					<h3><i></i>Meet the Panda Pals for this tour. Pick your favorite!</h3>
 					<p class="detail_p mt10">This tour is led by a Panda Pal: an English-speaking local who loves their city and wants to show you around. Although they don’t have the knowledge of experience of a professional guide, Panda Pals still meet our standards of excellence and provide an authentic way to experience China through 
 the eyes of an ordinary local. </p>
 					<div class="pandaPal_box mt20">
-						<div v-swiper:swiper="swiperPandaPal">
+						<div class="pandaPal_tab" v-swiper:swiperPandaPal="swiperPandaPalTab1" ref="swiperPandaPal">
 							<div class="swiper-wrapper">
-								<div class="swiper-slide" :key="index" v-for="(slide, index) in detail.bannerPhotos">
-									<img :src="slide.url"  />
+								<div class="swiper-slide" @click="showPandapal=true" :key="index" v-for="(slide, index) in detail.bannerPhotos">
+									<img :src="slide.url">
+									<div class="pandaPal_tab_info">
+										<p>Hello I am</p>
+										<h5>Thia, The Friendly Storyteller</h5>
+									</div>
 								</div>
 							</div>
-							<div class="swiper-button-prev swiper-button-white"></div>
-							<div class="swiper-button-next swiper-button-white"></div>
+							<div class="swiper-button-prev swiper-button-white iconfont">&#xe669;</div>
+							<div class="swiper-button-next swiper-button-white iconfont">&#xe64a;</div>
 						</div>
+
+						
 					</div>
-				</div> -->
+				</div>
 
 				<!-- 行程板块 -->
 				<div class="detail_box itinerary" id="itinerary" v-if="detail.itinerary.length">
@@ -538,6 +563,80 @@ Price may vary depending on the language. If you need guides in other languages,
 			<div class="pp_close iconfont" @click="showPPDialog=false">&#xe606;</div>
 		</div>
 
+
+		<div class="pal_dialog_bg" v-show="showPandapal"></div>
+		<div class="pal_dialog" v-show="showPandapal" ref="pal_dialog">
+			<h3>Select your favorite Pal</h3>
+			<div class="pal_dialog_tab" v-swiper:palDialogTab="palDialogTabOpt" ref="palDialogTab">
+				<div class="swiper-wrapper">
+					<div class="swiper-slide" @click="tabIndex=index" :class="{'active':index==pandapalIndex,'activeTab':index==tabIndex}" :key="index" v-for="(slide, index) in detail.bannerPhotos">
+						<img :src="slide.url">
+						<div class="pal_dialog_tab_info">
+							<p>Hello I am</p>
+							<h5>Thia, The Friendly Storyteller</h5>
+						</div>
+						<div class="check_tag iconfont">&#xe654;</div>
+					</div>
+				</div>
+				<div class="swiper-button-prev swiper-button-white iconfont">&#xe669;</div>
+				<div class="swiper-button-next swiper-button-white iconfont">&#xe64a;</div>
+			</div>
+
+			<div class="pal_dialog_content">
+				<div class="pal_dialog_box">
+					<h4>Meet your Panda Pals</h4>
+					<div class="pals_top">
+						<div class="pals_l">
+							<img src="http://placehold.it/734x430/dddddd" width="734" height="430" alt="">
+						</div>
+						<div class="pals_r">
+							<div class="pals_r_tit">Hello I'm Jenny, <br>The Creative Historian</div>
+							<p><b>Tours Given:</b> 88</p>
+							<p><b>I speak:</b> English, 中文</p>
+
+							<div class="pals_tag">
+								<span>Loves history & mysteries</span>
+								<span>Enthusiasm</span>
+								<span>War stories expert</span>
+								<span>Humas compass</span>
+							</div>
+
+							<div class="pals_btnbox">
+								<span class="btn_selected">Pal Selected</span>
+								<span class="btn_contactme">Contact me</span>
+							</div>
+						</div>
+					</div>
+
+					<h5>About me</h5>
+					<p class="pals_p">You’ll discover Shanghai through the eyes of a local: from the highlights to the hidden gems. I have tons of great stories to share with you!  You’ll discover Shanghai through the eyes of a local: from the highlights to the hidden gems. I have tons of great stories to share with you!  You’ll discover Shanghai through the eyes of a local: from the highlights to the hidden gems. I have tons of great stories to share with you!  You’ll discover Shanghai through the eyes of a local: from the highlights to the hidden gems. I have tons of great stories to share with you! </p>
+					<p class="pals_p">You’ll discover Shanghai through the eyes of a local: from the highlights to the hidden gems. I have tons of great stories to share with you!  You’ll discover Shanghai through the eyes of a local: from the highlights to the hidden gems. I have tons of great stories to share with you!  You’ll discover Shanghai through the eyes of a local: from the highlights to the hidden gems. I have tons of great stories to share with you!  You’ll discover Shanghai through the eyes of a local: from the highlights to the hidden gems. I have tons of great stories to share with you! </p>
+
+					<h5>My experiences</h5>
+					<div class="experiences">
+						<div class="swiper_experiences" v-swiper:palExperiences="palExperiencesOpt" ref="palExperiences">
+							<div class="swiper-wrapper">
+								<div class="swiper-slide" :key="index" v-for="(slide, index) in detail.bannerPhotos">
+									<div class="img_box" v-lazy:background-image="slide.url"></div>
+									<div class="experiences_info">
+										<div class="pro_tit">
+											<span class="pro_tag">PRIVATE</span>Zero basic oil painting experience, Zero basic oil painting experience, 
+										</div>
+										<p>Duration:  4 hours</p>
+										<div class="pro_price"><span>From</span> <b>$88.9</b> pp</div>
+									</div>
+								</div>
+							</div>
+							<div class="swiper-button-prev swiper-button-white iconfont">&#xe669;</div>
+							<div class="swiper-button-next swiper-button-white iconfont">&#xe64a;</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="pal_dialog_close iconfont" @click="showPandapal=false">&#xe606;</div>
+		</div>
+
 	</div>
 </template>
 
@@ -647,8 +746,8 @@ import { sep } from 'path';
 					},
 					// setWrapperSize: true,
 					
-				},
-				swiperPandaPal: {
+				}, 
+				swiperPandaPalTab1: {
 					lazy: true,
 					autoplay: false,
 					// delay: 3000,
@@ -666,6 +765,49 @@ import { sep } from 'path';
 					// setWrapperSize: true,
 					initialSlide: 0,
 				},
+				swiperPandaPalBook: {
+					lazy: true,
+					autoplay: false,
+					spaceBetween:6,
+					slidesPerView: 5,
+					slidesPerGroup: 1,
+					navigation: {
+						nextEl: '.swiper-button-next',
+						prevEl: '.swiper-button-prev',
+					},
+					// setWrapperSize: true,
+					initialSlide: 0,
+				},
+				
+
+				pandapalIndex:0,
+				tabIndex:0,
+				showPandapal:false,
+
+				palDialogTabOpt:{
+					lazy: true,
+					autoplay: false,
+					slidesPerView: 'auto',
+					slidesPerGroup: 4,
+					navigation: {
+						nextEl: '.swiper-button-next',
+						prevEl: '.swiper-button-prev',
+					},
+					initialSlide: 0,
+				},
+				palExperiencesOpt:{
+					lazy: true,
+					autoplay: false,
+					slidesPerView: 'auto',
+					slidesPerGroup: 3,
+					spaceBetween:16,
+					navigation: {
+						nextEl: '.swiper-button-next',
+						prevEl: '.swiper-button-prev',
+					},
+					initialSlide: 0,
+				}
+
 			};
 
 			//设置币种
@@ -1854,6 +1996,11 @@ import { sep } from 'path';
 						});
 					}
 				}
+			},
+			showPandapal(value){
+				if(value){
+					document.querySelector('.pal_dialog').style.top = (scrollY+30)+'px';
+				}
 			}
 		}
 	};
@@ -2107,6 +2254,78 @@ import { sep } from 'path';
 										cursor: pointer;
 									}
 								}
+
+								.pandaPal_book_tab_all{
+									position: relative;
+									padding: 5px 0 10px;
+									.swiper-button-prev,.swiper-button-next{
+										background: none;
+										width: 20px;
+										height: 52px;
+										text-align: center;
+										line-height: 52px;
+										background-color: #fff;
+										color: #333;
+										font-size: 20px;
+										font-weight: bold;
+										// top: 50%;
+										// margin-top: -10px;
+										top: 0;
+										margin-top: 0;
+										
+									}
+									.swiper-button-prev{
+										left: 0
+									}
+									.swiper-button-next{
+										right: 0;
+									}
+									
+								}
+								.pandapal_change_tip{
+									color: #1bbc9d;
+									font-size: 14px;
+									margin-top: 5px;
+								}
+								.pandaPal_book_tab{
+									padding: 0 20px;
+									position: relative;
+									.swiper-slide{
+										width: 52px!important;
+										height: 52px;
+										border-radius: 50%;
+										overflow: hidden;
+										margin-right: 6px;
+										position: relative;
+										cursor: pointer;
+										img{
+											width: 100%;
+											height: 100%;
+										}
+									}
+									
+									
+									.active_box{
+										background-color:rgba(27,188,157,0.5);
+										display: none;
+										text-align: center;
+										position: absolute;
+										left: 0;
+										top: 0;
+										width: 100%;
+										height: 100%;
+										text-align: center;
+										line-height: 52px;
+										color: #fff;
+										font-size: 22px;
+									}
+									.active{
+										.active_box{
+											display: block;
+											
+										}
+									}
+								}
 							}
 						}
 						.book_price_info{
@@ -2352,12 +2571,55 @@ import { sep } from 'path';
 			//潘大炮
 			.pandaPal{
 				.pandaPal_box{
+					position: relative;
+					.pandaPal_tab{
+						padding:0 0 20px;
+					}
 					.swiper-slide{
 						// width: 220px;
+						box-shadow: 0px 2px 20px 0px rgba(0, 0, 0, 0.1);
+						border-radius: 5px;
 						margin-right: 20px;
+						overflow: hidden;
+						cursor: pointer;
 						img{
 							width: 100%;
 						}
+						.pandaPal_tab_info{
+							padding: 12px 20px;
+							p{
+								font-size: 14px;
+							}
+							h5{
+								font-size: 20px;
+								font-weight: bold;
+								margin-top: 8px;
+							}
+						}
+					}
+					.swiper-button-prev,.swiper-button-next{
+						background: #fff;
+						border-radius: 20px;
+						width: 40px;
+						height: 40px;
+						box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.1);
+						color: #353a3f;
+						font-size: 22px;
+						font-weight: bold;
+						text-align: center;
+						line-height: 40px;
+						&:hover{
+							color: #1bbc9d;
+						}
+						&:focus{
+							outline: none;
+						}
+					}
+					.swiper-button-prev{
+						left: 0px;
+					}
+					.swiper-button-next{
+						right: 0px;
 					}
 				}
 			}
@@ -3040,91 +3302,377 @@ import { sep } from 'path';
 		}
 
 
-	.alertPicOuter {
-		background: rgba(0, 0, 0, 0.8);
-		height: 100%;
-		width: 100%;
-		position: fixed;
-		z-index: 999;
-		top: 0;
-		left: 0;
-		&.on {
-			display: block;
-		}
-		&.off {
-			display: none;
-		}
-		.conter{
-			width: 860px;
-			overflow: hidden;
-			.swiper-button-next{
-				right: -60px;
+		.alertPicOuter {
+			background: rgba(0, 0, 0, 0.8);
+			height: 100%;
+			width: 100%;
+			position: fixed;
+			z-index: 999;
+			top: 0;
+			left: 0;
+			&.on {
+				display: block;
 			}
-			.swiper-button-prev{
-				left: -60px;
+			&.off {
+				display: none;
 			}
-		}
-		.boxshow {
-			position: absolute;
-			// height: 700px;
-			left: 50%;
-			top: 50%;
-			margin: -350px 0 0 -430px;
-				
-			 .swiper-container {
-			        width: 100%;
-			        height: 300px;
-			        margin-left: auto;
-			        margin-right: auto;
-			   }
-			    .gallery-top {
-			        height: 574px;
-			        width: 100%;
-			    	.swiper-slide{
-			    		height: 574px;
-			    		text-align: center;
-					    overflow: hidden;
-			    		img{
-			    			height: 100%;
-			    		}
-			    	}
-			    }
-			    .gallery-thumbs {
-						height: 100px;
-						box-sizing: border-box;
-						margin-top: 26px;
-			    }
-			    .gallery-thumbs .swiper-slide {
-						height: 100%;
-						width: 138px;
-						
-						background-size: cover;
-						opacity: 0.4; 
-						text-align: center;
-						overflow: hidden;
-						img{
-							height: 92px;	
+			.conter{
+				width: 860px;
+				overflow: hidden;
+				.swiper-button-next{
+					right: -60px;
+				}
+				.swiper-button-prev{
+					left: -60px;
+				}
+			}
+			.boxshow {
+				position: absolute;
+				// height: 700px;
+				left: 50%;
+				top: 50%;
+				margin: -350px 0 0 -430px;
+					
+				.swiper-container {
+								width: 100%;
+								height: 300px;
+								margin-left: auto;
+								margin-right: auto;
+					}
+						.gallery-top {
+								height: 574px;
+								width: 100%;
+							.swiper-slide{
+								height: 574px;
+								text-align: center;
+								overflow: hidden;
+								img{
+									height: 100%;
+								}
+							}
 						}
-			       
-			    }
-			    .gallery-thumbs .imgActive {
-			      opacity: 1;
-			    }
-			   
+						.gallery-thumbs {
+							height: 100px;
+							box-sizing: border-box;
+							margin-top: 26px;
+						}
+						.gallery-thumbs .swiper-slide {
+							height: 100%;
+							width: 138px;
+							
+							background-size: cover;
+							opacity: 0.4; 
+							text-align: center;
+							overflow: hidden;
+							img{
+								height: 92px;	
+							}
+							
+						}
+						.gallery-thumbs .imgActive {
+							opacity: 1;
+						}
+					
+			}
+			.false {
+				&:hover {
+					cursor: pointer;
+				}
+				i {
+					font-size: 36px;
+					color: #fff;
+				}
+				position: absolute;
+				right: 40px;
+				top: 31px;
+			}
 		}
-		.false {
-			&:hover {
-				cursor: pointer;
-			}
-			i {
-				font-size: 36px;
-				color: #fff;
-			}
+
+		.pal_dialog_bg{
+			width: 100%;
+			height: 100%;
+			position: fixed;
+			left: 0;
+			top: 0;
+			background-color: rgba(0,0,0,0.4);
+			z-index: 999;
+		}
+		.pal_dialog{
 			position: absolute;
-			right: 40px;
-			top: 31px;
+			left: 5%;
+			top: 50px;
+			z-index: 999;
+			width: 90%;
+			
+			min-width: 1220px;
+			background-color: #fff;
+			box-sizing: border-box;
+			padding: 0 20px;
+			h3{
+				height: 48px;
+				line-height: 48px;
+				text-align: center;
+				color: #000;
+				font-size: 18px;
+				font-weight: bold;
+			}
+			.pal_dialog_tab{
+				padding: 4px 0;
+				.swiper-slide{
+					width: 300px!important;
+					height: 200px;
+					overflow: hidden;
+					.pal_dialog_tab_info{
+						width: 100%;
+						padding: 50px 15px 15px;
+						color: #fff;
+						font-size: 20px;
+						position: absolute;
+						left: 0;
+						bottom: 0;
+						background: -webkit-linear-gradient(bottom,rgba(0,0,0,0.5),rgba(0,0,0,0)); /* Safari 5.1 - 6 */
+						background: -o-linear-gradient(top,rgba(0,0,0,0.5),rgba(0,0,0,0)); /* Opera 11.1 - 12*/
+						background: -moz-linear-gradient(top,rgba(0,0,0,0.5),rgba(0,0,0,0)); /* Firefox 3.6 - 15*/
+						background: linear-gradient(to top, rgba(0,0,0,0.5), rgba(0,0,0,0)); /* 标准的语法 */
+						p{
+							margin-bottom: 5px;
+							font-weight: bold;
+						}
+						h5{
+							font-weight: bold;
+						}
+					}
+				}
+
+				.check_tag{
+					position: absolute;
+					right: 18px;
+					top: 18px;
+					width: 34px;
+					height: 34px;
+					text-align: center;
+					line-height: 34px;
+					color: #fff;
+					border-radius: 50%;
+					background-color: #1bbc9d;
+					opacity: 0;
+				}
+				.active{
+					.check_tag{
+						opacity: 1;
+					}
+				}
+				.activeTab{
+					border-bottom: 8px solid #1bbc9d;
+					height: 208px;
+					margin-top: -4px;
+				}
+
+				.swiper-button-prev,.swiper-button-next{
+					background: #fff;
+					border-radius: 20px;
+					width: 40px;
+					height: 40px;
+					box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.1);
+					color: #353a3f;
+					font-size: 22px;
+					font-weight: bold;
+					text-align: center;
+					line-height: 40px;
+					&:hover{
+						color: #1bbc9d;
+					}
+					&:focus{
+						outline: none;
+					}
+				}
+				.swiper-button-prev{
+					left: 24px;
+				}
+				.swiper-button-next{
+					right: 24px;
+				}
+			}
+
+			.pal_dialog_content{
+				// height: calc(90vh - 250px);
+				// overflow-y: auto;
+			}
+			.pal_dialog_box{
+				width: 1180px;
+				margin: 0 auto;
+				
+				h4{
+					font-size: 32px;
+					font-weight: bold;
+					margin: 40px 0 25px;
+				}
+				.pals_top{
+					overflow: hidden;
+					.pals_l{
+						float: left;
+					}
+					.pals_r{
+						width: 380px;
+						float: left;
+						margin-left: 60px;
+						.pals_r_tit{
+							font-size: 26px;
+							font-weight: bold;
+							line-height: 38px;
+							margin-bottom: 10px;
+						}
+						p{
+							font-size: 18px;
+							margin-top: 4px;
+						}
+						.pals_tag{
+							margin-top: 40px;
+							span{
+								display: inline-block;
+								overflow: hidden;
+								border-radius: 18px;
+								height: 36px;
+								line-height: 34px;
+								padding: 0 15px;
+								border: solid 1px #353a3f;
+								font-size: 18px;
+								margin: 10px 10px 0 0;
+							}
+						}
+						.pals_btnbox{
+							margin-top:40px;
+							span{
+								display: inline-block;
+								width: 180px;
+								text-align: center;
+								color: #1bbc9d;
+								background-color: #fff;
+								box-shadow: 0px 2px 30px 0px rgba(0, 0, 0, 0.1);
+								border-radius: 28px;
+								height: 56px;
+								line-height: 56px;
+								margin-left: 20px;
+								color: #1bbc9d;
+								font-size: 18px;
+								cursor: pointer;
+							}
+							span:nth-child(1){
+								border: 1px solid #1bbc9d;
+								margin-left: 0;
+							}
+						}
+					}
+				}
+				h5{
+					font-size: 26px;
+					margin-top: 36px;
+				}
+				.pals_p{
+					font-size: 16px;
+					margin-top: 8px;
+					line-height: 24px;
+				}
+
+				.experiences{
+					.swiper_experiences{
+						padding: 20px 5px 30px;
+						.swiper-slide{
+							width: 380px!important;
+							overflow: hidden;
+							background-color: #ffffff;
+							box-shadow: 0px 2px 30px 0px rgba(0, 0, 0, 0.1);
+							border-radius: 6px;
+							.img_box{
+								height: 222px;
+								background-size: cover;
+							}
+							.experiences_info{
+								padding: 15px;
+								.pro_tit{
+									font-size: 16px;
+									line-height: 21px;
+									overflow:hidden;
+									-webkit-line-clamp: 2;   //要设置的行数
+									-webkit-box-orient: vertical;
+									display: -webkit-box;
+									text-overflow: ellipsis;
+									span{
+										display: inline-block;
+										height: 16px;
+										line-height: 16px;
+										padding: 0 10px;
+										background-color: #1bbc9d;
+										border-radius: 8px;
+										margin-right: 10px;
+										color: #fff;
+										font-size: 10px;
+									}
+								}
+								p{
+									color: #878e95;
+									font-size: 14px;
+									margin-top: 10px;
+								}
+								.pro_price{
+									font-size: 14px;
+									text-align: right;
+									span{
+										color: #878e95;
+										margin-right: 5px;
+									}
+									b{
+										font-size: 20px;
+									}
+								}
+							}
+						}
+						.swiper-button-prev,.swiper-button-next{
+							background: #fff;
+							border-radius: 20px;
+							width: 40px;
+							height: 40px;
+							box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.1);
+							color: #353a3f;
+							font-size: 22px;
+							font-weight: bold;
+							text-align: center;
+							line-height: 40px;
+							&:hover{
+								color: #1bbc9d;
+							}
+							&:focus{
+								outline: none;
+							}
+						}
+						.swiper-button-prev{
+							left: 0px;
+						}
+						.swiper-button-next{
+							right: 0px;
+						}
+					}
+				}
+				
+				
+			}
+
+			.pal_dialog_close{
+				position: absolute;
+				right: 0;
+				top: 0;
+				width: 48px;
+				height: 48px;
+				line-height: 48px;
+				text-align: center;
+				font-size: 18px;
+				cursor: pointer;
+				&:hover{
+					color: #1bbc9d;
+				}
+			}
+			
 		}
-	}
 		
 	}
 </style>

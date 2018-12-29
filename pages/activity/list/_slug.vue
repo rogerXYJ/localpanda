@@ -873,7 +873,7 @@ export default {
         DURATION: 1,
         CATEGORY: 2,
         GROUP_TYPE: 3,
-        TOUR_TYPE: 4,
+        // TOUR_TYPE: 4,
         ATTRACTION: 5,
         CITY: 6
       };

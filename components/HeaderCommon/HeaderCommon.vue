@@ -106,20 +106,22 @@
 							<span>(US) +1 888 930-8849 (Toll Free)</span>
 						</div>	
 						<div>
-							<i>
-								<svg class="iconCountry" aria-hidden="true">
-									 <use xlink:href="#icon-usa"></use>
-								</svg>
+							<i class="currencySvg">
+								<!-- <svg class="iconCountry" aria-hidden="true">
+									 <use xlink:href="#icon-uk"></use>
+								</svg> -->
+								<svg viewBox="0 0 32 24" role="presentation" aria-hidden="true" focusable="false"><path d="m .02 0h32v24h-32z" fill="#006"></path><path d="m-7.98 0v2.67l42.57 21.24h5.36v-2.67l-42.58-21.24h-5.36zm37.31 7.97 10.62-5.3v-2.67h-5.36l-14.61 7.29v-7.29h-7.99v7.97h-19.97v7.97h10.62l-10.62 5.3v2.67h5.36l14.61-7.29v7.29h7.99v-7.97h19.97v-7.97z" fill="#fff"></path><path d="m-7.98 9.57v4.78h47.93v-4.78zm21.57 14.43h4.79v-24h-4.79zm-21.57-.09 15.98-7.97h3.57l-15.98 7.98h-3.57zm0-23.92 15.97 7.98h-3.57l-12.4-6.19v-1.78zm28.38 7.97 15.98-7.96h3.57l-15.98 7.97h-3.57zm19.55 15.94-15.98-7.96h3.57l12.4 6.19v1.78z" fill="#c00"></path></svg>
 							</i>
-							<span>(US) +44 7479-270518</span>
+							<span>(UK) +44 7479-270518</span>
 						</div>	
 						<div>
-							<i>
-								<svg class="iconCountry" aria-hidden="true">
-									 <use xlink:href="#icon-usa"></use>
-								</svg>
+							<i class="currencySvg">
+								<svg viewBox="0 0 32 24" role="presentation" aria-hidden="true" focusable="false"><path d="m0 0h32v24h-32z" fill="#00247d"></path><path d="m0 0h1.93l15.35 11.1v1.4h-1.93l-15.35-11.1zm13.46 4.17h3.83v4.17h-7.2v4.17h-2.88v-3.81l-5.27 3.81h-1.93v-1.4l3.83-2.77h-3.83v-4.17h7.2v-4.17h2.88v3.81l5.27-3.81h1.93v1.4z" fill="#fff"></path><path d="m0 5v2.5h17.28v-2.5zm7.78-5v12.5h1.73v-12.5zm-7.78 12.5 5.76-4.17h1.29l-5.76 4.17zm0-12.5 5.76 4.17h-1.29l-4.47-3.24zm10.24 4.17 5.76-4.17h1.29l-5.76 4.17zm7.05 8.33-5.76-4.17h1.29l4.47 3.24z" fill="#c00"></path><path d="m14.99 19.63-2.18.19.3 2.17-1.51-1.59-1.51 1.59.3-2.17-2.18-.19 1.88-1.12-1.21-1.83 2.05.78.67-2.09.67 2.09 2.05-.78-1.21 1.83zm9.34 2-.53-.79.89.34.29-.91.29.91.89-.34-.53.79.82.49-.95.08.13.94-.66-.69-.66.69.13-.94-.95-.08zm0-14.1-.53-.79.89.34.29-.91.29.91.89-.34-.53.79.82.49-.95.08.13.94-.66-.69-.66.69.13-.94-.95-.08zm-5.29 5.73-.53-.79.89.34.29-.91.29.91.89-.34-.53.79.82.49-.95.08.13.94-.66-.69-.66.69.13-.94-.95-.08zm9.99-1.41-.53-.79.89.34.29-.91.29.91.89-.34-.53.79.82.49-.95.08.13.94-.66-.69-.66.69.13-.94-.95-.08.82-.49zm-1.93 4.16-.52.32.14-.59-.47-.39.61-.05.23-.56.23.56.61.05-.47.39.14.59z" fill="#fff"></path></svg>
+								<!-- <svg class="iconCountry" aria-hidden="true">
+									 <use xlink:href="#icon-au"></use>
+								</svg> -->
 							</i>
-							<span>(US) +61 488-849-818</span>
+							<span>(AU) +61 488-849-818</span>
 						</div>	
 					</div>				
 				</div>
@@ -738,6 +740,17 @@
 						margin-left: 8px;
 						font-size: 14px;
 						font-weight: bold;
+					}
+					.currencySvg{
+						width: 20px!important;
+						height: 14px!important;
+						display: inline-block;
+						float: left;
+						margin-top: 2px;
+						svg{
+							width: 100%!important;
+							height: 100%!important; display: inline-block; fill: currentcolor; vertical-align: top;
+						}
 					}
 				}
 				p{

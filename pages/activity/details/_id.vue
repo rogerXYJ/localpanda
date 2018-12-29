@@ -35,7 +35,7 @@
 								<i class="iconfont">&#xe666;</i>
 							</div>
 							<div class="price_info">
-								<b><span class="price_from" v-if="participants==0 && !picInfo.unifiedPricing">From</span>{{nowExchange.symbol}}{{participants>0?returnFloat(getPeoplePrice(participants,true)):returnFloat(picInfo.bottomPrice)}}</b>{{returnText(participants)}} 
+								<b><span class="price_from" v-if="participants==0 && !picInfo.unifiedPricing">From</span>{{nowExchange.symbol}}{{participants>0?(nowExchange.code=='JPY'?parseInt(getPeoplePrice(participants,true)):returnFloat(getPeoplePrice(participants,true))):(nowExchange.code=='JPY'?parseInt(picInfo.bottomPrice):returnFloat(picInfo.bottomPrice))}}</b>{{returnText(participants)}} 
 							</div>
 
 							<div class="price_tip" v-if="!participants && !picInfo.unifiedPricing">Price based on group of {{getBottomCapacity()}}</div>

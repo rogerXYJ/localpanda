@@ -164,7 +164,7 @@
 						</div>
 					</div>
 
-					<div class="filterBox" v-for="(item,index) in aggregations" v-if="Object.getOwnPropertyNames(item.items).length>2" :key="index">
+					<div class="filterBox" v-for="(item,index) in aggregations" v-show="Object.getOwnPropertyNames(item.items).length>2" :key="index">
 						<div class="title">
 							<h3>{{getFilterType(item.type)}}</h3>
 						</div>
@@ -1394,7 +1394,7 @@ export default {
       if (this.postData.participants == 0) {
         delete postData.participants;
       }
-      console.log(postData.filters,11111111111);
+      // console.log(postData.filters,11111111111);
       //return
       Vue.axios
         .post(this.apiBasePath + "search/activity", JSON.stringify(postData), {

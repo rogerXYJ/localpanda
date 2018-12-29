@@ -177,7 +177,7 @@
 							</checkbox-group>
 							<span class="viewMore" @click="showMore(filterCheck,item.items,item.type)" v-if="getObjLength(item.items)>6">View More</span>
 						</div>
-						<div class="filterItem" v-else>
+						<div class="filterItem" :class="{'filterItemHeightAuto':item.type == 'CATEGORY'}" v-else>
 							<checkbox-group  v-model="filterCheck[toLower(item.type)]">
 								<div class="checkboxlist" v-for="(i,key,index) in item.items">
 									<checkbox :label="key" :change="closeChecked" :key="key">{{key}} ({{i}})</checkbox>
@@ -1791,8 +1791,14 @@ export default {
   }
 }
 .checkbox-group {
-  max-height: 120px;
+  max-height: 90px;
   overflow: hidden;
+}
+.filterItemHeightAuto{
+  .checkbox-group {
+    max-height: none;
+    overflow: hidden;
+  }
 }
 .activityList {
   background: #fff;

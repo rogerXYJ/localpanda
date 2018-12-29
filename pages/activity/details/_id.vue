@@ -1035,7 +1035,7 @@ import { sep } from 'path';
 						//注意事项
 						data.notice = results[9].data || [];
 						//导游信息
-						data.detail.guide = results[10].data;
+						data.detail.guide = results[10].data || [];
 
 						//推荐信息
 						data.detail.recommend = results[1].data;
@@ -2152,7 +2152,7 @@ import { sep } from 'path';
 								}
 							}
 							.price_tip{
-								padding: 0px 0 0 95px;
+								padding: 0px 0 0 85px;
 							}
 						}
 						.book_list{

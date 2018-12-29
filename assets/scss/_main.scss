@@ -108,9 +108,11 @@ input {
 .ml30{ margin-left: 30px!important;}
 .ml50{ margin-left: 50px!important;}
 
+.mr10{ margin-right: 10px;}
+
 .flnone{ float: none!important;}
-.fl{ float: left;}
-.fr{ float: right;}
+.fl{ float: left!important;}
+.fr{ float: right!important;}
 
 .hr{ height: 1px; background-color: #ddd;}
 

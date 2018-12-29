@@ -553,7 +553,7 @@
 					}
 					.countryCode {
 						position: absolute;
-						top: 60px;
+						bottom: 30px;
 						left: 0px;
 						box-shadow: 0px 2px 10px 0px rgba(53, 58, 63, 0.2);
 						background: #fff;

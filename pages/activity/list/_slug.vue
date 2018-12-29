@@ -164,7 +164,7 @@
 						</div>
 					</div>
 
-					<div class="filterBox" v-for="(item,index) in aggregations" v-if="Object.getOwnPropertyNames(item.items).length" :key="index">
+					<div class="filterBox" v-for="(item,index) in aggregations" v-if="Object.getOwnPropertyNames(item.items).length>2" :key="index">
 						<div class="title">
 							<h3>{{getFilterType(item.type)}}</h3>
 						</div>
@@ -191,21 +191,24 @@
 
 				<div class="pageRight">
 					<div class="selectType clearfix" v-if="records>0">
-						<div class="top_filter">
+						<div class="top_filter fr">
+              <span class="mr10">Sort by</span>
 							<select class="selectSort" @change="sortFn(selected)" v-model="selected">
 								<option v-for="(item,index) in select" v-model="item.selectText">{{item.selectText}}</option>
 							</select>
 							<i class="iconfont select_arrow">&#xe60f;</i>
 						</div>
 
+            <div class="top_filter">
+							<span class="pageSizeInfo" v-if="records>1"><b>{{records}}</b> activities in total</span>
+              <span class="pageSizeInfo" v-else>{{records}} activity in total</span>
+						</div>
+
             <div class="top_filter" v-if="hasPandaPal">
               <checkbox v-model="pandaPal" label="Panda Pal Experience">Panda Pal Experience</checkbox>
             </div>
 
-						<div class="all">
-							<span class="pageSizeInfo" v-if="records>1"><b>{{records}}</b> activities in total</span>
-              <span class="pageSizeInfo" v-else>{{records}} activity in total</span>
-						</div>
+						
 					</div>
 					<div class="list-cont" v-if="records>0">
 						<ul>
@@ -464,6 +467,7 @@ export default {
     }
     //服务端请求数据
     let listdata = {};
+
     try {
       listdata = await Vue.axios.post(
         apiBasePath + "search/activity",
@@ -517,14 +521,15 @@ export default {
     }
     //filterCheck排序
     var sortDefault = [
+      "DURATION",
       "CATEGORY",
       "GROUP_TYPE",
-      "ATTRACTION",
-      "DURATION",
       "TOUR_TYPE",
+      "ATTRACTION",
       "CITY",
       "PANDA_PAL"
     ];
+    
     //给数据添加排序的序号
     var newfilterCheck = {};
     var thisNumLength = 0;
@@ -865,11 +870,11 @@ export default {
       var aggregations = this.listdata.aggregations; //设置自定义顺序
 
       var sortDefault = {
-        CATEGORY: 1,
-        GROUP_TYPE: 2,
-        ATTRACTION: 3,
-        DURATION: 4,
-        TOUR_TYPE: 5,
+        DURATION: 1,
+        CATEGORY: 2,
+        GROUP_TYPE: 3,
+        TOUR_TYPE: 4,
+        ATTRACTION: 5,
         CITY: 6
       };
       //给数据添加排序的序号
@@ -889,12 +894,42 @@ export default {
 
       //排序
       newAggregations = newAggregations.sort(function(a, b) {
-        return a.number > b.number;
+        return a.number - b.number;
       });
       return newAggregations;
     }
   },
   methods: {
+    //获取指定顺序的数据
+    getAggregations: function(aggregations) {
+      var sortDefault = {
+        DURATION: 1,
+        CATEGORY: 2,
+        GROUP_TYPE: 3,
+        TOUR_TYPE: 4,
+        ATTRACTION: 5,
+        CITY: 6,
+        PANDA_PAL: 7
+      };
+      //给数据添加排序的序号
+
+      var newAggregations = [];
+      for (var i = 0; i < aggregations.length; i++) {
+        var thisType = aggregations[i].type;
+        var thisNum = sortDefault[thisType];
+        aggregations[i].number = thisNum ? thisNum : 10; //没有的字段默认设置顺序为10
+        // newAggregations.push(aggregations[i]);
+        if ( typeof sortDefault[thisType] !== "undefined" && aggregations[i].items) {
+          newAggregations.push(aggregations[i]);
+        }
+      }
+
+      //排序
+      newAggregations = newAggregations.sort(function(a, b) {
+        return a.number - b.number;
+      });
+      return newAggregations;
+    },
     closeFn(value) {
       this.showSeachList = value;
       this.isShowHot = value;
@@ -1359,7 +1394,7 @@ export default {
       if (this.postData.participants == 0) {
         delete postData.participants;
       }
-      // console.log(postData.filters);
+      console.log(postData.filters,11111111111);
       //return
       Vue.axios
         .post(this.apiBasePath + "search/activity", JSON.stringify(postData), {
@@ -1387,7 +1422,8 @@ export default {
               }
             }
 
-            var aggregations = res.data.aggregations;
+            //設置数据顺序
+            var aggregations = this.getAggregations(res.data.aggregations);
 
             //检测是否有潘大炮
             var hasPandaPal = false;
@@ -1425,6 +1461,9 @@ export default {
               });
             };
 
+
+            
+
             
           },
           res => {}
@@ -1449,8 +1488,9 @@ export default {
       } else {
         price = [0, 505];
       }
-      this.checkPrice = price;
 
+
+      this.checkPrice = price;
       //重置价格区间
       var thisFil = this.postData.filters;
       if (thisFil) {
@@ -1618,7 +1658,6 @@ export default {
         urlQuery = urlQuery.substring(1); //去掉第一个&
         var url = "/activity/list/China" + (urlQuery ? "?" + urlQuery : "");
         history.pushState(null, null, url);
-        console.log(options);
         
         //返回顶部位置
         this.goTop();
@@ -1752,7 +1791,7 @@ export default {
   }
 }
 .checkbox-group {
-  max-height: 200px;
+  max-height: 120px;
   overflow: hidden;
 }
 .activityList {
@@ -2087,7 +2126,7 @@ export default {
         }
         .filterBox {
           margin-bottom: 15px;
-          padding: 20px 10px 30px 20px;
+          padding: 20px 10px 20px 20px;
           border-radius: 6px;
           border: solid 1px #ebebeb;
           .filterItem1 {
@@ -2096,7 +2135,7 @@ export default {
           }
           .filterItem {
             .viewMore {
-              margin-top: 25px;
+              margin-top: 10px;
               text-align: center;
               text-decoration: underline;
               display: block;
@@ -2105,13 +2144,13 @@ export default {
             }
           }
           .checkboxlist {
-            margin-bottom: 20px;
+            margin-bottom: 8px;
             &:last-child {
               margin: 0;
             }
           }
           .title {
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             h3 {
               font-size: 16px;
               font-weight: bold;
@@ -2151,14 +2190,16 @@ export default {
             right: 14px;
             top: 12px;
           }
+          .pageSizeInfo {
+            line-height: 40px;
+            font-size: 16px;
+          }
         }
         .all {
           float: right;
           height: 40px;
           line-height: 40px;
-          .pageSizeInfo {
-            font-size: 16px;
-          }
+          
           .listIcon {
             font-size: 16px;
             color: #878e95;

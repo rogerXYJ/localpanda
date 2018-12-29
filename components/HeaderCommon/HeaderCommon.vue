@@ -105,6 +105,22 @@
 							</i>
 							<span>(US) +1 888 930-8849 (Toll Free)</span>
 						</div>	
+						<div>
+							<i>
+								<svg class="iconCountry" aria-hidden="true">
+									 <use xlink:href="#icon-usa"></use>
+								</svg>
+							</i>
+							<span>(US) +44 7479-270518</span>
+						</div>	
+						<div>
+							<i>
+								<svg class="iconCountry" aria-hidden="true">
+									 <use xlink:href="#icon-usa"></use>
+								</svg>
+							</i>
+							<span>(US) +61 488-849-818</span>
+						</div>	
 					</div>				
 				</div>
 			</div>
@@ -128,7 +144,7 @@
 				<span class="iconfont font">&#xe66c;</span>
 				<div class="contact_cont">
 					<h3><b>WeChat</b></h3>
-					<h4>Add our public account and communicate with our customer service directly.</h4>
+					<h4>Add our public account & communicate with our customer service directly.</h4>
 					<div class="QR_code"><img src="https://cloud.localpanda.com/static/icon/LPwechat.jpg" alt=""></div>
 				</div>
 			</div>
@@ -709,10 +725,11 @@
 				}
 				.phone{
 					margin-top: 5px;
+					padding-bottom: 10px;
 					div{
-						padding: 10px 0;
+						padding: 4px 0;
 						&:first-child{
-							border-bottom: 1px solid #ebebeb;	
+							// border-bottom: 1px solid #ebebeb;	
 						}
 						
 					}
@@ -729,7 +746,7 @@
 					margin-top: 10px;
 				}
 				.QR_code{
-					margin-top: 15px;
+					margin-top: 10px;
 					width: 98px;
 					height: 98px;
 					background: #ccc;

@@ -13,47 +13,50 @@
 					<h4>Explore hundreds of unique, immersive and authentic experiences</h4>
 				</div>
 				<!--seach bar -->
-				<div class="selectInfo">
-          <span class="clear_search iconfont" v-show="seachContent" @click="clearSearch">&#xe629;</span>
-					<input type="text" id="search_input" v-model="seachContent" @click.stop="showHot" maxlength="60" @keyup.enter="seachFn" autocomplete="off" placeholder="Attraction, Activity, Destination" />
-					<div class="selectPeople">
-						<!-- <span>{{postData.participants}} People <i class="iconfont">&#xe60f;</i></span>
-						<input-number v-if="selectPeople" :participants="postData.participants" :selectNumber="selectNumber" @showSelectPeople="setSelectPeople" @getPeople="setPeople"></input-number> -->
-						<select v-model="postData.participants" class="participants" @change="setPeople">
-							<option v-for="(item,index) in participantsOptionFn()" :value="item.label">{{item.selectparticipant}}</option>
-							
-						</select>
-						<i class="iconfont">&#xe60f;</i>
-					</div>
-					
-					<button class="seachBtn" @click="seachFn">Search</button>
-					<div class="hotRecommend clearfix" v-if="isShowHot" @click.stop="isShowHot=true">
-						<div class="city">
-							<h3>Popular Destinations</h3>
-							<ul>
-								<li v-for="item in options"><a @click.stop="gaRecommendation" :href="getUrl(item,'recommend')">{{item}}</a></li>
-								
-							</ul>
-						</div>
-						<div class="theme">
-							<h3>Popular Choices</h3>
-							<ul>
-								<li v-for="item in thems"><a @click.stop="gaRecommendation" :href="getUrl(item,'recommend')">{{item}}</a></li>
-							</ul>
-						</div>
-					</div>
-					<div class="seachList" v-if="showSeachList">
-						<ul>
-							<li v-for="item in seachList">
-								<a :href="getUrl(item.value,'suggest')" @click="gaSuggestion">
-								<i class="iconfont" v-if="item.type=='DESTINATION'">&#xe610;</i>
-								<i class="iconfont" v-else>&#xe609;</i>
-								<span v-html="textHighlight(item.value)"></span>
-								</a>
-							</li>
-						</ul>
-					</div>
-				</div>
+        <div class="search_box" id="search_box" :class="{'search_fixed':searchFixed}">
+          <div class="search_box_bg" :style="bannerInfo?'background-image: url('+bannerInfo.bannerSrc+');':''"></div>
+          <div class="selectInfo">
+            <span class="clear_search iconfont" v-show="seachContent" @click="clearSearch">&#xe629;</span>
+            <input type="text" id="search_input" v-model="seachContent" @click.stop="showHot" maxlength="60" @keyup.enter="seachFn" autocomplete="off" placeholder="Attraction, Activity, Destination" />
+            <div class="selectPeople">
+              <!-- <span>{{postData.participants}} People <i class="iconfont">&#xe60f;</i></span>
+              <input-number v-if="selectPeople" :participants="postData.participants" :selectNumber="selectNumber" @showSelectPeople="setSelectPeople" @getPeople="setPeople"></input-number> -->
+              <select v-model="postData.participants" class="participants" @change="setPeople">
+                <option v-for="(item,index) in participantsOptionFn()" :value="item.label">{{item.selectparticipant}}</option>
+                
+              </select>
+              <i class="iconfont">&#xe60f;</i>
+            </div>
+            
+            <button class="seachBtn" @click="seachFn">Search</button>
+            <div class="hotRecommend clearfix" v-if="isShowHot" @click.stop="isShowHot=true">
+              <div class="city">
+                <h3>Popular Destinations</h3>
+                <ul>
+                  <li v-for="item in options"><a @click.stop="gaRecommendation" :href="getUrl(item,'recommend')">{{item}}</a></li>
+                  
+                </ul>
+              </div>
+              <div class="theme">
+                <h3>Popular Choices</h3>
+                <ul>
+                  <li v-for="item in thems"><a @click.stop="gaRecommendation" :href="getUrl(item,'recommend')">{{item}}</a></li>
+                </ul>
+              </div>
+            </div>
+            <div class="seachList" v-if="showSeachList">
+              <ul>
+                <li v-for="item in seachList">
+                  <a :href="getUrl(item.value,'suggest')" @click="gaSuggestion">
+                  <i class="iconfont" v-if="item.type=='DESTINATION'">&#xe610;</i>
+                  <i class="iconfont" v-else>&#xe609;</i>
+                  <span v-html="textHighlight(item.value)"></span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
 				
 			</div>
 		</div>
@@ -733,6 +736,9 @@ export default {
       logIn: "",
       loadingStatus: false,
       isdisabled: data.records > postData.pageSize ? true : false, //是否显示翻页
+
+
+      searchFixed:false,
 
       checkPrice: price, //选择价格区间值
       apiBasePath: apiBasePath,
@@ -1747,6 +1753,24 @@ export default {
     });
 
 
+
+
+    this.$nextTick(function(){
+      //导航悬浮
+      var $search_box = document.querySelector('#search_box');
+      var oldTop = $search_box.getBoundingClientRect().top+45;
+      window.onscroll = function(){
+        var Y = window.scrollY;
+        if(Y>oldTop){
+          that.searchFixed = true;
+        }else{
+          that.searchFixed = false;
+        }
+        
+      }
+    })
+
+
     // console.log(that.filterCheck,11111);
 
     // if(window.name != "bencalie"){
@@ -1841,6 +1865,44 @@ export default {
 				width: 100%;
 				text-align: center;*/
     }
+    .search_box{
+      position: absolute;
+      left: 0;
+      top: 150px;
+      // top: 24px;
+      width: 100%;
+      height: 96px;
+      padding: 24px 0 0;
+      z-index: 99;
+      
+      .search_box_bg{
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-repeat:no-repeat;
+        background-size:0;
+        -webkit-filter: blur(2px);
+        -moz-filter: blur(2px);
+        -o-filter: blur(2px);
+        -ms-filter: blur(2px);
+        filter:blur(2px);
+      }
+    }
+    .search_fixed{
+      background-color: #fff;
+      position: fixed;
+      top: 0;
+      box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+      
+      .search_box_bg{
+        background-size:cover;
+      }
+      .selectInfo{
+        box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
+      }
+    }
     .selectInfo {
       height: 48px;
       width: 800px;
@@ -1848,7 +1910,7 @@ export default {
       background: #fff;
       margin: 0 auto;
       position: relative;
-
+      z-index: 2;
       a {
         display: block;
       }

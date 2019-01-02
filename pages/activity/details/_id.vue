@@ -100,25 +100,23 @@
 								<checkbox class="pp_checkbox" v-model="pandaPhoneCheck">Add Panda Phone to my trip for only <dfn>USD $1</dfn></checkbox>
 								<p class="pp_tip">All-in-one Mobile Travel Assistant <span @click="showPandaPhone">Show details</span></p>
 							</li> -->
-							<!-- <li>
+							<li>
 								<h4>Pick Your Panda Pal or let us choose for you</h4>
 								<div class="pandaPal_book_tab_all">
 									<div class="pandaPal_book_tab" v-swiper:swiperBook="swiperPandaPalBook" ref="swiperBook">
 										<div class="swiper-wrapper">
-											<div class="swiper-slide" @click="showGuideDetail = true" :class="{'active':checkGuideIndex==index}" :key="index" v-for="(slide, index) in detail.bannerPhotos">
-												<img :src="slide.url">
+											<div class="swiper-slide" @click="palShowFn" :class="{'active':checkGuideIndex===index}" :key="index" v-for="(items, index) in detail.guide" v-lazy:background-image="items.guidePhoto.headPortraitUrl">
 												<div class="active_box iconfont">&#xe654;</div>
 											</div>
 										</div>
-										<div class="swiper-button-prev iconfont">&#xe669;</div>
-										<div class="swiper-button-next iconfont">&#xe64a;</div>
+										<div class="swiper-button-prev iconfont" v-if="detail.guide.length>0">&#xe669;</div>
+										<div class="swiper-button-next iconfont" v-if="detail.guide.length>0">&#xe64a;</div>
 									</div>
 									
 									
 								</div>
-								<p class="pandapal_change_tip">You’ve selected Supergladys!</p>
-								
-							</li> -->
+								<p class="pandapal_change_tip" v-if="checkGuideIndex!==''">You’ve selected {{detail.guide[checkGuideIndex].enName}}!</p>
+							</li>
 							<li class="clearfix">
 								<span class="btn js_bookNow" @click="bookNow">Book Now</span>
 								<span class="btn_inquire fl" @click="showContact">Inquire</span>
@@ -200,14 +198,14 @@
 				</div>
 
 				<!-- Panda Pals -->
-				<!-- <div class="detail_box pandaPal" id="pandaPal">
+				<div class="detail_box pandaPal" id="pandaPal">
 					<h3><i></i>Meet the Panda Pals for this tour. Pick your favorite!</h3>
 					<p class="detail_p mt10">This tour is led by a Panda Pal: an English-speaking local who loves their city and wants to show you around. Although they don’t have the knowledge of experience of a professional guide, Panda Pals still meet our standards of excellence and provide an authentic way to experience China through 
 the eyes of an ordinary local. </p>
 					<div class="pandaPal_box mt20">
 						<div class="pandaPal_tab" v-swiper:swiperPandaPal="swiperPandaPalTab1" ref="swiperPandaPal">
 							<div class="swiper-wrapper">
-								<div class="swiper-slide" @click="showGuideDetail=true" :key="index" v-for="(items, index) in detail.guide" >
+								<div class="swiper-slide" @click="palShowFn" :key="index" v-for="(items, index) in detail.guide" >
 									<div class="img_box" v-lazy:background-image="items.guidePhoto.headPortraitUrl"></div>
 									<div class="pandaPal_tab_info">
 										<p>Hello I am</p>
@@ -218,9 +216,8 @@ the eyes of an ordinary local. </p>
 							<div class="swiper-button-prev swiper-button-white iconfont" v-if="detail.guide.length>3">&#xe669;</div>
 							<div class="swiper-button-next swiper-button-white iconfont" v-if="detail.guide.length>3">&#xe64a;</div>
 						</div>
-						
 					</div>
-				</div> -->
+				</div>
 
 				<!-- 行程板块 -->
 				<div class="detail_box itinerary" id="itinerary" v-if="detail.itinerary.length">
@@ -248,7 +245,7 @@ the eyes of an ordinary local. </p>
 							<a @click="similarFn(i.activityId)">
 								<h4><span class="tag" :class="{'private':i.groupType=='Private'}" v-if="i.groupType">{{i.groupType}}</span> {{i.shortTitle?i.shortTitle:i.title}} <span class="tag_time">{{i.duration}} {{setTimeStr(i.duration,i.durationUnit)}}</span>	</h4>
 								<div class="similar_list_foot">
-									<span class="price"><i class="gray">{{participants==0?'From':''}}</i><b>{{nowExchange.code}} {{nowExchange.symbol}}{{participants==0?returnFloat(i.bottomPrice):returnFloat(i.perPersonPrice)}}</b>{{returnText(participants)}}</span>
+									<span class="price"><i class="gray">{{participants==0?'From':''}}</i><b>{{nowExchange.code}} {{nowExchange.symbol}}{{participants==0?returnFloat(i.bottomPrice):returnFloat(i.perPersonPrice)}}</b>{{i.unifiedPricing?'pp':returnText(participants)}}</span>
 								</div>
 								<i class="iconfont similar_arrow">&#xe64a;</i>
 							</a>
@@ -515,7 +512,7 @@ Price may vary depending on the language. If you need guides in other languages,
 					
 						<div v-swiper:swiperThumbs="swiperOptionThumbs" class="gallery-thumbs" ref="swiperThumbs">
 							<div class="swiper-wrapper">
-								<div class="swiper-slide" v-for="(i,index) in reviewsImgList" :class="index==0?'imgActive':''" v-lazy:background-image="i.url">
+								<div class="swiper-slide" @click="" v-for="(i,index) in reviewsImgList" :class="index==0?'imgActive':''" v-lazy:background-image="i.url">
 									<!-- <img :src="i.url" /> -->
 								</div>
 								
@@ -570,7 +567,7 @@ Price may vary depending on the language. If you need guides in other languages,
 			<h3>Select your favorite Pal</h3>
 			<div class="pal_dialog_tab" v-swiper:palDialogTab="palDialogTabOpt" ref="palDialogTab">
 				<div class="swiper-wrapper">
-					<div class="swiper-slide" @click="guideSwiperIndex=index" :class="{'active':index==checkGuideIndex,'activeTab':index==guideSwiperIndex}" :key="index" v-for="(items, index) in detail.guide" v-lazy:background-image="items.guidePhoto.headPortraitUrl">
+					<div class="swiper-slide" @click="guideSwiperIndex=index" :class="{'active':index===checkGuideIndex,'activeTab':index==guideSwiperIndex}" :key="index" v-for="(items, index) in detail.guide" v-lazy:background-image="items.guidePhoto.headPortraitUrl">
 						<div class="pal_dialog_tab_info">
 							<p>Hello I am</p>
 							<h5>{{items.enName}}, {{items.slogan}}</h5>
@@ -610,8 +607,8 @@ Price may vary depending on the language. If you need guides in other languages,
 							</div>
 
 							<div class="pals_btnbox">
-								<span class="btn_selected" :class="{'btn_active':checkGuideIndex==guideSwiperIndex}" @click="checkPal"><i class="iconfont">&#xe654;</i> Pal Selected</span>
-								<span class="btn_contactme">Contact me</span>
+								<span class="btn_selected" :class="{'btn_active':checkGuideIndex===guideSwiperIndex}" @click="checkPal(guideSwiperIndex)"><i class="iconfont">&#xe654;</i> Pal Selected</span>
+								<span class="btn_contactme" @click="palContact">Contact me</span>
 							</div>
 						</div>
 					</div>
@@ -668,7 +665,6 @@ Price may vary depending on the language. If you need guides in other languages,
 	require('~/assets/scss/G-ui/flatpickr.min.css')
 	import { addmulMonth,delNullArr,getUrlParams,getParents,formatDate } from "~/assets/js/plugin/utils";
 	import Vue from 'vue';
-import { sep } from 'path';
 
 	export default {
 		name: "activitiesDetail",
@@ -1799,8 +1795,32 @@ import { sep } from 'path';
 				});
 				return details[0].capacity;
 			},
-			checkPal(){
+			checkPal(checkGuideIndex){
+				if(this.checkGuideIndex === checkGuideIndex){
+					return  false;
+				}
+
 				this.checkGuideIndex = this.guideSwiperIndex;
+				this.showGuideDetail = false;
+			},
+			palContact(){
+				let that = this;
+				ga(gaSend, {
+					hitType: "event",
+					eventCategory: "activity_detail",
+					eventAction: "Click",
+					eventLabel: "activity_pandaPal_contact"
+				});
+				that.ContactStatus=true;
+			},
+			palShowFn(){
+				this.showGuideDetail = true;
+				ga(gaSend, {
+					hitType: "event",
+					eventCategory: "activity_detail",
+					eventAction: "Click",
+					eventLabel: "activity_pandaPal_select"
+				});
 			},
 			phoneIntroducing(){
 				this.showPPDialog=true;
@@ -2320,34 +2340,54 @@ import { sep } from 'path';
 										overflow: hidden;
 										margin-right: 6px;
 										position: relative;
+										background-size: cover;
 										cursor: pointer;
+										border: 2px solid #fff;
+										
 										img{
 											width: 100%;
 											height: 100%;
 										}
+
+										
 									}
 									
 									
+									
 									.active_box{
-										background-color:rgba(27,188,157,0.5);
-										display: none;
+										background-color:rgba(27,188,157,1);
+										// display: none;
 										text-align: center;
 										position: absolute;
 										left: 0;
 										top: 0;
 										width: 100%;
 										height: 100%;
+										border-radius: 50%;
+										overflow: hidden;
 										text-align: center;
 										line-height: 52px;
 										color: #fff;
 										font-size: 22px;
+										-webkit-transition:all 0.3s linear 0.3s;
+										transition:all 0.3s linear 0.3s;
+										-webkit-transform: scale(0.2);
+										transform: scale(0.2);
+										opacity: 0;
 									}
 									.active{
+										border: 2px solid #0e9279;//009efd
+										-webkit-animation:palFash 0.8s linear 0s normal 1 forwards;
+										animation:palFash 0.8s linear 0s normal 1 forwards;
 										.active_box{
-											display: block;
-											
+											// display: block;
+											background-color:rgba(27,188,157,0.4);
+											transform: scale(1);
+											opacity: 1;
 										}
 									}
+									@-webkit-keyframes palFash{25%,75%{ border-color:#0e9279; }0%,50%,100% { border-color:#fff; }}
+									@keyframes palFash{25%,75%{ border-color:#0e9279; }0%,50%,100% { border-color:#fff; }}
 								}
 							}
 						}

@@ -100,7 +100,7 @@
 								<checkbox class="pp_checkbox" v-model="pandaPhoneCheck">Add Panda Phone to my trip for only <dfn>USD $1</dfn></checkbox>
 								<p class="pp_tip">All-in-one Mobile Travel Assistant <span @click="showPandaPhone">Show details</span></p>
 							</li> -->
-							<liv v-if="detail.guide.length">
+							<li v-if="detail.guide.length">
 								<h4>Pick Your Panda Pal or let us choose for you</h4>
 								<div class="pandaPal_book_tab_all">
 									<div class="pandaPal_book_tab" v-swiper:swiperBook="swiperPandaPalBook" ref="swiperBook">
@@ -2071,7 +2071,7 @@ Price may vary depending on the language. If you need guides in other languages,
 			},
 			showGuideDetail(value){
 				if(value){
-					document.querySelector('.pal_dialog').style.top = (scrollY+30)+'px';
+					document.querySelector('.pal_dialog').style.top = (scrollY+20)+'px';
 				}
 			}
 		}
@@ -3674,12 +3674,12 @@ Price may vary depending on the language. If you need guides in other languages,
 					padding-bottom: 20px;
 					.pals_l{
 						float: left;
-						width: 734px;
+						width: 534px;
 						height: 430px;
 						background-size: cover;
 					}
 					.pals_r{
-						width: 380px;
+						width: 580px;
 						float: left;
 						margin-left: 60px;
 						.pals_r_tit{
@@ -3693,7 +3693,7 @@ Price may vary depending on the language. If you need guides in other languages,
 							margin-top: 4px;
 						}
 						.pals_tag{
-							margin-top: 40px;
+							margin-top: 30px;
 							span{
 								display: inline-block;
 								overflow: hidden;
@@ -3707,7 +3707,7 @@ Price may vary depending on the language. If you need guides in other languages,
 							}
 						}
 						.pals_btnbox{
-							margin-top:40px;
+							margin-top:30px;
 							span{
 								display: inline-block;
 								width: 180px;

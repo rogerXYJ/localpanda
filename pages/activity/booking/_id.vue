@@ -1299,8 +1299,11 @@
 			// this.opctions.adultsPic=this.getBasisPrice()
 			var details=this.opctions.picInfo.details;
 			var opctions=this.opctions.picInfo;
+
 			
-		
+			//pandaPal信息带过来
+			this.comments = this.opctions.comments;
+			
 			this.opctions.childDiscount=opctions.childDiscount?opctions.childDiscount:0
 			for(var i = 0; i < details.length; i++) {
 				if(this.opctions.adultNum+this.opctions.childrenNum==details[i].capacity){

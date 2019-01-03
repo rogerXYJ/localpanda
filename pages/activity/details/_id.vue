@@ -105,7 +105,11 @@
 								<div class="pandaPal_book_tab_all">
 									<div class="pandaPal_book_tab" v-swiper:swiperBook="swiperPandaPalBook" ref="swiperBook">
 										<div class="swiper-wrapper">
-											<div class="swiper-slide" @click="palShowFn" :class="{'active':checkGuideIndex===index}" :key="index" v-for="(items, index) in detail.guide" v-lazy:background-image="items.guidePhoto.headPortraitUrl">
+											<div class="swiper-slide" @click="palShowFn(index)" :class="{'active':checkGuideIndex===index}" :key="index" v-for="(items, index) in detail.guide" v-lazy:background-image="items.guidePhoto.headPortraitUrl">
+												<div class="active_box iconfont">&#xe654;</div>
+											</div>
+											<div class="swiper-slide" @click="palShowFn(detail.guide.length)" :class="{'active':checkGuideIndex===detail.guide.length}">
+												<div class="iconfont pal_logo">&#xe621;</div>
 												<div class="active_box iconfont">&#xe654;</div>
 											</div>
 										</div>
@@ -115,7 +119,7 @@
 									
 									
 								</div>
-								<p class="pandapal_change_tip" v-if="checkGuideIndex!==''">You’ve selected {{detail.guide[checkGuideIndex].enName}}!</p>
+								<p class="pandapal_change_tip" v-if="checkGuideIndex!=='' && checkGuideIndex!=detail.guide.length">You’ve selected {{detail.guide[checkGuideIndex].enName}}!</p>
 							</li>
 							<li class="clearfix">
 								<span class="btn js_bookNow" @click="bookNow">Book Now</span>
@@ -205,11 +209,18 @@ the eyes of an ordinary local. </p>
 					<div class="pandaPal_box mt20">
 						<div class="pandaPal_tab" v-swiper:swiperPandaPal="swiperPandaPalTab1" ref="swiperPandaPal">
 							<div class="swiper-wrapper">
-								<div class="swiper-slide" @click="palShowFn" :key="index" v-for="(items, index) in detail.guide" >
+								<div class="swiper-slide" @click="palShowFn(index)" :key="index" v-for="(items, index) in detail.guide" >
 									<div class="img_box" v-lazy:background-image="items.guidePhoto.headPortraitUrl"></div>
 									<div class="pandaPal_tab_info">
 										<p>Hello I am</p>
 										<h5>{{items.enName}}, {{items.slogan}}</h5>
+									</div>
+								</div>
+								<div class="swiper-slide" @click="palShowFn(detail.guide.length)">
+									<div class="iconfont img_box">&#xe621;</div>
+									<div class="pandaPal_tab_info">
+										<p>No suitable?</p>
+										<h5>Let us pick for you~</h5>
 									</div>
 								</div>
 							</div>
@@ -411,7 +422,7 @@ the eyes of an ordinary local. </p>
 								<p><b>Duration:</b>{{i.duration}} {{setTimeStr(i.duration,i.durationUnit)}}</p>
 							</div>
 							<div class="similar_list_foot">
-								<span class="price"><i class="gray">{{participants==0?'From':''}}</i><b>{{nowExchange.code}} {{nowExchange.symbol}}{{participants==0?returnFloat(i.bottomPrice):returnFloat(i.perPersonPrice)}}</b>{{returnText(participants)}}</span>
+								<span class="price"><i class="gray">{{participants==0?'From':''}}</i><b>{{nowExchange.code}} {{nowExchange.symbol}}{{participants==0?returnFloat(i.bottomPrice):returnFloat(i.perPersonPrice)}}</b>{{i.unifiedPricing?'pp':returnText(participants)}}</span>
 								<!-- <div class="reviews_star" v-html="reviewsStarHtml(reviewsData.avgScore)"></div><span class="gray">(263)</span> -->
 							</div>
 						</a>
@@ -588,7 +599,7 @@ Price may vary depending on the language. If you need guides in other languages,
 			</div>
 
 			<div class="pal_dialog_content">
-				<div class="pal_dialog_box" v-if="guideSwiperIndex<detail.guide.length">
+				<div class="pal_dialog_box" v-if="guideSwiperIndex!=detail.guide.length">
 					<h4>Meet your Panda Pals</h4>
 					<div class="pals_top">
 						<div class="pals_l" v-lazy:background-image="detail.guide[guideSwiperIndex].guidePhoto.headPortraitUrl">
@@ -641,9 +652,9 @@ Price may vary depending on the language. If you need guides in other languages,
 				<div class="pal_dialog_box letus_pick" v-show="guideSwiperIndex == detail.guide.length">
 					<h4>Let us pick for you</h4>
 					<p class="pals_p">"We’ll match you with the best available Panda Pal for your trip."</p>
-					<textarea class="letus_value" placeholder="If you have preferences on the age/gender/style/specialization or others of the Panda Pal please include in your reply."></textarea>
+					<textarea class="letus_value" :class="{'pal_conments_tip':showPalTip}" placeholder="If you have preferences on the age/gender/style/specialization or others of the Panda Pal please include in your reply." v-model="comments"></textarea>
 
-					<span class="btn_letus_submit">Submit</span>
+					<span class="btn_letus_submit" @click="palSubmit">Submit</span>
 				</div>
 			</div>
 
@@ -1126,6 +1137,8 @@ Price may vary depending on the language. If you need guides in other languages,
 				checkGuideIndex:'',
 				guideSwiperIndex: 0,
 				thisGuide:'',
+				comments:'',
+				showPalTip:false,
 
 				
 
@@ -1651,10 +1664,11 @@ Price may vary depending on the language. If you need guides in other languages,
 					venues: this.detail.venues,
 				  owner:this.detail.owner,
 		      averagePrice: this.perPersonPrice, //人均价 
-					guideId: this.checkGuideIndex!=='' ? this.detail.guide[this.checkGuideIndex].guideId : null,
+					guideId: this.detail.guide[this.checkGuideIndex] ? this.detail.guide[this.checkGuideIndex].guideId : null,
 					phoneHirePrice: this.picInfo.phoneHirePrice,
 					pandaPhoneCheck:this.pandaPhoneCheck,
-					picInfo: this.picInfo
+					picInfo: this.picInfo,
+					comments: this.comments
 				};
 				
 				
@@ -1803,6 +1817,20 @@ Price may vary depending on the language. If you need guides in other languages,
 				this.checkGuideIndex = this.guideSwiperIndex;
 				this.showGuideDetail = false;
 			},
+			palSubmit(){
+
+				this.checkGuideIndex = this.detail.guide.length;
+				// this.guideSwiperIndex = this.detail.guide.length;
+				this.showPalTip = false;
+				this.showGuideDetail = false;
+
+				// if(this.comments){
+					
+				// }else{
+				// 	this.showPalTip = true;
+				// }
+				
+			},
 			palContact(){
 				let that = this;
 				ga(gaSend, {
@@ -1813,8 +1841,9 @@ Price may vary depending on the language. If you need guides in other languages,
 				});
 				that.ContactStatus=true;
 			},
-			palShowFn(){
+			palShowFn(index){
 				this.showGuideDetail = true;
+				this.guideSwiperIndex = index;
 				ga(gaSend, {
 					hitType: "event",
 					eventCategory: "activity_detail",
@@ -2331,7 +2360,7 @@ Price may vary depending on the language. If you need guides in other languages,
 									margin-top: 5px;
 								}
 								.pandaPal_book_tab{
-									padding: 0 20px;
+									padding: 5px 20px;
 									position: relative;
 									.swiper-slide{
 										width: 52px!important;
@@ -2342,11 +2371,19 @@ Price may vary depending on the language. If you need guides in other languages,
 										position: relative;
 										background-size: cover;
 										cursor: pointer;
-										border: 2px solid #fff;
-										
+										border: 2px solid #eee;
+										// box-shadow: 0 0 5px rgba(0, 1px, 0, 0.2);
 										img{
 											width: 100%;
 											height: 100%;
+										}
+										.pal_logo{
+											width: 100%;
+											height: 52px;
+											line-height: 52px;
+											text-align: center;
+											font-size: 30px;
+											color: #000;
 										}
 
 										
@@ -2667,6 +2704,14 @@ Price may vary depending on the language. If you need guides in other languages,
 								display: -webkit-box;
 								text-overflow: ellipsis;
 							}
+						}
+						.img_box{
+							width: 100%;
+							height: 154px;
+							line-height: 154px;
+							text-align: center;
+							font-size: 120px;
+							color: #000;
 						}
 					}
 					.swiper-button-prev,.swiper-button-next{
@@ -3596,6 +3641,9 @@ Price may vary depending on the language. If you need guides in other languages,
 						line-height: 24px;
 						border: solid 1px #dde0e0;
 					}
+					.pal_conments_tip{
+						border-color: red;
+					}
 					.btn_letus_submit{
 						margin-top: 40px;
 						display: block;
@@ -3608,6 +3656,7 @@ Price may vary depending on the language. If you need guides in other languages,
 						color: #fff;
 						background-image: -webkit-gradient(linear, right top, left top, from(#009efd), to(#1bbc9d));
 						background-image: linear-gradient(270deg, #009efd 0%, #1bbc9d 100%);
+						cursor: pointer;
 					}
 				}
 			}

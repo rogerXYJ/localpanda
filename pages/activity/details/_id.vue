@@ -142,7 +142,7 @@
 
 					<!-- 预定保障模块 -->
 					
-					<ul class="book_ensure">
+					<ul class="book_ensure" v-if="showBookEnsure">
 						<li><i class="iconfont">&#xe654;</i>No hidden booking or credit card fees</li>
 						<li><i class="iconfont">&#xe654;</i>Instant confirmation after booking</li>
 						<li><i class="iconfont">&#xe654;</i>Best Price Guarantee</li>
@@ -455,6 +455,97 @@ the eyes of an ordinary local. </p>
 		
 		<!-- 公共底部 -->
 		<FooterCommon :nowCurrency="nowExchange" @headCurrency="headCurrencyFn"></FooterCommon>
+
+
+		<!-- pandaPal弹窗 -->
+		<div class="pal_dialog_bg" v-show="showGuideDetail"></div>
+		<div class="pal_dialog" v-show="showGuideDetail" ref="pal_dialog">
+			<h3>Select your favorite Pal</h3>
+			<div class="pal_dialog_tab" v-swiper:palDialogTab="palDialogTabOpt" ref="palDialogTab">
+				<div class="swiper-wrapper">
+					<div class="swiper-slide" @click="guideSwiperIndex=index" :class="{'active':index===checkGuideIndex,'activeTab':index==guideSwiperIndex}" :key="index" v-for="(items, index) in detail.guide" v-lazy:background-image="items.guidePhoto.headPortraitUrl">
+						<div class="pal_dialog_tab_info">
+							<p>Hello I am</p>
+							<h5>{{items.enName}}, {{items.slogan}}</h5>
+						</div>
+						<div class="check_tag iconfont">&#xe654;</div>
+					</div>
+					<div class="swiper-slide" @click="guideSwiperIndex=detail.guide.length" :class="{'activeTab':detail.guide.length==guideSwiperIndex}" v-lazy:background-image="''">
+						<div class="iconfont pal_logo">&#xe621;</div>
+						<div class="pal_dialog_tab_info">
+							<p>No suitable?</p>
+							<h5>Let us pick for you~</h5>
+						</div>
+						<div class="check_tag iconfont">&#xe654;</div>
+					</div>
+				</div>
+				<div class="swiper-button-prev swiper-button-white iconfont">&#xe669;</div>
+				<div class="swiper-button-next swiper-button-white iconfont">&#xe64a;</div>
+			</div>
+
+			<div class="pal_dialog_content">
+				<div class="pal_dialog_box" v-if="guideSwiperIndex!=detail.guide.length">
+					<h4>Meet your Panda Pals</h4>
+					<div class="pals_top">
+						<div class="pals_l" v-lazy:background-image="detail.guide[guideSwiperIndex].guidePhoto.headPortraitUrl">
+							<!-- <img v-lazy="thisGuide.guidePhoto.headPortraitUrl" width="734" height="430" alt=""> -->
+						</div>
+						<div class="pals_r">
+							<div class="pals_r_tit">Hello I'm {{detail.guide[guideSwiperIndex].enName}}, <br>{{detail.guide[guideSwiperIndex].slogan}}</div>
+							<p><b>Tours Given:</b> 88</p>
+							<p><b>I speak:</b> English, 中文</p>
+
+							<div class="pals_tag">
+								<span>Loves history & mysteries</span>
+								<span>Enthusiasm</span>
+								<span>War stories expert</span>
+								<span>Humas compass</span>
+							</div>
+
+							<div class="pals_btnbox">
+								<span class="btn_selected" :class="{'btn_active':checkGuideIndex===guideSwiperIndex}" @click="checkPal(guideSwiperIndex)"><i class="iconfont">&#xe654;</i> Pal Selected</span>
+								<span class="btn_contactme" @click="palContact">Contact me</span>
+							</div>
+						</div>
+					</div>
+
+					<h5>About me</h5>
+					<p class="pals_p">You’ll discover Shanghai through the eyes of a local: from the highlights to the hidden gems. I have tons of great stories to share with you!  You’ll discover Shanghai through the eyes of a local: from the highlights to the hidden gems. I have tons of great stories to share with you!  You’ll discover Shanghai through the eyes of a local: from the highlights to the hidden gems. I have tons of great stories to share with you!  You’ll discover Shanghai through the eyes of a local: from the highlights to the hidden gems. I have tons of great stories to share with you! </p>
+					<p class="pals_p">You’ll discover Shanghai through the eyes of a local: from the highlights to the hidden gems. I have tons of great stories to share with you!  You’ll discover Shanghai through the eyes of a local: from the highlights to the hidden gems. I have tons of great stories to share with you!  You’ll discover Shanghai through the eyes of a local: from the highlights to the hidden gems. I have tons of great stories to share with you!  You’ll discover Shanghai through the eyes of a local: from the highlights to the hidden gems. I have tons of great stories to share with you! </p>
+
+					<!-- <h5>My experiences</h5>
+					<div class="experiences">
+						<div class="swiper_experiences" v-swiper:palExperiences="palExperiencesOpt" ref="palExperiences">
+							<div class="swiper-wrapper">
+								<div class="swiper-slide" :key="index" v-for="(slide, index) in detail.bannerPhotos">
+									<div class="img_box" v-lazy:background-image="slide.url"></div>
+									<div class="experiences_info">
+										<div class="pro_tit">
+											<span class="pro_tag">PRIVATE</span>Zero basic oil painting experience, Zero basic oil painting experience, 
+										</div>
+										<p>Duration:  4 hours</p>
+										<div class="pro_price"><span>From</span> <b>$88.9</b> pp</div>
+									</div>
+								</div>
+							</div>
+							<div class="swiper-button-prev swiper-button-white iconfont">&#xe669;</div>
+							<div class="swiper-button-next swiper-button-white iconfont">&#xe64a;</div>
+						</div>
+					</div> -->
+				</div>
+
+				<div class="pal_dialog_box letus_pick" v-show="guideSwiperIndex == detail.guide.length">
+					<h4>Let us pick for you</h4>
+					<p class="pals_p">"We’ll match you with the best available Panda Pal for your trip."</p>
+					<textarea class="letus_value" :class="{'pal_conments_tip':showPalTip}" placeholder="If you have preferences on the age/gender/style/specialization or others of the Panda Pal please include in your reply." v-model="comments"></textarea>
+
+					<span class="btn_letus_submit" @click="palSubmit">Submit</span>
+				</div>
+			</div>
+
+			<div class="pal_dialog_close iconfont" @click="showGuideDetail=false">&#xe606;</div>
+		</div>
+
 		
 		<!-- inquiry -->
 		<Contact :ContactStatus="ContactStatus" v-on:contactCallback="contactCallBack" :owner="detail.owner"  :objectType="'ACTIVITY'" :objectId="id"></Contact>
@@ -570,96 +661,14 @@ Price may vary depending on the language. If you need guides in other languages,
 			
 			
 			<div class="pp_close iconfont" @click="showPPDialog=false">&#xe606;</div>
+
+
+
+			
 		</div>
 
 
-		<div class="pal_dialog_bg" v-show="showGuideDetail"></div>
-		<div class="pal_dialog" v-show="showGuideDetail" ref="pal_dialog">
-			<h3>Select your favorite Pal</h3>
-			<div class="pal_dialog_tab" v-swiper:palDialogTab="palDialogTabOpt" ref="palDialogTab">
-				<div class="swiper-wrapper">
-					<div class="swiper-slide" @click="guideSwiperIndex=index" :class="{'active':index===checkGuideIndex,'activeTab':index==guideSwiperIndex}" :key="index" v-for="(items, index) in detail.guide" v-lazy:background-image="items.guidePhoto.headPortraitUrl">
-						<div class="pal_dialog_tab_info">
-							<p>Hello I am</p>
-							<h5>{{items.enName}}, {{items.slogan}}</h5>
-						</div>
-						<div class="check_tag iconfont">&#xe654;</div>
-					</div>
-					<div class="swiper-slide" @click="guideSwiperIndex=detail.guide.length" :class="{'activeTab':detail.guide.length==guideSwiperIndex}" v-lazy:background-image="''">
-						<div class="iconfont pal_logo">&#xe621;</div>
-						<div class="pal_dialog_tab_info">
-							<p>No suitable?</p>
-							<h5>Let us pick for you~</h5>
-						</div>
-						<div class="check_tag iconfont">&#xe654;</div>
-					</div>
-				</div>
-				<div class="swiper-button-prev swiper-button-white iconfont">&#xe669;</div>
-				<div class="swiper-button-next swiper-button-white iconfont">&#xe64a;</div>
-			</div>
-
-			<div class="pal_dialog_content">
-				<div class="pal_dialog_box" v-if="guideSwiperIndex!=detail.guide.length">
-					<h4>Meet your Panda Pals</h4>
-					<div class="pals_top">
-						<div class="pals_l" v-lazy:background-image="detail.guide[guideSwiperIndex].guidePhoto.headPortraitUrl">
-							<!-- <img v-lazy="thisGuide.guidePhoto.headPortraitUrl" width="734" height="430" alt=""> -->
-						</div>
-						<div class="pals_r">
-							<div class="pals_r_tit">Hello I'm {{detail.guide[guideSwiperIndex].enName}}, <br>{{detail.guide[guideSwiperIndex].slogan}}</div>
-							<p><b>Tours Given:</b> 88</p>
-							<p><b>I speak:</b> English, 中文</p>
-
-							<div class="pals_tag">
-								<span>Loves history & mysteries</span>
-								<span>Enthusiasm</span>
-								<span>War stories expert</span>
-								<span>Humas compass</span>
-							</div>
-
-							<div class="pals_btnbox">
-								<span class="btn_selected" :class="{'btn_active':checkGuideIndex===guideSwiperIndex}" @click="checkPal(guideSwiperIndex)"><i class="iconfont">&#xe654;</i> Pal Selected</span>
-								<span class="btn_contactme" @click="palContact">Contact me</span>
-							</div>
-						</div>
-					</div>
-
-					<h5>About me</h5>
-					<p class="pals_p">You’ll discover Shanghai through the eyes of a local: from the highlights to the hidden gems. I have tons of great stories to share with you!  You’ll discover Shanghai through the eyes of a local: from the highlights to the hidden gems. I have tons of great stories to share with you!  You’ll discover Shanghai through the eyes of a local: from the highlights to the hidden gems. I have tons of great stories to share with you!  You’ll discover Shanghai through the eyes of a local: from the highlights to the hidden gems. I have tons of great stories to share with you! </p>
-					<p class="pals_p">You’ll discover Shanghai through the eyes of a local: from the highlights to the hidden gems. I have tons of great stories to share with you!  You’ll discover Shanghai through the eyes of a local: from the highlights to the hidden gems. I have tons of great stories to share with you!  You’ll discover Shanghai through the eyes of a local: from the highlights to the hidden gems. I have tons of great stories to share with you!  You’ll discover Shanghai through the eyes of a local: from the highlights to the hidden gems. I have tons of great stories to share with you! </p>
-
-					<!-- <h5>My experiences</h5>
-					<div class="experiences">
-						<div class="swiper_experiences" v-swiper:palExperiences="palExperiencesOpt" ref="palExperiences">
-							<div class="swiper-wrapper">
-								<div class="swiper-slide" :key="index" v-for="(slide, index) in detail.bannerPhotos">
-									<div class="img_box" v-lazy:background-image="slide.url"></div>
-									<div class="experiences_info">
-										<div class="pro_tit">
-											<span class="pro_tag">PRIVATE</span>Zero basic oil painting experience, Zero basic oil painting experience, 
-										</div>
-										<p>Duration:  4 hours</p>
-										<div class="pro_price"><span>From</span> <b>$88.9</b> pp</div>
-									</div>
-								</div>
-							</div>
-							<div class="swiper-button-prev swiper-button-white iconfont">&#xe669;</div>
-							<div class="swiper-button-next swiper-button-white iconfont">&#xe64a;</div>
-						</div>
-					</div> -->
-				</div>
-
-				<div class="pal_dialog_box letus_pick" v-show="guideSwiperIndex == detail.guide.length">
-					<h4>Let us pick for you</h4>
-					<p class="pals_p">"We’ll match you with the best available Panda Pal for your trip."</p>
-					<textarea class="letus_value" :class="{'pal_conments_tip':showPalTip}" placeholder="If you have preferences on the age/gender/style/specialization or others of the Panda Pal please include in your reply." v-model="comments"></textarea>
-
-					<span class="btn_letus_submit" @click="palSubmit">Submit</span>
-				</div>
-			</div>
-
-			<div class="pal_dialog_close iconfont" @click="showGuideDetail=false">&#xe606;</div>
-		</div>
+		
 
 	</div>
 </template>
@@ -1127,6 +1136,7 @@ Price may vary depending on the language. If you need guides in other languages,
 
 				isShowMeau:false,
 
+				showBookEnsure:true,
 				
 
 
@@ -1814,6 +1824,7 @@ Price may vary depending on the language. If you need guides in other languages,
 					return  false;
 				}
 
+				this.comments = '';
 				this.checkGuideIndex = this.guideSwiperIndex;
 				this.showGuideDetail = false;
 			},
@@ -2022,6 +2033,9 @@ Price may vary depending on the language. If you need guides in other languages,
 				this.getManual();
 				//刷新推荐产品价格
 				this.getRecommend();
+
+				//隐藏模块
+				this.showBookEnsure = false;
 			},
 			nowExchange:function(val){
 				//设置价格

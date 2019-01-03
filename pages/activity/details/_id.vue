@@ -100,7 +100,7 @@
 								<checkbox class="pp_checkbox" v-model="pandaPhoneCheck">Add Panda Phone to my trip for only <dfn>USD $1</dfn></checkbox>
 								<p class="pp_tip">All-in-one Mobile Travel Assistant <span @click="showPandaPhone">Show details</span></p>
 							</li> -->
-							<li>
+							<liv v-if="detail.guide.length">
 								<h4>Pick Your Panda Pal or let us choose for you</h4>
 								<div class="pandaPal_book_tab_all">
 									<div class="pandaPal_book_tab" v-swiper:swiperBook="swiperPandaPalBook" ref="swiperBook">
@@ -202,7 +202,7 @@
 				</div>
 
 				<!-- Panda Pals -->
-				<div class="detail_box pandaPal" id="pandaPal">
+				<div class="detail_box pandaPal" id="pandaPal" v-if="detail.guide.length">
 					<h3><i></i>Meet the Panda Pals for this tour. Pick your favorite!</h3>
 					<p class="detail_p mt10">This tour is led by a Panda Pal: an English-speaking local who loves their city and wants to show you around. Although they don’t have the knowledge of experience of a professional guide, Panda Pals still meet our standards of excellence and provide an authentic way to experience China through 
 the eyes of an ordinary local. </p>
@@ -224,8 +224,8 @@ the eyes of an ordinary local. </p>
 									</div>
 								</div>
 							</div>
-							<div class="swiper-button-prev swiper-button-white iconfont" v-if="detail.guide.length>3">&#xe669;</div>
-							<div class="swiper-button-next swiper-button-white iconfont" v-if="detail.guide.length>3">&#xe64a;</div>
+							<div class="swiper-button-prev swiper-button-white iconfont" v-if="detail.guide.length>2">&#xe669;</div>
+							<div class="swiper-button-next swiper-button-white iconfont" v-if="detail.guide.length>2">&#xe64a;</div>
 						</div>
 					</div>
 				</div>

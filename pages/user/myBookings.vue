@@ -39,7 +39,7 @@
 								<div class="tag">
 									<a :href="'/user/order/details?orderId='+item.orderId+'&email='+item.email+'&type=ACTIVITY'">Order Details</a>
 
-									<span  @click="goDetail('ACTIVITY',item.objectId)">Book Again</span>
+									<span  @click="goDetail('ACTIVITY',item.detailUrl)">Book Again</span>
 
 									<span v-if="item.status=='PAYMENT_PENDING'" @click="goPay('ACTIVITY',item.orderId)">To Pay</span>
 								</div>
@@ -342,13 +342,13 @@
 				}
 				
 			},
-			goDetail(type,id){
+			goDetail(type,url){
 				if(type=='PHONE'){
 					window.location.href = 'https://www.localpanda.com/product/phone/details/';
 				}else if(type=='ACTIVITY'){
-					window.location.href = "/activity/details/" + id;
+					window.location.href = url;
 				}else if(type == 'GUIDE_SERVICE'){
-					window.location.href = "/guide/detail/" + id;
+					window.location.href = "/guide/detail/" + url;
 				}
 				
 			},

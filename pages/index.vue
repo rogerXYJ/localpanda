@@ -125,7 +125,7 @@ export default {
        
     mounted: function() {
     	this.logIn = window.localStorage.getItem("logstate");
-      console.log(this.activeList);
+      console.log(this.initialState.activeList);
       // console.log('自动发布测试');
       document.documentElement.scrollTop=0
     //    if(window.name != "bencalie"){

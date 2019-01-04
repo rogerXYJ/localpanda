@@ -253,7 +253,7 @@ the eyes of an ordinary local. </p>
 					<ul class="similar_list_manual">
 						<li :key="index" v-for="(i,index) in detail.manual.entities">
 							<!--  v-show="participants==0 || participants && i.perPersonPrice" -->
-							<a @click="similarFn(i.activityId)">
+							<a @click="similarFn(i.detailUrl)">
 								<h4><span class="tag" :class="{'private':i.groupType=='Private'}" v-if="i.groupType">{{i.groupType}}</span> {{i.shortTitle?i.shortTitle:i.title}} <span class="tag_time">{{i.duration}} {{setTimeStr(i.duration,i.durationUnit)}}</span>	</h4>
 								<div class="similar_list_foot">
 									<span class="price"><i class="gray">{{participants==0?'From':''}}</i><b>{{nowExchange.code}} {{nowExchange.symbol}}{{participants==0?returnFloat(i.bottomPrice):returnFloat(i.perPersonPrice)}}</b>{{i.unifiedPricing?'pp':returnText(participants)}}</span>
@@ -413,7 +413,7 @@ the eyes of an ordinary local. </p>
 				<h3><i></i>Other People Also Choose</h3>
 				<ul class="similar_list">
 					<li :key="index" v-for="(i,index) in detail.recommend.entities">
-						<a @click="alsoFn(i.activityId)">
+						<a @click="alsoFn(i.detailUrl)">
 							<div class="similar_img_box">
 								<div class="similar_img" v-lazy:background-image="i.coverPhotoUrl"></div>
 							</div>
@@ -1898,7 +1898,7 @@ Price may vary depending on the language. If you need guides in other languages,
 					eventLabel:"pickup"
 				});
 			},
-			similarFn(activityId){
+			similarFn(detailUrl){
 				ga(gaSend, {
 					hitType: "event",
 					eventCategory: "activity_detail",
@@ -1906,9 +1906,9 @@ Price may vary depending on the language. If you need guides in other languages,
 					eventLabel:"recommend_manual"
 				});
 
-				location.href =  '/activity/details/'+activityId;
+				location.href =  detailUrl;
 			},
-			alsoFn(activityId){
+			alsoFn(detailUrl){
 				ga(gaSend, {
 					hitType: "event",
 					eventCategory: "activity_detail",
@@ -1916,7 +1916,7 @@ Price may vary depending on the language. If you need guides in other languages,
 					eventLabel:"recommend_system"
 				});
 
-				location.href =  '/activity/details/'+activityId;
+				location.href =  detailUrl;
 			}
 		},
 		mounted: function() {

@@ -217,7 +217,7 @@
 						<ul>
 							<li class="activity-item clearfix" v-for="item in activityList" v-if="item.activityId" :key="item.activityId">
 
-								<a :href="'/activity/details/'+item.activityId" target="_blank">
+								<a :href="item.detailUrl" target="_blank">
 									<div class="activity">
 										<div class="activity-photo" v-lazy:background-image="item.coverPhotoUrl">
 											<!-- <p class="type">{{item.category}}</p> -->

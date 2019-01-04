@@ -17,7 +17,7 @@
 				<div class="content_detail clearfix">
 					<div class="img_box">
 						<img :src="details.activityInfo.coverPhotoUrl" alt="">
-						<a :href="'/activity/details/'+details.activityInfo.activityId" target="_blank">Book Again</a>
+						<a :href="details.activityInfo.detailUrl" target="_blank">Book Again</a>
 					</div>
 					<ul class="content_list list_float">
 						<li><b>Booking ID :</b>{{details.orderId}}</li>
@@ -26,7 +26,7 @@
 						<li><b>Amount :</b>{{details.currency}} {{details.symbol}} {{details.amount}}</li>
 						<li><b>Number of Travelers :</b>{{details.adultNum+(details.adultNum>1?'Adults':'Adult')}} , {{details.childrenNum+(details.childrenNum>1?'Children':'Child')}}</li>
 						<li><b>Travel Date :</b>{{formatDate(details.startDate)}}</li>
-						<li class="wmax"><b>Product :</b><a :href="'/activity/details/'+details.activityInfo.activityId" target="_blank">{{details.activityInfo.title}}</a></li>
+						<li class="wmax"><b>Product :</b><a :href="details.activityInfo.detailUrl" target="_blank">{{details.activityInfo.title}}</a></li>
 						<li><b>Duration :</b>{{details.activityInfo.duration}}{{getDurationUnit(details.activityInfo.duration,details.activityInfo.durationUnit)}}</li>
 						<li><b>Category :</b>{{details.activityInfo.category?details.activityInfo.category:'Panda Phone'}}</li>
 						<li v-if="details.phoneHire"><b>Panda Phone Service </b>{{details.phoneDepositPayOnline?'(deposit included)':''}}</li>

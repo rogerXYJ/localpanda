@@ -122,7 +122,7 @@
 								<p class="pandapal_change_tip" v-if="checkGuideIndex!=='' && checkGuideIndex!=detail.guide.length">You’ve selected {{detail.guide[checkGuideIndex].enName}}!</p>
 							</li>
 							<li class="clearfix">
-								<span class="btn js_bookNow" @click="bookNow">Book Now</span>
+								<span class="btn js_bookNow" @click.stop="bookNow">Book Now</span>
 								<span class="btn_inquire fl" @click="showContact">Inquire</span>
 							</li>
 							

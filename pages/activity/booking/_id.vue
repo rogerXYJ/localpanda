@@ -1241,6 +1241,7 @@
 					"couponCode": that.page,
 					"utcOffset": new Date().getTimezoneOffset() / 60 * -1,
 					"deviceType": "PC",
+					"guideId": that.opctions.guideId,
 					//"fullRefund":that.opctions.fullRefund,
 					"finalRefundPeriod":that.opctions.finalRefundPeriod,
 					"phoneHirePrice":that.opctions.phoneHirePrice,
